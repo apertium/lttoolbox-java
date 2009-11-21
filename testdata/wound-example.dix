@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dictionary>
+
+<alphabet>ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz</alphabet>
+ 
+<sdefs>
+    <sdef n="vblex"/>
+    <sdef n="pp"/>
+    <sdef n="n"/>
+    <sdef n="sg"/>
+    <sdef n="pl"/>
+</sdefs>
+
+<section id="saluton" type="standard">
+	<e><p><l>wound</l><r>wound<s n="n"/><s n="sg"/></r></p></e>
+	<e><p><l>wounds</l><r>wound<s n="n"/><s n="pl"/></r></p></e>
+	<e><p><l>wound</l><r>wind<s n="vblex"/><s n="pp"/></r></p></e>
+ </section>
+</dictionary>

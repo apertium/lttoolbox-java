@@ -1,0 +1,24 @@
+lt-validate (to validate XML dictionaries) :
+ - works great, at least with rng
+ - I don't remember whether i have tested it with dtd
+ - there is a problem of depedencies with maven
+(works well if I run it from netbeans, 
+but otherwise, a ClassNotFound exception is thrown...)
+
+lt-comp :
+ - works exactly as the c++ version
+ - but is slower
+ - I think I know a way to gain some speed, I'll try that
+ - Maybe there are still a thing or two that can be uniformized between lt-comp and lt-expand
+ - the code is cleaned (all unecessary comments removed, some refactoring too)
+
+lt-proc :
+ - still bugged, but really close to be working (I think)
+ - the code needs to be cleaned
+ - maybe a bit refactored as well
+
+lt-expand :
+ - works exactly as the c++ version
+ - nearly as fast on my computer, so speed is not a problem here
+ - the code is cleaned (all unecessary comments removed, some refactoring too)
+ - Maybe there are still a thing or two that can be uniformized between lt-comp and lt-expand

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dictionary>
+
+<alphabet>·ÀÁÂÄÇÈÉÊËÌÍÎÏÑÒÓÔÖÙÚÛÜàáâäçèéêëìíîïñòóôöùúûüABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz</alphabet>
+ 
+
+<sdefs>
+    <sdef n="aa"/>
+
+    <sdef n="acr"/>
+    <sdef n="adj"/>
+    <sdef n="adv"/>
+    <sdef n="al"/>
+    <sdef n="an"/>
+    <sdef n="ant"/>
+    <sdef n="atn"/>
+    <sdef n="cm"/>
+    <sdef n="num"/>
+    <sdef n="ord"/>
+    <sdef n="f"/>
+    <sdef n="sg"/>
+    <sdef n="m"/>
+    <sdef n="vbhaver"/>
+    <sdef n="pri"/>
+    <sdef n="p3"/>
+    <sdef n="vblex"/>
+    <sdef n="ifi"/>
+    <sdef n="p3"/>
+    <sdef n="p1"/>
+    <sdef n="p2"/>
+    <sdef n="pl"/>
+    <sdef n="pis"/>
+    <sdef n="pp"/>
+    <sdef n="fti"/>
+    <sdef n="cni"/>
+    <sdef n="inf"/>
+    <sdef n="imp"/>
+    <sdef n="prn"/>
+    <sdef n="enc"/>
+    <sdef n="nt"/>
+    <sdef n="mf"/>
+    <sdef n="pii"/>
+    <sdef n="ger"/>
+    <sdef n="ppres"/>
+    <sdef n="ND"/>
+    <sdef n="prs"/>
+</sdefs>
+
+<pardefs>
+<pardef n="/avoir__vbhaver">
+
+   <!-- comment -->            
+                        <e><p><l>a</l><r>avoir<s n="vbhaver"/><s n="pri"/><s n="p3"/><s n="sg"/></r></p></e>
+
+             </pardef>
+
+
+</pardefs>    
+
+
+<section id="final" type="inconditional">
+
+                        <e><par n="/avoir__vbhaver"/></e>
+
+
+ </section>
+</dictionary>
