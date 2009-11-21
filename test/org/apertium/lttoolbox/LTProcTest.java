@@ -20,7 +20,7 @@ import junit.framework.TestCase;
  *
  * @author Jacob Nordfalk
  */
-public class TestLTProc extends TestCase {
+public class LTProcTest extends TestCase {
 
 
   /**
@@ -29,7 +29,7 @@ public class TestLTProc extends TestCase {
    */
   public void testAnalysis_small_oneWound_Java() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
-      fstp.load(new DataInputStream(new BufferedInputStream(new FileInputStream("src/test/org/apertium/lttoolbox/wound-example.bin"))));
+      fstp.load(new DataInputStream(new BufferedInputStream(new FileInputStream("testdata/wound-example.bin"))));
       fstp.initAnalysis();
       DataInputStream input = new DataInputStream(new ByteArrayInputStream("wound\n".getBytes()));
       StringWriter output = new StringWriter();
@@ -44,7 +44,7 @@ public class TestLTProc extends TestCase {
 
   public void testAnalysis_small_oneWord_Java() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
-      fstp.load(new DataInputStream(new BufferedInputStream(new FileInputStream("src/test/org/apertium/lttoolbox/correct-test.bin"))));
+      fstp.load(new DataInputStream(new BufferedInputStream(new FileInputStream("testdata/correct-test.bin"))));
       fstp.initAnalysis();
       // input a single 'a'   - should give  ^a/avoir<vbhaver><pri><p3><sg>$
       DataInputStream input = new DataInputStream(new ByteArrayInputStream("a\n".getBytes()));
@@ -60,7 +60,7 @@ public class TestLTProc extends TestCase {
 
   public void testAnalysis_small_twoWords_Java() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
-      fstp.load(new DataInputStream(new BufferedInputStream(new FileInputStream("src/test/org/apertium/lttoolbox/correct-test.bin"))));
+      fstp.load(new DataInputStream(new BufferedInputStream(new FileInputStream("testdata/correct-test.bin"))));
       fstp.initAnalysis();
       DataInputStream input = new DataInputStream(new ByteArrayInputStream("a a\n".getBytes()));
       StringWriter output = new StringWriter();
@@ -77,7 +77,7 @@ public class TestLTProc extends TestCase {
 
 
   public void testAnalysis_small_oneWord_Cpp() throws IOException {
-    Process p = Runtime.getRuntime().exec("lt-proc src/test/org/apertium/lttoolbox/correct-test.bin");
+    Process p = Runtime.getRuntime().exec("lt-proc testdata/correct-test.bin");
     p.getOutputStream().write("a\n".getBytes());
     p.getOutputStream().close();
     String res = new BufferedReader(new InputStreamReader(p.getInputStream())).readLine();
@@ -87,7 +87,7 @@ public class TestLTProc extends TestCase {
 
   public void testAnalysisUppercasetransformation() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
-      fstp.load(new DataInputStream(new BufferedInputStream(new FileInputStream("src/test/org/apertium/lttoolbox/tests-LTProc/fr-es.automorf.bin"))));
+      fstp.load(new DataInputStream(new BufferedInputStream(new FileInputStream("testdata/tests-LTProc/fr-es.automorf.bin"))));
       fstp.initAnalysis();
       StringWriter output = new StringWriter();
       String input = "Un article ";
@@ -106,7 +106,7 @@ public class TestLTProc extends TestCase {
 
   public void testAnalysis3wordsWithSuperblanksAndNewlines() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
-      fstp.load(new DataInputStream(new BufferedInputStream(new FileInputStream("src/test/org/apertium/lttoolbox/tests-LTProc/fr-es.automorf.bin"))));
+      fstp.load(new DataInputStream(new BufferedInputStream(new FileInputStream("testdata/tests-LTProc/fr-es.automorf.bin"))));
       fstp.initAnalysis();
       StringWriter output = new StringWriter();
       String input = "je[\npart ]\n[]suis"
@@ -129,7 +129,7 @@ public class TestLTProc extends TestCase {
 
     public void testAnalysis13words() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
-      fstp.load(new DataInputStream(new BufferedInputStream(new FileInputStream("src/test/org/apertium/lttoolbox/tests-LTProc/fr-es.automorf.bin"))));
+      fstp.load(new DataInputStream(new BufferedInputStream(new FileInputStream("testdata/tests-LTProc/fr-es.automorf.bin"))));
       fstp.initAnalysis();
       StringWriter output = new StringWriter();
       DataInputStream input = new DataInputStream(new ByteArrayInputStream(
@@ -150,7 +150,7 @@ public class TestLTProc extends TestCase {
 
   public void testGeneration() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
-      fstp.load(new DataInputStream(new BufferedInputStream(new FileInputStream("src/test/org/apertium/lttoolbox/generator.bin"))));
+      fstp.load(new DataInputStream(new BufferedInputStream(new FileInputStream("testdata/generator.bin"))));
       fstp.initGeneration();
 
       DataInputStream input = new DataInputStream(new ByteArrayInputStream(
@@ -166,7 +166,7 @@ public class TestLTProc extends TestCase {
 
   public void testGenerationSuperblankAndUnknown() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
-      fstp.load(new DataInputStream(new BufferedInputStream(new FileInputStream("src/test/org/apertium/lttoolbox/generator.bin"))));
+      fstp.load(new DataInputStream(new BufferedInputStream(new FileInputStream("testdata/generator.bin"))));
       fstp.initGeneration();
 
       DataInputStream input = new DataInputStream(new ByteArrayInputStream(
@@ -184,7 +184,7 @@ public class TestLTProc extends TestCase {
 
   public void testPostGeneration() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
-      fstp.load(new DataInputStream(new BufferedInputStream(new FileInputStream("src/test/org/apertium/lttoolbox/tests-LTProc/fr-es.autopgen.bin"))));
+      fstp.load(new DataInputStream(new BufferedInputStream(new FileInputStream("testdata/tests-LTProc/fr-es.autopgen.bin"))));
       fstp.initGeneration();
 
       DataInputStream input = new DataInputStream(new ByteArrayInputStream(
