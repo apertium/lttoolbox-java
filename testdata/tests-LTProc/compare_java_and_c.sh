@@ -1,7 +1,9 @@
 #!/bin/bash
 
-LTProcJ="java -cp /home/j/esperanto/apertium/gsoc2009/rah/lttoolbox-java-maven/target/lttoolbox-1.0-SNAPSHOT.jar org.apertium.lttoolbox.LTProc"
+#LTProcJ="time java -cp ../../dist/lttoolbox.jar org.apertium.lttoolbox.LTProc"
+LTProcJ="java -cp ../../dist/lttoolbox.jar org.apertium.lttoolbox.LTProc"
 #LTProcC="/home/j/esperanto/apertium/lttoolbox/lttoolbox/lt-proc"
+#LTProcC="time lt-proc"
 LTProcC="lt-proc"
 F=/tmp/lt-proc-output.txt
 ERR=/tmp/lt-proc-output-diff.txt

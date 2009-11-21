@@ -34,7 +34,7 @@ public class StateTest extends TestCase {
 
   public void testStateRaphaëlPleaseFinish() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
-      fstp.load(new DataInputStream(new BufferedInputStream(new FileInputStream("src/test/org/apertium/lttoolbox/correct-test.bin"))));
+      fstp.load(new DataInputStream(new BufferedInputStream(new FileInputStream("testdata/correct-test.bin"))));
 
 
       System.err.println("fstp.transducers = " + fstp.transducers);
