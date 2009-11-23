@@ -1,0 +1,104 @@
+aérien:aérien<adj><m><sg>
+aérienne:aérien<adj><f><sg>
+aériennes:aérien<adj><f><pl>
+aériens:aérien<adj><m><pl>
+a:avoir<vbhaver><pri><p3><sg>
+__REGEXP__([0-9]*[02-9]1|1)er:__REGEXP__([0-9]*[02-9]1|1)er<num><ord><m><sg>
+__REGEXP__,:__REGEXP__,<cm>
+__REGEXP__[0-9]+([.,][0-9]+)?%:__REGEXP__[0-9]+([.,][0-9]+)?%<num><percent>
+__REGEXP__[0-9]+([.,][0-9]+)?:__REGEXP__[0-9]+([.,][0-9]+)?<num>
+__REGEXP__[\)\]]:__REGEXP__[\)\]]<rpar>
+__REGEXP__[\(\[]:__REGEXP__[\(\[]<lpar>
+__REGEXP__¿:__REGEXP__¿<lquest>
+__REGEXP__[.\?;:!]:>:__REGEXP__[.\?;:!]<sent>
+~__REGEXP__[.\?;:!]:<:__REGEXP__[.\?;:!]<sent>
+__REGEXP__[a-z.]+@[a-z.]+:__REGEXP__[a-z.]+@[a-z.]+<num>
+__REGEXP__(((www.)|(http://))[a-z0-9\-]+([.][a-z]+)+(/[a-z0-9_]+)*([.][a-z]+)*):__REGEXP__(((www.)|(http://))[a-z0-9\-]+([.][a-z]+)+(/[a-z0-9_]+)*([.][a-z]+)*)<num>
+a l'habitude d':>:avoir<vblex><pri><p3><sg># l'habitude de
+ai l'habitude d':>:avoir<vblex><pri><p1><sg># l'habitude de
+aie l'habitude d':>:avoir<vblex><imp><p2><sg># l'habitude de
+aie-en l'habitude d':>:avoir<vblex><imp><p2><sg>+en<prn><enc><adv># l'habitude de
+aie-la l'habitude d':>:avoir<vblex><imp><p2><sg>+le<prn><enc><p3><f><sg># l'habitude de
+aie-le l'habitude d':>:avoir<vblex><imp><p2><sg>+le<prn><enc><p3><m><sg># l'habitude de
+aie-le l'habitude d':>:avoir<vblex><imp><p2><sg>+le<prn><enc><p3><nt># l'habitude de
+aie-les l'habitude d':>:avoir<vblex><imp><p2><sg>+le<prn><enc><p3><mf><pl># l'habitude de
+aie-les l'habitude d':>:avoir<vblex><imp><p2><sg>+leur<prn><enc><p3><mf><pl># l'habitude de
+aie-les l'habitude d':>:avoir<vblex><imp><p2><sg>+lui<prn><enc><p3><mf><sg># l'habitude de
+aie-moi l'habitude d':>:avoir<vblex><imp><p2><sg>+me<prn><enc><p1><mf><sg># l'habitude de
+aie-nous l'habitude d':>:avoir<vblex><imp><p2><sg>+nous<prn><enc><p1><mf><pl># l'habitude de
+aie-toi l'habitude d':>:avoir<vblex><imp><p2><sg>+te<prn><enc><p2><mf><sg># l'habitude de
+aie-vous l'habitude d':>:avoir<vblex><imp><p2><sg>+vous<prn><enc><p2><mf><pl># l'habitude de
+aie-y l'habitude d':>:avoir<vblex><imp><p2><sg>+y<prn><enc><adv># l'habitude de
+aie l'habitude d':>:avoir<vblex><prs><p1><sg># l'habitude de
+aient l'habitude d':>:avoir<vblex><prs><p3><pl># l'habitude de
+aies l'habitude d':>:avoir<vblex><prs><p2><sg># l'habitude de
+ait l'habitude d':>:avoir<vblex><prs><p3><sg># l'habitude de
+as l'habitude d':>:avoir<vblex><pri><p2><sg># l'habitude de
+aura l'habitude d':>:avoir<vblex><fti><p3><sg># l'habitude de
+aurai l'habitude d':>:avoir<vblex><fti><p1><sg># l'habitude de
+auraient l'habitude d':>:avoir<vblex><cni><p3><pl># l'habitude de
+aurais l'habitude d':>:avoir<vblex><cni><p1><sg># l'habitude de
+aurais l'habitude d':>:avoir<vblex><cni><p2><sg># l'habitude de
+aurait l'habitude d':>:avoir<vblex><cni><p3><sg># l'habitude de
+auras l'habitude d':>:avoir<vblex><fti><p2><sg># l'habitude de
+aurez l'habitude d':>:avoir<vblex><fti><p2><pl># l'habitude de
+auriez l'habitude d':>:avoir<vblex><cni><p2><pl># l'habitude de
+aurions l'habitude d':>:avoir<vblex><cni><p1><pl># l'habitude de
+aurons l'habitude d':>:avoir<vblex><fti><p1><pl># l'habitude de
+auront l'habitude d':>:avoir<vblex><fti><p3><pl># l'habitude de
+avaient l'habitude d':>:avoir<vblex><pii><p3><pl># l'habitude de
+avais l'habitude d':>:avoir<vblex><pii><p1><sg># l'habitude de
+avais l'habitude d':>:avoir<vblex><pii><p2><sg># l'habitude de
+avait l'habitude d':>:avoir<vblex><pii><p3><sg># l'habitude de
+avez l'habitude d':>:avoir<vblex><pri><p2><pl># l'habitude de
+aviez l'habitude d':>:avoir<vblex><pii><p2><pl># l'habitude de
+avions l'habitude d':>:avoir<vblex><pii><p1><pl># l'habitude de
+avoir l'habitude d':>:avoir<vblex><inf># l'habitude de
+avons l'habitude d':>:avoir<vblex><pri><p1><pl># l'habitude de
+ayant l'habitude d':>:avoir<vblex><ger># l'habitude de
+ayant l'habitude d':>:avoir<vblex><ppres><p3><ND># l'habitude de
+ayez l'habitude d':>:avoir<vblex><imp><p2><pl># l'habitude de
+ayez-en l'habitude d':>:avoir<vblex><imp><p2><pl>+en<prn><enc><adv># l'habitude de
+ayez-la l'habitude d':>:avoir<vblex><imp><p2><pl>+le<prn><enc><p3><f><sg># l'habitude de
+ayez-le l'habitude d':>:avoir<vblex><imp><p2><pl>+le<prn><enc><p3><m><sg># l'habitude de
+ayez-le l'habitude d':>:avoir<vblex><imp><p2><pl>+le<prn><enc><p3><nt># l'habitude de
+ayez-les l'habitude d':>:avoir<vblex><imp><p2><pl>+le<prn><enc><p3><mf><pl># l'habitude de
+ayez-les l'habitude d':>:avoir<vblex><imp><p2><pl>+leur<prn><enc><p3><mf><pl># l'habitude de
+ayez-les l'habitude d':>:avoir<vblex><imp><p2><pl>+lui<prn><enc><p3><mf><sg># l'habitude de
+ayez-moi l'habitude d':>:avoir<vblex><imp><p2><pl>+me<prn><enc><p1><mf><sg># l'habitude de
+ayez-nous l'habitude d':>:avoir<vblex><imp><p2><pl>+nous<prn><enc><p1><mf><pl># l'habitude de
+ayez-toi l'habitude d':>:avoir<vblex><imp><p2><pl>+te<prn><enc><p2><mf><sg># l'habitude de
+ayez-vous l'habitude d':>:avoir<vblex><imp><p2><pl>+vous<prn><enc><p2><mf><pl># l'habitude de
+ayez-y l'habitude d':>:avoir<vblex><imp><p2><pl>+y<prn><enc><adv># l'habitude de
+ayez l'habitude d':>:avoir<vblex><prs><p2><pl># l'habitude de
+ayons l'habitude d':>:avoir<vblex><imp><p1><pl># l'habitude de
+ayons-en l'habitude d':>:avoir<vblex><imp><p1><pl>+en<prn><enc><adv># l'habitude de
+ayons-la l'habitude d':>:avoir<vblex><imp><p1><pl>+le<prn><enc><p3><f><sg># l'habitude de
+ayons-le l'habitude d':>:avoir<vblex><imp><p1><pl>+le<prn><enc><p3><m><sg># l'habitude de
+ayons-le l'habitude d':>:avoir<vblex><imp><p1><pl>+le<prn><enc><p3><nt># l'habitude de
+ayons-les l'habitude d':>:avoir<vblex><imp><p1><pl>+le<prn><enc><p3><mf><pl># l'habitude de
+ayons-les l'habitude d':>:avoir<vblex><imp><p1><pl>+leur<prn><enc><p3><mf><pl># l'habitude de
+ayons-les l'habitude d':>:avoir<vblex><imp><p1><pl>+lui<prn><enc><p3><mf><sg># l'habitude de
+ayons-moi l'habitude d':>:avoir<vblex><imp><p1><pl>+me<prn><enc><p1><mf><sg># l'habitude de
+ayons-nous l'habitude d':>:avoir<vblex><imp><p1><pl>+nous<prn><enc><p1><mf><pl># l'habitude de
+ayons-toi l'habitude d':>:avoir<vblex><imp><p1><pl>+te<prn><enc><p2><mf><sg># l'habitude de
+ayons-vous l'habitude d':>:avoir<vblex><imp><p1><pl>+vous<prn><enc><p2><mf><pl># l'habitude de
+ayons-y l'habitude d':>:avoir<vblex><imp><p1><pl>+y<prn><enc><adv># l'habitude de
+ayons l'habitude d':>:avoir<vblex><prs><p1><pl># l'habitude de
+eu l'habitude d':>:avoir<vblex><pp><m><sg># l'habitude de
+eue l'habitude d':>:avoir<vblex><pp><f><sg># l'habitude de
+eues l'habitude d':>:avoir<vblex><pp><f><pl># l'habitude de
+eurent l'habitude d':>:avoir<vblex><ifi><p3><pl># l'habitude de
+eus l'habitude d':>:avoir<vblex><ifi><p1><sg># l'habitude de
+eus l'habitude d':>:avoir<vblex><ifi><p2><sg># l'habitude de
+eus l'habitude d':>:avoir<vblex><pp><m><pl># l'habitude de
+eusse l'habitude d':>:avoir<vblex><pis><p1><sg># l'habitude de
+eussent l'habitude d':>:avoir<vblex><pis><p3><pl># l'habitude de
+eusses l'habitude d':>:avoir<vblex><pis><p2><sg># l'habitude de
+eussiez l'habitude d':>:avoir<vblex><pis><p2><pl># l'habitude de
+eussions l'habitude d':>:avoir<vblex><pis><p1><pl># l'habitude de
+eut l'habitude d':>:avoir<vblex><ifi><p3><sg># l'habitude de
+eûmes l'habitude d':>:avoir<vblex><ifi><p1><pl># l'habitude de
+eût l'habitude d':>:avoir<vblex><pis><p3><sg># l'habitude de
+eûtes l'habitude d':>:avoir<vblex><ifi><p2><pl># l'habitude de
+ont l'habitude d':>:avoir<vblex><pri><p3><pl># l'habitude de

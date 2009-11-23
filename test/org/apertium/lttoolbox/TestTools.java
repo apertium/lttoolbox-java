@@ -37,11 +37,13 @@ public class TestTools {
     while ((s=br.readLine())!=null)  output=output+s+"\n";
     //p.waitFor();
     //if (p.exitValue()!=0) Assert.fail(cmd+" reported an error");
+
+    /*
     if (output.length()>0) {
       System.err.println("exec: " + cmd);
       System.err.println("output: " + output);
       return cmd+"\n"+output;
-    }
+    }*/
     return output;
   }
 
