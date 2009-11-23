@@ -74,6 +74,7 @@ public class LTProc {
         int cmd = 0;
         FSTProcessor fstp = new FSTProcessor();
 
+
         GetOpt getopt = new GetOpt(argv, "acgndpstzvh");
 
         int optind = -1;

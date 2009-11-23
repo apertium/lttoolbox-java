@@ -87,7 +87,7 @@ public class LTProcTest extends TestCase {
 
   public void testAnalysisUppercasetransformation() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
-      fstp.load(new DataInputStream(new BufferedInputStream(new FileInputStream("testdata/tests-LTProc/fr-es.automorf.bin"))));
+      fstp.load(new DataInputStream(new BufferedInputStream(new FileInputStream("testdata/regression/fr-es.automorf.bin"))));
       fstp.initAnalysis();
       StringWriter output = new StringWriter();
       String input = "Un article ";
@@ -106,7 +106,7 @@ public class LTProcTest extends TestCase {
 
   public void testAnalysis3wordsWithSuperblanksAndNewlines() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
-      fstp.load(new DataInputStream(new BufferedInputStream(new FileInputStream("testdata/tests-LTProc/fr-es.automorf.bin"))));
+      fstp.load(new DataInputStream(new BufferedInputStream(new FileInputStream("testdata/regression/fr-es.automorf.bin"))));
       fstp.initAnalysis();
       StringWriter output = new StringWriter();
       String input = "je[\npart ]\n[]suis"
@@ -129,7 +129,7 @@ public class LTProcTest extends TestCase {
 
     public void testAnalysis13words() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
-      fstp.load(new DataInputStream(new BufferedInputStream(new FileInputStream("testdata/tests-LTProc/fr-es.automorf.bin"))));
+      fstp.load(new DataInputStream(new BufferedInputStream(new FileInputStream("testdata/regression/fr-es.automorf.bin"))));
       fstp.initAnalysis();
       StringWriter output = new StringWriter();
       DataInputStream input = new DataInputStream(new ByteArrayInputStream(
@@ -184,7 +184,7 @@ public class LTProcTest extends TestCase {
 
   public void testPostGeneration() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
-      fstp.load(new DataInputStream(new BufferedInputStream(new FileInputStream("testdata/tests-LTProc/fr-es.autopgen.bin"))));
+      fstp.load(new DataInputStream(new BufferedInputStream(new FileInputStream("testdata/regression/fr-es.autopgen.bin"))));
       fstp.initGeneration();
 
       DataInputStream input = new DataInputStream(new ByteArrayInputStream(

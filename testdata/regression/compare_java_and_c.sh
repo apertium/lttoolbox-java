@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 #LTProcJ="time java -cp ../../dist/lttoolbox.jar org.apertium.lttoolbox.LTProc"
 LTProcJ="java -cp ../../dist/lttoolbox.jar org.apertium.lttoolbox.LTProc"
 #LTProcC="/home/j/esperanto/apertium/lttoolbox/lttoolbox/lt-proc"
@@ -73,8 +74,5 @@ cat postgenerator_input | $LTProcJ  -p fr-es.autopgen.bin > $F
 diff postgenerator_output $F > $ERR && echo "OK" || fail "cat postgenerator_input | $LTProcJ  -p fr-es.autopgen.bin"
 
 
-#cat analysis_input | java -cp /home/j/esperanto/apertium/gsoc2009/rah/lttoolbox-java-maven/target/lttoolbox-1.0-SNAPSHOT.jar org.apertium.lttoolbox.LTProc fr-es.automorf.bin > res_java_version
-#cat analysis_input | /home/j/esperanto/apertium/lttoolbox/lttoolbox/lt-proc fr-es.automorf.bin > res_c_version
-#cat generator_input | lt-proc -g fr-es.autogen.bin > xq
-
 echo "All tests passed"
+exit 0

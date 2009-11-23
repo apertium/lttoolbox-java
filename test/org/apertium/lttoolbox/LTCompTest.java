@@ -8,6 +8,7 @@ package org.apertium.lttoolbox;
 import java.io.File;
 import java.io.IOException;
 import junit.framework.TestCase;
+import static org.apertium.lttoolbox.TestTools.*;
 
 /**
  *
@@ -17,10 +18,10 @@ public class LTCompTest extends TestCase {
 
     protected void setUp() throws Exception {
       // Create and clean tmp dir
-       File tmpdir = new File("tmp");
-       tmpdir.mkdirs();
-       for (File f : tmpdir.listFiles()) f.delete();
+       new File("tmp").mkdirs();
+       rm("tmp");
     }
+
 
   public void testLTCompJava() throws Exception {
     LTComp.main(new String[] { "lr", "testdata/test.dix", "tmp/testJava.bin"});
