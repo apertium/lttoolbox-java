@@ -20,7 +20,7 @@ package org.apertium.lttoolbox;
 import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Set;
-import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  * Class to represent the states of a transducer 
@@ -55,7 +55,7 @@ private static class TNodeState {
     private List<TNodeState> state;
     
     /**
-     * Pool of characters vectors, for efficiency (static class)
+     * Pool of characters ArrayLists, for efficiency (static class)
      */
     //JACOBstatic Pool<List<Integer>> pool;
 
@@ -78,7 +78,7 @@ private static class TNodeState {
      * The constructor
      */
     public State() {
-        state = new Vector<TNodeState>();
+        state = new ArrayList<TNodeState>();
     }
 
     /**
@@ -122,8 +122,8 @@ private static class TNodeState {
      */
     public void init(Node initial) {
         state.clear();
-        state.add(0, new TNodeState(initial, new Vector<Integer>(), false)); // JACOBpool.get()
-        state.get(0).sequence = new Vector<Integer>();
+        state.add(0, new TNodeState(initial, new ArrayList<Integer>(), false)); // JACOBpool.get()
+        state.get(0).sequence = new ArrayList<Integer>();
         epsilonClosure();
     }
 
@@ -133,7 +133,7 @@ private static class TNodeState {
      */
     void apply(int input) {
 
-        List<TNodeState> new_state = new Vector<TNodeState>();
+        List<TNodeState> new_state = new ArrayList<TNodeState>();
 
         if (input == 0) {
             state = new_state;
@@ -149,7 +149,7 @@ private static class TNodeState {
                 // ORIGINAL for (int j = 0; j != it.size; j++) {
                 for (int j = 0; j < it.out_tag.size(); j++) {  // JACOBS FORSØG
                     //XXX no pool now: List<Integer> new_v = pool.get();
-                    List<Integer> new_v = new Vector<Integer>();
+                    List<Integer> new_v = new ArrayList<Integer>();
                     new_v.addAll(state.get(i).sequence);
 
                     if (DEBUG) System.err.println(i + " " + j + (char) input + "  state="+state.size());
@@ -173,7 +173,7 @@ private static class TNodeState {
      */
     void apply(int input, int alt) {
 
-        List<TNodeState> new_state = new Vector<TNodeState>();
+        List<TNodeState> new_state = new ArrayList<TNodeState>();
 
         for (int i = 0,  limit = state.size(); i != limit; i++) {
 
@@ -181,7 +181,7 @@ private static class TNodeState {
             if (it != null) {
                 for (int j = 0; j != it.size; j++) {
                     List<Integer> new_v;// JACOB = pool.get();
-                    new_v = new Vector<Integer>(state.get(i).sequence);
+                    new_v = new ArrayList<Integer>(state.get(i).sequence);
                     if (input != 0) {
                         new_v.add(it.out_tag.get(j));
                     }
@@ -192,7 +192,7 @@ private static class TNodeState {
             if (it != null) {
                 for (int j = 0; j != it.size; j++) {
                     List<Integer> new_v; // JACOB = pool.get();
-                    new_v = new Vector<Integer>(state.get(i).sequence);
+                    new_v = new ArrayList<Integer>(state.get(i).sequence);
                     if (alt != 0) {
                         new_v.add(it.out_tag.get(j));
                     }
@@ -215,7 +215,7 @@ private static class TNodeState {
             if (it2 != null) {
                 for (int j = 0; j != it2.size; j++) {
                     List<Integer> tmp; // JACOB = pool.get();
-                    tmp = new Vector<Integer>(state.get(i).sequence);
+                    tmp = new ArrayList<Integer>(state.get(i).sequence);
                     if (it2.out_tag.get(j) != 0) {
                         tmp.add(it2.out_tag.get(j));
                     }
@@ -388,7 +388,7 @@ private static class TNodeState {
      * @param firstchar first character of the word
      * @return the result of the transduction
      */
-    String filterFinalsTM(Set<Node> finals, Alphabet alphabet, Set<Character> escaped_chars, ArrayDeque<String> blankqueue, Vector<String> numbers) {
+    String filterFinalsTM(Set<Node> finals, Alphabet alphabet, Set<Character> escaped_chars, ArrayDeque<String> blankqueue, ArrayList<String> numbers) {
         String result = "";
         for (int i = 0,  limit = state.size(); i < limit; i++) {
             if (finals.contains(state.get(i).where)) {
@@ -402,7 +402,7 @@ private static class TNodeState {
             }
         }
         String result2 = "";
-        Vector<String> fragments = new Vector<String>();
+        ArrayList<String> fragments = new ArrayList<String>();
         fragments.add("");
         for (int i = 0,  limit = result.length(); i < limit; i++) {
             if (result.charAt(i) == ')') {

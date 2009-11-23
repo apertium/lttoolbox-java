@@ -20,7 +20,7 @@ package org.apertium.lttoolbox;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  * Node class of TransExe.
@@ -67,8 +67,8 @@ public class Node {
         if (!transitions.containsKey(i)) {
             transitions.put(i, new Dest());
         }
-        List<Integer> out_tag = new Vector<Integer>(transitions.get(i).out_tag);
-        List<Node> dest = new Vector<Node>(transitions.get(i).dest);
+        List<Integer> out_tag = new ArrayList<Integer>(transitions.get(i).out_tag);
+        List<Node> dest = new ArrayList<Node>(transitions.get(i).dest);
 
         out_tag.add(transitions.get(i).size, o);
         dest.add(transitions.get(i).size, d);

@@ -27,7 +27,7 @@ import java.io.Writer;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Vector;
+import java.util.ArrayList;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -50,7 +50,7 @@ public class Expander {
      */
     //String direction;
 
-private static class EntList extends Vector<SPair> {
+private static class EntList extends ArrayList<SPair> {
 
   public EntList() {
 

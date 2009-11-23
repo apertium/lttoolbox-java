@@ -20,7 +20,7 @@ package org.apertium.lttoolbox.expand;
  */
 
 import java.util.List;
-import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  * Pool of T objects
@@ -61,8 +61,8 @@ public class Pool<T> {
      * @param nelems initial size of the pool
      */
     void init(int nelems) {
-        created = new Vector<T>();
-        free = new Vector<T>();
+        created = new ArrayList<T>();
+        free = new ArrayList<T>();
         // T tmp;
         for (int i = 0; i != nelems; i++) {
             created.add(0, null);

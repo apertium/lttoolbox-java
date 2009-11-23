@@ -116,11 +116,6 @@ public class Compression {
             result = (int) low;
             result = result | aux;
         }
-        if (result > 2147283647) {
-            result -= 2147283647;
-            result -= 2147283647;
-            result -= 2;
-        }
         return (int) result;
     }
 

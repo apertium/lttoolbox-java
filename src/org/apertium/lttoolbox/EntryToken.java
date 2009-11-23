@@ -17,7 +17,7 @@ package org.apertium.lttoolbox;
  * 02111-1307, USA.
  */
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  * This is a "Compiler" helper class, to store the parts of each entry
@@ -46,12 +46,12 @@ public class EntryToken {
     /**
      * Left side of transduction (if 'single_transduction')
      */
-    Vector<Integer> leftSide;
+    ArrayList<Integer> leftSide;
     
     /**
      * Right side of transduction (if 'single_transduction')
      */
-    Vector<Integer> rightSide;
+    ArrayList<Integer> rightSide;
     
     /**
      * Regular expression (if 'regexp')
@@ -62,8 +62,8 @@ public class EntryToken {
      * Non-parametric constructor 
      */
     EntryToken() {
-        leftSide = new Vector<Integer>();
-        rightSide = new Vector<Integer>();
+        leftSide = new ArrayList<Integer>();
+        rightSide = new ArrayList<Integer>();
         parName = "";
         type = 0;
     }
@@ -94,7 +94,7 @@ public class EntryToken {
      * @param pi left part
      * @param pd right part
      */
-    void setSingleTransduction(Vector<Integer> pi, Vector<Integer> pd) {
+    void setSingleTransduction(ArrayList<Integer> pi, ArrayList<Integer> pd) {
         leftSide = pi;
         rightSide = pd;
         type = TYPE_single_transduction;
@@ -145,7 +145,7 @@ public class EntryToken {
      * Retrieve the left part of the paradigm.
      * @return the left part of the paradigm.
      */
-    Vector<Integer> left() {
+    ArrayList<Integer> left() {
         return leftSide;
     }
 
@@ -153,7 +153,7 @@ public class EntryToken {
      * Retrieve the right part of the paradigm.
      * @return the right part of the paradigm.
      */
-    Vector<Integer> right() {
+    ArrayList<Integer> right() {
         return rightSide;
     }
 

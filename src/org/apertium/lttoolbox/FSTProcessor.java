@@ -26,7 +26,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.Vector;
+import java.util.ArrayList;
 
 public class FSTProcessor {
     private boolean isLastBlankTM;
@@ -79,7 +79,7 @@ public class FSTProcessor {
     /**
      * Set of characters being considered alphabetics
      */
-    Set<Character> alphabetic_chars = new HashSet<Character>();
+    Set<Character> alphabetic_chars;
     /**
      * Set of characters to escape with a backslash
      */
@@ -109,7 +109,7 @@ public class FSTProcessor {
      * if true, flush the output when the null character is found
      */
     boolean nullFlush;
-    Vector<String> numbers;
+    ArrayList<String> numbers;
 
     public FSTProcessor() {
         // escaped_chars chars
@@ -570,6 +570,8 @@ if (input.available() == 0) {
         // letters
    
         int len = Compression.multibyte_read(input);
+        alphabetic_chars = new HashSet<Character>(len);
+
         while (len > 0) {
             char c = (char) Compression.multibyte_read(input);
             //if (DEBUG) System.err.println("alphabetic_chars.add(" + c);
@@ -616,7 +618,7 @@ if (input.available() == 0) {
     }
 
     void initTMAnalysis() {
-        numbers = new Vector<String>();
+        numbers = new ArrayList<String>();
         all_finals = new HashSet<Node>();
         calcInitial();
         for (TransExe t : transducers.values()) {

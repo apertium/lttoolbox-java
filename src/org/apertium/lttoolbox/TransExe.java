@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  * Transducer class for execution of lexical processing algorithms
@@ -41,29 +41,23 @@ public class TransExe {
     /**
      * Set of final nodes
      */
-    Vector<Node> finals;
+    ArrayList<Node> finals;
 
     //Index of the last node added to node_list
     private Integer index =0;
     
     TransExe() {
         node_list = new TreeMap<Integer,Node>();
-        finals = new Vector<Node>();
+        finals = new ArrayList<Node>();
         index = 0;
-    }
-
-    void NewTransExe(TransExe te) {
-        initial_id = te.initial_id;
-        node_list = te.node_list;
-        finals = te.finals;
     }
 
     void read(DataInputStream input, Alphabet alphabet) throws IOException {
         node_list = new TreeMap<Integer,Node>();
-        finals = new Vector<Node>();
         index = 0;
         initial_id = Compression.multibyte_read(input);
         int finals_size = Compression.multibyte_read(input);
+        finals = new ArrayList<Node>(finals_size);
         //System.out.println("finals_size : "+finals_size);
         int base = 0;
 
@@ -86,43 +80,29 @@ public class TransExe {
         //System.out.println("number of states : "+number_of_states);
         int current_state = 0;
 
-//        for (Integer it : myfinals) {
-//            if (!node_list.containsKey(it)) {
-////                index++;
-////                while (node_list.containsKey(index)) {
-////                    index++;
-////                }
-//            node_list.put(it,new Node());
-//            }
-//            finals.add(node_list.get(it));
-//        }
-
-         //System.out.println("alphabet");
-                //alphabet.display();
-               // System.out.println("alphabet.spairinv.size()"+alphabet.spairinv.size());
         while (number_of_states > 0) {
             
-            int number_of_local_transitions = Compression.multibyte_read(input);
-            int tagbase = 0;
-            if (!node_list.containsKey(current_state)) {
-                    node_list.put(current_state,new Node());
-                }
-            Node mynode = node_list.get(current_state);
+          int number_of_local_transitions = Compression.multibyte_read(input);
+          int tagbase = 0;
+          if (!node_list.containsKey(current_state)) {
+              node_list.put(current_state,new Node());
+          }
+          Node mynode = node_list.get(current_state);
 
-            while (number_of_local_transitions > 0) {
-                number_of_local_transitions--;
-                tagbase += Compression.multibyte_read(input);
-                int state = (current_state + Compression.multibyte_read(input)) % base;
-                int i_symbol = alphabet.decode(tagbase).first;
-                int o_symbol = alphabet.decode(tagbase).second;
-                //System.out.println("i : "+i_symbol+", o : "+o_symbol);
-                if (!node_list.containsKey(state)) {
-                    node_list.put(state,new Node());
-                }
-                //System.out.println(node_list.get(state));
-                mynode.addTransition(i_symbol, o_symbol, node_list.get(state));
-                //mynode.addTransition(current_state, tagbase, new_t.node_list.get(state));
-                 }
+          while (number_of_local_transitions > 0) {
+              number_of_local_transitions--;
+              tagbase += Compression.multibyte_read(input);
+              int state = (current_state + Compression.multibyte_read(input)) % base;
+              int i_symbol = alphabet.decode(tagbase).first;
+              int o_symbol = alphabet.decode(tagbase).second;
+              //System.out.println("i : "+i_symbol+", o : "+o_symbol);
+              if (!node_list.containsKey(state)) {
+                  node_list.put(state,new Node());
+              }
+              //System.out.println(node_list.get(state));
+              mynode.addTransition(i_symbol, o_symbol, node_list.get(state));
+              //mynode.addTransition(current_state, tagbase, new_t.node_list.get(state));
+               }
             number_of_states--;
             current_state++;
         }
@@ -151,7 +131,7 @@ public class TransExe {
         return node_list.get(initial_id);
     }
 
-    Vector<Node> getFinals() {
+    ArrayList<Node> getFinals() {
         return finals;
     }
 

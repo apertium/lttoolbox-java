@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  * Alphabet class.
@@ -104,11 +104,11 @@ public static class IntegerPair implements Comparable {
     /**
      * Identifier-symbol relationship.
      */
-    List<String> slexicinv = new Vector<String>();
+    List<String> slexicinv = new ArrayList<String>();
     
     Map<IntegerPair, Integer> spair;
     
-    Vector<IntegerPair> spairinv;
+    ArrayList<IntegerPair> spairinv;
 
 
 /**
@@ -145,7 +145,7 @@ private static class IntegerPairComparator implements Comparator<IntegerPair> {
     public Alphabet() {
         spair = new TreeMap<IntegerPair, Integer>();
         spair.put(new IntegerPair(0, 0), 0);
-        spairinv = new Vector<IntegerPair>();
+        spairinv = new ArrayList<IntegerPair>();
         spairinv.add(new IntegerPair(0, 0));
     }
 
@@ -362,6 +362,7 @@ private static class IntegerPairComparator implements Comparator<IntegerPair> {
 
         // Reading of taglist
         int tam = Compression.multibyte_read(input);
+        //StringBuilder sb = new StringBuilder();
         while (tam > 0) {
             tam--;
             String mytag = "<" + Compression.String_read(input) + ">";

@@ -258,7 +258,7 @@ public class Compile {
      * Insert a list of tokens into the paradigm / section being processed
      * @param elements the list
      */
-    private void insertEntryTokens(Vector<EntryToken> elements) {
+    private void insertEntryTokens(ArrayList<EntryToken> elements) {
         if (!current_paradigm.equals("")) {
             Transducer t;
             // compilation of paradigms
@@ -367,7 +367,7 @@ public class Compile {
      * @param t the transducer
      * @return the last state of the inserted transduction
      */
-    int matchTransduction(Vector<Integer> pi, Vector<Integer> pd, int state, Transducer t) {
+    int matchTransduction(ArrayList<Integer> pi, ArrayList<Integer> pd, int state, Transducer t) {
         int izqda, dcha, limizqda, limdcha;
         if (direction.equals(COMPILER_RESTRICTION_LR_VAL)) {
             izqda = 0;
@@ -537,7 +537,7 @@ public class Compile {
             return;
         }
 
-        Vector<EntryToken> elements = new Vector<EntryToken>();
+        ArrayList<EntryToken> elements = new ArrayList<EntryToken>();
 
         while (true) {
             if (!reader.hasNext()) {
@@ -561,11 +561,9 @@ public class Compile {
                 reader.next();
 
                 // detection of the use of undefined paradigms
-                String p = elements.lastElement().paradigmName();
+                String p = elements.get(elements.size()-1).paradigmName();
                 if (!paradigms.containsKey(p)) {
-                    throw new RuntimeException("Error (" + reader.getLocation().getLineNumber() +
-                        "): Undefined paradigm '" + p + "'.");
-
+                    throw new RuntimeException("Error (" + reader.getLocation().getLineNumber() +"): Undefined paradigm '" + p + "'.");
                 }
                 // descartar entradas con paradigms vac�os (por las direciones,
                 // normalmente
@@ -745,7 +743,7 @@ public class Compile {
      * @throws javax.xml.stream.XMLStreamException
      */
     EntryToken procIdentity() throws XMLStreamException {
-        Vector<Integer> both_sides = new Vector<Integer>();
+        ArrayList<Integer> both_sides = new ArrayList<Integer>();
         if (!(reader.isStartElement() && reader.isEndElement())) {
         //not an emoty node
         }
@@ -772,8 +770,8 @@ public class Compile {
      * @throws javax.xml.stream.XMLStreamException
      */
     EntryToken procTransduction() throws XMLStreamException {
-        Vector<Integer> lhs = new Vector<Integer>();
-        Vector<Integer> rhs = new Vector<Integer>();
+        ArrayList<Integer> lhs = new ArrayList<Integer>();
+        ArrayList<Integer> rhs = new ArrayList<Integer>();
         String name = new String("");
         name = skipUntil(name, COMPILER_LEFT_ELEM);
         reader.next();

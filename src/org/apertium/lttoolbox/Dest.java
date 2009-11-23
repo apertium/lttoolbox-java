@@ -18,7 +18,7 @@ package org.apertium.lttoolbox;
  */
 
 import java.util.List;
-import java.util.Vector;
+import java.util.ArrayList;
 
 
 /**
@@ -35,14 +35,14 @@ public class Dest {
 
   void copy(Dest d) {
     size = d.size;
-    out_tag = new Vector<Integer>(d.out_tag);
-    dest = new Vector<Node>(dest);
+    out_tag = new ArrayList<Integer>(d.out_tag);
+    dest = new ArrayList<Node>(dest);
   }
 
   void init() {
     size = 0;
-    out_tag = new Vector<Integer>();
-    dest = new Vector<Node>();
+    out_tag = new ArrayList<Integer>();
+    dest = new ArrayList<Node>();
   }
 
  public Dest() {
