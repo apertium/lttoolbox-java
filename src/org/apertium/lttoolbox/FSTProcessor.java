@@ -43,7 +43,7 @@ public class FSTProcessor {
     /**
      * Transducers in FSTP
      */
-    Map<String, NewTransExe> transducers = new TreeMap<String, NewTransExe>(myCollator);
+    Map<String, TransExe> transducers = new TreeMap<String, TransExe>(myCollator);
     /**
      * Current state of lexical analysis
      */
@@ -495,7 +495,7 @@ if (input.available() == 0) {
 
     void classifyFinals() {
         for (String first : transducers.keySet()) {
-            final NewTransExe second = transducers.get(first);
+            final TransExe second = transducers.get(first);
             if (endsWith(first, "@inconditional")) {
                 inconditional.addAll(second.getFinals());
             } else if (endsWith(first, "@standard")) {
@@ -588,7 +588,7 @@ if (input.available() == 0) {
         while (len > 0) {
             String name = Compression.String_read(input);
             if (!transducers.containsKey(name)) {
-                transducers.put(name,new NewTransExe());
+                transducers.put(name,new TransExe());
             } else {
               System.err.println(this.getClass()+".load() Why has transducer already name "+ name);
             }
@@ -619,7 +619,7 @@ if (input.available() == 0) {
         numbers = new Vector<String>();
         all_finals = new HashSet<Node>();
         calcInitial();
-        for (NewTransExe t : transducers.values()) {
+        for (TransExe t : transducers.values()) {
             all_finals.addAll(t.getFinals());
         }
     }

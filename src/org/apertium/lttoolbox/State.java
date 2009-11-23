@@ -28,6 +28,30 @@ import java.util.Vector;
  */
 public class State {
 
+/**
+ * Class to represent the current state of transducer processing
+ * @author Raah
+ */
+private static class TNodeState {
+
+    Node where;
+    List<Integer> sequence;
+    boolean dirty;
+
+    public TNodeState(Node w, List<Integer> s, boolean dirty) {
+        this.where = w;
+        this.sequence = s;
+        this.dirty = dirty;
+    }
+
+    public TNodeState(TNodeState other) {
+        this.where = other.where;
+        this.sequence = other.sequence;
+        this.dirty = other.dirty;
+    }
+}
+
+
     private List<TNodeState> state;
     
     /**

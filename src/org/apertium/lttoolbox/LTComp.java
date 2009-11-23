@@ -56,15 +56,15 @@ public class LTComp {
             return;
         }
         String opc = argv[0];
-        Compiler c = new Compiler();
+        Compile c = new Compile();
 
         if (opc.equals("lr")) {
             if (argc == 4) {
-                c.parseACX(argv[3], Compiler.COMPILER_RESTRICTION_LR_VAL);
+                c.parseACX(argv[3], Compile.COMPILER_RESTRICTION_LR_VAL);
             }
-            c.parse(argv[1], Compiler.COMPILER_RESTRICTION_LR_VAL);
+            c.parse(argv[1], Compile.COMPILER_RESTRICTION_LR_VAL);
         } else if (opc.equals("rl")) {
-            c.parse(argv[1], Compiler.COMPILER_RESTRICTION_RL_VAL);
+            c.parse(argv[1], Compile.COMPILER_RESTRICTION_RL_VAL);
         } else {
             endProgram("LTComp");
             return;

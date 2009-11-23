@@ -25,10 +25,10 @@ import java.util.TreeSet;
 import java.util.Vector;
 
 /**
- *
+ * Transducer class for execution of lexical processing algorithms
  * @author Raah
  */
-public class NewTransExe {
+public class TransExe {
     
     /**
      * Initial state
@@ -46,13 +46,13 @@ public class NewTransExe {
     //Index of the last node added to node_list
     private Integer index =0;
     
-    NewTransExe() {
+    TransExe() {
         node_list = new TreeMap<Integer,Node>();
         finals = new Vector<Node>();
         index = 0;
     }
 
-    void NewTransExe(NewTransExe te) {
+    void NewTransExe(TransExe te) {
         initial_id = te.initial_id;
         node_list = te.node_list;
         finals = te.finals;

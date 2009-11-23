@@ -1,4 +1,4 @@
-package org.apertium.lttoolbox;
+package org.apertium.lttoolbox.expand;
 
 /*
  * This program is free software; you can redistribute it and/or
@@ -17,12 +17,17 @@ package org.apertium.lttoolbox;
  * 02111-1307, USA.
  */
 
+import org.apertium.lttoolbox.expand.*;
+import org.apertium.lttoolbox.*;
+import org.apertium.lttoolbox.expand.SPair;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Vector;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -44,7 +49,20 @@ public class Expander {
      * (right-to-left)
      */
     //String direction;
-    
+
+private static class EntList extends Vector<SPair> {
+
+  public EntList() {
+
+  }
+
+  public EntList(Collection<? extends SPair> sPairs) {
+    super(sPairs);
+  }
+
+}
+
+
     /**
      * Paradigms
      */
@@ -60,7 +78,7 @@ public class Expander {
      * @param out the output
      * @throws java.io.IOException
      */
-    void expand(String file, Writer out) throws IOException {
+    public void expand(String file, Writer out) throws IOException {
         paradigm = new HashMap<String, EntList>();
         paradigm_lr = new HashMap<String, EntList>();
         paradigm_rl = new HashMap<String, EntList>();
@@ -177,10 +195,10 @@ public class Expander {
      * @throws java.io.IOException
      */
     private void procEntry() throws XMLStreamException, IOException {
-        String attribute = attrib(Compiler.COMPILER_RESTRICTION_ATTR);
-        String entrname = attrib(Compiler.COMPILER_LEMMA_ATTR);
+        String attribute = attrib(Compile.COMPILER_RESTRICTION_ATTR);
+        String entrname = attrib(Compile.COMPILER_LEMMA_ATTR);
         String myname = "";
-        if (attrib(Compiler.COMPILER_IGNORE_ATTR).equals("yes")) {
+        if (attrib(Compile.COMPILER_IGNORE_ATTR).equals("yes")) {
             do {
                 if (!reader.hasNext()) {
                     throw new RuntimeException("Error (" + reader.getLocation().getLineNumber() + "): Parse error.");
@@ -189,7 +207,7 @@ public class Expander {
                 if (reader.hasName()) {
                     myname = reader.getLocalName();
                 }
-            } while (!myname.equals(Compiler.COMPILER_ENTRY_ELEM));
+            } while (!myname.equals(Compile.COMPILER_ENTRY_ELEM));
             return;
         }
 
@@ -197,9 +215,9 @@ public class Expander {
         EntList items_lr = new EntList();
         EntList items_rl = new EntList();
 
-        if (attribute.equals(Compiler.COMPILER_RESTRICTION_LR_VAL)) {
+        if (attribute.equals(Compile.COMPILER_RESTRICTION_LR_VAL)) {
             items_lr.add(new SPair("", ""));
-        } else if (attribute.equals(Compiler.COMPILER_RESTRICTION_RL_VAL)) {
+        } else if (attribute.equals(Compile.COMPILER_RESTRICTION_RL_VAL)) {
             items_rl.add(new SPair("", ""));
         } else {
             items.add(new SPair("", ""));
@@ -215,28 +233,28 @@ public class Expander {
                 name = reader.getLocalName();
             }
             int type = reader.getEventType();
-            if (name.equals(Compiler.COMPILER_PAIR_ELEM)) {
+            if (name.equals(Compile.COMPILER_PAIR_ELEM)) {
                 if (reader.isStartElement()) {
                     SPair p = procTransduction();
                     items = append(items, p);
                     items_lr = append(items_lr, p);
                     items_rl = append(items_rl, p);
                 }
-            } else if (name.equals(Compiler.COMPILER_IDENTITY_ELEM)) {
+            } else if (name.equals(Compile.COMPILER_IDENTITY_ELEM)) {
                 if (reader.isStartElement()) {
                     String val = procIdentity();
                     items = append(items, val);
                     items_lr = append(items_lr, val);
                     items_rl = append(items_rl, val);
                 }
-            } else if (name.equals(Compiler.COMPILER_REGEXP_ELEM)) {
+            } else if (name.equals(Compile.COMPILER_REGEXP_ELEM)) {
                 if (reader.isStartElement()) {
                     String val = "__REGEXP__" + procRegexp();
                     items = append(items, val);
                     items_lr = append(items_lr, val);
                     items_rl = append(items_rl, val);
                 }
-            } else if (name.equals(Compiler.COMPILER_PAR_ELEM)) {
+            } else if (name.equals(Compile.COMPILER_PAR_ELEM)) {
                 if (!reader.isEndElement()) {
                     String p = procPar();
                     // detecci�n del uso de paradigmas no definidos
@@ -249,9 +267,9 @@ public class Expander {
                         throw new RuntimeException("Error (" + reader.getLocation().getLineNumber() + "): Undefined paradigm '" + p + "'.");
                     }
 
-                    if (attribute.equals(Compiler.COMPILER_RESTRICTION_LR_VAL)) {
+                    if (attribute.equals(Compile.COMPILER_RESTRICTION_LR_VAL)) {
                         if (paradigm.get(p).size() == 0 && paradigm_lr.get(p).size() == 0) {
-                            name = skip(name, Compiler.COMPILER_ENTRY_ELEM);
+                            name = skip(name, Compile.COMPILER_ENTRY_ELEM);
                             return;
                         }
                         EntList first = new EntList();
@@ -260,9 +278,9 @@ public class Expander {
                         items_lr = append(items_lr, paradigm_lr.get(p));
                         items_lr.addAll(first);
 
-                    } else if (attribute.equals(Compiler.COMPILER_RESTRICTION_RL_VAL)) {
+                    } else if (attribute.equals(Compile.COMPILER_RESTRICTION_RL_VAL)) {
                         if (paradigm.get(p).size() == 0 && paradigm_rl.get(p).size() == 0) {
-                            name = skip(name, Compiler.COMPILER_ENTRY_ELEM);
+                            name = skip(name, Compile.COMPILER_ENTRY_ELEM);
                             return;
                         }
 
@@ -291,7 +309,7 @@ public class Expander {
                         items_rl.addAll(aux_rl);
                     }
                 }
-            } else if (name.equals(Compiler.COMPILER_ENTRY_ELEM) && type == XMLStreamConstants.END_ELEMENT) {
+            } else if (name.equals(Compile.COMPILER_ENTRY_ELEM) && type == XMLStreamConstants.END_ELEMENT) {
                 if (current_paradigm.equals("")) {
                     for (Pair<String, String> it : items) {
                         output.write(it.first);
@@ -335,7 +353,7 @@ public class Expander {
             } else {
                 XMLPrint.printEvent(reader);
                 throw new RuntimeException("Error (" + reader.getLocation().getLineNumber() + ", " + reader.getLocation().getColumnNumber() +
-                    "): Invalid inclusion of '<" + name + ">' into '<" + Compiler.COMPILER_ENTRY_ELEM +
+                    "): Invalid inclusion of '<" + name + ">' into '<" + Compile.COMPILER_ENTRY_ELEM +
                     ">'.");
             }
         }
@@ -353,7 +371,7 @@ public class Expander {
             reader.next();
             if (reader.hasName()) {
                 name = reader.getLocalName();
-                if (name.equals(Compiler.COMPILER_IDENTITY_ELEM)) {
+                if (name.equals(Compile.COMPILER_IDENTITY_ELEM)) {
                     break;
                 }
             }
@@ -377,21 +395,21 @@ public class Expander {
 
         if (nombre.equals("")) {
         /* ignorar */
-        } else if (nombre.equals(Compiler.COMPILER_DICTIONARY_ELEM)) {
+        } else if (nombre.equals(Compile.COMPILER_DICTIONARY_ELEM)) {
         /* ignorar */
-        } else if (nombre.equals(Compiler.COMPILER_ALPHABET_ELEM)) {
+        } else if (nombre.equals(Compile.COMPILER_ALPHABET_ELEM)) {
         /* ignorar */
-        } else if (nombre.equals(Compiler.COMPILER_SDEFS_ELEM)) {
+        } else if (nombre.equals(Compile.COMPILER_SDEFS_ELEM)) {
         /* ignorar */
-        } else if (nombre.equals(Compiler.COMPILER_SDEF_ELEM)) {
+        } else if (nombre.equals(Compile.COMPILER_SDEF_ELEM)) {
         /* ignorar */
-        } else if (nombre.equals(Compiler.COMPILER_PARDEFS_ELEM)) {
+        } else if (nombre.equals(Compile.COMPILER_PARDEFS_ELEM)) {
         /* ignorar */
-        } else if (nombre.equals(Compiler.COMPILER_PARDEF_ELEM)) {
+        } else if (nombre.equals(Compile.COMPILER_PARDEF_ELEM)) {
             procParDef();
-        } else if (nombre.equals(Compiler.COMPILER_ENTRY_ELEM)) {
+        } else if (nombre.equals(Compile.COMPILER_ENTRY_ELEM)) {
             procEntry();
-        } else if (nombre.equals(Compiler.COMPILER_SECTION_ELEM)) {
+        } else if (nombre.equals(Compile.COMPILER_SECTION_ELEM)) {
         /* ignorar */
         } else {
             throw new RuntimeException("Error (" + reader.getLocation().getLineNumber() +
@@ -405,7 +423,7 @@ public class Expander {
      * @return the name of the paradigm
      */
     private String procPar() {
-        String paradigmName = attrib(Compiler.COMPILER_N_ATTR);
+        String paradigmName = attrib(Compile.COMPILER_N_ATTR);
         return paradigmName;
     }
 
@@ -415,7 +433,7 @@ public class Expander {
     private void procParDef() {
         int type = reader.getEventType();
         if (type != XMLStreamConstants.END_ELEMENT) {
-            current_paradigm = attrib(Compiler.COMPILER_N_ATTR);
+            current_paradigm = attrib(Compile.COMPILER_N_ATTR);
         } else {
             current_paradigm = "";
         }
@@ -450,31 +468,31 @@ public class Expander {
         StringBuilder lhs = new StringBuilder(), rhs = new StringBuilder();
         String name = "";
 
-        name = skip(name, Compiler.COMPILER_LEFT_ELEM);
+        name = skip(name, Compile.COMPILER_LEFT_ELEM);
         name = "";
         while (true) {
             reader.next();
             if (reader.hasName()) {
                 name = reader.getLocalName();
             }
-            if (name.equals(Compiler.COMPILER_LEFT_ELEM)) {
+            if (name.equals(Compile.COMPILER_LEFT_ELEM)) {
                 break;
             }
             readString(lhs, name);
         }
-        name = skip(name, Compiler.COMPILER_RIGHT_ELEM);
+        name = skip(name, Compile.COMPILER_RIGHT_ELEM);
         name = "";
         while (true) {
             reader.next();
             if (reader.hasName()) {
                 name = reader.getLocalName();
             }
-            if (name.equals(Compiler.COMPILER_RIGHT_ELEM)) {
+            if (name.equals(Compile.COMPILER_RIGHT_ELEM)) {
                 break;
             }
             readString(rhs, name);
         }
-        name = skip(name, Compiler.COMPILER_PAIR_ELEM);
+        name = skip(name, Compile.COMPILER_PAIR_ELEM);
 
         return new SPair(lhs.toString(), rhs.toString());
     }
@@ -490,23 +508,23 @@ public class Expander {
             int length = reader.getTextLength();
             result.append(new String(reader.getTextCharacters(), start, length));
         } else if (reader.getEventType() == XMLStreamConstants.START_ELEMENT) {
-            if (name.equals(Compiler.COMPILER_BLANK_ELEM)) {
+            if (name.equals(Compile.COMPILER_BLANK_ELEM)) {
                 requireEmptyError(name);
                 result.append(' ');
-            } else if (name.equals(Compiler.COMPILER_JOIN_ELEM)) {
+            } else if (name.equals(Compile.COMPILER_JOIN_ELEM)) {
                 requireEmptyError(name);
                 result.append('+');
-            } else if (name.equals(Compiler.COMPILER_POSTGENERATOR_ELEM)) {
+            } else if (name.equals(Compile.COMPILER_POSTGENERATOR_ELEM)) {
                 requireEmptyError(name);
                 result.append('~');
-            } else if (name.equals(Compiler.COMPILER_GROUP_ELEM)) {
+            } else if (name.equals(Compile.COMPILER_GROUP_ELEM)) {
                 int type = reader.getEventType();
                 if (type != XMLStreamConstants.END_ELEMENT) {
                     result.append('#');
                 }
-            } else if (name.equals(Compiler.COMPILER_S_ELEM)) {
+            } else if (name.equals(Compile.COMPILER_S_ELEM)) {
                 requireEmptyError(name);
-                result.append("<" + attrib(Compiler.COMPILER_N_ATTR) + ">");
+                result.append("<" + attrib(Compile.COMPILER_N_ATTR) + ">");
             } else {
                 throw new RuntimeException("Error (" + reader.getLocation().getLineNumber() +
                     "): Invalid specification of element '<" + name +

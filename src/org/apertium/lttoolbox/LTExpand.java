@@ -17,6 +17,7 @@ package org.apertium.lttoolbox;
  * 02111-1307, USA.
  */
 
+import org.apertium.lttoolbox.expand.Expander;
 import org.xml.sax.SAXException;
 import java.io.*;
 

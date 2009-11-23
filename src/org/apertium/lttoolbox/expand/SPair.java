@@ -1,4 +1,6 @@
-package org.apertium.lttoolbox;
+package org.apertium.lttoolbox.expand;
+
+import org.apertium.lttoolbox.*;
 
 /*
  * This program is free software; you can redistribute it and/or
@@ -17,21 +19,13 @@ package org.apertium.lttoolbox;
  * 02111-1307, USA.
  */
 
-import java.util.Vector;
-import java.util.Collection;
-
 /**
- * Created by Nic Cottrell, Jan 27, 2009 10:55:24 PM
+ * Class to represent pairs of strings
+ * @author Raah
  */
+public class SPair extends Pair<String, String> {
 
-public class EntList extends Vector<SPair> {
-
-  public EntList() {
-
-  }
-  
-  public EntList(Collection<? extends SPair> sPairs) {
-    super(sPairs);
-  }
-  
+    public SPair(String obj1, String obj2) {
+        super(obj1, obj2);
+    }
 }

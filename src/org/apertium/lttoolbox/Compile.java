@@ -36,7 +36,7 @@ import javax.xml.stream.XMLStreamReader;
  * A compiler of dictionaries to letter transducers
  * @author Raah
  */
-public class Compiler {
+public class Compile {
 
     public static String COMPILER_DICTIONARY_ELEM = "dictionary";
     public static String COMPILER_ALPHABET_ELEM = "alphabet";
@@ -143,7 +143,7 @@ public class Compiler {
     /**
      * The constructor
      */
-    public Compiler() {
+    public Compile() {
         acx_map = new TreeMap<Integer, TreeSet<Integer>>();
         paradigms = new HashMap<String, Transducer>();
         sections = new HashMap<String, Transducer>();
@@ -970,15 +970,15 @@ public class Compiler {
     }
   
     /**
-     * Create a new Instance of the Compiler class from a stream
+     * Create a new Instance of the Compile class from a stream
      * Was written for debugging purpose
      * @param input the inpus stream from which to read the data
-     * @return an instance of the Compiler class that contains 
+     * @return an instance of the Compile class that contains
      * all the data read from the input
      * @throws java.io.IOException
      */
-    Compiler read(DataInputStream input) throws IOException {
-        Compiler c = new Compiler();
+    Compile read(DataInputStream input) throws IOException {
+        Compile c = new Compile();
         
         //reading of letters 
         c.letters=Compression.String_read(input);
@@ -997,12 +997,12 @@ public class Compiler {
     }
     
     /**
-     * Compare with another instance of the Compiler class
+     * Compare with another instance of the Compile class
      * Was written for debugging purpose
      * @param c to NewCompiler to compare to
      * @return true if both compilers are similar
      */
-    boolean compare(Compiler c) {
+    boolean compare(Compile c) {
         boolean sameAlphabet = true;
         if (this.alphabet.compare(c.alphabet)) {
             System.out.println("the two alphabets are the same : true");
@@ -1043,7 +1043,7 @@ public class Compiler {
         write(output);
         output.close();
         System.out.println("writing done");
-        Compiler c = new Compiler();
+        Compile c = new Compile();
         DataInputStream input = new DataInputStream(new BufferedInputStream (new FileInputStream("testTransducer.bin")));     
         c = read(input);
         input.close();

@@ -97,9 +97,9 @@ public class testTransducer {
     public static void main(String[] args) throws FileNotFoundException, IOException {
             
         
-        Compiler c = new Compiler();
-        Compiler c2 = new Compiler();
-        c.parse("testdata/apertium-fr-es.fr.dix", Compiler.COMPILER_RESTRICTION_LR_VAL);
+        Compile c = new Compile();
+        Compile c2 = new Compile();
+        c.parse("testdata/apertium-fr-es.fr.dix", Compile.COMPILER_RESTRICTION_LR_VAL);
         //c.parse("../src/test/org/apertium/lttoolbox/test3.dix", NewCompiler.COMPILER_RESTRICTION_LR_VAL);
         //c.parse("../src/test/org/apertium/lttoolbox/test4.dix", NewCompiler.COMPILER_RESTRICTION_LR_VAL);
         //c.parse("../src/test/org/apertium/lttoolbox/test5.dix", NewCompiler.COMPILER_RESTRICTION_LR_VAL);
