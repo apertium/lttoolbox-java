@@ -1,34 +1,39 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
-package org.apertium.lttoolbox;
-
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.PrintStream;
-import junit.framework.TestCase;
-import static org.apertium.lttoolbox.TestTools.*;
+
 
 /**
  *
+ *
  * @author Jacob Nordfalk
  */
-public class RegressionTest extends TestCase {
+public class Profiling {
+
+      static long now = System.currentTimeMillis();
+      public static void report(String action) {
+      System.out.println(action + " took sec "+ (System.currentTimeMillis()-now) + " msec" );
+
+        now = System.currentTimeMillis();
+      }
+
+      public static void main(String[] argv) throws Exception {
+        Profiling p = new Profiling();
+        System.out.println("Profiling "+new java.util.Date() );
+        System.out.println(System.getProperties() );
+  
+        p.testjavaAnalysis();
+        p.testjavaGeneration();
+        p.testjavaDGeneration();
+        p.testjavaNGeneration();
+        p.testjavaPostgeneration();
+        p.testjavaAnalysis();
+      }
+
+
 
   String dir = "testdata/regression/";
-
-
-  public void xxxtestByInvoking_compare_java_and_c() throws Exception {
-      Process p = exep(dir,dir+"compare_java_and_c.sh");
-    //Process p = exep(dir,"ls");
-    assertEquals("compare_java_and_c.sh exit value", 0, p.exitValue());
-}
 
 
   InputStream systemin = System.in;
@@ -41,7 +46,7 @@ public class RegressionTest extends TestCase {
     org.apertium.lttoolbox.LTProc.main(new String[] {"-a",dir+"fr-es.automorf.bin"});
     System.setIn(systemin);
     System.setOut(systemout);
-    assertEquals("Difference", "", exec("diff "+dir+"analysis_output "+outFile));
+    report("analysis -a  ");
   }
 
 
@@ -52,7 +57,7 @@ public class RegressionTest extends TestCase {
     org.apertium.lttoolbox.LTProc.main(new String[] {"-g",dir+"fr-es.autogen.bin"});
     System.setIn(systemin);
     System.setOut(systemout);
-    assertEquals("Difference", "", exec("diff "+dir+"generator_g_output "+outFile));
+    report("generation -g");
   }
 
 
@@ -63,7 +68,7 @@ public class RegressionTest extends TestCase {
     org.apertium.lttoolbox.LTProc.main(new String[] {"-d",dir+"fr-es.autogen.bin"});
     System.setIn(systemin);
     System.setOut(systemout);
-    assertEquals("Difference", "", exec("diff "+dir+"generator_d_output "+outFile));
+    report("generation -d");
   }
 
 
@@ -74,7 +79,7 @@ public class RegressionTest extends TestCase {
     org.apertium.lttoolbox.LTProc.main(new String[] {"-n",dir+"fr-es.autogen.bin"});
     System.setIn(systemin);
     System.setOut(systemout);
-    assertEquals("Difference", "", exec("diff "+dir+"generator_n_output "+outFile));
+    report("generation -n");
   }
 
 
@@ -85,6 +90,22 @@ public class RegressionTest extends TestCase {
     org.apertium.lttoolbox.LTProc.main(new String[] {"-p",dir+"fr-es.autopgen.bin"});
     System.setIn(systemin);
     System.setOut(systemout);
-    assertEquals("Difference", "", exec("diff "+dir+"postgenerator_output "+outFile));
+    report("generation -p");
   }
+
 }
+
+
+/* Progress log
+
+
+Profiling Mon Nov 23 16:54:59 CET 2009
+analysis -a   took sec 3697 msec
+generation -g took sec 2768 msec
+generation -d took sec 2544 msec
+generation -n took sec 2631 msec
+generation -p took sec 1669 msec
+analysis -a   took sec 2464 msec
+ 
+
+ */

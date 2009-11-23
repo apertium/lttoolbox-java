@@ -168,29 +168,11 @@ public class LTProc {
                 endProgram("LTProc");
             }
 
-//            int plop = 0;
-//            while(plop<42) {
-//                System.out.println((char)input.read());
-//                plop++;
-//            }
-//            System.exit(-1);
             fstp.load(in);
             in.close();
 
-        //System.out.println("hii :"+(char)input.read());
         } else {
-//            InputStreamReader isr = new InputStreamReader (System.in);
-//            FileWriter fw = new FileWriter (new File("TemporaryOutputFile.txt"));
-//            if (isr.ready()){
-//                int read_char=isr.read();
-//                while (read_char != -1) {
-//                    fw.write((char) read_char);
-//                    read_char = isr.read();
-//                }
-//            }
-//            isr.close();
-//            fw.close();
-//            input=fopen("TemporaryOutputFile.txt");
+
             input = new DataInputStream(System.in);
 
             if (optind == (argc - 2)) {
@@ -245,7 +227,6 @@ public class LTProc {
 
                 case 'a':
                 default:
-                    //System.out.println("plop 333:" + (char) 0);
                     fstp.initAnalysis();
                     checkValidity(fstp);
                     fstp.analysis(input, output);
@@ -260,11 +241,8 @@ public class LTProc {
         }
 
         input.close();
-        //output.write("\n\né\n");
-        
         output.close();
         
-//System.err.println(Charset.availableCharsets().keySet());
     }
     private static Writer fout(String filename) throws FileNotFoundException, UnsupportedEncodingException {
         String encoding = "UTF-8";
