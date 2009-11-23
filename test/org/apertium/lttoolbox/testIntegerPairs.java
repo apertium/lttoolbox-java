@@ -17,10 +17,11 @@ package org.apertium.lttoolbox;
  * 02111-1307, USA.
  */
 
+import org.apertium.lttoolbox.*;
 import java.util.HashMap;
 
 /**
- *
+ * Not a test. Raphael's expertiments.
  * @author Raah
  */
 public class testIntegerPairs {
@@ -47,7 +48,7 @@ public class testIntegerPairs {
         System.out.println("p.equals(p2) : " +(p.equals(p2)));
         
         HashMap<IntegerPair, Integer> spair;
-        IntegerPairComparator integerPairComparator = new IntegerPairComparator();
+        //IntegerPairComparator integerPairComparator = new IntegerPairComparator();
         //spair = new TreeMap<IntegerPair, Integer>(integerPairComparator);
         spair = new HashMap<IntegerPair, Integer>();
         spair.put(new IntegerPair(0, -17), 8);

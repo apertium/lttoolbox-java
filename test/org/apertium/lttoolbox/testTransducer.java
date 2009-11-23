@@ -17,6 +17,7 @@ package org.apertium.lttoolbox;
  * 02111-1307, USA.
  */
 
+import org.apertium.lttoolbox.*;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
@@ -98,7 +99,7 @@ public class testTransducer {
         
         Compiler c = new Compiler();
         Compiler c2 = new Compiler();
-        c.parse("../src/test/org/apertium/lttoolbox/apertium-fr-es.fr.dix", Compiler.COMPILER_RESTRICTION_LR_VAL);
+        c.parse("testdata/apertium-fr-es.fr.dix", Compiler.COMPILER_RESTRICTION_LR_VAL);
         //c.parse("../src/test/org/apertium/lttoolbox/test3.dix", NewCompiler.COMPILER_RESTRICTION_LR_VAL);
         //c.parse("../src/test/org/apertium/lttoolbox/test4.dix", NewCompiler.COMPILER_RESTRICTION_LR_VAL);
         //c.parse("../src/test/org/apertium/lttoolbox/test5.dix", NewCompiler.COMPILER_RESTRICTION_LR_VAL);
