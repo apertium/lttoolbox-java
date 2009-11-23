@@ -21,6 +21,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +55,51 @@ public class Transducer {
      * Transitions of the transducer
      */
     Map<Integer, Map<Integer, Set<Integer>>> transitions;
+
+
+/**
+ *
+ * @author sortiz
+ */
+private static class CollectionIntegerComparator
+    implements Comparator<Collection<Integer>> {
+
+    public boolean equals(Collection<Integer> other) {
+        if (other == this) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int compare(Collection<Integer> o1, Collection<Integer> o2) {
+        if (o1 == o2) {
+            return 0;
+        } else if (o1.size() > o2.size()) {
+            return 1;
+        } else if (o1.size() < o2.size()) {
+            return -1;
+        }
+
+        Iterator<Integer> it1 = o1.iterator();
+        Iterator<Integer> it2 = o2.iterator();
+
+        while (it1.hasNext()) {
+            Integer a = it1.next();
+            Integer b = it2.next();
+
+            if (a > b) {
+                return 1;
+            }
+            if (a < b) {
+                return -1;
+            }
+        }
+
+        return 0;
+    }
+}
 
     private final static CollectionIntegerComparator setComparator = new CollectionIntegerComparator();
 

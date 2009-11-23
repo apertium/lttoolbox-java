@@ -29,9 +29,9 @@ public class EntryToken {
     /**
      * Type of tokens, inner enum.
      */
-    public static int TYPE_PARADIGM = 1;
-    public static int Type_single_transduction = 2;
-    public static int Type_regexp = 3; //?? why was there a 2 here ?
+    public static int TYPE_paradigm = 1;
+    public static int TYPE_single_transduction = 2;
+    public static int TYPE_regexp = 3;
     
     /**
      * Type of this token
@@ -86,7 +86,7 @@ public class EntryToken {
      */
     void setParadigm(String np) {
         parName = np;
-        type = TYPE_PARADIGM;
+        type = TYPE_paradigm;
     }
 
     /**
@@ -97,7 +97,7 @@ public class EntryToken {
     void setSingleTransduction(Vector<Integer> pi, Vector<Integer> pd) {
         leftSide = pi;
         rightSide = pd;
-        type = Type_single_transduction;
+        type = TYPE_single_transduction;
     }
 
     /**
@@ -106,7 +106,7 @@ public class EntryToken {
      */
     void setRegexp(String r) {
         myregexp = r;
-        type = Type_regexp;
+        type = TYPE_regexp;
     }
 
     /**
@@ -114,7 +114,7 @@ public class EntryToken {
      * @return true if it is a paradigm.
      */
     boolean isParadigm() {
-        return type == TYPE_PARADIGM;
+        return type == TYPE_paradigm;
     }
 
     /**
@@ -122,7 +122,7 @@ public class EntryToken {
      * @return true if it is a single transduction.
      */
     boolean isSingleTransduction() {
-        return type == Type_single_transduction;
+        return type == TYPE_single_transduction;
     }
 
     /**
@@ -130,7 +130,7 @@ public class EntryToken {
      * @return true if it is a regular expression.
      */
     boolean isRegexp() {
-        return type == Type_regexp;
+        return type == TYPE_regexp;
     }
 
     /**
@@ -172,9 +172,9 @@ public class EntryToken {
     @Override
     public String toString() {
         String res= "";
-        if (type==TYPE_PARADIGM) {
+        if (type==TYPE_paradigm) {
             res += "paradigm name : "+parName;
-        } else if (type ==Type_regexp) {
+        } else if (type ==TYPE_regexp) {
             res+="regexp : "+myregexp;
         } else {
             res+="transduction : left "+leftSide+" right "+rightSide;

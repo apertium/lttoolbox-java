@@ -34,6 +34,7 @@ import javax.xml.stream.XMLStreamReader;
 
 /**
  * A compiler of dictionaries to letter transducers
+ * It's called 'Compile' and not 'Compiler' to avoid clash with java.lang.Compiler
  * @author Raah
  */
 public class Compile {

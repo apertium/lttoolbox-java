@@ -25,6 +25,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +38,63 @@ import java.util.Vector;
  * @author Raah
  */
 public class Alphabet {
+
+
+/**
+ * Class to represent a pair of integers
+ * @author Raah
+ */
+public static class IntegerPair implements Comparable {
+
+    int first;
+    int second;
+
+    public IntegerPair(Integer i1, Integer i2) {
+        first = i1;
+        second = i2;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (! (o instanceof IntegerPair)) {
+            return false;
+        }
+        IntegerPair p = (IntegerPair)o;
+        return ((first == p.first)&& (second == p.second));
+    }
+
+    public int compareTo(IntegerPair p) {
+        if (first > p.first) {
+            return 1;
+        }
+        if (first < p.first) {
+            return -1;
+        }
+        if (second > p.second) {
+            return 1;
+        }
+        if (second < p.second) {
+            return -1;
+        }
+        return 0;
+    }
+
+    @Override
+    public String toString() {
+        return new String("<" + (first>0?(char)first:"") + first + "," + (second>0?(char)second:"") + second + ">");
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if (o==this) return 0;
+        IntegerPair p = (IntegerPair)o;
+        return compareTo(p);
+    }
+}
+
 
     /**
      * Symbol-identifier relationship.
@@ -51,6 +109,33 @@ public class Alphabet {
     Map<IntegerPair, Integer> spair;
     
     Vector<IntegerPair> spairinv;
+
+
+/**
+ * IntegerPair comparaison class, to conveniently use Maps
+ * @author Raah
+ */
+private static class IntegerPairComparator implements Comparator<IntegerPair> {
+
+
+    @Override
+    public int compare(IntegerPair p0, IntegerPair p1) {
+        if (p0.first > p1.first) {
+            return 1;
+        }
+        if (p0.first < p1.first) {
+            return -1;
+        }
+        if (p0.second > p1.second) {
+            return 1;
+        }
+        if (p0.second < p1.second) {
+            return -1;
+        }
+        return 0;
+    }
+
+}
 
     private final static IntegerPairComparator integerPairComparator = new IntegerPairComparator();
 
