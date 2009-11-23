@@ -18,8 +18,8 @@ public class LTCompTest extends TestCase {
 
     protected void setUp() throws Exception {
       // Create and clean tmp dir
-       new File("tmp").mkdirs();
        rm("tmp");
+       new File("tmp").mkdirs();
     }
 
 
