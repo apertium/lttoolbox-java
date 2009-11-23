@@ -291,7 +291,7 @@ private static class TNodeState {
 
       if (DEBUG) System.err.println("filterFinals( " + uppercase + " "+ firstupper + " "+ firstchar);
 
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
 
         for (int i = 0,  limit = state.size(); i != limit; i++) {
 
@@ -346,7 +346,7 @@ private static class TNodeState {
         Alphabet alphabet,
         Set<Character> escaped_chars,
         boolean uppercase, boolean firstupper, int firstchar) {
-        StringBuffer result = new StringBuffer("");
+        StringBuilder result = new StringBuilder("");
 
         for (int i = 0,  limit = state.size(); i != limit; i++) {
             if (finals.contains(state.get(i).where)) {

@@ -1076,7 +1076,7 @@ if (input.available() == 0) {
 
         boolean skip_mode = true;
         State current_state = new State().copy(initial_state);
-        StringBuffer lf = new StringBuffer("");
+        StringBuilder lf = new StringBuilder("");
         String sf = "";
         Set<Character> empty_escaped_chars = new HashSet<Character>();
         int last = 0;
@@ -1102,7 +1102,7 @@ if (input.available() == 0) {
                 if (current_state.isFinal(all_finals)) {
                     boolean firstupper = Character.isUpperCase(charAt(sf,1));
                     boolean uppercase = sf.length() > 1 && firstupper && Character.isUpperCase(charAt(sf,2));
-                    lf = new StringBuffer(current_state.filterFinals(all_finals, alphabet,
+                    lf = new StringBuilder(current_state.filterFinals(all_finals, alphabet,
                             empty_escaped_chars,
                             uppercase, firstupper, 0));
 
@@ -1181,7 +1181,7 @@ if (input.available() == 0) {
                     }
 
                     current_state.copy(initial_state);
-                    lf = new StringBuffer("");
+                    lf = new StringBuilder("");
                     sf = "";
                     skip_mode = true;
                 }
@@ -1268,10 +1268,10 @@ if (input.available() == 0) {
 
     public String biltrans(String input_word, boolean with_delim) {
         State current_state = new State().copy(initial_state);
-        StringBuffer result = new StringBuffer("");
+        StringBuilder result = new StringBuilder("");
         int start_point = 1;
         int end_point = input_word.length() - 2;
-        StringBuffer queue = new StringBuffer("");
+        StringBuilder queue = new StringBuilder("");
         boolean mark=false;
         
         if (!with_delim) {
@@ -1318,20 +1318,20 @@ if (input.available() == 0) {
                 }
             }
             if (current_state.isFinal(all_finals)) {
-                result = new StringBuffer(current_state.filterFinals(all_finals, alphabet,
+                result = new StringBuilder(current_state.filterFinals(all_finals, alphabet,
                         escaped_chars,
                         uppercase, firstupper, 0));
                 if (with_delim) {
                     if(mark) {
-                        result = new StringBuffer("^="+result.substring(1));
+                        result = new StringBuilder("^="+result.substring(1));
                     } else {
                         result.setCharAt(0, '^');
                     }
                 } else {
                     if(mark) {
-                        result = new StringBuffer("="+result.substring(1));
+                        result = new StringBuilder("="+result.substring(1));
                     } else {
-                        result = new StringBuffer(result.substring(1));
+                        result = new StringBuilder(result.substring(1));
                     }
                 }
             }
@@ -1342,9 +1342,9 @@ if (input.available() == 0) {
                 } else {
                     // word is not present
                     if (with_delim) {
-                        result = new StringBuffer("^@" + input_word.substring(1));
+                        result = new StringBuilder("^@" + input_word.substring(1));
                     } else {
-                        result = new StringBuffer("@" + input_word);
+                        result = new StringBuilder("@" + input_word);
                     }
                     return result.toString();
                 }
@@ -1354,7 +1354,7 @@ if (input.available() == 0) {
         // attach unmatched queue automatically
 
         if (queue.length() != 0) {
-            StringBuffer result_with_queue = new StringBuffer("");
+            StringBuilder result_with_queue = new StringBuilder("");
             boolean multiple_translation = false;
             for (int i = 0,  limit = result.length(); i != limit; i++) {
                 switch (charAt(result.toString(),i)) {
@@ -1389,10 +1389,10 @@ if (input.available() == 0) {
 
     public Pair<String, Integer> biltransWithQueue(String input_word, boolean with_delim) {
         State current_state = new State().copy(initial_state);
-        StringBuffer result = new StringBuffer("");
+        StringBuilder result = new StringBuilder("");
         int start_point = 1;
         int end_point = input_word.length() - 2;
-        StringBuffer queue = new StringBuffer("");
+        StringBuilder queue = new StringBuilder("");
         boolean mark=false;
         
         if (!with_delim) {
@@ -1440,20 +1440,20 @@ if (input.available() == 0) {
                 }
             }
             if (current_state.isFinal(all_finals)) {
-                result = new StringBuffer(current_state.filterFinals(all_finals, alphabet,
+                result = new StringBuilder(current_state.filterFinals(all_finals, alphabet,
                         escaped_chars,
                         uppercase, firstupper, 0));
                 if (with_delim) {
                     if (mark) {
-                        result = new StringBuffer("^=" + result.substring(1));
+                        result = new StringBuilder("^=" + result.substring(1));
                     } else {
                         result.setCharAt(0, '^');
                     }
                 } else {
                     if (mark) {
-                        result = new StringBuffer("=" + result.substring(1));
+                        result = new StringBuilder("=" + result.substring(1));
                     } else {
-                    result = new StringBuffer(result.substring(1));
+                    result = new StringBuilder(result.substring(1));
                     }
                 }
             }
@@ -1464,9 +1464,9 @@ if (input.available() == 0) {
                 } else {
                     // word is not present
                     if (with_delim) {
-                        result = new StringBuffer("^@" + input_word.substring(1));
+                        result = new StringBuilder("^@" + input_word.substring(1));
                     } else {
-                        result = new StringBuffer("@" + input_word);
+                        result = new StringBuilder("@" + input_word);
                     }
                     return new Pair<String, Integer>(result.toString(), 0);
                 }
@@ -1476,7 +1476,7 @@ if (input.available() == 0) {
         // attach unmatched queue automatically
 
         if (queue.length() > 0) {
-            StringBuffer result_with_queue = new StringBuffer("");
+            StringBuilder result_with_queue = new StringBuilder("");
             boolean multiple_translation = false;
             for (int i = 0,  limit = result.length(); i != limit; i++) {
                 switch (charAt(result.toString(),i)) {
@@ -1511,7 +1511,7 @@ if (input.available() == 0) {
 
     public String biltransWithoutQueue(String input_word, boolean with_delim) {
         State current_state = new State().copy(initial_state);
-        StringBuffer result = new StringBuffer("");
+        StringBuilder result = new StringBuilder("");
         int start_point = 1;
         int end_point = input_word.length() - 2;
         boolean mark = false;
@@ -1561,20 +1561,20 @@ if (input.available() == 0) {
                 }
             }
             if (current_state.isFinal(all_finals)) {
-                result = new StringBuffer(current_state.filterFinals(all_finals, alphabet,
+                result = new StringBuilder(current_state.filterFinals(all_finals, alphabet,
                         escaped_chars,
                         uppercase, firstupper, 0));
                 if (with_delim) {
                     if (mark) {
-                        result = new StringBuffer("^=" + result.substring(1));
+                        result = new StringBuilder("^=" + result.substring(1));
                     } else {
                         result.setCharAt(0, '^');
                     }
                 } else {
                     if (mark) {
-                        result = new StringBuffer("=" + result.substring(1));
+                        result = new StringBuilder("=" + result.substring(1));
                     } else {
-                        result = new StringBuffer(result.substring(1));
+                        result = new StringBuilder(result.substring(1));
                     }
                 }
             }
@@ -1583,9 +1583,9 @@ if (input.available() == 0) {
                 if (symbol.equals("")) {
                     // word is not present
                     if (with_delim) {
-                        result = new StringBuffer("^@" + input_word.substring(1));
+                        result = new StringBuilder("^@" + input_word.substring(1));
                     } else {
-                        result = new StringBuffer("@" + input_word);
+                        result = new StringBuilder("@" + input_word);
                     }
                     return result.toString();
                 }
