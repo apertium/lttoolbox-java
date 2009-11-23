@@ -17,8 +17,17 @@ package org.apertium.lttoolbox;
  * 02111-1307, USA.
  */
 
-import com.sun.org.apache.xalan.internal.xsltc.cmdline.getopt.GetOpt;
 import java.io.*;
+
+
+// The implementation of GetOpt currently used is Sun proprietary API and may be removed in a future release.
+// Making this small subclass makes the compiler warn only once instead of 3 times
+class GetOpt extends com.sun.org.apache.xalan.internal.xsltc.cmdline.getopt.GetOpt {
+
+  public GetOpt(String[] argv, String string) {
+    super(argv, string);
+  }
+}
 
 /**
  * 
@@ -73,7 +82,6 @@ public class LTProc {
 
         int cmd = 0;
         FSTProcessor fstp = new FSTProcessor();
-
 
         GetOpt getopt = new GetOpt(argv, "acgndpstzvh");
 
