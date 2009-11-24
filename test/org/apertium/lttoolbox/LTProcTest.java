@@ -33,7 +33,7 @@ public class LTProcTest extends TestCase {
       fstp.initAnalysis();
       DataInputStream input = new DataInputStream(new ByteArrayInputStream("wound\n".getBytes()));
       StringWriter output = new StringWriter();
-      fstp.analysis(input, output);
+      fstp.analysis(new StringReader2("wound\n"), output);
       System.err.println("testAnalysis_small_oneWound_Java = '" + output.toString()+"'");
 
       // WORKS!!
@@ -49,7 +49,7 @@ public class LTProcTest extends TestCase {
       // input a single 'a'   - should give  ^a/avoir<vbhaver><pri><p3><sg>$
       DataInputStream input = new DataInputStream(new ByteArrayInputStream("a\n".getBytes()));
       StringWriter output = new StringWriter();
-      fstp.analysis(input, output);
+      fstp.analysis(new StringReader2("a\n"), output);
       System.err.println("testAnalysis_small_oneWord_Java() output = " + output);
 
       // WORKS!
@@ -64,7 +64,7 @@ public class LTProcTest extends TestCase {
       fstp.initAnalysis();
       DataInputStream input = new DataInputStream(new ByteArrayInputStream("a a\n".getBytes()));
       StringWriter output = new StringWriter();
-      fstp.analysis(input, output);
+      fstp.analysis(new StringReader2("a a\n"), output);
       String correct = "^a/avoir<vbhaver><pri><p3><sg>$ ^a/avoir<vbhaver><pri><p3><sg>$\n";
 
       System.err.println("I: '" + input+"'");
@@ -93,7 +93,7 @@ public class LTProcTest extends TestCase {
       String input = "Un article ";
       String correct = "^Un/Un<num><m><sg>/Un<prn><tn><m><sg>/Un<det><ind><m><sg>$ ^article/article<n><m><sg>$ ";
       DataInputStream inputs = new DataInputStream(new ByteArrayInputStream(input.getBytes()));
-      fstp.analysis(inputs, output);
+      fstp.analysis(new StringReader2(input), output);
 
       System.err.println("I: '" + input+"'");
       System.err.println("O: '" + output+"'");
@@ -114,7 +114,7 @@ public class LTProcTest extends TestCase {
       String correct = "^je/je<prn><tn><p1><mf><sg>$[\npart ]\n[]^suis/être<vblex><pri><p1><sg>/être<vbser><pri><p1><sg>/suivre<vblex><pri><p1><sg>/suivre<vblex><pri><p2><sg>/suivre<vblex><imp><p2><sg>$"
           +"[&#160;] ^:/:<sent>$[ <b>]^10,8/10,8<num>$[&#161;]%^./.<sent>$[][<\\/b><\\/li>]^content/content<adj><m><sg>/conter<vblex><pri><p3><pl>/conter<vblex><prs><p3><pl>$ ";
       DataInputStream inputs = new DataInputStream(new ByteArrayInputStream(input.getBytes()));
-      fstp.analysis(inputs, output);
+      fstp.analysis(new StringReader2(input), output);
 
       System.err.println("I: '" + input+"'");
       System.err.println("O: '" + output+"'");
@@ -134,7 +134,7 @@ public class LTProcTest extends TestCase {
       StringWriter output = new StringWriter();
       DataInputStream input = new DataInputStream(new ByteArrayInputStream(
           "Militairement, la France possède l'une des principales forces armées d'Europe et est une\n".getBytes()));
-      fstp.analysis(input, output);
+      fstp.analysis(new StringReader2("Militairement, la France possède l'une des principales forces armées d'Europe et est une\n"), output);
 
       String correct = "^Militairement/*Militairement$^,/,<cm>$ ^la/le<det><def><f><sg>/le<prn><pro><p3><f><sg>$ ^France/France<np><loc>$ ^possède/posséder<vblex><pri><p3><sg>/posséder<vblex><pri><p1><sg>/posséder<vblex><prs><p3><sg>/posséder<vblex><prs><p1><sg>/posséder<vblex><imp><p2><sg>$ ^l'/le<det><def><mf><sg>/le<prn><pro><p3><m><sg>/le<prn><pro><p3><f><sg>$ ^une/un<prn><tn><f><sg>/un<det><ind><f><sg>$ ^des/de<pr>+le<det><def><mf><pl>$ ^principales/principal<adj><f><pl>$ ^forces/force<n><f><pl>/forcer<vblex><pri><p2><sg>/forcer<vblex><prs><p2><sg>$ ^armées/armée<n><f><pl>/armer<vblex><pp><f><pl>$ ^d'/de<pr>$ ^Europe/Europe<np><loc>$ ^et/et<cnjcoo>$ ^est/est<n><m><sg>/être<vblex><pri><p3><sg>/être<vbser><pri><p3><sg>$ ^une/un<prn><tn><f><sg>/un<det><ind><f><sg>$\n";
 
@@ -157,7 +157,7 @@ public class LTProcTest extends TestCase {
           "^je<prn><tn><p1><mf><sg>$ ^moi<prn><tn><p1><mf><sg>$ \n".getBytes()));
       StringWriter output = new StringWriter();
 
-      fstp.generation(input, output, FSTProcessor.GenerationMode.gm_unknown);
+      fstp.generation(new StringReader2("^je<prn><tn><p1><mf><sg>$ ^moi<prn><tn><p1><mf><sg>$ \n"), output, FSTProcessor.GenerationMode.gm_unknown);
       System.err.println("testGeneration() output = " + output);
 
       // WORKS
@@ -174,7 +174,7 @@ public class LTProcTest extends TestCase {
           //"[<\\/a> <i>]\n".getBytes()));
       StringWriter output = new StringWriter();
 
-      fstp.generation(input, output, FSTProcessor.GenerationMode.gm_unknown);
+      fstp.generation(new StringReader2( "^de<n>$ ^Europe<np><loc>$[<\\/a> <i>]\n"), output, FSTProcessor.GenerationMode.gm_unknown);
       System.err.println("testGeneration() output = " + output);
 
       // WORKS
@@ -191,7 +191,7 @@ public class LTProcTest extends TestCase {
           "~je moi \n".getBytes()));
       StringWriter output = new StringWriter();
 
-      fstp.postgeneration(input, output);
+      fstp.postgeneration(new StringReader2("~je moi \n"), output);
       System.err.println("testGeneration() output = " + output);
 
       // WORKS

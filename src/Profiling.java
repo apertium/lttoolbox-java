@@ -96,6 +96,7 @@ generation -n took sec 2506 msec
 generation -p took sec 1666 msec
 analysis -a   took sec 2690 msec
 
+// Changed way profiling works
 Profiling Tue Nov 24 10:27:40 CET 2009
 analysis -a   took sec 3095 msec
 generation -g took sec 2149 msec
@@ -104,5 +105,12 @@ generation -n took sec 2015 msec
 generation -p took sec 1272 msec
 analysis -a   took sec 2240 msec
 
+// Use system UTF8 decoding instead of hand-made way of decoding UTF-8
+analysis -a   took sec 2483 msec
+generation -g took sec 885 msec
+generation -d took sec 859 msec
+generation -n took sec 979 msec
+generation -p took sec 451 msec
+analysis -a   took sec 1044 msec
 
  */

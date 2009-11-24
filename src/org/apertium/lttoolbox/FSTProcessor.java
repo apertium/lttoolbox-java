@@ -18,6 +18,7 @@ package org.apertium.lttoolbox;
  */
 
 import java.io.DataInputStream;
+import java.io.Reader;
 import java.io.IOException;
 import java.io.Writer;
 import java.text.Collator;
@@ -145,29 +146,29 @@ public class FSTProcessor {
         throw new RuntimeException("Error: Malformed input stream.");
     }
 
-    private Character readEscaped(DataInputStream input) throws IOException {
+    private Character readEscaped(Reader input) throws IOException {
         
         
-        if (input.available() == 0) {
+        if (!input.ready()) {
             streamError();
         }
 
         Character val = read(input);
         //System.out.println("read "+val);
 
-        if (input.available() == 0 || (!escaped_chars.contains(val))) {
+        if (!input.ready() || (!escaped_chars.contains(val))) {
             streamError();
         }
 
         return val;
     }
 
-    private String readFullBlock(DataInputStream input, Character delim1, Character delim2) throws IOException {
+    private String readFullBlock(Reader input, Character delim1, Character delim2) throws IOException {
         String result = "";
         result += delim1;
         Character c = delim1;
 
-        while (input.available() != 0 && c != delim2) {
+        while (input.ready() && c != delim2) {
             c=read(input);
         //System.out.println("read "+c);
             result += c;
@@ -185,22 +186,19 @@ public class FSTProcessor {
         return result;
     }
 
-    private char readAnalysis(DataInputStream input) throws IOException {
+    private char readAnalysis(Reader input) throws IOException {
         if (!input_buffer.isEmpty()) {
             return input_buffer.next();
         }
-if (input.available() == 0) {
+        if (!input.ready()) {
             //System.out.println("exiting readAnalysis");
             return (char) 0;
         }
         Character val = read(input);
+        //if (val == -1) return (char) 0; // Jacob
+
         //System.out.println("readA "+val);
         char altval = (char) 0;
-//        System.out.println("input.available() == "+input.available());
-//        if (input.available() == 0) {
-//            System.out.println("exiting readAnalysis");
-//            return (char) 0;
-//        }
 
         if (escaped_chars.contains(val)) {
             //System.out.println("the read char is an escaped char");
@@ -234,12 +232,12 @@ if (input.available() == 0) {
         return val;
     }
 
-    private char readTMAnalysis(DataInputStream input) throws IOException {
+    private char readTMAnalysis(Reader input) throws IOException {
         isLastBlankTM = false;
         if (!input_buffer.isEmpty()) {
             return input_buffer.next();
         }
-        if (input.available() == 0) {
+        if (!input.ready()) {
             //System.out.println("exiting readAnalysis");
             return (char) 0;
         }
@@ -247,7 +245,7 @@ if (input.available() == 0) {
         //System.out.println("readA "+val);
         char altval = (char) 0;
 //        System.out.println("input.available() == "+input.available());
-//        if (input.available() == 0) {
+//        if (!input.ready()) {
 //            System.out.println("exiting readAnalysis");
 //            return (char) 0;
 //        }
@@ -307,12 +305,12 @@ if (input.available() == 0) {
         return val;
     }
 
-    private char readPostgeneration(DataInputStream input) throws IOException {
+    private char readPostgeneration(Reader input) throws IOException {
         if (!input_buffer.isEmpty()) {
             return input_buffer.next();
         }
 
-        if (input.available() == 0) {
+        if (!input.ready()) {
             return (char) 0;
         }
         Character val = read(input);
@@ -344,21 +342,18 @@ if (input.available() == 0) {
         }
     }
 
-    private void skipUntil(DataInputStream input, Writer output, char character) throws IOException {
+    private void skipUntil(Reader input, Writer output, char character) throws IOException {
         while (true) {
-            if (input.available() == 0) {
+            if (!input.ready()) {
                 return;
             }
             char val = read(input);
-            //System.out.println("read "+val);
-
 
             if (val == '\\') {
-                if (input.available() == 0) {
+                if (!input.ready()) {
                     return;
                 }
                 val = read(input);
-                //System.out.println("read "+val);
 
                 output.write('\\');
                 output.write(val);
@@ -370,9 +365,9 @@ if (input.available() == 0) {
         }
     }
 
-    private int readGeneration(DataInputStream input, Writer output) throws IOException {
+    private int readGeneration(Reader input, Writer output) throws IOException {
        
-        if (input.available() == 0) {
+        if (!input.ready()) {
             return 0x7fffffff;
         }
         char val = read(input);
@@ -382,7 +377,7 @@ if (input.available() == 0) {
 
         if (outOfWord) {
             if (val == '^') {
-                if (input.available() == 0) {
+                if (!input.ready()) {
                     return 0x7fffffff;
                 }
                 val = read(input);
@@ -390,7 +385,7 @@ if (input.available() == 0) {
                 
             } else if (val == '\\') {
                 output.write(val);
-                if (input.available() == 0) {
+                if (!input.ready()) {
                     return 0x7fffffff;
                 }
                 val = read(input);
@@ -398,7 +393,7 @@ if (input.available() == 0) {
                 
                 output.write(val);
                 skipUntil(input, output, '^');
-                 if (input.available() == 0) {
+                 if (!input.ready()) {
                     return 0x7fffffff;
                 }
                 val = read(input);
@@ -407,7 +402,7 @@ if (input.available() == 0) {
             } else {
                 output.write(val);
                 skipUntil(input, output, '^');
-                if (input.available() == 0) {
+                if (!input.ready()) {
                     return 0x7fffffff;
                 }
                 val = read(input);
@@ -429,14 +424,14 @@ if (input.available() == 0) {
             cad += val;
             
             
-            if (input.available() == 0) {
+            if (!input.ready()) {
                     streamError();
                 }
             val = read(input);
         //System.out.println("read "+val);
             while (val != '>') {
                cad += val;
-                if (input.available() == 0) {
+                if (!input.ready()) {
                     streamError();
                 }
                 val = read(input);
@@ -643,7 +638,7 @@ if (input.available() == 0) {
         return s.charAt(index);
     }
 
-    public void analysis(DataInputStream input, Writer output) throws IOException {
+    public void analysis(Reader input, Writer output) throws IOException {
         //System.out.println("entering analysis");
         if (getNullFlush()) {
             analysis_wrapper_null_flush(input, output);
@@ -828,9 +823,9 @@ if (input.available() == 0) {
         flushBlanks(output);
     }
 
-    private void analysis_wrapper_null_flush(DataInputStream input, Writer output) throws IOException {
+    private void analysis_wrapper_null_flush(Reader input, Writer output) throws IOException {
         setNullFlush(false);
-        while (input.available() >0) {
+        while (input.ready()) {
             analysis(input, output);
             output.write('\0');
             try {
@@ -842,10 +837,10 @@ if (input.available() == 0) {
         }
     }
 
-    private void generation_wrapper_null_flush(DataInputStream input, Writer output,
+    private void generation_wrapper_null_flush(Reader input, Writer output,
             GenerationMode mode) throws IOException{
         setNullFlush(false);
-        while (input.available() >0) {
+        while (input.ready()) {
             generation(input, output, mode);
             output.write('\0');
             try {
@@ -857,9 +852,9 @@ if (input.available() == 0) {
         }
     }
 
-    private void postgeneration_wrapper_null_flush(DataInputStream input, Writer output) throws IOException {
+    private void postgeneration_wrapper_null_flush(Reader input, Writer output) throws IOException {
         setNullFlush(false);
-        while (input.available() >0) {
+        while (input.ready()) {
             postgeneration(input, output);
             output.write('\0');
             try {
@@ -871,9 +866,9 @@ if (input.available() == 0) {
         }
     }
 
-    private void transliteration_wrapper_null_flush(DataInputStream input, Writer output) throws IOException {
+    private void transliteration_wrapper_null_flush(Reader input, Writer output) throws IOException {
         setNullFlush(false);
-        while (input.available() >0) {
+        while (input.ready()) {
             transliteration(input, output);
             output.write('\0');
             try {
@@ -885,7 +880,7 @@ if (input.available() == 0) {
         }
     }
 
-    private void tm_analysis(DataInputStream input, Writer output) throws IOException {
+    private void tm_analysis(Reader input, Writer output) throws IOException {
 
         State current_state = new State().copy(initial_state);
         String lf = "";
@@ -987,7 +982,7 @@ if (input.available() == 0) {
     }
 
 
-    public void generation(DataInputStream input, Writer output, GenerationMode mode) throws IOException {
+    public void generation(Reader input, Writer output, GenerationMode mode) throws IOException {
         if (getNullFlush()) {
             generation_wrapper_null_flush(input, output, mode);
         }
@@ -1057,7 +1052,7 @@ if (input.available() == 0) {
         }
     }
 
-    public void postgeneration(DataInputStream input, Writer output) throws IOException {
+    public void postgeneration(Reader input, Writer output) throws IOException {
         if (getNullFlush()) {
             postgeneration_wrapper_null_flush(input, output);
         }
@@ -1180,7 +1175,7 @@ if (input.available() == 0) {
         flushBlanks(output);
     }
 
-    void transliteration(DataInputStream input, Writer output) throws IOException {
+    void transliteration(Reader input, Writer output) throws IOException {
         if (getNullFlush()) {
             transliteration_wrapper_null_flush(input, output);
         }
@@ -1601,12 +1596,12 @@ if (input.available() == 0) {
         return true;
     }
 
-    char readSAO(DataInputStream input) throws IOException {
+    char readSAO(Reader input) throws IOException {
         if (!input_buffer.isEmpty()) {
             return input_buffer.next();
         }
         
-        if (input.available() == 0) {
+        if (!input.ready()) {
             return (char)0;
         }
         Character val = read(input);
@@ -1653,7 +1648,7 @@ if (input.available() == 0) {
         }
     }
 
-    void SAO(DataInputStream input, Writer output) throws IOException {
+    void SAO(Reader input, Writer output) throws IOException {
         boolean last_incond = false;
         boolean last_postblank = false;
         State current_state = new State().copy(initial_state);
@@ -1807,7 +1802,9 @@ if (input.available() == 0) {
     }
     
 
-    private char read(DataInputStream input) throws IOException {
+    private char read(Reader input) throws IOException {
+      return (char) input.read();
+        /*
         int read = input.read();
         if ((128 & read) == 0) {
             return (char) read;
@@ -1816,6 +1813,7 @@ if (input.available() == 0) {
         } else {
             return (char) (((read & 15) << 12) + ((input.read() & 63) << 6) + (input.read() & 63));
         }
+         */
     }
 
     private boolean iswdigit(Character val) {
