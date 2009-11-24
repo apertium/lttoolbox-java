@@ -2,6 +2,8 @@
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
+import org.apertium.lttoolbox.LTComp;
+import org.apertium.lttoolbox.SetOfCharacters;
 
 
 /**
@@ -20,15 +22,19 @@ public class Profiling {
 
       public static void main(String[] argv) throws Exception {
         Profiling p = new Profiling();
+        //System.out.println(System.getProperties() );
         System.out.println("Profiling "+new java.util.Date() );
-        System.out.println(System.getProperties() );
-  
         p.testjavaAnalysis();
         p.testjavaGeneration();
         p.testjavaDGeneration();
         p.testjavaNGeneration();
         p.testjavaPostgeneration();
         p.testjavaAnalysis();
+ /**/
+    LTComp.main(new String[] { "rl", "testdata/apertium-fr-es.fr.dix", "tmp/testJava.bin"});
+    report("lt-comp  ");
+
+        //System.err.println("SetOfCharacters.max_encountered = " + SetOfCharacters.max_encountered);
       }
 
 
@@ -112,5 +118,16 @@ generation -d took sec 859 msec
 generation -n took sec 979 msec
 generation -p took sec 451 msec
 analysis -a   took sec 1044 msec
+ lt-comp   took sec 10917 msec
 
+
+// Use SetOfCharacters with array of boolean implementation
+Profiling Tue Nov 24 14:26:37 CET 2009
+analysis -a   took sec 2759 msec
+generation -g took sec 928 msec
+generation -d took sec 880 msec
+generation -n took sec 681 msec
+generation -p took sec 448 msec
+analysis -a   took sec 1166 msec
+lt-comp   took sec 9485 msec
  */

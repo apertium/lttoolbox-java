@@ -269,7 +269,7 @@ private static class TNodeState {
      * @param firstupper true if the first letter of a word is uppercase
      * @return the result of the transduction
      */
-    String filterFinals(Set<Node> finals, Alphabet alphabet, Set<Character> escaped_chars,
+    String filterFinals(Set<Node> finals, Alphabet alphabet, SetOfCharacters escaped_chars,
         boolean uppercase, boolean firstupper) {
         int firstchar = 0;
         return filterFinals(finals, alphabet, escaped_chars, uppercase, firstupper, firstchar);
@@ -286,7 +286,7 @@ private static class TNodeState {
      * @param firstchar first character of the word
      * @return the result of the transduction
      */
-    String filterFinals(Set<Node> finals, Alphabet alphabet, Set<Character> escaped_chars,
+    String filterFinals(Set<Node> finals, Alphabet alphabet, SetOfCharacters escaped_chars,
         boolean uppercase, boolean firstupper, int firstchar) {
 
       if (DEBUG) System.err.println("filterFinals( " + uppercase + " "+ firstupper + " "+ firstchar);
@@ -344,7 +344,7 @@ private static class TNodeState {
      */
     String filterFinalsSAO(Set<Node> finals,
         Alphabet alphabet,
-        Set<Character> escaped_chars,
+        SetOfCharacters escaped_chars,
         boolean uppercase, boolean firstupper, int firstchar) {
         StringBuilder result = new StringBuilder("");
 
@@ -388,13 +388,13 @@ private static class TNodeState {
      * @param firstchar first character of the word
      * @return the result of the transduction
      */
-    String filterFinalsTM(Set<Node> finals, Alphabet alphabet, Set<Character> escaped_chars, ArrayDeque<String> blankqueue, ArrayList<String> numbers) {
+    String filterFinalsTM(Set<Node> finals, Alphabet alphabet, SetOfCharacters escaped_chars, ArrayDeque<String> blankqueue, ArrayList<String> numbers) {
         String result = "";
         for (int i = 0,  limit = state.size(); i < limit; i++) {
             if (finals.contains(state.get(i).where)) {
                 result += '/';
                 for (int j = 0,  limit2 = state.get(i).sequence.size(); j < limit2; j++) {
-                    if (escaped_chars.contains(state.get(i).sequence.get(j))) {
+                    if (escaped_chars.contains((char) state.get(i).sequence.get(j).intValue())) {
                         result += '\\';
                     }
                     result = alphabet.getSymbol(result, state.get(i).sequence.get(j));

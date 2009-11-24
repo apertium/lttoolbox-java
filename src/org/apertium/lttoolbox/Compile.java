@@ -71,58 +71,58 @@ public class Compile {
     /**
      * The paradigm being compiled
      */
-    String current_paradigm = "";
+    private String current_paradigm = "";
     
     /**
      * The dictionary section being compiled
      */
-    String current_section = "";
+    private String current_section = "";
     
     /**
      * The direction of the compilation, 'lr' (left-to-right) or 'rl'
      * (right-to-left)
      */
-    String direction = "";
+    private String direction = "";
     
     /**
      * List of characters to be considered alphabetic
      */
-    String letters = "";
+    private String letters = "";
     
     /**
      * Identifier of all the symbols during the compilation
      */
-    Alphabet alphabet;
+    private Alphabet alphabet;
     
     /**
      * List of named transducers-paradigms
      */
-    Map<String, Transducer> paradigms = new HashMap<String, Transducer>();
+    private Map<String, Transducer> paradigms = new HashMap<String, Transducer>();
     
     /**
      * List of named dictionary sections
      */
-    Map<String, Transducer> sections = new HashMap<String, Transducer>();
+    public HashMap<String, Transducer> sections = new HashMap<String, Transducer>();
     
     /**
      * List of named prefix copy of a paradigm
      */
-    HashMap<String, HashMap<String, Integer>> prefix_paradigms;
+    private HashMap<String, HashMap<String, Integer>> prefix_paradigms;
     
     /**
      * List of named suffix copy of a paradigm
      */
-    HashMap<String, HashMap<String, Integer>> suffix_paradigms;
+    private HashMap<String, HashMap<String, Integer>> suffix_paradigms;
     
     /**
      * List of named endings of a suffix copy of a paradgim
      */
-    HashMap<String, HashMap<String, Integer>> postsuffix_paradigms;
+    private HashMap<String, HashMap<String, Integer>> postsuffix_paradigms;
     
     /**
      * Mapping of aliases of characters specified in ACX files
      */
-    TreeMap<Integer, TreeSet<Integer>> acx_map = new TreeMap<Integer, TreeSet<Integer>>();
+    private HashMap<Integer, HashSet<Integer>> acx_map = new HashMap<Integer, HashSet<Integer>>();
     
     /**
      * Original char being mapped
@@ -145,9 +145,6 @@ public class Compile {
      * The constructor
      */
     public Compile() {
-        acx_map = new TreeMap<Integer, TreeSet<Integer>>();
-        paradigms = new HashMap<String, Transducer>();
-        sections = new HashMap<String, Transducer>();
         alphabet = new Alphabet();
         prefix_paradigms = new HashMap<String, HashMap<String, Integer>>();
         suffix_paradigms = new HashMap<String, HashMap<String, Integer>>();
@@ -378,7 +375,7 @@ public class Compile {
             if (pi.size() == 0 && pd.size() == 0) {
                 state = t.insertNewSingleTransduction(alphabet.cast(0, 0), state);
             } else {
-                TreeSet<Integer> acx_map_ptr = null;
+                HashSet<Integer> acx_map_ptr = null;
                 int rsymbol = 0;
 
                 while (true) {
@@ -429,7 +426,7 @@ public class Compile {
             if (pi.size() == 0 && pd.size() == 0) {
                 state = t.insertNewSingleTransduction(alphabet.cast(0, 0), state);
             } else {
-                TreeSet<Integer> acx_map_ptr = null;
+                HashSet<Integer> acx_map_ptr = null;
                 int rsymbol = 0;
 
                 while (true) {
@@ -609,7 +606,11 @@ public class Compile {
             }
         }
 
-        if (nombre.equals(COMPILER_DICTIONARY_ELEM)) {
+        if (nombre.equals(COMPILER_ENTRY_ELEM)) { // most often
+            procEntry();
+        } else if (nombre.equals(COMPILER_PARDEF_ELEM)) { // 2nd most often
+            procParDef();
+        } else if (nombre.equals(COMPILER_DICTIONARY_ELEM)) {
         /* ignore */
         } else if (eventType == XMLStreamConstants.END_ELEMENT && !nombre.equals(COMPILER_PARDEF_ELEM)) {
         //do nothing
@@ -621,10 +622,6 @@ public class Compile {
             procSDef();
         } else if (nombre.equals(COMPILER_PARDEFS_ELEM)) {
         /* ignore */
-        } else if (nombre.equals(COMPILER_PARDEF_ELEM)) {
-            procParDef();
-        } else if (nombre.equals(COMPILER_ENTRY_ELEM)) {
-            procEntry();
         } else if (nombre.equals(COMPILER_SECTION_ELEM)) {
             procSection();
         } else if (eventType == XMLStreamConstants.START_DOCUMENT) {
@@ -660,7 +657,7 @@ public class Compile {
                 acx_current_char = (int) (attrib("value").charAt(0));
             } else if (name.equals("equiv-char")) {
                 if (!acx_map.containsKey(acx_current_char)) {
-                    TreeSet<Integer> set = new TreeSet<Integer>();
+                    HashSet<Integer> set = new HashSet<Integer>();
                     acx_map.put(acx_current_char, set);
                 }
                 acx_map.get(acx_current_char).add((int) (attrib("value").charAt(0)));

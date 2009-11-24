@@ -77,14 +77,15 @@ public class FSTProcessor {
      * Queue of blanks, used in reading methods
      */
     private ArrayDeque<String> blankqueue;
+
     /**
      * Set of characters being considered alphabetics
      */
-    private Set<Character> alphabetic_chars;
+    private SetOfCharacters alphabetic_chars;
     /**
      * Set of characters to escape with a backslash
      */
-    private Set<Character> escaped_chars = new HashSet<Character>();
+    private SetOfCharacters escaped_chars = new SetOfCharacters();
     /**
      * Alphabet
      */
@@ -146,15 +147,14 @@ public class FSTProcessor {
         throw new RuntimeException("Error: Malformed input stream.");
     }
 
-    private Character readEscaped(Reader input) throws IOException {
+    private char readEscaped(Reader input) throws IOException {
         
         
         if (!input.ready()) {
             streamError();
         }
 
-        Character val = read(input);
-        //System.out.println("read "+val);
+        char val = read(input);
 
         if (!input.ready() || (!escaped_chars.contains(val))) {
             streamError();
@@ -552,7 +552,7 @@ public class FSTProcessor {
         // letters
    
         int len = Compression.multibyte_read(input);
-        alphabetic_chars = new HashSet<Character>(len);
+        alphabetic_chars = new SetOfCharacters();
 
         while (len > 0) {
             char c = (char) Compression.multibyte_read(input);
@@ -1061,7 +1061,7 @@ public class FSTProcessor {
         State current_state = new State().copy(initial_state);
         StringBuilder lf = new StringBuilder("");
         String sf = "";
-        Set<Character> empty_escaped_chars = new HashSet<Character>();
+        SetOfCharacters empty_escaped_chars = new SetOfCharacters();
         int last = 0;
 
         Character val;

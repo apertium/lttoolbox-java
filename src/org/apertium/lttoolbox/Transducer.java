@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -329,8 +330,10 @@ private static class CollectionIntegerComparator
         R.add(new TreeSet<Integer>());
         R.add(new TreeSet<Integer>());
 
-        Map<Integer, Set<Integer>> Q_prima = new TreeMap<Integer, Set<Integer>>();
-        Map<Set<Integer>, Integer> Q_prima_inv = new TreeMap<Set<Integer>, Integer>(setComparator);
+        Map<Integer, Set<Integer>> Q_prima = new HashMap<Integer, Set<Integer>>();
+        Map<Set<Integer>, Integer> Q_prima_inv = new HashMap<Set<Integer>, Integer>(); // setComparator
+
+        // MUST be TreeMap to retain binary compatibility:
         Map<Integer, Map<Integer, Set<Integer>>> transitions_prima = new TreeMap<Integer, Map<Integer, Set<Integer>>>();
 
         int talla_Q_prima = 0;

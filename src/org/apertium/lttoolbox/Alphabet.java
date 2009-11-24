@@ -149,7 +149,7 @@ private static class IntegerPairComparator implements Comparator<IntegerPair> {
      * The constructor
      */
     public Alphabet() {
-        spair = new TreeMap<IntegerPair, Integer>();
+        spair = new HashMap<IntegerPair, Integer>();
         spair.put(new IntegerPair(0, 0), 0);
         spairinv = new ArrayList<IntegerPair>();
         spairinv.add(new IntegerPair(0, 0));
