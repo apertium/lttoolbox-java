@@ -21,15 +21,11 @@ import static org.apertium.lttoolbox.TestTools.*;
  */
 public class LTExpandTest extends TestCase {
 
-
-  PrintStream systemout = System.out;
   String dir = "testdata/";
 
   public void testjavaLTExpand() throws Exception {
     String outFile = "/tmp/lt-expand-output.txt";
-    System.setOut(new PrintStream(outFile));
-    org.apertium.lttoolbox.LTExpand.main(new String[] {dir+"short.dix"});
-    System.setOut(systemout);
+    org.apertium.lttoolbox.LTExpand.main(new String[] {dir+"short.dix", outFile});
     assertEquals("Difference", "", exec("diff "+dir+"short.dix-expanded.txt "+outFile));
   }
 

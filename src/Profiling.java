@@ -36,62 +36,40 @@ public class Profiling {
   String dir = "testdata/regression/";
 
 
-  InputStream systemin = System.in;
-  PrintStream systemout = System.out;
-
   public void testjavaAnalysis() throws Exception {
-    String outFile = "/tmp/lt-proc-output.txt";
-    System.setIn(new FileInputStream(dir+"analysis_input"));
-    System.setOut(new PrintStream(outFile));
-    org.apertium.lttoolbox.LTProc.main(new String[] {"-a",dir+"fr-es.automorf.bin"});
-    System.setIn(systemin);
-    System.setOut(systemout);
+    String outFile = "/tmp/lt-proc-output1a.txt";
+    org.apertium.lttoolbox.LTProc.main(new String[] {"-a",dir+"fr-es.automorf.bin", dir+"analysis_input", outFile});
     report("analysis -a  ");
   }
 
 
   public void testjavaGeneration() throws Exception {
-    String outFile = "/tmp/lt-proc-output.txt";
-    System.setIn(new FileInputStream(dir+"generator_input"));
-    System.setOut(new PrintStream(outFile));
-    org.apertium.lttoolbox.LTProc.main(new String[] {"-g",dir+"fr-es.autogen.bin"});
-    System.setIn(systemin);
-    System.setOut(systemout);
+    String outFile = "/tmp/lt-proc-output1b.txt";
+    org.apertium.lttoolbox.LTProc.main(new String[] {"-g",dir+"fr-es.autogen.bin",dir+"generator_input", outFile});
     report("generation -g");
   }
 
 
   public void testjavaDGeneration() throws Exception {
-    String outFile = "/tmp/lt-proc-output.txt";
-    System.setIn(new FileInputStream(dir+"generator_input"));
-    System.setOut(new PrintStream(outFile));
-    org.apertium.lttoolbox.LTProc.main(new String[] {"-d",dir+"fr-es.autogen.bin"});
-    System.setIn(systemin);
-    System.setOut(systemout);
+    String outFile = "/tmp/lt-proc-output3g.txt";
+    org.apertium.lttoolbox.LTProc.main(new String[] {"-d",dir+"fr-es.autogen.bin",dir+"generator_input", outFile});
     report("generation -d");
   }
 
 
   public void testjavaNGeneration() throws Exception {
-    String outFile = "/tmp/lt-proc-output.txt";
-    System.setIn(new FileInputStream(dir+"generator_input"));
-    System.setOut(new PrintStream(outFile));
-    org.apertium.lttoolbox.LTProc.main(new String[] {"-n",dir+"fr-es.autogen.bin"});
-    System.setIn(systemin);
-    System.setOut(systemout);
+    String outFile = "/tmp/lt-proc-output4.txt";
+    org.apertium.lttoolbox.LTProc.main(new String[] {"-n",dir+"fr-es.autogen.bin",dir+"generator_input", outFile});
     report("generation -n");
   }
 
 
   public void testjavaPostgeneration() throws Exception {
-    String outFile = "/tmp/lt-proc-output.txt";
-    System.setIn(new FileInputStream(dir+"postgenerator_input"));
-    System.setOut(new PrintStream(outFile));
-    org.apertium.lttoolbox.LTProc.main(new String[] {"-p",dir+"fr-es.autopgen.bin"});
-    System.setIn(systemin);
-    System.setOut(systemout);
+    String outFile = "/tmp/lt-proc-output5.txt";
+    org.apertium.lttoolbox.LTProc.main(new String[] {"-p",dir+"fr-es.autopgen.bin",dir+"postgenerator_input", outFile});
     report("generation -p");
   }
+
 
 }
 
@@ -117,4 +95,14 @@ generation -d took sec 2601 msec
 generation -n took sec 2506 msec
 generation -p took sec 1666 msec
 analysis -a   took sec 2690 msec
+
+Profiling Tue Nov 24 10:27:40 CET 2009
+analysis -a   took sec 3095 msec
+generation -g took sec 2149 msec
+generation -d took sec 1876 msec
+generation -n took sec 2015 msec
+generation -p took sec 1272 msec
+analysis -a   took sec 2240 msec
+
+
  */
