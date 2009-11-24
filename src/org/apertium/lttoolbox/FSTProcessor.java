@@ -39,11 +39,11 @@ public class FSTProcessor {
         gm_unknown, // display unknown words, clear transfer and generation tags
         gm_all         // display all
     }
-    Collator myCollator = Collator.getInstance();
+    private Collator myCollator = Collator.getInstance();
     /**
      * Transducers in FSTP
      */
-    Map<String, TransExe> transducers = new TreeMap<String, TransExe>(myCollator);
+    private Map<String, TransExe> transducers = new TreeMap<String, TransExe>(myCollator);
     /**
      * Current state of lexical analysis
      */
@@ -55,61 +55,61 @@ public class FSTProcessor {
     /**
      * Set of final states of incoditional sections in the dictionaries
      */
-    Set<Node> inconditional;
+    private Set<Node> inconditional;
     /**
      * Set of final states of standard sections in the dictionaries
      */
-    Set<Node> standard;
+    private Set<Node> standard;
     /**
      * Set of final states of postblank sections in the dictionaries
      */
-    Set<Node> postblank;
+    private Set<Node> postblank;
     /**
      * Set of final states of preblank sections in the dictionaries
      */
-    Set<Node> preblank;
+    private Set<Node> preblank;
     /**
      * Merge of 'inconditional', 'standard', 'postblank' and 'preblank' sets
      */
-    Set<Node> all_finals;
+    private Set<Node> all_finals;
     /**
      * Queue of blanks, used in reading methods
      */
-    ArrayDeque<String> blankqueue;
+    private ArrayDeque<String> blankqueue;
     /**
      * Set of characters being considered alphabetics
      */
-    Set<Character> alphabetic_chars;
+    private Set<Character> alphabetic_chars;
     /**
      * Set of characters to escape with a backslash
      */
-    Set<Character> escaped_chars = new HashSet<Character>();
+    private Set<Character> escaped_chars = new HashSet<Character>();
     /**
      * Alphabet
      */
-    Alphabet alphabet = new Alphabet();
+    private Alphabet alphabet = new Alphabet();
     /**
      * Input buffer
      */
-    Buffer input_buffer;
+    private Buffer input_buffer;
     /**
      * Begin of the transducer
      */
-    Node root;
+    private Node root;
     /**
      * true if the position of input stream is out of a word
      */
-    boolean outOfWord;
+    private boolean outOfWord;
     /**
      * if true, makes always difference between uppercase and lowercase
      * characters
      */
-    boolean caseSensitive;
+    private boolean caseSensitive;
     /**
      * if true, flush the output when the null character is found
      */
-    boolean nullFlush;
-    ArrayList<String> numbers;
+    private boolean nullFlush;
+    private ArrayList<String> numbers;
 
     public FSTProcessor() {
         // escaped_chars chars
@@ -141,11 +141,11 @@ public class FSTProcessor {
 
     }
 
-    void streamError() {
+    private void streamError() {
         throw new RuntimeException("Error: Malformed input stream.");
     }
 
-    Character readEscaped(DataInputStream input) throws IOException {
+    private Character readEscaped(DataInputStream input) throws IOException {
         
         
         if (input.available() == 0) {
@@ -162,7 +162,7 @@ public class FSTProcessor {
         return val;
     }
 
-    String readFullBlock(DataInputStream input, Character delim1, Character delim2) throws IOException {
+    private String readFullBlock(DataInputStream input, Character delim1, Character delim2) throws IOException {
         String result = "";
         result += delim1;
         Character c = delim1;
@@ -185,18 +185,8 @@ public class FSTProcessor {
         return result;
     }
 
-    char readAnalysis(DataInputStream input) throws IOException {
-//        while(input.available()>0) {
-//            System.err.println(read(input));
-//        }
-        //System.out.println("entering readAnalysis");
-//        if (input.available() == 0) {
-//            System.out.println("exiting readAnalysis");
-//            return (char) 0;
-//        }
+    private char readAnalysis(DataInputStream input) throws IOException {
         if (!input_buffer.isEmpty()) {
-            //System.out.println("inside the if : input buffer is not empty");
-            //System.out.println("exiting readAnalysis with input_buffer : "+input_buffer);
             return input_buffer.next();
         }
 if (input.available() == 0) {
@@ -317,10 +307,8 @@ if (input.available() == 0) {
         return val;
     }
 
-    char readPostgeneration(DataInputStream input) throws IOException {
+    private char readPostgeneration(DataInputStream input) throws IOException {
         if (!input_buffer.isEmpty()) {
-//            System.out.println("here");
-//            System.exit(-1);
             return input_buffer.next();
         }
 
@@ -328,9 +316,7 @@ if (input.available() == 0) {
             return (char) 0;
         }
         Character val = read(input);
-        //System.out.println("read "+val);
         char altval = (char) 0;
-
 
         switch (val) {
             case '<':
@@ -358,7 +344,7 @@ if (input.available() == 0) {
         }
     }
 
-    void skipUntil(DataInputStream input, Writer output, char character) throws IOException {
+    private void skipUntil(DataInputStream input, Writer output, char character) throws IOException {
         while (true) {
             if (input.available() == 0) {
                 return;
@@ -384,7 +370,7 @@ if (input.available() == 0) {
         }
     }
 
-    int readGeneration(DataInputStream input, Writer output) throws IOException {
+    private int readGeneration(DataInputStream input, Writer output) throws IOException {
        
         if (input.available() == 0) {
             return 0x7fffffff;
@@ -468,14 +454,14 @@ if (input.available() == 0) {
     // return 0x7fffffff;
     }
 
-    void flushBlanks(Writer output) throws IOException {
+    private void flushBlanks(Writer output) throws IOException {
         for (int i = blankqueue.size(); i > 0; i--) {
             output.write(blankqueue.getFirst());
             blankqueue.removeFirst();
         }
     }
 
-    void calcInitial() {
+    private void calcInitial() {
         //System.out.println("call to calcInitial");
         for (String first : transducers.keySet()) {
             root.addTransition(0, 0, transducers.get(first).getInitial());
@@ -485,7 +471,7 @@ if (input.available() == 0) {
         //System.out.println("exiting calcInitial");
     }
 
-    boolean endsWith(String str, String suffix) {
+    private boolean endsWith(String str, String suffix) {
         if (str.length() < suffix.length()) {
             return false;
         } else {
@@ -493,7 +479,7 @@ if (input.available() == 0) {
         }
     }
 
-    void classifyFinals() {
+    private void classifyFinals() {
         for (String first : transducers.keySet()) {
             final TransExe second = transducers.get(first);
             if (endsWith(first, "@inconditional")) {
@@ -510,23 +496,24 @@ if (input.available() == 0) {
         }
     }
 
-    void writeEscaped(String str, Writer output) throws IOException {
+    private void writeEscaped(String str, Writer output) throws IOException {
         for (int i = 0,  limit = str.length(); i < limit; i++) {
-            if (escaped_chars.contains(charAt(str,i))) {
+          char ch = str.charAt(i);
+            if (escaped_chars.contains(ch)) {
                 output.write('\\');
             }
-            output.write(charAt(str,i));
+            output.write(ch);
         }
     }
 
-    void printWord(String sf, String lf, Writer output) throws IOException {
+    private void printWord(String sf, String lf, Writer output) throws IOException {
         output.write('^');
         writeEscaped(sf, output);
         output.write(lf);
         output.write('$');
     }
 
-    void printUnknownWord(String sf, Writer output) throws IOException {
+    private void printUnknownWord(String sf, Writer output) throws IOException {
 //        try {
 //            throw new RuntimeException("toto");
 //        } catch (RuntimeException e) {
@@ -541,7 +528,7 @@ if (input.available() == 0) {
         output.write('$');
     }
 
-    int lastBlank(String str) {
+    private int lastBlank(String str) {
         for (int i = str.length() - 1; i >= 0; i--) {
             if (!alphabetic_chars.contains(charAt(str,i))) {
                 return (i);
@@ -558,11 +545,11 @@ if (input.available() == 0) {
         }
     }
 
-    boolean isEscaped(Character c) {
+    private boolean isEscaped(Character c) {
         return escaped_chars.contains(c);
     }
 
-    boolean isAlphabetic(Character c) {
+    private boolean isAlphabetic(Character c) {
         return alphabetic_chars.contains(c);
     }
 
@@ -605,7 +592,7 @@ if (input.available() == 0) {
         
     }
 
-    void initAnalysis() {
+    public void initAnalysis() {
         //System.out.println("entering initAnalysis");
     
         calcInitial();
@@ -617,7 +604,7 @@ if (input.available() == 0) {
         //System.out.println("exiting initanalysis");
     }
 
-    void initTMAnalysis() {
+    public void initTMAnalysis() {
         numbers = new ArrayList<String>();
         all_finals = new HashSet<Node>();
         calcInitial();
@@ -626,7 +613,7 @@ if (input.available() == 0) {
         }
     }
 
-    void initGeneration() {
+    public void initGeneration() {
         calcInitial();
         all_finals = new HashSet<Node>();
         for (String first : transducers.keySet()) {
@@ -635,7 +622,7 @@ if (input.available() == 0) {
         }
     }
 
-    void initPostgeneration() {
+    public void initPostgeneration() {
         initGeneration();
     }
 
@@ -645,17 +632,18 @@ if (input.available() == 0) {
 
     private static boolean DEBUG = false;
 
+    private final Character charAt(String s, int index) {
+        /*
     //Maybe this wasn't really necessary,
     //but to prevent problems with the difference from the java charAt() method
     //and the c++ [] operator, I wrote this method
-    Character charAt(String s, int index) {
         if (index>=s.length()) {
             return (char)0;
-        }
+        }*/
         return s.charAt(index);
     }
-    
-    void analysis(DataInputStream input, Writer output) throws IOException {
+
+    public void analysis(DataInputStream input, Writer output) throws IOException {
         //System.out.println("entering analysis");
         if (getNullFlush()) {
             analysis_wrapper_null_flush(input, output);
@@ -840,7 +828,7 @@ if (input.available() == 0) {
         flushBlanks(output);
     }
 
-    void analysis_wrapper_null_flush(DataInputStream input, Writer output) throws IOException {
+    private void analysis_wrapper_null_flush(DataInputStream input, Writer output) throws IOException {
         setNullFlush(false);
         while (input.available() >0) {
             analysis(input, output);
@@ -854,7 +842,7 @@ if (input.available() == 0) {
         }
     }
 
-    void generation_wrapper_null_flush(DataInputStream input, Writer output,
+    private void generation_wrapper_null_flush(DataInputStream input, Writer output,
             GenerationMode mode) throws IOException{
         setNullFlush(false);
         while (input.available() >0) {
@@ -869,7 +857,7 @@ if (input.available() == 0) {
         }
     }
 
-    void postgeneration_wrapper_null_flush(DataInputStream input, Writer output) throws IOException {
+    private void postgeneration_wrapper_null_flush(DataInputStream input, Writer output) throws IOException {
         setNullFlush(false);
         while (input.available() >0) {
             postgeneration(input, output);
@@ -883,7 +871,7 @@ if (input.available() == 0) {
         }
     }
 
-    void transliteration_wrapper_null_flush(DataInputStream input, Writer output) throws IOException {
+    private void transliteration_wrapper_null_flush(DataInputStream input, Writer output) throws IOException {
         setNullFlush(false);
         while (input.available() >0) {
             transliteration(input, output);
@@ -897,7 +885,7 @@ if (input.available() == 0) {
         }
     }
 
-    void tm_analysis(DataInputStream input, Writer output) throws IOException {
+    private void tm_analysis(DataInputStream input, Writer output) throws IOException {
 
         State current_state = new State().copy(initial_state);
         String lf = "";
@@ -999,7 +987,7 @@ if (input.available() == 0) {
     }
 
 
-    void generation(DataInputStream input, Writer output, GenerationMode mode) throws IOException {
+    public void generation(DataInputStream input, Writer output, GenerationMode mode) throws IOException {
         if (getNullFlush()) {
             generation_wrapper_null_flush(input, output, mode);
         }
@@ -1069,7 +1057,7 @@ if (input.available() == 0) {
         }
     }
 
-    void postgeneration(DataInputStream input, Writer output) throws IOException {
+    public void postgeneration(DataInputStream input, Writer output) throws IOException {
         if (getNullFlush()) {
             postgeneration_wrapper_null_flush(input, output);
         }

@@ -44,14 +44,19 @@ public class Alphabet {
  * Class to represent a pair of integers
  * @author Raah
  */
-public static class IntegerPair implements Comparable {
+public static class IntegerPair implements Comparable<IntegerPair> {
 
     int first;
     int second;
 
     public IntegerPair(Integer i1, Integer i2) {
-        first = i1;
+      first = i1;
         second = i2;
+    }
+
+    @Override
+    public int hashCode() {
+    	return first + second*0x8000;
     }
 
     @Override
@@ -66,6 +71,7 @@ public static class IntegerPair implements Comparable {
         return ((first == p.first)&& (second == p.second));
     }
 
+    @Override
     public int compareTo(IntegerPair p) {
         if (first > p.first) {
             return 1;
@@ -86,13 +92,13 @@ public static class IntegerPair implements Comparable {
     public String toString() {
         return new String("<" + (first>0?(char)first:"") + first + "," + (second>0?(char)second:"") + second + ">");
     }
-
+/*
     @Override
     public int compareTo(Object o) {
         if (o==this) return 0;
         IntegerPair p = (IntegerPair)o;
         return compareTo(p);
-    }
+    }*/
 }
 
 
@@ -114,7 +120,7 @@ public static class IntegerPair implements Comparable {
 /**
  * IntegerPair comparaison class, to conveniently use Maps
  * @author Raah
- */
+ 
 private static class IntegerPairComparator implements Comparator<IntegerPair> {
 
 
@@ -138,7 +144,7 @@ private static class IntegerPairComparator implements Comparator<IntegerPair> {
 }
 
     private final static IntegerPairComparator integerPairComparator = new IntegerPairComparator();
-
+*/
     /**
      * The constructor
      */
@@ -168,20 +174,15 @@ private static class IntegerPairComparator implements Comparator<IntegerPair> {
      * @return the code for (c1, c2)
      */
     int cast(int c1, int c2) {
-        IntegerPair p = new IntegerPair(0, 0);
         IntegerPair tmp = new IntegerPair(c1, c2);
-        if (!spair.containsKey(tmp)) {
+        Integer res = spair.get(tmp);
+        if (res==null) {
             int spair_size = spair.size();
             spair.put(tmp, spair_size);
             spairinv.add(tmp);
+            return spair_size;
         }
-        return spair.get(tmp);
-//        if (!containsKey(spair, tmp)) {
-//            int spair_size = spair.size();
-//            put(spair, tmp, spair_size);
-//            spairinv.add(tmp);
-//        }
-//        return get(spair, tmp);
+        return res;
     }
 
     /**
@@ -409,11 +410,11 @@ private static class IntegerPairComparator implements Comparator<IntegerPair> {
      * @param uppercase true if we want an uppercase symbol
      * @return the concatenation of the string s and the symbol symbol
      */
-    String getSymbol(String s, int symbol, boolean uppercase) {
-        String result = new String(s);
+    public String getSymbol(String s, int symbol, boolean uppercase) {
         if (symbol == 0) {
-            return result;
+            return s;
         }
+        String result = s;
         if (!uppercase) {
             if (symbol >= 0) {
                 result += (char) (symbol);

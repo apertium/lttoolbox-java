@@ -1,4 +1,4 @@
-package org.apertium.lttoolbox.expand;
+package org.apertium.lttoolbox;
 
 /*
  * This program is free software; you can redistribute it and/or
@@ -17,9 +17,7 @@ package org.apertium.lttoolbox.expand;
  * 02111-1307, USA.
  */
 
-import org.apertium.lttoolbox.expand.*;
 import org.apertium.lttoolbox.*;
-import org.apertium.lttoolbox.expand.SPair;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -49,6 +47,19 @@ public class Expander {
      * (right-to-left)
      */
     //String direction;
+
+/**
+ * Class to represent pairs of strings
+ * @author Raah
+ */
+public class SPair extends Pair<String, String> {
+
+    public SPair(String obj1, String obj2) {
+        super(obj1, obj2);
+    }
+}
+
+
 
 private static class EntList extends ArrayList<SPair> {
 
@@ -311,13 +322,13 @@ private static class EntList extends ArrayList<SPair> {
                 }
             } else if (name.equals(Compile.COMPILER_ENTRY_ELEM) && type == XMLStreamConstants.END_ELEMENT) {
                 if (current_paradigm.equals("")) {
-                    for (Pair<String, String> it : items) {
+                    for (SPair it : items) {
                         output.write(it.first);
                         output.write(':');
                         output.write(it.second);
                         output.write('\n');
                     }
-                    for (Pair<String, String> it : items_lr) {
+                    for (SPair it : items_lr) {
                         output.write(it.first);
                         output.write(':');
                         output.write('>');
@@ -325,7 +336,7 @@ private static class EntList extends ArrayList<SPair> {
                         output.write(it.second);
                         output.write('\n');
                     }
-                    for (Pair<String, String> it : items_rl) {
+                    for (SPair it : items_rl) {
                         output.write(it.first);
                         output.write(':');
                         output.write('<');

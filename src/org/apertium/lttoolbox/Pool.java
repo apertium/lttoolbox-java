@@ -1,4 +1,4 @@
-package org.apertium.lttoolbox.expand;
+package org.apertium.lttoolbox;
 
 /*
  * Copyright (C) 2005 Universitat d'Alacant / Universidad de Alicante

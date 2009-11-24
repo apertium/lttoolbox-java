@@ -33,15 +33,15 @@ public class TransExe {
     /**
      * Initial state
      */
-    int initial_id;
+    private int initial_id;
     /**
      * Node list
      */
-    TreeMap<Integer,Node> node_list;
+    private TreeMap<Integer,Node> node_list;
     /**
      * Set of final nodes
      */
-    ArrayList<Node> finals;
+    private ArrayList<Node> finals;
 
     //Index of the last node added to node_list
     private Integer index =0;
@@ -108,7 +108,7 @@ public class TransExe {
         }
     }
 
-    void unifyFinals() {
+    private void unifyFinals() {
 
         index++;
         while (node_list.containsKey(index)) {
