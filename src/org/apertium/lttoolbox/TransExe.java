@@ -17,7 +17,7 @@ package org.apertium.lttoolbox;
  * 02111-1307, USA.
  */
 
-import java.io.DataInputStream;
+import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import java.util.TreeMap;
@@ -49,7 +49,7 @@ public class TransExe {
     TransExe() {
     }
 
-    void read(DataInputStream input, Alphabet alphabet) throws IOException {
+    void read(InputStream input, Alphabet alphabet) throws IOException {
         node_list = new TreeMap<Integer,Node>();
         index = 0;
         initial_id = Compression.multibyte_read(input);

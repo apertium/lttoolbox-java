@@ -19,7 +19,7 @@ package org.apertium.lttoolbox;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
+import java.io.InputStream;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -965,7 +965,7 @@ public class Compile {
      * all the data read from the input
      * @throws java.io.IOException
      */
-    Compile read(DataInputStream input) throws IOException {
+    Compile read(InputStream input) throws IOException {
         Compile c = new Compile();
         
         //reading of letters 
@@ -1032,7 +1032,7 @@ public class Compile {
         output.close();
         System.out.println("writing done");
         Compile c = new Compile();
-        DataInputStream input = new DataInputStream(new BufferedInputStream (new FileInputStream("testTransducer.bin")));     
+        InputStream input = new BufferedInputStream (new FileInputStream("testTransducer.bin"));     
         c = read(input);
         input.close();
         System.out.println("reading done");

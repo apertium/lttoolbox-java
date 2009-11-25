@@ -17,7 +17,7 @@ package org.apertium.lttoolbox;
  * 02111-1307, USA.
  */
 
-import java.io.DataInputStream;
+import java.io.InputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -610,7 +610,7 @@ public class Transducer {
      * @return the transducer read from the stream
      * @throws java.io.IOException
      */
-    public static Transducer read(DataInputStream input, Alphabet alphabet) throws IOException {
+    public static Transducer read(InputStream input, Alphabet alphabet) throws IOException {
 
         Transducer t = new Transducer();
         t.transitions.clear();

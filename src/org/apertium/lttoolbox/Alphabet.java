@@ -19,7 +19,7 @@ package org.apertium.lttoolbox;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
+import java.io.InputStream;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -293,7 +293,7 @@ public static class IntegerPair implements Comparable<IntegerPair> {
         DataOutputStream output = new DataOutputStream(new BufferedOutputStream(new FileOutputStream("testAlphabet.bin")));
         this.write(output);
         output.close();
-        DataInputStream input = new DataInputStream(new BufferedInputStream(new FileInputStream("testAlphabet.bin")));
+        InputStream input = new BufferedInputStream(new FileInputStream("testAlphabet.bin"));
         Alphabet a = new Alphabet();
         a = read(input);
         input.close();
@@ -332,7 +332,7 @@ public static class IntegerPair implements Comparable<IntegerPair> {
      * @return the alphabet read from th input
      * @throws java.io.IOException
      */
-    public static Alphabet read(DataInputStream input) throws IOException {
+    public static Alphabet read(InputStream input) throws IOException {
         Alphabet a_new = new Alphabet();
         a_new.spairinv.clear();
         a_new.spair.clear();

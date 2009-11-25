@@ -17,7 +17,7 @@ package org.apertium.lttoolbox;
  * 02111-1307, USA.
  */
 
-import java.io.DataInputStream;
+import java.io.InputStream;
 import java.io.Reader;
 import java.io.IOException;
 import java.io.Writer;
@@ -537,7 +537,7 @@ public class FSTProcessor {
         return alphabetic_chars.contains(c);
     }
 
-    public void load( DataInputStream input) throws IOException {
+    public void load( InputStream input) throws IOException {
         // letters
    
         int len = Compression.multibyte_read(input);

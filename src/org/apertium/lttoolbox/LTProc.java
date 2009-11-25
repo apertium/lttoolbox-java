@@ -131,7 +131,7 @@ public class LTProc {
 
         if (optind == (argc - 4)) {
 
-            DataInputStream in = fopen(argv[optind + 1]);
+            InputStream in = fopen(argv[optind + 1]);
             if (in == null) {
                 endProgram("LTProc");
             }
@@ -149,7 +149,7 @@ public class LTProc {
             fstp.load(in);
             in.close();
         } else if (optind == (argc - 3)) {
-            DataInputStream in = fopen(argv[optind + 1]);
+            InputStream in = fopen(argv[optind + 1]);
             if (in == null) {
                 endProgram("LTProc");
             }
@@ -168,7 +168,7 @@ public class LTProc {
 
             if (optind == (argc - 2)) {
                 final String filename = argv[optind + 1];
-                DataInputStream in = fopen(filename);
+                InputStream in = fopen(filename);
                 if (in == null) {
                     endProgram("LTProc");
                 }
@@ -243,12 +243,12 @@ public class LTProc {
         return new OutputStreamWriter(new FileOutputStream(new File(filename)), encoding);
     }
 
-    private static DataInputStream fopen(String filename) throws FileNotFoundException {
+    private static InputStream fopen(String filename) throws FileNotFoundException {
         String encoding = "UTF-8";
         if (System.getProperties().containsKey("file.encoding")) {
             encoding = System.getProperty("file.encoding");
         }
-        return new DataInputStream(new BufferedInputStream(new FileInputStream(filename)));
+        return new BufferedInputStream(new FileInputStream(filename));
     }
 
     private static Reader openReader(String filename) throws FileNotFoundException {

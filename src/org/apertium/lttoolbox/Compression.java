@@ -17,7 +17,7 @@ package org.apertium.lttoolbox;
  * 02111-1307, USA.
  */
 
-import java.io.DataInputStream;
+import java.io.InputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -140,7 +140,7 @@ public class Compression {
      * @return the wide string readed.
      * @throws java.io.IOException
      */
-    static String String_read(DataInputStream input) throws IOException {
+    static String String_read(InputStream input) throws IOException {
         String retval = "";
         for (int i = 0,  limit = multibyte_read(input); i != limit; i++) {
             retval += (char) (multibyte_read(input));
