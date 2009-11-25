@@ -64,17 +64,8 @@ public class LTProc {
 
     public static void main(String[] argv) throws Exception {
 
-        InputStreamReader isr = new InputStreamReader(System.in, "UTF-8");
-        
-        //System.err.println( isr.getEncoding());
-        //System.err.println(System.getProperty("file.encoding"));
-        //System.exit(-1);
         System.setProperty("file.encoding", "UTF-8");
-        //System.getProperties().list(new PrintStream(System.err));
-        //System.exit(-1);
         if (argv.length == 0) {
-            //argv = new String[]{"./testTransducer2.bin"};
-            //argv = new String[]{"./outc"};
             endProgram("LTProc");
         }
 

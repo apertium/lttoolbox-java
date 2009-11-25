@@ -20,6 +20,7 @@ package org.apertium.lttoolbox;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Writer;
 
 /**
@@ -75,7 +76,7 @@ public class Compression {
      * @return the integer value readed.
      * @throws java.io.IOException
      */
-    static int multibyte_read(DataInputStream input) throws IOException {
+    static int multibyte_read(InputStream input) throws IOException {
         char up;
         long result = 0;
 

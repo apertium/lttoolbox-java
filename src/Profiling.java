@@ -26,9 +26,9 @@ public class Profiling {
         System.out.println("Profiling "+new java.util.Date() );
         System.gc();
         p.testjavaAnalysis();
+        /*
         System.gc();
         p.testjavaGeneration();
-        /**/
         System.gc();
         p.testjavaDGeneration();
         System.gc();

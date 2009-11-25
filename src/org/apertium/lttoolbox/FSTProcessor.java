@@ -191,17 +191,14 @@ public class FSTProcessor {
             return input_buffer.next();
         }
         if (!input.ready()) {
-            //System.out.println("exiting readAnalysis");
             return (char) 0;
         }
         Character val = read(input);
         //if (val == -1) return (char) 0; // Jacob
 
-        //System.out.println("readA "+val);
         char altval = (char) 0;
 
         if (escaped_chars.contains(val)) {
-            //System.out.println("the read char is an escaped char");
             switch (val) {
                 case '<':
                     altval = (char) (alphabet.cast(readFullBlock(input, '<', '>')));
@@ -215,7 +212,6 @@ public class FSTProcessor {
 
                 case '\\':
                     val = read(input);
-        //System.out.println("read "+val);
                     if (!escaped_chars.contains(val)) {
                         streamError();
                     }
@@ -228,7 +224,6 @@ public class FSTProcessor {
         }
 
         input_buffer.add(val);
-        //System.out.println("exiting readAnalysis");
         return val;
     }
 
@@ -238,20 +233,12 @@ public class FSTProcessor {
             return input_buffer.next();
         }
         if (!input.ready()) {
-            //System.out.println("exiting readAnalysis");
             return (char) 0;
         }
         Character val = read(input);
-        //System.out.println("readA "+val);
         char altval = (char) 0;
-//        System.out.println("input.available() == "+input.available());
-//        if (!input.ready()) {
-//            System.out.println("exiting readAnalysis");
-//            return (char) 0;
-//        }
 
         if (escaped_chars.contains(val)||iswdigit(val)) {
-            //System.out.println("the read char is an escaped char");
             switch (val) {
                 case '<':
                     altval = (char) (alphabet.cast(readFullBlock(input, '<', '>')));
@@ -492,6 +479,8 @@ public class FSTProcessor {
     }
 
     private void writeEscaped(String str, Writer output) throws IOException {
+      //int len = str.length();
+      //System.err.println("writeEscaped( str.length() = " + str.length());
         for (int i = 0,  limit = str.length(); i < limit; i++) {
           char ch = str.charAt(i);
             if (escaped_chars.contains(ch)) {
