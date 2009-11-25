@@ -437,14 +437,17 @@ public class Compile {
                         etiqueta = alphabet.cast(0, pi.get(dcha));
                         dcha++;
                     } else if (dcha == limdcha) {
-                        etiqueta = alphabet.cast(pd.get(izqda), 0);
-                        acx_map_ptr = acx_map.get(pd.get(izqda)); // perhaps null
+                        Integer pd_izqda = pd.get(izqda);
+                        etiqueta = alphabet.cast(pd_izqda, 0);
+                        acx_map_ptr = acx_map.get(pd_izqda); // perhaps null
                         rsymbol = 0;
                         izqda++;
                     } else {
-                        etiqueta = alphabet.cast(pd.get(izqda), pi.get(dcha));
-                        acx_map_ptr = acx_map.get(pd.get(izqda)); // perhaps null
-                        rsymbol = pi.get(dcha);
+                        Integer pd_izqda = pd.get(izqda);
+                        Integer pi_dcha = pi.get(dcha);
+                        etiqueta = alphabet.cast(pd_izqda, pi_dcha);
+                        acx_map_ptr = acx_map.get(pd_izqda); // perhaps null
+                        rsymbol = pi_dcha;
                         izqda++;
                         dcha++;
                     }
