@@ -25,7 +25,7 @@ import java.util.ArrayList;
  * 
  * @author Raah
  */
-public class Dest {
+public class Transition {
 
   int size;
 
@@ -39,12 +39,13 @@ public class Dest {
     dest = new ArrayList<Node>();
   }
 
- public Dest() {
+ public Transition() {
     init();
   }
 
    public String toString() {
-    return "size="+this.size +"/out_tag="+ this.out_tag +"/dest="+  this.dest;
+    //return "size="+this.size +"/out_tag="+ this.out_tag +"/dest="+  this.dest;
+    return "tsize="+this.size;
   }
 
 }

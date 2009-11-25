@@ -33,7 +33,7 @@ public class Node {
      * The outgoing transitions of this node.
      * Schema: (input symbol, (output symbol, destination))
      */
-    Map<Integer, Dest> transitions;
+    Map<Integer, Transition> transitions;
 
     /**
      * The constructor
@@ -41,10 +41,80 @@ public class Node {
     Node() {
     }
    
+/*
+number_of_local_transitions = 1
+number_of_local_transitions = 1
+number_of_local_transitions = 1
+number_of_local_transitions = 1
+number_of_local_transitions = 47
+number_of_local_transitions = 14
+number_of_local_transitions = 16
+number_of_local_transitions = 15
+number_of_local_transitions = 15
+number_of_local_transitions = 28
+number_of_local_transitions = 28
+number_of_local_transitions = 29
+number_of_local_transitions = 28
+number_of_local_transitions = 1
+number_of_local_transitions = 1
+number_of_local_transitions = 1
+number_of_local_transitions = 1
+number_of_local_transitions = 1
+number_of_local_transitions = 0
+number_of_local_transitions = 10
+number_of_local_transitions = 1
+number_of_local_transitions = 14
+number_of_local_transitions = 1
+number_of_local_transitions = 1
+number_of_local_transitions = 3
+number_of_local_transitions = 2
+number_of_local_transitions = 27
+number_of_local_transitions = 28
+number_of_local_transitions = 28
+number_of_local_transitions = 12
+number_of_local_transitions = 1
+number_of_local_transitions = 2
+number_of_local_transitions = 2
+number_of_local_transitions = 1
+number_of_local_transitions = 1
+number_of_local_transitions = 1
 
-  void initTransitions(int number_of_local_transitions) {
-        transitions = new HashMap<Integer, Dest>(number_of_local_transitions);
-  }
+
+ number_of_local_transitions = 2
+addTransition(i = 116
+addTransition(i = 115
+number_of_local_transitions = 1
+addTransition(i = 101
+number_of_local_transitions = 2
+addTransition(i = 105
+addTransition(i = 32
+number_of_local_transitions = 14
+addTransition(i = 114
+addTransition(i = 100
+addTransition(i = 116
+addTransition(i = 112
+addTransition(i = 98
+addTransition(i = 99
+addTransition(i = 102
+addTransition(i = 103
+addTransition(i = 106
+addTransition(i = 108
+addTransition(i = 109
+addTransition(i = 110
+addTransition(i = 115
+addTransition(i = 118
+number_of_local_transitions = 4
+addTransition(i = 114
+addTransition(i = 99
+addTransition(i = 110
+addTransition(i = 117
+
+ */
+    void initTransitions(int number_of_local_transitions) {
+
+//    System.err.println("number_of_local_transitions = " + number_of_local_transitions);
+        transitions = new HashMap<Integer, Transition>(number_of_local_transitions);
+    }
     /**
      * Making a link between this node and another
      * @param i input symbol
@@ -52,14 +122,19 @@ public class Node {
      * @param d destination
      */
     void addTransition(int i, int o, Node d) {
-        Dest transition = transitions.get(i);
+
+      //System.err.println("addTransition(i = " + i);
+
+        Transition transition = transitions.get(i);
         if (transition==null) {
-          transition = new Dest();
+          transition = new Transition();
           transitions.put(i, transition);
         }
         transition.out_tag.add(o);
         transition.dest.add(d);
         transition.size++;
+
+        //System.err.println("transition.size = " + transition.size);
     }
 
    public String toString() {

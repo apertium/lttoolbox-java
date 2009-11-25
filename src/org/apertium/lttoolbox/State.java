@@ -144,7 +144,7 @@ private static class TNodeState {
 
         for (int i = 0,  limit = state.size(); i != limit; i++) {
 
-            Dest it = state.get(i).where.transitions.get(input);
+            Transition it = state.get(i).where.transitions.get(input);
             if (it != null) {
                 // ORIGINAL for (int j = 0; j != it.size; j++) {
                 for (int j = 0; j < it.out_tag.size(); j++) {  // JACOBS FORSØG
@@ -177,7 +177,7 @@ private static class TNodeState {
 
         for (int i = 0,  limit = state.size(); i != limit; i++) {
 
-            Dest it = state.get(i).where.transitions.get(input);
+            Transition it = state.get(i).where.transitions.get(input);
             if (it != null) {
                 for (int j = 0; j != it.size; j++) {
                     List<Integer> new_v;// JACOB = pool.get();
@@ -211,7 +211,7 @@ private static class TNodeState {
      */
     void epsilonClosure() {
         for (int i = 0; i != state.size(); i++) {
-            Dest it2 = state.get(i).where.transitions.get(0);
+            Transition it2 = state.get(i).where.transitions.get(0);
             if (it2 != null) {
                 for (int j = 0; j != it2.size; j++) {
                     List<Integer> tmp; // JACOB = pool.get();
