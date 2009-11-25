@@ -165,7 +165,7 @@ private static class CollectionIntegerComparator
             Map<Integer, Set<Integer>> place = transitions.get(source);
             Set<Integer> set = place.get(label);
             if (set == null) {
-                set = new TreeSet<Integer>();
+                set = new HashSet<Integer>();
                 place.put(label, set);
             }
             set.add(destination);
@@ -180,7 +180,7 @@ private static class CollectionIntegerComparator
      */
     Integer newState() {
         Integer nstate = new Integer(transitions.size());
-        transitions.put(nstate, new TreeMap<Integer, Set<Integer>>());
+        transitions.put(nstate, new HashMap<Integer, Set<Integer>>());
         return nstate;
     }
 
@@ -188,8 +188,8 @@ private static class CollectionIntegerComparator
      * Constructor
      */
     Transducer() {
-        transitions = new TreeMap<Integer, Map<Integer, Set<Integer>>>();
-        finals = new TreeSet<Integer>();
+        transitions = new HashMap<Integer, Map<Integer, Set<Integer>>>();
+        finals = new HashSet<Integer>();
         initial = newState();
         epsilon_tag = new Integer(0);
     }
@@ -208,7 +208,7 @@ private static class CollectionIntegerComparator
         if (set != null) {
             return set.iterator().next();
         } else {
-            set = new TreeSet<Integer>();
+            set = new HashSet<Integer>();
             Integer i = newState();
             set.add(i);
             place.put(tag, set);
@@ -228,15 +228,12 @@ private static class CollectionIntegerComparator
         Map<Integer, Set<Integer>> place = transitions.get(source);
         Set<Integer> set = place.get(tag);
 
-        if (set != null) {
-            set.add(state);
-            return state;
-        } else {
-            set = new TreeSet<Integer>();
-            set.add(state);
+        if (set == null) {
+            set = new HashSet<Integer>();
             place.put(tag, set);
-            return state;
         }
+        set.add(state);
+        return state;
     }
 
     /**
@@ -256,7 +253,7 @@ private static class CollectionIntegerComparator
         for (int i = 0; i < t.transitions.size(); i++) {
             Integer local_source = newState();
             for (Integer tag : t.transitions.get(i).keySet()) {
-                Set<Integer> destset = new TreeSet<Integer>();
+                Set<Integer> destset = new HashSet<Integer>();
                 for (Integer destination : t.transitions.get(i).get(tag)) {
                     destset.add(destination + first_state);
                 }
@@ -332,6 +329,7 @@ private static class CollectionIntegerComparator
      */
     private void determinize() {
         List<Set<Integer>> R = new ArrayList<Set<Integer>>(2);
+        // MUST be TreeSet to retain binary compatibility:
         R.add(new TreeSet<Integer>());
         R.add(new TreeSet<Integer>());
 
