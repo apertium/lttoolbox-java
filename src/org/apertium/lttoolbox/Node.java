@@ -115,6 +115,8 @@ addTransition(i = 117
 //    System.err.println("number_of_local_transitions = " + number_of_local_transitions);
         transitions = new HashMap<Integer, Transition>(number_of_local_transitions);
     }
+
+    public static final boolean FAST_BUT_REVERSE_ORDER = false;
     /**
      * Making a link between this node and another
      * @param i input symbol
@@ -123,8 +125,24 @@ addTransition(i = 117
      */
     void addTransition(int i, int o, Node d) {
 
-      //System.err.println("addTransition(i = " + i);
+        Transition newTransition = new Transition();
+        newTransition.out_tag = o;
+        newTransition.dest = d;
 
+        if (FAST_BUT_REVERSE_ORDER) {
+          Transition oldTransition = transitions.put(i, newTransition);
+          // if there was already a transition it is putted behind the new one in a linked list structure
+          newTransition.next = oldTransition;
+        } else {
+          Transition oldTransition = transitions.get(i);
+          if (oldTransition==null) transitions.put(i, newTransition);
+          else {
+            while (oldTransition.next!=null) oldTransition=oldTransition.next;
+            oldTransition.next =newTransition;
+          }
+        }
+
+      /*
         Transition transition = transitions.get(i);
         if (transition==null) {
           transition = new Transition();
@@ -133,7 +151,7 @@ addTransition(i = 117
         transition.out_tag.add(o);
         transition.dest.add(d);
         transition.size++;
-
+*/
         //System.err.println("transition.size = " + transition.size);
     }
 

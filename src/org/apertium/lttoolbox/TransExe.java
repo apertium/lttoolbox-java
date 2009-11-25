@@ -78,8 +78,8 @@ public class TransExe {
 
         base = number_of_states;
         //System.out.println("number of states : "+number_of_states);
-        int maxmax = 0;
-        int ant1 = 0;
+        //int maxmax = 0;
+        //int ant1 = 0;
 
         for (int current_state = 0; current_state<number_of_states; current_state++) {
           Node sourceNode = node_list2[current_state];
@@ -100,15 +100,15 @@ public class TransExe {
               sourceNode.addTransition(i_symbol, o_symbol, targetNode);
           }
 
-          int max = 0;
-          for (Transition x : sourceNode.transitions.values()) max = Math.max(max, x.size);
-          maxmax = Math.max(max, maxmax);
-          if (max>1) ;//System.err.println("sourceNode.transitions = " + max+ " "+maxmax);
-          else ant1++;
+          //int max = 0;
+          //for (Transition x : sourceNode.transitions.values()) max = Math.max(max, x.size);
+          //maxmax = Math.max(max, maxmax);
+          //if (max>1) ;//System.err.println("sourceNode.transitions = " + max+ " "+maxmax);
+          //else ant1++;
         }
 
 
-        System.err.println(ant1 + " ettere ud af  " + number_of_states);
+        //System.err.println(ant1 + " ettere ud af  " + number_of_states);
 
         for (int i=0; i<finals_size; i++) {
             base = myfinals2[i];

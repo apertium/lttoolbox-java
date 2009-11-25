@@ -26,7 +26,7 @@ public class Profiling {
         System.out.println("Profiling "+new java.util.Date() );
         System.gc();
         p.testjavaAnalysis();
-/*
+
         System.gc();
         p.testjavaGeneration();
         System.gc();
@@ -196,4 +196,16 @@ main@standard 62442 96775
 lt-comp   took sec 10017 msec
 BUILD SUCCESSFUL (total time: 15 seconds)
 
+
+ Making Transitions a linked list instead of using 2 arrays of objecs.
+
+Profiling Wed Nov 25 22:14:38 CET 2009
+analysis -a   took sec 2137 msec
+generation -g took sec 576 msec
+generation -d took sec 492 msec
+generation -n took sec 455 msec
+generation -p took sec 471 msec
+analysis -a   took sec 735 msec
+lt-comp   took sec 10081 msec
+BUILD SUCCESSFUL (total time: 15 seconds)
  */

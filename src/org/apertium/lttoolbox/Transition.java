@@ -17,35 +17,20 @@ package org.apertium.lttoolbox;
  * 02111-1307, USA.
  */
 
-import java.util.List;
-import java.util.ArrayList;
-
-
 /**
- * 
- * @author Raah
+ * A linked list of transitions.
+ * Experiments show that 95 % nodes have only 1 transition, and the rest have less than 8 transitions
+ * @author Jacob Nordfalk
  */
 public class Transition {
 
-  int size;
+  /** The output symbol (character/tag) sent when making this transition */
+  int out_tag;
 
-  List<Integer> out_tag;
+  /** Destination node when makine this transition */
+  Node dest;
 
-  List<Node> dest;
-
-  private void init() {
-    size = 0;
-    out_tag = new ArrayList<Integer>();
-    dest = new ArrayList<Node>();
-  }
-
- public Transition() {
-    init();
-  }
-
-   public String toString() {
-    //return "size="+this.size +"/out_tag="+ this.out_tag +"/dest="+  this.dest;
-    return "tsize="+this.size;
-  }
+  /** Next transition in the linked list */
+  Transition next;
 
 }

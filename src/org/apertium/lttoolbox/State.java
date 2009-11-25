@@ -145,20 +145,18 @@ private static class TNodeState {
         for (int i = 0,  limit = state.size(); i != limit; i++) {
 
             Transition it = state.get(i).where.transitions.get(input);
-            if (it != null) {
-                // ORIGINAL for (int j = 0; j != it.size; j++) {
-                for (int j = 0; j < it.out_tag.size(); j++) {  // JACOBS FORSØG
-                    //XXX no pool now: List<Integer> new_v = pool.get();
-                    List<Integer> new_v = new ArrayList<Integer>();
-                    new_v.addAll(state.get(i).sequence);
+            while (it != null) {
+              //XXX no pool now: List<Integer> new_v = pool.get();
+              List<Integer> new_v = new ArrayList<Integer>();
+              new_v.addAll(state.get(i).sequence);
 
-                    if (DEBUG) System.err.println(i + " " + j + (char) input + "  state="+state.size());
+              if (DEBUG) System.err.println(i + " " +  (char) input + "  state="+state.size());
 
-                    if (input != 0) {
-                        new_v.add(it.out_tag.get(j));
-                    }
-                    new_state.add(new TNodeState(it.dest.get(j), new_v, state.get(i).dirty));
-                }
+              if (input != 0) {
+                  new_v.add(it.out_tag);
+              }
+              new_state.add(new TNodeState(it.dest, new_v, state.get(i).dirty));
+              it = it.next;
             }
             //XXX no pool now: pool.release(state.get(i).sequence);
         }
@@ -178,26 +176,24 @@ private static class TNodeState {
         for (int i = 0,  limit = state.size(); i != limit; i++) {
 
             Transition it = state.get(i).where.transitions.get(input);
-            if (it != null) {
-                for (int j = 0; j != it.size; j++) {
+            while (it != null) {
                     List<Integer> new_v;// JACOB = pool.get();
                     new_v = new ArrayList<Integer>(state.get(i).sequence);
                     if (input != 0) {
-                        new_v.add(it.out_tag.get(j));
+                        new_v.add(it.out_tag);
                     }
-                    new_state.add(new TNodeState(it.dest.get(j), new_v, state.get(i).dirty));
-                }
+                    new_state.add(new TNodeState(it.dest, new_v, state.get(i).dirty));
+                    it = it.next;
             }
             it = state.get(i).where.transitions.get(alt);
-            if (it != null) {
-                for (int j = 0; j != it.size; j++) {
+            while (it != null) {
                     List<Integer> new_v; // JACOB = pool.get();
                     new_v = new ArrayList<Integer>(state.get(i).sequence);
                     if (alt != 0) {
-                        new_v.add(it.out_tag.get(j));
+                        new_v.add(it.out_tag);
                     }
-                    new_state.add(new TNodeState(it.dest.get(j), new_v, true));
-                }
+                    new_state.add(new TNodeState(it.dest, new_v, true));
+                    it = it.next;
             }
             //JACOBpool.release(state.get(i).sequence);
         }
@@ -212,15 +208,14 @@ private static class TNodeState {
     void epsilonClosure() {
         for (int i = 0; i != state.size(); i++) {
             Transition it2 = state.get(i).where.transitions.get(0);
-            if (it2 != null) {
-                for (int j = 0; j != it2.size; j++) {
-                    List<Integer> tmp; // JACOB = pool.get();
-                    tmp = new ArrayList<Integer>(state.get(i).sequence);
-                    if (it2.out_tag.get(j) != 0) {
-                        tmp.add(it2.out_tag.get(j));
-                    }
-                    state.add(new TNodeState(it2.dest.get(j), tmp, state.get(i).dirty));
+            while (it2 != null) {
+                List<Integer> tmp; // JACOB = pool.get();
+                tmp = new ArrayList<Integer>(state.get(i).sequence);
+                if (it2.out_tag != 0) {
+                    tmp.add(it2.out_tag);
                 }
+                state.add(new TNodeState(it2.dest, tmp, state.get(i).dirty));
+                it2 = it2.next;
             }
         }
     }
