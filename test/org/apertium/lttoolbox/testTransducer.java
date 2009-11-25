@@ -20,8 +20,8 @@ package org.apertium.lttoolbox;
 import org.apertium.lttoolbox.*;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -42,7 +42,7 @@ public class testTransducer {
      * @param args the command line arguments
      */
     
-    static Transducer read(DataInputStream input) throws IOException {
+    static Transducer read(InputStream input) throws IOException {
         
         
         Transducer t = new Transducer();
@@ -125,11 +125,11 @@ public class testTransducer {
         }
          
          //System.exit(-1);
-        DataOutputStream output = new DataOutputStream(new BufferedOutputStream (new FileOutputStream("testTransducer2.bin")));
+        OutputStream output = new BufferedOutputStream (new FileOutputStream("testTransducer2.bin"));
         c.write(output);
         output.close();
-        //DataInputStream input = new DataInputStream(new BufferedInputStream (new FileInputStream("testTransducer2.bin")));
-        DataInputStream input = new DataInputStream(new BufferedInputStream (new FileInputStream("outc")));
+        //InputStream input = new InputStream(new BufferedInputStream (new FileInputStream("testTransducer2.bin")));
+        InputStream input = new BufferedInputStream (new FileInputStream("outc"));
         //c2 = c.read(input);
         
         //FSTProcessor fstp = new FSTProcessor();
