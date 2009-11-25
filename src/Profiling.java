@@ -24,14 +24,19 @@ public class Profiling {
         Profiling p = new Profiling();
         //System.out.println(System.getProperties() );
         System.out.println("Profiling "+new java.util.Date() );
-/*
+        System.gc();
         p.testjavaAnalysis();
+        System.gc();
         p.testjavaGeneration();
+        System.gc();
         p.testjavaDGeneration();
+        System.gc();
         p.testjavaNGeneration();
+        System.gc();
         p.testjavaPostgeneration();
+        System.gc();
         p.testjavaAnalysis();
- /**/
+        System.gc();
     LTComp.main(new String[] { "rl", "testdata/apertium-fr-es.fr.dix", "tmp/testJava.bin"});
     report("lt-comp  ");
 
@@ -149,4 +154,20 @@ generation -n took sec 794 msec
 generation -p took sec 461 msec
 analysis -a   took sec 1689 msec
 lt-comp   took sec 9907 msec
+
+
+various optimizations
+
+Profiling Wed Nov 25 07:26:42 CET 2009
+analysis -a   took sec 2409 msec
+generation -g took sec 981 msec
+generation -d took sec 641 msec
+generation -n took sec 792 msec
+generation -p took sec 441 msec
+analysis -a   took sec 1016 msec
+lt-comp   took sec 9327 msec
+BUILD SUCCESSFUL (total time: 16 seconds)
+
+ *
+ * 
  */

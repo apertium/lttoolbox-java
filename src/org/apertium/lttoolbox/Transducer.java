@@ -59,51 +59,6 @@ public class Transducer {
     Map<Integer, Map<Integer, Set<Integer>>> transitions = new HashMap<Integer, Map<Integer, Set<Integer>>>();
 
 
-/**
- *
- * @author sortiz
- */
-private static class CollectionIntegerComparator
-    implements Comparator<Collection<Integer>> {
-
-    public boolean equals(Collection<Integer> other) {
-        if (other == this) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public int compare(Collection<Integer> o1, Collection<Integer> o2) {
-        if (o1 == o2) {
-            return 0;
-        } else if (o1.size() > o2.size()) {
-            return 1;
-        } else if (o1.size() < o2.size()) {
-            return -1;
-        }
-
-        Iterator<Integer> it1 = o1.iterator();
-        Iterator<Integer> it2 = o2.iterator();
-
-        while (it1.hasNext()) {
-            Integer a = it1.next();
-            Integer b = it2.next();
-
-            if (a > b) {
-                return 1;
-            }
-            if (a < b) {
-                return -1;
-            }
-        }
-
-        return 0;
-    }
-}
-
-    private final static CollectionIntegerComparator setComparator = new CollectionIntegerComparator();
 
     /**
      * String conversion method to be able to display a transducer
@@ -479,9 +434,11 @@ private static class CollectionIntegerComparator
             for (Map.Entry<Integer, Set<Integer>> it2 : it.getValue().entrySet()) {
                 Integer tag = it2.getKey();
                 for (Integer origin : it2.getValue()) {
-                    if (!result.containsKey(origin)) {
-                        result.put(origin, new TreeMap<Integer, Set<Integer>>());
-                        result.get(origin).put(tag, new TreeSet<Integer>());
+                    Map<Integer, Set<Integer>> res_origin = result.get(origin);
+                    if (res_origin==null) {
+                        res_origin = new TreeMap<Integer, Set<Integer>>();
+                        result.put(origin, res_origin);
+                        res_origin.put(tag, new TreeSet<Integer>());
 
                         Set<Integer> aux = new TreeSet<Integer>();
                         aux.add(dest);
@@ -489,12 +446,13 @@ private static class CollectionIntegerComparator
                         Map<Integer, Set<Integer>> aux2 = new TreeMap<Integer, Set<Integer>>();
                         aux2.put(tag, aux);
                         result.put(origin, aux2);
-                    } else if (!result.get(origin).containsKey(tag)) {
-                        Set<Integer> aux = new TreeSet<Integer>();
-                        aux.add(dest);
-                        result.get(origin).put(tag, aux);
                     } else {
-                        result.get(origin).get(tag).add(dest);
+                       Set<Integer> res_origin_tag = res_origin.get(tag);
+                        if (res_origin_tag==null) {
+                          res_origin_tag = new TreeSet<Integer>();
+                          res_origin.put(tag, res_origin_tag);
+                        }
+                        res_origin_tag.add(dest);
                     }
                 }
             }
