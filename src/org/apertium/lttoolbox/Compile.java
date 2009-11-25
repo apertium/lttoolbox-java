@@ -141,16 +141,21 @@ public class Compile {
      */
     XMLStreamReader reader;
 
+    // this lookup is needed very often and thus cached
+    private int alphabetcast00;
+
     /**
      * The constructor
      */
     public Compile() {
         alphabet = new Alphabet();
+        alphabetcast00 = alphabet.cast(0, 0);
         prefix_paradigms = new HashMap<String, HashMap<String, Integer>>();
         suffix_paradigms = new HashMap<String, HashMap<String, Integer>>();
         postsuffix_paradigms = new HashMap<String, HashMap<String, Integer>>();
     // LtLocale.tryToSetLocale();
     }
+
 
     /**
      * Compile dictionary to letter transducers
@@ -281,7 +286,7 @@ public class Compile {
                     RegexpCompiler analyzer = new RegexpCompiler();
                     analyzer.initialize(alphabet);
                     analyzer.compile(elements.get(i).regExp());
-                    t.setEpsilon_Tag(alphabet.cast(0, 0));
+                    t.setEpsilon_Tag(alphabetcast00);
                     e = t.insertTransducer(e, analyzer.getTransducer());
                 } else {
                     throw new RuntimeException("Error (" + reader.getLocation().getLineNumber() +
@@ -312,7 +317,7 @@ public class Compile {
                             t.linkStates(e, suffix_paradigms.get(current_section).get(paradigmName), 0);
                             e = postsuffix_paradigms.get(current_section).get(paradigmName);
                         } else {
-                            e = t.insertNewSingleTransduction(alphabet.cast(0, 0), e);
+                            e = t.insertNewSingleTransduction(alphabetcast00, e);
                             suffix_paradigms.get(current_section).put(paradigmName, e);
                             t.setEpsilon_Tag(0);
                             e = t.insertTransducer(e, paradigms.get(paradigmName));
@@ -345,7 +350,7 @@ public class Compile {
                     RegexpCompiler analyzer = new RegexpCompiler();
                     analyzer.initialize(alphabet);
                     analyzer.compile(elements.get(i).regExp());
-                    t.setEpsilon_Tag(alphabet.cast(0, 0));
+                    t.setEpsilon_Tag(alphabetcast00);
                     e = t.insertTransducer(e, analyzer.getTransducer());
                 } else {
                     e = matchTransduction(elements.get(i).left(), elements.get(i).right(), e, t);
@@ -373,7 +378,7 @@ public class Compile {
             limdcha = pd.size();
 
             if (pi.size() == 0 && pd.size() == 0) {
-                state = t.insertNewSingleTransduction(alphabet.cast(0, 0), state);
+                state = t.insertNewSingleTransduction(alphabetcast00, state);
             } else {
                 HashSet<Integer> acx_map_ptr = null;
                 int rsymbol = 0;
@@ -386,22 +391,17 @@ public class Compile {
                         etiqueta = alphabet.cast(0, pd.get(dcha));
                         dcha++;
                     } else if (dcha == limdcha) {
-                        etiqueta = alphabet.cast(pi.get(izqda), 0);
-                        if (acx_map.containsKey(pi.get(izqda))) {
-                            acx_map_ptr = acx_map.get(pi.get(izqda));
-                        } else {
-                            acx_map_ptr = null;
-                        }
+                        Integer pi_izqda = pi.get(izqda);
+                        etiqueta = alphabet.cast(pi_izqda, 0);
+                        acx_map_ptr = acx_map.get(pi_izqda); // perhaps null
                         rsymbol = 0;
                         izqda++;
                     } else {
-                        etiqueta = alphabet.cast(pi.get(izqda), pd.get(dcha));
-                        if (acx_map.containsKey(pi.get(izqda))) {
-                            acx_map_ptr = acx_map.get(pi.get(izqda));
-                        } else {
-                            acx_map_ptr = null;
-                        }
-                        rsymbol = pd.get(dcha);
+                        Integer pi_izqda = pi.get(izqda);
+                        Integer pd_dcha = pd.get(dcha);
+                        etiqueta = alphabet.cast(pi_izqda, pd_dcha);
+                        acx_map_ptr = acx_map.get(pi_izqda); // perhaps null
+                        rsymbol = pd_dcha;
                         izqda++;
                         dcha++;
                     }
@@ -424,7 +424,7 @@ public class Compile {
             limdcha = pi.size();
 
             if (pi.size() == 0 && pd.size() == 0) {
-                state = t.insertNewSingleTransduction(alphabet.cast(0, 0), state);
+                state = t.insertNewSingleTransduction(alphabetcast00, state);
             } else {
                 HashSet<Integer> acx_map_ptr = null;
                 int rsymbol = 0;
@@ -438,20 +438,12 @@ public class Compile {
                         dcha++;
                     } else if (dcha == limdcha) {
                         etiqueta = alphabet.cast(pd.get(izqda), 0);
-                        if (acx_map.containsKey(pd.get(izqda))) {
-                            acx_map_ptr = acx_map.get(pd.get(izqda));
-                        } else {
-                            acx_map_ptr = null;
-                        }
+                        acx_map_ptr = acx_map.get(pd.get(izqda)); // perhaps null
                         rsymbol = 0;
                         izqda++;
                     } else {
                         etiqueta = alphabet.cast(pd.get(izqda), pi.get(dcha));
-                        if (acx_map.containsKey(pd.get(izqda))) {
-                            acx_map_ptr = acx_map.get(pd.get(izqda));
-                        } else {
-                            acx_map_ptr = null;
-                        }
+                        acx_map_ptr = acx_map.get(pd.get(izqda)); // perhaps null
                         rsymbol = pi.get(dcha);
                         izqda++;
                         dcha++;
