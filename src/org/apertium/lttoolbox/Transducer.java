@@ -323,7 +323,7 @@ public class Transducer {
                     if (xxx!=null) {
                         for (Integer it3 : xxx.keySet()) {
                             if (!it3.equals(epsilon_tag)) {
-                                for (Integer it3p : transitions.get(it2).get(it3)) {
+                                for (Integer it3p : xxx.get(it3)) {
                                     Set<Integer> c = closure(it3p);
                                     Set<Integer> zzz = mymap.get(it3);
                                     if (zzz==null) {

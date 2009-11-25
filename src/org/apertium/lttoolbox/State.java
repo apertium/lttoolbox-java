@@ -143,19 +143,19 @@ private static class TNodeState {
         if (DEBUG) System.err.println("apply(" + (char) input + "  state="+state.size());
 
         for (int i = 0,  limit = state.size(); i != limit; i++) {
-
-            Transition it = state.get(i).where.transitions.get(input);
+            TNodeState state_i = state.get(i);
+            Transition it = state_i.where.transitions.get(input);
             while (it != null) {
               //XXX no pool now: List<Integer> new_v = pool.get();
               List<Integer> new_v = new ArrayList<Integer>();
-              new_v.addAll(state.get(i).sequence);
+              new_v.addAll(state_i.sequence);
 
               if (DEBUG) System.err.println(i + " " +  (char) input + "  state="+state.size());
 
               if (input != 0) {
                   new_v.add(it.out_tag);
               }
-              new_state.add(new TNodeState(it.dest, new_v, state.get(i).dirty));
+              new_state.add(new TNodeState(it.dest, new_v, state_i.dirty));
               it = it.next;
             }
             //XXX no pool now: pool.release(state.get(i).sequence);
@@ -174,21 +174,21 @@ private static class TNodeState {
         List<TNodeState> new_state = new ArrayList<TNodeState>();
 
         for (int i = 0,  limit = state.size(); i != limit; i++) {
-
-            Transition it = state.get(i).where.transitions.get(input);
+            TNodeState state_i = state.get(i);
+            Transition it = state_i.where.transitions.get(input);
             while (it != null) {
                     List<Integer> new_v;// JACOB = pool.get();
-                    new_v = new ArrayList<Integer>(state.get(i).sequence);
+                    new_v = new ArrayList<Integer>(state_i.sequence);
                     if (input != 0) {
                         new_v.add(it.out_tag);
                     }
-                    new_state.add(new TNodeState(it.dest, new_v, state.get(i).dirty));
+                    new_state.add(new TNodeState(it.dest, new_v, state_i.dirty));
                     it = it.next;
             }
-            it = state.get(i).where.transitions.get(alt);
+            it = state_i.where.transitions.get(alt);
             while (it != null) {
                     List<Integer> new_v; // JACOB = pool.get();
-                    new_v = new ArrayList<Integer>(state.get(i).sequence);
+                    new_v = new ArrayList<Integer>(state_i.sequence);
                     if (alt != 0) {
                         new_v.add(it.out_tag);
                     }
@@ -207,14 +207,15 @@ private static class TNodeState {
      */
     void epsilonClosure() {
         for (int i = 0; i != state.size(); i++) {
-            Transition it2 = state.get(i).where.transitions.get(0);
+            TNodeState state_i = state.get(i);
+            Transition it2 = state_i.where.transitions.get(0);
             while (it2 != null) {
                 List<Integer> tmp; // JACOB = pool.get();
-                tmp = new ArrayList<Integer>(state.get(i).sequence);
+                tmp = new ArrayList<Integer>(state_i.sequence);
                 if (it2.out_tag != 0) {
                     tmp.add(it2.out_tag);
                 }
-                state.add(new TNodeState(it2.dest, tmp, state.get(i).dirty));
+                state.add(new TNodeState(it2.dest, tmp, state_i.dirty));
                 it2 = it2.next;
             }
         }
@@ -289,18 +290,18 @@ private static class TNodeState {
         StringBuilder result = new StringBuilder();
 
         for (int i = 0,  limit = state.size(); i != limit; i++) {
-
-            if (finals.contains(state.get(i).where)) {
-                if (state.get(i).dirty) {
+            TNodeState state_i = state.get(i);
+            if (finals.contains(state_i.where)) {
+                if (state_i.dirty) {
                     result.append('/');
                     int first_char = result.length() + firstchar;
 
-                    for (int j = 0,  limit2 = state.get(i).sequence.size(); j != limit2; j++) {
-                        if (escaped_chars.contains((char) ((state.get(i).sequence)).get(j).intValue())) {
+                    for (int j = 0,  limit2 = state_i.sequence.size(); j != limit2; j++) {
+                        if (escaped_chars.contains((char) ((state_i.sequence)).get(j).intValue())) {
                             result.append('\\');
                         }
                         // alphabet.getSymbol(result, (*(state[i].sequence))[j], uppercase); was missing
-                        result.replace(0, Integer.MAX_VALUE, alphabet.getSymbol(result.toString(), (state.get(i).sequence).get(j).intValue(), uppercase));
+                        result.replace(0, Integer.MAX_VALUE, alphabet.getSymbol(result.toString(), (state_i.sequence).get(j).intValue(), uppercase));
                     }
                     if (firstupper) {
 
@@ -314,11 +315,11 @@ private static class TNodeState {
                     }
                 } else {
                     result.append('/');
-                    for (int j = 0,  limit2 = state.get(i).sequence.size(); j != limit2; j++) {
-                        if (escaped_chars.contains((char) ((state.get(i).sequence).get(j)).intValue())) {
+                    for (int j = 0,  limit2 = state_i.sequence.size(); j != limit2; j++) {
+                        if (escaped_chars.contains((char) ((state_i.sequence).get(j)).intValue())) {
                             result.append('\\');
                         }
-                        result.replace(0, Integer.MAX_VALUE, alphabet.getSymbol(result.toString(), (state.get(i).sequence).get(j).intValue()));
+                        result.replace(0, Integer.MAX_VALUE, alphabet.getSymbol(result.toString(), (state_i.sequence).get(j).intValue()));
                     }
                 }
             }
@@ -344,19 +345,20 @@ private static class TNodeState {
         StringBuilder result = new StringBuilder("");
 
         for (int i = 0,  limit = state.size(); i != limit; i++) {
-            if (finals.contains(state.get(i).where)) {
+            TNodeState state_i = state.get(i);
+            if (finals.contains(state_i.where)) {
                 result.append('/');
                 int first_char = result.length() + firstchar;
-                for (int j = 0,  limit2 = state.get(i).sequence.size(); j != limit2; j++) {
-                    if (escaped_chars.contains((char) (state.get(i).sequence).get(j).intValue())) {
+                for (int j = 0,  limit2 = state_i.sequence.size(); j != limit2; j++) {
+                    if (escaped_chars.contains((char) (state_i.sequence).get(j).intValue())) {
                         result.append('\\');
                     }
-                    if (alphabet.isTag(((state.get(i).sequence)).get(j))) {
+                    if (alphabet.isTag(((state_i.sequence)).get(j))) {
                         result.append('&');
-                        result.replace(0, Integer.MAX_VALUE, alphabet.getSymbol(result.toString(), state.get(i).sequence.get(j)));
+                        result.replace(0, Integer.MAX_VALUE, alphabet.getSymbol(result.toString(), state_i.sequence.get(j)));
                         result.setCharAt(result.length() - 1, ';');
                     } else {
-                        result.replace(0, Integer.MAX_VALUE, alphabet.getSymbol(result.toString(), ((state.get(i).sequence)).get(j), uppercase));
+                        result.replace(0, Integer.MAX_VALUE, alphabet.getSymbol(result.toString(), ((state_i.sequence)).get(j), uppercase));
                     }
                 }
                 if (firstupper) {
@@ -386,13 +388,14 @@ private static class TNodeState {
     String filterFinalsTM(Set<Node> finals, Alphabet alphabet, SetOfCharacters escaped_chars, ArrayDeque<String> blankqueue, ArrayList<String> numbers) {
         String result = "";
         for (int i = 0,  limit = state.size(); i < limit; i++) {
-            if (finals.contains(state.get(i).where)) {
+            TNodeState state_i = state.get(i);
+            if (finals.contains(state_i.where)) {
                 result += '/';
-                for (int j = 0,  limit2 = state.get(i).sequence.size(); j < limit2; j++) {
-                    if (escaped_chars.contains((char) state.get(i).sequence.get(j).intValue())) {
+                for (int j = 0,  limit2 = state_i.sequence.size(); j < limit2; j++) {
+                    if (escaped_chars.contains((char) state_i.sequence.get(j).intValue())) {
                         result += '\\';
                     }
-                    result = alphabet.getSymbol(result, state.get(i).sequence.get(j));
+                    result = alphabet.getSymbol(result, state_i.sequence.get(j));
                 }
             }
         }

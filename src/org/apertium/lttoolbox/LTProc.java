@@ -240,7 +240,7 @@ public class LTProc {
         if (System.getProperties().containsKey("file.encoding")) {
             encoding = System.getProperty("file.encoding");
         }
-        return new OutputStreamWriter(new FileOutputStream(new File(filename)), encoding);
+        return new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(filename)), encoding));
     }
 
     private static InputStream fopen(String filename) throws FileNotFoundException {
