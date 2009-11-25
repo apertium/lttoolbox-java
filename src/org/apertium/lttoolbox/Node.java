@@ -42,22 +42,6 @@ public class Node {
     }
    
     /**
-     * Copy constructor 
-     * @param n the node to be copied
-     */
-    Node(Node n) {
-        copy(n);
-    }
-
-    /**
-     * Copy method
-     * @param n the node to be copied
-     */
-    void copy(Node n) {
-        transitions = new TreeMap<Integer, Dest>(n.transitions);
-    }
-
-    /**
      * Making a link between this node and another
      * @param i input symbol
      * @param o output symbol
@@ -69,15 +53,6 @@ public class Node {
           transition = new Dest();
           transitions.put(i, transition);
         }
-        /*
-        List<Integer> out_tag = new ArrayList<Integer>(transition.out_tag);
-        List<Node> dest = new ArrayList<Node>(transition.dest);
-
-        out_tag.add(transition.size, o);
-        dest.add(transition.size, d);
-        transition.out_tag = out_tag;
-        transition.dest = dest;
-         */
         transition.out_tag.add(o);
         transition.dest.add(d);
         transition.size++;

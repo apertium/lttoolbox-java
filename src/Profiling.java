@@ -26,7 +26,7 @@ public class Profiling {
         System.out.println("Profiling "+new java.util.Date() );
         System.gc();
         p.testjavaAnalysis();
-        /*
+/*
         System.gc();
         p.testjavaGeneration();
         System.gc();
@@ -182,4 +182,18 @@ final@inconditional 61 858
 main@standard 62442 96775
 lt-comp   took sec 10204 msec
 BUILD SUCCESSFUL (total time: 16 seconds)
+
+
+Profiling Wed Nov 25 16:39:13 CET 2009
+analysis -a   took sec 1915 msec
+generation -g took sec 751 msec
+generation -d took sec 527 msec
+generation -n took sec 744 msec
+generation -p took sec 500 msec
+analysis -a   took sec 1170 msec
+final@inconditional 61 858
+main@standard 62442 96775
+lt-comp   took sec 10017 msec
+BUILD SUCCESSFUL (total time: 15 seconds)
+
  */

@@ -21,8 +21,10 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 
 /**
  * Transducer class for execution of lexical processing algorithms
@@ -37,11 +39,11 @@ public class TransExe {
     /**
      * Node list
      */
-    private TreeMap<Integer,Node> node_list  = new TreeMap<Integer,Node>();
+    private Node[] node_list2;
     /**
      * Set of final nodes
      */
-    private ArrayList<Node> finals = new ArrayList<Node>();
+    private ArrayList<Node> finals2 = new ArrayList<Node>();
 
     //Index of the last node added to node_list
     private Integer index =0;
@@ -50,43 +52,38 @@ public class TransExe {
     }
 
     void read(InputStream input, Alphabet alphabet) throws IOException {
-        node_list = new TreeMap<Integer,Node>();
         index = 0;
         initial_id = Compression.multibyte_read(input);
-        int finals_size = Compression.multibyte_read(input);
-        finals.ensureCapacity(finals_size);
+        final int finals_size = Compression.multibyte_read(input);
         //System.out.println("finals_size : "+finals_size);
+
+
         int base = 0;
 
-        Set<Integer> myfinals = new TreeSet<Integer>();
-
-        while (finals_size > 0) {    
-            finals_size--;
+        // first comes the list of all final nodes
+        int[] myfinals2 = new int[finals_size];
+        for (int i=0; i<finals_size; i++) {
             base += Compression.multibyte_read(input);
-            myfinals.add(base);
-            Node n = node_list.get(base);
-            if (n == null) {
-               n = new Node();
-                node_list.put(base, n);
-            }
-            finals.add(n);
+            myfinals2[i] = base;
         }
 
-        base = Compression.multibyte_read(input);
 
-        int number_of_states = base;
+        final int number_of_states = Compression.multibyte_read(input);
+
+        node_list2 = new Node[number_of_states];
+        for (int current_state = 0; current_state<number_of_states; current_state++) {
+          node_list2[current_state] = new Node();
+        }
+
+        base = number_of_states;
         //System.out.println("number of states : "+number_of_states);
-        int current_state = 0;
 
-        while (number_of_states > 0) {
+        for (int current_state = 0; current_state<number_of_states; current_state++) {
             
           int number_of_local_transitions = Compression.multibyte_read(input);
           int tagbase = 0;
-          Node mynode = node_list.get(current_state);
-          if (mynode == null) {
-            mynode=new Node();
-            node_list.put(current_state,mynode);
-          }
+
+          Node mynode2 = node_list2[current_state];
 
           while (number_of_local_transitions > 0) {
               number_of_local_transitions--;
@@ -94,18 +91,19 @@ public class TransExe {
               int state = (current_state + Compression.multibyte_read(input)) % base;
               int i_symbol = alphabet.decode(tagbase).first;
               int o_symbol = alphabet.decode(tagbase).second;
-              Node n = node_list.get(state);
-              if (n == null) {
-                 n=new Node();
-                 node_list.put(state,n);
-              }
-              mynode.addTransition(i_symbol, o_symbol, n);
-            }
-            number_of_states--;
-            current_state++;
-        }
-    }
+              Node n2 = node_list2[state];
+              mynode2.addTransition(i_symbol, o_symbol, n2);
 
+            }
+        }
+
+        for (int i=0; i<finals_size; i++) {
+            base = myfinals2[i];
+            finals2.add(node_list2[base]);
+        }
+
+    }
+/*
     private void unifyFinals() {
 
         index++;
@@ -124,16 +122,16 @@ public class TransExe {
         finals.clear();
         finals.add(newfinal);
     }
-
+*/
     public Node getInitial() {
-        return node_list.get(initial_id);
+        return node_list2[initial_id];
     }
 
     ArrayList<Node> getFinals() {
-        return finals;
+        return finals2;
     }
-
+/*
     public String toString() {
       return "index="+this.index +"/initial_id="+ this.initial_id +"/finals="+  this.finals;
-    }
+    }*/
 }
