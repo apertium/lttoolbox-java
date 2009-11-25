@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import org.apertium.lttoolbox.Alphabet.IntegerPair;
 
 /**
  * Transducer class for execution of lexical processing algorithms
@@ -79,21 +80,22 @@ public class TransExe {
         //System.out.println("number of states : "+number_of_states);
 
         for (int current_state = 0; current_state<number_of_states; current_state++) {
+          Node sourceNode = node_list2[current_state];
             
           int number_of_local_transitions = Compression.multibyte_read(input);
           int tagbase = 0;
 
-          Node mynode2 = node_list2[current_state];
+          sourceNode.initTransitions(number_of_local_transitions);
 
           while (number_of_local_transitions > 0) {
               number_of_local_transitions--;
               tagbase += Compression.multibyte_read(input);
               int state = (current_state + Compression.multibyte_read(input)) % base;
-              int i_symbol = alphabet.decode(tagbase).first;
-              int o_symbol = alphabet.decode(tagbase).second;
-              Node n2 = node_list2[state];
-              mynode2.addTransition(i_symbol, o_symbol, n2);
-
+              IntegerPair pair = alphabet.decode(tagbase);
+              int i_symbol = pair.first;
+              int o_symbol = pair.second;
+              Node targetNode = node_list2[state];
+              sourceNode.addTransition(i_symbol, o_symbol, targetNode);
             }
         }
 

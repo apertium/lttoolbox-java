@@ -445,6 +445,7 @@ public class FSTProcessor {
 
     private void calcInitial() {
         //System.out.println("call to calcInitial");
+        root.initTransitions(transducers.size());
         for (String first : transducers.keySet()) {
             root.addTransition(0, 0, transducers.get(first).getInitial());
         }
@@ -577,8 +578,7 @@ public class FSTProcessor {
     }
 
     public void initAnalysis() {
-        //System.out.println("entering initAnalysis");
-    
+        //System.out.println("entering initAnalysis");    
         calcInitial();
         classifyFinals();
         all_finals = standard;
@@ -600,8 +600,7 @@ public class FSTProcessor {
     public void initGeneration() {
         calcInitial();
         all_finals = new HashSet<Node>();
-        for (String first : transducers.keySet()) {
-            
+        for (String first : transducers.keySet()) {            
             all_finals.addAll(transducers.get(first).getFinals());
         }
     }

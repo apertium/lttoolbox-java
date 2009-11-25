@@ -33,13 +33,7 @@ public class Dest {
 
   List<Node> dest;
 
-  void copy(Dest d) {
-    size = d.size;
-    out_tag = new ArrayList<Integer>(d.out_tag);
-    dest = new ArrayList<Node>(dest);
-  }
-
-  void init() {
+  private void init() {
     size = 0;
     out_tag = new ArrayList<Integer>();
     dest = new ArrayList<Node>();
@@ -47,10 +41,6 @@ public class Dest {
 
  public Dest() {
     init();
-  }
-
- public Dest(Dest d) {
-    copy(d);
   }
 
    public String toString() {

@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Node class of TransExe.
@@ -38,9 +39,12 @@ public class Node {
      * The constructor
      */
     Node() {
-        transitions = new TreeMap<Integer, Dest>();
     }
    
+
+  void initTransitions(int number_of_local_transitions) {
+        transitions = new HashMap<Integer, Dest>(number_of_local_transitions);
+  }
     /**
      * Making a link between this node and another
      * @param i input symbol
