@@ -40,11 +40,11 @@ public class FSTProcessor {
         gm_unknown, // display unknown words, clear transfer and generation tags
         gm_all         // display all
     }
-    private Collator myCollator = Collator.getInstance();
+    //private Collator myCollator = Collator.getInstance();
     /**
      * Transducers in FSTP
      */
-    private Map<String, TransExe> transducers = new TreeMap<String, TransExe>(myCollator);
+    private Map<String, TransExe> transducers = new TreeMap<String, TransExe>();
     /**
      * Current state of lexical analysis
      */
@@ -163,19 +163,17 @@ public class FSTProcessor {
         return val;
     }
 
-    private String readFullBlock(Reader input, Character delim1, Character delim2) throws IOException {
-        String result = "";
-        result += delim1;
-        Character c = delim1;
+    private String readFullBlock(Reader input, char delim1, char delim2) throws IOException {
+        StringBuilder result = new StringBuilder();
+        result.append(delim1);
+
+        char c = delim1;
 
         while (input.ready() && c != delim2) {
             c=read(input);
-        //System.out.println("read "+c);
-            result += c;
-            if (c != '\\') {
-                continue;
-            } else {
-                result += readEscaped(input);
+            result.append(c);
+            if (c == '\\') {
+                result.append(readEscaped(input));
             }
         }
 
@@ -183,7 +181,7 @@ public class FSTProcessor {
             streamError();
         }
 
-        return result;
+        return result.toString();
     }
 
     private char readAnalysis(Reader input) throws IOException {

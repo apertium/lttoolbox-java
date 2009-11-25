@@ -26,7 +26,7 @@ public class Profiling {
         System.out.println("Profiling "+new java.util.Date() );
         System.gc();
         p.testjavaAnalysis();
-
+/**/
         System.gc();
         p.testjavaGeneration();
         System.gc();
@@ -208,4 +208,19 @@ generation -p took sec 471 msec
 analysis -a   took sec 735 msec
 lt-comp   took sec 10081 msec
 BUILD SUCCESSFUL (total time: 15 seconds)
+
+ 
+  make readFullBlock use char instread of Character
+ 
+Profiling Wed Nov 25 22:40:04 CET 2009
+analysis -a   took sec 1679 msec
+generation -g took sec 737 msec
+generation -d took sec 481 msec
+generation -n took sec 494 msec
+generation -p took sec 151 msec
+analysis -a   took sec 508 msec
+lt-comp   took sec 9960 msec
+BUILD SUCCESSFUL (total time: 15 seconds)
+
+
  */
