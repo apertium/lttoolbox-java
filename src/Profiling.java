@@ -28,6 +28,7 @@ public class Profiling {
         p.testjavaAnalysis();
         System.gc();
         p.testjavaGeneration();
+        /**/
         System.gc();
         p.testjavaDGeneration();
         System.gc();
@@ -39,7 +40,7 @@ public class Profiling {
         System.gc();
     LTComp.main(new String[] { "rl", "testdata/apertium-fr-es.fr.dix", "tmp/testJava.bin"});
     report("lt-comp  ");
-
+/**/
         //System.err.println("SetOfCharacters.max_encountered = " + SetOfCharacters.max_encountered);
       }
 
@@ -158,16 +159,27 @@ lt-comp   took sec 9907 msec
 
 various optimizations
 
-Profiling Wed Nov 25 07:26:42 CET 2009
-analysis -a   took sec 2409 msec
-generation -g took sec 981 msec
-generation -d took sec 641 msec
-generation -n took sec 792 msec
-generation -p took sec 441 msec
-analysis -a   took sec 1016 msec
-lt-comp   took sec 9327 msec
-BUILD SUCCESSFUL (total time: 16 seconds)
+  Profiling Wed Nov 25 07:26:42 CET 2009
+  analysis -a   took sec 2409 msec
+  generation -g took sec 981 msec
+  generation -d took sec 641 msec
+  generation -n took sec 792 msec
+  generation -p took sec 441 msec
+  analysis -a   took sec 1016 msec
+  lt-comp   took sec 9327 msec
+  BUILD SUCCESSFUL (total time: 16 seconds)
 
- *
- * 
+ 
+
+Profiling Wed Nov 25 13:49:13 CET 2009
+analysis -a   took sec 2272 msec
+generation -g took sec 806 msec
+generation -d took sec 687 msec
+generation -n took sec 796 msec
+generation -p took sec 460 msec
+analysis -a   took sec 1239 msec
+final@inconditional 61 858
+main@standard 62442 96775
+lt-comp   took sec 10204 msec
+BUILD SUCCESSFUL (total time: 16 seconds)
  */

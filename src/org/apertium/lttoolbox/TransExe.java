@@ -37,19 +37,16 @@ public class TransExe {
     /**
      * Node list
      */
-    private TreeMap<Integer,Node> node_list;
+    private TreeMap<Integer,Node> node_list  = new TreeMap<Integer,Node>();
     /**
      * Set of final nodes
      */
-    private ArrayList<Node> finals;
+    private ArrayList<Node> finals = new ArrayList<Node>();
 
     //Index of the last node added to node_list
     private Integer index =0;
     
     TransExe() {
-        node_list = new TreeMap<Integer,Node>();
-        finals = new ArrayList<Node>();
-        index = 0;
     }
 
     void read(DataInputStream input, Alphabet alphabet) throws IOException {
@@ -57,21 +54,22 @@ public class TransExe {
         index = 0;
         initial_id = Compression.multibyte_read(input);
         int finals_size = Compression.multibyte_read(input);
-        finals = new ArrayList<Node>(finals_size);
+        finals.ensureCapacity(finals_size);
         //System.out.println("finals_size : "+finals_size);
         int base = 0;
 
         Set<Integer> myfinals = new TreeSet<Integer>();
 
-        while (finals_size > 0) {
-            
+        while (finals_size > 0) {    
             finals_size--;
             base += Compression.multibyte_read(input);
             myfinals.add(base);
-            if (!node_list.containsKey(base)) {
-                node_list.put(base,new Node());
+            Node n = node_list.get(base);
+            if (n == null) {
+               n = new Node();
+                node_list.put(base, n);
             }
-            finals.add(node_list.get(base));
+            finals.add(n);
         }
 
         base = Compression.multibyte_read(input);
@@ -84,10 +82,11 @@ public class TransExe {
             
           int number_of_local_transitions = Compression.multibyte_read(input);
           int tagbase = 0;
-          if (!node_list.containsKey(current_state)) {
-              node_list.put(current_state,new Node());
-          }
           Node mynode = node_list.get(current_state);
+          if (mynode == null) {
+            mynode=new Node();
+            node_list.put(current_state,mynode);
+          }
 
           while (number_of_local_transitions > 0) {
               number_of_local_transitions--;
@@ -95,14 +94,13 @@ public class TransExe {
               int state = (current_state + Compression.multibyte_read(input)) % base;
               int i_symbol = alphabet.decode(tagbase).first;
               int o_symbol = alphabet.decode(tagbase).second;
-              //System.out.println("i : "+i_symbol+", o : "+o_symbol);
-              if (!node_list.containsKey(state)) {
-                  node_list.put(state,new Node());
+              Node n = node_list.get(state);
+              if (n == null) {
+                 n=new Node();
+                 node_list.put(state,n);
               }
-              //System.out.println(node_list.get(state));
-              mynode.addTransition(i_symbol, o_symbol, node_list.get(state));
-              //mynode.addTransition(current_state, tagbase, new_t.node_list.get(state));
-               }
+              mynode.addTransition(i_symbol, o_symbol, n);
+            }
             number_of_states--;
             current_state++;
         }

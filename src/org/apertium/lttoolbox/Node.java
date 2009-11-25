@@ -64,17 +64,23 @@ public class Node {
      * @param d destination
      */
     void addTransition(int i, int o, Node d) {
-        if (!transitions.containsKey(i)) {
-            transitions.put(i, new Dest());
+        Dest transition = transitions.get(i);
+        if (transition==null) {
+          transition = new Dest();
+          transitions.put(i, transition);
         }
-        List<Integer> out_tag = new ArrayList<Integer>(transitions.get(i).out_tag);
-        List<Node> dest = new ArrayList<Node>(transitions.get(i).dest);
+        /*
+        List<Integer> out_tag = new ArrayList<Integer>(transition.out_tag);
+        List<Node> dest = new ArrayList<Node>(transition.dest);
 
-        out_tag.add(transitions.get(i).size, o);
-        dest.add(transitions.get(i).size, d);
-        transitions.get(i).out_tag = out_tag;
-        transitions.get(i).dest = dest;
-        transitions.get(i).size++;
+        out_tag.add(transition.size, o);
+        dest.add(transition.size, d);
+        transition.out_tag = out_tag;
+        transition.dest = dest;
+         */
+        transition.out_tag.add(o);
+        transition.dest.add(d);
+        transition.size++;
     }
 
    public String toString() {
