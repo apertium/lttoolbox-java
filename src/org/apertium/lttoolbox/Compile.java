@@ -141,15 +141,12 @@ public class Compile {
      */
     XMLStreamReader reader;
 
-    // this lookup is needed very often and thus cached
-    private int alphabetcast00;
 
     /**
      * The constructor
      */
     public Compile() {
         alphabet = new Alphabet();
-        alphabetcast00 = alphabet.cast(0, 0);
         prefix_paradigms = new HashMap<String, HashMap<String, Integer>>();
         suffix_paradigms = new HashMap<String, HashMap<String, Integer>>();
         postsuffix_paradigms = new HashMap<String, HashMap<String, Integer>>();
@@ -286,7 +283,7 @@ public class Compile {
                     RegexpCompiler analyzer = new RegexpCompiler();
                     analyzer.initialize(alphabet);
                     analyzer.compile(elements.get(i).regExp());
-                    t.setEpsilon_Tag(alphabetcast00);
+                    t.setEpsilon_Tag(alphabet.cast00);
                     e = t.insertTransducer(e, analyzer.getTransducer());
                 } else {
                     throw new RuntimeException("Error (" + reader.getLocation().getLineNumber() +
@@ -317,7 +314,7 @@ public class Compile {
                             t.linkStates(e, suffix_paradigms.get(current_section).get(paradigmName), 0);
                             e = postsuffix_paradigms.get(current_section).get(paradigmName);
                         } else {
-                            e = t.insertNewSingleTransduction(alphabetcast00, e);
+                            e = t.insertNewSingleTransduction(alphabet.cast00, e);
                             suffix_paradigms.get(current_section).put(paradigmName, e);
                             t.setEpsilon_Tag(0);
                             e = t.insertTransducer(e, paradigms.get(paradigmName));
@@ -350,7 +347,7 @@ public class Compile {
                     RegexpCompiler analyzer = new RegexpCompiler();
                     analyzer.initialize(alphabet);
                     analyzer.compile(elements.get(i).regExp());
-                    t.setEpsilon_Tag(alphabetcast00);
+                    t.setEpsilon_Tag(alphabet.cast00);
                     e = t.insertTransducer(e, analyzer.getTransducer());
                 } else {
                     e = matchTransduction(elements.get(i).left(), elements.get(i).right(), e, t);
@@ -378,7 +375,7 @@ public class Compile {
             limdcha = pd.size();
 
             if (pi.size() == 0 && pd.size() == 0) {
-                state = t.insertNewSingleTransduction(alphabetcast00, state);
+                state = t.insertNewSingleTransduction(alphabet.cast00, state);
             } else {
                 HashSet<Integer> acx_map_ptr = null;
                 int rsymbol = 0;
@@ -424,7 +421,7 @@ public class Compile {
             limdcha = pi.size();
 
             if (pi.size() == 0 && pd.size() == 0) {
-                state = t.insertNewSingleTransduction(alphabetcast00, state);
+                state = t.insertNewSingleTransduction(alphabet.cast00, state);
             } else {
                 HashSet<Integer> acx_map_ptr = null;
                 int rsymbol = 0;

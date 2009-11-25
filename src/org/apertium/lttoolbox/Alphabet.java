@@ -117,34 +117,9 @@ public static class IntegerPair implements Comparable<IntegerPair> {
     ArrayList<IntegerPair> spairinv;
 
 
-/**
- * IntegerPair comparaison class, to conveniently use Maps
- * @author Raah
- 
-private static class IntegerPairComparator implements Comparator<IntegerPair> {
+    /** this lookup is needed very often and thus cached */
+    final int cast00;
 
-
-    @Override
-    public int compare(IntegerPair p0, IntegerPair p1) {
-        if (p0.first > p1.first) {
-            return 1;
-        }
-        if (p0.first < p1.first) {
-            return -1;
-        }
-        if (p0.second > p1.second) {
-            return 1;
-        }
-        if (p0.second < p1.second) {
-            return -1;
-        }
-        return 0;
-    }
-
-}
-
-    private final static IntegerPairComparator integerPairComparator = new IntegerPairComparator();
-*/
     /**
      * The constructor
      */
@@ -153,6 +128,7 @@ private static class IntegerPairComparator implements Comparator<IntegerPair> {
         spair.put(new IntegerPair(0, 0), 0);
         spairinv = new ArrayList<IntegerPair>();
         spairinv.add(new IntegerPair(0, 0));
+        cast00 =cast(0, 0);
     }
 
     /**

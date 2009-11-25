@@ -46,17 +46,17 @@ public class Transducer {
     /**
      * tag for epsilon transitions
      */
-    Integer epsilon_tag;
+    Integer epsilon_tag  = new Integer(0);
         
     /**
      * Final state set
      */
-    Set<Integer> finals;
+    Set<Integer> finals = new HashSet<Integer>();
 
     /**
      * Transitions of the transducer
      */
-    Map<Integer, Map<Integer, Set<Integer>>> transitions;
+    Map<Integer, Map<Integer, Set<Integer>>> transitions = new HashMap<Integer, Map<Integer, Set<Integer>>>();
 
 
 /**
@@ -188,10 +188,7 @@ private static class CollectionIntegerComparator
      * Constructor
      */
     Transducer() {
-        transitions = new HashMap<Integer, Map<Integer, Set<Integer>>>();
-        finals = new HashSet<Integer>();
         initial = newState();
-        epsilon_tag = new Integer(0);
     }
 
     /**
@@ -522,8 +519,8 @@ private static class CollectionIntegerComparator
      * @return the set of the epsilon-connected states
      */
     public Set<Integer> closure(Integer state) {
-        Set<Integer> nonvisited = new HashSet<Integer>();
-        Set<Integer> result = new HashSet<Integer>();
+        HashSet<Integer> nonvisited = new HashSet<Integer>();
+        HashSet<Integer> result = new HashSet<Integer>();
         nonvisited.add(state);
         result.add(state);
         while (nonvisited.size() > 0) {
@@ -655,13 +652,13 @@ private static class CollectionIntegerComparator
      * @return the transducer read from the stream
      * @throws java.io.IOException
      */
-    Transducer read(DataInputStream input, Alphabet alphabet) throws IOException {
+    public static Transducer read(DataInputStream input, Alphabet alphabet) throws IOException {
 
         Transducer t = new Transducer();
         t.transitions.clear();
 
         //reading the initial state
-        initial = Compression.multibyte_read(input);
+        t.initial = Compression.multibyte_read(input);
 
         //reading the final states
         int base = 0;

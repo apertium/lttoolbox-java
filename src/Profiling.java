@@ -24,7 +24,7 @@ public class Profiling {
         Profiling p = new Profiling();
         //System.out.println(System.getProperties() );
         System.out.println("Profiling "+new java.util.Date() );
-/**/
+/*
         p.testjavaAnalysis();
         p.testjavaGeneration();
         p.testjavaDGeneration();
