@@ -18,7 +18,7 @@ package org.apertium.lttoolbox;
  */
 
 import java.io.InputStream;
-import java.io.DataOutputStream;
+import java.io.OutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
@@ -37,7 +37,7 @@ public class Compression {
      * @param output output stream.
      * @throws java.io.IOException
      */
-    static void multibyte_write(long value, DataOutputStream output) throws IOException {
+    static void multibyte_write(long value, OutputStream output) throws IOException {
         if (value < 0x00000040) {
             output.write((char) value);
         } else if (value < 0x00004000) {
@@ -127,7 +127,7 @@ public class Compression {
      * @param output the output stream.
      * @throws java.io.IOException
      */
-    static void String_write(String str, DataOutputStream output) throws IOException {
+    static void String_write(String str, OutputStream output) throws IOException {
         multibyte_write(str.length(), output);
         for (int i = 0,  limit = str.length(); i != limit; i++) {
             multibyte_write((str.charAt(i)), output);

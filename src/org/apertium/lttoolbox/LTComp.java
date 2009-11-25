@@ -69,7 +69,7 @@ public class LTComp {
             endProgram("LTComp");
             return;
         }
-        DataOutputStream output = new DataOutputStream(new BufferedOutputStream (new FileOutputStream(argv[2])));
+        OutputStream output = new BufferedOutputStream (new FileOutputStream(argv[2]));
         c.write(output);
         output.close();
     }

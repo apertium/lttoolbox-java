@@ -20,7 +20,7 @@ package org.apertium.lttoolbox;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.InputStream;
-import java.io.DataOutputStream;
+import java.io.OutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -192,7 +192,7 @@ public static class IntegerPair implements Comparable<IntegerPair> {
      * @param output the outputstream.
      * @throws java.io.IOException.
      */
-    void write(DataOutputStream output) throws IOException {
+    void write(OutputStream output) throws IOException {
         // First, we write the taglist
         Compression.multibyte_write(slexicinv.size(), output);
 
@@ -290,7 +290,7 @@ public static class IntegerPair implements Comparable<IntegerPair> {
      * @throws java.io.IOException
      */
     public void testIO() throws FileNotFoundException, IOException {
-        DataOutputStream output = new DataOutputStream(new BufferedOutputStream(new FileOutputStream("testAlphabet.bin")));
+        OutputStream output = new BufferedOutputStream(new FileOutputStream("testAlphabet.bin"));
         this.write(output);
         output.close();
         InputStream input = new BufferedInputStream(new FileInputStream("testAlphabet.bin"));

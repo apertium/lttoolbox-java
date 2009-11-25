@@ -18,7 +18,7 @@ package org.apertium.lttoolbox;
  */
 
 import java.io.InputStream;
-import java.io.DataOutputStream;
+import java.io.OutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -651,7 +651,7 @@ public class Transducer {
      * @param decalage offset to sum to the tags
      * @throws java.io.IOException
      */
-    void write(DataOutputStream output, int decalage) throws IOException {
+    void write(OutputStream output, int decalage) throws IOException {
         Compression.multibyte_write(initial, output);
         Compression.multibyte_write(finals.size(), output);
         int base = 0;

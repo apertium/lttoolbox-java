@@ -20,7 +20,7 @@ package org.apertium.lttoolbox;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.InputStream;
-import java.io.DataOutputStream;
+import java.io.OutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -217,7 +217,7 @@ public class Compile {
      * @param output the stream where write the result
      * @throws java.io.IOException
      */
-    void write(DataOutputStream output) throws IOException {
+    void write(OutputStream output) throws IOException {
 
         // letters
         Compression.String_write(letters, output);
@@ -1027,7 +1027,7 @@ public class Compile {
      */
     void testIO() throws FileNotFoundException, IOException {
         System.out.println("now comparing an instance of NewCompiler with what we get after writting it to a file and then reading it back from that file");
-        DataOutputStream output = new DataOutputStream(new BufferedOutputStream (new FileOutputStream("testTransducer.bin")));
+        OutputStream output = new BufferedOutputStream (new FileOutputStream("testTransducer.bin"));
         write(output);
         output.close();
         System.out.println("writing done");
