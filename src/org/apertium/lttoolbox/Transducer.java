@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -161,16 +162,15 @@ private static class CollectionIntegerComparator
     void linkStates(Integer source, Integer destination, Integer label) {
 
         if (transitions.size() > source && transitions.size() > destination) {
-            if (transitions.get(source).containsKey(label)) {
-                transitions.get(source).get(label).add(destination);
-            } else {
-                Set ts = new TreeSet<Integer>();
-                ts.add(destination);
-                transitions.get(source).put(label, ts);
+            Map<Integer, Set<Integer>> place = transitions.get(source);
+            Set<Integer> set = place.get(label);
+            if (set == null) {
+                set = new TreeSet<Integer>();
+                place.put(label, set);
             }
+            set.add(destination);
         } else {
-            throw new RuntimeException("Error: Trying to link nonexistent states (" + source +
-                ", " + destination + ", " + label + ")");
+            throw new RuntimeException("Error: Trying to link nonexistent states (" + source + ", " + destination + ", " + label + ")");
         }
     }
 
@@ -203,13 +203,15 @@ private static class CollectionIntegerComparator
      */
     Integer insertSingleTransduction(Integer tag, Integer source) {
         Map<Integer, Set<Integer>> place = transitions.get(source);
-        if (place.containsKey(tag)) {
-            return place.get(tag).iterator().next();
+        Set<Integer> set = place.get(tag);
+
+        if (set != null) {
+            return set.iterator().next();
         } else {
-            Set<Integer> ts = new TreeSet<Integer>();
+            set = new TreeSet<Integer>();
             Integer i = newState();
-            ts.add(i);
-            place.put(tag, ts);
+            set.add(i);
+            place.put(tag, set);
             return i;
         }
     }
@@ -223,13 +225,16 @@ private static class CollectionIntegerComparator
      */
     Integer insertNewSingleTransduction(Integer tag, Integer source) {
         Integer state = newState();
-        if (transitions.get(source).containsKey(tag)) {
-            transitions.get(source).get(tag).add(state);
+        Map<Integer, Set<Integer>> place = transitions.get(source);
+        Set<Integer> set = place.get(tag);
+
+        if (set != null) {
+            set.add(state);
             return state;
         } else {
-            Set<Integer> set = new TreeSet<Integer>();
+            set = new TreeSet<Integer>();
             set.add(state);
-            transitions.get(source).put(tag, set);
+            place.put(tag, set);
             return state;
         }
     }
@@ -364,16 +369,17 @@ private static class CollectionIntegerComparator
                 Map<Integer, Set<Integer>> mymap = new TreeMap<Integer, Set<Integer>>();
 
                 for (Integer it2 : Q_prima.get(it)) {
-                    if (transitions.containsKey(it2)) {
-                        for (Integer it3 : transitions.get(it2).keySet()) {
+                    Map<Integer, Set<Integer>> xxx = transitions.get(it2);
+                    if (xxx!=null) {
+                        for (Integer it3 : xxx.keySet()) {
                             if (!it3.equals(epsilon_tag)) {
                                 for (Integer it3p : transitions.get(it2).get(it3)) {
                                     Set<Integer> c = closure(it3p);
-
-                                    if (!mymap.containsKey(it3)) {
+                                    Set<Integer> zzz = mymap.get(it3);
+                                    if (zzz==null) {
                                         mymap.put(it3, c);
                                     } else {
-                                        mymap.get(it3).addAll(c);
+                                        zzz.addAll(c);
                                     }
                                 }
                             }
@@ -518,8 +524,8 @@ private static class CollectionIntegerComparator
      * @return the set of the epsilon-connected states
      */
     public Set<Integer> closure(Integer state) {
-        Set<Integer> nonvisited = new TreeSet<Integer>();
-        Set<Integer> result = new TreeSet<Integer>();
+        Set<Integer> nonvisited = new HashSet<Integer>();
+        Set<Integer> result = new HashSet<Integer>();
         nonvisited.add(state);
         result.add(state);
         while (nonvisited.size() > 0) {
@@ -547,7 +553,10 @@ private static class CollectionIntegerComparator
      * @param destination the target state
      */
     void addTransition(Integer source, Integer label, Integer destination) {
-        if (!transitions.containsKey(source)) {
+        //Map<Integer, Set<Integer>> place = transitions.get(source);
+        //Set<Integer> set = place.get(tag);
+
+      if (!transitions.containsKey(source)) {
             transitions.put(source, new TreeMap<Integer, Set<Integer>>());
         }
         if (!transitions.containsKey(destination)) {
