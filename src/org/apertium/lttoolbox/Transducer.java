@@ -530,9 +530,11 @@ private static class CollectionIntegerComparator
         result.add(state);
         while (nonvisited.size() > 0) {
             Integer auxest = nonvisited.iterator().next();
-            if (transitions.containsKey(auxest)) {
-                if (transitions.get(auxest).containsKey(epsilon_tag)) {
-                    for (Integer i : transitions.get(auxest).get(epsilon_tag)) {
+            Map<Integer, Set<Integer>> place = transitions.get(auxest);
+            if (place != null) {
+              Set<Integer> set = place.get(epsilon_tag);
+                if (set !=null) {
+                    for (Integer i : set) {
                         if (!result.contains(i)) {
                             nonvisited.add(i);
                             result.add(i);
@@ -553,22 +555,24 @@ private static class CollectionIntegerComparator
      * @param destination the target state
      */
     void addTransition(Integer source, Integer label, Integer destination) {
-        //Map<Integer, Set<Integer>> place = transitions.get(source);
-        //Set<Integer> set = place.get(tag);
+        Map<Integer, Set<Integer>> place = transitions.get(source);
+        if (place == null) {
+            place = new TreeMap<Integer, Set<Integer>>();
+            transitions.put(source, place);
+        }
 
-      if (!transitions.containsKey(source)) {
-            transitions.put(source, new TreeMap<Integer, Set<Integer>>());
+        Map<Integer, Set<Integer>> destplace = transitions.get(destination);
+        if (destplace == null) {
+           destplace = new TreeMap<Integer, Set<Integer>>();
+            transitions.put(destination, destplace);
         }
-        if (!transitions.containsKey(destination)) {
-            transitions.put(destination, new TreeMap<Integer, Set<Integer>>());
+
+        Set<Integer> set = place.get(label);
+        if (set == null) {
+            set = new TreeSet<Integer>();
+            place.put(label, set);
         }
-        if (transitions.get(source).containsKey(label)) {
-            transitions.get(source).get(label).add(destination);
-        } else {
-            Set ts = new TreeSet<Integer>();
-            ts.add(destination);
-            transitions.get(source).put(label, ts);
-        }
+        set.add(destination);
     }
 
     /**
@@ -700,13 +704,14 @@ private static class CollectionIntegerComparator
         Compression.multibyte_write(base, output);
         for(Integer itFirst : transitions.keySet()) {
             int size = 0;
-            for (Integer it2First : transitions.get(itFirst).keySet()) {
-                size+=transitions.get(itFirst).get(it2First).size();
+            Map<Integer, Set<Integer>> place = transitions.get(itFirst);
+            for (Integer it2First : place.keySet()) {
+                size+=place.get(it2First).size();
             }
             Compression.multibyte_write(size, output);
             int tagbase = 0;
-            for (Integer it2First : transitions.get(itFirst).keySet()) {
-                for (Integer it2Second : transitions.get(itFirst).get(it2First)) {
+            for (Integer it2First : place.keySet()) {
+                for (Integer it2Second : place.get(it2First)) {
                     Compression.multibyte_write(it2First - tagbase + decalage, output);
                     tagbase = it2First;
                     if (it2Second >= itFirst) {
