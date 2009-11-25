@@ -554,25 +554,32 @@ private static class CollectionIntegerComparator
      * @param label the tag
      * @param destination the target state
      */
-    void addTransition(Integer source, Integer label, Integer destination) {
-        Map<Integer, Set<Integer>> place = transitions.get(source);
+    void addTransition(Integer current_state, Integer tagbase, Integer state) {
+        Map<Integer, Set<Integer>> place = transitions.get(current_state);
         if (place == null) {
             place = new TreeMap<Integer, Set<Integer>>();
-            transitions.put(source, place);
+            transitions.put(current_state, place);
         }
 
-        Map<Integer, Set<Integer>> destplace = transitions.get(destination);
+        // unneccesary according to test , but needed according to C++ code:
+        // new_t.transitions[state].clear(); // force create
+        Map<Integer, Set<Integer>> destplace = transitions.get(state);
         if (destplace == null) {
            destplace = new TreeMap<Integer, Set<Integer>>();
-            transitions.put(destination, destplace);
+            transitions.put(state, destplace);
         }
 
-        Set<Integer> set = place.get(label);
+        // new_t.transitions[current_state].insert(pair<int, int>(tagbase, state));
+        Set<Integer> set = new TreeSet<Integer>();
+        place.put(tagbase, set);
+/*
+        Set<Integer> set = place.get(tagbase);
         if (set == null) {
             set = new TreeSet<Integer>();
-            place.put(label, set);
+            place.put(tagbase, set);
         }
-        set.add(destination);
+ */
+        set.add(state);
     }
 
     /**
@@ -669,7 +676,6 @@ private static class CollectionIntegerComparator
         //reading the transitions
         int number_of_states = Compression.multibyte_read(input);
         base = number_of_states;
-
         int current_state = 0;
 
         for (int i = number_of_states; i > 0; i--) {
