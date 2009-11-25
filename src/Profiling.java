@@ -24,6 +24,7 @@ public class Profiling {
         Profiling p = new Profiling();
         //System.out.println(System.getProperties() );
         System.out.println("Profiling "+new java.util.Date() );
+/**/
         p.testjavaAnalysis();
         p.testjavaGeneration();
         p.testjavaDGeneration();
@@ -130,4 +131,22 @@ generation -n took sec 681 msec
 generation -p took sec 448 msec
 analysis -a   took sec 1166 msec
 lt-comp   took sec 9485 msec
+
+ 
+ avoid
+                    if (transitions.containsKey(it2)) {
+                        for (Integer it3 : transitions.get(it2).keySet()) {
+use
+                    Map<Integer, Set<Integer>> xxx = transitions.get(it2);
+                    if (xxx!=null) {
+                        for (Integer it3 : xxx.keySet()) {
+
+Profiling Wed Nov 25 05:16:23 CET 2009
+analysis -a   took sec 2537 msec
+generation -g took sec 838 msec
+generation -d took sec 750 msec
+generation -n took sec 794 msec
+generation -p took sec 461 msec
+analysis -a   took sec 1689 msec
+lt-comp   took sec 9907 msec
  */
