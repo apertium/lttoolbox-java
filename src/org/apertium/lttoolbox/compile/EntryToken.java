@@ -41,7 +41,7 @@ public class EntryToken {
     /**
      * Name of the paradigm (if it is of 'paradigm' 'type')
      */
-    String parName;
+    String paradigmName;
     
     /**
      * Left side of transduction (if 'single_transduction')
@@ -56,42 +56,22 @@ public class EntryToken {
     /**
      * Regular expression (if 'regexp')
      */
-    String myregexp;
+    String regexp;
 
-    /**
-     * Non-parametric constructor 
-     */
-    EntryToken() {
-        leftSide = new ArrayList<Integer>();
-        rightSide = new ArrayList<Integer>();
-        parName = "";
-        type = 0;
-    }
 
-    /**
-     * copy method
-     * @param e the entryToken to be copied
-     */
-    void copy(EntryToken e) {
-        type = e.type;
-        leftSide = e.leftSide;
-        rightSide = e.rightSide;
-        parName = e.parName;
-        myregexp = e.myregexp;
-    }
 
     /**
      * Sets the name of the paradigm.
      * @param np the paradigm name
      */
     void setParadigm(String np) {
-        parName = np;
+        paradigmName = np;
         type = TYPE_paradigm;
     }
 
     /**
      * Set both parts of a single transduction.
-     * @param pi left part
+     * @param pi leftSide part
      * @param pd right part
      */
     void setSingleTransduction(ArrayList<Integer> pi, ArrayList<Integer> pd) {
@@ -105,7 +85,7 @@ public class EntryToken {
      * @param r the regular expression specification.
      */
     void setRegexp(String r) {
-        myregexp = r;
+        regexp = r;
         type = TYPE_regexp;
     }
 
@@ -133,37 +113,7 @@ public class EntryToken {
         return type == TYPE_regexp;
     }
 
-    /**
-     * Retrieve the name of the paradigm.
-     * @return the name of the paradigm.
-     */
-    String paradigmName() {
-        return parName;
-    }
 
-    /**
-     * Retrieve the left part of the paradigm.
-     * @return the left part of the paradigm.
-     */
-    ArrayList<Integer> left() {
-        return leftSide;
-    }
-
-    /**
-     * Retrieve the right part of the paradigm.
-     * @return the right part of the paradigm.
-     */
-    ArrayList<Integer> right() {
-        return rightSide;
-    }
-
-    /**
-     * Retrieve the regular expression specification.
-     * @return the regular expression specification.
-     */
-    String regExp() {
-        return myregexp;
-    }
     
     /**
      * Build a string representation of the entryToken
@@ -173,9 +123,9 @@ public class EntryToken {
     public String toString() {
         String res= "";
         if (type==TYPE_paradigm) {
-            res += "paradigm name : "+parName;
+            res += "paradigm name : "+paradigmName;
         } else if (type ==TYPE_regexp) {
-            res+="regexp : "+myregexp;
+            res+="regexp : "+regexp;
         } else {
             res+="transduction : left "+leftSide+" right "+rightSide;
         }

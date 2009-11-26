@@ -143,6 +143,10 @@ public static class IntegerPair implements Comparable<IntegerPair> {
         }
     }
 
+
+    
+    /** Non-threadsafe temp variable */
+    IntegerPair tmp = new IntegerPair(0,0);
     /**
      * Get an unique code for a pair of characters
      * @param c1 left symbol
@@ -150,12 +154,15 @@ public static class IntegerPair implements Comparable<IntegerPair> {
      * @return the code for (c1, c2)
      */
     public int cast(int c1, int c2) {
-        IntegerPair tmp = new IntegerPair(c1, c2);
+        tmp.first=c1;
+        tmp.second=c2;
         Integer res = spair.get(tmp);
         if (res==null) {
             int spair_size = spair.size();
             spair.put(tmp, spair_size);
             spairinv.add(tmp);
+            // for use next time
+            tmp = new IntegerPair(0,0);
             return spair_size;
         }
         return res;

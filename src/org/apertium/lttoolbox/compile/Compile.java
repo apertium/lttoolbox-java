@@ -80,8 +80,8 @@ public class Compile {
     private String current_section = "";
     
     /**
-     * The direction of the compilation, 'lr' (left-to-right) or 'rl'
-     * (right-to-left)
+     * The direction of the compilation, 'lr' (leftSide-to-right) or 'rl'
+     * (right-to-leftSide)
      */
     private String direction = "";
     
@@ -158,8 +158,8 @@ public class Compile {
     /**
      * Compile dictionary to letter transducers
      * @param file the address of the XML dictionnary to be read
-     * @param dir the direction of the compilation, 'lr' (left-to-right) or 'rl'
-     * (right-to-left)
+     * @param dir the direction of the compilation, 'lr' (leftSide-to-right) or 'rl'
+     * (right-to-leftSide)
      */
     public void parse(String file, String dir) {
         try {
@@ -189,8 +189,8 @@ public class Compile {
      * Read ACX file.
      * @see http://wiki.apertium.org/wiki/ACX format
      * @param file the address of the file to be read
-     * @param dir the direction of the compilation, 'lr' (left-to-right) or 'rl'
-     * (right-to-left)
+     * @param dir the direction of the compilation, 'lr' (leftSide-to-right) or 'rl'
+     * (right-to-leftSide)
      */
     public void parseACX(String file, String dir) {
         try {
@@ -260,30 +260,29 @@ public class Compile {
      */
     private void insertEntryTokens(ArrayList<EntryToken> elements) {
         if (!current_paradigm.equals("")) {
-            Transducer t;
             // compilation of paradigms
-            if (!paradigms.containsKey(current_paradigm)) {
+            Transducer t = paradigms.get(current_paradigm);
+            if (t==null) {
                 t = new Transducer();
                 paradigms.put(current_paradigm, t);
-            } else {
-                t = paradigms.get(current_paradigm);
             }
 
             Integer e = t.getInitial();
 
             for (int i = 0,  limit = elements.size(); i < limit; i++) {
-                if (elements.get(i).isParadigm()) {
-                    if (!paradigms.containsKey(elements.get(i).paradigmName())) {
-                        paradigms.put(elements.get(i).paradigmName(), new Transducer());
+              EntryToken entry = elements.get(i);
+
+                if (entry.isParadigm()) {
+                    if (!paradigms.containsKey(entry.paradigmName)) {
+                        paradigms.put(entry.paradigmName, new Transducer());
                     }
-                    e = t.insertTransducer(e, paradigms.get(elements.get(i).paradigmName()));
-                } else if (elements.get(i).isSingleTransduction()) {
-                    e = matchTransduction(elements.get(i).left(),
-                        elements.get(i).right(), e, t);
-                } else if (elements.get(i).isRegexp()) {
+                    e = t.insertTransducer(e, paradigms.get(entry.paradigmName));
+                } else if (entry.isSingleTransduction()) {
+                    e = matchTransduction(entry.leftSide,entry.rightSide, e, t);
+                } else if (entry.isRegexp()) {
                     RegexpCompiler analyzer = new RegexpCompiler();
                     analyzer.initialize(alphabet);
-                    analyzer.compile(elements.get(i).regExp());
+                    analyzer.compile(entry.regexp);
                     t.setEpsilon_Tag(alphabet.cast00);
                     e = t.insertTransducer(e, analyzer.getTransducer());
                 } else {
@@ -304,8 +303,9 @@ public class Compile {
             int e = t.getInitial();
 
             for (int i = 0,  limit = elements.size(); i < limit; i++) {
-                if (elements.get(i).isParadigm()) {
-                    final String paradigmName = new String(elements.get(i).paradigmName());
+                EntryToken entry = elements.get(i);
+                if (entry.isParadigm()) {
+                    final String paradigmName = entry.paradigmName;
                     if (i == elements.size() - 1) {
                         // paradigm sufix
                         if (!suffix_paradigms.containsKey(current_section)) {
@@ -344,14 +344,14 @@ public class Compile {
                         t.setEpsilon_Tag(0);
                         e = t.insertTransducer(e, paradigms.get(paradigmName));
                     }
-                } else if (elements.get(i).isRegexp()) {
+                } else if (entry.isRegexp()) {
                     RegexpCompiler analyzer = new RegexpCompiler();
                     analyzer.initialize(alphabet);
-                    analyzer.compile(elements.get(i).regExp());
+                    analyzer.compile(entry.regexp);
                     t.setEpsilon_Tag(alphabet.cast00);
                     e = t.insertTransducer(e, analyzer.getTransducer());
                 } else {
-                    e = matchTransduction(elements.get(i).left(), elements.get(i).right(), e, t);
+                    e = matchTransduction(entry.leftSide, entry.rightSide, e, t);
                 }
             }
             t.setFinal(e);
@@ -359,9 +359,9 @@ public class Compile {
     }
 
     /**
-     * Construct symbol pairs by align left side of both parts and insert
+     * Construct symbol pairs by align leftSide side of both parts and insert
      * them into a transducer
-     * @param pi left part of the transduction
+     * @param pi leftSide part of the transduction
      * @param pd right part of the transduction
      * @param state the state from wich insert the new transduction
      * @param t the transducer
@@ -470,7 +470,6 @@ public class Compile {
      */
     EntryToken procRegexp() throws XMLStreamException {
 
-        EntryToken et = new EntryToken();
         reader.next();
         String re = "";
         int start = reader.getTextStart();
@@ -481,6 +480,7 @@ public class Compile {
             re += new String(reader.getTextCharacters(), start, length);
             reader.next();
         }
+        EntryToken et = new EntryToken();
         et.setRegexp(re);
         return et;
     }
@@ -516,7 +516,7 @@ public class Compile {
     private void procEntry() throws XMLStreamException {
         String attribute = attrib(COMPILER_RESTRICTION_ATTR);
         String ignore = attrib(COMPILER_IGNORE_ATTR);
-        String name = new String("");
+        String name = "";
         if (ignore.equals(COMPILER_IGNORE_YES_VAL) || (!(attribute.equals("")) && !(attribute.equals(direction)))) {
             while (!(name.equals(COMPILER_ENTRY_ELEM))) {
                 reader.next();
@@ -537,7 +537,8 @@ public class Compile {
             if (reader.getEventType() == XMLStreamConstants.START_ELEMENT) {
                 name = reader.getLocalName();
             }
-            name = skipBlanks(name);
+            skipBlanks();
+            name =  reader.getLocalName();
             int type = reader.getEventType();
 
             if (name.equals(COMPILER_PAIR_ELEM)) {
@@ -551,7 +552,7 @@ public class Compile {
                 reader.next();
 
                 // detection of the use of undefined paradigms
-                String p = elements.get(elements.size()-1).paradigmName();
+                String p = elements.get(elements.size()-1).paradigmName;
                 if (!paradigms.containsKey(p)) {
                     throw new RuntimeException("Error (" + reader.getLocation().getLineNumber() +"): Undefined paradigm '" + p + "'.");
                 }
@@ -762,9 +763,9 @@ public class Compile {
     EntryToken procTransduction() throws XMLStreamException {
         ArrayList<Integer> lhs = new ArrayList<Integer>();
         ArrayList<Integer> rhs = new ArrayList<Integer>();
-        String name = new String("");
-        name = skipUntil(name, COMPILER_LEFT_ELEM);
+        skipUntil("", COMPILER_LEFT_ELEM);
         reader.next();
+        String name = "";
         while (true) {
             if (reader.isEndElement() && reader.getLocalName().equals(COMPILER_LEFT_ELEM)) {
                 break;
@@ -774,7 +775,7 @@ public class Compile {
                 readString(lhs, name);
                 reader.next();
             } else if (reader.isCharacters()) {
-                readString(lhs, new String(""));
+                readString(lhs, "");
                 reader.next();
             } else if (reader.isEndElement()) {
                 reader.next();
@@ -784,7 +785,7 @@ public class Compile {
                     "): unexpected type of event.");
             }
         }
-        name = skipUntil(name, COMPILER_RIGHT_ELEM);
+        skipUntil(name, COMPILER_RIGHT_ELEM);
         reader.next();
         while (true) {
             if (reader.isEndElement() && reader.getLocalName().equals(COMPILER_RIGHT_ELEM)) {
@@ -795,7 +796,7 @@ public class Compile {
                 readString(rhs, name);
                 reader.next();
             } else if (reader.isCharacters()) {
-                readString(rhs, new String(""));
+                readString(rhs, "");
                 reader.next();
             } else if (reader.isEndElement()) {
                 reader.next();
@@ -806,7 +807,7 @@ public class Compile {
             }
         }
 
-        name = skipUntil(name, COMPILER_PAIR_ELEM);
+        skipUntil(name, COMPILER_PAIR_ELEM);
         EntryToken e = new EntryToken();
         e.setSingleTransduction(lhs, rhs);
         return e;
@@ -818,12 +819,12 @@ public class Compile {
      * @throws javax.xml.stream.XMLStreamException
      */
     EntryToken procPar() throws XMLStreamException {
-        EntryToken e = new EntryToken();
         String paradigm_name = attrib(COMPILER_N_ATTR);
         if (!paradigms.containsKey(paradigm_name)) {
             throw new RuntimeException("Error (" + reader.getLocation().getLineNumber() +
                 "): Undefined paradigm '" + paradigm_name + "'.");
         }
+        EntryToken e = new EntryToken();
         e.setParadigm(paradigm_name);
         return e;
     }
@@ -918,16 +919,14 @@ public class Compile {
     //sets the cursor on the next START_ELEMENT
     /**
      * Skip all blank #text nodes before "name"
-     * @param name the name of the current node
-     * @return the name of the next node
      * @throws javax.xml.stream.XMLStreamException
      */
     //to be changed
-    private String skipBlanks(String s) throws XMLStreamException {
+    private void skipBlanks() throws XMLStreamException {
         reader.next();
         while (true) {
             if (reader.isStartElement() || reader.isEndElement()) {
-                return reader.getLocalName();
+                return;
             } else if (reader.getEventType() == XMLStreamConstants.COMMENT) {
                 reader.next();
             } else if (reader.isCharacters()) {
@@ -944,13 +943,13 @@ public class Compile {
      * 
      * @param name the name of the current node
      * @param elem the name of the node until which we want to skip
-     * @return the name of the wanted node
      * @throws javax.xml.stream.XMLStreamException
      */
-    private String skipUntil(String name, String elem) throws XMLStreamException {
-        name = skipBlanks(name);
+    private void skipUntil(String name, String elem) throws XMLStreamException {
+        skipBlanks();
+        name =  reader.getLocalName();
         if (name.equals(elem)) {
-            return name;
+            return;
         }
         XMLPrint.printNEvent(reader, 3);
         throw new RuntimeException("Error (" + reader.getLocation().getLineNumber() + ", " + reader.getLocation().getColumnNumber() +
