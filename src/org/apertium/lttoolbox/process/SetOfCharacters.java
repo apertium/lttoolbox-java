@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package org.apertium.lttoolbox;
+package org.apertium.lttoolbox.process;
 
 import java.util.Arrays;
 import java.util.HashSet;

@@ -1,4 +1,4 @@
-package org.apertium.lttoolbox;
+package org.apertium.lttoolbox.process;
 
 /*
  * This program is free software; you can redistribute it and/or
@@ -17,6 +17,7 @@ package org.apertium.lttoolbox;
  * 02111-1307, USA.
  */
 
+import org.apertium.lttoolbox.*;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.IOException;
@@ -1161,7 +1162,7 @@ public class FSTProcessor {
         flushBlanks(output);
     }
 
-    void transliteration(Reader input, Writer output) throws IOException {
+    public void transliteration(Reader input, Writer output) throws IOException {
         if (getNullFlush()) {
             transliteration_wrapper_null_flush(input, output);
         }
@@ -1567,7 +1568,7 @@ public class FSTProcessor {
         return result.toString();
     }
 
-    boolean valid() {
+    public boolean valid() {
         if (initial_state.isFinal(all_finals)) {
             System.err.println("Error: Invalid dictionary (hint: the left side of an entry is empty)");
             return false;
@@ -1634,7 +1635,7 @@ public class FSTProcessor {
         }
     }
 
-    void SAO(Reader input, Writer output) throws IOException {
+    public void SAO(Reader input, Writer output) throws IOException {
         boolean last_incond = false;
         boolean last_postblank = false;
         State current_state = new State().copy(initial_state);
@@ -1765,15 +1766,15 @@ public class FSTProcessor {
         return str;
     }
 
-    void setCaseSensitiveMode(boolean value) {
+    public void setCaseSensitiveMode(boolean value) {
         caseSensitive = value;
     }
 
-    void setNullFlush(boolean value) {
+    public void setNullFlush(boolean value) {
         nullFlush = value;
     }
 
-    boolean getNullFlush() {
+    public boolean getNullFlush() {
         return nullFlush;
     }
 

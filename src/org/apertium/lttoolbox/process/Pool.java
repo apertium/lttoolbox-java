@@ -1,4 +1,4 @@
-package org.apertium.lttoolbox;
+package org.apertium.lttoolbox.process;
 
 /*
  * Copyright (C) 2005 Universitat d'Alacant / Universidad de Alicante

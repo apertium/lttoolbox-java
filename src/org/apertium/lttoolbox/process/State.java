@@ -1,4 +1,4 @@
-package org.apertium.lttoolbox;
+package org.apertium.lttoolbox.process;
 
 /*
  * This program is free software; you can redistribute it and/or
@@ -17,6 +17,7 @@ package org.apertium.lttoolbox;
  * 02111-1307, USA.
  */
 
+import org.apertium.lttoolbox.Alphabet;
 import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Set;

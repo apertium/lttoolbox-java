@@ -17,7 +17,8 @@ package org.apertium.lttoolbox;
  * 02111-1307, USA.
  */
 
-import org.apertium.lttoolbox.*;
+import org.apertium.lttoolbox.compile.XMLPrint;
+import org.apertium.lttoolbox.compile.Compile;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;

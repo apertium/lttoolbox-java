@@ -3,7 +3,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
 import org.apertium.lttoolbox.LTComp;
-import org.apertium.lttoolbox.SetOfCharacters;
+import org.apertium.lttoolbox.process.SetOfCharacters;
 
 
 /**
@@ -26,7 +26,6 @@ public class Profiling {
         System.out.println("Profiling "+new java.util.Date() );
         System.gc();
         p.testjavaAnalysis();
-/**/
         System.gc();
         p.testjavaGeneration();
         System.gc();
@@ -37,6 +36,7 @@ public class Profiling {
         p.testjavaPostgeneration();
         System.gc();
         p.testjavaAnalysis();
+/*
         System.gc();
     LTComp.main(new String[] { "rl", "testdata/apertium-fr-es.fr.dix", "tmp/testJava.bin"});
     report("lt-comp  ");
@@ -222,5 +222,17 @@ analysis -a   took sec 508 msec
 lt-comp   took sec 9960 msec
 BUILD SUCCESSFUL (total time: 15 seconds)
 
+
+ * Profiling Wed Nov 25 23:11:14 CET 2009
+analysis -a   took sec 1442 msec
+generation -g took sec 761 msec
+generation -d took sec 447 msec
+generation -n took sec 557 msec
+generation -p took sec 143 msec
+analysis -a   took sec 502 msec
+final@inconditional 61 858
+main@standard 62442 96775
+lt-comp   took sec 10407 msec
+BUILD SUCCESSFUL (total time: 14 seconds)
 
  */

@@ -37,7 +37,7 @@ public class Compression {
      * @param output output stream.
      * @throws java.io.IOException
      */
-    static void multibyte_write(long value, OutputStream output) throws IOException {
+    public static void multibyte_write(long value, OutputStream output) throws IOException {
         if (value < 0x00000040) {
             output.write((char) value);
         } else if (value < 0x00004000) {
@@ -76,7 +76,7 @@ public class Compression {
      * @return the integer value readed.
      * @throws java.io.IOException
      */
-    static int multibyte_read(InputStream input) throws IOException {
+    public static int multibyte_read(InputStream input) throws IOException {
         char up;
         long result = 0;
 
@@ -127,7 +127,7 @@ public class Compression {
      * @param output the output stream.
      * @throws java.io.IOException
      */
-    static void String_write(String str, OutputStream output) throws IOException {
+    public static void String_write(String str, OutputStream output) throws IOException {
         multibyte_write(str.length(), output);
         for (int i = 0,  limit = str.length(); i != limit; i++) {
             multibyte_write((str.charAt(i)), output);
@@ -140,7 +140,7 @@ public class Compression {
      * @return the wide string readed.
      * @throws java.io.IOException
      */
-    static String String_read(InputStream input) throws IOException {
+    public static String String_read(InputStream input) throws IOException {
         String retval = "";
         for (int i = 0,  limit = multibyte_read(input); i != limit; i++) {
             retval += (char) (multibyte_read(input));

@@ -19,6 +19,7 @@ package org.apertium.lttoolbox;
  * 02111-1307, USA.
  */
 
+import org.apertium.lttoolbox.compile.Compile;
 import java.io.*;
 
 /**

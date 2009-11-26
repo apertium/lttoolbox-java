@@ -1,4 +1,4 @@
-package org.apertium.lttoolbox;
+package org.apertium.lttoolbox.compile;
 
 /*
  * This program is free software; you can redistribute it and/or
@@ -17,6 +17,8 @@ package org.apertium.lttoolbox;
  * 02111-1307, USA.
  */
 
+import org.apertium.lttoolbox.compile.Compile;
+import org.apertium.lttoolbox.compile.Transducer;
 import org.apertium.lttoolbox.*;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

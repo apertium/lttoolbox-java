@@ -46,8 +46,8 @@ public class Alphabet {
  */
 public static class IntegerPair implements Comparable<IntegerPair> {
 
-    int first;
-    int second;
+    public int first;
+    public int second;
 
     public IntegerPair(Integer i1, Integer i2) {
       first = i1;
@@ -118,7 +118,7 @@ public static class IntegerPair implements Comparable<IntegerPair> {
 
 
     /** this lookup is needed very often and thus cached */
-    final int cast00;
+    public final int cast00;
 
     /**
      * The constructor
@@ -135,7 +135,7 @@ public static class IntegerPair implements Comparable<IntegerPair> {
      * Include a symbol into the alphabet.
      * @param s the symbol to include
      */
-    void includeSymbol(String s) {
+    public void includeSymbol(String s) {
         if (!slexic.containsKey(s)) {
             int slexic_size = slexic.size();
             slexic.put(s, -(slexic_size + 1));
@@ -149,7 +149,7 @@ public static class IntegerPair implements Comparable<IntegerPair> {
      * @param c2 right symbol
      * @return the code for (c1, c2)
      */
-    int cast(int c1, int c2) {
+    public int cast(int c1, int c2) {
         IntegerPair tmp = new IntegerPair(c1, c2);
         Integer res = spair.get(tmp);
         if (res==null) {
@@ -166,7 +166,7 @@ public static class IntegerPair implements Comparable<IntegerPair> {
      * @param s symbol to be identified.
      * @return the symbol identifier.
      */
-    int cast(String s) {
+    public int cast(String s) {
         return slexic.get(s);
     }
 
@@ -175,7 +175,7 @@ public static class IntegerPair implements Comparable<IntegerPair> {
      * @param s the symbol to check.
      * @return true if the symbol is defined.
      */
-    boolean isSymbolDefined(String s) {
+    public boolean isSymbolDefined(String s) {
         return slexic.containsKey(s);
     }
 
@@ -192,7 +192,7 @@ public static class IntegerPair implements Comparable<IntegerPair> {
      * @param output the outputstream.
      * @throws java.io.IOException.
      */
-    void write(OutputStream output) throws IOException {
+    public void write(OutputStream output) throws IOException {
         // First, we write the taglist
         Compression.multibyte_write(slexicinv.size(), output);
 
@@ -217,7 +217,7 @@ public static class IntegerPair implements Comparable<IntegerPair> {
      * @param a the alphabet to compare to
      * @return true if both alphabets are similar
      */
-    boolean compare(Alphabet a) {
+    public boolean compare(Alphabet a) {
         System.out.println("now comparing the alphabets");
         boolean sameSlexic = true;
         for (String s : a.slexic.keySet()) {
@@ -375,7 +375,7 @@ public static class IntegerPair implements Comparable<IntegerPair> {
      * @return the concatenation of the string s and the symbol symbol 
      * (in lower case)
      */
-    String getSymbol(String s, int symbol) {
+    public String getSymbol(String s, int symbol) {
         return getSymbol(s, symbol, false);
     }
 
@@ -410,7 +410,7 @@ public static class IntegerPair implements Comparable<IntegerPair> {
      * @param symbol the code of the symbol
      * @return true if the symbol is a tag
      */
-    boolean isTag(int symbol) {
+    public boolean isTag(int symbol) {
         return symbol < 0;
     }
 

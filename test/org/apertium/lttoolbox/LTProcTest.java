@@ -6,6 +6,7 @@
 
 package org.apertium.lttoolbox;
 
+import org.apertium.lttoolbox.process.FSTProcessor;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;

@@ -1,4 +1,4 @@
-package org.apertium.lttoolbox;
+package org.apertium.lttoolbox.compile;
 
 /*
  * This program is free software; you can redistribute it and/or
@@ -17,6 +17,7 @@ package org.apertium.lttoolbox;
  * 02111-1307, USA.
  */
 
+import org.apertium.lttoolbox.*;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.InputStream;
@@ -191,7 +192,7 @@ public class Compile {
      * @param dir the direction of the compilation, 'lr' (left-to-right) or 'rl'
      * (right-to-left)
      */
-    void parseACX(String file, String dir) {
+    public void parseACX(String file, String dir) {
         try {
             if (dir.equals(COMPILER_RESTRICTION_LR_VAL)) {
                 XMLInputFactory factory = XMLInputFactory.newInstance();
@@ -217,7 +218,7 @@ public class Compile {
      * @param output the stream where write the result
      * @throws java.io.IOException
      */
-    void write(OutputStream output) throws IOException {
+    public void write(OutputStream output) throws IOException {
 
         // letters
         Compression.String_write(letters, output);
