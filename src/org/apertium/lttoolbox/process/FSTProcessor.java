@@ -17,6 +17,7 @@ package org.apertium.lttoolbox.process;
  * 02111-1307, USA.
  */
 
+import java.io.StringWriter;
 import org.apertium.lttoolbox.*;
 import java.io.InputStream;
 import java.io.Reader;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 
 public class FSTProcessor {
     private boolean isLastBlankTM;
+
 
   
     
@@ -192,7 +194,7 @@ public class FSTProcessor {
         if (!input.ready()) {
             return (char) 0;
         }
-        Character val = read(input);
+        char val = read(input);
         //if (val == -1) return (char) 0; // Jacob
 
         char altval = (char) 0;
@@ -234,7 +236,7 @@ public class FSTProcessor {
         if (!input.ready()) {
             return (char) 0;
         }
-        Character val = read(input);
+        char val = read(input);
         char altval = (char) 0;
 
         if (escaped_chars.contains(val)||iswdigit(val)) {
@@ -299,7 +301,7 @@ public class FSTProcessor {
         if (!input.ready()) {
             return (char) 0;
         }
-        Character val = read(input);
+        char val = read(input);
         char altval = (char) 0;
 
         switch (val) {
@@ -357,8 +359,6 @@ public class FSTProcessor {
             return 0x7fffffff;
         }
         char val = read(input);
-        //System.out.println("read "+val);
-
         
 
         if (outOfWord) {
@@ -367,7 +367,6 @@ public class FSTProcessor {
                     return 0x7fffffff;
                 }
                 val = read(input);
-        //System.out.println("read "+val);
                 
             } else if (val == '\\') {
                 output.write(val);
@@ -375,15 +374,13 @@ public class FSTProcessor {
                     return 0x7fffffff;
                 }
                 val = read(input);
-        //System.out.println("read "+val);
-                
+
                 output.write(val);
                 skipUntil(input, output, '^');
                  if (!input.ready()) {
                     return 0x7fffffff;
                 }
                 val = read(input);
-        //System.out.println("read "+val);
                
             } else {
                 output.write(val);
@@ -392,7 +389,6 @@ public class FSTProcessor {
                     return 0x7fffffff;
                 }
                 val = read(input);
-        //System.out.println("read "+val);
                 
             }
             outOfWord = false;
@@ -400,7 +396,6 @@ public class FSTProcessor {
 
         if (val == '\\') {
             val = read(input);
-        //System.out.println("read "+val);
             return (int) (val);
         } else if (val == '$') {
             outOfWord = true;
@@ -414,14 +409,12 @@ public class FSTProcessor {
                     streamError();
                 }
             val = read(input);
-        //System.out.println("read "+val);
             while (val != '>') {
                cad += val;
                 if (!input.ready()) {
                     streamError();
                 }
                 val = read(input);
-        //System.out.println("read "+val);
             }
             cad += val;
             return alphabet.cast(cad);
@@ -521,7 +514,7 @@ public class FSTProcessor {
         return 0;
     }
 
-    void printSpace(Character val, Writer output) throws IOException {
+    void printSpace(char val, Writer output) throws IOException {
         if (blankqueue.size() > 0) {
             flushBlanks(output);
         } else {
@@ -529,11 +522,11 @@ public class FSTProcessor {
         }
     }
 
-    private boolean isEscaped(Character c) {
+    private boolean isEscaped(char c) {
         return escaped_chars.contains(c);
     }
 
-    private boolean isAlphabetic(Character c) {
+    private boolean isAlphabetic(char c) {
         return alphabetic_chars.contains(c);
     }
 
@@ -577,15 +570,37 @@ public class FSTProcessor {
     }
 
     public void initAnalysis() {
-        //System.out.println("entering initAnalysis");    
         calcInitial();
         classifyFinals();
         all_finals = standard;
         all_finals.addAll(inconditional);
         all_finals.addAll(postblank);
         all_finals.addAll(preblank);
-        //System.out.println("exiting initanalysis");
     }
+
+  public void initDecomposition() {
+        calcInitial();
+        for (String first : transducers.keySet()) {
+            final TransExe second = transducers.get(first);
+            if (endsWith(first, "@inconditional")) {
+                inconditional.addAll(second.getFinals());
+            } else if (endsWith(first, "@standard")) {
+                inconditional.addAll(second.getFinals());
+                standard.addAll(second.getFinals());
+            } else if (endsWith(first, "@postblank")) {
+                postblank.addAll(second.getFinals());
+            } else if (endsWith(first, "@preblank")) {
+                preblank.addAll(second.getFinals());
+            } else {
+                throw new RuntimeException("Error: Unsupported transducer type for '" + first + "'.");
+            }
+        }
+        all_finals = standard;
+        all_finals.addAll(inconditional);
+        all_finals.addAll(postblank);
+        all_finals.addAll(preblank);
+  }
+
 
     public void initTMAnalysis() {
         numbers = new ArrayList<String>();
@@ -614,7 +629,7 @@ public class FSTProcessor {
 
     private static boolean DEBUG = false;
 
-    private final Character charAt(String s, int index) {
+    private final char charAt(String s, int index) {
         /*
     //Maybe this wasn't really necessary,
     //but to prevent problems with the difference from the java charAt() method
@@ -625,8 +640,8 @@ public class FSTProcessor {
         return s.charAt(index);
     }
 
+    
     public void analysis(Reader input, Writer output) throws IOException {
-        //System.out.println("entering analysis");
         if (getNullFlush()) {
             analysis_wrapper_null_flush(input, output);
         }
@@ -639,50 +654,40 @@ public class FSTProcessor {
         String sf = "";
         int last = 0;
 
-        Character val;
+        char val;
         while ((val = readAnalysis(input)) != (char)0) {
-         if (DEBUG) System.err.println("inside while, val = "+val+" "+ (int)val);
-            // test for final states
             if (current_state.isFinal(all_finals)) {
-                //System.out.println("current_state.isFinal(all_finals)");
                 if (current_state.isFinal(inconditional)) {
-                //System.out.println("current_state.isFinal(inconditional)");
                     boolean firstupper = Character.isUpperCase(charAt(sf,0));
                     boolean uppercase = firstupper && Character.isUpperCase(charAt(sf,sf.length() - 1));
 
                     lf = current_state.filterFinals(all_finals, alphabet,
-                            escaped_chars,
-                            uppercase, firstupper);
+                            escaped_chars, uppercase, firstupper);
                     last_incond = true;
                     last = input_buffer.getPos();
                 } else if (current_state.isFinal(postblank)) {
-                //System.out.println("current_state.isFinal(postblank)");
                     boolean firstupper = Character.isUpperCase(charAt(sf,0));
                     boolean uppercase = firstupper && Character.isUpperCase(charAt(sf,sf.length() - 1));
 
                     lf = current_state.filterFinals(all_finals, alphabet,
-                            escaped_chars,
-                            uppercase, firstupper);
+                            escaped_chars, uppercase, firstupper);
                     last_postblank = true;
                     last = input_buffer.getPos();
                 } else if (current_state.isFinal(preblank)) {
-                //System.out.println("current_state.isFinal(preblank)");
                     boolean firstupper = Character.isUpperCase(charAt(sf,0));
                     boolean uppercase = firstupper && Character.isUpperCase(charAt(sf,sf.length() - 1));
 
                     lf = current_state.filterFinals(all_finals, alphabet,
-                            escaped_chars,
-                            uppercase, firstupper);
+                            escaped_chars, uppercase, firstupper);
                     last_preblank = true;
                     last = input_buffer.getPos();
                 } else if (!isAlphabetic(val)) {
-                if (DEBUG) System.err.println("!isAlphabetic(val)");
+                    if (DEBUG) System.err.println("!isAlphabetic(val)");
                     boolean firstupper = Character.isUpperCase(charAt(sf,0));
                     boolean uppercase = firstupper && Character.isUpperCase(charAt(sf,sf.length() - 1));
 
                     lf = current_state.filterFinals(all_finals, alphabet,
-                            escaped_chars,
-                            uppercase, firstupper);
+                            escaped_chars, uppercase, firstupper);
                     last_postblank = false;
                     last_preblank = false;
                     last_incond = false;
@@ -690,7 +695,6 @@ public class FSTProcessor {
                 }
                 if (DEBUG) System.err.println("1 sf="+sf + " lf="+lf);
             } else if (sf.equals("") && Character.isSpaceChar(val)) {
-                //System.out.println("sf.equals(\"\") && Character.isSpaceChar(val)");
                 lf = "/*";
                 lf+=sf;
                 last_postblank = false;
@@ -737,44 +741,22 @@ public class FSTProcessor {
                             lf, output);
                     input_buffer.setPos(last);
                     input_buffer.back(1);
-                } else if (isAlphabetic(val) &&
-                        ((sf.length() - input_buffer.diffPrevPos(last)) > lastBlank(sf) ||
-                        lf.equals(""))) {
-                if (DEBUG) System.err.println("3 sf="+sf + " lf="+lf);
+                } else if (isAlphabetic(val) && ((sf.length() - input_buffer.diffPrevPos(last)) > lastBlank(sf) || lf.equals(""))) {
                     do {
-        //System.out.println("read "+val);
                         sf=alphabet.getSymbol(sf, val);
-                if (DEBUG) System.err.println("4 sf="+sf + " lf="+lf);
                     } while (((val = readAnalysis(input)) != (char)0 )&& isAlphabetic(val));
-//System.out.println("val "+val);
-//System.out.println("isAlphabetic(val) :"+isAlphabetic(val));
-//System.out.println("val == (char)0 : "+(val==(char)0));
-                    
-                    //System.out.println("string read : '"+sf+"'");
-                    if (sf.equals("content")) {
-                        //System.out.println("tout lu, val = "+val);
-                        //System.out.println("val == (char)0 "+(val == (char)0));
-                        //System.out.println("readAnalysis(input) == (char)0 : "+(readAnalysis(input)==(char)0));
-                    }
-                    int limit = firstNotAlpha(sf);
-                    
-                    
+
+                    int limit = firstNotAlpha(sf);                    
                     int size = sf.length();
-                    //System.err.println("size : "+size);
                     limit = (limit == Integer.MAX_VALUE ? size : limit);
-                    //if (sf.equals("content")) {
-                    //System.err.println("limit : "+limit);
-                    //System.err.println("input_buffer : "+input_buffer.toString());
-                    //System.exit(-1);
-                    //}
                     if (limit == 0) {
                         input_buffer.back(sf.length());
                         output.write(charAt(sf,0));
-                if (DEBUG) System.err.println("5 sf="+sf + " lf="+lf);
+                        if (DEBUG) System.err.println("5 sf="+sf + " lf="+lf);
                     } else {
                         input_buffer.back(1 + (size - limit));
                         printUnknownWord(sf.substring(0, limit), output);
-                if (DEBUG) System.err.println("6 sf="+sf + " lf="+lf);
+                        if (DEBUG) System.err.println("6 sf="+sf + " lf="+lf);
                     }
                 } else if (lf.equals("")) {
                     int limit = firstNotAlpha(sf);
@@ -783,18 +765,17 @@ public class FSTProcessor {
                     if (limit == 0) {
                         input_buffer.back(sf.length());
                         output.write(charAt(sf,0));
-                if (DEBUG) System.err.println("7 sf="+sf + " lf="+lf);
+                        if (DEBUG) System.err.println("7 sf="+sf + " lf="+lf);
                     } else {
                         input_buffer.back(1 + (size - limit));
                         printUnknownWord(sf.substring(0, limit), output);
-                if (DEBUG) System.err.println("8 sf="+sf + " lf="+lf);
+                        if (DEBUG) System.err.println("8 sf="+sf + " lf="+lf);
                     }
                 } else {
-                    printWord(sf.substring(0, sf.length() - input_buffer.diffPrevPos(last)),
-                            lf, output);
+                    printWord(sf.substring(0, sf.length() - input_buffer.diffPrevPos(last)), lf, output);
                     input_buffer.setPos(last);
                     input_buffer.back(1);
-                if (DEBUG) System.err.println("9 sf="+sf + " lf="+lf);
+                    if (DEBUG) System.err.println("9 sf="+sf + " lf="+lf);
                 }
 
                 current_state.copy(initial_state);
@@ -810,6 +791,123 @@ public class FSTProcessor {
         flushBlanks(output);
     }
 
+
+
+  public void decomposition(Reader input, Writer output) throws IOException {
+        boolean last_incond = false;
+        State current_state = new State().copy(initial_state);
+        String lf = "";
+        String sf = "";
+        int last = 0;
+
+        char val;
+        while ((val = readAnalysis(input)) != (char)0) {
+            if (current_state.isFinal(all_finals)) {
+                if (current_state.isFinal(inconditional)) {
+                    boolean firstupper = Character.isUpperCase(charAt(sf,0));
+                    boolean uppercase = firstupper && Character.isUpperCase(charAt(sf,sf.length() - 1));
+
+                    lf = current_state.filterFinals(all_finals, alphabet,
+                            escaped_chars, uppercase, firstupper);
+                    last_incond = true;
+                    last = input_buffer.getPos();
+                } else if (!isAlphabetic(val)) {
+                    if (DEBUG) System.err.println("!isAlphabetic(val)");
+                    boolean firstupper = Character.isUpperCase(charAt(sf,0));
+                    boolean uppercase = firstupper && Character.isUpperCase(charAt(sf,sf.length() - 1));
+
+                    lf = current_state.filterFinals(all_finals, alphabet,
+                            escaped_chars, uppercase, firstupper);
+                    last_incond = false;
+                    last = input_buffer.getPos();
+                }
+                if (DEBUG) System.err.println("1 sf="+sf + " lf="+lf);
+            } else if (sf.equals("") && Character.isSpaceChar(val)) {
+                lf = "/*";
+                lf+=sf;
+                last_incond = false;
+                last = input_buffer.getPos();
+                if (DEBUG) System.err.println("2 sf="+sf + " lf="+lf);
+            }
+
+            if (!Character.isUpperCase(val) || caseSensitive) {
+                current_state.step(val);
+            } else {
+                current_state.step(val, Character.toLowerCase(val));
+            }
+
+            if (current_state.size() != 0) {
+                sf=alphabet.getSymbol(sf, val);
+                if (DEBUG) System.err.println("1 sf="+sf);
+
+            } else {
+                if (!isAlphabetic(val) && sf.equals("")) {
+                    if (Character.isSpaceChar(val)) {
+                        printSpace(val, output);
+                    } else {
+                        if (isEscaped(val)) {
+                            output.write('\\');
+                        }
+                        output.write(val);
+                    }
+                } else if (last_incond) {
+                    printWord(sf.substring(0, sf.length() - input_buffer.diffPrevPos(last)),
+                            lf, output);
+                    input_buffer.setPos(last);
+                    input_buffer.back(1);
+                } else if (isAlphabetic(val) && ((sf.length() - input_buffer.diffPrevPos(last)) > lastBlank(sf) || lf.equals(""))) {
+                    do {
+                        sf=alphabet.getSymbol(sf, val);
+                    } while (((val = readAnalysis(input)) != (char)0 )&& isAlphabetic(val));
+
+                    int limit = firstNotAlpha(sf);
+                    int size = sf.length();
+                    limit = (limit == Integer.MAX_VALUE ? size : limit);
+                    if (limit == 0) {
+                        input_buffer.back(sf.length());
+                        output.write(charAt(sf,0));
+                        if (DEBUG) System.err.println("5 sf="+sf + " lf="+lf);
+                    } else {
+                        input_buffer.back(1 + (size - limit));
+                        printUnknownWord(sf.substring(0, limit), output);
+                        if (DEBUG) System.err.println("6 sf="+sf + " lf="+lf);
+                    }
+                } else if (lf.equals("")) {
+                    int limit = firstNotAlpha(sf);
+                    int size = sf.length();
+                    limit = (limit == Integer.MAX_VALUE ? size : limit);
+                    if (limit == 0) {
+                        input_buffer.back(sf.length());
+                        output.write(charAt(sf,0));
+                        if (DEBUG) System.err.println("7 sf="+sf + " lf="+lf);
+                    } else {
+                        input_buffer.back(1 + (size - limit));
+                        printUnknownWord(sf.substring(0, limit), output);
+                        if (DEBUG) System.err.println("8 sf="+sf + " lf="+lf);
+                    }
+                } else {
+                    printWord(sf.substring(0, sf.length() - input_buffer.diffPrevPos(last)), lf, output);
+                    input_buffer.setPos(last);
+                    input_buffer.back(1);
+                    if (DEBUG) System.err.println("9 sf="+sf + " lf="+lf);
+                }
+
+                current_state.copy(initial_state);
+                lf = "";
+                sf = "";
+                last_incond = false;
+            }
+        }
+
+        // print remaining blanks
+        flushBlanks(output);
+    }
+
+
+
+
+
+
     private void analysis_wrapper_null_flush(Reader input, Writer output) throws IOException {
         setNullFlush(false);
         while (input.ready()) {
@@ -824,8 +922,7 @@ public class FSTProcessor {
         }
     }
 
-    private void generation_wrapper_null_flush(Reader input, Writer output,
-            GenerationMode mode) throws IOException{
+    private void generation_wrapper_null_flush(Reader input, Writer output, GenerationMode mode) throws IOException{
         setNullFlush(false);
         while (input.ready()) {
             generation(input, output, mode);
@@ -874,7 +971,7 @@ public class FSTProcessor {
         String sf = "";
         int last = 0;
 
-        Character val;
+        char val;
         while ((val = readAnalysis(input)) != (char) 0) {
             // test for final states
             if (current_state.isFinal(all_finals)) {
@@ -1004,10 +1101,8 @@ public class FSTProcessor {
                 } else if (current_state.isFinal(all_finals)) {
                     boolean uppercase = sf.length() > 1 && Character.isUpperCase(charAt(sf,1));
                     boolean firstupper = Character.isUpperCase(charAt(sf,0));
-
-                    output.write(current_state.filterFinals(all_finals, alphabet,
-                            escaped_chars,
-                            uppercase, firstupper).substring(1));
+                    output.write(current_state.filterFinals(all_finals, alphabet, 
+                            escaped_chars, uppercase, firstupper).substring(1));
                 } else {
                     if (mode == GenerationMode.gm_all) {
                         output.write('#');
@@ -1051,7 +1146,7 @@ public class FSTProcessor {
         SetOfCharacters empty_escaped_chars = new SetOfCharacters();
         int last = 0;
 
-        Character val;
+        char val;
         while ((val = readPostgeneration(input)) != (char)0) {
 
             if (val == '~') {
@@ -1172,7 +1267,7 @@ public class FSTProcessor {
         String sf = "";
         int last = 0;
 
-        Character val;
+        char val;
         while ((val = readPostgeneration(input)) != (char)0) {
             if (iswpunct(val) || Character.isSpaceChar(val)) {
                 boolean firstupper = false;
@@ -1591,7 +1686,7 @@ public class FSTProcessor {
         if (!input.ready()) {
             return (char)0;
         }
-        Character val = read(input);
+        char val = read(input);
         //System.out.println("read "+val);
         
 
@@ -1648,7 +1743,7 @@ public class FSTProcessor {
         escaped_chars.add(('<'));
         escaped_chars.add(('>'));
 
-        Character val;
+        char val;
         while ((val = readSAO(input)) != (char)0) {
             // test for final states
             if (current_state.isFinal(all_finals)) {
@@ -1803,12 +1898,12 @@ public class FSTProcessor {
          */
     }
 
-    private boolean iswdigit(Character val) {
+    private boolean iswdigit(char val) {
         int i = (int) val;
         return ((i>=48&&i<=57)||i==178||i==179||i==185);
     }
 
-    private boolean iswpunct(Character val) {
+    private boolean iswpunct(char val) {
         int i = (int) val;
         return ((i >= 161 && i <= 191) ||
             (i >= 33 && i <= 47) ||

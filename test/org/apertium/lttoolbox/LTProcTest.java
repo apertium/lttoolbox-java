@@ -24,6 +24,9 @@ import junit.framework.TestCase;
 public class LTProcTest extends TestCase {
 
 
+
+
+
   /**
    * Tests a transducer like http://wiki.apertium.org/wiki/Morphological_dictionaries
    * @throws java.io.IOException
@@ -32,7 +35,6 @@ public class LTProcTest extends TestCase {
       FSTProcessor fstp = new FSTProcessor();
       fstp.load(new BufferedInputStream(new FileInputStream("testdata/wound-example.bin")));
       fstp.initAnalysis();
-      InputStream input = new ByteArrayInputStream("wound\n".getBytes());
       StringWriter output = new StringWriter();
       fstp.analysis(new StringReader2("wound\n"), output);
       System.err.println("testAnalysis_small_oneWound_Java = '" + output.toString()+"'");

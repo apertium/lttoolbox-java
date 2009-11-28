@@ -236,6 +236,15 @@ main@standard 62442 96775
 lt-comp   took sec 10407 msec
 BUILD SUCCESSFUL (total time: 14 seconds)
 
- *
+Ran into and changed Character -> char  in FSTProcessor. 10% speed increase
 
+Profiling Sat Nov 28 23:04:20 CET 2009
+analysis -a   took sec 1328 msec
+generation -g took sec 760 msec
+generation -d took sec 443 msec
+generation -n took sec 405 msec
+generation -p took sec 134 msec
+analysis -a   took sec 564 msec
+lt-comp   took sec 10110 msec
+BUILD SUCCESSFUL (total time: 13 seconds)
  */
