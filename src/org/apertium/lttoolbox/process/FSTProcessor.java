@@ -187,6 +187,38 @@ public class FSTProcessor {
         return result.toString();
     }
 
+  private char readDecomposition(Reader input)  throws IOException {
+        if (!input_buffer.isEmpty()) {
+            return input_buffer.next();
+        }
+        if (!input.ready()) {
+            return (char) 0;
+        }
+        char val = read(input);
+
+        if ("[\\".indexOf(val)>=0) {
+            switch (val) {
+                case '[':
+                    blankqueue.addLast(readFullBlock(input, '[', ']'));
+                    input_buffer.add((' '));
+                    return (' ');
+                case '\\':
+                    val = read(input);
+                    if (!escaped_chars.contains(val)) {
+                        streamError();
+                    }
+                    input_buffer.add((val));
+                    return val;
+            }
+        }
+
+        input_buffer.add(val);
+        return val;
+  }
+
+
+
+
     private char readAnalysis(Reader input) throws IOException {
         if (!input_buffer.isEmpty()) {
             return input_buffer.next();
@@ -227,6 +259,8 @@ public class FSTProcessor {
         input_buffer.add(val);
         return val;
     }
+
+
 
     private char readTMAnalysis(Reader input) throws IOException {
         isLastBlankTM = false;
@@ -800,34 +834,53 @@ public class FSTProcessor {
         String sf = "";
         int last = 0;
 
-        char val;
-        while ((val = readAnalysis(input)) != (char)0) {
-            if (current_state.isFinal(all_finals)) {
-                if (current_state.isFinal(inconditional)) {
-                    boolean firstupper = Character.isUpperCase(charAt(sf,0));
-                    boolean uppercase = firstupper && Character.isUpperCase(charAt(sf,sf.length() - 1));
+        boolean slashJustSeen = false;
+        boolean do_decompose = false;
 
-                    lf = current_state.filterFinals(all_finals, alphabet,
-                            escaped_chars, uppercase, firstupper);
+        char val;
+        while ((val = readDecomposition(input)) != (char)0) {
+          // search for string  /*
+          if (val=='*' && slashJustSeen) {
+            do_decompose = true;
+            continue; // skip the *
+          }
+          slashJustSeen = (val=='/');
+
+          // if any blank then we are not anymore decomposing
+          if (blankqueue.size() > 0) {
+              flushBlanks(output);
+             do_decompose = false;
+          }
+          if (val==' ') {
+            do_decompose = false;
+          }
+
+
+          if (!do_decompose) {
+            // just output the input
+            output.write(val);
+            continue;
+          }
+
+
+            if (current_state.isFinal(all_finals)) {
+                boolean firstupper = Character.isUpperCase(charAt(sf,0));
+                boolean uppercase = firstupper && Character.isUpperCase(charAt(sf,sf.length() - 1));
+                if (current_state.isFinal(inconditional)) {
+                    lf = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
                     last_incond = true;
                     last = input_buffer.getPos();
                 } else if (!isAlphabetic(val)) {
-                    if (DEBUG) System.err.println("!isAlphabetic(val)");
-                    boolean firstupper = Character.isUpperCase(charAt(sf,0));
-                    boolean uppercase = firstupper && Character.isUpperCase(charAt(sf,sf.length() - 1));
-
-                    lf = current_state.filterFinals(all_finals, alphabet,
-                            escaped_chars, uppercase, firstupper);
+                    lf = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
                     last_incond = false;
                     last = input_buffer.getPos();
                 }
-                if (DEBUG) System.err.println("1 sf="+sf + " lf="+lf);
             } else if (sf.equals("") && Character.isSpaceChar(val)) {
-                lf = "/*";
+                //lf = "/*";  // the / has already been wrotten
+                lf = "*";  // the / has already been wrotten
                 lf+=sf;
                 last_incond = false;
                 last = input_buffer.getPos();
-                if (DEBUG) System.err.println("2 sf="+sf + " lf="+lf);
             }
 
             if (!Character.isUpperCase(val) || caseSensitive) {
@@ -838,8 +891,6 @@ public class FSTProcessor {
 
             if (current_state.size() != 0) {
                 sf=alphabet.getSymbol(sf, val);
-                if (DEBUG) System.err.println("1 sf="+sf);
-
             } else {
                 if (!isAlphabetic(val) && sf.equals("")) {
                     if (Character.isSpaceChar(val)) {
@@ -851,8 +902,7 @@ public class FSTProcessor {
                         output.write(val);
                     }
                 } else if (last_incond) {
-                    printWord(sf.substring(0, sf.length() - input_buffer.diffPrevPos(last)),
-                            lf, output);
+                    output.write(lf);
                     input_buffer.setPos(last);
                     input_buffer.back(1);
                 } else if (isAlphabetic(val) && ((sf.length() - input_buffer.diffPrevPos(last)) > lastBlank(sf) || lf.equals(""))) {
@@ -866,11 +916,11 @@ public class FSTProcessor {
                     if (limit == 0) {
                         input_buffer.back(sf.length());
                         output.write(charAt(sf,0));
-                        if (DEBUG) System.err.println("5 sf="+sf + " lf="+lf);
                     } else {
                         input_buffer.back(1 + (size - limit));
-                        printUnknownWord(sf.substring(0, limit), output);
-                        if (DEBUG) System.err.println("6 sf="+sf + " lf="+lf);
+                        //printUnknownWord(sf.substring(0, limit), output);
+                        output.write('*');
+                        writeEscaped(sf.substring(0, limit), output);
                     }
                 } else if (lf.equals("")) {
                     int limit = firstNotAlpha(sf);
@@ -879,17 +929,18 @@ public class FSTProcessor {
                     if (limit == 0) {
                         input_buffer.back(sf.length());
                         output.write(charAt(sf,0));
-                        if (DEBUG) System.err.println("7 sf="+sf + " lf="+lf);
                     } else {
                         input_buffer.back(1 + (size - limit));
-                        printUnknownWord(sf.substring(0, limit), output);
-                        if (DEBUG) System.err.println("8 sf="+sf + " lf="+lf);
+                        //printUnknownWord(sf.substring(0, limit), output);
+                        output.write('*');
+                        writeEscaped(sf.substring(0, limit), output);
                     }
                 } else {
-                    printWord(sf.substring(0, sf.length() - input_buffer.diffPrevPos(last)), lf, output);
+                    //printWord(sf.substring(0, sf.length() - input_buffer.diffPrevPos(last)), lf, output);
+                    writeEscaped(sf, output);
+                    output.write(lf);
                     input_buffer.setPos(last);
                     input_buffer.back(1);
-                    if (DEBUG) System.err.println("9 sf="+sf + " lf="+lf);
                 }
 
                 current_state.copy(initial_state);
