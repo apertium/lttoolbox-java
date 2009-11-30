@@ -18,32 +18,12 @@ main (int argc, char* argv[])
   FILE* f;
   string word = "";
 
-  // This if block is mainly in case the word contains a space and isn't fully quoted
-  if (argc < 3) {
+  if (argc != 3) {
     cerr << "Usage: " << argv[0] << " bidix word" << endl;
     exit(EXIT_FAILURE);
-  } else if (argc == 3) {
-    word = argv[2];
-  } else {
-    for (int i=2;i<argc;i++) {
-      if (i==2) {
-        word = argv[i];
-      } else {
-        word.append(" ");
-        word.append(argv[i]);
-      }
-      if (word[word.length()-1]=='$' && i!=argc-1) {
-        cerr << "Usage: " << argv[0] << " bidix word" << endl;
-        cerr << "Only translates a single word" << endl;
-        exit(EXIT_FAILURE);
-      }
-    }
-  }
-  if (word[0]!='^' && word[word.length()-1]!='$') {
-    cerr << "Usage: " << argv[0] << " bidix word" << endl;
-    cerr << "word must be quoted" << endl;
-    exit(EXIT_FAILURE);
-  }
+  } 
+
+  word = argv[2];
 
   wstring lemma=XMLParseUtil::stows(word);
 
