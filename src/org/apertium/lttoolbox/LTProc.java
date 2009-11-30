@@ -40,13 +40,14 @@ public class LTProc {
 
     static void endProgram(String name) {
         System.out.print(name + ": process a stream with a letter transducer\n" +
-            "USAGE: " + name + " [-c] [-a|-g|-n|-d|-p|-s|-t] fst_file [input_file [output_file]]\n" +
+            "USAGE: " + name + " [-c] [-a|-g|-n|-d|-b|-p|-s|-t] fst_file [input_file [output_file]]\n" +
             "Options:\n" +
             "  -a:   morphological analysis (default behavior)\n" +
             "  -c:   use the literal case of the incoming characters\n" +
             "  -g:   morphological generation\n" +
             "  -n:   morph. generation without unknown word marks\n" +
             "  -d:   morph. generation with all the stuff\n"+
+            "  -t:   morph. generation, but retaining part-of-speech\n"+
             "  -p:   post-generation\n" +
             "  -s:   SAO annotation system input processing\n" +
             "  -t:   apply transliteration dictionary\n" +
@@ -93,6 +94,7 @@ public class LTProc {
                         break;
 
                     case 'a':
+                    case 'b':
                     case 'g':
                     case 'n':
                     case 'd':
@@ -198,6 +200,11 @@ public class LTProc {
                     fstp.initGeneration();
                     checkValidity(fstp);
                     fstp.generation(input, output, FSTProcessor.GenerationMode.gm_all);
+
+                case 'b':
+                    fstp.initGeneration();
+                    checkValidity(fstp);
+                    fstp.generation(input, output, FSTProcessor.GenerationMode.gm_tagged);
 
                 case 'p':
                     fstp.initPostgeneration();

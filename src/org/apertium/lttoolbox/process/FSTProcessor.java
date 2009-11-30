@@ -41,7 +41,8 @@ public class FSTProcessor {
 
         gm_clean, // clear all
         gm_unknown, // display unknown words, clear transfer and generation tags
-        gm_all         // display all
+        gm_all,         // display all
+        gm_tagged   // tagged generation
     }
     //private Collator myCollator = Collator.getInstance();
     /**
@@ -1126,8 +1127,17 @@ public class FSTProcessor {
                 } else if (current_state.isFinal(all_finals)) {
                     boolean uppercase = sf.length() > 1 && Character.isUpperCase(charAt(sf,1));
                     boolean firstupper = Character.isUpperCase(charAt(sf,0));
+                    if (mode == GenerationMode.gm_tagged) {
+                      output.write('^');
+                    }
                     output.write(current_state.filterFinals(all_finals, alphabet, 
                             escaped_chars, uppercase, firstupper).substring(1));
+                    if (mode == GenerationMode.gm_tagged) {
+                      output.write('/');
+                      output.write(sf);
+                      output.write('$');
+                    }
+
                 } else {
                     if (mode == GenerationMode.gm_all) {
                         output.write('#');
