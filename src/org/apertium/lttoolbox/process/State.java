@@ -248,6 +248,7 @@ private static class TNodeState {
      * @return true if the state is final
      */
     boolean isFinal(Set<Node> finals) {
+        //if (finals.isEmpty()) return false;
         for (int i = 0,  limit = state.size(); i != limit; i++) {
             if (finals.contains(state.get(i).where)) {
                 return true;
@@ -257,8 +258,10 @@ private static class TNodeState {
     }
 
     /**
-     * Print all outputs of current parsing, preceeded by a bar '/',
-     * from the final nodes of the state
+     * Print all outputs of current parsing, preceeded by a bar '/', from the final nodes of the state. Examples:
+     * /le<prn><pro><p3><nt>/le<det><def><m><sg>/le<prn><pro><p3><m><sg>
+     * /domaine<n><m><sg>
+     * /,<cm>
      * @param finals the set of final nodes
      * @param alphabet the alphabet to decode strings
      * @param escaped_chars the set of chars to be preceeded with one backslash
@@ -266,15 +269,15 @@ private static class TNodeState {
      * @param firstupper true if the first letter of a word is uppercase
      * @return the result of the transduction
      */
-    String filterFinals(Set<Node> finals, Alphabet alphabet, SetOfCharacters escaped_chars,
-        boolean uppercase, boolean firstupper) {
-        int firstchar = 0;
-        return filterFinals(finals, alphabet, escaped_chars, uppercase, firstupper, firstchar);
+    String filterFinals(Set<Node> finals, Alphabet alphabet, SetOfCharacters escaped_chars, boolean uppercase, boolean firstupper) {
+        return filterFinals(finals, alphabet, escaped_chars, uppercase, firstupper, 0);
     }
 
     /**
-     * Print all outputs of current parsing, preceeded by a bar '/',
-     * from the final nodes of the state
+     * Print all outputs of current parsing, preceeded by a bar '/', from the final nodes of the state. Examples:
+     * /le<prn><pro><p3><nt>/le<det><def><m><sg>/le<prn><pro><p3><m><sg>
+     * /domaine<n><m><sg>
+     * /,<cm>
      * @param finals the set of final nodes
      * @param alphabet the alphabet to decode strings
      * @param escaped_chars the set of chars to be preceeded with one backslash
@@ -283,7 +286,7 @@ private static class TNodeState {
      * @param firstchar first character of the word
      * @return the result of the transduction
      */
-    String filterFinals(Set<Node> finals, Alphabet alphabet, SetOfCharacters escaped_chars,
+    private String filterFinals(Set<Node> finals, Alphabet alphabet, SetOfCharacters escaped_chars,
         boolean uppercase, boolean firstupper, int firstchar) {
 
       if (DEBUG) System.err.println("filterFinals( " + uppercase + " "+ firstupper + " "+ firstchar);
@@ -325,7 +328,7 @@ private static class TNodeState {
                 }
             }
         }
-      if (DEBUG) System.err.println("filterFinals RET ( " + result);
+      //System.err.println("filterFinals RET ( " + result);
         return result.toString();
     }
 

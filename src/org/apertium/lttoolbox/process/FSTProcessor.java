@@ -694,48 +694,33 @@ public class FSTProcessor {
                 if (current_state.isFinal(inconditional)) {
                     boolean firstupper = Character.isUpperCase(charAt(sf,0));
                     boolean uppercase = firstupper && Character.isUpperCase(charAt(sf,sf.length() - 1));
-
-                    lf = current_state.filterFinals(all_finals, alphabet,
-                            escaped_chars, uppercase, firstupper);
-                    last_incond = true;
+                    lf = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
                     last = input_buffer.getPos();
+                    last_incond = true;
                 } else if (current_state.isFinal(postblank)) {
                     boolean firstupper = Character.isUpperCase(charAt(sf,0));
                     boolean uppercase = firstupper && Character.isUpperCase(charAt(sf,sf.length() - 1));
-
-                    lf = current_state.filterFinals(all_finals, alphabet,
-                            escaped_chars, uppercase, firstupper);
-                    last_postblank = true;
+                    lf = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
                     last = input_buffer.getPos();
+                    last_postblank = true;
                 } else if (current_state.isFinal(preblank)) {
                     boolean firstupper = Character.isUpperCase(charAt(sf,0));
                     boolean uppercase = firstupper && Character.isUpperCase(charAt(sf,sf.length() - 1));
-
-                    lf = current_state.filterFinals(all_finals, alphabet,
-                            escaped_chars, uppercase, firstupper);
-                    last_preblank = true;
+                    lf = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
                     last = input_buffer.getPos();
+                    last_preblank = true;
                 } else if (!isAlphabetic(val)) {
-                    if (DEBUG) System.err.println("!isAlphabetic(val)");
                     boolean firstupper = Character.isUpperCase(charAt(sf,0));
                     boolean uppercase = firstupper && Character.isUpperCase(charAt(sf,sf.length() - 1));
-
-                    lf = current_state.filterFinals(all_finals, alphabet,
-                            escaped_chars, uppercase, firstupper);
-                    last_postblank = false;
-                    last_preblank = false;
-                    last_incond = false;
+                    lf = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
                     last = input_buffer.getPos();
-                }
-                if (DEBUG) System.err.println("1 sf="+sf + " lf="+lf);
+                    last_postblank = last_preblank = last_incond = false;
+                } 
             } else if (sf.equals("") && Character.isSpaceChar(val)) {
                 lf = "/*";
                 lf+=sf;
-                last_postblank = false;
-                last_preblank = false;
-                last_incond = false;
+                last_postblank = last_preblank = last_incond = false;
                 last = input_buffer.getPos();
-                if (DEBUG) System.err.println("2 sf="+sf + " lf="+lf);
             }
 
             if (!Character.isUpperCase(val) || caseSensitive) {
@@ -746,7 +731,6 @@ public class FSTProcessor {
 
             if (current_state.size() != 0) {
                 sf=alphabet.getSymbol(sf, val);
-                if (DEBUG) System.err.println("1 sf="+sf);
 
             } else {
                 if (!isAlphabetic(val) && sf.equals("")) {
@@ -759,20 +743,17 @@ public class FSTProcessor {
                         output.write(val);
                     }
                 } else if (last_postblank) {
-                    printWord(sf.substring(0, sf.length() - input_buffer.diffPrevPos(last)),
-                            lf, output);
+                    printWord(sf.substring(0, sf.length() - input_buffer.diffPrevPos(last)), lf, output);
                     output.write(' ');
                     input_buffer.setPos(last);
                     input_buffer.back(1);
                 } else if (last_preblank) {
                     output.write(' ');
-                    printWord(sf.substring(0, sf.length() - input_buffer.diffPrevPos(last)),
-                            lf, output);
+                    printWord(sf.substring(0, sf.length() - input_buffer.diffPrevPos(last)), lf, output);
                     input_buffer.setPos(last);
                     input_buffer.back(1);
                 } else if (last_incond) {
-                    printWord(sf.substring(0, sf.length() - input_buffer.diffPrevPos(last)),
-                            lf, output);
+                    printWord(sf.substring(0, sf.length() - input_buffer.diffPrevPos(last)), lf, output);
                     input_buffer.setPos(last);
                     input_buffer.back(1);
                 } else if (isAlphabetic(val) && ((sf.length() - input_buffer.diffPrevPos(last)) > lastBlank(sf) || lf.equals(""))) {
@@ -786,11 +767,9 @@ public class FSTProcessor {
                     if (limit == 0) {
                         input_buffer.back(sf.length());
                         output.write(charAt(sf,0));
-                        if (DEBUG) System.err.println("5 sf="+sf + " lf="+lf);
                     } else {
                         input_buffer.back(1 + (size - limit));
                         printUnknownWord(sf.substring(0, limit), output);
-                        if (DEBUG) System.err.println("6 sf="+sf + " lf="+lf);
                     }
                 } else if (lf.equals("")) {
                     int limit = firstNotAlpha(sf);
@@ -799,11 +778,9 @@ public class FSTProcessor {
                     if (limit == 0) {
                         input_buffer.back(sf.length());
                         output.write(charAt(sf,0));
-                        if (DEBUG) System.err.println("7 sf="+sf + " lf="+lf);
                     } else {
                         input_buffer.back(1 + (size - limit));
                         printUnknownWord(sf.substring(0, limit), output);
-                        if (DEBUG) System.err.println("8 sf="+sf + " lf="+lf);
                     }
                 } else {
                     printWord(sf.substring(0, sf.length() - input_buffer.diffPrevPos(last)), lf, output);
@@ -813,11 +790,8 @@ public class FSTProcessor {
                 }
 
                 current_state.copy(initial_state);
-                lf = "";
-                sf = "";
-                last_incond = false;
-                last_postblank = false;
-                last_preblank = false;
+                lf = sf = "";
+                last_incond = last_postblank = last_preblank = false;
             }
         }
 
@@ -1218,9 +1192,7 @@ public class FSTProcessor {
                 if (current_state.isFinal(all_finals)) {
                     boolean firstupper = Character.isUpperCase(charAt(sf,1));
                     boolean uppercase = sf.length() > 1 && firstupper && Character.isUpperCase(charAt(sf,2));
-                    lf = new StringBuilder(current_state.filterFinals(all_finals, alphabet,
-                            empty_escaped_chars,
-                            uppercase, firstupper, 0));
+                    lf = new StringBuilder(current_state.filterFinals(all_finals, alphabet, empty_escaped_chars, uppercase, firstupper));
 
                     // case of the beggining of the next word
 
@@ -1327,8 +1299,7 @@ public class FSTProcessor {
                     firstupper = Character.isUpperCase(charAt(sf,1));
                     uppercase = sf.length() > 1 && firstupper && Character.isUpperCase(charAt(sf,2));
                 }
-                lf = current_state.filterFinals(all_finals, alphabet, escaped_chars,
-                        uppercase, firstupper, 0);
+                lf = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
                 if (lf.length() > 0) {
                     output.write(lf.substring(1));
                     current_state.copy(initial_state);
@@ -1347,8 +1318,7 @@ public class FSTProcessor {
                 if (current_state.isFinal(all_finals)) {
                     boolean firstupper = Character.isUpperCase(charAt(sf,1));
                     boolean uppercase = sf.length() > 1 && firstupper && Character.isUpperCase(charAt(sf,2));
-                    lf = current_state.filterFinals(all_finals, alphabet, escaped_chars,
-                            uppercase, firstupper, 0);
+                    lf = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
                     last = input_buffer.getPos();
                 }
 
@@ -1434,9 +1404,7 @@ public class FSTProcessor {
                 }
             }
             if (current_state.isFinal(all_finals)) {
-                result = new StringBuilder(current_state.filterFinals(all_finals, alphabet,
-                        escaped_chars,
-                        uppercase, firstupper, 0));
+                result = new StringBuilder(current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper));
                 if (with_delim) {
                     if(mark) {
                         result = new StringBuilder("^="+result.substring(1));
@@ -1556,9 +1524,7 @@ public class FSTProcessor {
                 }
             }
             if (current_state.isFinal(all_finals)) {
-                result = new StringBuilder(current_state.filterFinals(all_finals, alphabet,
-                        escaped_chars,
-                        uppercase, firstupper, 0));
+                result = new StringBuilder(current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper));
                 if (with_delim) {
                     if (mark) {
                         result = new StringBuilder("^=" + result.substring(1));
@@ -1677,9 +1643,7 @@ public class FSTProcessor {
                 }
             }
             if (current_state.isFinal(all_finals)) {
-                result = new StringBuilder(current_state.filterFinals(all_finals, alphabet,
-                        escaped_chars,
-                        uppercase, firstupper, 0));
+                result = new StringBuilder(current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper));
                 if (with_delim) {
                     if (mark) {
                         result = new StringBuilder("^=" + result.substring(1));
