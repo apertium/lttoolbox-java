@@ -44,6 +44,7 @@ public class LTProc {
             "Options:\n" +
             "  -a:   morphological analysis (default behavior)\n" +
             "  -c:   use the literal case of the incoming characters\n" +
+            "  -e:   morphological analysis, do compound analysis on unknown words\n" +
             "  -g:   morphological generation\n" +
             "  -n:   morph. generation without unknown word marks\n" +
             "  -d:   morph. generation with all the stuff\n"+
@@ -91,6 +92,10 @@ public class LTProc {
                 switch (c) {
                     case 'c':
                         fstp.setCaseSensitiveMode(true);
+                        break;
+
+                    case 'e':
+                        fstp.setCompoundAnalysis(true);
                         break;
 
                     case 'a':

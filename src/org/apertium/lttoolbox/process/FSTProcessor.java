@@ -34,6 +34,12 @@ import java.util.ArrayList;
 public class FSTProcessor {
     private boolean isLastBlankTM;
 
+    private boolean do_decomposition = false;
+
+  public void setCompoundAnalysis(boolean b) {
+    do_decomposition = true;
+  }
+
 
   
     
@@ -99,10 +105,6 @@ public class FSTProcessor {
      */
     private Buffer input_buffer;
     /**
-     * Begin of the transducer
-     */
-    private Node root;
-    /**
      * true if the position of input stream is out of a word
      */
     private boolean outOfWord;
@@ -132,7 +134,6 @@ public class FSTProcessor {
         escaped_chars.add('>');
         caseSensitive = false;
         nullFlush = false;
-        root = new Node();
         initial_state = new State();
         //not really elegant, but the Pool attribute is static, 
         //thus shared by all the instances of the class
@@ -472,6 +473,11 @@ public class FSTProcessor {
 
     private void calcInitial() {
         //System.out.println("call to calcInitial");
+    /**
+     * Begin of the transducer
+     */
+        Node root;
+        root = new Node();
         root.initTransitions(transducers.size());
         for (String first : transducers.keySet()) {
             root.addTransition(0, 0, transducers.get(first).getInitial());
@@ -518,25 +524,19 @@ public class FSTProcessor {
         }
     }
 
-    private void printWord(String sf, String lf, Writer output) throws IOException {
+    private void printWord(String surfaceForm, String lexicalForm, Writer output) throws IOException {
         output.write('^');
-        writeEscaped(sf, output);
-        output.write(lf);
+        writeEscaped(surfaceForm, output);
+        output.write(lexicalForm);
         output.write('$');
     }
 
-    private void printUnknownWord(String sf, Writer output) throws IOException {
-//        try {
-//            throw new RuntimeException("toto");
-//        } catch (RuntimeException e) {
-//            e.printStackTrace();
-//            //System.exit(-1);
-//        }
+    private void printUnknownWord(String surfaceForm, Writer output) throws IOException {
         output.write('^');
-        writeEscaped(sf, output);
+        writeEscaped(surfaceForm, output);
         output.write('/');
         output.write('*');
-        writeEscaped(sf, output);
+        writeEscaped(surfaceForm, output);
         output.write('$');
     }
 
@@ -614,26 +614,33 @@ public class FSTProcessor {
     }
 
   public void initDecomposition() {
-        calcInitial();
-        for (String first : transducers.keySet()) {
-            final TransExe second = transducers.get(first);
-            if (endsWith(first, "@inconditional")) {
-                inconditional.addAll(second.getFinals());
-            } else if (endsWith(first, "@standard")) {
-                inconditional.addAll(second.getFinals());
-                standard.addAll(second.getFinals());
-            } else if (endsWith(first, "@postblank")) {
-                postblank.addAll(second.getFinals());
-            } else if (endsWith(first, "@preblank")) {
-                preblank.addAll(second.getFinals());
-            } else {
-                throw new RuntimeException("Error: Unsupported transducer type for '" + first + "'.");
+    initAnalysis();
+    for (String first : transducers.keySet()) {
+        final TransExe second = transducers.get(first);
+
+        System.err.println("first = " + first);
+
+        if (endsWith(first, "@standard")) {
+          System.err.println("Initial = " + second.getInitial());
+          {
+          Node n = second.getInitial();
+            for (Integer i: n.transitions.keySet()) {
+              String symbol = alphabet.getSymbol("", i);
+
+              System.err.println("symbol = " + symbol);
             }
+          }
+
+          System.err.println("Finals = " + second.getFinals());
+          for (Node n : second.getFinals()) {
+            System.err.println("n = " + n);
+            for (Integer i: n.transitions.keySet()) {
+              String symbol = alphabet.getSymbol("", i);
+              System.err.println(i + "symbol = " + symbol);
+            }
+          }
         }
-        all_finals = standard;
-        all_finals.addAll(inconditional);
-        all_finals.addAll(postblank);
-        all_finals.addAll(preblank);
+    }
   }
 
 
@@ -685,8 +692,8 @@ public class FSTProcessor {
         boolean last_postblank = false;
         boolean last_preblank = false;
         State current_state = new State().copy(initial_state);
-        String lf = "";
-        String sf = "";
+        String lf = ""; // lexical form
+        String sf = ""; // surface form
         int last = 0;
 
         char val;
@@ -770,7 +777,17 @@ public class FSTProcessor {
                         output.write(charAt(sf,0));
                     } else {
                         input_buffer.back(1 + (size - limit));
-                        printUnknownWord(sf.substring(0, limit), output);
+                        String unknownWord = sf.substring(0, limit);
+                        if (do_decomposition) {
+                          String compound = compoundAnalysis(unknownWord);
+                          if (compound!=null) {
+                            printWord(unknownWord, compound, output);
+                          } else {
+                            printUnknownWord(unknownWord, output);
+                          }
+                        } else {
+                          printUnknownWord(unknownWord, output);
+                        }
                     }
                 } else if (lf.equals("")) {
                     int limit = firstNotAlpha(sf);
@@ -781,13 +798,23 @@ public class FSTProcessor {
                         output.write(charAt(sf,0));
                     } else {
                         input_buffer.back(1 + (size - limit));
-                        printUnknownWord(sf.substring(0, limit), output);
+                        //printUnknownWord(sf.substring(0, limit), output);
+                        String unknownWord = sf.substring(0, limit);
+                        if (do_decomposition) {
+                          String compound = compoundAnalysis(unknownWord);
+                          if (compound!=null) {
+                            printWord(unknownWord, compound, output);
+                          } else {
+                            printUnknownWord(unknownWord, output);
+                          }
+                        } else {
+                          printUnknownWord(unknownWord, output);
+                        }
                     }
                 } else {
                     printWord(sf.substring(0, sf.length() - input_buffer.diffPrevPos(last)), lf, output);
                     input_buffer.setPos(last);
                     input_buffer.back(1);
-                    if (DEBUG) System.err.println("9 sf="+sf + " lf="+lf);
                 }
 
                 current_state.copy(initial_state);
@@ -798,6 +825,105 @@ public class FSTProcessor {
 
         // print remaining blanks
         flushBlanks(output);
+    }
+
+
+
+
+    public String compoundAnalysis(String input_word) {
+        State current_state = new State().copy(initial_state);
+        StringBuilder result = new StringBuilder();
+        final int MAX_COMBINATIONS = 500;
+        int combinations = 1;
+        input_word += " ";
+
+        // List compound elements. Each element can have multiple alternatives
+        ArrayList<String[]> compoundElements = new ArrayList<String[]>();
+
+        boolean firstupper = Character.isUpperCase(charAt(input_word,0));
+        boolean uppercase = firstupper && Character.isUpperCase(charAt(input_word,1));
+
+        for (int i = 0; i <input_word.length(); i++) {
+            boolean lastChar = (i==input_word.length()-1);
+
+            State previous_state;
+
+            if (lastChar) {
+              previous_state = current_state;
+            } else {
+              previous_state = new State().copy(current_state);
+              int val = (int) (charAt(input_word,i));
+
+              if (current_state.size() != 0) {
+                  if (!alphabet.isTag(val) && Character.isUpperCase(val) && !caseSensitive) {
+                      current_state.step(val, Character.toLowerCase(val));
+                  } else {
+                      current_state.step(val);
+                  }
+              }
+            }
+
+
+            if (current_state.size()==0 || lastChar) {
+              // longest match exceeded has come - or end of word
+              if (previous_state.isFinal(all_finals)) {
+                result = new StringBuilder(previous_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper));
+                result = new StringBuilder(result.substring(1));
+
+                System.err.println("result = " + result);
+                String[] alternatives = result.toString().split("/");
+                // Add array of possible analyses
+                compoundElements.add(alternatives);
+
+                // abort if too many alternatives
+                combinations *= alternatives.length;
+                if (combinations>MAX_COMBINATIONS) {
+                  System.err.println("Warning: compoundAnalysis' MAX_COMBINATIONS exceeded for " + input_word+"\nHint: "+result);
+                  return null;
+                }
+                
+                // start over
+                if (!lastChar) {
+                  current_state = new State().copy(initial_state);
+                  i--;
+                }
+              } else {
+                  // word is not present
+                  return null;
+              }
+            }
+
+            //System.err.println("current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper) = " + current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper));
+
+        }
+
+
+        if (DEBUG) System.err.println("compoundElements = " + compoundElements);
+
+        // Build list of combination tuples
+        ArrayList<String> tuples=null;
+        for (String[] arr : compoundElements) {
+          if (tuples==null) {
+            tuples = new ArrayList<String>();
+            for (String part : arr) tuples.add(part);
+          } else {
+            ArrayList<String> tuples2 = new ArrayList<String>(tuples.size() * arr.length);
+
+            if (DEBUG) System.err.println("tuples.size() * arr.length = " + tuples.size() * arr.length);
+            for (String head : tuples) {
+              for (String part : arr) tuples2.add(head+"+"+part);
+            }
+            tuples = tuples2;
+          }
+        }
+
+        // build resulting string
+        result.delete(0, result.length());
+        for (String word : tuples) {
+          result.append('/');
+          result.append(word);
+        }
+        return result.toString();
     }
 
 
@@ -1360,6 +1486,7 @@ public class FSTProcessor {
         // print remaining blanks
         flushBlanks(output);
     }
+
 
 
     public String biltrans(String input_word, boolean with_delim) {
