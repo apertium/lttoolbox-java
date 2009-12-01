@@ -413,6 +413,17 @@ public static class IntegerPair implements Comparable<IntegerPair> {
     }
 
     /**
+     * Sets an already existing symbol to represent a new value
+     */
+    public void setSymbol(int symbol, String newSymbolString) {
+        if (symbol >= 0) {
+            throw new IllegalArgumentException("Symbol may not be a normal character:"+symbol);
+        } else {
+            slexicinv.set(-symbol - 1, newSymbolString);
+        }
+    }
+
+    /**
      * Checks whether a symbol is a tag or not
      * @param symbol the code of the symbol
      * @return true if the symbol is a tag

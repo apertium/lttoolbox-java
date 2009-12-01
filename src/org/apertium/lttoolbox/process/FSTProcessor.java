@@ -38,8 +38,19 @@ public class FSTProcessor {
 
   public void setCompoundAnalysis(boolean b) {
     do_decomposition = true;
+    
+    System.err.println("compoundSymbol = " + compoundSymbol);
   }
 
+  int compoundSymbol = 0;
+  
+  public void setCompoundingSymbol(String symbol) {
+    compoundSymbol = alphabet.cast("<"+symbol+">");
+    System.err.println("compoundSymbol = " + compoundSymbol);
+    // remove this symbol from output
+    alphabet.setSymbol(compoundSymbol, "");
+
+  }
 
   
     
@@ -188,7 +199,7 @@ public class FSTProcessor {
 
         return result.toString();
     }
-
+/*
   private char readDecomposition(Reader input)  throws IOException {
         if (!input_buffer.isEmpty()) {
             return input_buffer.next();
@@ -217,7 +228,7 @@ public class FSTProcessor {
         input_buffer.add(val);
         return val;
   }
-
+*/
 
 
 
@@ -831,6 +842,9 @@ public class FSTProcessor {
 
 
     public String compoundAnalysis(String input_word) {
+      // Francis' heuristic
+      if (input_word.length()<9) return null;
+
         State current_state = new State().copy(initial_state);
         StringBuilder result = new StringBuilder();
         final int MAX_COMBINATIONS = 500;
@@ -881,6 +895,9 @@ public class FSTProcessor {
                   System.err.println("Warning: compoundAnalysis' MAX_COMBINATIONS exceeded for " + input_word+"\nHint: "+result);
                   return null;
                 }
+
+      // Francis' heuristic
+      if (compoundElements.size()>2) return null;
                 
                 // start over
                 if (!lastChar) {
@@ -927,7 +944,7 @@ public class FSTProcessor {
     }
 
 
-
+/*
   public void decomposition(Reader input, Writer output) throws IOException {
         boolean last_incond = false;
         State current_state = new State().copy(initial_state);
@@ -1054,7 +1071,7 @@ public class FSTProcessor {
         // print remaining blanks
         flushBlanks(output);
     }
-
+*/
 
 
 

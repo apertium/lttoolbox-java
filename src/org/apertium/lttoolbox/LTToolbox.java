@@ -27,7 +27,7 @@ public class LTToolbox {
       System.out.println(LTToolbox.class.getResource("/x"));
       System.out.println(LTToolbox.class.getResource("."));
        */
-        System.out.print("lttoolbox: is a toolbox for lexical processing, morphological analysis and generation of words\n" +
+        System.out.println("lttoolbox: is a toolbox for lexical processing, morphological analysis and generation of words\n" +
             "USAGE: java -jar " +jar+ " [task]\n" +
             "Examples:\n" +
             " java -jar " +jar+ " lt-expand dictionary.dix     expands a dictionary\n" +
