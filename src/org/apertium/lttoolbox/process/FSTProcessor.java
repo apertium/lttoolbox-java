@@ -669,7 +669,7 @@ public class FSTProcessor {
         initGeneration();
     }
 
-    private static boolean DEBUG = false;
+    private final static boolean DEBUG = false;
 
     private final char charAt(String s, int index) {
         /*
@@ -870,7 +870,7 @@ public class FSTProcessor {
                 result = new StringBuilder(previous_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper));
                 result = new StringBuilder(result.substring(1));
 
-                System.err.println("result = " + result);
+                if (DEBUG) System.err.println("result = " + result);
                 String[] alternatives = result.toString().split("/");
                 // Add array of possible analyses
                 compoundElements.add(alternatives);

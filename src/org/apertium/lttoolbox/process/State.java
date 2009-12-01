@@ -50,6 +50,14 @@ private static class TNodeState {
         this.sequence = other.sequence;
         this.dirty = other.dirty;
     }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder(sequence.size());
+        for (int i : sequence) sb.append((char)i);
+        sb.append('→');
+        for (int i : where.transitions.keySet()) sb.append((char)i);
+        return sb.toString() + "/" + dirty;
+    }
 }
 
 
@@ -162,6 +170,7 @@ private static class TNodeState {
             //XXX no pool now: pool.release(state.get(i).sequence);
         }
 
+
         state = new_state;
     }
 
@@ -227,8 +236,14 @@ private static class TNodeState {
      * @param input the input symbol
      */
     void step(int input) {
+        if (DEBUG) System.err.println();
+        if (DEBUG) System.err.println("state f = " + state);
+        if (DEBUG) System.err.println("apply (" + (char) input);
+
         apply(input);
+        if (DEBUG) System.err.println("state e1= " + state);
         epsilonClosure();
+        if (DEBUG) System.err.println("state e2= " + state);
     }
 
     /**
@@ -269,25 +284,9 @@ private static class TNodeState {
      * @param firstupper true if the first letter of a word is uppercase
      * @return the result of the transduction
      */
-    String filterFinals(Set<Node> finals, Alphabet alphabet, SetOfCharacters escaped_chars, boolean uppercase, boolean firstupper) {
-        return filterFinals(finals, alphabet, escaped_chars, uppercase, firstupper, 0);
-    }
-
-    /**
-     * Print all outputs of current parsing, preceeded by a bar '/', from the final nodes of the state. Examples:
-     * /le<prn><pro><p3><nt>/le<det><def><m><sg>/le<prn><pro><p3><m><sg>
-     * /domaine<n><m><sg>
-     * /,<cm>
-     * @param finals the set of final nodes
-     * @param alphabet the alphabet to decode strings
-     * @param escaped_chars the set of chars to be preceeded with one backslash
-     * @param uppercase true if the word is uppercase
-     * @param firstupper true if the first letter of a word is uppercase
-     * @param firstchar first character of the word
-     * @return the result of the transduction
-     */
-    private String filterFinals(Set<Node> finals, Alphabet alphabet, SetOfCharacters escaped_chars,
-        boolean uppercase, boolean firstupper, int firstchar) {
+    String filterFinals(Set<Node> finals, Alphabet alphabet, SetOfCharacters escaped_chars,
+        boolean uppercase, boolean firstupper) {
+      int firstchar = 0;
 
       if (DEBUG) System.err.println("filterFinals( " + uppercase + " "+ firstupper + " "+ firstchar);
 
@@ -309,7 +308,6 @@ private static class TNodeState {
                     }
                     if (firstupper) {
 
-                      if (DEBUG) System.err.println(first_char + "result = " + result);
                         if (result.charAt(first_char) == '~') {
                             // skip post-generation mark
                             result.setCharAt(first_char + 1, Character.toUpperCase(result.charAt(first_char + 1)));
@@ -320,10 +318,11 @@ private static class TNodeState {
                 } else {
                     result.append('/');
                     for (int j = 0,  limit2 = state_i.sequence.size(); j != limit2; j++) {
-                        if (escaped_chars.contains((char) ((state_i.sequence).get(j)).intValue())) {
+                        int symbol = ((state_i.sequence).get(j)).intValue();
+                        if (escaped_chars.contains((char) symbol)) {
                             result.append('\\');
                         }
-                        result.replace(0, Integer.MAX_VALUE, alphabet.getSymbol(result.toString(), (state_i.sequence).get(j).intValue()));
+                        result.replace(0, Integer.MAX_VALUE, alphabet.getSymbol(result.toString(), symbol));
                     }
                 }
             }

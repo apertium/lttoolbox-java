@@ -77,7 +77,7 @@ public class LTProc {
         int cmd = 0;
         FSTProcessor fstp = new FSTProcessor();
 
-        GetOpt getopt = new GetOpt(argv, "acgndpstzvh");
+        GetOpt getopt = new GetOpt(argv, "acegndpstzvh");
 
         int optind = -1;
         int counter = 0;
@@ -96,6 +96,7 @@ public class LTProc {
 
                     case 'e':
                         fstp.setCompoundAnalysis(true);
+                        optind = counter;
                         break;
 
                     case 'a':

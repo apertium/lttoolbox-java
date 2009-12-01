@@ -5,7 +5,10 @@
 
 package org.apertium.lttoolbox;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 import java.util.Arrays;
+import org.apertium.lttoolbox.process.FSTProcessor;
 
 /**
  *
@@ -14,6 +17,7 @@ import java.util.Arrays;
 public class LTToolbox {
 
     static void showHelp() {
+
       String jar = System.getProperty("java.class.path");
       if (jar.contains(":") || !jar.endsWith("lttoolbox.jar")) jar = "lttoolbox.jar";
       /*
@@ -37,7 +41,7 @@ public class LTToolbox {
   public static void main(String[] argv) throws Exception {
       if (argv.length == 0) showHelp();
       String task = argv[0];
-      String[] restOfArgs = Arrays.copyOfRange(argv, 0 , argv.length-1);
+      String[] restOfArgs = Arrays.copyOfRange(argv, 1 , argv.length);
       if (task.equals("lt-proc")) LTProc.main(restOfArgs);
       else if (task.equals("lt-comp")) LTComp.main(restOfArgs);
       else if (task.equals("lt-expand")) LTExpand.main(restOfArgs);

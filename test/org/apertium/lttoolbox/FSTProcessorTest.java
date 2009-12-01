@@ -33,7 +33,7 @@ public class FSTProcessorTest extends TestCase {
       assertEquals("big<adj>/large<adj>", fstp.biltrans("granda<adj>", false));
   }
 
-/* TODO test
+/* TODO test Java and C compilation
 lt-comp lr apertium-eo-en.eo-en.dix eo-en.autobil.bin
 lt-comp rl apertium-eo-en.eo-en.dix en-eo.autobil.bin
  */
