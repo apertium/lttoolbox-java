@@ -289,6 +289,25 @@ public class State {
         return result.toString();
     }
 
+
+    void restartFinals(Set<Node> finals, Alphabet alphabet, State initial_state, int restartSymbol) {
+
+        for (int i = 0,  limit = state.size(); i != limit; i++) {
+            TNodeState state_i = state.get(i);
+            if (finals.contains(state_i.where)) {
+
+                // state is final - restart it, conserving old symbols
+                for (TNodeState initst : initial_state.state) {
+                    ArrayList<Integer> new_sequence = new ArrayList<Integer>(state_i.sequence.size()+1); //XXX no pool for now: new_v = pool.get();
+                    new_sequence.addAll(state_i.sequence);
+                    new_sequence.add(restartSymbol);
+                    state.add(new TNodeState(initst.where, new_sequence, state_i.caseWasChanged));
+                }
+            }
+        }
+    }
+
+
     /**
      * Same as previous one, but  the output is adapted to the SAO system
      * @param finals the set of final nodes

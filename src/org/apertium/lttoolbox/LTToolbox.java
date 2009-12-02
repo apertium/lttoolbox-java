@@ -39,6 +39,15 @@ public class LTToolbox {
     }
 
   public static void main(String[] argv) throws Exception {
+      FSTProcessor fstp = new FSTProcessor();
+      fstp.load(new BufferedInputStream(new FileInputStream("testdata/compounding/eo-en.automorf.bin")));
+      fstp.initAnalysis();
+      fstp.setCompoundAnalysis(true);
+      fstp.setCompoundingSymbol("compounding");
+
+      fstp.compoundAnalysis2("domodetektivo");
+        System.exit(-1);
+
       if (argv.length == 0) showHelp();
       String task = argv[0];
       String[] restOfArgs = Arrays.copyOfRange(argv, 1 , argv.length);
