@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.ArrayList;
 
+
 /**
  * Alphabet class.
  * Encodes pairs of symbols into an integer.
@@ -39,12 +40,11 @@ import java.util.ArrayList;
  */
 public class Alphabet {
 
-
 /**
  * Class to represent a pair of integers
  * @author Raah
  */
-public static class IntegerPair implements Comparable<IntegerPair> {
+public static class IntegerPair { 
 
     public int first;
     public int second;
@@ -64,71 +64,41 @@ public static class IntegerPair implements Comparable<IntegerPair> {
         if (o == this) {
             return true;
         }
+        /*
         if (! (o instanceof IntegerPair)) {
             return false;
-        }
+        }*/
         IntegerPair p = (IntegerPair)o;
         return ((first == p.first)&& (second == p.second));
-    }
-
-    @Override
-    public int compareTo(IntegerPair p) {
-        if (first > p.first) {
-            return 1;
-        }
-        if (first < p.first) {
-            return -1;
-        }
-        if (second > p.second) {
-            return 1;
-        }
-        if (second < p.second) {
-            return -1;
-        }
-        return 0;
     }
 
     @Override
     public String toString() {
         return new String("<" + (first>0?(char)first:"") + first + "," + (second>0?(char)second:"") + second + ">");
     }
-/*
-    @Override
-    public int compareTo(Object o) {
-        if (o==this) return 0;
-        IntegerPair p = (IntegerPair)o;
-        return compareTo(p);
-    }*/
 }
-
 
     /**
      * Symbol-identifier relationship.
      */
-    Map<String, Integer> slexic = new HashMap<String, Integer>();
+    private final Map<String, Integer> slexic = new HashMap<String, Integer>();
     
     /**
      * Identifier-symbol relationship.
      */
-    List<String> slexicinv = new ArrayList<String>();
-    
-    Map<IntegerPair, Integer> spair;
-    
-    ArrayList<IntegerPair> spairinv;
+    private final List<String> slexicinv = new ArrayList<String>();
 
 
-    /** this lookup is needed very often and thus cached */
-    public final int cast00;
+    private final Map<IntegerPair, Integer> spair= new HashMap<IntegerPair, Integer>();
+
+    
+    private final ArrayList<IntegerPair> spairinv = new ArrayList<IntegerPair>();
+
 
     /**
      * The constructor
      */
     public Alphabet() {
-        spair = new HashMap<IntegerPair, Integer>();
-        spair.put(new IntegerPair(0, 0), 0);
-        spairinv = new ArrayList<IntegerPair>();
-        spairinv.add(new IntegerPair(0, 0));
-        cast00 =cast(0, 0);
     }
 
     /**
@@ -147,6 +117,10 @@ public static class IntegerPair implements Comparable<IntegerPair> {
     
     /** Non-threadsafe temp variable */
     IntegerPair tmp = new IntegerPair(0,0);
+
+    /** this lookup is needed very often and thus cached */
+    public final int cast00 =cast(0, 0);
+
     /**
      * Get an unique code for a pair of characters
      * @param c1 left symbol
@@ -371,7 +345,8 @@ public static class IntegerPair implements Comparable<IntegerPair> {
     }
 
     public String toString() {
-    	return slexicinv+"\n/"+spairinv +"\n/"+ spair;
+    	return slexicinv.toString();
+    	//return slexicinv+"\n/"+spairinv +"\n/"+ spair;
     }
 
 

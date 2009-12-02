@@ -20,12 +20,7 @@ package org.apertium.lttoolbox.process;
 import org.apertium.lttoolbox.*;
 import java.io.InputStream;
 import java.io.IOException;
-import java.util.Set;
-import java.util.TreeMap;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 import org.apertium.lttoolbox.Alphabet.IntegerPair;
 
 /**
@@ -48,13 +43,13 @@ public class TransExe {
     private ArrayList<Node> finals2 = new ArrayList<Node>();
 
     //Index of the last node added to node_list
-    private Integer index =0;
+    // private Integer index =0;
     
     TransExe() {
     }
 
     void read(InputStream input, Alphabet alphabet) throws IOException {
-        index = 0;
+        //index = 0;
         initial_id = Compression.multibyte_read(input);
         final int finals_size = Compression.multibyte_read(input);
         //System.out.println("finals_size : "+finals_size);

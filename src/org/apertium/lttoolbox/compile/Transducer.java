@@ -65,6 +65,7 @@ public class Transducer {
      * String conversion method to be able to display a transducer
      * @return a string description of the transducer
      */
+  @Override
     public String toString() {
         String res = "";
         res+="initial :\n"+initial+"\n";
@@ -158,15 +159,15 @@ public class Transducer {
         Map<Integer, Set<Integer>> place = transitions.get(source);
         Set<Integer> set = place.get(tag);
 
-        if (set != null) {
-            return set.iterator().next();
-        } else {
+        if (set == null) {
             set = new HashSet<Integer>();
-            Integer i = newState();
-            set.add(i);
             place.put(tag, set);
-            return i;
+        } else {
+            return set.iterator().next();
         }
+        Integer state = newState();
+        set.add(state);
+        return state;
     }
 
     /**
@@ -177,7 +178,6 @@ public class Transducer {
      * @return the target state
      */
     Integer insertNewSingleTransduction(Integer tag, Integer source) {
-        Integer state = newState();
         Map<Integer, Set<Integer>> place = transitions.get(source);
         Set<Integer> set = place.get(tag);
 
@@ -185,6 +185,7 @@ public class Transducer {
             set = new HashSet<Integer>();
             place.put(tag, set);
         }
+        Integer state = newState();
         set.add(state);
         return state;
     }
