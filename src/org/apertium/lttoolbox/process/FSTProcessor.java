@@ -598,7 +598,7 @@ public class FSTProcessor {
           {
           Node n = second.getInitial();
             for (Integer i: n.transitions.keySet()) {
-              String symbol = alphabet.getSymbol("", i);
+              String symbol = alphabet.getSymbol(i);
 
               System.err.println("symbol = " + symbol);
             }
@@ -608,7 +608,7 @@ public class FSTProcessor {
           for (Node n : second.getFinals()) {
             System.err.println("n = " + n);
             for (Integer i: n.transitions.keySet()) {
-              String symbol = alphabet.getSymbol("", i);
+              String symbol = alphabet.getSymbol(i);
               System.err.println(i + "symbol = " + symbol);
             }
           }
@@ -705,7 +705,7 @@ public class FSTProcessor {
             }
 
             if (current_state.size() != 0) {
-                sf=alphabet.getSymbol(sf, val);
+                sf=sf+alphabet.getSymbol(val);
 
             } else {
                 if (!isAlphabetic(val) && sf.equals("")) {
@@ -733,7 +733,7 @@ public class FSTProcessor {
                     input_buffer.back(1);
                 } else if (isAlphabetic(val) && ((sf.length() - input_buffer.diffPrevPos(last)) > lastBlank(sf) || lf.equals(""))) {
                     do {
-                        sf=alphabet.getSymbol(sf, val);
+                        sf=sf+alphabet.getSymbol(val);
                     } while (((val = readAnalysis(input)) != (char)0 )&& isAlphabetic(val));
 
                     int limit = firstNotAlpha(sf);                    
@@ -1017,7 +1017,7 @@ public class FSTProcessor {
             }
 
             if (current_state.size() != 0) {
-                sf=alphabet.getSymbol(sf, val);
+                sf+=alphabet.getSymbol(, val);
             } else {
                 if (!isAlphabetic(val) && sf.equals("")) {
                     if (Character.isSpaceChar(val)) {
@@ -1034,7 +1034,7 @@ public class FSTProcessor {
                     input_buffer.back(1);
                 } else if (isAlphabetic(val) && ((sf.length() - input_buffer.diffPrevPos(last)) > lastBlank(sf) || lf.equals(""))) {
                     do {
-                        sf=alphabet.getSymbol(sf, val);
+                        sf+=alphabet.getSymbol(, val);
                     } while (((val = readAnalysis(input)) != (char)0 )&& isAlphabetic(val));
 
                     int limit = firstNotAlpha(sf);
@@ -1177,7 +1177,7 @@ public class FSTProcessor {
                 } else if (isLastBlankTM && val == ' ') {
                     sf += blankqueue.getLast();
                 } else {
-                    sf = alphabet.getSymbol(sf, val);
+                    sf = sf+alphabet.getSymbol(val);
                 }
             } else {
                 if ((Character.isWhitespace(val) || iswpunct(val)) && sf.equals("")) {
@@ -1199,7 +1199,7 @@ public class FSTProcessor {
                         } else if (isLastBlankTM && val == ' ') {
                             sf += (blankqueue.getLast());
                         } else {
-                            sf = alphabet.getSymbol(sf, val);
+                            sf += alphabet.getSymbol(val);
                         }
                     } while (((val = readTMAnalysis(input)) != (char) 0) && !Character.isWhitespace(val) && !iswpunct(val));
 
@@ -1307,9 +1307,9 @@ public class FSTProcessor {
             } else if (Character.isSpaceChar((char) val) && sf.length() == 0) {
             // do nothing
             } else if (sf.length() > 0 && (sf.charAt(0) == '*' || sf.charAt(0) == '%')) {
-                sf=alphabet.getSymbol(sf, val);
+                sf+=alphabet.getSymbol(val);
             } else {
-                sf=alphabet.getSymbol(sf, val);
+                sf+=alphabet.getSymbol(val);
                 if (current_state.size() > 0) {
                     if (!alphabet.isTag(val) && Character.isUpperCase(val) && !caseSensitive) {
                         current_state.step(val, Character.toLowerCase(val));
@@ -1399,7 +1399,7 @@ public class FSTProcessor {
                 }
 
                 if (current_state.size() != 0) {
-                    sf=alphabet.getSymbol(sf, val);
+                    sf+=alphabet.getSymbol(val);
                 } else {
                     if (lf.length()==0) {
                         int mark = sf.length();
@@ -1486,7 +1486,7 @@ public class FSTProcessor {
 
                 current_state.step(val);
                 if (current_state.size() != 0) {
-                    sf=alphabet.getSymbol(sf, val);
+                    sf+=alphabet.getSymbol(val);
                 } else {
                     if (lf.length() > 0) {
                         output.write(lf.substring(1));
@@ -1971,7 +1971,7 @@ public class FSTProcessor {
             }
 
             if (current_state.size() != 0) {
-                sf=alphabet.getSymbol(sf, val);
+                sf+=alphabet.getSymbol(val);
             } else {
                 if (!isAlphabetic(val) && sf.equals("")) {
                     if (Character.isSpaceChar(val)) {
@@ -1995,7 +1995,7 @@ public class FSTProcessor {
                         ((sf.length() - input_buffer.diffPrevPos(last)) > lastBlank(sf) ||
                         lf.equals(""))) {
                     do {
-                        sf=alphabet.getSymbol(sf, val);
+                        sf+=alphabet.getSymbol(val);
                     } while ((val = readSAO(input)) != (char)0 && isAlphabetic(val));
 
                     int limit = firstNotAlpha(sf);

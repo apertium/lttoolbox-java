@@ -309,7 +309,7 @@ private static class TNodeState {
                             result.append('\\');
                         }
                         // alphabet.getSymbol(result, (*(state[i].sequence))[j], uppercase); was missing
-                        result.replace(0, Integer.MAX_VALUE, alphabet.getSymbol(result.toString(), (state_i.sequence).get(j).intValue(), uppercase));
+                        result.append(alphabet.getSymbol((state_i.sequence).get(j).intValue(), uppercase));
                     }
                     if (firstupper) {
 
@@ -327,7 +327,7 @@ private static class TNodeState {
                         if (escaped_chars.contains((char) symbol)) {
                             result.append('\\');
                         }
-                        result.replace(0, Integer.MAX_VALUE, alphabet.getSymbol(result.toString(), symbol));
+                        result.append(alphabet.getSymbol(symbol));
                     }
                 }
             }
@@ -363,10 +363,10 @@ private static class TNodeState {
                     }
                     if (alphabet.isTag(((state_i.sequence)).get(j))) {
                         result.append('&');
-                        result.replace(0, Integer.MAX_VALUE, alphabet.getSymbol(result.toString(), state_i.sequence.get(j)));
+                        result.append(alphabet.getSymbol(state_i.sequence.get(j)));
                         result.setCharAt(result.length() - 1, ';');
                     } else {
-                        result.replace(0, Integer.MAX_VALUE, alphabet.getSymbol(result.toString(), ((state_i.sequence)).get(j), uppercase));
+                        result.append(alphabet.getSymbol(((state_i.sequence)).get(j), uppercase));
                     }
                 }
                 if (firstupper) {
@@ -403,7 +403,7 @@ private static class TNodeState {
                     if (escaped_chars.contains((char) state_i.sequence.get(j).intValue())) {
                         result += '\\';
                     }
-                    result = alphabet.getSymbol(result, state_i.sequence.get(j));
+                    result += alphabet.getSymbol(state_i.sequence.get(j));
                 }
             }
         }

@@ -376,45 +376,50 @@ public static class IntegerPair implements Comparable<IntegerPair> {
 
 
     /**
-     * Concat the symbol symbol to the string s.
-     * @param s string to which to add the symbol
-     * @param symbol the symbol to be added
-     * @return the concatenation of the string s and the symbol symbol 
-     * (in lower case)
+     * @deprecated
      */
     public String getSymbol(String s, int symbol) {
         return getSymbol(s, symbol, false);
     }
 
     /**
-     * Concat the symbol symbol to the string s.
-     * @param s string to which to add the symbol
-     * @param symbol the symbol to be added
-     * @param uppercase true if we want an uppercase symbol
-     * @return the concatenation of the string s and the symbol symbol
+     * @deprecated
      */
     public String getSymbol(String s, int symbol, boolean uppercase) {
+      return s + getSymbol(symbol, uppercase);
+    }
+
+    public String getSymbol(int symbol) {
+        return getSymbol(symbol, false);
+    }
+
+    /**
+     * Find a symbol symbol
+     * @param symbol the symbol to be added
+     * @param uppercase true if we want an uppercase symbol
+     * @return the symbol as a string
+     */
+    public String getSymbol(int symbol, boolean uppercase) {
         if (symbol == 0) {
-            return s;
+            return "";
         }
-        String result = s;
         if (!uppercase) {
             if (symbol >= 0) {
-                result += (char) (symbol);
+                return ""+ (char)symbol; // @TODO re-use strings
             } else {
-                result += (slexicinv.get(-symbol - 1));
+                return slexicinv.get(-symbol - 1);
             }
         } else if (symbol >= 0) {
-            result += Character.toUpperCase((char) (symbol));
+              return ""+ Character.toUpperCase((char)symbol); // @TODO re-use strings
         } else {
-            result += (slexicinv.get(-symbol - 1));
+                return slexicinv.get(-symbol - 1);
         }
-        return result;
     }
 
 
     /**
      * Sets an already existing symbol to represent a new value
+     * Used to avoid decomposition symbols in output
      */
     public void setSymbol(int symbol, String newSymbolString) {
         if (symbol >= 0) {
