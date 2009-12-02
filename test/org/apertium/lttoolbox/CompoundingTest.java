@@ -28,7 +28,7 @@ public class CompoundingTest extends TestCase {
       fstp.setCompoundAnalysis(true);
       fstp.setCompoundingSymbol("compounding");
 
-      assertEquals("/domo<n><sg><nom>+detektivo<n><m><sg><nom>", fstp.compoundAnalysis("domodetektivo"));
+      assertEquals("/domo<n><sg><nom>+detektivo<n><m><sg><nom>", fstp.compoundAnalysis2("domodetektivo"));
 
   }
 

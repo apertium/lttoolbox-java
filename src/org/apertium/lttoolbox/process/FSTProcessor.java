@@ -793,43 +793,6 @@ public class FSTProcessor {
     }
 
 
-  private boolean compound1step(int i, String input_word, State current_state, boolean uppercase, boolean firstupper, ArrayList<String[]> compoundElements) {
-    boolean endOfWord=(i==input_word.length());
-
-    State previous_state =new State().copy(current_state);
-
-    if (!endOfWord) {
-      char val=input_word.charAt(i);
-        current_state.step_case(val, caseSensitive);
-    }
-
-    String result=previous_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
-    if (DEBUG) System.err.println(i + " result = "+result);
-
-    if (current_state.size()==0||endOfWord) {
-      // longest match exceeded has come - or end of word
-
-      if (previous_state.isFinal(all_finals)) {
-
-        String[] alternatives=result.substring(1).split("/");
-        // Add array of possible analyses
-        compoundElements.add(alternatives);
-
-        // start over
-        if (!endOfWord) {
-          current_state.copy(initial_state);
-          // do again on current char
-          return compound1step(i, input_word, current_state, uppercase, firstupper, compoundElements);
-        }
-      } else {
-        // word is not present
-        return false;
-      }
-    }
-
-    return true;
-  }
-
 
 
 
@@ -847,20 +810,42 @@ public class FSTProcessor {
         boolean uppercase = firstupper && Character.isUpperCase(input_word.charAt(1));
 
         for (int i = 0; i<=input_word.length(); i++) {
-            boolean ok =compound1step(i, input_word, current_state, uppercase, firstupper, compoundElements);
+          boolean endOfWord=(i==input_word.length());
 
-            if (!ok) return null;
+          State previous_state =new State().copy(current_state);
+
+          if (!endOfWord) {
+            char val=input_word.charAt(i);
+              current_state.step_case(val, caseSensitive);
+          }
+
+          String result=previous_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
+          if (DEBUG) System.err.println(i + " result = "+result);
+
+          if (current_state.size()==0||endOfWord) {
+            // longest match exceeded has come - or end of word
+
+            if (previous_state.isFinal(all_finals)) {
+
+              String[] alternatives=result.substring(1).split("/");
+              // Add array of possible analyses
+              compoundElements.add(alternatives);
+
+              // start over
+              if (!endOfWord) {
+                current_state.copy(initial_state);
+                // do again on current char
+                i--;
+              }
+            } else {
+              // word is not present
+              return null;
+            }
+          }
 
             // Francis' heuristic
             if (compoundElements.size()>2) return null;
         }
-
-
-
-
-
-
-
         if (DEBUG) System.err.println("compoundElements = " + compoundElements);
 
         final int MAX_COMBINATIONS = 500;
@@ -907,7 +892,90 @@ public class FSTProcessor {
 
 
     public String compoundAnalysis2(String input_word) {
-      return null;
+
+        State current_state = initial_state.copy();
+        //input_word += " ";
+
+        // List compound elements. Each element can have multiple alternatives
+        ArrayList<String[]> compoundElements = new ArrayList<String[]>();
+
+        boolean firstupper = Character.isUpperCase(input_word.charAt(0));
+        boolean uppercase = firstupper && Character.isUpperCase(input_word.charAt(1));
+
+        for (int i = 0; i<=input_word.length(); i++) {
+          boolean endOfWord=(i==input_word.length());
+
+          State previous_state =new State().copy(current_state);
+
+          if (!endOfWord) {
+            char val=input_word.charAt(i);
+              current_state.step_case(val, caseSensitive);
+          }
+
+          String result=previous_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
+          if (DEBUG) System.err.println(i + " result = "+result);
+
+          if (current_state.size()==0||endOfWord) {
+            // longest match exceeded has come - or end of word
+
+            if (previous_state.isFinal(all_finals)) {
+
+              String[] alternatives=result.substring(1).split("/");
+              // Add array of possible analyses
+              compoundElements.add(alternatives);
+
+              // start over
+              if (!endOfWord) {
+                current_state.copy(initial_state);
+                // do again on current char
+                i--;
+              }
+            } else {
+              // word is not present
+              return null;
+            }
+          }
+        }
+        if (DEBUG) System.err.println("compoundElements = " + compoundElements);
+
+        final int MAX_COMBINATIONS = 500;
+        int combinations = 1;
+
+        // Build list of combination tuples
+        ArrayList<String> tuples=null;
+        for (String[] arr : compoundElements) {
+          // abort if too many alternatives
+          combinations *= arr.length;
+          if (combinations>MAX_COMBINATIONS) {
+            System.err.println("Warning: compoundAnalysis' MAX_COMBINATIONS exceeded for " + input_word);
+            return null;
+          }
+
+          if (tuples==null) {
+            tuples = new ArrayList<String>();
+            for (String part : arr) tuples.add(part);
+          } else {
+            ArrayList<String> tuples2 = new ArrayList<String>(tuples.size() * arr.length);
+
+            if (DEBUG) System.err.println("tuples.size() * arr.length = " + tuples.size() * arr.length);
+            for (String head : tuples) {
+              for (String part : arr) tuples2.add(head+"+"+part);
+            }
+            tuples = tuples2;
+          }
+        }
+
+        // build resulting string
+        StringBuilder result = new StringBuilder();
+        result.delete(0, result.length());
+        for (String word : tuples) {
+          result.append('/');
+          result.append(word);
+        }
+
+        if (DEBUG) System.err.println("compoundAnalysis("+input_word);
+        if (DEBUG) System.err.println(result);
+        return result.toString();
     }
 
 
