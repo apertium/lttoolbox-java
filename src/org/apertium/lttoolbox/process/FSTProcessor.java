@@ -1158,13 +1158,7 @@ public class FSTProcessor {
                 sf+=alphabet.getSymbol(val);
             } else {
                 sf+=alphabet.getSymbol(val);
-                if (current_state.size() > 0) {
-                    if (!alphabet.isTag(val) && Character.isUpperCase(val) && !caseSensitive) {
-                        current_state.step(val, Character.toLowerCase(val));
-                    } else {
-                        current_state.step(val);
-                    }
-                }
+                current_state.step_case(val, caseSensitive);
             }
         }
     }
@@ -1176,7 +1170,7 @@ public class FSTProcessor {
 
         boolean skip_mode = true;
         State current_state = initial_state.copy();
-        StringBuilder lf = new StringBuilder("");
+        StringBuilder lf = new StringBuilder();
         String sf = "";
         SetOfCharacters empty_escaped_chars = new SetOfCharacters();
         int last = 0;
@@ -1403,9 +1397,9 @@ public class FSTProcessor {
             } else {
                 val = (int) (input_word.charAt(i));
             }
-            if (current_state.size() != 0) {
-                current_state.step_case(val, caseSensitive);
-            }
+
+            current_state.step_case(val, caseSensitive);
+
             if (current_state.isFinal(all_finals)) {
                 result = new StringBuilder(current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper));
                 if (with_delim) {
@@ -1519,9 +1513,9 @@ public class FSTProcessor {
             } else {
                 val = input_word.charAt(i);
             }
-            if (current_state.size() != 0) {
-                current_state.step_case(val, caseSensitive);
-            }
+
+            current_state.step_case(val, caseSensitive);
+
             if (current_state.isFinal(all_finals)) {
                 result = new StringBuilder(current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper));
                 if (with_delim) {
@@ -1634,9 +1628,9 @@ public class FSTProcessor {
             } else {
                 val = (int) (input_word.charAt(i));
             }
-            if (current_state.size() != 0) {
-                current_state.step_case(val, caseSensitive);
-            }
+
+            current_state.step_case(val, caseSensitive);
+
             if (current_state.isFinal(all_finals)) {
                 result = new StringBuilder(current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper));
                 if (with_delim) {

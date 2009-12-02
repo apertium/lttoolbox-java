@@ -25,7 +25,7 @@ package org.apertium.lttoolbox.process;
 public class Transition {
 
   /** The output symbol (character/tag) sent when making this transition */
-  int out_tag;
+  int output_symbol;
 
   /** Destination node when makine this transition */
   Node dest;

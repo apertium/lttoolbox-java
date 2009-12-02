@@ -123,7 +123,7 @@ addTransition(i = 117
     void addTransition(int i, int o, Node d) {
 
         Transition newTransition = new Transition();
-        newTransition.out_tag = o;
+        newTransition.output_symbol = o;
         newTransition.dest = d;
 
         if (FAST_BUT_REVERSE_ORDER) {
@@ -145,7 +145,7 @@ addTransition(i = 117
           transition = new Transition();
           transitions.put(i, transition);
         }
-        transition.out_tag.add(o);
+        transition.output_symbol.add(o);
         transition.dest.add(d);
         transition.size++;
 */

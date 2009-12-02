@@ -23,29 +23,27 @@ import java.util.List;
 import java.util.Set;
 import java.util.ArrayList;
 
-/**
- * Class to represent the states of a transducer 
- * @author Raah
- */
-public class State {
 
 /**
- * Class to represent the current state of transducer processing
+ * one state element in  the current set of states of transducer processing
  * @author Raah
  */
-private static class TNodeState {
+class TNodeState {
 
+    /** Which node are we currently visiting */
     Node where;
+
+    /** The list of output symbols we produced while getting to this node */
     List<Integer> sequence;
 
 
-    /** dirty=true means lowercase version of input */
-    boolean dirty;
+    /** caseWasChanged means input was lowercased - thus we should consider uppercasing the output symbols  before outputting */
+    boolean caseWasChanged;
 
-    public TNodeState(Node w, List<Integer> s, boolean dirty) {
-        this.where = w;
-        this.sequence = s;
-        this.dirty = dirty;
+    public TNodeState(Node where, List<Integer> sequence, boolean caseWasChanged) {
+        this.where = where;
+        this.sequence = sequence;
+        this.caseWasChanged = caseWasChanged;
     }
 
     public String toString() {
@@ -53,12 +51,18 @@ private static class TNodeState {
         for (int i : sequence) sb.append((char)i);
         sb.append('→');
         for (int i : where.transitions.keySet()) sb.append((char)i);
-        return sb.toString() + "/" + dirty;
+        return sb.toString() + "/" + caseWasChanged;
     }
 }
 
+/**
+ * Class to represent the set of alive states of a transducer
+ * @author Raah
+ */
+public class State {
 
-    private List<TNodeState> state;
+
+    private List<TNodeState> state = new ArrayList<TNodeState>();
     
     /**
      * Pool of characters ArrayLists, for efficiency (static class)
@@ -67,15 +71,15 @@ private static class TNodeState {
 
      private static final boolean DEBUG=false;
 
-  State copy(State other_state) {
-    this.state.clear();
-    this.state.addAll(other_state.state);
-    return this;
-  }
+      State copy(State other_state) {
+        this.state.clear();
+        this.state.addAll(other_state.state);
+        return this;
+      }
 
-  State copy() {
-    return new State().copy(this);
-  }
+      State copy() {
+        return new State().copy(this);
+      }
 
     /**
      * Initialisation method for the static attribute
@@ -85,44 +89,10 @@ private static class TNodeState {
     }
 
     /**
-     * The constructor
-     */
-    public State() {
-        state = new ArrayList<TNodeState>();
-    }
-
-    /**
-     * Copy constructor
-     * @param s the state to be copied
-    public State(State s) {
-        copy(s);
-    }
-     */
-
-    /**
-     * Copy method
-     * @param s the state to be copied
-    void copy(State s) {
-        // release references
-        for (int i = 0,  limit = state.size(); i != limit; i++) {
-            pool.release(state.get(i).sequence);
-        }
-
-        state = s.state;
-
-        for (int i = 0,  limit = state.size(); i != limit; i++) {
-            List<Integer> tmp = pool.get();
-            tmp = (state.get(i).sequence);
-            state.get(i).sequence = tmp;
-        }
-    }
-     */
-
-    /**
      * Number of alive transductions
      * @return the size
      */
-    int size() {
+   int size() {
         return state.size();
     }
 
@@ -147,10 +117,10 @@ private static class TNodeState {
             TNodeState state_i = state.get(i);
             Transition it = state_i.where.transitions.get(input);
             while (it != null) {
-              ArrayList<Integer> new_v = new ArrayList<Integer>(state_i.sequence.size()+1); //XXX no pool for now: new_v = pool.get();
-              new_v.addAll(state_i.sequence);
-              new_v.add(it.out_tag);
-              new_state.add(new TNodeState(it.dest, new_v, state_i.dirty));
+              ArrayList<Integer> new_sequence = new ArrayList<Integer>(state_i.sequence.size()+1); //XXX no pool for now: new_v = pool.get();
+              new_sequence.addAll(state_i.sequence);
+              new_sequence.add(it.output_symbol);
+              new_state.add(new TNodeState(it.dest, new_sequence, state_i.caseWasChanged));
               it = it.next;
             } //XXX no pool now: pool.release(state.get(i).sequence);
         }
@@ -159,10 +129,10 @@ private static class TNodeState {
 
     /**
      * Make a transition, version for lowercase and uppercase letters
-     * @param input the input symbol
-     * @param alt the alternative input symbol
+     * @param input the input symbol (which is actually always uppercase)
+     * @param lowerCasedInput the alternative input symbol (actually its always Character.toLowerCase(input))
      */
-    private void apply(int input, int alt) {
+    private void apply(int input, int lowerCasedInput) {
 
         List<TNodeState> new_state = new ArrayList<TNodeState>();
 
@@ -170,19 +140,20 @@ private static class TNodeState {
             TNodeState state_i = state.get(i);
             Transition it = state_i.where.transitions.get(input);
             while (it != null) {
-              ArrayList<Integer> new_v = new ArrayList<Integer>(state_i.sequence.size()+1); //XXX no pool for now: new_v = pool.get();
-              new_v.addAll(state_i.sequence);
-              new_v.add(it.out_tag);
-              new_state.add(new TNodeState(it.dest, new_v, state_i.dirty));
+              ArrayList<Integer> new_sequence = new ArrayList<Integer>(state_i.sequence.size()+1); //XXX no pool for now: new_v = pool.get();
+              new_sequence.addAll(state_i.sequence);
+              new_sequence.add(it.output_symbol);
+              new_state.add(new TNodeState(it.dest, new_sequence, state_i.caseWasChanged));
               it = it.next;
             } //XXX no pool now: pool.release(state.get(i).sequence);
 
-            it = state_i.where.transitions.get(alt);
+            // try also apply lowerCasedInput
+            it = state_i.where.transitions.get(lowerCasedInput);
             while (it != null) {
-              ArrayList<Integer> new_v = new ArrayList<Integer>(state_i.sequence.size()+1); //XXX no pool for now: new_v = pool.get();
-              new_v.addAll(state_i.sequence);
-              new_v.add(it.out_tag);
-              new_state.add(new TNodeState(it.dest, new_v, true)); // dirty=true - lowercased version of input
+              ArrayList<Integer> new_sequence = new ArrayList<Integer>(state_i.sequence.size()+1); //XXX no pool for now: new_v = pool.get();
+              new_sequence.addAll(state_i.sequence);
+              new_sequence.add(it.output_symbol);
+              new_state.add(new TNodeState(it.dest, new_sequence, true)); // caseWasChanged=true - lowercased version of input
               it = it.next;
             }
             //JACOBpool.release(state.get(i).sequence);
@@ -192,20 +163,21 @@ private static class TNodeState {
     }
 
     /**
-     * Calculate the epsilon closure over the current state, replacing
-     * its content.
+     * Calculate the epsilon closure over the current state, replacing its content.
+     * i.e. expand to all states reachable consuming θ (the empty input symbol)
      */
     private void epsilonClosure() {
         for (int i = 0; i != state.size(); i++) {
             TNodeState state_i = state.get(i);
-            Transition it2 = state_i.where.transitions.get(0);
+            // get the transitions consuming θ (the empty input symbol)
+            Transition it2 = state_i.where.transitions.get(0);  
             while (it2 != null) {
                 List<Integer> tmp; // JACOB = pool.get();
                 tmp = new ArrayList<Integer>(state_i.sequence);
-                if (it2.out_tag != 0) {
-                    tmp.add(it2.out_tag);
+                if (it2.output_symbol != 0) {
+                    tmp.add(it2.output_symbol);
                 }
-                state.add(new TNodeState(it2.dest, tmp, state_i.dirty));
+                state.add(new TNodeState(it2.dest, tmp, state_i.caseWasChanged));
                 it2 = it2.next;
             }
         }
@@ -231,8 +203,8 @@ private static class TNodeState {
      * @param input the input symbol
      * @param alt the alternative input symbol (typically lowercase version of input symbol)
      */
-    public void step(int input, int alt) {
-        apply(input, alt);
+    public void step(int input, int lowerCasedInput) {
+        apply(input, lowerCasedInput);
         epsilonClosure();
     }
 
@@ -291,8 +263,8 @@ private static class TNodeState {
                 result.append('/');
                 int first_char = result.length();
 
-                // make uppercase if uppercase &&  case was changed during step (state_i.dirty)
-                boolean upc = uppercase &&  state_i.dirty;
+                // make uppercase if uppercase &&  case was changed during step (state_i.caseWasChanged)
+                boolean upc = uppercase &&  state_i.caseWasChanged;
 
                 for (int j = 0,  limit2 = state_i.sequence.size(); j != limit2; j++) {
                     int symbol = ((state_i.sequence).get(j)).intValue();
@@ -303,7 +275,7 @@ private static class TNodeState {
                 }
 
 
-                if (firstupper && state_i.dirty ) {
+                if (firstupper && state_i.caseWasChanged ) {
                     if (result.charAt(first_char) == '~') {
                         // skip post-generation mark
                         result.setCharAt(first_char + 1, Character.toUpperCase(result.charAt(first_char + 1)));
