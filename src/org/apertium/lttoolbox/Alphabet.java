@@ -412,6 +412,7 @@ public static class IntegerPair implements Comparable<IntegerPair> {
         return result;
     }
 
+
     /**
      * Sets an already existing symbol to represent a new value
      */

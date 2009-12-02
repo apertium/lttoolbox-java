@@ -70,10 +70,14 @@ private static class TNodeState {
 
      private static final boolean DEBUG=false;
 
-  State copy(State initial_state) {
+  State copy(State other_state) {
     this.state.clear();
-    this.state.addAll(initial_state.state);
+    this.state.addAll(other_state.state);
     return this;
+  }
+
+  State copy() {
+    return new State().copy(this);
   }
 
     /**
@@ -286,7 +290,8 @@ private static class TNodeState {
      */
     String filterFinals(Set<Node> finals, Alphabet alphabet, SetOfCharacters escaped_chars,
         boolean uppercase, boolean firstupper) {
-      int firstchar = 0;
+
+      final int firstchar = 0;
 
       if (DEBUG) System.err.println("filterFinals( " + uppercase + " "+ firstupper + " "+ firstchar);
 
