@@ -403,16 +403,15 @@ public static class IntegerPair implements Comparable<IntegerPair> {
         if (symbol == 0) {
             return "";
         }
+
+        if (symbol < 0) {
+            return slexicinv.get(-symbol - 1);
+        }
+        
         if (!uppercase) {
-            if (symbol >= 0) {
-                return ""+ (char)symbol; // @TODO re-use strings
-            } else {
-                return slexicinv.get(-symbol - 1);
-            }
-        } else if (symbol >= 0) {
-              return ""+ Character.toUpperCase((char)symbol); // @TODO re-use strings
+          return ""+ (char)symbol; // @TODO re-use strings
         } else {
-                return slexicinv.get(-symbol - 1);
+            return ""+ Character.toUpperCase((char)symbol); // @TODO re-use strings
         }
     }
 
@@ -434,7 +433,7 @@ public static class IntegerPair implements Comparable<IntegerPair> {
      * @param symbol the code of the symbol
      * @return true if the symbol is a tag
      */
-    public boolean isTag(int symbol) {
+    public static boolean isTag(int symbol) {
         return symbol < 0;
     }
 
