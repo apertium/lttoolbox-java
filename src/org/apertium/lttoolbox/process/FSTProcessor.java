@@ -89,6 +89,7 @@ public class FSTProcessor {
      * Set of final states of preblank sections in the dictionaries
      */
     private Set<Node> preblank = new HashSet<Node>();
+
     private Set<Node> compoundL = new HashSet<Node>();
     private Set<Node> compoundR = new HashSet<Node>();
     /**
@@ -441,12 +442,7 @@ public class FSTProcessor {
     }
 
     private void calcInitial() {
-        //System.out.println("call to calcInitial");
-    /**
-     * Begin of the transducer
-     */
-        Node root;
-        root = new Node();
+        Node root = new Node();
         root.initTransitions(transducers.size());
         for (String first : transducers.keySet()) {
             root.addTransition(0, 0, transducers.get(first).getInitial());
@@ -457,30 +453,32 @@ public class FSTProcessor {
     }
 
     private boolean endsWith(String str, String suffix) {
+      return str.endsWith(suffix);
+      /*
         if (str.length() < suffix.length()) {
             return false;
         } else {
             return str.substring(str.length() - suffix.length()).equals(suffix);
-        }
+        }*/
     }
 
     private void classifyFinals() {
-        for (String first : transducers.keySet()) {
-            final TransExe second = transducers.get(first);
-            if (endsWith(first, "@inconditional")) {
-                inconditional.addAll(second.getFinals());
-            } else if (endsWith(first, "@standard")) {
-                standard.addAll(second.getFinals());
-            } else if (endsWith(first, "@postblank")) {
-                postblank.addAll(second.getFinals());
-            } else if (endsWith(first, "@preblank")) {
-                preblank.addAll(second.getFinals());
-            } else if (endsWith(first, "@compound-L")) {
-                compoundL.addAll(second.getFinals());
-            } else if (endsWith(first, "@compound-R")) {
-                compoundR.addAll(second.getFinals());
+        for (String name : transducers.keySet()) {
+            final TransExe transducer = transducers.get(name);
+            if (endsWith(name, "@inconditional")) {
+                inconditional.addAll(transducer.getFinals());
+            } else if (endsWith(name, "@standard")) {
+                standard.addAll(transducer.getFinals());
+            } else if (endsWith(name, "@postblank")) {
+                postblank.addAll(transducer.getFinals());
+            } else if (endsWith(name, "@preblank")) {
+                preblank.addAll(transducer.getFinals());
+            } else if (endsWith(name, "@compound-L")) {
+                compoundL.addAll(transducer.getFinals());
+            } else if (endsWith(name, "@compound-R")) {
+                compoundR.addAll(transducer.getFinals());
             } else {
-                throw new RuntimeException("Error: Unsupported transducer type for '" + first + "'.");
+                throw new RuntimeException("Error: Unsupported transducer type for '" + name + "'.");
             }
         }
     }
@@ -561,14 +559,17 @@ public class FSTProcessor {
         len = Compression.multibyte_read(input);
         while (len > 0) {
             String name = Compression.String_read(input);
-            if (!transducers.containsKey(name)) {
-                transducers.put(name,new TransExe());
+
+            TransExe tx = transducers.get(name);
+            if (tx==null) {
+                tx = new TransExe();
+                transducers.put(name,tx);
             } else {
-              System.err.println(this.getClass()+".load() Why has transducer already name "+ name);
+                System.err.println(this.getClass()+".load() Why has transducer already name "+ name);
             }
 
             //System.out.println("reading : "+name);
-            transducers.get(name).read(input, alphabet);
+            tx.read(input, alphabet);
             len--;
             //System.out.println(len);
         }
@@ -855,6 +856,11 @@ public class FSTProcessor {
         }
 
 
+
+
+
+
+
         if (DEBUG) System.err.println("compoundElements = " + compoundElements);
 
         final int MAX_COMBINATIONS = 500;
@@ -900,40 +906,8 @@ public class FSTProcessor {
 
 
 
-    public String compoundAnalysisWithSymbols(String input_word) {
-
-        ArrayList<State> current_states = new ArrayList<State>();
-        current_states.add(initial_state.copy());
-
-        // List compound elements. Each element can have multiple alternatives
-        ArrayList<ArrayList<String[]>> compoundElementss = new ArrayList<ArrayList<String[]>>();
-        compoundElementss.add(new ArrayList<String[]>());
-
-        boolean firstupper = Character.isUpperCase(input_word.charAt(0));
-        boolean uppercase = firstupper && Character.isUpperCase(input_word.charAt(1));
-
-
-        for (int i = 0; i<=input_word.length(); i++) {
-          for (int setNo = 0; setNo<current_states.size(); setNo++) {
-            State current_state = current_states.get(setNo);
-            ArrayList<String[]> compoundElements = compoundElementss.get(setNo);
-
-            boolean ok =compound1step(i, input_word, current_state, uppercase, firstupper, compoundElements);
-
-            if (!ok) return null;
-
-            // Francis' heuristic
-            if (compoundElementss.size()>2) return null;
-          }
-        }
-
-        for (int i = 0; i <input_word.length(); i++) {
-            boolean lastChar = (i==input_word.length()-1);
-              for (State current_state : current_states) {
-              }
-
-        }
-        return null;
+    public String compoundAnalysis2(String input_word) {
+      return null;
     }
 
 
