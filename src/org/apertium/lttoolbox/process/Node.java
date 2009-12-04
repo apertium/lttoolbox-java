@@ -138,22 +138,10 @@ addTransition(i = 117
             oldTransition.next =newTransition;
           }
         }
-
-      /*
-        Transition transition = transitions.get(i);
-        if (transition==null) {
-          transition = new Transition();
-          transitions.put(i, transition);
-        }
-        transition.output_symbol.add(o);
-        transition.dest.add(d);
-        transition.size++;
-*/
-        //System.err.println("transition.size = " + transition.size);
     }
 
    public String toString() {
-    return "Node{transitions: "+this.transitions+"}";
+    return "Node{"+this.transitions+"}@"+hashCode();
   }
 
 }

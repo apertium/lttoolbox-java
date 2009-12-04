@@ -19,17 +19,31 @@ import static org.junit.Assert.*;
  */
 public class CompoundingTest extends TestCase {
 
+	static public void assertEquals(String expected, String actual) {
+		if (expected == null && actual == null)
+			return;
+		if (expected != null && expected.equals(actual))
+			return;
+
+    System.err.println("expect = " + expected);
+    System.err.println("actual = " + actual);
+  	    assertEquals(null, expected, actual);
+  }
 
 
-  public void testCompound() throws IOException {
+  public void testCompound2() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
       fstp.load(new BufferedInputStream(new FileInputStream("testdata/compounding/eo-en.automorf.bin")));
-      fstp.initAnalysis();
-      fstp.setCompoundAnalysis(true);
-      fstp.setCompoundingSymbol("compounding");
+      fstp.initDecomposition();
 
-      assertEquals("/domo<n><sg><nom>+detektivo<n><m><sg><nom>", fstp.compoundAnalysis2("domodetektivo"));
+      assertEquals("/domo<n><sg><nom>+detektivo<n><m><sg><nom>",
+          fstp.compoundAnalysis2("domodetektivo"));
 
+
+      StringWriter output = new StringWriter();
+      fstp.analysis(new StringReader2("diktatordio domo\n"), output);
+      System.err.println("output.toString() = " + output.toString().replaceAll("/", "\n/"));
+      assertEquals("^diktatordio/diktatoro<n><m><sg><nom>+dio<n><m><sg><nom>$ ^domo/domo<n><sg><nom>$\n", output.toString());
   }
 
 
@@ -39,18 +53,14 @@ public class CompoundingTest extends TestCase {
       FSTProcessor fstp = new FSTProcessor();
       fstp.load(new BufferedInputStream(new FileInputStream("testdata/compounding/eo-en.automorf.bin")));
       fstp.initAnalysis();
-      fstp.setCompoundAnalysis(true);
-      fstp.setCompoundingSymbol("compounding");
+      //fstp.initDecomposition();
+      fstp.alphabet.setSymbol(fstp.alphabet.cast("<compound-L>"), "");
+      fstp.alphabet.setSymbol(fstp.alphabet.cast("<compound-R>"), "");
 
-      assertEquals("/domo<n><sg><nom>+detektivo<n><m><sg><nom>", fstp.compoundAnalysis("domodetektivo"));
-
-
-      StringWriter output = new StringWriter();
-      fstp.analysis(new StringReader2("diktatorodio domo\n"), output);
-      assertEquals("^diktatorodio/diktatoro<n><m><sg><nom>+dio<n><m><sg><nom>$ ^domo/domo<n><sg><nom>$\n", output.toString());
-    
-      System.out.println(output);
-  }
+      String res = fstp.compoundAnalysis("domodefendo");
+      System.err.println("res = " + res.replaceAll("/", "\n/"));
+      assertEquals("/domo<n><sg><nom>+defendo<n><sg><nom>", res);
+      }
 
 
 

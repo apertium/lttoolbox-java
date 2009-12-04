@@ -95,10 +95,14 @@ public static class IntegerPair {
     private final ArrayList<IntegerPair> spairinv = new ArrayList<IntegerPair>();
 
 
+    /** For debugging purposes ONLY */
+    public static Alphabet debuggingInstance;
+
     /**
      * The constructor
      */
     public Alphabet() {
+      Alphabet.debuggingInstance = this;
     }
 
     /**

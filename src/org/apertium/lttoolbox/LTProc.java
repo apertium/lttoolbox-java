@@ -19,6 +19,7 @@ package org.apertium.lttoolbox;
 
 import org.apertium.lttoolbox.process.FSTProcessor;
 import java.io.*;
+import org.apertium.lttoolbox.process.State;
 
 
 // The implementation of GetOpt currently used is Sun proprietary API and may be removed in a future release.
@@ -54,6 +55,7 @@ public class LTProc {
             "  -t:   apply transliteration dictionary\n" +
             "  -z:   flush output on the null character \n" +
             "  -v:   version\n" +
+            "  -D:   debug; print diagnostics to stderr\n" +
             "  -h:   show this help\n");
         System.exit(-1);
 
@@ -77,7 +79,7 @@ public class LTProc {
         int cmd = 0;
         FSTProcessor fstp = new FSTProcessor();
 
-        GetOpt getopt = new GetOpt(argv, "acegndpstzvh");
+        GetOpt getopt = new GetOpt(argv, "acdegndpstzvh");
 
         int optind = -1;
         int counter = 0;
@@ -94,11 +96,12 @@ public class LTProc {
                         fstp.setCaseSensitiveMode(true);
                         break;
 
-                    case 'e':
-                        fstp.setCompoundAnalysis(true);
-                        optind = counter;
+                    case 'D':
+                      FSTProcessor.DEBUG = true;
+                      State.DEBUG = true;
                         break;
 
+                    case 'e':
                     case 'a':
                     case 'b':
                     case 'g':
@@ -228,6 +231,12 @@ public class LTProc {
                     fstp.initPostgeneration();
                     checkValidity(fstp);
                     fstp.transliteration(input, output);
+                    break;
+
+                case 'e':
+                    fstp.initDecomposition();
+                    checkValidity(fstp);
+                    fstp.analysis(input, output);
                     break;
 
                 case 'a':

@@ -46,12 +46,15 @@ class TNodeState {
         this.caseWasChanged = caseWasChanged;
     }
 
+    @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder(sequence.size());
-        for (int i : sequence) sb.append((char)i);
+       if (Alphabet.debuggingInstance==null) return "Alphabet.debuggingInstance==null";
+        StringBuilder sb = new StringBuilder(sequence.size()*2);
+        if (caseWasChanged) sb.append("caseWasChanged;");
+        for (int i : sequence) sb.append(Alphabet.debuggingInstance.getSymbol(i, caseWasChanged));
         sb.append('→');
-        for (int i : where.transitions.keySet()) sb.append((char)i);
-        return sb.toString() + "/" + caseWasChanged;
+        for (int i : where.transitions.keySet()) sb.append(Alphabet.debuggingInstance.getSymbol(i));
+        return sb.toString()+"@"+where.hashCode();
     }
 }
 
@@ -69,7 +72,7 @@ public class State {
      */
     //JACOBstatic Pool<List<Integer>> pool;
 
-     private static final boolean DEBUG=false;
+     public static boolean DEBUG=false;
 
       State copy(State other_state) {
         this.state.clear();
@@ -102,10 +105,15 @@ public class State {
      */
     public void init(Node initial) {
         state.clear();
-        state.add(0, new TNodeState(initial, new ArrayList<Integer>(), false)); // JACOBpool.get()
-        state.get(0).sequence = new ArrayList<Integer>();
+        TNodeState tn = new TNodeState(initial, new ArrayList<Integer>(), false);
+        state.add(tn); // JACOBpool.get()
+        tn.sequence = new ArrayList<Integer>();
         epsilonClosure();
     }
+
+  public String toString() {
+    return this.state.toString();
+  }
 
     /**
      * Make a transition, version for lowercase letters and symbols
@@ -183,6 +191,24 @@ public class State {
         }
     }
 
+
+    void tjekDubletter() {
+        //System.err.println("Duble? "+ state.size());
+        for (int i = 0; i != state.size(); i++) {
+          TNodeState state_i = state.get(i);
+          for (int j = i+1; j != state.size(); j++) {
+            TNodeState state_j = state.get(j);
+            if (state_i.where == state_j.where && state_i.caseWasChanged ==state_j.caseWasChanged && state_i.sequence.equals(state_j.sequence)) {
+                System.err.println("Dublet!!! "+ i + " " + j);
+                System.err.println("Dublet?: state_j = " + state_i + "==" + state_j);
+                new Exception().printStackTrace();
+                state.remove(j);
+                j--;
+            }
+          }
+        }
+    }
+
     /**
      * step = apply + epsilonClosure
      * @param input the input symbol
@@ -191,8 +217,9 @@ public class State {
         if (DEBUG) System.err.println();
         if (DEBUG) System.err.println("state f = " + state);
         if (DEBUG) System.err.println("apply (" + (char) input);
-
+        tjekDubletter();
         apply(input);
+        tjekDubletter();
         if (DEBUG) System.err.println("state e1= " + state);
         epsilonClosure();
         if (DEBUG) System.err.println("state e2= " + state);
@@ -263,7 +290,7 @@ public class State {
                 result.append('/');
                 int first_char = result.length();
 
-                // make uppercase if uppercase &&  case was changed during step (state_i.caseWasChanged)
+                // make all uppercase if original word was uppercase && case was changed to lowercase during match
                 boolean upc = uppercase &&  state_i.caseWasChanged;
 
                 for (int j = 0,  limit2 = state_i.sequence.size(); j != limit2; j++) {
@@ -290,23 +317,81 @@ public class State {
     }
 
 
-    void restartFinals(Set<Node> finals, Alphabet alphabet, State initial_state, int restartSymbol) {
+    /**
+     * Find final states, remove those that not has a requiredSymbol and 'restart' each of them as the set of initial states, but remembering the sequence and adding a separationSymbol
+     * @param finals
+     * @param requiredSymbol
+     * @param restart_state
+     * @param separationSymbol
+     */
+    void pruneAndRestartFinals(Set<Node> finals, int requiredSymbol, State restart_state, int separationSymbol) {
 
-        for (int i = 0,  limit = state.size(); i != limit; i++) {
+      ArrayList<TNodeState> added_states = new ArrayList<TNodeState>();
+
+        for (int i = 0;  i<state.size(); i++) {
             TNodeState state_i = state.get(i);
-            if (finals.contains(state_i.where)) {
 
+            if (DEBUG && finals.contains(state_i.where) != state_i.where.transitions.isEmpty()) {
+              System.err.println("!HM finals.contains(state_i.where) = " + finals.contains(state_i.where));
+              System.err.println("!HM state_i.where.transitions = " + state_i);
+            }
+
+            if (finals.contains(state_i.where)) {
                 // state is final - restart it, conserving old symbols
-                for (TNodeState initst : initial_state.state) {
-                    ArrayList<Integer> new_sequence = new ArrayList<Integer>(state_i.sequence.size()+1); //XXX no pool for now: new_v = pool.get();
-                    new_sequence.addAll(state_i.sequence);
-                    new_sequence.add(restartSymbol);
-                    state.add(new TNodeState(initst.where, new_sequence, state_i.caseWasChanged));
+                boolean restart=false;
+                for (int n = state_i.sequence.size()-1; n>=0; n--) {
+                  int symbol = state_i.sequence.get(n);
+                  if (symbol==requiredSymbol) { restart = true; break; }
+                  if (symbol==separationSymbol) { break; }
                 }
+
+                if (restart) {
+                  if (restart_state!=null) {
+                      if (DEBUG) System.err.println("restart state "+i+"= " + state_i);
+                      for (TNodeState initst : restart_state.state) {
+
+                      ArrayList<Integer> new_sequence = new ArrayList<Integer>(state_i.sequence.size()+1); //XXX no pool for now: new_v = pool.get();
+                      new_sequence.addAll(state_i.sequence);
+                      new_sequence.add(separationSymbol);
+                      added_states.add(new TNodeState(initst.where, new_sequence, state_i.caseWasChanged));
+                    }
+                    state.remove(i);
+                    i--;
+                  } else {
+                    // skip remove
+                      if (DEBUG) System.err.println("retain state "+i+"= " + state_i);
+                  }
+                } else {
+                  if (DEBUG) System.err.println("remove state "+i+"= " + state_i);
+                  state.remove(i);
+                  i--;
+                }
+            } else if (restart_state==null) {
+                // no restart - that means all nonfinal states can be discarded
+                state.remove(i);
+                i--;
             }
         }
+        state.addAll(added_states);
     }
 
+
+    void removeNonminalCompounds(int separationSymbol) {
+      int minNoOfCompoundElements = Integer.MAX_VALUE;
+      int[] noOfCompoundElements = new int[state.size()];
+      for (int i = 0;  i<state.size(); i++) {
+          List<Integer> seq = state.get(i).sequence;
+          int this_noOfCompoundElements = 0;
+          for (int j = seq.size()-2; j>0; j--) if (seq.get(j)==separationSymbol) this_noOfCompoundElements++;
+          noOfCompoundElements[i] = this_noOfCompoundElements;
+          minNoOfCompoundElements = Math.min(minNoOfCompoundElements, this_noOfCompoundElements);
+      }
+
+      // remove states with more than minimum number of compounds
+      for (int i = state.size()-1; i>=0; i--) {
+        if (noOfCompoundElements[i]>minNoOfCompoundElements) state.remove(i);
+      }
+    }
 
     /**
      * Same as previous one, but  the output is adapted to the SAO system
