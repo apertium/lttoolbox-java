@@ -234,7 +234,7 @@ public class LTProc {
                     break;
 
                 case 'e':
-                    fstp.initDecomposition();
+                    fstp.initDecomposition(true);
                     checkValidity(fstp);
                     fstp.analysis(input, output);
                     break;

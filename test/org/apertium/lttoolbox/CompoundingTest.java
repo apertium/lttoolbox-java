@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import junit.framework.TestCase;
 import org.apertium.lttoolbox.process.FSTProcessor;
+import org.apertium.lttoolbox.process.State;
 import static org.junit.Assert.*;
 
 /**
@@ -31,36 +32,66 @@ public class CompoundingTest extends TestCase {
   }
 
 
-  public void testCompound2() throws IOException {
+
+  public void testCompound2_Nnnb() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
-      fstp.load(new BufferedInputStream(new FileInputStream("testdata/compounding/eo-en.automorf.bin")));
-      fstp.initDecomposition();
+      fstp.load(new BufferedInputStream(new FileInputStream("/home/j/esperanto/apertium/apertium-nn-nb/compound.dix.bin")));
+      fstp.initDecomposition(true);
 
-      assertEquals("/domo<n><sg><nom>+detektivo<n><m><sg><nom>",
-          fstp.compoundAnalysis2("domodetektivo"));
+      // FSTProcessor.DEBUG = true;
+      // State.DEBUG = true;
+      assertNull(fstp.compoundAnalysis2("befinner"));
 
-
+      
       StringWriter output = new StringWriter();
-      fstp.analysis(new StringReader2("diktatordio domo\n"), output);
+      fstp.analysis(new StringReader2("fader\n"), output);
       System.err.println("output.toString() = " + output.toString().replaceAll("/", "\n/"));
-      assertEquals("^diktatordio/diktatoro<n><m><sg><nom>+dio<n><m><sg><nom>$ ^domo/domo<n><sg><nom>$\n", output.toString());
+      assertEquals("^fader/fader<n><m><sg><ind>$\n", output.toString());
   }
 
 
-  // lt-comp lr apertium-eo-en.eo.dix eo-en.automorf.bin
 
-  public void testCompound0() throws IOException {
+
+  public void testCompound2_Esperanto() throws IOException {
+      FSTProcessor fstp = new FSTProcessor();
+      fstp.load(new BufferedInputStream(new FileInputStream("testdata/compounding/eo-en.automorf.bin")));
+      fstp.initDecomposition(true);
+
+      State.DEBUG = true;
+  // lt-comp lr apertium-eo-en.eo.dix eo-en.automorf.bin
+      assertEquals("/domo<n><sg><nom>+detektivo<n><m><pl><acc>", fstp.compoundAnalysis2("domodetektivojn"));
+
+      assertEquals("/domo<n><sg><nom>+detektivo<n><m><sg><nom>",fstp.compoundAnalysis2("domodetektivo"));
+
+      assertEquals("/domo<n><sg><nom>+detektivo<n><m><sg><nom>",fstp.compoundAnalysis2("domdetektivo"));
+
+      assertEquals("/detektivo<n><m><sg><nom>+domo<n><sg><nom>",fstp.compoundAnalysis2("detektivdomo"));
+      assertEquals("/detektivo<n><f><sg><nom>+domo<n><sg><nom>",fstp.compoundAnalysis2("detektivindomo"));
+
+      assertEquals(null, fstp.compoundAnalysis2("domojdetektivo"));
+      assertEquals(null, fstp.compoundAnalysis2("domondetektivo"));
+
+
+      StringWriter output = new StringWriter();
+      fstp.analysis(new StringReader2("diktatorindiino domo\n"), output);
+      System.err.println("output.toString() = " + output.toString().replaceAll("/", "\n/"));
+      assertEquals("^diktatorindiino/diktatoro<n><f><sg><nom>+dio<n><f><sg><nom>$ ^domo/domo<n><sg><nom>$\n", output.toString());
+  }
+
+
+
+
+  public void testCompoundOld() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
       fstp.load(new BufferedInputStream(new FileInputStream("testdata/compounding/eo-en.automorf.bin")));
       fstp.initAnalysis();
-      //fstp.initDecomposition();
       fstp.alphabet.setSymbol(fstp.alphabet.cast("<compound-L>"), "");
       fstp.alphabet.setSymbol(fstp.alphabet.cast("<compound-R>"), "");
 
-      String res = fstp.compoundAnalysis("domodefendo");
+      String res = fstp.compoundAnalysisOld("domodefendo");
       System.err.println("res = " + res.replaceAll("/", "\n/"));
       assertEquals("/domo<n><sg><nom>+defendo<n><sg><nom>", res);
-      }
+    }
 
 
 

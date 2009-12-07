@@ -210,7 +210,8 @@ public class FSTProcessor {
                     return val;
 
                 default:
-                    streamError();
+                  System.err.println("val = " + val);
+                  streamError();
             }
         }
 
@@ -582,10 +583,10 @@ public class FSTProcessor {
     int compoundLSymbol = 0;
     int compoundRSymbol = 0;
 
-    public void initDecomposition() {
+    public void initDecomposition(boolean removeSymbolsFromOutput) {
         initAnalysis();
-
-        compounding_finals.addAll(all_finals);
+        compounding_finals = all_finals;
+        //compounding_finals.addAll(all_finals);
         //System.err.println("compounding_finals = " + compounding_finals);
         do_decomposition = true;
 
@@ -595,8 +596,8 @@ public class FSTProcessor {
         compoundRSymbol = alphabet.cast("<compound-R>");
         //System.err.println("compoundSymbol = " + compoundLSymbol);
         // remove this symbol from output
-        alphabet.setSymbol(compoundLSymbol, "");
-        alphabet.setSymbol(compoundRSymbol, "");
+        if (removeSymbolsFromOutput) alphabet.setSymbol(compoundLSymbol, "");
+        if (removeSymbolsFromOutput) alphabet.setSymbol(compoundRSymbol, "");
 
         /*
         Node root = new Node();
@@ -744,7 +745,7 @@ public class FSTProcessor {
                         input_buffer.back(1 + (size - limit));
                         String unknownWord = sf.substring(0, limit);
                         if (do_decomposition) {
-                          String compound = compoundAnalysis(unknownWord);
+                          String compound = compoundAnalysis2(unknownWord);
                           if (compound!=null) {
                             printWord(unknownWord, compound, output);
                           } else {
@@ -766,7 +767,7 @@ public class FSTProcessor {
                         //printUnknownWord(sf.substring(0, limit), output);
                         String unknownWord = sf.substring(0, limit);
                         if (do_decomposition) {
-                          String compound = compoundAnalysis(unknownWord);
+                          String compound = compoundAnalysis2(unknownWord);
                           if (compound!=null) {
                             printWord(unknownWord, compound, output);
                           } else {
@@ -797,7 +798,7 @@ public class FSTProcessor {
 
 
 
-    public String compoundAnalysis(String input_word) {
+    public String compoundAnalysisOld(String input_word) {
       // Francis' heuristic
       if (input_word.length()<9) return null;
 
@@ -915,16 +916,11 @@ public class FSTProcessor {
             String result=current_state.filterFinals(compounding_finals, alphabet, escaped_chars, uppercase, firstupper);
 
             if (i<input_word.length()-1) {
-              current_state.pruneAndRestartFinals(compounding_finals, compoundLSymbol, initial_compounding_state, '+');
-              if (DEBUG) System.err.println(val + " eft rest "+i+" current_state = " + current_state);
-              if (DEBUG) System.err.println(i + " result = "+result);
-              result=current_state.filterFinals(compounding_finals, alphabet, escaped_chars, uppercase, firstupper);
-            } else {
-              current_state.pruneAndRestartFinals(compounding_finals, compoundRSymbol, null, '+');
-              if (DEBUG) System.err.println(val + " eft rest "+i+" current_state = " + current_state);
-              if (DEBUG) System.err.println(i + " result = "+result);
-              result=current_state.filterFinals(compounding_finals, alphabet, escaped_chars, uppercase, firstupper);
+              current_state.restartFinals(compounding_finals, compoundLSymbol, initial_compounding_state, '+');
             }
+            if (DEBUG) System.err.println(val + " eft rest "+i+" current_state = " + current_state);
+            if (DEBUG) System.err.println(i + " result = "+result);
+            result=current_state.filterFinals(compounding_finals, alphabet, escaped_chars, uppercase, firstupper);
             if (DEBUG) System.err.println(i + " result = "+result);
             if (DEBUG) System.err.println("-- size="+current_state.size());
             if (current_state.size()==0) {
@@ -932,10 +928,10 @@ public class FSTProcessor {
                 return null;
             }
         }
-        current_state.removeNonminalCompounds( '+');
+        current_state.pruneCompounds(compoundRSymbol, '+');
 
         String result=current_state.filterFinals(compounding_finals, alphabet, escaped_chars, uppercase, firstupper);
-        if (DEBUG) System.err.println("result = "+result);
+        if (DEBUG) System.err.println("rrresult = "+result.replaceAll("/", "/\n"));
         return result;
     }
 

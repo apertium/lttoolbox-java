@@ -5,11 +5,7 @@
 
 package org.apertium.lttoolbox;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
 import java.util.Arrays;
-import org.apertium.lttoolbox.process.FSTProcessor;
-import org.apertium.lttoolbox.process.State;
 
 /**
  *
@@ -36,11 +32,10 @@ public class LTToolbox {
             " java -jar " +jar+ " lt-proc dic.bin              morphological analysis\n" +
             "See also http://wiki.apertium.org/wiki/Lttoolbox");
         System.exit(-1);
-
     }
 
   public static void main(String[] argv) throws Exception {
-      if (argv.length == 0) showHelp();
+    if (argv.length == 0) showHelp();
       String task = argv[0];
       String[] restOfArgs = Arrays.copyOfRange(argv, 1 , argv.length);
       if (task.equals("lt-proc")) LTProc.main(restOfArgs);
