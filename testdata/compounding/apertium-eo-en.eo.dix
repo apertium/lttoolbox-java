@@ -1,106 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-	Dictionary:
-	Sections: 1
-	Entries: 21
-	Sdefs: 93
-	Paradigms: 68
-	Last processed by: apertium-dixtools equiv-paradigms -stripEmptyLines -alignMonodix apertium-eo-en.eo.dixtmp1 apertium-eo-en.eo.dix
-
+lt-comp lr apertium-eo-en.eo.dix eo-en.automorf.bin
 -->
 <dictionary>
 	<alphabet>·ÀÁÂÄÇÈÉÊËÌÍÎÏÑÒÓÔÖÙÛÜÚàáâäãçèéêëìíîïñòóôöõùúûüABCDEFGHIJKLMNOPQRSTUVWXYZĈĜĤĴŜŬabcdefghijklmnopqrstuvwxyzĉĝĥĵŝŭ</alphabet>
 	<sdefs>
-		<sdef n="compounding" />
+		<sdef n="compound-L" />
+		<sdef n="compound-R" />
+		<sdef n="m" /> 
+		<sdef n="mf" /> 
 		<sdef n="re" /> 
 		<sdef n="alpha" /> 
 		<sdef n="acc" /> 
-		<sdef n="nomiacc" /> 
 		<sdef n="nom" /> 
-		<sdef n="comp" /> 
-		<sdef n="detnt" /> 
-		<sdef n="predet" /> 
-		<sdef n="past" /> 
-		<sdef n="atn" /> 
-		<sdef n="qnt" /> 
+		<sdef n="num" /> 
+		<sdef n="ij" /> 
 		<sdef n="ord" /> 
-		<sdef n="obj" /> 
-		<sdef n="subj" /> 
-		<sdef n="pro" /> 
-		<sdef n="tn" /> 
 		<sdef n="acr" /> 
 		<sdef n="top" /> 
 		<sdef n="ant" /> 
 		<sdef n="cog" /> 
-		<sdef n="al" /> 
 		<sdef n="n" /> 
 		<sdef n="np" /> 
 		<sdef n="adj" /> 
 		<sdef n="f" /> 
-		<sdef n="m" /> 
-		<sdef n="mf" /> 
 		<sdef n="sg" /> 
 		<sdef n="pl" /> 
 		<sdef n="adv" /> 
-		<sdef n="preadv" /> 
-		<sdef n="pr" /> 
-		<sdef n="prn" /> 
-		<sdef n="rel" /> 
-		<sdef n="nn" /> 
-		<sdef n="an" /> 
-		<sdef n="aa" /> 
-		<sdef n="ind" /> 
-		<sdef n="itg" /> 
-		<sdef n="det" /> 
-		<sdef n="dem" /> 
-		<sdef n="def" /> 
-		<sdef n="cnjcoo" /> 
-		<sdef n="cnjsub" /> 
-		<sdef n="cnjadv" /> 
-		<sdef n="nt" /> 
-		<sdef n="vaux" /> 
-		<sdef n="vbser" /> 
-		<sdef n="vbhaver" /> 
-		<sdef n="vblex" /> 
-		<sdef n="vbmod" /> 
-		<sdef n="inf" /> 
-		<sdef n="ger" /> 
-		<sdef n="gerpast" /> 
-		<sdef n="pp" /> 
-		<sdef n="pp2" /> 
-		<sdef n="pp3" /> 
-		<sdef n="pri" /> 
-		<sdef n="ifi" /> 
-		<sdef n="p1" /> 
-		<sdef n="p2" /> 
-		<sdef n="p3" /> 
-		<sdef n="pii" /> 
-		<sdef n="fti" /> 
-		<sdef n="fts" /> 
-		<sdef n="cni" /> 
-		<sdef n="prs" /> 
-		<sdef n="pis" /> 
-		<sdef n="imp" /> 
-		<sdef n="pos" /> 
-		<sdef n="gen" /> 
-		<sdef n="sp" /> 
-		<sdef n="ref" /> 
-		<sdef n="sup" /> 
-		<sdef n="num" /> 
-		<sdef n="percent" /> 
-		<sdef n="ij" /> 
 		<sdef n="sent" /> 
 		<sdef n="cm" /> 
 		<sdef n="lpar" /> 
 		<sdef n="rpar" /> 
-		<sdef n="web" /> 
-		<sdef n="subs" /> 
-		<sdef n="pres" /> 
-		<sdef n="pprs" /> 
 		<sdef n="guio" /> 
-		<sdef n="enc" /> 
-		<sdef n="vbdo" /> 
-		<sdef n="sint" /> 
 		<sdef n="unc" /> 
 		<sdef n="sep" /> 
 		<sdef n="pron" /> 
@@ -113,57 +44,27 @@
 -->
 
 
-
-<pardef n="sgpl">
-  <e>       <p><l></l>          <r><s n="sg"/></r></p></e>
-  <e>       <p><l>j</l>         <r><s n="pl"/></r></p></e>
-  <e r="RL"><p><l></l>          <r><s n="sp"/></r></p></e>
-</pardef>
-
-
-<pardef n="nomacc">
-  <e>       <p><l></l>          <r><s n="nom"/></r></p></e>
-  <e>       <p><l>n</l>         <r><s n="acc"/></r></p></e>
-</pardef>
-
-
 <pardef n="sgplnomacc">
-  <e>       <par n="sgpl"/><par n="nomacc"/></e>
+  <e>       <p><l></l>          <r><s n="sg"/><s n="nom"/></r></p></e>
+  <e>       <p><l>j</l>         <r><s n="pl"/><s n="nom"/></r></p></e>
+  <e>       <p><l>n</l>         <r><s n="sg"/><s n="acc"/></r></p></e>
+  <e>       <p><l>jn</l>        <r><s n="pl"/><s n="acc"/></r></p></e>
 </pardef>
 
-
-<pardef n="acronimos_regex_par">
-<!-- UAB Hospital ^UAB<n><acr><sp>$ ^Hospital<n><sg>$ UABa Hospitalo -->
-  <e r="RL"><p><l>a</l>         <r><s n="adj"/><s n="acr"/><s n="re"/></r></p><par n="sgplnomacc"/></e>
-  <e r="RL"><p><l></l>          <r><s n="n"/><s n="acr"/><s n="re"/></r></p><par n="sgplnomacc0"/></e>
-
-<!-- Jacob 7sept 2009. En direkto eo->en ni provizore sopozu ke estas nominativo -->
-  <e r="LR"><p><l></l>          <r><s n="n"/><s n="acr"/><s n="re"/><s n="sg"/><s n="nom"/></r></p></e>
-
+<pardef n="radiko">
+  <e>       <p><l></l>          <r><s n="compound-L"/></r></p></e>
 </pardef>
 
-<pardef n="acronimos">
-  <e>       <re>[A-Z][A-Z]</re><par n="acronimos_regex_par"/></e>
-  <e>       <re>[A-Z][A-Z][A-Z]</re><par n="acronimos_regex_par"/></e>
-  <e>       <re>[A-Z][A-Z][A-Z][A-Z]</re><par n="acronimos_regex_par"/></e>
-  <e>       <re>[A-Z][A-Z][A-Z][A-Z][A-Z]</re><par n="acronimos_regex_par"/></e>
+<pardef n="vortfino">
+  <e>       <p><l></l>          <r><s n="compound-R"/></r></p></e>
 </pardef>
 
-<pardef n="ordinals">
-  <e>       <re>([0-9]+)?</re><p><l>a</l><r>a<s n="num"/><s n="ord"/></r></p></e>
-  <e>       <re>([0-9]+)?</re><p><l>an</l><r>an<s n="num"/><s n="ord"/></r></p></e>
+<pardef n="sgplnomacc_kunmetebla">
+  <e>       <p><l></l>          <r><s n="sg"/><s n="nom"/></r></p><par n="radiko"/><par n="vortfino"/></e>
+  <e>       <p><l>j</l>         <r><s n="pl"/><s n="nom"/></r></p><par n="vortfino"/></e>
+  <e>       <p><l>n</l>         <r><s n="sg"/><s n="acc"/></r></p><par n="vortfino"/></e>
+  <e>       <p><l>jn</l>        <r><s n="pl"/><s n="acc"/></r></p><par n="vortfino"/></e>
 </pardef>
-
-
-<pardef n="time">
-  <e>       <re>[0-9]+[.:][0-5][0-9](pm|PM|am|AM)</re><p><l></l><r><s n="num"/></r></p></e>
-  <e>       <re>[0-9](pm|PM|am|AM)</re><p><l></l><r><s n="num"/></r></p></e>
-</pardef>
-
-<pardef n="adiós__ij">
-  <e>       <p><l></l>          <r><s n="ij"/></r></p></e>
-</pardef>
-
 
 <pardef n="e__adv">
   <e>       <p><l>e</l>         <r>e<s n="adv"/></r></p></e>
@@ -173,43 +74,17 @@
   <e>       <p><l>a</l>         <r>a<s n="adj"/></r></p><par n="sgplnomacc"/></e>
 </pardef>
 
-
-
-<pardef n="compounding">
-  <e>       <p><l></l>         <r><s n="compounding"/></r></p></e>
-  <e>       <p><l></l>         <r></r></p></e>
-</pardef>
-
-
-
-
 <pardef n="o__n">
-  <e>       <p><l>o</l>         <r>o<s n="n"/></r></p><par n="sgplnomacc"/></e>
-
-<!-- Permesu o-vortojn igxi a-vortojn (fare de la transfero) -->
-  <e r="RL"><p><l>a</l>         <r>o<s n="adj"/></r></p><par n="sgplnomacc"/></e>
+  <e>       <p><l>o</l>         <r>o<s n="n"/></r></p><par n="sgplnomacc_kunmetebla"/></e>
+  <e>       <p><l></l>          <r>o<s n="n"/><s n="sg"/><s n="nom"/></r></p><par n="radiko"/></e>
 </pardef>
-
 
 
 <pardef n="ino__n">
-  <e>       <p><l>o</l>         <r>o<s n="n"/><s n="m"/></r></p><par n="sgplnomacc"/></e>
-  <e>       <p><l>ino</l>       <r>o<s n="n"/><s n="f"/></r></p><par n="sgplnomacc"/></e>
-
-<!-- kiam genro mankas, ni elektas la o-formojn -->
-  <e r="RL"><p><l>o</l>         <r>o<s n="n"/></r></p><par n="sgplnomacc"/></e>
-
-<!-- Permesu o-vortojn igxi a-vortojn (fare de la transfero) -->
-  <e r="RL"><p><l>a</l>         <r>o<s n="adj"/><s n="m"/></r></p><par n="sgplnomacc"/></e>
-  <e r="RL"><p><l>ina</l>       <r>o<s n="adj"/><s n="f"/></r></p><par n="sgplnomacc"/></e>
-  <e r="RL"><p><l>a</l>         <r>o<s n="adj"/></r></p><par n="sgplnomacc"/></e>
-</pardef>
-
-
-
-
-<pardef n="proper_names">
-  <e>       <re>(St|s\-ro|s\-ino|f\-ino|d\-ro|Sir|Lord|Rt Hon|Mr|Miss|Ms|Mrs|Dr|Don).? ([A-Z][a-z]*|[A-Z][a-z]* [A-Z][a-z]*|[A-Z][a-z]* [A-Z].? [A-Z][a-z]*)</re><p><l></l><r><s n="np"/><s n="ant"/><s n="mf"/><s n="sg"/></r></p><par n="nomacc"/></e>
+  <e>       <p><l>o</l>         <r>o<s n="n"/><s n="m"/></r></p><par n="sgplnomacc_kunmetebla"/></e>
+  <e>       <p><l></l>          <r>o<s n="n"/><s n="m"/><s n="sg"/><s n="nom"/></r></p><par n="radiko"/></e>
+  <e>       <p><l>ino</l>       <r>o<s n="n"/><s n="f"/></r></p><par n="sgplnomacc_kunmetebla"/></e>
+  <e>       <p><l>in</l>        <r>o<s n="n"/><s n="f"/><s n="sg"/><s n="nom"/></r></p><par n="radiko"/></e>
 </pardef>
 
 
@@ -220,25 +95,32 @@
 
 	</pardefs>
 
-	<section id="main" type="standard">
+<section id="main" type="standard">
+<e lm="domo">            <i>dom</i><par n="o__n"/></e>
+<e lm="detektivo">       <i>detektiv</i><par n="ino__n"/></e>
+<e lm="defendo">         <i>defend</i><par n="o__n"/></e>
+<e lm="dio">             <i>di</i><par n="ino__n"/></e>
+<e lm="diktatoro">       <i>diktator</i><par n="ino__n"/></e>
 
-<e>                           <par n="acronimos"/></e>
+<e lm="d">            <i>d</i><par n="o__n"/></e>
+<e lm="m">            <i>m</i><par n="o__n"/></e>
+<e lm="dano">            <i>dan</i><par n="ino__n"/></e>
+
+<e lm="d">                    <i>d</i><par n="litero"/></e>
+<e lm="g">                    <i>g</i><par n="litero"/></e>
+<e lm="j">                    <i>j</i><par n="litero"/></e>
+<e lm="m">                    <i>m</i><par n="litero"/></e>
+<e lm="n">                    <i>n</i><par n="litero"/></e>
+<e lm="o">                    <i>o</i><par n="litero"/></e>
 
 <e lm="konservita">      <i>konservit</i><par n="a__adj"/></e>
 <e lm="kondamnita">      <i>kondamnit</i><par n="a__adj"/></e>
-<e lm="domo">            <i>dom</i><par n="o__n"/></e>
-<e lm="d">            <i>d</i><par n="o__n"/></e>
-<e lm="dano">            <i>dan</i><par n="ino__n"/></e>
 <e lm="defendo">         <i>defend</i><par n="o__n"/></e>
 <e lm="dekano">          <i>dekan</i><par n="ino__n"/></e>
 <e lm="demokrato">       <i>demokrat</i><par n="ino__n"/></e>
 <e lm="denominatoro">    <i>denominator</i><par n="ino__n"/></e>
 <e lm="dentisto">        <i>dentist</i><par n="ino__n"/></e>
 <e lm="deputito">        <i>deputit</i><par n="ino__n"/></e>
-<e lm="detektilo">       <i>detektil</i><par n="ino__n"/></e>
-<e lm="detektivo">       <i>detektiv</i><par n="ino__n"/></e>
-<e lm="dio">             <i>di</i><par n="ino__n"/></e>
-<e lm="diktatoro">       <i>diktator</i><par n="ino__n"/></e>
 <e lm="direktoro">       <i>direktor</i><par n="ino__n"/></e>
 <e lm="dirigento">       <i>dirigent</i><par n="ino__n"/></e>
 <e lm="doktoro">         <i>doktor</i><par n="ino__n"/></e>
@@ -246,21 +128,26 @@
 <e lm="duko">            <i>duk</i><par n="ino__n"/></e>
 <e lm="edzo">            <i>edz</i><par n="ino__n"/></e>
 <e lm="subskribinto">    <i>subskribint</i><par n="o__n"/></e>
-
-<e>                           <p><l>komerca<b/>konsilisto</l><r>komerca<b/>konsilisto<s n="n"/><s n="m"/><s n="sg"/><s n="nom"/></r></p></e>
-
+<e><p><l>komerca<b/>konsilisto</l><r>komerca<b/>konsilisto<s n="n"/><s n="m"/><s n="sg"/><s n="nom"/></r></p></e>
 	</section>
 
+
+<!--
+<section id="compound-L" type="compound-L">
+</section>
+
+<section id="compound-R" type="standard">
+</section>
+-->
+
        <section id="final" type="inconditional">
-<e>                           <par n="proper_names"/></e>
-<e>                           <par n="time"/></e>
 <e>                           <p><l>-</l>                   <r>-<s n="guio"/></r></p></e>
 <e>                           <p><l>,</l>                   <r>,<s n="cm"/></r></p></e>
 <e>                           <re>[.\?;:!]</re><p><l></l>   <r><s n="sent"/></r></p></e>
 <e>                           <re>[\(\[]</re><p><l></l>     <r><s n="lpar"/></r></p></e>
 <e>                           <re>[\)\]]</re><p><l></l>     <r><s n="rpar"/></r></p></e>
 <e>                           <p><l>'</l>                   <r>'<s n="apos"/></r></p></e>
-
         </section>
+
 
 </dictionary>
