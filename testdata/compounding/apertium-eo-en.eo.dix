@@ -5,7 +5,7 @@ lt-comp lr apertium-eo-en.eo.dix eo-en.automorf.bin
 <dictionary>
 	<alphabet>·ÀÁÂÄÇÈÉÊËÌÍÎÏÑÒÓÔÖÙÛÜÚàáâäãçèéêëìíîïñòóôöõùúûüABCDEFGHIJKLMNOPQRSTUVWXYZĈĜĤĴŜŬabcdefghijklmnopqrstuvwxyzĉĝĥĵŝŭ</alphabet>
 	<sdefs>
-		<sdef n="compound-L" />
+		<sdef n="compound-only-L" />
 		<sdef n="compound-R" />
 		<sdef n="m" /> 
 		<sdef n="mf" /> 
@@ -51,20 +51,31 @@ lt-comp lr apertium-eo-en.eo.dix eo-en.automorf.bin
   <e>       <p><l>jn</l>        <r><s n="pl"/><s n="acc"/></r></p></e>
 </pardef>
 
+<!-- specialaj difinoj por kunmetitaj vortoj  -->
 <pardef n="radiko">
-  <e>       <p><l></l>          <r><s n="compound-L"/></r></p></e>
+  <e r="LR"><p><l></l>          <r><s n="compound-only-L"/></r></p></e>
+<!--  <e><p><l></l>          <r></r></p></e> -->
+</pardef>
+
+<pardef n="nur_radiko">
+  <e r="LR"><p><l></l>          <r><s n="compound-only-L"/></r></p></e>
 </pardef>
 
 <pardef n="vortfino">
-  <e>       <p><l></l>          <r><s n="compound-R"/></r></p></e>
+  <e r="LR"><p><l></l>          <r><s n="compound-R"/></r></p></e>
+  <e r="RL"><p><l></l>          <r></r></p></e>
 </pardef>
+
 
 <pardef n="sgplnomacc_kunmetebla">
   <e>       <p><l></l>          <r><s n="sg"/><s n="nom"/></r></p><par n="radiko"/><par n="vortfino"/></e>
   <e>       <p><l>j</l>         <r><s n="pl"/><s n="nom"/></r></p><par n="vortfino"/></e>
   <e>       <p><l>n</l>         <r><s n="sg"/><s n="acc"/></r></p><par n="vortfino"/></e>
   <e>       <p><l>jn</l>        <r><s n="pl"/><s n="acc"/></r></p><par n="vortfino"/></e>
+  <e r="RL"><p><l></l>          <r><s n="sp"/><s n="nom"/></r></p></e>
+  <e r="RL"><p><l>n</l>         <r><s n="sp"/><s n="acc"/></r></p></e>
 </pardef>
+
 
 <pardef n="e__adv">
   <e>       <p><l>e</l>         <r>e<s n="adv"/></r></p></e>
