@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# Heap space memory for JVM
+defaultMinMem=200
+defaultMaxMem=800
+library=`dirname $0`/../share/apertium/lttoolbox.jar
+
+if [ ! -e $library ]
+then
+	if [ -e dist/lttoolbox.jar ]
+	then
+		library=dist/lttoolbox.jar
+	elif [ -e lttoolbox.jar ]
+	then
+		library=lttoolbox.jar
+	fi
+fi
+
+java -Xms${defaultMinMem}m -Xmx${defaultMaxMem}m -jar ${library} $0 $*
