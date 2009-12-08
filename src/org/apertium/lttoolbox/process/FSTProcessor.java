@@ -894,14 +894,14 @@ public class FSTProcessor {
 
 
     public String compoundAnalysis2(String input_word) {
-      final int MAX_COMBINATIONS = 500;
+        final int MAX_COMBINATIONS = 500;
 
-      if (DEBUG) System.err.println(" compoundAnalysis2(input_word = " + input_word);
+        if (DEBUG) System.err.println(" compoundAnalysis2(input_word = " + input_word);
 
         State current_state = initial_compounding_state.copy();
 
         boolean firstupper = Character.isUpperCase(input_word.charAt(0));
-        boolean uppercase = firstupper && Character.isUpperCase(input_word.charAt(1));
+        boolean uppercase = firstupper && input_word.length()>1 && Character.isUpperCase(input_word.charAt(1));
 
         for (int i = 0; i<input_word.length(); i++) {
             char val=input_word.charAt(i);
@@ -909,7 +909,10 @@ public class FSTProcessor {
             if (DEBUG) System.err.println(val + " før step "+i+" current_state = " + current_state);
             current_state.step_case(val, caseSensitive);
             if (current_state.size()>MAX_COMBINATIONS) {
-              System.err.println("Warning: compoundAnalysis' MAX_COMBINATIONS exceeded for " + input_word);
+              System.err.println("Warning: compoundAnalysis' MAX_COMBINATIONS exceeded for '" + input_word+"'");
+              System.err.println("         gave up at char "+i+" '"+val+"'. Here are first 20 states:'");
+              System.err.println(current_state.state.subList(0, 20));
+
               return null;              
             }
             if (DEBUG) System.err.println(val + " eft step "+i+" current_state = " + current_state);
@@ -932,7 +935,8 @@ public class FSTProcessor {
 
         String result=current_state.filterFinals(compounding_finals, alphabet, escaped_chars, uppercase, firstupper);
         if (DEBUG) System.err.println("rrresult = "+result.replaceAll("/", "/\n"));
-        return result;
+        if (result.length()>0) return result;
+        return null;
     }
 
 

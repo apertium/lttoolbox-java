@@ -54,7 +54,7 @@ class TNodeState {
         for (int i : sequence) sb.append(Alphabet.debuggingInstance.getSymbol(i, caseWasChanged));
         sb.append('→');
         for (int i : where.transitions.keySet()) sb.append(Alphabet.debuggingInstance.getSymbol(i));
-        return sb.toString()+"@"+where.hashCode();
+        return sb.toString()+"@"+Integer.toString(where.hashCode(), Character.MAX_RADIX);
     }
 }
 
@@ -65,7 +65,7 @@ class TNodeState {
 public class State {
 
 
-    private List<TNodeState> state = new ArrayList<TNodeState>();
+    ArrayList<TNodeState> state = new ArrayList<TNodeState>();
     
     /**
      * Pool of characters ArrayLists, for efficiency (static class)
@@ -120,7 +120,7 @@ public class State {
      * @param input the input symbol
      */
     private void apply(int input) {
-        List<TNodeState> new_state = new ArrayList<TNodeState>();
+        ArrayList<TNodeState> new_state = new ArrayList<TNodeState>();
         for (int i = 0,  limit = state.size(); i != limit; i++) {
             TNodeState state_i = state.get(i);
             Transition it = state_i.where.transitions.get(input);
@@ -142,7 +142,7 @@ public class State {
      */
     private void apply(int input, int lowerCasedInput) {
 
-        List<TNodeState> new_state = new ArrayList<TNodeState>();
+        ArrayList<TNodeState> new_state = new ArrayList<TNodeState>();
 
         for (int i = 0,  limit = state.size(); i != limit; i++) {
             TNodeState state_i = state.get(i);
