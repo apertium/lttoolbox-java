@@ -580,7 +580,8 @@ public class FSTProcessor {
 
 
     private boolean do_decomposition = false;
-    int compoundLSymbol = 0;
+    //int compoundLSymbol = 0;
+    int compoundOnlyLSymbol = 0;
     int compoundRSymbol = 0;
 
     public void initDecomposition(boolean removeSymbolsFromOutput) {
@@ -590,13 +591,16 @@ public class FSTProcessor {
         //System.err.println("compounding_finals = " + compounding_finals);
         do_decomposition = true;
 
-        alphabet.includeSymbol("<compound-L>");
+        alphabet.includeSymbol("<compound-only-L>");
+        //alphabet.includeSymbol("<compound-L>");
         alphabet.includeSymbol("<compound-R>");
-        compoundLSymbol = alphabet.cast("<compound-L>");
+        compoundOnlyLSymbol = alphabet.cast("<compound-only-L>");
+        //compoundLSymbol = alphabet.cast("<compound-L>");
         compoundRSymbol = alphabet.cast("<compound-R>");
         //System.err.println("compoundSymbol = " + compoundLSymbol);
         // remove this symbol from output
-        if (removeSymbolsFromOutput) alphabet.setSymbol(compoundLSymbol, "");
+        //if (removeSymbolsFromOutput) alphabet.setSymbol(compoundLSymbol, "");
+        if (removeSymbolsFromOutput) alphabet.setSymbol(compoundOnlyLSymbol, "");
         if (removeSymbolsFromOutput) alphabet.setSymbol(compoundRSymbol, "");
 
         /*
@@ -672,28 +676,35 @@ public class FSTProcessor {
                 if (current_state.isFinal(inconditional)) {
                     boolean firstupper = Character.isUpperCase(sf.charAt(0));
                     boolean uppercase = firstupper && Character.isUpperCase(sf.charAt(sf.length() - 1));
+                    if (compoundOnlyLSymbol!=0) current_state.pruneStatesWithForbiddenSymbol(compoundOnlyLSymbol);
                     lf = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
                     last = input_buffer.getPos();
                     last_incond = true;
                 } else if (current_state.isFinal(postblank)) {
                     boolean firstupper = Character.isUpperCase(sf.charAt(0));
                     boolean uppercase = firstupper && Character.isUpperCase(sf.charAt(sf.length() - 1));
+                    if (compoundOnlyLSymbol!=0) current_state.pruneStatesWithForbiddenSymbol(compoundOnlyLSymbol);
                     lf = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
                     last = input_buffer.getPos();
                     last_postblank = true;
                 } else if (current_state.isFinal(preblank)) {
                     boolean firstupper = Character.isUpperCase(sf.charAt(0));
                     boolean uppercase = firstupper && Character.isUpperCase(sf.charAt(sf.length() - 1));
+                    if (compoundOnlyLSymbol!=0) current_state.pruneStatesWithForbiddenSymbol(compoundOnlyLSymbol);
                     lf = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
                     last = input_buffer.getPos();
                     last_preblank = true;
                 } else if (!isAlphabetic(val)) {
                     boolean firstupper = Character.isUpperCase(sf.charAt(0));
                     boolean uppercase = firstupper && Character.isUpperCase(sf.charAt(sf.length() - 1));
+                    if (compoundOnlyLSymbol!=0) current_state.pruneStatesWithForbiddenSymbol(compoundOnlyLSymbol);
                     lf = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
                     last = input_buffer.getPos();
                     last_postblank = last_preblank = last_incond = false;
-                } 
+                } else {
+                    ; // Hum? In which cases do we get here?
+                    if (DEBUG) System.err.println("Hum? In which cases do we get here? val = " + val);
+                }
             } else if (sf.equals("") && Character.isSpaceChar(val)) {
                 lf = "/*";
                 lf+=sf;
@@ -704,6 +715,7 @@ public class FSTProcessor {
             current_state.step_case(val, caseSensitive);
 
             if (current_state.size() != 0) {
+
                 sf=sf+alphabet.getSymbol(val);
 
             } else {
@@ -919,11 +931,11 @@ public class FSTProcessor {
             String result=current_state.filterFinals(compounding_finals, alphabet, escaped_chars, uppercase, firstupper);
 
             if (i<input_word.length()-1) {
-              current_state.restartFinals(compounding_finals, compoundLSymbol, initial_compounding_state, '+');
+              current_state.restartFinals(compounding_finals, compoundOnlyLSymbol, initial_compounding_state, '+');
             }
             if (DEBUG) System.err.println(val + " eft rest "+i+" current_state = " + current_state);
             if (DEBUG) System.err.println(i + " result = "+result);
-            result=current_state.filterFinals(compounding_finals, alphabet, escaped_chars, uppercase, firstupper);
+            if (DEBUG) result=current_state.filterFinals(compounding_finals, alphabet, escaped_chars, uppercase, firstupper);
             if (DEBUG) System.err.println(i + " result = "+result);
             if (DEBUG) System.err.println("-- size="+current_state.size());
             if (current_state.size()==0) {

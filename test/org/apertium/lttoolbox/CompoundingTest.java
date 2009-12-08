@@ -32,7 +32,7 @@ public class CompoundingTest extends TestCase {
   }
 
 
-
+/*
   public void testCompound2_Nnnb() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
       fstp.load(new BufferedInputStream(new FileInputStream("/home/j/esperanto/apertium/apertium-nn-nb/compound.dix.bin")));
@@ -48,7 +48,7 @@ public class CompoundingTest extends TestCase {
       System.err.println("output.toString() = " + output.toString().replaceAll("/", "\n/"));
       assertEquals("^fader/fader<n><m><sg><ind>$\n", output.toString());
   }
-
+*/
 
 
 
@@ -68,14 +68,15 @@ public class CompoundingTest extends TestCase {
       assertEquals("/detektivo<n><m><sg><nom>+domo<n><sg><nom>",fstp.compoundAnalysis2("detektivdomo"));
       assertEquals("/detektivo<n><f><sg><nom>+domo<n><sg><nom>",fstp.compoundAnalysis2("detektivindomo"));
 
+      assertEquals(null, fstp.compoundAnalysis2("dom"));
       assertEquals(null, fstp.compoundAnalysis2("domojdetektivo"));
       assertEquals(null, fstp.compoundAnalysis2("domondetektivo"));
 
 
       StringWriter output = new StringWriter();
-      fstp.analysis(new StringReader2("Ó diktatorindiino domo\n"), output);
+      fstp.analysis(new StringReader2("Ó dom diktatorindiino domo\n"), output);
       System.err.println("output.toString() = " + output.toString().replaceAll("/", "\n/"));
-      assertEquals("^Ó/*Ó$ ^diktatorindiino/diktatoro<n><f><sg><nom>+dio<n><f><sg><nom>$ ^domo/domo<n><sg><nom>$\n", output.toString());
+      assertEquals("^Ó/*Ó$ ^dom/*dom$ ^diktatorindiino/diktatoro<n><f><sg><nom>+dio<n><f><sg><nom>$ ^domo/domo<n><sg><nom>$\n", output.toString());
   }
 
 
@@ -85,7 +86,7 @@ public class CompoundingTest extends TestCase {
       FSTProcessor fstp = new FSTProcessor();
       fstp.load(new BufferedInputStream(new FileInputStream("testdata/compounding/eo-en.automorf.bin")));
       fstp.initAnalysis();
-      fstp.alphabet.setSymbol(fstp.alphabet.cast("<compound-L>"), "");
+      fstp.alphabet.setSymbol(fstp.alphabet.cast("<compound-only-L>"), "");
       fstp.alphabet.setSymbol(fstp.alphabet.cast("<compound-R>"), "");
 
       String res = fstp.compoundAnalysisOld("domodefendo");

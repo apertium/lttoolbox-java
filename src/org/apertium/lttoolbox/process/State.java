@@ -387,13 +387,28 @@ public class State {
     }
 
 
+    void pruneStatesWithForbiddenSymbol(int forbiddenSymbol) {
+
+      Integer forbiddenSymbolInteger = forbiddenSymbol;
+
+      // remove states with more than minimum number of compounds
+      for (int i = state.size()-1; i>=0; i--) {
+        List<Integer> seq = state.get(i).sequence;
+        // TODO optimize: search from end,
+        if (seq.contains(forbiddenSymbolInteger)) {
+          state.remove(i);
+        }
+      }
+    }
+
+
     void pruneCompounds(int requiredSymbol, int separationSymbol) {
       int minNoOfCompoundElements = Integer.MAX_VALUE-1;
       int[] noOfCompoundElements = new int[state.size()];
       for (int i = 0;  i<state.size(); i++) {
           List<Integer> seq = state.get(i).sequence;
           if (!lastPartHasRequiredSymbol(seq, requiredSymbol, separationSymbol)) {
-            // 
+            //
             noOfCompoundElements[i] = Integer.MAX_VALUE;
             continue;
           }
@@ -410,6 +425,7 @@ public class State {
         }
       }
     }
+
 
     /**
      * Same as previous one, but  the output is adapted to the SAO system
