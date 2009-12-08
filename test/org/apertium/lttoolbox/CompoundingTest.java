@@ -57,7 +57,7 @@ public class CompoundingTest extends TestCase {
       fstp.load(new BufferedInputStream(new FileInputStream("testdata/compounding/eo-en.automorf.bin")));
       fstp.initDecomposition(true);
 
-      State.DEBUG = true;
+      //State.DEBUG = true;
   // lt-comp lr apertium-eo-en.eo.dix eo-en.automorf.bin
       assertEquals("/domo<n><sg><nom>+detektivo<n><m><pl><acc>", fstp.compoundAnalysis2("domodetektivojn"));
 
@@ -73,9 +73,9 @@ public class CompoundingTest extends TestCase {
 
 
       StringWriter output = new StringWriter();
-      fstp.analysis(new StringReader2("diktatorindiino domo\n"), output);
+      fstp.analysis(new StringReader2("Ó diktatorindiino domo\n"), output);
       System.err.println("output.toString() = " + output.toString().replaceAll("/", "\n/"));
-      assertEquals("^diktatorindiino/diktatoro<n><f><sg><nom>+dio<n><f><sg><nom>$ ^domo/domo<n><sg><nom>$\n", output.toString());
+      assertEquals("^Ó/*Ó$ ^diktatorindiino/diktatoro<n><f><sg><nom>+dio<n><f><sg><nom>$ ^domo/domo<n><sg><nom>$\n", output.toString());
   }
 
 

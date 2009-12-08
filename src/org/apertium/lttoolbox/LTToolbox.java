@@ -28,13 +28,15 @@ public class LTToolbox {
       System.out.println(LTToolbox.class.getResource("/x"));
       System.out.println(LTToolbox.class.getResource("."));
        */
-        System.out.println("lttoolbox: is a toolbox for lexical processing, morphological analysis and generation of words\n" +
+        System.err.println("lttoolbox: a toolbox for lexical processing, morphological analysis and generation of words\n" +
             "USAGE: "+invocationCommand+"\n" +
             "Examples:\n" +
-            " " +bareCommand+ " lt-expand-j dictionary.dix     expand a dictionary\n" +
-            " " +bareCommand+ " lt-comp-j lr dic.dix dic.bin   compile a dictionary\n" +
-            " " +bareCommand+ " lt-proc-j dic.bin              morphological analysis/generation\n" +
-            " " +bareCommand+ " lt-validate-j -dix dic.dix     validate a  dictionary\n" +
+            " " +bareCommand+ " lt-expand dictionary.dix     expand a dictionary\n" +
+            " " +bareCommand+ " lt-comp lr dic.dix dic.bin   compile a dictionary\n" +
+            " " +bareCommand+ " lt-proc dic.bin              morphological analysis/generation\n" +
+            " " +bareCommand+ " lt-validate -dix dic.dix     validate a  dictionary\n" +
+//            "For more help, run without a task, like: " +bareCommand+ "\n" +
+            "For more help on a task, run it, like: " +bareCommand+ " lt-proc\n" +
             "See also http://wiki.apertium.org/wiki/Lttoolbox-java");
         System.exit(-1);
     }
@@ -53,7 +55,7 @@ public class LTToolbox {
       else if (task.startsWith("lt-comp")) LTComp.main(restOfArgs);
       else if (task.startsWith("lt-validate")) LTValidate.main(restOfArgs);
       else {
-        System.out.println("Command not recognized: "+task); // Arrays.toString(argv).replaceAll(", ", " ")
+        System.err.println("Command not recognized: "+task); // Arrays.toString(argv).replaceAll(", ", " ")
         showHelp(null);
       }
     }
