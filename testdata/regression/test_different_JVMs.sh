@@ -8,5 +8,5 @@ do
 	echo  ======== $i 
 	echo  ===========================
 #	CONTINUE_ON_ERROR=true JAVA="$i" ./compare_java_and_c.sh
-	JAVA="$i" ./compare_java_and_c.sh
+	JAVA="$i" ./test_java_and_c.sh
 done
