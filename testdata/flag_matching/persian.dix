@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Last processed by: apertium-dixtools fix -alignMonodix persian.dix persian.dix
+-->
+<dictionary>
+	<alphabet>abcdefghijklmnopqrstuvwyzx</alphabet>
+	<sdefs>
+		<sdef n="mi:1" /> 
+		<sdef n="xp:1" /> 
+		<sdef n="xp:0" /> 
+		<sdef n="p3" /> 
+		<sdef n="p2" /> 
+		<sdef n="prs" /> 
+		<sdef n="p1" /> 
+		<sdef n="inf" /> 
+		<sdef n="sg" /> 
+		<sdef n="vblex" /> 
+		<sdef n="pri" /> 
+		<sdef n="mi:0" /> 
+		<sdef n="bi:0" /> 
+		<sdef n="bi:1" /> 
+	</sdefs>
+	<pardefs>
+<!--
+ lt-comp lr persian.dix persian-automorf.bin
+ lt-comp rl persian.dix persian-autogen.bin
+
+
+bikhodam:khodan<vblex><prs><p1><sg>
+bikhodaš:khodan<vblex><prs><p2><sg>
+bikhoda:khodan<vblex><prs><p3><sg>
+mikhodam:khodan<vblex><pri><p1><sg>
+mikhodaš:khodan<vblex><pri><p2><sg>
+mikhoda:khodan<vblex><pri><p3><sg>
+khodan:khodan<vblex><inf>
+
+$ lt-expand persian.dix|   grep -v -e '<xp:1>.*<xp:0>' -e '<mi:1>.*<mi:0>' -e '<bi:1>.*<bi:0>'  -e '<bi:0>.*<bi:1>' -e '<mi:0>.*<mi:1>' -e '<xp:0>.*<xp:1>'
+bikhodam:<bi:1>khodan<mi:0><xp:0><vblex><pri><p1><sg>
+bikhodaš:<bi:1>khodan<mi:0><xp:0><vblex><pri><p2><sg>
+bikhoda:<bi:1>khodan<mi:0><xp:0><vblex><pri><p3><sg>
+mikhodam:<mi:1>khodan<bi:0><xp:0><vblex><prs><p1><sg>
+mikhodaš:<mi:1>khodan<bi:0><xp:0><vblex><prs><p2><sg>
+mikhoda:<mi:1>khodan<bi:0><xp:0><vblex><prs><p3><sg>
+khodan:<xp:1>khodan<xp:1><bi:0><mi:0><vblex><inf>
+
+  -->
+<pardef n="prefix">
+<!-- To form a complete path, all flags must agree, e.g.
+     _bi_ must be set to '1' in all states with a flag -->
+
+  <!-- 'bi-' is the prefix for indicative -->
+  <e>       <p><l>bi</l>        <r><s n="bi:1"/></r></p></e>
+
+  <!-- 'mi-' is the prefix for subjunctive -->
+  <e>       <p><l>mi</l>        <r><s n="mi:1"/></r></p></e>
+
+  <e>       <p><l></l>          <r><s n="xp:1"/></r></p></e>
+</pardef>
+
+<pardef n="khoda/n__vblex">
+  <e>       <p><l>m</l>         <r><s n="xp:0"/><s n="mi:1"/><s n="bi:0"/><s n="vblex"/><s n="prs"/><s n="p1"/><s n="sg"/></r></p></e>
+  <e>       <p><l>m</l>         <r><s n="xp:0"/><s n="mi:0"/><s n="bi:1"/><s n="vblex"/><s n="pri"/><s n="p1"/><s n="sg"/></r></p></e>
+
+  <e>       <p><l>š</l>         <r><s n="xp:0"/><s n="mi:1"/><s n="bi:0"/><s n="vblex"/><s n="prs"/><s n="p2"/><s n="sg"/></r></p></e>
+  <e>       <p><l>š</l>         <r><s n="xp:0"/><s n="mi:0"/><s n="bi:1"/><s n="vblex"/><s n="pri"/><s n="p2"/><s n="sg"/></r></p></e>
+
+  <e>       <p><l></l>          <r><s n="xp:0"/><s n="mi:1"/><s n="bi:0"/><s n="vblex"/><s n="prs"/><s n="p3"/><s n="sg"/></r></p></e>
+  <e>       <p><l></l>          <r><s n="xp:0"/><s n="mi:0"/><s n="bi:1"/><s n="vblex"/><s n="pri"/><s n="p3"/><s n="sg"/></r></p></e>
+  <e>       <p><l>n</l>         <r><s n="xp:1"/><s n="vblex"/><s n="inf"/></r></p></e>
+</pardef>
+	</pardefs>
+
+	<section id="main" type="standard">
+
+<e lm="khodan">          <par n="prefix"/><i>khoda</i><par n="khoda/n__vblex"/></e>
+
+	</section>
+</dictionary>

@@ -623,6 +623,13 @@ public class FSTProcessor {
         //System.err.println("initial_compounding_state = " + initial_compounding_state.toString());
     }
 
+    public void initFlagMatch_analysis(boolean removeSymbolsFromOutput) {
+        initAnalysis();
+        System.err.println("alphabet = " + alphabet);
+
+        //if (removeSymbolsFromOutput) alphabet.setSymbol(l, "");
+
+    }
 
     public void initTMAnalysis() {
         tmNumbers = new ArrayList<String>();
