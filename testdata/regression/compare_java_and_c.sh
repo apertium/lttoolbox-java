@@ -1,8 +1,13 @@
 #!/bin/bash
 
+if [ "x$JAVA" == "x" ]
+then
+	JAVA=java
+fi
 
-LTProcJ="time -f %Usec java -cp ../../dist/lttoolbox.jar org.apertium.lttoolbox.LTProc"
-#LTProcJ="java -cp ../../dist/lttoolbox.jar org.apertium.lttoolbox.LTProc"
+#LTProcJ="time -f %Usec $JAVA -jar ../../dist/lttoolbox.jar lt-proc"
+LTProcJ="time -f %Usec $JAVA -cp ../../dist/lttoolbox.jar org.apertium.lttoolbox.LTProc"
+
 #LTProcC="/home/j/esperanto/apertium/lttoolbox/lttoolbox/lt-proc"
 LTProcC="time -f %Usec lt-proc"
 #LTProcC="lt-proc"
@@ -13,7 +18,10 @@ function fail() {
 	echo "error"
 	echo "Command was: $1"
 	echo "Output is in $F - differences is in $ERR"
-	exit 1
+	if [ "x$CONTINUE_ON_ERROR" == "x" ]
+	then
+		exit 1
+	fi
 }
 
 
