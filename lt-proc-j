@@ -16,4 +16,4 @@ then
 	fi
 fi
 
-java -Xms${defaultMinMem}m -Xmx${defaultMaxMem}m -jar ${library} $0 $*
+java -Dfile.encoding=UTF-8 -Xms${defaultMinMem}m -Xmx${defaultMaxMem}m -jar ${library} $0 $*
