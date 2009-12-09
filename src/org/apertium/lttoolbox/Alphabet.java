@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -81,15 +83,15 @@ public static class IntegerPair {
     /**
      * Symbol-identifier relationship.
      */
-    private final Map<String, Integer> slexic = new HashMap<String, Integer>();
+    private final HashMap<String, Integer> slexic = new HashMap<String, Integer>();
     
     /**
      * Identifier-symbol relationship.
      */
-    private final List<String> slexicinv = new ArrayList<String>();
+    private final ArrayList<String> slexicinv = new ArrayList<String>();
 
 
-    private final Map<IntegerPair, Integer> spair= new HashMap<IntegerPair, Integer>();
+    private final HashMap<IntegerPair, Integer> spair= new HashMap<IntegerPair, Integer>();
 
     
     private final ArrayList<IntegerPair> spairinv = new ArrayList<IntegerPair>();
@@ -98,12 +100,22 @@ public static class IntegerPair {
     /** For debugging purposes ONLY */
     public static Alphabet debuggingInstance;
 
+    public void debug_remember_removed_symbols() {
+        debuggingInstance = new Alphabet();
+        debuggingInstance.slexicinv.addAll(slexicinv);
+    }
+
     /**
      * The constructor
      */
     public Alphabet() {
-      Alphabet.debuggingInstance = this;
+        Alphabet.debuggingInstance = this;
     }
+
+
+  public Set<String> getFlagMatchSymbols() {
+    return slexic.keySet();
+  }
 
     /**
      * Include a symbol into the alphabet.
@@ -168,7 +180,7 @@ public static class IntegerPair {
      * Give the size of the alphabet.
      * @return the number of symbols of the alphabet.
      */
-    int size() {
+    public int size() {
         return slexic.size();
     }
 

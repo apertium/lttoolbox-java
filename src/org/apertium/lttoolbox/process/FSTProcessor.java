@@ -30,6 +30,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class FSTProcessor {
@@ -623,13 +625,92 @@ public class FSTProcessor {
         //System.err.println("initial_compounding_state = " + initial_compounding_state.toString());
     }
 
+    private boolean do_flagMatch = false;
+    int[] flagMatch_symbolToVarVal;
+    int flagMatch_no_of_flags;
+
     public void initFlagMatch_analysis(boolean removeSymbolsFromOutput) {
         initAnalysis();
-        System.err.println("alphabet = " + alphabet);
+        do_flagMatch = true;
+        flagMatch_symbolToVarVal =new int[alphabet.size()];
+        if (DEBUG) System.err.println("alphabet = " + alphabet);
+        final String flagAssigmentChar = ":";
+        // iterate thru all <var:val> like <mi:1>
 
+        ArrayList<String> flagList = new ArrayList<String>();
+        ArrayList<String> valueList = new ArrayList<String>();
+
+
+        for (String symbol : alphabet.getFlagMatchSymbols()) {
+          String[] varval = symbol.split(flagAssigmentChar);
+          if (varval.length!=2 || varval[1].length()==0) {
+            continue;
+          }
+          if (varval[1].length()==0) {
+             System.err.println("Warning: symbol must have a value to be used for flagmatch: " + symbol);
+            continue;
+          }
+          int symboli = alphabet.cast(symbol);
+          if (removeSymbolsFromOutput) alphabet.setSymbol(symboli, "");
+
+          // Instead of remembering strings
+          int flagIndex = flagList.indexOf(varval[0]);
+          if (flagIndex==-1) {
+            flagIndex = flagList.size();
+            flagList.add(varval[0]);
+            flagMatch_no_of_flags = flagIndex+1;
+          }
+
+          int valueIndex = valueList.indexOf(varval[1]);
+          if (valueIndex==-1) {
+            valueIndex = valueList.size();
+            valueList.add(varval[1]);
+          }
+          valueIndex++; // count values from one
+
+          flagMatch_symbolToVarVal[-symboli - 1] = flagIndex<<16 | valueIndex;
+          if (DEBUG) System.err.println(symboli + symbol+" is "+flagIndex+":" + valueIndex+ "(=="+(flagIndex<<16 | valueIndex));
+        }
+        if (DEBUG) System.err.println("alphabet = " + alphabet);
+        if (DEBUG) System.err.println("flagList = " + flagList);
+        if (DEBUG) System.err.println("valueList = " + valueList);
+        if (DEBUG) System.err.println("flagMatch_symbolToVarVal = " + Arrays.toString(flagMatch_symbolToVarVal));
         //if (removeSymbolsFromOutput) alphabet.setSymbol(l, "");
-
     }
+
+
+  private void deleteStatesWithConflictingFlags(State current_state) {
+      if (DEBUG) System.err.println("deleteStatesWithConflictingFlags: " + current_state);
+
+      stateLoop:
+      for (int i = current_state.state.size()-1; i>=0; i--) {
+        byte[] flagvalues = new byte[flagMatch_no_of_flags]; // TODO reuse/avoid initialization
+        if (DEBUG) System.err.println("deleteStatesWithConflictingFlags: " + current_state.state.get(i));
+        List<Integer> seq = current_state.state.get(i).sequence;
+        for (Integer symbolii : seq) {
+          int symboli = symbolii.intValue();
+          if (symboli>=0) continue;
+          int flagIndex_value = flagMatch_symbolToVarVal[-symboli - 1];
+          if (flagIndex_value==0) continue;
+          int flagIndex = flagIndex_value>>16;
+          int newValue =  (flagIndex_value & 0xffff);
+          int oldValue = flagvalues[flagIndex];
+          if (oldValue == 0) {
+            flagvalues[flagIndex] = (byte) newValue;
+
+            System.err.println(flagIndex +": " +oldValue+"->"+newValue+  "flagvalues = " + Arrays.toString(flagvalues));
+            continue;
+          } else if (oldValue != newValue) {
+            // conbflicting flags, remove  state
+
+            if (DEBUG) System.err.println(flagIndex +": " +oldValue+"!="+newValue+   " - deleting " + current_state.state.get(i));
+            current_state.state.remove(i);
+            continue stateLoop;
+          }
+        }
+      }
+  }
+
 
     public void initTMAnalysis() {
         tmNumbers = new ArrayList<String>();
@@ -683,28 +764,32 @@ public class FSTProcessor {
                 if (current_state.isFinal(inconditional)) {
                     boolean firstupper = Character.isUpperCase(sf.charAt(0));
                     boolean uppercase = firstupper && Character.isUpperCase(sf.charAt(sf.length() - 1));
-                    if (compoundOnlyLSymbol!=0) current_state.pruneStatesWithForbiddenSymbol(compoundOnlyLSymbol);
+                    if (do_decomposition) current_state.pruneStatesWithForbiddenSymbol(compoundOnlyLSymbol);
+                    if (do_flagMatch) deleteStatesWithConflictingFlags(current_state);
                     lf = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
                     last = input_buffer.getPos();
                     last_incond = true;
                 } else if (current_state.isFinal(postblank)) {
                     boolean firstupper = Character.isUpperCase(sf.charAt(0));
                     boolean uppercase = firstupper && Character.isUpperCase(sf.charAt(sf.length() - 1));
-                    if (compoundOnlyLSymbol!=0) current_state.pruneStatesWithForbiddenSymbol(compoundOnlyLSymbol);
+                    if (do_decomposition) current_state.pruneStatesWithForbiddenSymbol(compoundOnlyLSymbol);
+                    if (do_flagMatch) deleteStatesWithConflictingFlags(current_state);
                     lf = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
                     last = input_buffer.getPos();
                     last_postblank = true;
                 } else if (current_state.isFinal(preblank)) {
                     boolean firstupper = Character.isUpperCase(sf.charAt(0));
                     boolean uppercase = firstupper && Character.isUpperCase(sf.charAt(sf.length() - 1));
-                    if (compoundOnlyLSymbol!=0) current_state.pruneStatesWithForbiddenSymbol(compoundOnlyLSymbol);
+                    if (do_decomposition) current_state.pruneStatesWithForbiddenSymbol(compoundOnlyLSymbol);
+                    if (do_flagMatch) deleteStatesWithConflictingFlags(current_state);
                     lf = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
                     last = input_buffer.getPos();
                     last_preblank = true;
                 } else if (!isAlphabetic(val)) {
                     boolean firstupper = Character.isUpperCase(sf.charAt(0));
                     boolean uppercase = firstupper && Character.isUpperCase(sf.charAt(sf.length() - 1));
-                    if (compoundOnlyLSymbol!=0) current_state.pruneStatesWithForbiddenSymbol(compoundOnlyLSymbol);
+                    if (do_decomposition) current_state.pruneStatesWithForbiddenSymbol(compoundOnlyLSymbol);
+                    if (do_flagMatch) deleteStatesWithConflictingFlags(current_state);
                     lf = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
                     last = input_buffer.getPos();
                     last_postblank = last_preblank = last_incond = false;
