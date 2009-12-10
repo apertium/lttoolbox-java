@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Last processed by: apertium-dixtools fix -alignMonodix persian.dix persian.dix
+-->
+<dictionary>
+	<alphabet>abcdefghijklmnopqrstuvwyzx</alphabet>
+	<sdefs>
+		<sdef n="pref:bi" />
+		<sdef n="pref:mi" />
+		<sdef n="pref:none" />
+		<sdef n="p3" /> 
+		<sdef n="p2" /> 
+		<sdef n="prs" /> 
+		<sdef n="p1" /> 
+		<sdef n="inf" /> 
+		<sdef n="sg" /> 
+		<sdef n="vblex" /> 
+		<sdef n="pri" /> 
+	</sdefs>
+	<pardefs>
+<!--
+ lt-comp-j lr persian2.dix persian-automorf2.bin
+ lt-comp-j rl persian2.dix persian-autogen2.bin
+
+
+bikhodam:khodan<vblex><prs><p1><sg>
+bikhodaš:khodan<vblex><prs><p2><sg>
+bikhoda:khodan<vblex><prs><p3><sg>
+mikhodam:khodan<vblex><pri><p1><sg>
+mikhodaš:khodan<vblex><pri><p2><sg>
+mikhoda:khodan<vblex><pri><p3><sg>
+khodan:khodan<vblex><inf>
+
+  -->
+
+<pardef n="prefix">
+<!-- To form a complete path, all flags must agree, e.g.
+     _bi_ must be set to '1' in all states with a flag -->
+
+  <!-- 'bi-' is the prefix for indicative -->
+  <e>       <p><l>bi</l>        <r></r></p><f><s n="pref:bi"/></f></e>
+
+  <!-- 'mi-' is the prefix for subjunctive -->
+  <e>       <p><l>mi</l>        <r></r></p><f><s n="pref:mi"/></f></e>
+
+  <e>      <p><l></l>            <r></r></p><f><s n="pref:none"/></f></e>
+</pardef>
+
+<pardef n="khoda/n__vblex">
+  <e> <f><s n="pref:mi"/></f>      <p><l>m</l>         <r>n<s n="vblex"/><s n="pri"/><s n="p1"/><s n="sg"/></r></p></e>
+  <e> <f><s n="pref:bi"/></f>      <p><l>m</l>         <r>n<s n="vblex"/><s n="prs"/><s n="p1"/><s n="sg"/></r></p></e>
+
+  <e> <f><s n="pref:mi"/></f>      <p><l>š</l>         <r>n<s n="vblex"/><s n="pri"/><s n="p2"/><s n="sg"/></r></p></e>
+  <e> <f><s n="pref:bi"/></f>      <p><l>š</l>         <r>n<s n="vblex"/><s n="prs"/><s n="p2"/><s n="sg"/></r></p></e>
+
+  <e> <f><s n="pref:mi"/></f>      <p><l></l>          <r>n<s n="vblex"/><s n="pri"/><s n="p3"/><s n="sg"/></r></p></e>
+  <e> <f><s n="pref:bi"/></f>      <p><l></l>          <r>n<s n="vblex"/><s n="prs"/><s n="p3"/><s n="sg"/></r></p></e>
+  <e> <f><s n="pref:none"/></f>    <p><l>n</l>       <r>n<s n="vblex"/><s n="inf"/></r></p></e>
+</pardef>
+	</pardefs>
+
+	<section id="main" type="standard">
+
+<e lm="khodan">          <par n="prefix"/><i>khoda</i><par n="khoda/n__vblex"/></e>
+
+	</section>
+</dictionary>

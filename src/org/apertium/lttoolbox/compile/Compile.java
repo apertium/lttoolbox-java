@@ -61,6 +61,8 @@ public class Compile {
     public static String COMPILER_ID_ATTR = "id";
     public static String COMPILER_TYPE_ATTR = "type";
     public static String COMPILER_IDENTITY_ELEM = "i";
+    public static String COMPILER_FLAG_ELEM = "f";
+    public static String COMPILER_VALUE_ATTR = "v";
     public static String COMPILER_JOIN_ELEM = "j";
     public static String COMPILER_BLANK_ELEM = "b";
     public static String COMPILER_POSTGENERATOR_ELEM = "a";
@@ -545,6 +547,8 @@ public class Compile {
                 elements.add(procTransduction());
             } else if (name.equals(COMPILER_IDENTITY_ELEM)) {
                 elements.add(procIdentity());
+            } else if (name.equals(COMPILER_FLAG_ELEM)) {
+                elements.add(procFlag());
             } else if (name.equals(COMPILER_REGEXP_ELEM)) {
                 elements.add(procRegexp());
             } else if (name.equals(COMPILER_PAR_ELEM)) {
@@ -602,7 +606,13 @@ public class Compile {
 
         if (nombre.equals(COMPILER_ENTRY_ELEM)) { // most often
             procEntry();
-        } else if (nombre.equals(COMPILER_PARDEF_ELEM)) { // 2nd most often
+        } else if (eventType == XMLStreamConstants.SPACE) { // also often
+        //do nothing
+        } else if (eventType == XMLStreamConstants.CHARACTERS) {
+        //do nothing
+        } else if (eventType == XMLStreamConstants.COMMENT) {
+        //do nothing
+        } else if (nombre.equals(COMPILER_PARDEF_ELEM)) {
             procParDef();
         } else if (nombre.equals(COMPILER_DICTIONARY_ELEM)) {
         /* ignore */
@@ -623,12 +633,6 @@ public class Compile {
             encoding = reader.getCharacterEncodingScheme();
             standalone = reader.isStandalone();
         } else if (eventType == XMLStreamConstants.END_DOCUMENT) {
-        //do nothing
-        } else if (eventType == XMLStreamConstants.SPACE) {
-        //do nothing
-        } else if (eventType == XMLStreamConstants.CHARACTERS) {
-        //do nothing
-        } else if (eventType == XMLStreamConstants.COMMENT) {
         //do nothing
         } else {
             System.err.println("procNode() : processing a node where what is to be done is unspecified yet");
@@ -739,6 +743,27 @@ public class Compile {
         //not an emoty node
         }
         String name = "";
+        reader.next();
+        while (true) {
+            if (reader.isEndElement() && reader.getLocalName().equals(COMPILER_IDENTITY_ELEM)) {
+                break;
+            }
+            if (reader.isStartElement()) {
+                name = reader.getLocalName();
+                readString(both_sides, name);
+                reader.next();
+            } else if (reader.isCharacters()) {
+                readString(both_sides, "");
+                reader.next();
+            } else if (reader.isEndElement()) {
+                reader.next();
+            } else {
+                throw new RuntimeException("Error (" + reader.getLocation().getLineNumber() +
+                    "," + reader.getLocation().getColumnNumber() +
+                    "): unexpected type of event.");
+            }
+        }
+        /*
         while (true) {
             reader.next();
             int type = reader.getEventType();
@@ -750,8 +775,64 @@ public class Compile {
             }
             readString(both_sides, name);
         }
+         */
         EntryToken e = new EntryToken();
         e.setSingleTransduction(both_sides, both_sides);
+        return e;
+    }
+
+    /**
+     * Parse the <f> elements
+     * @return a list of tokens from the dictionary's entry
+     */
+    EntryToken procFlag() throws XMLStreamException {
+        ArrayList<Integer> both_sides = new ArrayList<Integer>();
+        //String n = attrib(COMPILER_N_ATTR);
+        //String v = attrib(COMPILER_VALUE_ATTR);
+        String name = "";
+        reader.next();
+        while (true) {
+            if (reader.isEndElement() && reader.getLocalName().equals(COMPILER_FLAG_ELEM)) {
+                break;
+            }
+            if (reader.isStartElement()) {
+                name = reader.getLocalName();
+                readString(both_sides, name);
+                reader.next();
+            } else if (reader.isCharacters()) {
+                readString(both_sides, "");
+                reader.next();
+            } else if (reader.isEndElement()) {
+                reader.next();
+            } else {
+                throw new RuntimeException("Error (" + reader.getLocation().getLineNumber() +
+                    "," + reader.getLocation().getColumnNumber() +
+                    "): unexpected type of event.");
+            }
+        }
+
+      /*
+        while (true) {
+            reader.next();
+            int type = reader.getEventType();
+            if (type == XMLStreamConstants.END_ELEMENT || type == XMLStreamConstants.START_ELEMENT) {
+                name = reader.getLocalName();
+
+                System.err.println("name = " + name);
+            }
+            if (name.equals(COMPILER_FLAG_ELEM)) {
+                break;
+            }
+            readString(both_sides, name);
+        }
+*/
+        EntryToken e = new EntryToken();
+
+        if (direction.equals(COMPILER_RESTRICTION_LR_VAL)) {
+          e.setSingleTransduction(new ArrayList<Integer>(), both_sides);
+        } else {
+          e.setSingleTransduction(both_sides, new ArrayList<Integer>());
+        }
         return e;
     }
 

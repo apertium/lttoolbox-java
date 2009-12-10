@@ -58,14 +58,14 @@ khodan:<xp:1>khodan<xp:1><bi:0><mi:0><vblex><inf>
 </pardef>
 
 <pardef n="khoda/n__vblex">
-  <e>       <p><l>m</l>         <r>n<s n="xp:0"/><s n="mi:1"/><s n="bi:0"/><s n="vblex"/><s n="prs"/><s n="p1"/><s n="sg"/></r></p></e>
-  <e>       <p><l>m</l>         <r>n<s n="xp:0"/><s n="mi:0"/><s n="bi:1"/><s n="vblex"/><s n="pri"/><s n="p1"/><s n="sg"/></r></p></e>
+  <e>       <p><l>m</l>         <r>n<s n="xp:0"/><s n="mi:1"/><s n="bi:0"/><s n="vblex"/><s n="pri"/><s n="p1"/><s n="sg"/></r></p></e>
+  <e>       <p><l>m</l>         <r>n<s n="xp:0"/><s n="mi:0"/><s n="bi:1"/><s n="vblex"/><s n="prs"/><s n="p1"/><s n="sg"/></r></p></e>
 
-  <e>       <p><l>š</l>         <r>n<s n="xp:0"/><s n="mi:1"/><s n="bi:0"/><s n="vblex"/><s n="prs"/><s n="p2"/><s n="sg"/></r></p></e>
-  <e>       <p><l>š</l>         <r>n<s n="xp:0"/><s n="mi:0"/><s n="bi:1"/><s n="vblex"/><s n="pri"/><s n="p2"/><s n="sg"/></r></p></e>
+  <e>       <p><l>š</l>         <r>n<s n="xp:0"/><s n="mi:1"/><s n="bi:0"/><s n="vblex"/><s n="pri"/><s n="p2"/><s n="sg"/></r></p></e>
+  <e>       <p><l>š</l>         <r>n<s n="xp:0"/><s n="mi:0"/><s n="bi:1"/><s n="vblex"/><s n="prs"/><s n="p2"/><s n="sg"/></r></p></e>
 
-  <e>       <p><l></l>          <r>n<s n="xp:0"/><s n="mi:1"/><s n="bi:0"/><s n="vblex"/><s n="prs"/><s n="p3"/><s n="sg"/></r></p></e>
-  <e>       <p><l></l>          <r>n<s n="xp:0"/><s n="mi:0"/><s n="bi:1"/><s n="vblex"/><s n="pri"/><s n="p3"/><s n="sg"/></r></p></e>
+  <e>       <p><l></l>          <r>n<s n="xp:0"/><s n="mi:1"/><s n="bi:0"/><s n="vblex"/><s n="pri"/><s n="p3"/><s n="sg"/></r></p></e>
+  <e>       <p><l></l>          <r>n<s n="xp:0"/><s n="mi:0"/><s n="bi:1"/><s n="vblex"/><s n="prs"/><s n="p3"/><s n="sg"/></r></p></e>
   <e>       <p><l>n</l>         <r>n<s n="xp:1"/><s n="vblex"/><s n="inf"/></r></p></e>
 </pardef>
 	</pardefs>

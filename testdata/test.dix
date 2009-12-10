@@ -52,7 +52,9 @@
 
    <!-- comment -->            
                         <e><p><l>a</l><r>avoir<s n="vbhaver"/><s n="pri"/><s n="p3"/><s n="sg"/></r></p></e>
-
+<!--
+                        <e><f n="pref" v="bi"><p><l>a</l><r>avoir<s n="vbhaver"/><s n="pri"/><s n="p3"/><s n="sg"/></r></p></e>
+-->
              </pardef>
 
 
@@ -62,7 +64,11 @@
 <section id="final" type="inconditional">
 
                         <e><par n="/avoir__vbhaver"/></e>
-
+<!--
+                        <e><f><s n="sg"/></f></e>
+-->
+                        <e><p><l><s n="sg"/></l><r><s n="sg"/></r></p></e>
+                        <e><i><s n="sg"/></i></e>
 
  </section>
 </dictionary>
