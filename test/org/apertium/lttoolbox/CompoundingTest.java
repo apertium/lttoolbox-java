@@ -20,18 +20,6 @@ import static org.junit.Assert.*;
  */
 public class CompoundingTest extends TestCase {
 
-	static public void assertEquals(String expected, String actual) {
-		if (expected == null && actual == null)
-			return;
-		if (expected != null && expected.equals(actual))
-			return;
-
-    System.err.println("expect = " + expected);
-    System.err.println("actual = " + actual);
-  	    assertEquals(null, expected, actual);
-  }
-
-
 /*
   public void testCompound2_Nnnb() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
