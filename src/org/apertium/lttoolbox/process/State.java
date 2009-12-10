@@ -22,6 +22,7 @@ import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Set;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 
 /**
@@ -83,6 +84,41 @@ public class State {
       State copy() {
         return new State().copy(this);
       }
+
+/*
+  public void makeInputSymbolsEpsilonsymbols(final Integer[] symbolList) {
+      final HashSet<Node> visited = new HashSet<Node>();
+
+      final class recur {
+        public final void rec(TNodeState state_i) {
+          for (Integer input : symbolList) {
+                {
+                    Transition eps = state_i.where.transitions.get(0);
+                    Transition it = state_i.where.transitions.get(input);
+                    if (it != null) {
+                      if (DEBUG) System.err.println("makeEpsilon state_i = " + state_i + "   "+Alphabet.debuggingInstance.getSymbol(input));
+                      it.next = eps;
+                      state_i.where.transitions.put(input, null);
+                      state_i.where.transitions.put(0, it);
+                    }
+                }
+                for (Transition it : state_i.where.transitions.values())
+                while (it != null) {
+                  boolean recurse = visited.add(it.dest);
+                  if (recurse) {
+                    rec(new TNodeState(it.dest, state_i.sequence, false));
+                  }
+                  it = it.next;
+                }
+            }
+        }
+      }
+
+      State statex = this.copy();
+      for (TNodeState state_i : statex.state)
+        new recur().rec(state_i);
+  }
+*/
 
     /**
      * Initialisation method for the static attribute
@@ -178,20 +214,42 @@ public class State {
         for (int i = 0; i != state.size(); i++) {
             TNodeState state_i = state.get(i);
             // get the transitions consuming θ (the empty input symbol)
-            Transition it2 = state_i.where.transitions.get(0);  
-            while (it2 != null) {
+            Transition epsilonTransition = state_i.where.transitions.get(0);
+            while (epsilonTransition != null) {
                 List<Integer> tmp; // JACOB = pool.get();
                 tmp = new ArrayList<Integer>(state_i.sequence);
-                if (it2.output_symbol != 0) {
-                    tmp.add(it2.output_symbol);
+                if (epsilonTransition.output_symbol != 0) {
+                    tmp.add(epsilonTransition.output_symbol);
                 }
-                state.add(new TNodeState(it2.dest, tmp, state_i.caseWasChanged));
-                it2 = it2.next;
+                state.add(new TNodeState(epsilonTransition.dest, tmp, state_i.caseWasChanged));
+                epsilonTransition = epsilonTransition.next;
             }
         }
     }
 
-
+    /**
+     * Calculates an extended epsilon where a set of symbols are considered epsilons
+     * i.e. expand to all states reachable consuming this set of symbols
+     *
+    private void flagClosure(Integer[] flagMatch_symbolList) {
+        for (int i = 0; i != state.size(); i++) {
+            TNodeState state_i = state.get(i);
+            // get the transitions consuming a symbol from the list
+            for (int j=0; j<flagMatch_symbolList.length; j++) {
+              Transition epsilonTransition = state_i.where.transitions.get(flagMatch_symbolList[j]);
+              while (epsilonTransition != null) {
+                  List<Integer> tmp; // JACOB = pool.get();
+                  tmp = new ArrayList<Integer>(state_i.sequence);
+                  if (epsilonTransition.output_symbol != 0) {
+                      tmp.add(epsilonTransition.output_symbol);
+                  }
+                  state.add(new TNodeState(epsilonTransition.dest, tmp, state_i.caseWasChanged));
+                  epsilonTransition = epsilonTransition.next;
+              }
+            }
+        }
+    }
+   */
     void tjekDubletter() {
         //System.err.println("Duble? "+ state.size());
         for (int i = 0; i != state.size(); i++) {
@@ -215,8 +273,7 @@ public class State {
      */
     public void step(int input) {
         if (DEBUG) System.err.println();
-        if (DEBUG) System.err.println("state f = " + state);
-        if (DEBUG) System.err.println("apply (" + (char) input);
+        if (DEBUG) System.err.println("state f = " + state  +"     - apply (" + (char) input);
         if (DEBUG) tjekDubletter();
         apply(input);
         if (DEBUG) tjekDubletter();
@@ -234,8 +291,20 @@ public class State {
         apply(input, lowerCasedInput);
         epsilonClosure();
     }
-
-
+/*
+    public void step_case(char val, boolean caseSensitive, Integer[] flagMatch_symbolList) {
+        if (!Character.isUpperCase(val) || caseSensitive) {
+            apply(val);
+            if (DEBUG) System.err.println("state e1= " + state);
+            flagClosure(flagMatch_symbolList);
+            epsilonClosure();
+        } else {
+            apply(val, Character.toLowerCase(val));
+            flagClosure(flagMatch_symbolList);
+            epsilonClosure();
+        }
+    }
+*/
 
     public void step_case(char val, boolean caseSensitive) {
         if (!Character.isUpperCase(val) || caseSensitive) {
