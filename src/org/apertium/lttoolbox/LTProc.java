@@ -59,7 +59,8 @@ public class LTProc {
             "Options:\n" +
             "  -a:   morphological analysis (default behavior)\n" +
             "  -c:   use the literal case of the incoming characters\n" +
-            "  -e:   morphological analysis, do compound analysis on unknown words\n" +
+            "  -e:   morphological analysis, with compound analysis on unknown words\n" +
+            "  -f:   match flags (experimental)\n" +
             "  -g:   morphological generation\n" +
             "  -n:   morph. generation without unknown word marks\n" +
             "  -d:   morph. generation with all the stuff\n"+
@@ -93,7 +94,7 @@ public class LTProc {
         int cmd = 0;
         FSTProcessor fstp = new FSTProcessor();
 
-        MyGetOpt getopt = new MyGetOpt(argv, "acdegndpstzvh");
+        MyGetOpt getopt = new MyGetOpt(argv, "acdefgndpstzvh");
 
         int optind = -1;
         int counter = 0;
@@ -108,6 +109,10 @@ public class LTProc {
                 switch (c) {
                     case 'c':
                         fstp.setCaseSensitiveMode(true);
+                        break;
+
+                    case 'f':
+                        fstp.setFlagMatchMode(true);
                         break;
 
                     case 'D':

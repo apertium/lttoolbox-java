@@ -39,7 +39,8 @@ public class FSTProcessor {
 
     private boolean isLastBlankTM;
 
-    
+
+
     public enum GenerationMode {
 
         gm_clean, // clear all
@@ -133,7 +134,7 @@ public class FSTProcessor {
         escaped_chars.add('@');
         escaped_chars.add('<');
         escaped_chars.add('>');
-        //not really elegant, but the Pool attribute is static, 
+        //not really elegant, but the Pool attribute is static,
         //thus shared by all the instances of the class
         //and it needs to be initialized somewhere
         // JACOB initial_state.poolInit();
@@ -349,12 +350,12 @@ public class FSTProcessor {
     }
 
     private int readGeneration(Reader input, Writer output) throws IOException {
-       
+
         if (!input.ready()) {
             return 0x7fffffff;
         }
         char val = read(input);
-        
+
 
         if (outOfWord) {
             if (val == '^') {
@@ -362,7 +363,7 @@ public class FSTProcessor {
                     return 0x7fffffff;
                 }
                 val = read(input);
-                
+
             } else if (val == '\\') {
                 output.write(val);
                 if (!input.ready()) {
@@ -376,7 +377,7 @@ public class FSTProcessor {
                     return 0x7fffffff;
                 }
                 val = read(input);
-               
+
             } else {
                 output.write(val);
                 skipUntil(input, output, '^');
@@ -384,7 +385,7 @@ public class FSTProcessor {
                     return 0x7fffffff;
                 }
                 val = read(input);
-                
+
             }
             outOfWord = false;
         }
@@ -398,8 +399,8 @@ public class FSTProcessor {
         } else if (val == '<') {
             String cad = "";
             cad += val;
-            
-            
+
+
             if (!input.ready()) {
                     streamError();
                 }
@@ -529,7 +530,7 @@ public class FSTProcessor {
 
     public void load( InputStream input) throws IOException {
         // letters
-   
+
         int len = Compression.multibyte_read(input);
         alphabetic_chars = new SetOfCharacters();
 
@@ -542,10 +543,10 @@ public class FSTProcessor {
 
         // symbols
         alphabet= Alphabet.read(input);
-        
+
         if (DEBUG) System.err.println("alphabet = " + alphabet.toString());
         //if (DEBUG) alphabet.display();
-       
+
         //loading the sections transducers
         len = Compression.multibyte_read(input);
         while (len > 0) {
@@ -566,7 +567,7 @@ public class FSTProcessor {
         }
 
         //if (DEBUG)  System.err.println("  transducers = " + transducers.toString());
-        
+
     }
 
     public void initAnalysis() {
@@ -619,7 +620,7 @@ public class FSTProcessor {
         }
         System.err.println("initial_compounding_state = " + initial_compounding_state.toString());
         initial_compounding_state.init(root);
-        
+
          */
         initial_compounding_state = initial_state;
         //System.err.println("initial_compounding_state = " + initial_compounding_state.toString());
@@ -724,7 +725,7 @@ public class FSTProcessor {
     public void initGeneration() {
         calc_initial_state();
         all_finals = new HashSet<Node>();
-        for (String first : transducers.keySet()) {            
+        for (String first : transducers.keySet()) {
             all_finals.addAll(transducers.get(first).getFinals());
         }
     }
@@ -744,7 +745,7 @@ public class FSTProcessor {
         return s.charAt(index);
     }
 */
-    
+
     public void analysis(Reader input, Writer output) throws IOException {
         if (getNullFlush()) {
             analysis_wrapper_null_flush(input, output);
@@ -839,7 +840,7 @@ public class FSTProcessor {
                         sf=sf+alphabet.getSymbol(val);
                     } while (((val = readAnalysis(input)) != (char)0 )&& isAlphabetic(val));
 
-                    int limit = firstNotAlpha(sf);                    
+                    int limit = firstNotAlpha(sf);
                     int size = sf.length();
                     limit = (limit == Integer.MAX_VALUE ? size : limit);
                     if (limit == 0) {
@@ -1017,7 +1018,7 @@ public class FSTProcessor {
               System.err.println("         gave up at char "+i+" '"+val+"'. Here are first 20 states:'");
               System.err.println(current_state.state.subList(0, 20));
 
-              return null;              
+              return null;
             }
             if (DEBUG) System.err.println(val + " eft step "+i+" current_state = " + current_state);
             String result=current_state.filterFinals(compounding_finals, alphabet, escaped_chars, uppercase, firstupper);
@@ -1237,7 +1238,7 @@ public class FSTProcessor {
                     if (mode == GenerationMode.gm_tagged) {
                       output.write('^');
                     }
-                    output.write(current_state.filterFinals(all_finals, alphabet, 
+                    output.write(current_state.filterFinals(all_finals, alphabet,
                             escaped_chars, uppercase, firstupper).substring(1));
                     if (mode == GenerationMode.gm_tagged) {
                       output.write('/');
@@ -1467,7 +1468,7 @@ public class FSTProcessor {
         int end_point = input_word.length() - 2;
         StringBuilder queue = new StringBuilder("");
         boolean mark=false;
-        
+
         if (!with_delim) {
             start_point = 0;
             end_point = input_word.length() - 1;
@@ -1476,7 +1477,7 @@ public class FSTProcessor {
         if (input_word.charAt(start_point) == '*') {
             return input_word;
         }
-        
+
         if(input_word.charAt(start_point) == '=') {
             start_point++;
             mark = true;
@@ -1582,7 +1583,7 @@ public class FSTProcessor {
         int end_point = input_word.length() - 2;
         StringBuilder queue = new StringBuilder("");
         boolean mark=false;
-        
+
         if (!with_delim) {
             start_point = 0;
             end_point = input_word.length() - 1;
@@ -1697,7 +1698,7 @@ public class FSTProcessor {
         int start_point = 1;
         int end_point = input_word.length() - 2;
         boolean mark = false;
-        
+
         if (!with_delim) {
             start_point = 0;
             end_point = input_word.length() - 1;
@@ -1711,7 +1712,7 @@ public class FSTProcessor {
             start_point++;
             mark = true;
         }
-        
+
         boolean firstupper = Character.isUpperCase(input_word.charAt(start_point));
         boolean uppercase = firstupper && Character.isUpperCase(input_word.charAt(start_point + 1));
 
@@ -1793,13 +1794,13 @@ public class FSTProcessor {
         if (!input_buffer.isEmpty()) {
             return input_buffer.next();
         }
-        
+
         if (!input.ready()) {
             return (char)0;
         }
         char val = read(input);
         //System.out.println("read "+val);
-        
+
 
         if (escaped_chars.contains(val)) {
             if (val == '<') {
@@ -1863,7 +1864,7 @@ public class FSTProcessor {
                     boolean uppercase = firstupper && Character.isUpperCase(sf.charAt(sf.length() - 1));
 
                     lf = current_state.filterFinalsSAO(all_finals, alphabet, escaped_chars, uppercase, firstupper, 0);
-                                        
+
                     last_incond = true;
                     last = input_buffer.getPos();
                 } else if (current_state.isFinal(postblank)) {
@@ -1871,7 +1872,7 @@ public class FSTProcessor {
                     boolean uppercase = firstupper && Character.isUpperCase(sf.charAt(sf.length() - 1));
 
                     lf = current_state.filterFinalsSAO(all_finals, alphabet, escaped_chars, uppercase, firstupper, 0);
-                    
+
                     last_postblank = true;
                     last = input_buffer.getPos();
                 } else if (!isAlphabetic(val)) {
@@ -1879,7 +1880,7 @@ public class FSTProcessor {
                     boolean uppercase = firstupper && Character.isUpperCase(sf.charAt(sf.length() - 1));
 
                     lf = current_state.filterFinalsSAO(all_finals, alphabet, escaped_chars, uppercase, firstupper, 0);
-                    
+
                     last_postblank = false;
                     last_incond = false;
                     last = input_buffer.getPos();
@@ -1963,6 +1964,10 @@ public class FSTProcessor {
     public void setCaseSensitiveMode(boolean value) {
         caseSensitive = value;
     }
+    
+    public void setFlagMatchMode(boolean b) {
+      do_flagMatch = b;
+    }
 
     public void setNullFlush(boolean value) {
         nullFlush = value;
@@ -1981,7 +1986,7 @@ public class FSTProcessor {
         //throw new RuntimeException("Should not have gotten here");
         return Integer.MAX_VALUE;
     }
-    
+
 
     private char read(Reader input) throws IOException {
       return (char) input.read();

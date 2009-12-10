@@ -40,9 +40,16 @@ public class FlagMatchingTest extends TestCase {
   }
 
 
-  private String check(FSTProcessor fstp, String input) throws IOException {
+  private String checkAnalysis(FSTProcessor fstp, String input) throws IOException {
     StringWriter output=new StringWriter();
     fstp.analysis(new StringReader2(input), output);
+    String result=output.toString();
+    return result;
+  }
+
+  private String checkGeneration(FSTProcessor fstp, String input) throws IOException {
+    StringWriter output=new StringWriter();
+    fstp.generation(new StringReader2(input), output, FSTProcessor.GenerationMode.gm_unknown);
     String result=output.toString();
     return result;
   }
@@ -52,17 +59,39 @@ public class FlagMatchingTest extends TestCase {
       fstp.load(new BufferedInputStream(new FileInputStream("testdata/flag_matching/persian-automorf2.bin")));
       fstp.DEBUG = State.DEBUG = true;
       fstp.alphabet.debug_remember_removed_symbols();
-      fstp.initFlagMatch_analysis(true);
+      fstp.initAnalysis();
+      fstp.initFlagMatch(true);
 
       for (String s : correctPairs) {
         String[] p = s.split(":");
-        assertEquals("^"+p[0]+"/"+p[1]+"$ ", check(fstp, p[0]+" "));
+        assertEquals("^"+p[0]+"/"+p[1]+"$ ", checkAnalysis(fstp, p[0]+" "));
       }
 
       fstp.DEBUG = State.DEBUG =false;
-      String result = check(fstp, "\nbikhodam bikhodaš mikhoda khodan\n");
+      String result = checkAnalysis(fstp, "\nbikhodam bikhodaš mikhoda khodan\n");
       assertEquals("\n^bikhodam/khodan<vblex><prs><p1><sg>$ ^bikhodaš/khodan<vblex><prs><p2><sg>$ "
           +"^mikhoda/khodan<vblex><pri><p3><sg>$ ^khodan/khodan<vblex><inf>$\n", result);
+  }
+
+
+  public void testFlagMatch_generation_Persian2() throws IOException {
+      FSTProcessor fstp = new FSTProcessor();
+      fstp.load(new BufferedInputStream(new FileInputStream("testdata/flag_matching/persian-autogen2.bin")));
+      fstp.DEBUG = State.DEBUG = true;
+      fstp.alphabet.debug_remember_removed_symbols();
+      fstp.initGeneration();
+      fstp.initFlagMatch(true);
+
+      for (String s : correctPairs) {
+        String[] p = s.split(":");
+        assertEquals(p[0]+" ", checkGeneration(fstp, "^"+p[1]+"$ "));
+      }
+
+      fstp.DEBUG = State.DEBUG =false;
+      String result = checkGeneration(fstp,
+          "\n^khodan<vblex><prs><p1><sg>$ ^khodan<vblex><prs><p2><sg>$ "
+          +"^khodan<vblex><pri><p3><sg>$ ^khodan<vblex><inf>$\n");
+      assertEquals("\nbikhodam bikhodaš mikhoda khodan\n", result);
   }
 
   public void testFlagMatch_analysis_Persian() throws IOException {
@@ -70,16 +99,17 @@ public class FlagMatchingTest extends TestCase {
       fstp.load(new BufferedInputStream(new FileInputStream("testdata/flag_matching/persian-automorf.bin")));
       fstp.DEBUG = true;
       fstp.alphabet.debug_remember_removed_symbols();
-      fstp.initFlagMatch_analysis(true);
+      fstp.initAnalysis();
+      fstp.initFlagMatch(true);
 
-      String result = check(fstp, "\nbikhodam bikhodaš mikhoda khodan\n");
+      String result = checkAnalysis(fstp, "\nbikhodam bikhodaš mikhoda khodan\n");
       fstp.DEBUG = State.DEBUG =false;
       assertEquals("\n^bikhodam/khodan<vblex><prs><p1><sg>$ ^bikhodaš/khodan<vblex><prs><p2><sg>$ "
           +"^mikhoda/khodan<vblex><pri><p3><sg>$ ^khodan/khodan<vblex><inf>$\n", result);
 
       for (String s : correctPairs) {
         String[] p = s.split(":");
-        assertEquals("^"+p[0]+"/"+p[1]+"$ ", check(fstp, p[0]+" "));
+        assertEquals("^"+p[0]+"/"+p[1]+"$ ", checkAnalysis(fstp, p[0]+" "));
       }
   }
 
