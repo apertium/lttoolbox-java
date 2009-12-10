@@ -167,7 +167,11 @@ public class Compile {
         try {
             direction = dir;
             XMLInputFactory factory = XMLInputFactory.newInstance();
-            reader = factory.createXMLStreamReader(new FileReader(file));
+            if (file.equals("-")) {
+              reader = factory.createXMLStreamReader(System.in);
+            } else {
+              reader = factory.createXMLStreamReader(new FileReader(file));
+            }
             while (reader.hasNext()) {
                 procNode();
                 reader.next();
