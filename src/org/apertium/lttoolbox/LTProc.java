@@ -94,7 +94,7 @@ public class LTProc {
         int cmd = 0;
         FSTProcessor fstp = new FSTProcessor();
 
-        MyGetOpt getopt = new MyGetOpt(argv, "acdefgndpstzvh");
+        MyGetOpt getopt = new MyGetOpt(argv, "Dacdefgndpstzvh");
 
         int optind = -1;
         int counter = 0;

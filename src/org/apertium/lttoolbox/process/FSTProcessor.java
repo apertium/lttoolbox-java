@@ -6,7 +6,7 @@ package org.apertium.lttoolbox.process;
  * published by the Free Software Foundation; either version 2 of the
  * License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful, but
+ * This program is distributed in the hope that it will be useful, butflagvalues =
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
@@ -579,6 +579,7 @@ public class FSTProcessor {
         all_finals.addAll(inconditional);
         all_finals.addAll(postblank);
         all_finals.addAll(preblank);
+        if (do_flagMatch) initFlagMatch(true);
     }
 
 
@@ -628,11 +629,14 @@ public class FSTProcessor {
 
     private boolean do_flagMatch = false;
     int[] flagMatch_symbolToVarVal;
-    int flagMatch_no_of_flags;
+    int flagMatch_no_of_flags = -1;
 
-    public void initFlagMatch_analysis(boolean removeSymbolsFromOutput) {
-        initAnalysis();
+    public void initFlagMatch(boolean removeSymbolsFromOutput) {
         do_flagMatch = true;
+        if (flagMatch_symbolToVarVal!=null) {
+          return; // already initialized
+        }
+
         flagMatch_symbolToVarVal =new int[alphabet.size()];
         if (DEBUG) System.err.println("alphabet = " + alphabet);
         final String flagAssigmentChar = ":";
@@ -699,7 +703,7 @@ public class FSTProcessor {
           if (oldValue == 0) {
             flagvalues[flagIndex] = (byte) newValue;
 
-            System.err.println(flagIndex +": " +oldValue+"->"+newValue+  "flagvalues = " + Arrays.toString(flagvalues));
+            if (DEBUG) System.err.println(flagIndex +": " +oldValue+"->"+newValue+  "flagvalues = " + Arrays.toString(flagvalues));
             continue;
           } else if (oldValue != newValue) {
             // conbflicting flags, remove  state
@@ -728,6 +732,7 @@ public class FSTProcessor {
         for (String first : transducers.keySet()) {
             all_finals.addAll(transducers.get(first).getFinals());
         }
+        if (do_flagMatch) initFlagMatch(true);
     }
 
     public void initPostgeneration() {
@@ -1238,6 +1243,7 @@ public class FSTProcessor {
                     if (mode == GenerationMode.gm_tagged) {
                       output.write('^');
                     }
+                    if (do_flagMatch) deleteStatesWithConflictingFlags(current_state);
                     output.write(current_state.filterFinals(all_finals, alphabet,
                             escaped_chars, uppercase, firstupper).substring(1));
                     if (mode == GenerationMode.gm_tagged) {
