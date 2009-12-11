@@ -1062,7 +1062,7 @@ public class Compile {
         while (number_of_sections > 0) {
             String section_name = Compression.String_read(input);
             Transducer t = new Transducer();
-            t = t.read(input, c.alphabet);
+            t.read(input);
             c.sections.put(section_name,t);
             number_of_sections--;
         }

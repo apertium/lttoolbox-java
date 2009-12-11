@@ -2,6 +2,8 @@ package org.apertium.lttoolbox.transfer;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Writer;
 import java.util.Collection;
 import java.util.List;
@@ -70,7 +72,7 @@ public class PatternList {
 
     for (List<Integer> it : sequence_data) {
 
-      it.add(Alphabet.A.cast(QUEUE));
+      it.add(alphabet.cast(QUEUE));
       patterns.put(sequence_id, it);
     }
   }
@@ -79,27 +81,27 @@ public class PatternList {
   insertOutOfSequence(String lemma, String tags,
                       List<Integer> result) {
     if (lemma.equals("")) {
-      result.add(Alphabet.A.cast(ANY_CHAR));
+      result.add(alphabet.cast(ANY_CHAR));
     } else {
       for (int i = 0, limit = lemma.length(); i < limit; i++) {
         if (lemma.charAt(i) == '*') {
-          result.add(Alphabet.A.cast(ANY_CHAR));
+          result.add(alphabet.cast(ANY_CHAR));
         } else {
           result.add((int) lemma.charAt(i));
         }
       }
     }
     if (tags.equals("")) {
-      result.add(Alphabet.A.cast(ANY_TAG));
+      result.add(alphabet.cast(ANY_TAG));
     } else {
       for (int i = 0, limit = tagCount(tags); i < limit; i++) {
         String tag = "<" + tagAt(tags, i) + ">";
 
         if (tag.equals("<*>")) {
-          result.add(Alphabet.A.cast(ANY_TAG));
+          result.add(alphabet.cast(ANY_TAG));
         } else {
           alphabet.includeSymbol(tag);
-          result.add(Alphabet.A.cast(tag));
+          result.add(alphabet.cast(tag));
         }
       }
     }
@@ -126,7 +128,7 @@ public class PatternList {
     if (!sequence) {
       List<Integer> local = new Vector<Integer>();
       insertOutOfSequence(lemma, tags, local);
-      local.add(Alphabet.A.cast(QUEUE));
+      local.add(alphabet.cast(QUEUE));
       patterns.put(id, local);
     } else {
       insertIntoSequence(id, lemma, tags);
@@ -219,14 +221,14 @@ public class PatternList {
       int prevstate = -1;
       for (int i = 0, limit2 = itSecond.size(); i != limit2; i++) {
         int val = itSecond.get(i);
-        if (Alphabet.A.cast(ANY_CHAR) == val || Alphabet.A.cast(ANY_TAG) == val) {
+        if (alphabet.cast(ANY_CHAR) == val || alphabet.cast(ANY_TAG) == val) {
           state = transducer.insertSingleTransduction(val, state);
           if (prevstate != -1) {
             transducer.linkStates(prevstate, state, val);
             prevstate = -1;
           }
           transducer.linkStates(state, state, val);
-        } else if (Alphabet.A.cast(QUEUE) == val) {
+        } else if (alphabet.cast(QUEUE) == val) {
           if (prevstate != -1) {
             // ignore second (and next) possible consecutive queues
             continue;
@@ -237,7 +239,7 @@ public class PatternList {
           state = transducer.insertSingleTransduction((int) ('_'), state);
           transducer.linkStates(prevstate, state, (int) (' '));
           transducer.linkStates(prevstate, state, (int) ('#'));
-          transducer.linkStates(state, state, Alphabet.A.cast(ANY_CHAR));
+          transducer.linkStates(state, state, alphabet.cast(ANY_CHAR));
         } else {
           state = transducer.insertSingleTransduction(val, state);
           if (prevstate != -1) {
@@ -260,12 +262,14 @@ public class PatternList {
     }
   }
 
-  void write(Writer output) throws IOException {
+  void write(OutputStream output) throws IOException {
     alphabet.write(output);
     String tagger_name = "tagger";
 
-    output.write(1);
-    output.write(tagger_name);
+
+    if (output!=null) throw new IllegalStateException("code commented out below");
+    //output.write(1);
+    //output.write(tagger_name);
     transducer.write(output, alphabet.size());
 
     output.write(final_type.size());
@@ -276,14 +280,14 @@ public class PatternList {
     }
   }
 
-  void read(FileInputStream input) throws IOException {
+  void read(InputStream input) throws IOException {
     sequence = false;
     final_type.clear();
 
     alphabet.read(input);
     if (input.read() == 1) {
       int mystr = input.read();
-      Transducer.read(input, alphabet.size());
+      Transducer.read(input);
 
       int finalsize = input.read();
       for (; finalsize != 0; finalsize--) {

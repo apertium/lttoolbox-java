@@ -22,8 +22,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -57,7 +55,7 @@ public class Transducer {
     /**
      * Transitions of the transducer
      */
-    Map<Integer, Map<Integer, Set<Integer>>> transitions = new HashMap<Integer, Map<Integer, Set<Integer>>>();
+    public Map<Integer, Map<Integer, Set<Integer>>> transitions = new HashMap<Integer, Map<Integer, Set<Integer>>>();
 
 
 
@@ -106,17 +104,33 @@ public class Transducer {
      * Returns the initial state of a transducer
      * @return the initial state identifier
      */
-    Integer getInitial() {
+    public Integer getInitial() {
         return initial;
     }
 
-    /**
+    public boolean isFinal(int state) {
+      return finals.contains(state);
+    }
+
+    public void setFinal(int state) {
+      setFinal(state, true);
+    }
+
+    public void setFinal(int state, boolean valor) {
+      if (valor) {
+        finals.add(state);
+      } else {
+        finals.remove(state);
+      }
+    }
+
+   /**
      * Link two existing states by a transduction
      * @param source the source state
      * @param destination the target state
      * @param label the tag of the transduction
      */
-    void linkStates(Integer source, Integer destination, Integer label) {
+    public void linkStates(Integer source, Integer destination, Integer label) {
 
         if (transitions.size() > source && transitions.size() > destination) {
             Map<Integer, Set<Integer>> place = transitions.get(source);
@@ -155,7 +169,7 @@ public class Transducer {
      * @param source the source state of the new transduction
      * @return the target state
      */
-    Integer insertSingleTransduction(Integer tag, Integer source) {
+    public Integer insertSingleTransduction(Integer tag, Integer source) {
         Map<Integer, Set<Integer>> place = transitions.get(source);
         Set<Integer> set = place.get(tag);
 
@@ -612,7 +626,7 @@ public class Transducer {
      * @return the transducer read from the stream
      * @throws java.io.IOException
      */
-    public static Transducer read(InputStream input, Alphabet alphabet) throws IOException {
+    public static Transducer read(InputStream input) throws IOException {
 
         Transducer t = new Transducer();
         t.transitions.clear();
@@ -653,7 +667,7 @@ public class Transducer {
      * @param decalage offset to sum to the tags
      * @throws java.io.IOException
      */
-    void write(OutputStream output, int decalage) throws IOException {
+    public void write(OutputStream output, int decalage) throws IOException {
         Compression.multibyte_write(initial, output);
         Compression.multibyte_write(finals.size(), output);
         int base = 0;
