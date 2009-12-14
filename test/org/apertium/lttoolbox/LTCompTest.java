@@ -78,6 +78,20 @@ public class LTCompTest extends TestCase {
   }
 
 
+  public void testLTCompJavaLatin1() throws Exception {
+    LTComp.main(new String[] { "lr", "testdata/latin-1.dix", "tmp/testJava.bin"});
+    int compareExitValue = Runtime.getRuntime().exec("cmp tmp/testJava.bin testdata/correct-latin-1.bin").waitFor();
+    assertEquals("files must be binary equal", 0, compareExitValue);
+  }
+
+
+  public void testLTCompCppLatin1() throws Exception {
+    Runtime.getRuntime().exec("lt-comp lr testdata/apertium-latin-1.dix tmp/testC++.bin").waitFor();
+    int compareExitValue = Runtime.getRuntime().exec("cmp tmp/testC++.bin testdata/correct-latin-1.bin").waitFor();
+    assertEquals("files must be binary equal", 0, compareExitValue);
+  }
+
+
 
   public void testLTCompJavaRl() throws Exception {
     LTComp.main(new String[] { "rl", "testdata/test.dix", "tmp/testJava.bin"});

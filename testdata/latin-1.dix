@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<dictionary>
+<alphabet/>
+<sdefs>
+    <sdef n="np"/> 
+  </sdefs>
+
+<section id="regexp2" type="standard">
+	
+    <e><i>abÀÁÂÄÇÈÉÊËÌ</i><p><l><s n="np"/></l><r><s n="np"/></r></p></e>
+<!--
+    <e><re>[ab][ÀÁÂÄÇÈÉÊËÌ]*</re><p><l><s n="np"/></l><r><s n="np"/></r></p></e>
+    <e><par n="Abc"/><p><l><s n="np"/></l><r><s n="np"/></r></p></e>
+
+-->
+  </section></dictionary>
