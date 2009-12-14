@@ -103,24 +103,25 @@ public class Compile {
     private Map<String, Transducer> paradigms = new HashMap<String, Transducer>();
     
     /**
-     * List of named dictionary sections
+     * List of named dictionary sections.
+     * MUST be sorted when writing .bin file to retain compatibility with C++ code.
      */
-    public HashMap<String, Transducer> sections = new HashMap<String, Transducer>();
+    public Map<String, Transducer> sections = new TreeMap<String, Transducer>();
     
     /**
      * List of named prefix copy of a paradigm
      */
-    private HashMap<String, HashMap<String, Integer>> prefix_paradigms;
+    private HashMap<String, HashMap<String, Integer>> prefix_paradigms = new HashMap<String, HashMap<String, Integer>>();
     
     /**
      * List of named suffix copy of a paradigm
      */
-    private HashMap<String, HashMap<String, Integer>> suffix_paradigms;
-    
+    private HashMap<String, HashMap<String, Integer>> suffix_paradigms = new HashMap<String, HashMap<String, Integer>>();
+
     /**
      * List of named endings of a suffix copy of a paradgim
      */
-    private HashMap<String, HashMap<String, Integer>> postsuffix_paradigms;
+    private HashMap<String, HashMap<String, Integer>> postsuffix_paradigms = new HashMap<String, HashMap<String, Integer>>();
     
     /**
      * Mapping of aliases of characters specified in ACX files
@@ -150,9 +151,6 @@ public class Compile {
      */
     public Compile() {
         alphabet = new Alphabet();
-        prefix_paradigms = new HashMap<String, HashMap<String, Integer>>();
-        suffix_paradigms = new HashMap<String, HashMap<String, Integer>>();
-        postsuffix_paradigms = new HashMap<String, HashMap<String, Integer>>();
     // LtLocale.tryToSetLocale();
     }
 
@@ -1124,7 +1122,7 @@ public class Compile {
      */
     public static void main(String[] a) throws Exception {
         Compile c = DEBUG_read(new BufferedInputStream (new FileInputStream("tmp/testJava.bin")));
-        Compile c2 = DEBUG_read(new BufferedInputStream (new FileInputStream("testdata/correct-short.bin")));
+        Compile c2 = DEBUG_read(new BufferedInputStream (new FileInputStream("tmp/testCpp.bin")));
         if (c2.DEBUG_compare(c)) {
             System.out.println("the two instances of NewCompiler are the same : true");
         } else {
