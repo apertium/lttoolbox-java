@@ -214,15 +214,15 @@ public static class IntegerPair {
      * @param a the alphabet to DEBUG_compare to
      * @return true if both alphabets are similar
      */
-    public boolean DEBUG_compare(Alphabet a) {
-        System.out.println("now comparing the alphabets");
+    public boolean DEBUG_compare(Alphabet other) {
+        System.out.println("now comparing the alphabets this with other:\n"+this+"\n"+other);
         boolean sameSlexic = true;
-        for (String s : a.slexic.keySet()) {
+        for (String s : other.slexic.keySet()) {
             if (!slexic.containsKey(s)) {
                 sameSlexic = false;
                 break;
             }
-            if (!slexic.get(s).equals(a.slexic.get(s))) {
+            if (!slexic.get(s).equals(other.slexic.get(s))) {
                 sameSlexic = false;
                 break;
             }
@@ -230,11 +230,11 @@ public static class IntegerPair {
         }
         System.out.println("the slexic attributes are the same : " + sameSlexic);
         boolean sameSlexicinv = true;
-        for (int i = 0,  limit = a.slexicinv.size(); i < limit; i++) {
+        for (int i = 0,  limit = other.slexicinv.size(); i < limit; i++) {
             boolean temp = false;
             for (int j = i,  limit2 = slexicinv.size() + i; j < limit2; j++) {
                 int k = j % slexicinv.size();
-                if (a.slexicinv.get(i).equals(slexicinv.get(k))) {
+                if (other.slexicinv.get(i).equals(slexicinv.get(k))) {
                     temp = true;
                     break;
                 }
@@ -247,25 +247,25 @@ public static class IntegerPair {
         }
         boolean sameSpair = true;
         System.out.println("the slexicinv attributes are the same : " + sameSlexicinv);
-        for (IntegerPair p : a.spair.keySet()) {
+        for (IntegerPair p : other.spair.keySet()) {
             if(!spair.containsKey(p)) {
             //if (!containsKey(spair, p)) {
                 sameSpair = false;
                 break;
             }
             //if (!(get(spair, p).equals(get(a.spair, p)))) {
-            if (!spair.get(p).equals(a.spair.get(p))) {
+            if (!spair.get(p).equals(other.spair.get(p))) {
                 sameSpair = false;
                 break;
             }
         }
         System.out.println("the spair attributes are the same : " + sameSpair);
         boolean sameSpairinv = true;
-        for (int i = 0,  limit = a.spairinv.size(); i < limit; i++) {
+        for (int i = 0,  limit = other.spairinv.size(); i < limit; i++) {
             boolean temp = false;
             for (int j = i,  limit2 = spairinv.size() + i; j < limit2; j++) {
                 int k = j % spairinv.size();
-                if (a.spairinv.get(i).equals(spairinv.get(k))) {
+                if (other.spairinv.get(i).equals(spairinv.get(k))) {
                     temp = true;
                     break;
                 }

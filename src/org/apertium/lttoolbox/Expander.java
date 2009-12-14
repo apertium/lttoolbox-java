@@ -17,6 +17,7 @@ package org.apertium.lttoolbox;
  * 02111-1307, USA.
  */
 
+import java.io.FileInputStream;
 import org.apertium.lttoolbox.compile.XMLPrint;
 import org.apertium.lttoolbox.compile.Compile;
 import java.io.FileNotFoundException;
@@ -97,7 +98,7 @@ private static class EntList extends ArrayList<SPair> {
         try {
             output = out;
             XMLInputFactory factory = XMLInputFactory.newInstance();
-            reader = factory.createXMLStreamReader(new FileReader(file));
+            reader = factory.createXMLStreamReader(new FileInputStream(file));
             while (reader.hasNext()) {
                 procNode();
                 reader.next();

@@ -66,7 +66,7 @@ public class Transducer {
   @Override
     public String toString() {
         String res = "";
-        res+="initial :"+initial+"\n";
+        res+="initial :"+initial+" - ";
         res+= "finals :"+finals+"\n";
         res+= "transitions :"+transitions+"";
         return res;
@@ -568,15 +568,18 @@ public class Transducer {
         if (!(initial.equals(other.initial))) {
             System.out.println("the two transducer have different initial states");
             sameInitial = false;
+            return false;
         }
         if (finals.size() != other.finals.size()) {
             System.out.println("the two transducer have a different number of final states");
             sameFinals = false;
+            return false;
         }
         for (Integer i : finals) {
             if (!other.finals.contains(i)) {
                 System.out.println("the state " + i + " is a final state in the first transducer but not in the second one");
                 sameFinals = false;
+            return false;
             }
         }
         if (transitions.size() != other.transitions.size()) {
@@ -589,23 +592,23 @@ public class Transducer {
             if (!other.transitions.containsKey(source)) {
                 System.out.println("key " + source + " exists in this.transitions, but not in t.transitions");
                 sameTransducer = false;
-                continue;
+                break;
             }
             if (!(transitions.get(source).size() == other.transitions.get(source).size())) {
                 System.out.println("the transducers have a different number of transitions leaving the state " + source);
                 sameTransducer = false;
-                continue;
+                break;
             }
             for (Integer label : transitions.get(source).keySet()) {
                 if (!other.transitions.get(source).containsKey(label)) {
                     System.out.println("the state " + source + " has a transition with label " + label + " in this.transitions, but not in t.transitions");
                     sameTransducer = false;
-                    continue;
+                    break;
                 }
                 if (!(transitions.get(source).get(label).size() == other.transitions.get(source).get(label).size())) {
                     System.out.println("the transducers have a different number of transitions leaving the state " + source + " with the label " + label);
                     sameTransducer = false;
-                    continue;
+                    break;
                 }
                 for (Integer destination : transitions.get(source).get(label)) {
                     if (!other.transitions.get(source).get(label).contains(destination)) {

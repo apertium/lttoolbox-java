@@ -7,13 +7,23 @@ library=`dirname $0`/../share/apertium/lttoolbox.jar
 
 if [ ! -e $library ]
 then
-	if [ -e dist/lttoolbox.jar ]
+	library=`dirname $0`/dist/lttoolbox.jar
+	if [ ! -e $library ]
 	then
-		library=dist/lttoolbox.jar
-	elif [ -e lttoolbox.jar ]
-	then
-		library=lttoolbox.jar
+		library=`dirname $0`/lttoolbox.jar
+		if [ ! -e $library ]
+		then
+			if [ -e dist/lttoolbox.jar ]
+			then
+				library=dist/lttoolbox.jar
+			elif [ -e lttoolbox.jar ]
+			then
+				library=lttoolbox.jar
+			fi
+		fi
 	fi
 fi
 
+# echo java -Dfile.encoding=UTF-8 -Xms${defaultMinMem}m -Xmx${defaultMaxMem}m -jar ${library} $0 $*
 java -Dfile.encoding=UTF-8 -Xms${defaultMinMem}m -Xmx${defaultMaxMem}m -jar ${library} $0 $*
+

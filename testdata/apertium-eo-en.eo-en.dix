@@ -3,6 +3,7 @@
 	Last processed by: apertium-dixtools fix -alignBidix apertium-eo-en.eo-en.dix 2.dix
 -->
 <dictionary>
+	<!-- <alphabet/> -->
 	<alphabet></alphabet>
 	<sdefs>
 		<sdef n="nom" /> 

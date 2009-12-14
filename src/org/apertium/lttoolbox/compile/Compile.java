@@ -157,7 +157,7 @@ public class Compile {
 
     /**
      * Compile dictionary to letter transducers
-     * @param file the address of the XML dictionnary to be DEBUG_read
+     * @param file the address of the XML dictionnary to be read
      * @param dir the direction of the compilation, 'lr' (leftSide-to-right) or 'rl'
      * (right-to-leftSide)
      */
@@ -168,7 +168,7 @@ public class Compile {
             if (file.equals("-")) {
               reader = factory.createXMLStreamReader(System.in);
             } else {
-              reader = factory.createXMLStreamReader(new FileReader(file));
+              reader = factory.createXMLStreamReader(new FileInputStream(file));
             }
             while (reader.hasNext()) {
                 procNode();
@@ -192,7 +192,7 @@ public class Compile {
     /**
      * Read ACX file.
      * @see http://wiki.apertium.org/wiki/ACX format
-     * @param file the address of the file to be DEBUG_read
+     * @param file the address of the file to be read
      * @param dir the direction of the compilation, 'lr' (leftSide-to-right) or 'rl'
      * (right-to-leftSide)
      */
@@ -200,7 +200,7 @@ public class Compile {
         try {
             if (dir.equals(COMPILER_RESTRICTION_LR_VAL)) {
                 XMLInputFactory factory = XMLInputFactory.newInstance();
-                reader = factory.createXMLStreamReader(new FileReader(file));
+                reader = factory.createXMLStreamReader(new FileInputStream(file));
                 while (reader.hasNext()) {
                     procNodeACX();
                     reader.next();
@@ -505,6 +505,9 @@ public class Compile {
               "): Missing alphabet symbols.");
         }
       }
+//      if (letters.length()==0) {
+//        System.err.println("Note: A bug in C library libxml makes an empty <alphabet></alphabet> read a newline letters. This is not the case in Java, so the .bin files will differ in length.");
+//      }
 /*
         if (reader.hasNext()) {
             reader.next();
@@ -645,6 +648,8 @@ public class Compile {
         } else if (eventType == XMLStreamConstants.START_DOCUMENT) {
             version = reader.getVersion();
             encoding = reader.getCharacterEncodingScheme();
+            //System.err.println("encoding = " + encoding);
+            
             standalone = reader.isStandalone();
         } else if (eventType == XMLStreamConstants.END_DOCUMENT) {
         //do nothing
@@ -926,7 +931,7 @@ public class Compile {
 
     /**
      * Reads a string and puts it in a list of integers
-     * @param result the list of integers that contains the DEBUG_read string
+     * @param result the list of integers that contains the read string
      * @param name the name of the current node
      * @throws javax.xml.stream.XMLStreamException
      */
@@ -938,6 +943,7 @@ public class Compile {
             for (int i = 0; i < value.length(); i++) {
                 result.add((int) value.charAt(i));
             }
+            //System.err.println("value = " + value);
         } else if (reader.getEventType() == XMLStreamConstants.START_ELEMENT) {
             if (name.equals(COMPILER_BLANK_ELEM)) {
                 requireEmptyError(name);
@@ -983,6 +989,8 @@ public class Compile {
                 "): unexpected event type '" +
                 XMLPrint.getEventTypeString(reader.getEventType()) + "'.");
         }
+
+        //System.err.println("result = " + result);
     }
 
     /**
@@ -1055,9 +1063,9 @@ public class Compile {
     /**
      * Create a new Instance of the Compile class from a stream
      * Was written for debugging purpose
-     * @param input the inpus stream from which to DEBUG_read the data
+     * @param input the inpus stream from which to read the data
      * @return an instance of the Compile class that contains
-     * all the data DEBUG_read from the input
+     * all the data read from the input
      * @throws java.io.IOException
      */
     public static Compile DEBUG_read(InputStream input) throws IOException {
@@ -1091,7 +1099,10 @@ public class Compile {
             System.out.println("the two alphabets are the same : true");
         } else {
             sameAlphabet = false;
-            System.out.println("the two alphabets are the same : false");
+            System.out.println("the two alphabets are the NOT same:");
+            this.alphabet.display();
+            other.alphabet.display();
+            return false;
         }
         boolean sameTransducer = true;
         boolean allTransducersAlike = true;
@@ -1113,16 +1124,9 @@ public class Compile {
         return (sameAlphabet&&sameSectionsNumber&&allTransducersAlike);
     }
     
-    /**
-     * Write the compiler to a file, DEBUG_read it again,
-     * and check we have the same thing 
-     * Was written for debugging purpose
-     * @throws java.io.FileNotFoundException
-     * @throws java.io.IOException
-     */
     public static void main(String[] a) throws Exception {
-        Compile c = DEBUG_read(new BufferedInputStream (new FileInputStream("tmp/testJava.bin")));
-        Compile c2 = DEBUG_read(new BufferedInputStream (new FileInputStream("tmp/testCpp.bin")));
+        Compile c = DEBUG_read(new BufferedInputStream (new FileInputStream("xxx/c.bin")));
+        Compile c2 = DEBUG_read(new BufferedInputStream (new FileInputStream("xxx/c2.bin")));
         if (c2.DEBUG_compare(c)) {
             System.out.println("the two instances of NewCompiler are the same : true");
         } else {
