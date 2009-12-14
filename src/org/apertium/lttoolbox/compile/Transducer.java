@@ -66,9 +66,9 @@ public class Transducer {
   @Override
     public String toString() {
         String res = "";
-        res+="initial :\n"+initial+"\n";
-        res+= "finals :\n"+finals+"\n";
-        res+= "transitions : \n"+transitions+"\n";
+        res+="initial :"+initial+"\n";
+        res+= "finals :"+finals+"\n";
+        res+= "transitions :"+transitions+"";
         return res;
     }
 
@@ -553,61 +553,62 @@ public class Transducer {
 
     /**
      * Compare the tranducer with another one
-     * @param t the transducer to compare to
+     * @param t the transducer to DEBUG_compare to
      * @return true if the two transducers are similar
      */
-    boolean compare(Transducer t) {
+    boolean DEBUG_compare(Transducer other) {
         boolean sameSize = true;
         boolean sameInitial = true;
         boolean sameFinals = true;
-        if (t == null) {
+        System.out.println(("comparing this:\n"+this+"\nwith other:\n "+other)); // .replaceAll("\n", " ")
+       if (other == null) {
             System.out.println("comparing with a null transducer");
             return false;
         }
-        if (!(initial.equals(t.initial))) {
+        if (!(initial.equals(other.initial))) {
             System.out.println("the two transducer have different initial states");
             sameInitial = false;
         }
-        if (finals.size() != t.finals.size()) {
+        if (finals.size() != other.finals.size()) {
             System.out.println("the two transducer have a different number of final states");
             sameFinals = false;
         }
         for (Integer i : finals) {
-            if (!t.finals.contains(i)) {
+            if (!other.finals.contains(i)) {
                 System.out.println("the state " + i + " is a final state in the first transducer but not in the second one");
                 sameFinals = false;
             }
         }
-        if (transitions.size() != t.transitions.size()) {
+        if (transitions.size() != other.transitions.size()) {
             System.out.println("the two transducers have different sizes for their attribute transitions");
             sameSize = false;
         }
         boolean sameTransducer = true;
         for (Integer source : transitions.keySet()) {
             boolean sameTransitionsFromSource = true;
-            if (!t.transitions.containsKey(source)) {
+            if (!other.transitions.containsKey(source)) {
                 System.out.println("key " + source + " exists in this.transitions, but not in t.transitions");
                 sameTransducer = false;
                 continue;
             }
-            if (!(transitions.get(source).size() == t.transitions.get(source).size())) {
+            if (!(transitions.get(source).size() == other.transitions.get(source).size())) {
                 System.out.println("the transducers have a different number of transitions leaving the state " + source);
                 sameTransducer = false;
                 continue;
             }
             for (Integer label : transitions.get(source).keySet()) {
-                if (!t.transitions.get(source).containsKey(label)) {
+                if (!other.transitions.get(source).containsKey(label)) {
                     System.out.println("the state " + source + " has a transition with label " + label + " in this.transitions, but not in t.transitions");
                     sameTransducer = false;
                     continue;
                 }
-                if (!(t.transitions.get(source).get(label).size() == t.transitions.get(source).get(label).size())) {
+                if (!(transitions.get(source).get(label).size() == other.transitions.get(source).get(label).size())) {
                     System.out.println("the transducers have a different number of transitions leaving the state " + source + " with the label " + label);
                     sameTransducer = false;
                     continue;
                 }
                 for (Integer destination : transitions.get(source).get(label)) {
-                    if (!t.transitions.get(source).get(label).contains(destination)) {
+                    if (!other.transitions.get(source).get(label).contains(destination)) {
                         System.out.println("there is a transition from the state " + source +
                             " to the state " + destination + " with the label " + label +
                             " which is in this.transitions and not in t.transitions");

@@ -211,10 +211,10 @@ public static class IntegerPair {
     /**
      * Compare with another instance of alphabet
      * Was written for debugging purpose
-     * @param a the alphabet to compare to
+     * @param a the alphabet to DEBUG_compare to
      * @return true if both alphabets are similar
      */
-    public boolean compare(Alphabet a) {
+    public boolean DEBUG_compare(Alphabet a) {
         System.out.println("now comparing the alphabets");
         boolean sameSlexic = true;
         for (String s : a.slexic.keySet()) {
@@ -294,7 +294,7 @@ public static class IntegerPair {
         Alphabet a = new Alphabet();
         a = read(input);
         input.close();
-        if (this.compare(a)) {
+        if (this.DEBUG_compare(a)) {
             System.out.println("the two alphabets are the same : true");
         } else {
             System.out.println("the two alphabets are the same : false");

@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <dictionary>
-
 <alphabet>·ÀÁÂÄÇÈÉÊËÌÍÎÏÑÒÓÔÖÙÚÛÜàáâäçèéêëìíîïñòóôöùúûüABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz</alphabet>
  
-
 <sdefs>
     <sdef n="aa"/>
-
     <sdef n="acr"/>
     <sdef n="adj"/>
     <sdef n="adv"/>
@@ -46,29 +42,21 @@
     <sdef n="ND"/>
     <sdef n="prs"/>
 </sdefs>
-
 <pardefs>
 <pardef n="/avoir__vbhaver">
-
    <!-- comment -->            
                         <e><p><l>a</l><r>avoir<s n="vbhaver"/><s n="pri"/><s n="p3"/><s n="sg"/></r></p></e>
 <!--
                         <e><f n="pref" v="bi"><p><l>a</l><r>avoir<s n="vbhaver"/><s n="pri"/><s n="p3"/><s n="sg"/></r></p></e>
 -->
              </pardef>
-
-
 </pardefs>    
-
-
 <section id="final" type="inconditional">
-
                         <e><par n="/avoir__vbhaver"/></e>
 <!--
                         <e><f><s n="sg"/></f></e>
 -->
                         <e><p><l><s n="sg"/></l><r><s n="sg"/></r></p></e>
                         <e><i><s n="sg"/></i></e>
-
  </section>
 </dictionary>

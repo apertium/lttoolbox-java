@@ -132,7 +132,7 @@ public class testTransducer {
         output.close();
         //InputStream input = new InputStream(new BufferedInputStream (new FileInputStream("testTransducer2.bin")));
         InputStream input = new BufferedInputStream (new FileInputStream("outc"));
-        //c2 = c.read(input);
+        //c2 = c.DEBUG_read(input);
         
         //FSTProcessor fstp = new FSTProcessor();
         //fstp.load(input);
@@ -156,10 +156,10 @@ public class testTransducer {
          
             len--;
             if(c.sections.get(name)!=null&&sections.get(name)!=null) {
-            System.out.println(c.sections.get(name).compare(sections.get(name)));
+            System.out.println(c.sections.get(name).DEBUG_compare(sections.get(name)));
             }
             //System.exit(-1);
-            //throw new RuntimeException("section "+name+" was totaly read");
+            //throw new RuntimeException("section "+name+" was totaly DEBUG_read");
         }
         input.close();
         
@@ -186,13 +186,13 @@ public class testTransducer {
             //System.out.println("original transducer : "+c.sections.get(s));
             System.out.println("original transducer has "+count1+" transitions");
             System.out.println("original transducer higher state is "+max1);
-            //System.out.println("read transducer : "+sections.get(s));            
+            //System.out.println("DEBUG_read transducer : "+sections.get(s));
             System.out.println("read transducer has "+count2+" transitions");
             System.out.println("read transducer higher state is "+max2);
-            //System.out.println(c.sections.get(s).compare(sections.get(s)));
+            //System.out.println(c.sections.get(s).DEBUG_compare(sections.get(s)));
         }
         
-        //System.out.println(c.compare(c2));
+        //System.out.println(c.DEBUG_compare(c2));
         
         
     }

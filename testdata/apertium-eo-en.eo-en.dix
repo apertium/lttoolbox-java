@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Last processed by: apertium-dixtools fix -alignBidix apertium-eo-en.eo-en.dix 2.dix
+-->
+<dictionary>
+	<alphabet></alphabet>
+	<sdefs>
+		<sdef n="nom" /> 
+		<sdef n="num" /> 
+		<sdef n="np" /> 
+		<sdef n="n" /> 
+		<sdef n="adj" /> 
+		<sdef n="re" /> 
+		<sdef n="sg" /> 
+		<sdef n="acr" /> 
+		<sdef n="vblex" /> 
+	</sdefs>
+	<pardefs>
+
+<pardef n="Abc">
+  <e>       <re>[ÀÁÂÄÇÈÉÊËÌÍÎÏÑÒÓÔÖÙÚÛÜÚABCDEFGHIJKLMNOPQRSTUVWXYZĈĜĤĴŜŬÆØÅæøåàáâäçèéêëìíîïñòóôöõùúûüabcdefghijklmnopqrstuvwxyzĉĝĥĵŝŭÚéõóöäíáòñúŵã -.]*</re></e>
+</pardef>
+
+<pardef n="litero">
+  <e>       <i><s n="num"/><s n="sg"/></i></e>
+</pardef>
+	</pardefs>
+
+	<section id="main" type="standard">
+
+<e>       <i>a</i><par n="litero"/></e>
+<e>       <i>b</i><par n="litero"/></e>
+<e>       <i>c</i><par n="litero"/></e>
+<e>       <i>d</i><par n="litero"/></e>
+<e>       <i>e</i><par n="litero"/></e>
+<e>       <i>f</i><par n="litero"/></e>
+<e>       <p><l>botanika<s n="adj"/></l>               <r>botanical<s n="adj"/></r></p></e>
+<e>       <p><l>palestina<s n="adj"/></l>              <r>Palestinian<s n="adj"/></r></p></e>
+<e>       <p><l>palestinano<s n="n"/></l>              <r>Palestinian<s n="n"/></r></p></e>
+<e>       <p><l>Esperanto<s n="n"/></l>                <r>Esperanto<s n="n"/></r></p></e>
+<e>       <re>[A-Z][A-Z]</re><i><s n="n"/><s n="acr"/><s n="re"/></i></e>
+<e>       <re>[A-Z][A-Z][A-Z]</re><i><s n="n"/><s n="acr"/><s n="re"/></i></e>
+<e>       <re>[A-Z][A-Z][A-Z][A-Z]</re><i><s n="n"/><s n="acr"/><s n="re"/></i></e>
+<e>       <re>[A-Z][A-Z][A-Z][A-Z][A-Z]</re><i><s n="n"/><s n="acr"/><s n="re"/></i></e>
+<e>       <p><l>sepdek<b/>sep<s n="num"/></l>          <r>seventy-seven<s n="num"/></r></p></e>
+<e>       <p><l>sepdek<b/>ok<s n="num"/></l>           <r>seventy-eight<s n="num"/></r></p></e>
+<e>       <p><l>sepdek<b/>naŭ<s n="num"/></l>          <r>seventy-nine<s n="num"/></r></p></e>
+<e>       <p><l>okdek<b/>unu<s n="num"/></l>           <r>eighty-one<s n="num"/></r></p></e>
+<e>       <p><l>okdek<b/>du<s n="num"/></l>            <r>eighty-two<s n="num"/></r></p></e>
+<e>       <p><l>okdek<b/>tri<s n="num"/></l>           <r>eighty-three<s n="num"/></r></p></e>
+<e>       <p><l>okdek<b/>kvar<s n="num"/></l>          <r>eighty-four<s n="num"/></r></p></e>
+<e>       <p><l>kanadano<s n="n"/></l>                 <r>Canadian<s n="n"/></r></p></e>
+<e>       <p><l>amerikano<s n="n"/></l>                <r>American<s n="n"/></r></p></e>
+<e>       <p><l>nord-amerikano<s n="n"/></l>           <r>North<b/>American<s n="n"/></r></p></e>
+<e>       <p><l>sud-amerikano<s n="n"/></l>            <r>South<b/>American<s n="n"/></r></p></e>
+<e>       <p><l>centr-amerikano<s n="n"/></l>          <r>Central<b/>American<s n="n"/></r></p></e>
+<e>       <p><l>jugoslavo<s n="n"/></l>                <r>Yugoslav<s n="n"/></r></p></e>
+<e>       <p><l>kanario<s n="n"/></l>                  <r>Canarian<s n="n"/></r></p></e>
+<e>       <p><l>kataluno<s n="n"/></l>                 <r>Catalan<s n="n"/></r></p></e>
+<e>       <p><l>ĉiliano<s n="n"/></l>                  <r>Chilean<s n="n"/></r></p></e>
+<e>       <p><l>kolombiano<s n="n"/></l>               <r>Colombian<s n="n"/></r></p></e>
+<e>       <p><l>eŭropano<s n="n"/></l>                 <r>European<s n="n"/></r></p></e>
+<e>       <p><l>indiano<s n="n"/></l>                  <r>Indian<s n="n"/></r></p></e>
+<e>       <p><l>israelano<s n="n"/></l>                <r>Israeli<s n="n"/></r></p></e>
+<e r="LR"><p><l>izraeliano<s n="n"/></l>               <r>Israeli<s n="n"/></r></p></e>
+<e r="RL"><p><l>kvarono<s n="n"/></l>                  <r>fourth<s n="n"/></r></p></e>
+<e r="RL"><p><l>koko<s n="n"/></l>                     <r>fowl<s n="n"/></r></p></e>
+<e r="LR"><p><l>virkoko<s n="n"/></l>                  <r>fowl<s n="n"/></r></p></e>
+<e r="RL"><p><l>vestiblo<s n="n"/></l>                 <r>foyer<s n="n"/></r></p></e>
+<e r="RL"><p><l>interbatiĝo<s n="n"/></l>              <r>fracas<s n="n"/></r></p></e>
+<e r="LR"><p><l>frakturiĝi<s n="vblex"/></l>           <r>fracture<s n="vblex"/></r></p></e>
+<e>       <p><l>frakturi<s n="vblex"/></l>             <r>fracture<s n="vblex"/></r></p></e>
+<e r="RL"><p><l>delikateco<s n="n"/></l>               <r>fragility<s n="n"/></r></p></e>
+<e r="LR"><p><l>rompiĝemeco<s n="n"/></l>              <r>fragility<s n="n"/></r></p></e>
+<e r="LR"><p><l>rompebleco<s n="n"/></l>               <r>fragility<s n="n"/></r></p></e>
+<e r="LR"><p><l>fendiĝemeco<s n="n"/></l>              <r>fragility<s n="n"/></r></p></e>
+<e r="LR"><p><l>fragileco<s n="n"/></l>                <r>fragility<s n="n"/></r></p></e>
+<e r="LR"><p><l>fragmentigi<s n="vblex"/></l>          <r>fragment<s n="vblex"/></r></p></e>
+<e>       <p><l>fragmentiĝi<s n="vblex"/></l>          <r>fragment<s n="vblex"/></r></p></e>
+
+	</section>
+	<section id="propraj_nomoj" type="standard">
+<e>       <par n="Abc"/><i><s n="np"/></i></e>
+
+	</section>
+</dictionary>

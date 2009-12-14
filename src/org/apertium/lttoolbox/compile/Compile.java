@@ -159,7 +159,7 @@ public class Compile {
 
     /**
      * Compile dictionary to letter transducers
-     * @param file the address of the XML dictionnary to be read
+     * @param file the address of the XML dictionnary to be DEBUG_read
      * @param dir the direction of the compilation, 'lr' (leftSide-to-right) or 'rl'
      * (right-to-leftSide)
      */
@@ -194,7 +194,7 @@ public class Compile {
     /**
      * Read ACX file.
      * @see http://wiki.apertium.org/wiki/ACX format
-     * @param file the address of the file to be read
+     * @param file the address of the file to be DEBUG_read
      * @param dir the direction of the compilation, 'lr' (leftSide-to-right) or 'rl'
      * (right-to-leftSide)
      */
@@ -496,7 +496,18 @@ public class Compile {
      * @throws javax.xml.stream.XMLStreamException
      */
     private void procAlphabet() throws XMLStreamException {
-
+      reader.next();
+      if (reader.getEventType() != XMLStreamConstants.END_ELEMENT) {
+        if (reader.getEventType() == XMLStreamConstants.CHARACTERS) {
+            int start = reader.getTextStart();
+            int length = reader.getTextLength();
+            letters = new String(reader.getTextCharacters(), start, length);
+        } else {
+          throw new RuntimeException("Error (" + reader.getLocation().getLineNumber() +
+              "): Missing alphabet symbols.");
+        }
+      }
+/*
         if (reader.hasNext()) {
             reader.next();
             if (reader.getEventType() == XMLStreamConstants.CHARACTERS) {
@@ -513,6 +524,7 @@ public class Compile {
             throw new RuntimeException("Error (" + reader.getLocation().getLineNumber() +
                 "): Missing alphabet symbols.");
         }
+*/
     }
 
     /**
@@ -916,7 +928,7 @@ public class Compile {
 
     /**
      * Reads a string and puts it in a list of integers
-     * @param result the list of integers that contains the read string
+     * @param result the list of integers that contains the DEBUG_read string
      * @param name the name of the current node
      * @throws javax.xml.stream.XMLStreamException
      */
@@ -1045,24 +1057,23 @@ public class Compile {
     /**
      * Create a new Instance of the Compile class from a stream
      * Was written for debugging purpose
-     * @param input the inpus stream from which to read the data
+     * @param input the inpus stream from which to DEBUG_read the data
      * @return an instance of the Compile class that contains
-     * all the data read from the input
+     * all the data DEBUG_read from the input
      * @throws java.io.IOException
      */
-    Compile read(InputStream input) throws IOException {
+    public static Compile DEBUG_read(InputStream input) throws IOException {
         Compile c = new Compile();
         
         //reading of letters 
         c.letters=Compression.String_read(input);
-        c.alphabet=c.alphabet.read(input);
+        c.alphabet=Alphabet.read(input);
         
         //reading of sections
         int number_of_sections = Compression.multibyte_read(input);
         while (number_of_sections > 0) {
             String section_name = Compression.String_read(input);
-            Transducer t = new Transducer();
-            t.read(input);
+            Transducer t = Transducer.read(input);
             c.sections.put(section_name,t);
             number_of_sections--;
         }
@@ -1072,12 +1083,13 @@ public class Compile {
     /**
      * Compare with another instance of the Compile class
      * Was written for debugging purpose
-     * @param c to NewCompiler to compare to
+     * @param c to NewCompiler to DEBUG_compare to
      * @return true if both compilers are similar
      */
-    boolean compare(Compile c) {
+    public boolean DEBUG_compare(Compile other) {
         boolean sameAlphabet = true;
-        if (this.alphabet.compare(c.alphabet)) {
+        System.out.println("comparing this:"+this+" with other"+other);
+        if (this.alphabet.DEBUG_compare(other.alphabet)) {
             System.out.println("the two alphabets are the same : true");
         } else {
             sameAlphabet = false;
@@ -1086,12 +1098,12 @@ public class Compile {
         boolean sameTransducer = true;
         boolean allTransducersAlike = true;
         boolean sameSectionsNumber = true;
-        if (sections.size()!=c.sections.size()) {
+        if (sections.size()!=other.sections.size()) {
             System.out.println("the two instances of NewCompiler don't have the same number of sections");
             sameSectionsNumber = false;
         }
         for (String s :sections.keySet()) {
-            if (!sections.get(s).compare(c.sections.get(s))) {
+            if (!sections.get(s).DEBUG_compare(other.sections.get(s))) {
                 System.out.println("the transducers from section '"+s+"' are different");
                 allTransducersAlike=false;
             } else {
@@ -1099,29 +1111,21 @@ public class Compile {
             }
             
         }
-        System.out.println("sections de this :\n"+sections.keySet()+"\nsections de c :\n"+c.sections.keySet());
+        System.out.println("sections de this :\n"+sections.keySet()+"\nsections de c :\n"+other.sections.keySet());
         return (sameAlphabet&&sameSectionsNumber&&allTransducersAlike);
     }
     
     /**
-     * Write the compiler to a file, read it again, 
+     * Write the compiler to a file, DEBUG_read it again,
      * and check we have the same thing 
      * Was written for debugging purpose
      * @throws java.io.FileNotFoundException
      * @throws java.io.IOException
      */
-    void testIO() throws FileNotFoundException, IOException {
-        System.out.println("now comparing an instance of NewCompiler with what we get after writting it to a file and then reading it back from that file");
-        OutputStream output = new BufferedOutputStream (new FileOutputStream("testTransducer.bin"));
-        write(output);
-        output.close();
-        System.out.println("writing done");
-        Compile c = new Compile();
-        InputStream input = new BufferedInputStream (new FileInputStream("testTransducer.bin"));     
-        c = read(input);
-        input.close();
-        System.out.println("reading done");
-        if (this.compare(c)) {
+    public static void main(String[] a) throws Exception {
+        Compile c = DEBUG_read(new BufferedInputStream (new FileInputStream("tmp/testJava.bin")));
+        Compile c2 = DEBUG_read(new BufferedInputStream (new FileInputStream("testdata/correct-short.bin")));
+        if (c2.DEBUG_compare(c)) {
             System.out.println("the two instances of NewCompiler are the same : true");
         } else {
             System.out.println("the two instances of NewCompiler are the same : false");
