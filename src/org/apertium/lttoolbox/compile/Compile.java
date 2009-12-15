@@ -145,6 +145,8 @@ public class Compile {
      */
     XMLStreamReader reader;
 
+    private boolean DEBUG = false;
+
 
     /**
      * The constructor
@@ -182,9 +184,12 @@ public class Compile {
 
         } catch (FileNotFoundException e) {
             throw new RuntimeException("Error: Cannot open '" + file + "'.");
-        } catch (XMLStreamException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Error: An error occured parsing '" + file + "'.");
+        } catch (XMLStreamException ex) {
+            System.err.println("Error (" + ex + ") at "+reader.getLocation().getLineNumber());
+          throw new RuntimeException("Error t "+reader.getLocation().getLineNumber(), ex);
+        } catch (RuntimeException e) {
+            System.err.println("Error (" + e + ") at "+reader.getLocation().getLineNumber());
+            throw e;
         }
 
     }
@@ -263,6 +268,8 @@ public class Compile {
      * @param elements the list
      */
     private void insertEntryTokens(ArrayList<EntryToken> elements) {
+
+      if (DEBUG) System.err.println("insertEntryTokens( " + elements);
         if (!current_paradigm.equals("")) {
             // compilation of paradigms
             Transducer t = paradigms.get(current_paradigm);
@@ -380,7 +387,8 @@ public class Compile {
             limdcha = pd.size();
 
             if (pi.size() == 0 && pd.size() == 0) {
-                state = t.insertNewSingleTransduction(alphabet.cast00, state);
+              if (DEBUG) System.err.println("e = " + t.toString());
+              state = t.insertNewSingleTransduction(alphabet.cast00, state);
             } else {
                 HashSet<Integer> acx_map_ptr = null;
                 int rsymbol = 0;
@@ -550,8 +558,7 @@ public class Compile {
 
         while (true) {
             if (!reader.hasNext()) {
-                throw new RuntimeException("Error (" + reader.getLocation().getLineNumber() +
-                    "): Parse error.");
+                throw new RuntimeException("Error (" + reader.getLocation().getLineNumber() +"): Parse error.");
             }
             if (reader.getEventType() == XMLStreamConstants.START_ELEMENT) {
                 name = reader.getLocalName();
@@ -699,7 +706,11 @@ public class Compile {
     private void procParDef() {
         if (reader.getEventType() != XMLStreamConstants.END_ELEMENT) {
             current_paradigm = attrib(COMPILER_N_ATTR);
+
+            if (DEBUG) System.err.println("current_paradigm1 = " + current_paradigm);
         } else {
+
+            if (DEBUG) System.err.println("current_paradigm2 = " + current_paradigm);
             if (paradigms.containsKey(current_paradigm)) {
                 if (!paradigms.get(current_paradigm).isEmpty()) {
                     paradigms.get(current_paradigm).minimize();

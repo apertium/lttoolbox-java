@@ -57,6 +57,8 @@ public class Transducer {
      */
     public Map<Integer, Map<Integer, Set<Integer>>> transitions = new HashMap<Integer, Map<Integer, Set<Integer>>>();
 
+    private boolean DEBUG=false;
+
 
 
     /**
@@ -193,6 +195,8 @@ public class Transducer {
      */
     Integer insertNewSingleTransduction(Integer tag, Integer source) {
         Map<Integer, Set<Integer>> place = transitions.get(source);
+        
+        if (DEBUG) System.err.println(transitions +"  place = " + place);
         Set<Integer> set = place.get(tag);
 
         if (set == null) {

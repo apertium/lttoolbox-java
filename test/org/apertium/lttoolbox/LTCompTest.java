@@ -16,6 +16,7 @@ import static org.apertium.lttoolbox.TestTools.*;
  */
 public class LTCompTest extends TestCase {
 
+
     protected void setUp() throws Exception {
       // Create and clean tmp dir
        rm("tmp");
@@ -86,7 +87,7 @@ public class LTCompTest extends TestCase {
 
 
   public void testLTCompCppLatin1() throws Exception {
-    Runtime.getRuntime().exec("lt-comp lr testdata/apertium-latin-1.dix tmp/testC++.bin").waitFor();
+    Runtime.getRuntime().exec("lt-comp lr testdata/latin-1.dix tmp/testC++.bin").waitFor();
     int compareExitValue = Runtime.getRuntime().exec("cmp tmp/testC++.bin testdata/correct-latin-1.bin").waitFor();
     assertEquals("files must be binary equal", 0, compareExitValue);
   }
