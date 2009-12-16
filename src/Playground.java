@@ -16,15 +16,13 @@ import org.apertium.lttoolbox.process.FSTProcessor;
  */
 public class Playground {
       public static void main(String[] argv) throws Exception {
-          String input = "c b[\n] ";
-
+          String input = "c b[\n]";
+          
           FSTProcessor fstp = new FSTProcessor();
-          fstp.load(new BufferedInputStream(new FileInputStream("testdata/generator.bin")));
-          fstp.initGeneration();
+          fstp.load(new BufferedInputStream(new FileInputStream("testdata/cb.bin")));
+          fstp.initAnalysis();
           StringWriter output = new StringWriter();
-          fstp.generation(new StringReader2( input ), output, FSTProcessor.GenerationMode.gm_unknown);
-
-          System.err.println("testGeneration() output = " + output);
-
+          fstp.analysis(new StringReader2( input ), output);
+          System.err.println("analysis output = " + output);
       }
 }
