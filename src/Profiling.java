@@ -41,7 +41,7 @@ public class Profiling {
         p.testjavaPostgeneration();
         System.gc();
         p.testjavaAnalysis();
-/**/
+/**
         System.gc();
     LTComp.main(new String[] { "rl", "testdata/apertium-fr-es.fr.dix", "tmp/testJava.bin"});
     report("lt-comp  ");

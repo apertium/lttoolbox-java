@@ -57,7 +57,7 @@ public class Transducer {
      */
     public Map<Integer, Map<Integer, Set<Integer>>> transitions = new HashMap<Integer, Map<Integer, Set<Integer>>>();
 
-    private boolean DEBUG=false;
+    public static boolean DEBUG=false;
 
 
 
@@ -195,6 +195,10 @@ public class Transducer {
      */
     Integer insertNewSingleTransduction(Integer tag, Integer source) {
         Map<Integer, Set<Integer>> place = transitions.get(source);
+        if (place==null) {
+          place = new HashMap<Integer, Set<Integer>>();
+          transitions.put(source, place);
+        }
         
         if (DEBUG) System.err.println(transitions +"  place = " + place);
         Set<Integer> set = place.get(tag);
@@ -216,7 +220,6 @@ public class Transducer {
      * @return the new target state
      */    
     Integer insertTransducer(Integer source, Transducer t) {
-        Integer untranslated_final = t.joinFinals();
 
         // base of node translation
         final int first_state = transitions.size();
@@ -238,6 +241,7 @@ public class Transducer {
         this.linkStates(source, first_state + t.initial, epsilon_tag);
 
         // return the unique final state of the inserted transducer
+        Integer untranslated_final = t.finals.iterator().next();
         return first_state + untranslated_final;
     }
     
@@ -390,7 +394,7 @@ public class Transducer {
      * Join all finals in one using epsilon transductions
      * @return the only final state
      */
-    Integer joinFinals() {
+    void joinFinals() {
         if (finals.size() > 1) {
             Integer state = newState();
             Iterator<Integer> it = finals.iterator();
@@ -399,11 +403,11 @@ public class Transducer {
             }
             finals.clear();
             finals.add(state);
-            return state;
+            //return state;
         } else if (finals.size() == 0) {
             throw new RuntimeException("Error: empty set of final states");
         } else {
-            return finals.iterator().next();
+            //return finals.iterator().next();
         }
     }
 
@@ -445,8 +449,8 @@ public class Transducer {
      * Reverse all the transductions of a transducer
      */
     private void reverse() {
-        Integer newInitial = joinFinals();
-
+        joinFinals();
+        
         Map<Integer, Map<Integer, Set<Integer>>> result = new TreeMap<Integer, Map<Integer, Set<Integer>>>();
 
         for (Map.Entry<Integer, Map<Integer, Set<Integer>>> it : transitions.entrySet()) {
@@ -477,6 +481,7 @@ public class Transducer {
                 }
             }
         }
+        Integer newInitial = finals.iterator().next();
         finals.clear();
         finals.add(initial);
         initial = newInitial;

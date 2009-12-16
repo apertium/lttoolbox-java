@@ -145,7 +145,7 @@ public class Compile {
      */
     XMLStreamReader reader;
 
-    private boolean DEBUG = false;
+    public static boolean DEBUG = false;
 
 
     /**
@@ -184,12 +184,12 @@ public class Compile {
 
         } catch (FileNotFoundException e) {
             throw new RuntimeException("Error: Cannot open '" + file + "'.");
-        } catch (XMLStreamException ex) {
-            System.err.println("Error (" + ex + ") at "+reader.getLocation().getLineNumber());
-          throw new RuntimeException("Error t "+reader.getLocation().getLineNumber(), ex);
         } catch (RuntimeException e) {
-            System.err.println("Error (" + e + ") at "+reader.getLocation().getLineNumber());
+            System.err.println("Error (" + e + ") at line "+reader.getLocation().getLineNumber());
             throw e;
+        } catch (Throwable ex) {
+            System.err.println("Error (" + ex + ") at line "+reader.getLocation().getLineNumber());
+          throw new RuntimeException("Error t "+reader.getLocation().getLineNumber(), ex);
         }
 
     }
@@ -576,17 +576,18 @@ public class Compile {
             } else if (name.equals(COMPILER_REGEXP_ELEM)) {
                 elements.add(procRegexp());
             } else if (name.equals(COMPILER_PAR_ELEM)) {
-                elements.add(procPar());
-                reader.next();
+                EntryToken par = procPar();
+                elements.add(par);
 
                 // detection of the use of undefined paradigms
-                String p = elements.get(elements.size()-1).paradigmName;
-                if (!paradigms.containsKey(p)) {
-                    throw new RuntimeException("Error (" + reader.getLocation().getLineNumber() +"): Undefined paradigm '" + p + "'.");
+                String p = par.paradigmName;
+                Transducer t = paradigms.get(p);
+                if (t==null) {
+                    throw new RuntimeException("Error: Undefined paradigm '" + p + "'.");
                 }
                 // descartar entradas con paradigms vac�os (por las direciones,
                 // normalmente
-                if (paradigms.get(p).isEmpty()) {
+                if (t.isEmpty()) {
                     while (!name.equals(COMPILER_ENTRY_ELEM) || type != XMLStreamConstants.END_ELEMENT) {
                         reader.next();
                         if (reader.hasName()) {
@@ -596,6 +597,7 @@ public class Compile {
                     }
                     return;
                 }
+                reader.next();
             } else if (name.equals(COMPILER_ENTRY_ELEM) && type == XMLStreamConstants.END_ELEMENT) {
                 // insertar elements into letter transducer
                 insertEntryTokens(elements);
@@ -659,11 +661,10 @@ public class Compile {
             
             standalone = reader.isStandalone();
         } else if (eventType == XMLStreamConstants.END_DOCUMENT) {
-        //do nothing
+          //do nothing
         } else {
-            System.err.println("procNode() : processing a node where what is to be done is unspecified yet");
-            System.err.println(XMLPrint.getEventTypeString(eventType));
-            System.exit(-1);
+          XMLPrint.printEvent(reader);
+          throw new IllegalStateException("procNode(): don't know how to treat <"+ nombre + "> " + XMLPrint.getEventTypeString(eventType));
         }
     }
 
