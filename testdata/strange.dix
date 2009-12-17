@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dictionary>
+	<alphabet/>
+	<sdefs>
+		<sdef n="vblex" /> 
+		<sdef n="ppres" /> 
+		<sdef n="pprs" /> 
+		<sdef n="adj" /> 
+		<sdef n="num" /> 
+		<sdef n="sg" /> 
+	</sdefs>
+	<pardefs>
+
+<pardef n="literox">
+  <e>       <i></i></e>
+</pardef>
+
+<pardef n="literox">
+  <e>       <i></i></e>
+</pardef>
+
+<pardef n="litero">
+  <e>       <i><s n="num"/><s n="sg"/></i></e>
+</pardef>
+
+   <pardef n="generic__vblex">
+<e>       <p><l><s n="vblex"/></l><r><s n="vblex"/></r></p></e>
+<e>       <p><l><s n="vblex"/><s n="ppres"/></l><r><s n="adj"/><s n="pprs"/></r></p></e>
+    </pardef>
+
+	</pardefs>
+
+	<section id="main" type="standard">
+
+<e>       <i>a</i><par n="litero"/></e>
+<e>       <i>b</i><par n="litero"/></e>
+<e>       <i>c</i><par n="litero"/></e><e><i>d</i><par n="litero"/></e>
+<e>       <i>e</i><par n="litero"/></e>
+<e>       <i>a</i><par n="litero"/></e>
+<e>       <i>x</i><par n="literox"/></e>
+<e>       <i>g</i><par n="generic__vblex"/></e>
+	</section>
+</dictionary>
