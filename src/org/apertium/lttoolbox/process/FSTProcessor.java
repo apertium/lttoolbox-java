@@ -144,58 +144,58 @@ public class FSTProcessor {
         throw new RuntimeException("Error: Malformed input stream.");
     }
 
+    private void streamError(char val) {
+        throw new RuntimeException("Error: Illegal input stream char: "+(char)val);
+    }
+
     private char readEscaped(Reader input) throws IOException {
-        if (!input.ready()) {
+        int val = input.read();
+        if (val == EOF) streamError();
+
+        if (!escaped_chars.contains((char) val)) {
             streamError();
         }
 
-        char val = read(input);
-
-        if (!input.ready() || (!escaped_chars.contains(val))) {
-            streamError();
-        }
-
-        return val;
+        return (char) val;
     }
 
     private String readFullBlock(Reader input, char delim1, char delim2) throws IOException {
         StringBuilder result = new StringBuilder();
         result.append(delim1);
 
-        char c = delim1;
+        int c = delim1;
 
-        while (input.ready() && c != delim2) {
-            c=read(input);
-            result.append(c);
+        while (c != delim2) {
+            c=input.read();
+            if (c==EOF) break;
+            result.append((char) c);
             if (c == '\\') {
                 result.append(readEscaped(input));
             }
         }
 
         if (c != delim2) {
-            streamError();
+            streamError((char)c);
         }
 
         return result.toString();
     }
 
+    private static final char EOF = (char) -1;
 
     private char readAnalysis(Reader input) throws IOException {
         if (!input_buffer.isEmpty()) {
             return input_buffer.next();
         }
-        if (!input.ready()) {
-            return (char) 0;
-        }
-        char val = read(input);
-        //if (val == -1) return (char) 0; // Jacob
 
-        char altval = (char) 0;
+        char val = (char) input.read();
+        if (val == EOF) return (char) 0;
 
+    
         if (escaped_chars.contains(val)) {
             switch (val) {
                 case '<':
-                    altval = (char) (alphabet.cast(readFullBlock(input, '<', '>')));
+                    char altval = (char) (alphabet.cast(readFullBlock(input, '<', '>')));
                     input_buffer.add(altval);
                     return altval;
 
@@ -205,21 +205,20 @@ public class FSTProcessor {
                     return (' ');
 
                 case '\\':
-                    val = read(input);
+                    val = (char) input.read();
                     if (!escaped_chars.contains(val)) {
-                        streamError();
+                        streamError(val);
                     }
-                    input_buffer.add((val));
+                    input_buffer.add(val);
                     return val;
 
                 default:
-                  System.err.println("val = " + val);
-                  streamError();
+                  streamError(val);
             }
         }
 
-        input_buffer.add(val);
-        return val;
+        input_buffer.add((char)val);
+        return (char)val;
     }
 
 
@@ -229,10 +228,8 @@ public class FSTProcessor {
         if (!input_buffer.isEmpty()) {
             return input_buffer.next();
         }
-        if (!input.ready()) {
-            return (char) 0;
-        }
-        char val = read(input);
+        char val = (char) input.read();
+        if (val == EOF) return (char)0;
         char altval = (char) 0;
 
         if (escaped_chars.contains(val)||iswdigit(val)) {
@@ -249,9 +246,9 @@ public class FSTProcessor {
                     return (' ');
 
                 case '\\':
-                    val = read(input);
+                    val = (char) input.read();
                     if (!escaped_chars.contains(val)) {
-                        streamError();
+                        streamError(val);
                     }
                     input_buffer.add((val));
                     return val;
@@ -274,14 +271,14 @@ public class FSTProcessor {
                     do {
                         s+=val;
                         input.mark(3);
-                        val = read(input);
+                        val = (char) input.read();
                     } while (iswdigit(val));
                     input.reset();
                     input_buffer.add((char)alphabet.cast("<n>"));
                     tmNumbers.add(s);
                     return (char)alphabet.cast(s);
                 default:
-                    streamError();
+                    streamError(val);
             }
         }
 
@@ -294,10 +291,11 @@ public class FSTProcessor {
             return input_buffer.next();
         }
 
-        if (!input.ready()) {
+        char val = (char) input.read();
+        if (val == EOF) {
             return (char) 0;
         }
-        char val = read(input);
+
         char altval = (char) 0;
 
         switch (val) {
@@ -312,10 +310,9 @@ public class FSTProcessor {
                 return (' ');
 
             case '\\':
-                val = read(input);
-                //System.out.println("read "+val);
+                val = (char) input.read();
                 if (!escaped_chars.contains(val)) {
-                    streamError();
+                    streamError(val);
                 }
                 input_buffer.add((val));
                 return val;
@@ -328,16 +325,16 @@ public class FSTProcessor {
 
     private void skipUntil(Reader input, Writer output, char character) throws IOException {
         while (true) {
-            if (!input.ready()) {
+            char val = (char) input.read();
+            if (val == EOF) {
                 return;
             }
-            char val = read(input);
 
             if (val == '\\') {
-                if (!input.ready()) {
+                val = (char) input.read();
+                if (val == EOF) {
                     return;
                 }
-                val = read(input);
 
                 output.write('\\');
                 output.write(val);
@@ -351,66 +348,64 @@ public class FSTProcessor {
 
     private int readGeneration(Reader input, Writer output) throws IOException {
 
-        if (!input.ready()) {
+        char val = (char) input.read();
+        if (val == EOF) {
             return 0x7fffffff;
         }
-        char val = read(input);
 
 
         if (outOfWord) {
             if (val == '^') {
-                if (!input.ready()) {
+                val = (char) input.read();
+                if (val == EOF) {
                     return 0x7fffffff;
                 }
-                val = read(input);
 
             } else if (val == '\\') {
                 output.write(val);
-                if (!input.ready()) {
+                val = (char) input.read();
+                if (val == EOF) {
                     return 0x7fffffff;
                 }
-                val = read(input);
 
                 output.write(val);
                 skipUntil(input, output, '^');
-                 if (!input.ready()) {
+                val = (char) input.read();
+                if (val == EOF) {
                     return 0x7fffffff;
                 }
-                val = read(input);
 
             } else {
                 output.write(val);
                 skipUntil(input, output, '^');
-                if (!input.ready()) {
+                val = (char) input.read();
+                if (val == EOF) {
                     return 0x7fffffff;
                 }
-                val = read(input);
 
             }
             outOfWord = false;
         }
 
         if (val == '\\') {
-            val = read(input);
+            val = (char) input.read(); // XXX
             return (int) (val);
         } else if (val == '$') {
             outOfWord = true;
             return (int) ('$');
         } else if (val == '<') {
-            String cad = "";
-            cad += val;
+            String cad = ""+ val;
+            val = (char) input.read();
+            if (val == EOF) {
+                streamError(val);
+            }
 
-
-            if (!input.ready()) {
-                    streamError();
-                }
-            val = read(input);
             while (val != '>') {
-               cad += val;
-                if (!input.ready()) {
-                    streamError();
+                cad += val;
+                val = (char) input.read();
+                if (val == EOF) {
+                    streamError(val);
                 }
-                val = read(input);
             }
             cad += val;
             return alphabet.cast(cad);
@@ -536,7 +531,6 @@ public class FSTProcessor {
 
         while (len > 0) {
             char c = (char) Compression.multibyte_read(input);
-            //if (DEBUG) System.err.println("alphabetic_chars.add(" + c);
             alphabetic_chars.add(c);
             len--;
         }
@@ -896,7 +890,6 @@ public class FSTProcessor {
                 current_state.copy(initial_state);
                 lf = sf = "";
                 last_incond = last_postblank = last_preblank = false;
-                Math.random();
             }
         }
 
@@ -1133,7 +1126,7 @@ public class FSTProcessor {
             current_state.step_case(val, false);
 
             if (current_state.size() != 0) {
-                if (val == -1) {
+                if (val == EOF) {
                     sf += tmNumbers.get(tmNumbers.size() - 1);
                 } else if (isLastBlankTM && val == ' ') {
                     sf += blankqueue.getLast();
@@ -1155,7 +1148,7 @@ public class FSTProcessor {
                     lf.equals(""))) {
 
                     do {
-                        if (val == -1) {
+                        if (val == EOF) {
                             sf += tmNumbers.get(tmNumbers.size() - 1);
                         } else if (isLastBlankTM && val == ' ') {
                             sf += (blankqueue.getLast());
@@ -1804,7 +1797,7 @@ public class FSTProcessor {
         if (!input.ready()) {
             return (char)0;
         }
-        char val = read(input);
+        char val = (char) input.read(); // XXX
         //System.out.println("read "+val);
 
 
@@ -1822,16 +1815,16 @@ public class FSTProcessor {
                     streamError();
                 }
             } else if (val == '\\') {
-                val = read(input);
+                val = (char) input.read(); // XXX
         //System.out.println("read "+val);
                 if (isEscaped(val)) {
                     input_buffer.add(val);
                     return (val);
                 } else {
-                    streamError();
+                    streamError(val);
                 }
             } else {
-                streamError();
+                streamError(val);
             }
         }
 
@@ -1994,18 +1987,8 @@ public class FSTProcessor {
     }
 
 
-    private char read(Reader input) throws IOException {
+    private char xread(Reader input) throws IOException {
       return (char) input.read();
-        /*
-        int read = input.read();
-        if ((128 & read) == 0) {
-            return (char) read;
-        } else if ((224 & read) == 192) {
-            return (char) (((read & 31) << 6) + (input.read() & 63));
-        } else {
-            return (char) (((read & 15) << 12) + ((input.read() & 63) << 6) + (input.read() & 63));
-        }
-         */
     }
 
     private boolean iswdigit(char val) {

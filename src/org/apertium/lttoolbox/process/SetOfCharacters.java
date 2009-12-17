@@ -33,6 +33,7 @@ public final class SetOfCharacters {
   }
 
   final boolean contains(char c) {
+    if (c== ((char)-1)) return false; // EOF
     if (c<LIMIT) return set[c];
     if (c>max_encountered) return false;
     return otherChars.contains(c);

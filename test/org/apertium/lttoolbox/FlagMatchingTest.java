@@ -8,6 +8,7 @@ package org.apertium.lttoolbox;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.StringWriter;
 import junit.framework.TestCase;
 import org.apertium.lttoolbox.process.FSTProcessor;
@@ -42,14 +43,14 @@ public class FlagMatchingTest extends TestCase {
 
   private String checkAnalysis(FSTProcessor fstp, String input) throws IOException {
     StringWriter output=new StringWriter();
-    fstp.analysis(new StringReader2(input), output);
+    fstp.analysis(new StringReader(input), output);
     String result=output.toString();
     return result;
   }
 
   private String checkGeneration(FSTProcessor fstp, String input) throws IOException {
     StringWriter output=new StringWriter();
-    fstp.generation(new StringReader2(input), output, FSTProcessor.GenerationMode.gm_unknown);
+    fstp.generation(new StringReader(input), output, FSTProcessor.GenerationMode.gm_unknown);
     String result=output.toString();
     return result;
   }

@@ -8,6 +8,7 @@ package org.apertium.lttoolbox;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.StringWriter;
 import junit.framework.TestCase;
 import org.apertium.lttoolbox.process.FSTProcessor;
@@ -32,7 +33,7 @@ public class CompoundingTest extends TestCase {
 
       
       StringWriter output = new StringWriter();
-      fstp.analysis(new StringReader2("fader\n"), output);
+      fstp.analysis(new StringReader("fader\n"), output);
       System.err.println("output.toString() = " + output.toString().replaceAll("/", "\n/"));
       assertEquals("^fader/fader<n><m><sg><ind>$\n", output.toString());
   }
@@ -62,7 +63,7 @@ public class CompoundingTest extends TestCase {
 
 
       StringWriter output = new StringWriter();
-      fstp.analysis(new StringReader2("Ó dom diktatorindiino domo\n"), output);
+      fstp.analysis(new StringReader("Ó dom diktatorindiino domo\n"), output);
       System.err.println("output.toString() = " + output.toString().replaceAll("/", "\n/"));
       assertEquals("^Ó/*Ó$ ^dom/*dom$ ^diktatorindiino/diktatoro<n><f><sg><nom>+dio<n><f><sg><nom>$ ^domo/domo<n><sg><nom>$\n", output.toString());
   }
@@ -92,7 +93,7 @@ public class CompoundingTest extends TestCase {
       fstp.initDecomposition();
 
       StringWriter output = new StringWriter();
-      fstp.analysis(new StringReader2("danning\n"), output);
+      fstp.analysis(new StringReader("danning\n"), output);
       System.err.println(output);
   }
 
@@ -103,24 +104,24 @@ public class CompoundingTest extends TestCase {
       fstp.setCompoundAnalysis(true);
 
       StringWriter output = new StringWriter();
-      fstp.analysis(new StringReader2("Bændasamtökunum samtökunum\n"), output);
+      fstp.analysis(new StringReader("Bændasamtökunum samtökunum\n"), output);
       System.err.println(output);
 
       output.getBuffer().setLength(0);
-      fstp.analysis(new StringReader2("lambakjöti\n"), output);
+      fstp.analysis(new StringReader("lambakjöti\n"), output);
       System.err.println(output);
 
       output.getBuffer().setLength(0);
-      fstp.analysis(new StringReader2("persónukjöri\n"), output);
+      fstp.analysis(new StringReader("persónukjöri\n"), output);
       System.err.println(output);
 
       output.getBuffer().setLength(0);
-      fstp.analysis(new StringReader2("Reykjavíkurborg\n"), output);
+      fstp.analysis(new StringReader("Reykjavíkurborg\n"), output);
       System.err.println(output);
 
 
       output.getBuffer().setLength(0);
-      fstp.analysis(new StringReader2("Þýsklandi\n"), output);
+      fstp.analysis(new StringReader("Þýsklandi\n"), output);
       System.err.println(output);
 
 
