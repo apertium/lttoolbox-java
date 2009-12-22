@@ -62,7 +62,6 @@ public class FSTProcessor {
      */
     State initial_state = new State();
 
-    State initial_compounding_state = new State();
     /**
      * Set of final states of incoditional sections in the dictionaries
      */
@@ -80,7 +79,6 @@ public class FSTProcessor {
      */
     private Set<Node> preblank = new HashSet<Node>();
 
-    private Set<Node> compounding_finals = new HashSet<Node>();
     /**
      * Merge of 'inconditional', 'standard', 'postblank' and 'preblank' sets
      */
@@ -460,10 +458,6 @@ public class FSTProcessor {
                 postblank.addAll(transducer.getFinals());
             } else if (endsWith(name, "@preblank")) {
                 preblank.addAll(transducer.getFinals());
-            } else if (endsWith(name, "@compound-L")) {
-                compounding_finals.addAll(transducer.getFinals());
-            } else if (endsWith(name, "@compound-R")) {
-                compounding_finals.addAll(transducer.getFinals());
             } else {
                 throw new RuntimeException("Error: Unsupported transducer type for '" + name + "'.");
             }
@@ -574,30 +568,25 @@ public class FSTProcessor {
         all_finals.addAll(postblank);
         all_finals.addAll(preblank);
         if (do_flagMatch) initFlagMatch(true);
+
+        if (!do_decomposition) {
+          // Ugly hack: Remove decomp symbols from output
+        }
     }
 
 
     private boolean do_decomposition = false;
-    //int compoundLSymbol = 0;
     int compoundOnlyLSymbol = 0;
     int compoundRSymbol = 0;
 
     public void initDecomposition(boolean removeSymbolsFromOutput) {
-        initAnalysis();
-        compounding_finals = all_finals;
-        //compounding_finals.addAll(all_finals);
-        //System.err.println("compounding_finals = " + compounding_finals);
         do_decomposition = true;
+        initAnalysis();
 
         alphabet.includeSymbol("<compound-only-L>");
-        //alphabet.includeSymbol("<compound-L>");
         alphabet.includeSymbol("<compound-R>");
         compoundOnlyLSymbol = alphabet.cast("<compound-only-L>");
-        //compoundLSymbol = alphabet.cast("<compound-L>");
         compoundRSymbol = alphabet.cast("<compound-R>");
-        //System.err.println("compoundSymbol = " + compoundLSymbol);
-        // remove this symbol from output
-        //if (removeSymbolsFromOutput) alphabet.setSymbol(compoundLSymbol, "");
         if (removeSymbolsFromOutput) alphabet.setSymbol(compoundOnlyLSymbol, "");
         if (removeSymbolsFromOutput) alphabet.setSymbol(compoundRSymbol, "");
 
@@ -617,7 +606,6 @@ public class FSTProcessor {
         initial_compounding_state.init(root);
 
          */
-        initial_compounding_state = initial_state;
         //System.err.println("initial_compounding_state = " + initial_compounding_state.toString());
     }
 
@@ -1001,7 +989,7 @@ public class FSTProcessor {
 
         if (DEBUG) System.err.println(" compoundAnalysis2(input_word = " + input_word);
 
-        State current_state = initial_compounding_state.copy();
+        State current_state = initial_state.copy();
 
         boolean firstupper = Character.isUpperCase(input_word.charAt(0));
         boolean uppercase = firstupper && input_word.length()>1 && Character.isUpperCase(input_word.charAt(1));
@@ -1019,14 +1007,14 @@ public class FSTProcessor {
               return null;
             }
             if (DEBUG) System.err.println(val + " eft step "+i+" current_state = " + current_state);
-            String result=current_state.filterFinals(compounding_finals, alphabet, escaped_chars, uppercase, firstupper);
+            String result=current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
 
             if (i<input_word.length()-1) {
-              current_state.restartFinals(compounding_finals, compoundOnlyLSymbol, initial_compounding_state, '+');
+              current_state.restartFinals(all_finals, compoundOnlyLSymbol, initial_state, '+');
             }
             if (DEBUG) System.err.println(val + " eft rest "+i+" current_state = " + current_state);
             if (DEBUG) System.err.println(i + " result = "+result);
-            if (DEBUG) result=current_state.filterFinals(compounding_finals, alphabet, escaped_chars, uppercase, firstupper);
+            if (DEBUG) result=current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
             if (DEBUG) System.err.println(i + " result = "+result);
             if (DEBUG) System.err.println("-- size="+current_state.size());
             if (current_state.size()==0) {
@@ -1036,7 +1024,7 @@ public class FSTProcessor {
         }
         current_state.pruneCompounds(compoundRSymbol, '+');
 
-        String result=current_state.filterFinals(compounding_finals, alphabet, escaped_chars, uppercase, firstupper);
+        String result=current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
         if (DEBUG) System.err.println("rrresult = "+result.replaceAll("/", "/\n"));
         if (result.length()>0) return result;
         return null;
