@@ -1,4 +1,54 @@
 package org.apertium.lttoolbox.process;
+/*
+Xerox:
+
+@P.feature.value@ When a @P.feature.value@ Flag Diacritic is encountered, the value of the indicated feature is simply set or reset to the indicated value.
+
+@N.feature.value@ When an @N.feature.value@ Flag Diacritic is encountered, the value of feature is set or reset to the negation or complement of value.
+
+@R.feature.value@ When an @R.feature.value@Flag Diacritic is encountered, a test is performed; this test succeeds if and only if feature is currently set to value.
+
+@R.feature@ When an @R.feature@ Flag Diacritic is encountered, the test succeeds if and only if feature is currently set to some value other than neutral.
+
+@D.feature.value@ When a @D.feature.value@Flag Diacritic is encountered, the test succeeds if and only if feature is currently neutral or is set to a value that is incompatible with value.
+
+@D.feature@ When a @D.feature@ Flag Diacritic is encountered, the test succeeds if and only if feature is currently neutral (unset).
+
+@C.feature@ When a @C.feature@ Flag Diacritic is encountered, the value of feature is
+reset to neutral.
+
+@U.feature.value@ If feature is currently neutral, then encountering @U.feature.value@ simply causes feature to be set to value.
+
+------------
+
+<jacobEo> we have 4 combinations of words:
+<jacobEo> LR : can be both
+<jacobEo> L : root only
+<jacobEo> R ending only
+<jacobEo> - cannot be part of a compound
+
+LR: <if (!cmp) fail><if (R) fail><if L set R=on><set L=on>
+L : <if (!cmp) fail><set L=on>
+R : <if (!cmp) fail><if (R) fail><set R=on>
+- : <if (cmp) fail>
+
+
+when entering compounding prepend: @P.cmp.yes@
+R : @R.cmp.yes@ @R.right.no@ @P.right.yes@
+L : @R.cmp.yes@
+- : @R.cmp.no@
+add after last compound word: @R.right.yes@
+
+
+
+when entering compounding prepend: @set:cmp=yes@
+R : @assert:cmp==yes@ @assert:right!=yes@ @set:right=yes@
+L : @assert:cmp==yes@
+- : @assert:cmp!=yes@
+add after last compound word: @assert:right==yes@
+
+*/
+
 
 /*
  * This program is free software; you can redistribute it and/or
@@ -38,6 +88,21 @@ public class FSTProcessor {
 
 
     private boolean isLastBlankTM;
+
+  public void initDecompositionSymbols(boolean removeSymbolsFromOutput) {
+    if (alphabet.isSymbolDefined("<compound-only-L>")) {
+      compoundOnlyLSymbol=alphabet.cast("<compound-only-L>");
+    if (removeSymbolsFromOutput)
+      alphabet.setSymbol(compoundOnlyLSymbol, "");
+    }
+
+    if (alphabet.isSymbolDefined("<compound-R>")) {
+      compoundRSymbol=alphabet.cast("<compound-R>");
+      if (removeSymbolsFromOutput) {
+        alphabet.setSymbol(compoundRSymbol, "");
+      }
+    }
+  }
 
 
 
@@ -582,13 +647,7 @@ public class FSTProcessor {
     public void initDecomposition(boolean removeSymbolsFromOutput) {
         do_decomposition = true;
         initAnalysis();
-
-        alphabet.includeSymbol("<compound-only-L>");
-        alphabet.includeSymbol("<compound-R>");
-        compoundOnlyLSymbol = alphabet.cast("<compound-only-L>");
-        compoundRSymbol = alphabet.cast("<compound-R>");
-        if (removeSymbolsFromOutput) alphabet.setSymbol(compoundOnlyLSymbol, "");
-        if (removeSymbolsFromOutput) alphabet.setSymbol(compoundRSymbol, "");
+        initDecompositionSymbols(removeSymbolsFromOutput);
 
         /*
         Node root = new Node();
@@ -752,7 +811,7 @@ public class FSTProcessor {
                 if (current_state.isFinal(inconditional)) {
                     boolean firstupper = Character.isUpperCase(sf.charAt(0));
                     boolean uppercase = firstupper && Character.isUpperCase(sf.charAt(sf.length() - 1));
-                    if (do_decomposition) current_state.pruneStatesWithForbiddenSymbol(compoundOnlyLSymbol);
+                    if (compoundOnlyLSymbol!=0) current_state.pruneStatesWithForbiddenSymbol(compoundOnlyLSymbol);
                     if (do_flagMatch) deleteStatesWithConflictingFlags(current_state);
                     lf = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
                     last = input_buffer.getPos();
@@ -760,7 +819,7 @@ public class FSTProcessor {
                 } else if (current_state.isFinal(postblank)) {
                     boolean firstupper = Character.isUpperCase(sf.charAt(0));
                     boolean uppercase = firstupper && Character.isUpperCase(sf.charAt(sf.length() - 1));
-                    if (do_decomposition) current_state.pruneStatesWithForbiddenSymbol(compoundOnlyLSymbol);
+                    if (compoundOnlyLSymbol!=0) current_state.pruneStatesWithForbiddenSymbol(compoundOnlyLSymbol);
                     if (do_flagMatch) deleteStatesWithConflictingFlags(current_state);
                     lf = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
                     last = input_buffer.getPos();
@@ -768,7 +827,7 @@ public class FSTProcessor {
                 } else if (current_state.isFinal(preblank)) {
                     boolean firstupper = Character.isUpperCase(sf.charAt(0));
                     boolean uppercase = firstupper && Character.isUpperCase(sf.charAt(sf.length() - 1));
-                    if (do_decomposition) current_state.pruneStatesWithForbiddenSymbol(compoundOnlyLSymbol);
+                    if (compoundOnlyLSymbol!=0) current_state.pruneStatesWithForbiddenSymbol(compoundOnlyLSymbol);
                     if (do_flagMatch) deleteStatesWithConflictingFlags(current_state);
                     lf = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
                     last = input_buffer.getPos();
@@ -776,7 +835,7 @@ public class FSTProcessor {
                 } else if (!isAlphabetic(val)) {
                     boolean firstupper = Character.isUpperCase(sf.charAt(0));
                     boolean uppercase = firstupper && Character.isUpperCase(sf.charAt(sf.length() - 1));
-                    if (do_decomposition) current_state.pruneStatesWithForbiddenSymbol(compoundOnlyLSymbol);
+                    if (compoundOnlyLSymbol!=0)  current_state.pruneStatesWithForbiddenSymbol(compoundOnlyLSymbol);
                     if (do_flagMatch) deleteStatesWithConflictingFlags(current_state);
                     lf = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
                     last = input_buffer.getPos();

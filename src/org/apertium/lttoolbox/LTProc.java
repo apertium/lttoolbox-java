@@ -261,11 +261,15 @@ public class LTProc {
                 case 'a':
                 default:
                     fstp.initAnalysis();
+                    fstp.initDecompositionSymbols(true); // needed to hide them from output
                     checkValidity(fstp);
                     fstp.analysis(input, output);
                     break;
             }
         } catch (Exception e) {
+          output.flush();
+          System.out.flush();
+          Thread.sleep(10);
             e.printStackTrace();
             if (fstp.getNullFlush()) {
                 output.write('\0');
