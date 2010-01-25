@@ -1,7 +1,10 @@
 #!/bin/sh
 
+# NOTE: This script simply finds the JAR file and invokes it, first argumant being the name of this shell script.
+# Therefore all programs are served by the same script
+
 # Heap space memory for JVM
-defaultMinMem=200
+defaultMinMem=64
 defaultMaxMem=800
 library=`dirname $0`/../share/apertium/lttoolbox.jar
 
