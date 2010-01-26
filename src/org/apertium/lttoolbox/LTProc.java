@@ -51,10 +51,9 @@ class MyGetOpt extends Getopt {
  */
 public class LTProc {
 
-    private static final String PACKAGE_VERSION = "0.1j";
 
     static void endProgram(String name) {
-        System.out.print(name + ": process a stream with a letter transducer\n" +
+        System.out.print(name + LTToolbox.PACKAGE_VERSION +": process a stream with a letter transducer\n" +
             "USAGE: " + name + " [-c] [-a|-g|-n|-d|-b|-p|-s|-t] fst_file [input_file [output_file]]\n" +
             "Options:\n" +
             "  -a:   morphological analysis (default behavior)\n" +
@@ -142,7 +141,7 @@ public class LTProc {
                         break;
 
                     case 'v':
-                        System.out.println("org.apertium.lttoolbox.LTProc version " + PACKAGE_VERSION);
+                        System.out.println("org.apertium.lttoolbox.LTProc version " + LTToolbox.PACKAGE_VERSION);
                         return;
 
                     case 'h':

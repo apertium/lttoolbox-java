@@ -1,389 +1,75 @@
+README FILE OF LTTOOLBOX-JAVA
 
+This is a binary compatible Java port of Apertiums lttoolbox.
 
-recent work :
+It is designed as a replacement, so all input and output is the same, and binary files can be compiled with C version and used by the Java version, and vice versa.
 
 
-May 21 and 22 
 
-I worked on the validation process
-I used the jing API for that.
+Find further information on:
+http://wiki.apertium.org/wiki/Lttoolbox-java
 
-class Validator.java
-can be tested with testValidator.java commenting/uncommenting relevant lines
 
-I use .rng schema files for validation.
-The conversion from dtd to rng can be done with this command :
-java -jar trang.jar -I dtd -O rng dix.dtd dix.rng 
-the trang tool can be found at : http://www.thaiopensource.com/relaxng/trang.html
+1. Programs
 
+	lt-comp-j   -> compiler, execute without parameters to show the
+                     instructions of use.
 
-May 23 
+	lt-proc-j   -> processor, works with options -a (lexical analyser, 
+                     default option), -g (lexical generator) and -p 
+                    (lexical post-generator).  Using -h will show all 
+                    flags.
 
-I worked on the XML parsing
-Like I said in my proposal, I did that using the Sun Java Streaming XML Parser (SJSXP) 
-It is described here :
-http://java.sun.com/webservices/docs/1.6/tutorial/doc/
+	lt-expand-j -> generates all the pairs of transductions of a given
+	             dictionary.  Execute without parameters to show the
+                     instructions of use.
 
-I tested the Event and Cursor StAX APIs
+2. Install
 
-Event API :
+	a. Requirements:
+	        - i686, ppc, SPARC, etc.
+		- JDK 1.6 (Java Development Kit 6)
+		- Netbeans or ant version 1.6.5 or later
 
-      - CompilerTest.java to see how the parsing can be done
-      - results :
-      	with java -jar lttoolbox-1.0-SNAPSHOT.jar ../src/test/org/apertium/lttoolbox/short.dix 
-        we get <?xml version="1.0" encoding='null' standalone='no'?>
-        why do we loose encoding="UTF-8" ?
-        the rest of the dictionnary is displayed normally
-    
-      - EventPrinterTest.java to see what properties of the event I can access and how
-      - results : I loose some information, I don't know how I could access to it.
+	b. Building & installing
+		- sh autogen.sh
+		- make
+		- sudo make install
 
-Cursor API :
 
-      - CursorPrinterTest.java  to see what properties of the event I can access and how
-      - results : It seems that I'll be able to do everyting I'll need with this one
 
 
-May 24
 
-Just to make sure I explored all possibilities, I had a look as what exists in dixtools too. But it's DOM, and we don't want to build a tree for the whole XML file here and then go through this huge tree whereas reading the XML file once is enough to do what we need to do, and costs much less memory.
+COMPATIBILITY AND PERFORMANCE
 
+Compatibility can be checked by invoking test_java_and_c.sh in testdata/regression.
 
-I don't understand the "#text" part in Compiler::procNode()
-if(nombre == L"#text")
-  {
-    /* ignore */
-  }
-same for L"#comment"
-It looks like these are nodes categories, but I don't know exactly what they are.
-For now, I'll focus on treating the parts where something has to be done. I'll see later how to handle errors.
+C analysis is... 0.39sec
+OK
+Java analysis is... 1.85sec
+OK
+C generator -g is ... 0.32sec
+OK
+Java generator -g is ... 2.01sec
+OK
+C generator -d is ... 0.85sec
+OK
+Java generator -d is ... 2.14sec
+OK
+C generator -n is ... 0.92sec
+OK
+Java generator -n is ... 1.77sec
+OK
+C postgenerator -p is ... 0.04sec
+OK
+Java postgenerator -p is ... 0.81sec
+OK
+All tests passed
 
+As you see Java version is currently (jan 2010) a factor 2-8 slower than the C version.
+It still gives great performance, however, and Apertium running on Java is very fast, compared to other MT systems.
 
-The methods parse, ProcNode, ProcAlphabet, ProcDef, attrib, ProcParDef look ok now.
-It don't think it makes sense to keep a separate file XMLApp.java. I'm afraid we can't separate the treatment that is done from the way the XML file is parsed.
+There are currently (jan 2010) problems compiling some very seldom strange constructs (testdata/strange.dix).
+You can use the C version to compile these, and the binary files will work fine when used from lttoolbox-java.
 
 
-May 25-27
-
-I kept working on the analysis. More methods written : procEntry and its dependencies, but it's not finished yet. There is something wrong while calling procRegExp() and then procPar(). I think it is related to the skip() methods. But it isn't sorted out yet.
-
-
-May 28 - June 1
-
-Much time spent trying to figure out what exactly was wrong. Many errors are corrected now. We go further in the analysis, until the point where after a <p> entry is read, a transducer is being constructed. But there is something wrong here too. 
-Exception in thread "main" java.lang.NoClassDefFoundError: org/apache/commons/collections15/multimap/MultiHashMap
-	at org.apertium.lttoolbox.Transducer.newState(Transducer.java:61)
-Caused by: java.lang.ClassNotFoundException: org.apache.commons.collections15.multimap.MultiHashMap 
-????
-
-An other possibility is to use only a more common hashmap<Integer,ArrayList<Integer>> as an equivalent to the multimap<int,int> used in C++ for the transitions, but a multihashmap seemed rather convenient.
-
-There are still a lot of debug prints, I keep them for now, but will take the time to clean all that some day, when the rest also works.
-
-
-June 2 - 
-
-Working on the Transducer class.
-I don't use multimaps, but Treemap<Integer,TreeSet<Integer>> instead.
-I'm not so sure about how I wrote the insertTransducer method. Tests will be needed.
-I keep working in a chronological way, i.e. I take care of the different methods in the order they are called during the compilation process. And I stop each time things don't work as they should. Right now I am having problems with some initializations. Things are not as they should be. The problem is somewhere around a call to insertEntryTokens.
-  
-June 3 - 6
-
-I checked insertTransducer, and changed a few things, now it should work. I have to pay attention not to write java code in a C++ way. map.get(key) doesn't create a mapped value associated to the key if it doesn't exist already, which map[key] does. I Made some corrections in the code. Now the regexps analysis in an entry leads to java.util.ConcurrentModificationException. I'll check that later. I think there's not much left to do with transducers, but I still have to wotk on  the matchTransduction method. 
-
-About the epsilon_tag, sometimes in the C++ code, its 0, some others it's alphabet(0,0). I'll check about that later.
-
-
-
-
-Unfortunately, I didn't keep this file up to date. As I also was working on a school project, my work was less continuous and I didn't keep logs of what I did.
-
-Right now, the lr analysis process seems okay, except that :
-- I didn't work on serialization for now, and the preexisting code isn't working : on small test files, the binary files generated are different from the one generated by lt-comp in C++
-
-- I haven't done any benchmark on time because there are still a lot of debug prints that slow things down.
-
-- The biggest problem is with memory : At the beginning it uses less than 60 MB on the heap of the JVM, but after some time it explodes.
-I used the profiler plugin of netbeans to monitor that.
-
-- A part of the code that I'm working on now is the insertTransducer(NewTransducer t) method.
-
-// there are problems of concurrent modifications while calling newState() 
-        // during the iterations if 't' and 'this' refer to the same object
-        
-        // to avoid that, we need to ruse
-        // a first idea was to copy the set of states that should be iterated upon in the second loop
-        // but it takes much memory. This is the current version, but there is a no memory anymore on the heap exception.
-        // I am making the assumption that in the majority of calls to this method,
-        // this.size()>>t.size().
-
-//an other concurrent modification execption occured when I tried something else. I don't remember exactly what it was I tried though.
-//I think the problem is iterating on 't' to do modifications on 'this'. When both refer to the same object, the iteration raises the concurent modification exception.
-
-
-
-
-
-8 July :
-
-what works :
- - all the processing of the sections <alphabet>, <sdefs> and <pardefs> in the xml dictionary.
-
-it was checked doing : 
-$cd lttoolbox-java-maven/src/test/org/apertium/lttoolbox/
-$head -n 17549 apertium-fr-es.fr.dix > test2.dix
-$echo "</dictionary>" >> test2.dix
-$cd lttoolbox-java-maven/target/
-$java -jar lttoolbox-1.0-SNAPSHOT.jar lr ../src/test/org/apertium/lttoolbox/test2.dix out.bin
-$lt-comp lr ../src/test/org/apertium/lttoolbox/test2.dix out.bin.c
-$diff out.bin out.bin.c
-$
-
-If we detail :
-- the parsing of the xml works
-- the transducers building works
-- the regular expressions processing works
-- the paradigms management is ok
-- the writing in the correct binary format works
-- plus I wrote methods to read the binary files and create the corresponding objects in the classes we use. That works too.
-
-
-What doesn't really work :
-- the processing of <section ...> entries
-- the binary files that are generated are different in that case
-- it can be because the writte methods don't do what we want (in the NewTransducer class, the Compression class works well)
-- but I think it's rather because the processing of the transducers is not ok 
-
-
-9 July
-I wrote methods to debug transducers <--> binaries conversions.
-now we can wrtie an instance to NewCompiler to a binary file, 
-but we can also create an object instanciating this class from a binary file
-There is also a method to compare two instances of NewCompiler
-
-To debug, I create an instance of NewCompiler parsing the xml dictionary file,
-then I write it into a binary file,
-then I read the content of this binary file into another instance of the class,
-then I compare both with an appropriate method I wrote.
-
-What I have seen so far doing these tests :
-     - doing it on a small file : shortdix :
-       	     - the instance loaded from the xml file and the one we get after writing it and reading it back are the same.
-	     - but the content of the binary file is not the same as the one generated with c++ lt-comp
-	     - as a matter of fact the java one is shorter
-     - doing it on a big file : apertium-fr-es.fr.dix
-       	     - the instance loaded from the xml file and the one we get after writing it and reading it back are the different.
-
-How I interpret it :
-    - I think there is a problem in the method that reads a transducer, at the transitions reading level
-    - For some files (verifying I don't know what condition that makes my methods work), 
-      we have in the java version a more compress binary format than in the c++ version.
-
-
-One other interresing result :
-if we do $head -n 17549 apertium-fr-es.fr.dix > test3.dix 
-and if we add manually the section <section id="apostrophes" type="postblank"> with only one entry 
-<e r="LR"><par n="/avoir__vblex"/><p><l><b/>l'habitude<b/>d'</l><r><g><b/>l'habitude<b/>de</g></r></p></e>
-when we compare the ninaries generated by the java and the c++ versions of lt-comp,
-we see that there are differences only in two 'lines' : 
-from the java generated file :
-@Q Bg@T@Z@R@T@R@T@Z@Z
-@d@T
-@Z@R@BgBh@Ñ@Ð@{@ÍBi @Ý
-from the c++ generated file :
-@QBg@T@Z@R@T@R@T@Z@Z@d
-@T@Z@R@Bh@Ñ@Ð@{@ÍBi
-
-Except at the beginning and at the end, it seems that the difference is only a shift of one on some characters.
-I think it it just because the states don't have the same indexes.
-
-August :
-
-It looks like I have a problem reading big transducers : 
-
-I have a testClass that reads the XML to build transducers as usual.
-then it writes it to a file,
-and then read from the same file and write it in an other instance of NewCompiler,
-and compare the transducers.
-
-When running the main method of this class, I obtain these results :
-
-on the file 
-$ head -17549 apertium-fr-es.fr.dix >test4.dix
-$ tail -331 apertium-fr-es.fr.dix >>test4.dix 
-
-it works fine
-which means we have no problem in the transducers for the sections final and apostrophe
-
-
-$ head -34763 apertium-fr-es.fr.dix >test6.dix
-$ tail -331 apertium-fr-es.fr.dix >>test6.dix 
-
-$ java -jar lttoolbox-1.0-SNAPSHOT.jar
-
-comparing transducers of section final@inconditional
-original transducer has 96 transitions
-original transducer higher state is 47
-read transducer has 96 transitions
-read transducer higher state is 47
-comparing transducers of section main@standard
-original transducer has 30341 transitions
-original transducer higher state is 839
-read transducer has 30341 transitions
-read transducer higher state is 839
-comparing transducers of section apostrophes@postblank
-original transducer has 2798 transitions
-original transducer higher state is 850
-read transducer has 2798 transitions
-read transducer higher state is 850
-
-(meaning the transducers are the same) 
-
-
-but if I slightly change the testfile :
-
-$ head -34764 apertium-fr-es.fr.dix >test6.dix
-$ tail -331 apertium-fr-es.fr.dix >>test6.dix 
-
-then the transducers of the main section are different. (completely different !!)
-
-
-Which is weird is that when I do 
-
-
-$ head -17550 apertium-fr-es.fr.dix >test5.dix
-$ tail -331 apertium-fr-es.fr.dix >>test5.dix 
-
-and I add manually the 34764th line from apertium-fr-es.fr.dix in the main section,
-
-It works fine.
-
-So I think there is a problem with the indexes of the states.
-
-
-Plus, 
-
-$ head -17550 apertium-fr-es.fr.dix >test7.dix
-$ tail -77750 apertium-fr-es.fr.dix >temp 
-$ head -17213 temp >>test7.dix
-$ tail -331 apertium-fr-es.fr.dix >>test7.dix 
-
-works, but
-
-$ head -17550 apertium-fr-es.fr.dix >test7.dix
-$ tail -77750 apertium-fr-es.fr.dix >temp 
-$ head -17214 temp >>test7.dix
-$ tail -331 apertium-fr-es.fr.dix >>test7.dix 
-
-doesn't work
-
-we obtain the same results if we repalce the command 
-$ tail -331 apertium-fr-es.fr.dix >>test7.dix 
-by
-$ tail -3 apertium-fr-es.fr.dix >>test7.dix 
-which ignores the sections apostrophe and final.
-
-$ head -17550 apertium-fr-es.fr.dix >test7.dix
-$ tail -77750 apertium-fr-es.fr.dix >temp 
-$ head -17214 temp >>test7.dix
-$ tail -3 apertium-fr-es.fr.dix >>test7.dix 
-
-gives : 
-comparing transducers of section main@standard
-original transducer has 30552 transitions
-original transducer higher state is 16413
-read transducer has 359 transitions
-read transducer higher state is 29
-
-I must remark that 16413-29=16384=2**14
-But does it mean anything ?
-
-Yes it does !!
-after several days of complete incomprehension, and various java and c++ testing,
-the problem was a typo in the reading method of the compression class.
-Now it is corrected, and at last, after writting to a file and reading from it again, we keep the same transducers !
-
-
-There still is the fact that the java generated transducers have a few less states than the C++ generated ones.
----------------------------------------------------------------------------------------------------------------
-
-for analysis with lt-proc :
-
-Now the command line analysis is fixed. Everything seems to work for that part.
-
-The ins and outs seem ok. It can take both c++ and java generated binary files as entries. 
-It took some time, but now input can be a file or System.in.
-
-The analysis doesn't work for now.
-There is an infinite loop due to the input_buffer being not empty when it should
-
-The generation seems to nearly work. But it seems I have a problem of character encoding.
-
-$ echo "je suis content" | lt-proc ../src/test/org/apertium/lttoolbox/analyserC.bin | lt-proc -g ../src/test/org/apertium/lttoolbox/generatorC.bin 
-#je\/je #suis\/�tre #content\/content
-
-
-$ echo "je suis content" | lt-proc ../src/test/org/apertium/lttoolbox/analyserC.bin | java -jar lttoolbox-1.0-SNAPSHOT.jar -g ../src/test/org/apertium/lttoolbox/generator.bin 
-#je\/je #suis\/être #content\/content
-
-
-options : 
--n ok
--g ok
--d not ok
--p not ok
--t not ok
-
-
-
-
---------------------------------------------------------------------------------------------------------
-
-Much work on lt-expand done. 
-
-Same problem as in lt-comp for the checks concernings empty events.
-from the documentation  http://java.sun.com/javase/6/docs/api/javax/xml/stream/XMLStreamReader.html :
-NOTE: empty element (such as <tag/>) will be reported with two separate events: START_ELEMENT, END_ELEMENT 
-- This preserves parsing equivalency of empty element to <tag></tag>. 
-
-So it looks like checking if an element is empty is can not easily be done directly. 
-
-Everything works really fine now !!
-
-I get :
-
-$ time java -jar lttoolbox-1.0-SNAPSHOT.jar ../src/test/org/apertium/lttoolbox/apertium-fr-es.fr.dix ../src/test/org/apertium/lttoolbox/lt-expandOutputJava.txt 
-Reading ../src/test/org/apertium/lttoolbox/apertium-fr-es.fr.dix
-
-real	0m3.239s
-user	0m3.732s
-sys	0m0.156s
-$ time lt-expand ../src/test/org/apertium/lttoolbox/apertium-fr-es.fr.dix ../src/test/org/apertium/lttoolbox/lt-expandOutputC.txt 
-
-real	0m2.553s
-user	0m0.728s
-sys	0m0.084s
-$ diff ../src/test/org/apertium/lttoolbox/lt-expandOutputC.txt ../src/test/org/apertium/lttoolbox/lt-expandOutputJava.txt 
-$
-
-That is to say we have exactly the same output for both versions, with not too big a time difference.
-For a first version, this is quite satisfying.
-Maybe we can even find here the solution for what was wrong in lt-comp ?
-----------------------------------------------------------------------------------------------------
-
-
-
-The previous tests of the -g and -n options of lt-proc are inadequate.
-None of the options work so far (ok, -v and -h do work). All the words are treated as unknown words.
-for some reason, there are also extra @s when processing the </end tag>s. 
-The good news is I have located and corrected the characters reading problem.
-The bad news is that even though is does not the correct processing, 
-it is already much slower than the C++ version.
-Speed is more critical here than in lt-expand...
-
-
-----
-lt-comp now works completely.
-Maybe we can gain some speed though
-----

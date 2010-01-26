@@ -21,7 +21,7 @@ clean:
 	ant -quiet clean
 	rm -f prefix;
 
-dist: dist/lttoolbox.jar
+dists: dist/lttoolbox.jar
 	rm -rf ${PACKAGE}
 	mkdir ${PACKAGE}
 	cp -a ${DISTFILES} ${PACKAGE}

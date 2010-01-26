@@ -13,6 +13,8 @@ import java.util.Arrays;
  */
 public class LTToolbox {
 
+    public static final String PACKAGE_VERSION = "3.2j";
+
     static void showHelp(String invocationCommand) {
       String bareCommand = "";
       if (invocationCommand == null) {

@@ -43,7 +43,6 @@ import org.xml.sax.SAXParseException;
  */
 public class LTValidate {
 
-    private static final String PACKAGE_VERSION = "0.1j";
 
     /**
      * usage method
@@ -52,7 +51,7 @@ public class LTValidate {
         //System.out.println(" v" + PACKAGE_VERSION + ": validate an XML file" +
         //    " according to a schema\n" +
         //    "USAGE : LTValidate XML_File Schema");
-        System.out.println(" v" + PACKAGE_VERSION + ": validate an XML file" +
+        System.out.println(" v" + LTToolbox.PACKAGE_VERSION + ": validate an XML file" +
             " according to a schema\n" +
             "USAGE : LTValidate -dix dictionary.xml\n"+
             "        LTValidate -acx dictionary.acx"

@@ -28,8 +28,6 @@ import java.io.*;
  */
 public class LTComp {
 
-    private static final String PACKAGE_VERSION = "0.1j";
-
     /**
      * Anormal termination function
      * prints the usage
@@ -37,7 +35,7 @@ public class LTComp {
      */
     static void endProgram(String name) {
         if (name != null) {
-            System.out.println(" v" + PACKAGE_VERSION + ": build a letter transducer from a dictionary\n" +
+            System.out.println(" v" +LTToolbox.PACKAGE_VERSION + ": build a letter transducer from a dictionary\n" +
                     "USAGE: " + name + " lr | rl dictionary_file output_file [acx_file]\n" +
                     "Modes:\n" +
                     "  lr:     left-to-right compilation\n" +

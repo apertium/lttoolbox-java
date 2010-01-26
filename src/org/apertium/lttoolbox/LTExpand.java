@@ -27,11 +27,9 @@ import java.io.*;
  */
 public class LTExpand {
 
-  private static final String PACKAGE_VERSION = "0.1j";
-
   static void endProgram(String name) {
     if (name != null) {
-      System.out.println(" v" + PACKAGE_VERSION + ": expand the contents of a dictionary file" +
+      System.out.println(" v" + LTToolbox.PACKAGE_VERSION + ": expand the contents of a dictionary file" +
               "USAGE: " + name + " dictionary_file [output_file]");
     }
     System.exit(-1);
