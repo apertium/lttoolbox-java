@@ -209,12 +209,22 @@ public class ParseTranserFile {
         for (Element tag : children(c0))
           append(evalString(findElementSibling(tag.getFirstChild())));
         append("'{'");
-      } else if (n.equals("lu")) {        append("'^'");
+      } else if (n.equals("lu")) {
+        append("'^'");
         for (Element lu : children(c0))
           append(evalString(lu));
         append("'$'");
       } else if (n.equals("mlu")) {
-        parseError("// XXX TODO: mlu");
+        append("'^'");
+        for (java.util.Iterator<Element> it = children(c0).iterator(); it.hasNext();) {
+            Element mlu = it.next();
+            for (Element lu : children(mlu)) {
+              append(evalString(lu));
+            }
+            if (it.hasNext())
+              append("'+'");
+        }
+        append("'$'");
       } else {
         append(evalString(c0));
       }
@@ -554,7 +564,7 @@ public class ParseDefList {
       ParseTranserFile p = new ParseTranserFile();
     try {
       //p.parse("/home/j/esperanto/apertium/apertium-eo-en/apertium-eo-en.eo-en.t1x");
-      p.parse("/home/j/esperanto/apertium/apertium-eo-en/apertium-eo-en.en-eo.t1x");
+      p.parse("/home/jim/NetBeansProjects/lttoolbox-java/apertium-en-ca.en-ca.t1x");
     } catch (Exception ex) {
       ex.printStackTrace();
     }
