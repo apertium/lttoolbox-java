@@ -29,7 +29,7 @@ import java.io.Writer;
  * @author gustave
  */
 public class Compression {
- 
+
 
     /**
      * Encodes an integer value and writes it into the output stream
@@ -147,4 +147,10 @@ public class Compression {
         }
         return retval;
     }
+
+  public static String wstring_read_toUtf8(InputStream in) throws IOException {
+    // TODO
+    return String_read(in);
+  }
+
 }

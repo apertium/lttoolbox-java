@@ -640,6 +640,10 @@ public class Transducer {
      * @throws java.io.IOException
      */
     public static Transducer read(InputStream input) throws IOException {
+      return read(input,0);
+    }
+
+    public static Transducer read(InputStream input, int decalage) throws IOException {
 
         Transducer t = new Transducer();
         t.transitions.clear();
@@ -665,7 +669,7 @@ public class Transducer {
             int tagbase = 0;
 
             for (int j = number_of_local_transitions; j > 0; j--) {
-                tagbase += Compression.multibyte_read(input);
+                tagbase += Compression.multibyte_read(input)- decalage;
                 int state = (current_state + Compression.multibyte_read(input)) % number_of_states;
                 t.addTransition(current_state, tagbase, state);
             }

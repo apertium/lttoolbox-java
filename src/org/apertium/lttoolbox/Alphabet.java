@@ -164,7 +164,11 @@ public static class IntegerPair {
      * @return the symbol identifier.
      */
     public int cast(String s) {
-        return slexic.get(s);
+
+      //System.err.println(this+" "+slexic+"cast s = " + s);
+      Integer i = slexic.get(s);
+      if (i==null) return 0; // this happens in transfer
+        return (int) i;
     }
 
     /**
