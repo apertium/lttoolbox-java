@@ -196,11 +196,20 @@ public class ParseTranserFile {
 
     if (caseofchunkvar.isEmpty()) {
       if (!name.isEmpty()) append(str("^"+name));
-      else if (!namefromvar.isEmpty()) append(str("^")+"+var_"+namefromvar);
+      else if (!namefromvar.isEmpty()) {
+        append("'^'");
+        append("var_"+namefromvar);
+      }
       else parseError("//Error: you must specify either 'name' or 'namefrom' for the 'chunk' element");
     } else {
-      if (!name.isEmpty()) append(str("^")+"+TransferWord.copycase(var_"+caseofchunkvar+", "+str(name)+")");
-      else if (!namefromvar.isEmpty()) append(str("^")+"+TransferWord.copycase(var_"+caseofchunkvar+", var_"+namefromvar+")");
+      if (!name.isEmpty()) {
+        append("'^'");
+        append("TransferWord.copycase(var_"+caseofchunkvar+", "+str(name)+")");
+      }
+      else if (!namefromvar.isEmpty()) {
+        append("'^'");
+        append("TransferWord.copycase(var_"+caseofchunkvar+", var_"+namefromvar+")");
+      }
       else parseError("//Error: you must specify either 'name' or 'namefrom' for the 'chunk' element");
     }
 

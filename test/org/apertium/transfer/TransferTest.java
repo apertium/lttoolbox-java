@@ -80,7 +80,7 @@ public class TransferTest {
       //StringReader input = new StringReader("^Prpers<prn><subj><p3><m><sg>$ ^see<vblex><past>$ ^the<det><def><sp>$ ^saw<n><sg>$^'s<gen>$ ^tooth<n><sg>$   ^.<sent>$  \n");
       //Writer output = new StringWriter(); //new PrintWriter(System.err); //
       //Writer output = new OutputStreamWriter(System.out);
-      String outFile = "/tmp/lt-proc-output1a.txt";
+      String outFile = "/tmp/transfer-output-malgranda.txt";
       Writer output = new FileWriter(outFile);
       t.transfer( input, output);
       output.close();
@@ -89,7 +89,7 @@ public class TransferTest {
      rm(outFile);
   }
 
-
+/*
   @Test
   public void testTransferGranda() throws Exception {
       Transfer t = new Transfer();
@@ -102,10 +102,7 @@ public class TransferTest {
       t.read(transferClass, dir+"en-eo.t1x.bin", dir+"en-eo.autobil.bin");
 
       Reader input = new FileReader(dir+"transferinput-en-eo.t1x.txt");
-      //StringReader input = new StringReader("^Prpers<prn><subj><p3><m><sg>$ ^see<vblex><past>$ ^the<det><def><sp>$ ^saw<n><sg>$^'s<gen>$ ^tooth<n><sg>$   ^.<sent>$  \n");
-      //Writer output = new StringWriter(); //new PrintWriter(System.err); //
-      //Writer output = new OutputStreamWriter(System.out);
-      String outFile = "/tmp/lt-proc-output1a.txt";
+      String outFile = "/tmp/transfer-output.txt";
       Writer output = new FileWriter(outFile);
       t.transfer( input, output);
       output.close();
@@ -113,5 +110,5 @@ public class TransferTest {
      assertEquals("Difference", "", exec("diff "+dir+"transferoutput-en-eo.t1x.txt "+outFile));
      rm(outFile);
   }
-
+*/
 }

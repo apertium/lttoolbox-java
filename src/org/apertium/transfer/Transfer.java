@@ -183,14 +183,12 @@ public class Transfer {
   }
 
   public void read(String classFile, String datafile, String fstfile) throws Exception {
-    /*
     if (classFile.endsWith(".java")) {
         com.sun.tools.javac.Main oversætter = new com.sun.tools.javac.Main();
         String[] filer = { classFile };
         oversætter.compile( filer );
-        classFile = classFile.substring(0,classFile.length())
+        classFile = classFile.substring(0,classFile.length());
     }
-    */
 
     read(new MyClassLoader().loadClass(classFile), datafile, fstfile);
   }
@@ -519,12 +517,18 @@ public class Transfer {
 
       t.read(transferClass, dir+"en-eo.t1x.bin", dir+"en-eo.autobil.bin");
 
+      Reader input = new FileReader(dir+"transferinput-en-eo.t1x.txt");
+      String outFile = "/tmp/transfer-output.txt";
+      Writer output = new FileWriter(outFile);
+      t.transfer( input, output);
+      output.close();
+
 
       //t.read(args[0], args[1], args[2]);
       //t.transfer(new InputStreamReader( System.in ),  new OutputStreamWriter(System.out));
-
+/*
       //Reader input = new FileReader(dir+"transferinput-en-eo.t1x-malgranda.txt");
-      StringReader input = new StringReader("^good<adj><sint>$ ^deal<n><sg>$\n");
+?      StringReader input = new StringReader("^good<adj><sint>$ ^deal<n><sg>$\n");
 
       // echo "^good<adj><sint>$ ^deal<n><sg>$" | apertium-transfer apertium-eo-en.en-eo.t1x en-eo.t1x.bin en-eo.autobil.bin
 
@@ -538,9 +542,9 @@ public class Transfer {
 
       String outputs = t.fstp.biltransWithQueue("good<adj><sint>" , false).first;
       System.err.println("output = " + outputs);
+*/
 
     }
-
 }
 
 // apertium-transfer apertium-eo-en.en-eo.t1x en-eo.t1x.bin en-eo.autobil.bin transferinput-en-eo.t1x-malgranda.txt  transferoutput-en-eo.t1x-malgranda.txt

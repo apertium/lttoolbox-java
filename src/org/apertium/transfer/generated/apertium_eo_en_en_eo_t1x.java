@@ -288,7 +288,8 @@ public void rule0__prnref(Writer out, TransferWord word1) throws IOException
 {
 macro_firstWord(out, word1);
 macro_ordigu_genron(out, word1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "prnref"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "prnref"));
 out.append("<SN><nom>");
 out.append('{');
 out.append('^');
@@ -303,7 +304,8 @@ public void rule1__prnaltres(Writer out, TransferWord word1) throws IOException
 {
 macro_firstWord(out, word1);
 macro_set_numero1(out, word1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "prn"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "prn"));
 out.append("<SN><nom>");
 out.append('{');
 out.append('^');
@@ -319,7 +321,8 @@ out.append("}$");
 public void rule2__prnpers(Writer out, TransferWord word1) throws IOException
 {
 macro_firstWord(out, word1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "prnpers"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "prnpers"));
 out.append("<SN><nom>");
 out.append('{');
 out.append('^');
@@ -332,7 +335,8 @@ out.append("}$");
 public void rule3__num(Writer out, TransferWord word1) throws IOException
 {
 macro_firstWord(out, word1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "num"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "num"));
 out.append("<SN><nom>");
 out.append('{');
 out.append('^');
@@ -345,7 +349,8 @@ out.append("}$");
 public void rule4__monato__num_dato(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 {
 macro_firstWord(out, word1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "dato"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "dato"));
 out.append("<SN><nom>");
 out.append('{');
 out.append('^');
@@ -371,7 +376,8 @@ out.append("}$");
 public void rule5__monato__num_ord(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 {
 macro_firstWord(out, word1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "dato"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "dato"));
 out.append("<SN><nom>");
 out.append('{');
 out.append('^');
@@ -396,7 +402,8 @@ out.append("}$");
 public void rule6__on__monato__num_dato(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 {
 macro_firstWord(out, word1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "dato"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "dato"));
 out.append("<SN><nom>");
 out.append('{');
 out.append('^');
@@ -427,7 +434,8 @@ out.append("}$");
 public void rule7__on__monato__num_ord(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 {
 macro_firstWord(out, word1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "dato"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "dato"));
 out.append("<SN><nom>");
 out.append('{');
 out.append('^');
@@ -458,7 +466,8 @@ out.append("}$");
 public void rule8__num_sen_ord__of(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 {
 macro_firstWord(out, word1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "num"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "num"));
 out.append("<SN>");
 out.append('{');
 out.append('^');
@@ -480,7 +489,8 @@ out.append("}$");
 public void rule9__num_sen_ord__times__num_sen_ord(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 {
 macro_firstWord(out, word1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "num"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "num"));
 out.append("<SN>");
 out.append('{');
 out.append('^');
@@ -502,7 +512,8 @@ out.append("}$");
 public void rule10__num__times(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 {
 macro_firstWord(out, word1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "num"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "num"));
 out.append("<SN><nom>");
 out.append('{');
 out.append('^');
@@ -532,7 +543,8 @@ var_EOS = "false";
 public void rule12__det(Writer out, TransferWord word1) throws IOException
 {
 macro_firstWord(out, word1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "det"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "det"));
 out.append("<SD><nom>");
 out.append('{');
 out.append('^');
@@ -549,7 +561,8 @@ public void rule13__nom(Writer out, TransferWord word1) throws IOException
 {
 macro_firstWord(out, word1);
 macro_ordigu_genron(out, word1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "nom"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "nom"));
 out.append("<SN><nom>");
 out.append('{');
 out.append('^');
@@ -565,7 +578,8 @@ public void rule14__more__nom(Writer out, TransferWord word1, String blank1, Tra
 {
 macro_firstWord(out, word1);
 macro_ordigu_genron(out, word2);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "more_nom"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "more_nom"));
 out.append("<SN><nom>");
 out.append('{');
 out.append('^');
@@ -586,7 +600,8 @@ public void rule15__det__nom(Writer out, TransferWord word1, String blank1, Tran
 macro_firstWord(out, word1);
 macro_ordigu_genron(out, word2);
 macro_set_determiner3(out, word1, blank1, word2, blank1, word2);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "det_nom"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "det_nom"));
 out.append("<SN><nom>");
 out.append('{');
 out.append(var_determiner);
@@ -605,7 +620,8 @@ macro_firstWord(out, word1);
 macro_ordigu_genron(out, word2);
 macro_ordigu_genron(out, word3);
 macro_set_determiner3(out, word1, blank1, word2, blank2, word3);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "det_2nom"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "det_2nom"));
 out.append("<SN><nom>");
 out.append('{');
 out.append(var_determiner);
@@ -634,7 +650,8 @@ macro_ordigu_genron(out, word2);
 macro_ordigu_genron(out, word3);
 macro_ordigu_genron(out, word4);
 macro_set_determiner3(out, word1, blank1, word2, blank3, word4);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "det_3nom"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "det_3nom"));
 out.append("<SN><nom>");
 out.append('{');
 out.append(var_determiner);
@@ -673,7 +690,8 @@ macro_ordigu_genron(out, word3);
 macro_ordigu_genron(out, word4);
 macro_ordigu_genron(out, word5);
 macro_set_determiner3(out, word1, blank1, word2, blank4, word5);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "det_4nom"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "det_4nom"));
 out.append("<SN><nom>");
 out.append('{');
 out.append(var_determiner);
@@ -719,7 +737,8 @@ macro_firstWord(out, word1);
 macro_set_adjectiu2(out, word1, " ", word1);
 macro_ordigu_genron(out, word1);
 var_chunk_name = (""+"adj"+var_preadv_added);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, var_chunk_name));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, var_chunk_name));
 out.append("<SN><nom>");
 out.append('{');
 out.append('^');
@@ -735,7 +754,8 @@ macro_firstWord(out, word1);
 macro_ordigu_genron(out, word3);
 macro_set_adjectiu2(out, word2, blank2, word3);
 macro_set_determiner3(out, word1, blank1, word2, blank2, word3);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "det_preadv?_adj_nom"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "det_preadv?_adj_nom"));
 out.append("<SN><nom>");
 out.append('{');
 out.append(var_determiner);
@@ -757,7 +777,8 @@ public void rule21__adj__nom(Writer out, TransferWord word1, String blank1, Tran
 macro_firstWord(out, word1);
 macro_set_adjectiu2(out, word1, blank1, word2);
 macro_ordigu_genron(out, word2);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "preadv?_adj_nom"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "preadv?_adj_nom"));
 out.append("<SN><nom>");
 out.append('{');
 out.append('^');
@@ -781,7 +802,8 @@ macro_ordigu_genron(out, word3);
 var_tmp1 = var_preadv_added;
 var_tmp2 = var_adjectiu;
 macro_set_adjectiu2(out, word2, blank2, word3);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "preadv?_adj_adj_nom"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "preadv?_adj_adj_nom"));
 out.append("<SN><nom>");
 out.append('{');
 out.append('^');
@@ -806,7 +828,8 @@ public void rule23__det__unknown_adv_num__unknown_adv_num__nom(Writer out, Trans
 macro_firstWord(out, word1);
 macro_ordigu_genron(out, word4);
 macro_set_determiner3(out, word1, blank1, word2, blank3, word4);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "det_unkn_unkn_nom"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "det_unkn_unkn_nom"));
 out.append("<SN><nom>");
 out.append('{');
 out.append(var_determiner);
@@ -835,7 +858,8 @@ macro_set_adjectiu2(out, word2, blank3, word4);
 var_tmp1 = var_adjectiu;
 macro_set_adjectiu2(out, word3, blank3, word4);
 macro_set_determiner3(out, word1, blank1, word2, blank3, word4);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "det_preadv?_adj_adj_nom"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "det_preadv?_adj_adj_nom"));
 out.append("<SN><nom>");
 out.append('{');
 out.append(var_determiner);
@@ -866,7 +890,8 @@ macro_set_adjectiu2(out, word3, blank4, word5);
 var_tmp2 = var_adjectiu;
 macro_set_adjectiu2(out, word4, blank4, word5);
 macro_set_determiner3(out, word1, blank1, word2, blank4, word5);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "det_preadv?_adj_adj_adj_nom"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "det_preadv?_adj_adj_adj_nom"));
 out.append("<SN><nom>");
 out.append('{');
 out.append(var_determiner);
@@ -896,7 +921,8 @@ public void rule26__nom__nom(Writer out, TransferWord word1, String blank1, Tran
 macro_firstWord(out, word1);
 macro_ordigu_genron(out, word1);
 macro_ordigu_genron(out, word2);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "nom_nom"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "nom_nom"));
 out.append("<SN><nom>");
 out.append('{');
 out.append('^');
@@ -920,7 +946,8 @@ out.append("}$");
 public void rule27__ant_cog(Writer out, TransferWord word1) throws IOException
 {
 macro_firstWord(out, word1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "ant"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "ant"));
 out.append("<SN><nom>");
 out.append('{');
 out.append('^');
@@ -935,7 +962,8 @@ out.append("}$");
 public void rule28__ant_cog__ant_cog(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 {
 macro_firstWord(out, word1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "ant_cog"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "ant_cog"));
 out.append("<SN><nom>");
 out.append('{');
 out.append('^');
@@ -956,7 +984,8 @@ out.append("}$");
 public void rule29__ant_cog__ant_cog__ant_cog(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 {
 macro_firstWord(out, word1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "ant_cog"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "ant_cog"));
 out.append("<SN><nom>");
 out.append('{');
 out.append('^');
@@ -983,7 +1012,8 @@ out.append("}$");
 public void rule30__ant_cog__ant_cog__ant_cog__ant_cog(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 {
 macro_firstWord(out, word1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "ant_ant_cog_cog"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "ant_ant_cog_cog"));
 out.append("<SN><nom>");
 out.append('{');
 out.append('^');
@@ -1016,7 +1046,8 @@ out.append("}$");
 public void rule31__ant_cog__guio__ant_cog__ant_cog(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 {
 macro_firstWord(out, word1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "ant-ant_cog"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "ant-ant_cog"));
 out.append("<SN><nom>");
 out.append('{');
 out.append('^');
@@ -1047,7 +1078,8 @@ out.append("}$");
 public void rule32__ant_cog__ant_cog__guio__ant_cog(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 {
 macro_firstWord(out, word1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "ant_cog-cog"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "ant_cog-cog"));
 out.append("<SN><nom>");
 out.append('{');
 out.append('^');
@@ -1078,7 +1110,8 @@ out.append("}$");
 public void rule33__ant_cog__guio__ant_cog__ant_cog__guio__ant_cog(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5, String blank5, TransferWord word6) throws IOException
 {
 macro_firstWord(out, word1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "ant-ant_cog-cog"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "ant-ant_cog-cog"));
 out.append("<SN><nom>");
 out.append('{');
 out.append('^');
@@ -1123,7 +1156,8 @@ macro_set_nomvar_if_known1(out, word1);
 macro_ordigu_genron(out, word1);
 macro_ordigu_genron(out, word3);
 macro_set_blankon_se_havas_formaton2(out, word1, blank1, word2);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "nom_gen_nom"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "nom_gen_nom"));
 out.append("<SN><nom>");
 out.append('{');
 out.append('^');
@@ -1153,7 +1187,8 @@ macro_set_nomvar_if_known1(out, word1);
 macro_ordigu_genron(out, word1);
 macro_ordigu_genron(out, word3);
 macro_set_blankon_se_havas_formaton2(out, word1, blank1, word2);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "nom_gen_nom"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "nom_gen_nom"));
 out.append("<SN><nom>");
 out.append('{');
 out.append('^');
@@ -1184,7 +1219,8 @@ macro_ordigu_genron(out, word1);
 macro_ordigu_genron(out, word3);
 macro_ordigu_genron(out, word4);
 macro_set_blankon_se_havas_formaton2(out, word1, blank1, word2);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "n_n_de_n"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "n_n_de_n"));
 out.append("<SN><nom>");
 out.append('{');
 out.append('^');
@@ -1227,7 +1263,8 @@ word1.setTarget(attr_lem, TransferWord.copycase("aa", word1.target(attr_lem, tru
 macro_set_blankon_se_havas_formaton2(out, word1, blank1, word2);
 var_tmp2 = var_blanko;
 macro_set_blankon_se_havas_formaton2(out, word2, blank2, word3);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "det_nom_gen_det_nom"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "det_nom_gen_det_nom"));
 out.append("<SN><nom>");
 out.append('{');
 out.append('^');
@@ -1270,7 +1307,8 @@ macro_set_determiner_de_genitivo2(out, word1, blank2, word3);
 macro_set_blankon_se_havas_formaton2(out, word1, blank1, word2);
 var_tmp2 = var_blanko;
 macro_set_blankon_se_havas_formaton2(out, word3, blank3, word4);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "det_nom_gen_det_nom_nom"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "det_nom_gen_det_nom_nom"));
 out.append("<SN><nom>");
 out.append('{');
 out.append(var_tmp2);
@@ -1310,7 +1348,8 @@ public void rule39__and_or_nor(Writer out, TransferWord word1) throws IOExceptio
 {
 macro_firstWord(out, word1);
 macro_set_and_or_but(out, word1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "and_or"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "and_or"));
 out.append("<and_or>");
 out.append(var_and_or_but);
 out.append('{');
@@ -1324,7 +1363,8 @@ public void rule40__cnjcoo(Writer out, TransferWord word1) throws IOException
 {
 macro_firstWord(out, word1);
 macro_set_and_or_but(out, word1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "cnjcoo"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "cnjcoo"));
 out.append("<CC>");
 out.append(var_and_or_but);
 out.append('{');
@@ -1337,7 +1377,8 @@ out.append("}$");
 public void rule41__cnjadv(Writer out, TransferWord word1) throws IOException
 {
 macro_firstWord(out, word1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "cnjadv"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "cnjadv"));
 out.append("<CA>");
 out.append('{');
 out.append('^');
@@ -1349,7 +1390,8 @@ out.append("}$");
 public void rule42__cnjsub(Writer out, TransferWord word1) throws IOException
 {
 macro_firstWord(out, word1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "CS"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "CS"));
 out.append("<NUM>");
 out.append('{');
 out.append('^');
@@ -1372,7 +1414,8 @@ out.append("}$");
 public void rule44__rel(Writer out, TransferWord word1) throws IOException
 {
 macro_firstWord(out, word1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "rel"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "rel"));
 out.append("<REL>");
 out.append('{');
 out.append('^');
@@ -1384,7 +1427,8 @@ out.append("}$");
 public void rule45__preadv(Writer out, TransferWord word1) throws IOException
 {
 macro_firstWord(out, word1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "preadv"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "preadv"));
 out.append("<PREADV>");
 out.append('{');
 out.append('^');
@@ -1396,7 +1440,8 @@ out.append("}$");
 public void rule46__predet(Writer out, TransferWord word1) throws IOException
 {
 macro_firstWord(out, word1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "predet"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "predet"));
 out.append("<PREDET>");
 out.append('{');
 out.append('^');
@@ -1408,7 +1453,8 @@ out.append("}$");
 public void rule47__adv(Writer out, TransferWord word1) throws IOException
 {
 macro_firstWord(out, word1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "adv"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "adv"));
 out.append("<Adv>");
 out.append('{');
 out.append('^');
@@ -1420,7 +1466,8 @@ out.append("}$");
 public void rule48__pr(Writer out, TransferWord word1) throws IOException
 {
 macro_firstWord(out, word1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "pr"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "pr"));
 out.append("<PREP>");
 out.append('{');
 out.append('^');
@@ -1470,7 +1517,8 @@ out.append("}$");
 public void rule52__unknown(Writer out, TransferWord word1) throws IOException
 {
 macro_firstWord(out, word1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "unknown"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "unknown"));
 out.append("<SN><nom>");
 out.append('{');
 out.append('^');
@@ -1485,7 +1533,8 @@ public void rule53__to__vblexinf(Writer out, TransferWord word1, String blank1, 
 macro_firstWord(out, word1);
 macro_set_tipus_verbs1(out, word2);
 macro_sendu_blankon_se_havas_formaton2(out, word1, blank1, word2);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "verbInf"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "verbInf"));
 out.append("<SV>");
 out.append(var_tipus_verb);
 out.append(word2.target(attr_a_tns, true));
@@ -1505,7 +1554,8 @@ public void rule54__of__vblexger(Writer out, TransferWord word1, String blank1, 
 macro_firstWord(out, word1);
 macro_set_tipus_verbs1(out, word2);
 macro_sendu_blankon_se_havas_formaton2(out, word1, blank1, word2);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "verbInf"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "verbInf"));
 out.append("<SV>");
 out.append(var_tipus_verb);
 out.append("<inf>");
@@ -1526,7 +1576,8 @@ macro_firstWord(out, word1);
 macro_set_tipus_verbs1(out, word3);
 macro_sendu_blankon_se_havas_formaton2(out, word1, blank1, word2);
 macro_sendu_blankon_se_havas_formaton2(out, word2, blank2, word3);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "verbInf2"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "verbInf2"));
 out.append("<SV>");
 out.append(var_tipus_verb);
 out.append("<inf>");
@@ -1545,7 +1596,8 @@ public void rule56__vbser__vblexger(Writer out, TransferWord word1, String blank
 {
 macro_firstWord(out, word1);
 macro_set_tipus_verbs1(out, word2);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "be_vbger"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "be_vbger"));
 out.append("<SV>");
 out.append(var_tipus_verb);
 out.append(word1.target(attr_a_tns, true));
@@ -1572,7 +1624,8 @@ public void rule57__vblex__out(Writer out, TransferWord word1, String blank1, Tr
 macro_firstWord(out, word1);
 macro_set_tipus_verbs1(out, word1);
 macro_sendu_blankon_se_havas_formaton2(out, word1, blank1, word2);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "el_verb"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "el_verb"));
 out.append("<SV>");
 out.append(var_tipus_verb);
 out.append(word1.target(attr_a_tns, true));
@@ -1595,7 +1648,8 @@ public void rule58__vbser__not(Writer out, TransferWord word1, String blank1, Tr
 {
 macro_firstWord(out, word1);
 macro_set_tipus_verbs1(out, word1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "ser_not"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "ser_not"));
 out.append("<SV>");
 out.append(var_tipus_verb);
 out.append(word1.target(attr_a_tns, true));
@@ -1617,7 +1671,8 @@ out.append("}$");
 public void rule59__please__c_vblex_pres(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 {
 macro_set_tipus_verbs1(out, word2);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "pls_verb1"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "pls_verb1"));
 out.append("<SV>");
 out.append(var_tipus_verb);
 out.append(word1.target(attr_a_tns, true));
@@ -1629,7 +1684,8 @@ out.append("<3>");
 out.append('$');
 out.append("}$");
 out.append(blank1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "pls_verb2"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "pls_verb2"));
 out.append(word2.target(attr_a_tns, true));
 out.append('{');
 out.append('^');
@@ -1648,7 +1704,8 @@ macro_set_tipus_verbs1(out, word3);
 macro_set_verbkonj2_do(out, word1, blank2, word3);
 if (!(word2.source(attr_lem, true)).equalsIgnoreCase("not"))
 {
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "ja2"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "ja2"));
 out.append("<Adv>");
 out.append('{');
 out.append('^');
@@ -1663,7 +1720,8 @@ else
 {
 macro_sendu_blankon_se_havas_formaton2(out, word1, blank1, word2);
 }
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "adv2"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "adv2"));
 out.append("<Adv>");
 out.append('{');
 out.append('^');
@@ -1688,7 +1746,8 @@ public void rule61__do__infpres(Writer out, TransferWord word1, String blank1, T
 macro_firstWord(out, word1);
 macro_set_tipus_verbs1(out, word2);
 macro_set_verbkonj2_do(out, word1, blank1, word2);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "ja"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "ja"));
 out.append("<Adv>");
 out.append('{');
 out.append('^');
@@ -1717,7 +1776,8 @@ if (list_willwouldshallhave.containsIgnoreCase(word1.source(attr_lem, true)))
 {
 macro_set_temps1(out, word1);
 macro_sendu_blankon_se_havas_formaton2(out, word1, blank1, word2);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "verb2"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "verb2"));
 out.append("<SV>");
 out.append(var_tipus_verb);
 out.append(var_temps);
@@ -1736,7 +1796,8 @@ if ((((word1.source(attr_lem, true)).equalsIgnoreCase("can")
     || (word1.source(attr_lem, true)).equalsIgnoreCase("might")))
 {
 var_temps = "<cni>";
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "vaux_verb"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "vaux_verb"));
 out.append("<SV>");
 out.append(var_tipus_verb);
 out.append("<inf>");
@@ -1757,7 +1818,8 @@ out.append("}$");
 else
 {
 var_temps = word2.source(attr_a_tns, true);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "vaux_verb2"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "vaux_verb2"));
 out.append("<SV>");
 out.append(var_tipus_verb);
 out.append(word1.target(attr_a_tns, true));
@@ -1788,7 +1850,8 @@ if (list_willwouldshallhave.containsIgnoreCase(word1.source(attr_lem, true)))
 {
 macro_sendu_blankon_se_havas_formaton2(out, word1, blank1, word2);
 macro_set_temps1(out, word1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "verb3"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "verb3"));
 out.append("<SV>");
 out.append(var_tipus_verb);
 out.append(var_temps);
@@ -1811,7 +1874,8 @@ if ((((word1.source(attr_lem, true)).equalsIgnoreCase("can")
     || (word1.source(attr_lem, true)).equalsIgnoreCase("might")))
 {
 var_temps = "<cni>";
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "vaux_verb3"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "vaux_verb3"));
 out.append("<SV>");
 out.append(var_tipus_verb);
 out.append("<inf>");
@@ -1836,7 +1900,8 @@ out.append("}$");
 else
 {
 var_temps = word3.source(attr_a_tns, true);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "vaux_verb4"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "vaux_verb4"));
 out.append("<SV>");
 out.append(var_tipus_verb);
 out.append(var_temps);
@@ -1868,7 +1933,8 @@ if (list_willwouldshallhave.containsIgnoreCase(word1.source(attr_lem, true)))
 {
 macro_set_temps1(out, word1);
 macro_sendu_blankon_se_havas_formaton2(out, word1, blank1, word2);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "verb4"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "verb4"));
 out.append("<SV>");
 out.append(var_tipus_verb);
 out.append(var_temps);
@@ -1895,7 +1961,8 @@ if ((((word1.source(attr_lem, true)).equalsIgnoreCase("can")
     || (word1.source(attr_lem, true)).equalsIgnoreCase("might")))
 {
 var_temps = "<cni>";
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "vaux_verb5"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "vaux_verb5"));
 out.append("<SV>");
 out.append(var_tipus_verb);
 out.append("<inf>");
@@ -1924,7 +1991,8 @@ out.append("}$");
 else
 {
 var_temps = word4.source(attr_a_tns, true);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "vaux_verb6"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "vaux_verb6"));
 out.append("<SV>");
 out.append(var_tipus_verb);
 out.append(var_temps);
@@ -1960,7 +2028,8 @@ if (list_willwouldshallhave.containsIgnoreCase(word1.source(attr_lem, true)))
 {
 macro_set_temps1(out, word1);
 macro_sendu_blankon_se_havas_formaton2(out, word1, blank1, word2);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "verb_pp"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "verb_pp"));
 out.append("<SV>");
 out.append(var_tipus_verb);
 out.append("<pp3>");
@@ -1984,7 +2053,8 @@ if ((word1.source(attr_lem, true)).equalsIgnoreCase("may"))
 {
 var_temps = "<past>";
 macro_sendu_blankon_se_havas_formaton2(out, word1, blank1, word2);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "verb3a"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "verb3a"));
 out.append("<SV>");
 out.append(var_tipus_verb);
 out.append(var_temps);
@@ -2007,7 +2077,8 @@ if ((word1.source(attr_lem, true)).equalsIgnoreCase("might"))
 {
 var_temps = "<cni>";
 macro_sendu_blankon_se_havas_formaton2(out, word1, blank1, word2);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "verb3b"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "verb3b"));
 out.append("<SV>");
 out.append(var_tipus_verb);
 out.append(var_temps);
@@ -2031,7 +2102,8 @@ if (((word1.source(attr_lem, true)).equalsIgnoreCase("can")
 {
 var_temps = "<cni>";
 macro_sendu_blankon_se_havas_formaton2(out, word1, blank1, word2);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "vaux_pp"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "vaux_pp"));
 out.append("<SV>");
 out.append(var_tipus_verb);
 out.append("<inf>");
@@ -2057,7 +2129,8 @@ if ((word1.source(attr_lem, true)).equalsIgnoreCase("should"))
 var_temps = "<cni>";
 }
 macro_sendu_blankon_se_havas_formaton2(out, word1, blank1, word2);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "vaux_verb7"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "vaux_verb7"));
 out.append("<SV>");
 out.append(var_tipus_verb);
 out.append(var_temps);
@@ -2088,7 +2161,8 @@ if (list_willwouldshallhave.containsIgnoreCase(word1.source(attr_lem, true)))
 {
 macro_set_temps1(out, word1);
 macro_sendu_blankon_se_havas_formaton2(out, word1, blank1, word2);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "verb_vbger"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "verb_vbger"));
 out.append("<SV>");
 out.append(var_tipus_verb);
 out.append(var_temps);
@@ -2108,7 +2182,8 @@ out.append("}$");
 else
 {
 var_temps = word2.source(attr_a_tns, true);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "vaux_verb8"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "vaux_verb8"));
 out.append("<SV>");
 out.append(var_tipus_verb);
 out.append(var_temps);
@@ -2135,7 +2210,8 @@ public void rule67__vbdo(Writer out, TransferWord word1) throws IOException
 {
 macro_firstWord(out, word1);
 macro_set_tipus_verbs1(out, word1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "vbdo"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "vbdo"));
 out.append("<SV>");
 out.append(var_tipus_verb);
 out.append(word1.target(attr_a_tns, true));
@@ -2153,7 +2229,8 @@ public void rule68__vb_all(Writer out, TransferWord word1) throws IOException
 {
 macro_firstWord(out, word1);
 macro_set_tipus_verbs1(out, word1);
-out.append("^"+TransferWord.copycase(var_caseFirstWord, "verb_all"));
+out.append('^');
+out.append(TransferWord.copycase(var_caseFirstWord, "verb_all"));
 out.append("<SV>");
 out.append(var_tipus_verb);
 out.append(word1.target(attr_a_tns, true));
