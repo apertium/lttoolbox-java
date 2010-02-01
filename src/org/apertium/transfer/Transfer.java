@@ -524,7 +524,9 @@ public class Transfer {
       //t.transfer(new InputStreamReader( System.in ),  new OutputStreamWriter(System.out));
 
       //Reader input = new FileReader(dir+"transferinput-en-eo.t1x-malgranda.txt");
-      StringReader input = new StringReader("^what<prn><itg><sp>$\n");
+      StringReader input = new StringReader("^good<adj><sint>$ ^deal<n><sg>$\n");
+
+      // echo "^good<adj><sint>$ ^deal<n><sg>$" | apertium-transfer apertium-eo-en.en-eo.t1x en-eo.t1x.bin en-eo.autobil.bin
 
       Writer output = new StringWriter(); //new PrintWriter(System.err); //
       //Writer output = new OutputStreamWriter(System.out);
@@ -532,6 +534,10 @@ public class Transfer {
       t.transfer( input, output);
       output.flush();
       System.err.println("transfer output = " + output);
+
+
+      String outputs = t.fstp.biltransWithQueue("good<adj><sint>" , false).first;
+      System.err.println("output = " + outputs);
 
     }
 

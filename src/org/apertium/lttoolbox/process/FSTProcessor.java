@@ -1682,7 +1682,7 @@ public class FSTProcessor {
                     if (mark) {
                         result = new StringBuilder("=" + result.substring(1));
                     } else {
-                    result = new StringBuilder(result.substring(1));
+                        result = new StringBuilder(result.substring(1));
                     }
                 }
             }

@@ -157,6 +157,12 @@ public class State {
      */
     private void apply(int input) {
         ArrayList<TNodeState> new_state = new ArrayList<TNodeState>();
+
+        if (input==0) { // in transfer it happens an unknown symbol is translated to 0. Avoid interpreting that as an epsilon.
+          state = new_state;
+          return;
+        }
+
         for (int i = 0,  limit = state.size(); i != limit; i++) {
             TNodeState state_i = state.get(i);
             Transition it = state_i.where.transitions.get(input);

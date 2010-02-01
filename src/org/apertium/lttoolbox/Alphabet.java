@@ -167,8 +167,10 @@ public static class IntegerPair {
 
       //System.err.println(this+" "+slexic+"cast s = " + s);
       Integer i = slexic.get(s);
-      if (i==null) return 0; // this happens in transfer
-        return (int) i;
+
+      if (i==null) return 0; // unknown symbol - this happens in transfer
+
+      return (int) i;
     }
 
     /**
