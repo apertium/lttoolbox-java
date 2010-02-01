@@ -124,12 +124,12 @@ public class Transfer {
   for(int i = 0, limit = Compression.multibyte_read(in); i != limit; i++)
   {
     String cad_k = Compression.wstring_read_toUtf8(in);
-    ApertiumRE re = new ApertiumRE();
+    //ApertiumRE re = new ApertiumRE();
     int size = Compression.multibyte_read(in);
     byte[] reb = new byte[size];
     in.read(reb);
     //System.err.println("ApertiumRE.read(size = " + size+": "+new String(reb,"UTF-8")+ Arrays.toString(reb));
-    attr_items.put(cad_k, re);
+    //attr_items.put(cad_k, re);
 
     //System.err.println("cad_k = " + cad_k);
   }
@@ -523,11 +523,12 @@ public class Transfer {
       //t.read(args[0], args[1], args[2]);
       //t.transfer(new InputStreamReader( System.in ),  new OutputStreamWriter(System.out));
 
-      Reader input = new FileReader(dir+"transferinput-en-eo.t1x.txt");
-      //StringReader input = new StringReader("^Prpers<prn><subj><p3><m><sg>$ ^see<vblex><past>$ ^the<det><def><sp>$ ^saw<n><sg>$^'s<gen>$ ^tooth<n><sg>$   ^.<sent>$  \n");
-      //Writer output = new StringWriter(); //new PrintWriter(System.err); //
+      //Reader input = new FileReader(dir+"transferinput-en-eo.t1x-malgranda.txt");
+      StringReader input = new StringReader("^what<prn><itg><sp>$\n");
+
+      Writer output = new StringWriter(); //new PrintWriter(System.err); //
       //Writer output = new OutputStreamWriter(System.out);
-      Writer output = new FileWriter("/tmp/transferinput-en-eo.t1x.txt");
+      //Writer output = new FileWriter("/tmp/transferoutput-en-eo.t1x.txt");
       t.transfer( input, output);
       output.flush();
       System.err.println("transfer output = " + output);
@@ -536,7 +537,7 @@ public class Transfer {
 
 }
 
-
+// apertium-transfer apertium-eo-en.en-eo.t1x en-eo.t1x.bin en-eo.autobil.bin transferinput-en-eo.t1x-malgranda.txt  transferoutput-en-eo.t1x-malgranda.txt
 
 class MyClassLoader extends ClassLoader {
 

@@ -11,6 +11,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -465,6 +467,19 @@ public class ParseDefList {
           ArrayList<String> items = new ArrayList<String>();
           for (Element c1 : children(c0))
             items.add(c1.getAttribute("tags"));
+
+
+          /* FIX:
+java match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  is '<prn>'
+pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  is '<prn><itg>'
+           therefore I reorder so the longest are first.
+           */
+          Collections.sort(items, new Comparator<String>() {
+            public int compare(String o1, String o2) {
+              return o2.length() - o1.length();
+            }
+          });
+
           defAttrs.put(n,new ParseApertiumRE(n, items.toArray(new String[items.size()])));
           println("ApertiumRE attr_"+n+" = new ApertiumRE(\""+attrItemRegexp(items)+"\");");
           attList.add("attr_"+n);
@@ -564,7 +579,8 @@ public class ParseDefList {
       ParseTranserFile p = new ParseTranserFile();
     try {
       //p.parse("/home/j/esperanto/apertium/apertium-eo-en/apertium-eo-en.eo-en.t1x");
-      p.parse("/home/jim/NetBeansProjects/lttoolbox-java/apertium-en-ca.en-ca.t1x");
+      p.parse("/home/j/esperanto/apertium/apertium-eo-en/apertium-eo-en.en-eo.t1x");
+      //p.parse("/home/jim/NetBeansProjects/lttoolbox-java/apertium-en-ca.en-ca.t1x");
     } catch (Exception ex) {
       ex.printStackTrace();
     }

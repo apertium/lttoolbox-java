@@ -24,12 +24,18 @@ public class ApertiumRE {
     // PCRE_DOTALL|PCRE_CASELESS|PCRE_EXTENDED|PCRE_UTF8,
   }
 
-  ApertiumRE() {
-  }
+   public String toString() {
+     return ""+re;
+   }
+
 
   String match(String source) {
     Matcher m = re.matcher(source);
     if (!m.find()) return "";
+
+    //System.err.println("m = " + m);
+    //System.err.println("m = " + m.groupCount());
+
     return m.group();
   }
 
