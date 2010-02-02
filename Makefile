@@ -6,6 +6,24 @@ all: dist/lttoolbox.jar
 dist/lttoolbox.jar:
 	ant -quiet jar
 
+apertium-preprocess-transfer-bytecode-j: lt-proc-j
+	ln -s lt-proc-j $@
+
+apertium-transfer-j: lt-proc-j
+	ln -s lt-proc-j $@
+
+lt-comp-j: lt-proc-j
+	ln -s lt-proc-j $@
+
+lt-expand-j: lt-proc-j
+	ln -s lt-proc-j $@
+
+lt-validate-j: lt-proc-j
+	ln -s lt-proc-j $@
+
+symlinks: lt-validate-j lt-expand-j lt-comp-j apertium-transfer-j apertium-preprocess-transfer-bytecode-j
+	echo "Making symlinks"
+
 install: dist/lttoolbox.jar
 	@if [ ! -e prefix ]; then \
 		echo "/usr/local" > prefix; \
