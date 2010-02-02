@@ -89,7 +89,20 @@ public class TransferTest {
      rm(outFile);
   }
 
-/*
+  @Test
+  public void testTransferAndCompilationMalgranda() throws Exception {
+    String dir = "testdata/transfer/";
+    String outFile = "/tmp/transfer-output-malgranda.txt";
+    ApertiumTransferCompile.main(new String[]{"testdata/transfer/apertium-eo-en.en-eo.t1x", "/tmp/en-eo.t1x.bin.class"});
+    ApertiumTransfer.main(new String[]{"/tmp/en-eo.t1x.bin.class", dir+"en-eo.t1x.bin", dir+"en-eo.autobil.bin",
+      dir+"transferinput-en-eo.t1x-malgranda.txt", outFile});
+
+     assertEquals("Difference", "", exec("diff "+dir+"transferoutput-en-eo.t1x-malgranda.txt "+outFile));
+     rm(outFile);
+  }
+
+
+  /*
   @Test
   public void testTransferGranda() throws Exception {
       Transfer t = new Transfer();

@@ -6,6 +6,8 @@
 package org.apertium.lttoolbox;
 
 import java.util.Arrays;
+import org.apertium.transfer.ApertiumTransfer;
+import org.apertium.transfer.ApertiumTransferCompile;
 
 /**
  *
@@ -36,7 +38,7 @@ public class LTToolbox {
             " " +bareCommand+ " lt-expand dictionary.dix     expand a dictionary\n" +
             " " +bareCommand+ " lt-comp lr dic.dix dic.bin   compile a dictionary\n" +
             " " +bareCommand+ " lt-proc dic.bin              morphological analysis/generation\n" +
-            " " +bareCommand+ " lt-validate -dix dic.dix     validate a  dictionary\n" +
+            " " +bareCommand+ " lt-validate  dic.dix     validate a  dictionary\n" +
 //            "For more help, run without a task, like: " +bareCommand+ "\n" +
             "For more help on a task, run it, like: " +bareCommand+ " lt-proc\n" +
             "See also http://wiki.apertium.org/wiki/Lttoolbox-java");
@@ -53,9 +55,11 @@ public class LTToolbox {
 
       String[] restOfArgs = Arrays.copyOfRange(argv, 1 , argv.length);
       if (task.startsWith("lt-proc")) LTProc.main(restOfArgs);
+      else if (task.startsWith("apertium-transfer")) ApertiumTransfer.main(restOfArgs);
       else if (task.startsWith("lt-expand")) LTExpand.main(restOfArgs);
       else if (task.startsWith("lt-comp")) LTComp.main(restOfArgs);
       else if (task.startsWith("lt-validate")) LTValidate.main(restOfArgs);
+      else if (task.startsWith("apertium-preprocess-transfer-bytecode")) ApertiumTransferCompile.main(restOfArgs);
       else {
         System.err.println("Command not recognized: "+task); // Arrays.toString(argv).replaceAll(", ", " ")
         showHelp(null);

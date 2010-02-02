@@ -6,16 +6,13 @@ package org.apertium.transfer;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.Reader;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -29,11 +26,11 @@ import org.apertium.lttoolbox.Alphabet;
 import org.apertium.lttoolbox.Compression;
 import org.apertium.lttoolbox.Pair;
 import org.apertium.lttoolbox.compile.Transducer;
-import org.apertium.lttoolbox.process.Buffer;
 import org.apertium.lttoolbox.process.FSTProcessor;
-import org.apertium.lttoolbox.process.SetOfCharacters;
-import org.apertium.lttoolbox.process.TransExe;
 import org.apertium.transfer.TransferToken;
+
+
+// apertium-transfer apertium-eo-en.en-eo.t1x en-eo.t1x.bin en-eo.autobil.bin transferinput-en-eo.t1x-malgranda.txt  transferoutput-en-eo.t1x-malgranda.txt
 
 /**
  *
@@ -72,9 +69,20 @@ public class Transfer {
   Method lastrule; //xmlNode *lastrule;
   int nwords;
   private Object transferObject;
-  private Class transferClass;
 
-  private boolean DEBUG = false;
+  public static boolean DEBUG = false;
+
+  boolean getNullFlush() {
+    return null_flush;
+  }
+
+  void setCaseSensitiveMode(boolean b) {
+    throw new UnsupportedOperationException("Not yet implemented");
+  }
+
+  void setNullFlush(boolean b) {
+    null_flush=b;
+  }
 
   private void fputwc_unlocked(char c, Writer output) throws IOException {
     output.append(c);
@@ -88,11 +96,13 @@ public class Transfer {
 
   //map<xmlNode *, TransferInstr> evalStringCache;
   enum OutputType {
-
     lu, chunk
   };
   OutputType defaultAttrs;
   boolean useBilingual=true;
+  /**
+   * if true, flush the output when the null character is found
+   */
   boolean null_flush;
   boolean internal_null_flush;
 
@@ -183,14 +193,12 @@ public class Transfer {
   }
 
   public void read(String classFile, String datafile, String fstfile) throws Exception {
-    if (classFile.endsWith(".java")) {
-        com.sun.tools.javac.Main oversætter = new com.sun.tools.javac.Main();
-        String[] filer = { classFile };
-        oversætter.compile( filer );
-        classFile = classFile.substring(0,classFile.length());
+    if (!classFile.endsWith(".class")) {
+
+      System.err.println("Warning: " + classFile+ " should be a Java .class file. You probably got it wrong");
     }
 
-    read(new MyClassLoader().loadClass(classFile), datafile, fstfile);
+    read(new MyClassLoader().loadClassFile(classFile), datafile, fstfile);
   }
 
 
@@ -199,7 +207,6 @@ public class Transfer {
     InputStream is = new BufferedInputStream(new FileInputStream(datafile));
     readData(is);
     is.close();
-
 
     Method[] mets =  transferClass.getMethods();
     rule_map = new Method[mets.length];
@@ -266,20 +273,8 @@ public class Transfer {
     }
   }
 
-  public boolean getnullFlush() {
-    return nullFlush;
-  }
-  /**
-   * if true, flush the output when the null character is found
-   */
-  private boolean nullFlush=false;
-
-  public void setnullFlush(boolean value) {
-    nullFlush=value;
-  }
-
   private void transfer_wrapper_null_flush(Reader input, Writer output) throws Exception {
-    setnullFlush(false);
+    setNullFlush(false);
     while (input.ready()) {
       transfer(input, output);
       output.write('\0');
@@ -293,7 +288,7 @@ public class Transfer {
   }
 
   public void transfer(Reader in, Writer output) throws Exception {
-    if (getnullFlush()) {
+    if (getNullFlush()) {
       transfer_wrapper_null_flush(in, output);
     }
 
@@ -546,28 +541,23 @@ public class Transfer {
 
     }
 }
-
-// apertium-transfer apertium-eo-en.en-eo.t1x en-eo.t1x.bin en-eo.autobil.bin transferinput-en-eo.t1x-malgranda.txt  transferoutput-en-eo.t1x-malgranda.txt
-
 class MyClassLoader extends ClassLoader {
 
-    @Override
-    public Class loadClass(String filename) throws ClassNotFoundException {
+
+    public MyClassLoader() {
+        super(MyClassLoader.class.getClassLoader());
+    }
+
+    
+    public Class loadClassFile(String filename) throws ClassNotFoundException {
         try {
-            URL myUrl = new URL(filename);
-            URLConnection connection = myUrl.openConnection();
-            InputStream input = connection.getInputStream();
-            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-            int data = input.read();
-            while(data != -1){
-                buffer.write(data);
-                data = input.read();
-            }
+          System.err.println("filename = " + filename);
+          File file = new File(filename);
+            InputStream input = new FileInputStream(file);
+            byte data[] = new byte[(int) file.length()];
+            input.read(data);
             input.close();
-            byte[] classData = buffer.toByteArray();
-            return defineClass(null, classData, 0, classData.length);
-        } catch (MalformedURLException e) {
-          e.printStackTrace();
+            return defineClass(null, data, 0, data.length);
         } catch (IOException e) {
             e.printStackTrace();
         }

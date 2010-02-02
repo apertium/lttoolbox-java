@@ -29,6 +29,10 @@ import static org.apertium.transfer.compile.DOMTools.*;
 public class ParseTranserFile {
   public String className;
 
+  public String getJavaCode() {
+    return javaCode.toString();
+  }
+
   private void append(String str) {
     println("out.append("+str+");");
   }
@@ -584,7 +588,6 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException, ParserConfigurationException {
-        // TODO code application logic here
       ParseTranserFile p = new ParseTranserFile();
     try {
       //p.parse("/home/j/esperanto/apertium/apertium-eo-en/apertium-eo-en.eo-en.t1x");

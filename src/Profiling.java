@@ -30,6 +30,8 @@ public class Profiling {
         System.out.println("Profiling "+new java.util.Date() );
       
         System.gc();
+        p.testTransfer();
+        System.gc();
         p.testjavaAnalysis();
         System.gc();
         p.testjavaGeneration();
@@ -86,6 +88,10 @@ public class Profiling {
     String outFile = "/tmp/lt-proc-output5.txt";
     org.apertium.lttoolbox.LTProc.main(new String[] {"-p",dir+"fr-es.autopgen.bin",dir+"postgenerator_input", outFile});
     report("generation -p");
+  }
+
+  private void testTransfer() {
+
   }
 
 

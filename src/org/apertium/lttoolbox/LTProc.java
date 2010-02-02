@@ -280,7 +280,7 @@ public class LTProc {
         output.close();
         
     }
-    private static Writer fout(String filename) throws FileNotFoundException, UnsupportedEncodingException {
+    public static Writer fout(String filename) throws FileNotFoundException, UnsupportedEncodingException {
         String encoding = "UTF-8";
         if (System.getProperties().containsKey("file.encoding")) {
             encoding = System.getProperty("file.encoding");
@@ -288,7 +288,7 @@ public class LTProc {
         return new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(filename)), encoding));
     }
 
-    private static InputStream fopen(String filename) throws FileNotFoundException {
+    public static InputStream fopen(String filename) throws FileNotFoundException {
         String encoding = "UTF-8";
         if (System.getProperties().containsKey("file.encoding")) {
             encoding = System.getProperty("file.encoding");
@@ -296,7 +296,7 @@ public class LTProc {
         return new BufferedInputStream(new FileInputStream(filename));
     }
 
-    private static Reader openReader(String filename) throws FileNotFoundException {
+    public static Reader openReader(String filename) throws FileNotFoundException {
         return new FileReader(filename);
     }
 }
