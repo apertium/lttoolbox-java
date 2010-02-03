@@ -455,7 +455,15 @@ public class Transfer {
 
     if (DEBUG) System.err.println("#args = " + args.length);
     if (DEBUG) System.err.println("processRule:"+lastrule.getName()+"("+Arrays.toString(args));
+  try {
     lastrule.invoke(transferObject, args);
+  } catch (Exception e) {
+    System.err.println("Error during invokation of "+lastrule);
+    System.err.println("word = " + Arrays.toString(word));
+    System.err.println("#args = " + args.length);
+    System.err.println("processRule:"+lastrule.getName()+"("+Arrays.toString(args));
+    throw e;
+  }
     
     //processRule(lastrule);
     lastrule=null;

@@ -26,6 +26,7 @@ public class TransferWord {
 
   public String source(ApertiumRE part, boolean with_queue)
   {
+    if (part==null) return ""; // this can happen if an undefined attribute is used
     if(with_queue)
     {
       return part.match(source);
@@ -38,6 +39,7 @@ public class TransferWord {
 
   public String target(ApertiumRE part, boolean with_queue)
   {
+    if (part==null) return ""; // this can happen if an undefined attribute is used
     if(with_queue)
     {
       return part.match(target);
@@ -50,6 +52,7 @@ public class TransferWord {
 
   public void setSource(ApertiumRE part, String value, boolean with_queue)
   {
+    if (part==null) return; // this can happen if an undefined attribute is used
     if(with_queue)
     {
       source = part.replace(source, value);
@@ -64,6 +67,7 @@ public class TransferWord {
 
   public void setTarget(ApertiumRE part, String value, boolean with_queue)
   {
+    if (part==null) return; // this can happen if an undefined attribute is used
     if(with_queue)
     {
       target = part.replace(target, value);

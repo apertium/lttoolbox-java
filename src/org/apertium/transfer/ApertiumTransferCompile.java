@@ -69,10 +69,11 @@ public class ApertiumTransferCompile {
       fw.append(p.getJavaCode());
       fw.close();
 
-      System.err.println("Compiling " + javaDest);
      
       // don't depend on an internal javac - this might not be Sun's javac
+      // System.err.println("Compiling " + javaDest);
       //com.sun.tools.javac.Main.compile( new String[] { javaDest.getPath() } );
+      System.err.println("Compiling: javac -cp dist/lttoolbox.jar "+javaDest);
       exec("javac -cp dist/lttoolbox.jar "+javaDest);
 
 
