@@ -42,6 +42,10 @@ public class ParseTranserFile {
   /** For checking variables */
   private LinkedHashSet<String> varList = new LinkedHashSet<String>();
 
+  /** For checking lists */
+  private LinkedHashSet<String> listList = new LinkedHashSet<String>();
+
+
 
   /**
    * The number of parameters in the rule/macro/method currently being defined
@@ -123,7 +127,7 @@ public class ParseTranserFile {
       return "TransferWord.copycase("+word(pos)+".source(attr_lem, "+cond+"), "+ eval + ")";
     } else if (n.equals("concat")) {
       String res = "("+str("");
-      for (Element c : list(e.getChildNodes())) {
+      for (Element c : listElements(e.getChildNodes())) {
         res += "+"+ evalString(c);
       }
       res += ")";
@@ -167,9 +171,9 @@ public class ParseTranserFile {
     boolean cond=!e.getAttribute("queue").equals("no");
     String expr;
     if (side.equals("sl")) {
-      expr=""+word(pos)+".setSource("+attr(part)+", "+value+", "+cond+");\n";
+      expr=""+word(pos)+".setSource("+attr(part)+", "+value+", "+cond+");";
     } else if (side.equals("tl")) {
-      expr=""+word(pos)+".setTarget("+attr(part)+", "+value+", "+cond+");\n";
+      expr=""+word(pos)+".setTarget("+attr(part)+", "+value+", "+cond+");";
     } else throw new IllegalArgumentException(side);
     return expr;
   }
@@ -185,11 +189,6 @@ public class ParseTranserFile {
     return s;
   }
 
-  private void processAppend(Element instr) {
-    currentNode = instr;
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
   private void processCallMacro(Element instr) {
     currentNode = instr;
     String n = instr.getAttribute("n");
@@ -201,7 +200,7 @@ public class ParseTranserFile {
     int macronpar = macroList.get(n);
     String par = "";
     int npar = 0;
-    for (Element c : children(instr)) {
+    for (Element c : listChildren(instr)) {
       if (npar>=macronpar) {
         parseError("// WARNING: Macro "+n+" is invoked with too many parameters. Ignoring: "+c);
         break;
@@ -223,13 +222,13 @@ public class ParseTranserFile {
       npar++;
     }
 
-    println("macro_"+n+"(out"+par+");");
+    println("macro_"+javaIdentifier(n)+"(out"+par+");");
   }
 
   private void processChoose(Element e) {
     currentNode = e;
     boolean first = true;
-    for (Element whenC : children(e))
+    for (Element whenC : listChildren(e))
     {
       String n = whenC.getTagName();
       Element c0 = getFirstChildElement(whenC);
@@ -268,7 +267,7 @@ public class ParseTranserFile {
         append("'^'");
         append(var(namefromvar));
       }
-      else parseError("//Error: you must specify either 'name' or 'namefrom' for the 'chunk' element");
+      else parseError("// ERROR: you must specify either 'name' or 'namefrom' for the 'chunk' element");
     } else {
       if (!name.isEmpty()) {
         append("'^'");
@@ -276,28 +275,28 @@ public class ParseTranserFile {
       }
       else if (!namefromvar.isEmpty()) {
         append("'^'");
-        append("TransferWord.copycase("+var(caseofchunkvar)+", var_"+namefromvar+")");
+        append("TransferWord.copycase("+var(caseofchunkvar)+", "+var(namefromvar)+")");
       }
-      else parseError("//Error: you must specify either 'name' or 'namefrom' for the 'chunk' element");
+      else parseError("// ERROR: you must specify either 'name' or 'namefrom' for the 'chunk' element");
     }
 
 
-    for (Element c0 : children(e)) {
+    for (Element c0 : listChildren(e)) {
       String n = c0.getTagName();
       if (n.equals("tags")) {
-        for (Element tag : children(c0))
+        for (Element tag : listChildren(c0))
           append(evalString(findElementSibling(tag.getFirstChild())));
         append("'{'");
       } else if (n.equals("lu")) {
         append("'^'");
-        for (Element lu : children(c0))
+        for (Element lu : listChildren(c0))
           append(evalString(lu));
         append("'$'");
       } else if (n.equals("mlu")) {
         append("'^'");
-        for (java.util.Iterator<Element> it = children(c0).iterator(); it.hasNext();) {
+        for (java.util.Iterator<Element> it = listChildren(c0).iterator(); it.hasNext();) {
             Element mlu = it.next();
-            for (Element lu : children(mlu)) {
+            for (Element lu : listChildren(mlu)) {
               append(evalString(lu));
             }
             if (it.hasNext())
@@ -334,7 +333,7 @@ public class ParseTranserFile {
     currentNode = e;
     Element first = getFirstChildElement(e);
     Element second = findElementSibling(first.getNextSibling());
-    String listName = "list_"+second.getAttribute("n");
+    String listName = list(second.getAttribute("n"));
 
     if (e.getAttribute("caseless").equals("yes")) {
       return listName +".containsIgnoreCase("+evalString(first)+")";
@@ -382,9 +381,24 @@ public class ParseTranserFile {
       String name = leftSide.getAttribute("n");
       println(var(name)+" = " + evalString(rightSide)+ ";");
     } else if (n.equals("clip")) {
-      print(getWriteClipExpr(leftSide, evalString(rightSide)));
+      println(getWriteClipExpr(leftSide, evalString(rightSide)));
     } else throwParseError(n);
   }
+
+
+  private void processAppend(Element instr) {
+    currentNode = instr;
+    String var = var(instr.getAttribute("n"));
+
+    println(var +" = " + var);
+    Element appendElement = findElementSibling(instr.getFirstChild());
+    while (appendElement!=null) {
+      println("    +" + evalString(appendElement));
+      appendElement = findElementSibling(appendElement.getNextSibling());
+    }
+    println("    ;");
+  }
+
 
 
   String processLogical(Element e) {
@@ -396,11 +410,11 @@ public class ParseTranserFile {
     /* TODO
     } else if (n.equals("begins-with")) {
       return processBeginsWith(e);
-    } else if (n.equals("begins-with-list")) {
+    } else if (n.equals("begins-with-listElements")) {
       return processBeginsWithList(e);
     } else if (n.equals("ends-with")) {
       return processEndsWith(e);
-    } else if (n.equals("ends-with-list")) {
+    } else if (n.equals("ends-with-listElements")) {
       return processEndsWithList(e);
     } else if (n.equals("contains-substring")) {
       return processContainsSubstring(e);
@@ -437,14 +451,14 @@ public class ParseTranserFile {
         parseError("// WARNING variable "+name+" doesent exist. Ignoring modify-case");
       }
     } else if (n.equals("clip")) {
-      print(getWriteClipExpr(leftSide, "TransferWord.copycase("+evalString(rightSide)+", "+getReadClipExpr(leftSide)+")"));
+      println(getWriteClipExpr(leftSide, "TransferWord.copycase("+evalString(rightSide)+", "+getReadClipExpr(leftSide)+")"));
     } else throwParseError(n);
   }
 
   private void processOut(Element instr) {
     currentNode = instr;
     // XXX TODO lu not supported
-    for (Element e : children(instr)) {
+    for (Element e : listChildren(instr)) {
       String n = e.getTagName();
       if (n.equals("chunk")) processChunk(e);
       else append( evalString(e) );
@@ -475,16 +489,16 @@ public class ParseTranserFile {
   }
 
   private void throwParseError(String n) {
-    throw new UnsupportedOperationException("Not yet implemented:"+n);
+    throw new UnsupportedOperationException("Not yet implemented:"+n+getPathAsString(currentNode));
   }
 
   private boolean error_UNKNOWN_VAR = false;
   private String var(String name) {
     if (varList.contains(name)) {
-      return "var_"+name;
+      return "var_"+javaIdentifier(name);
     }
     parseError("// WARNING variable "+name+" doesent exist. Valid variables are: "+varList
-       + "\nReplacing with error_UNKNOWN_VAR");
+       + "\n// Replacing with error_UNKNOWN_VAR");
     error_UNKNOWN_VAR = true;
     return "error_UNKNOWN_VAR";
   }
@@ -493,13 +507,23 @@ public class ParseTranserFile {
   private boolean error_UNKNOWN_ATTR = false;
   private String attr(String name) {
     if (attrList.contains(name))
-      return "attr_"+name;
+      return "attr_"+javaIdentifier(name);
 
     parseError("// WARNING: Attribute "+name+" is not defined. Valid attributes are: "+attrList
-        + "\nReplacing with error_UNKNOWN_ATTR");
+        + "\n// Replacing with error_UNKNOWN_ATTR");
     error_UNKNOWN_ATTR = true;
     return "error_UNKNOWN_ATTR";
+  }
 
+  private boolean error_UNKNOWN_LIST = false;
+  private String list(String name) {
+    if (listList.contains(name))
+      return "list_"+javaIdentifier(name);
+
+    parseError("// WARNING: List "+name+" is not defined. Valid lists are: "+listList
+        + "\n// Replacing with error_UNKNOWN_LIST");
+    error_UNKNOWN_LIST = true;
+    return "error_UNKNOWN_LIST";
   }
 
 
@@ -573,13 +597,13 @@ public class ParseDefList {
         //LinkedHashMap<String,DefCat> defCats = new LinkedHashMap<String,DefCat>();
         //LinkedHashMap<String,ParseApertiumRE> defAttrs = new LinkedHashMap<String,ParseApertiumRE>();
         //ArrayList<String> defVars = new ArrayList<String>();
-        LinkedHashMap<String,ParseDefList> defLists = new LinkedHashMap<String,ParseDefList>();
+        //LinkedHashMap<String,ParseDefList> defLists = new LinkedHashMap<String,ParseDefList>();
 
         /*
         for (Element c0 : getChildsChildrenElements(root, "section-def-cats")) {
           String n = c0.getAttribute("n");
           ArrayList<CatItem> items = new ArrayList<CatItem>();
-          for (Element c1 : children(c0)) {
+          for (Element c1 : listChildren(c0)) {
             items.add(new CatItem(c1.getAttribute("lemma"), c1.getAttribute("tags")));
           }
           defCats.put(n,new DefCat(n, items.toArray(new CatItem[items.size()])));
@@ -591,7 +615,7 @@ public class ParseDefList {
         for (Element c0 : getChildsChildrenElements(root, "section-def-attrs")) {
           String n = c0.getAttribute("n");
           ArrayList<String> items = new ArrayList<String>();
-          for (Element c1 : children(c0))
+          for (Element c1 : listChildren(c0))
             items.add(c1.getAttribute("tags"));
 
 
@@ -607,7 +631,7 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
           });
 
           //defAttrs.put(n,new ParseApertiumRE(n, items.toArray(new String[items.size()])));
-          println("ApertiumRE attr_"+n+" = new ApertiumRE(\""+attrItemRegexp(items)+"\");");
+          println("ApertiumRE attr_"+javaIdentifier(n)+" = new ApertiumRE(\""+attrItemRegexp(items)+"\");");
           attrList.add(n);
         }
 
@@ -664,16 +688,17 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
           String n = c0.getAttribute("n");
           varList.add(n);
           String v = c0.getAttribute("v");
-          println("String var_"+n+" = \""+v+"\";");
+          println("String var_"+javaIdentifier(n)+" = \""+v+"\";");
         }
 
         for (Element c0 : getChildsChildrenElements(root, "section-def-lists")) {
           String n = c0.getAttribute("n");
           ArrayList<String> items = new ArrayList<String>();
-          for (Element c1 : children(c0))
+          for (Element c1 : listChildren(c0))
             items.add(c1.getAttribute("v"));
-          defLists.put(n,new ParseDefList(n, items.toArray(new String[items.size()])));
-          println("TransferWordList list_"+n+" = new TransferWordList("+javaStringArray(items)+");");
+          //listList.put(n,new ParseDefList(n, items.toArray(new String[items.size()])));
+          listList.add(n);
+          println("TransferWordList list_"+javaIdentifier(n)+" = new TransferWordList("+javaStringArray(items)+");");
         }
 
 
@@ -687,10 +712,10 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
           for (int i=1; i<=npar; i++) par += (i==1?", ":", String "+blank(i-1)+", ")+"TransferWord "+word(i);
           println("");
           macroList.put(n, npar);
-          println("private void macro_"+n+"(Writer out"+par+") throws IOException");
+          println("private void macro_"+javaIdentifier(n)+"(Writer out"+par+") throws IOException");
           println("{");
           currentNumberOfWordInParameterList = npar;
-          for (Element c1 : list(c0.getChildNodes())) processInstruction(c1);
+          for (Element c1 : listElements(c0.getChildNodes())) processInstruction(c1);
           println("}");
         }
 
@@ -704,7 +729,7 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
           String methodName = "rule"+(ruleNo++);
           for (Element c1 : getChildsChildrenElements(c0, "pattern")) {
             String n = c1.getAttribute("n");
-            methodName += "__"+n;
+            methodName += "__"+javaIdentifier(n);
             patternItems.add(n);
           }
           String par = "";
@@ -725,6 +750,10 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
 
         if (error_UNKNOWN_VAR) {
           println("String error_UNKNOWN_VAR = \"\";");
+        }
+
+        if (error_UNKNOWN_LIST) {
+          println("TransferWordList error_UNKNOWN_LIST = new TransferWordList(new String[0]);");
         }
 
         println("}");

@@ -216,13 +216,16 @@ String[] fa = {
 };
 
   int n = 0;
-  for (String inf : fa) {
+  for (String inf : fa) try {
+    System.err.println("\n============\n");
     String dir = "testdata/transfer/";
     String outFile = "/tmp/transfer-output-malgranda.txt"+n++;
-    ApertiumTransferCompile.main(new String[]{inf, "/tmp/transfer.class"+n});
+    ApertiumTransferCompile.main(new String[]{inf, "/tmp/transfer.class"});
     Runtime.getRuntime().exec("apertium-preprocess-transfer "+inf+" /tmp/transfer.bin"+n).waitFor();
-    ApertiumTransfer.main(new String[]{"/tmp/transfer.class"+n, "/tmp/transfer.bin"+n, dir+"en-eo.autobil.bin",
+    ApertiumTransfer.main(new String[]{"/tmp/transfer.class", "/tmp/transfer.bin"+n, dir+"en-eo.autobil.bin",
       dir+"transferinput-en-eo.t1x-malgranda.txt", outFile});
+  } catch (Exception e) {
+    e.printStackTrace();
   }
   }
 

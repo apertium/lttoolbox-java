@@ -18,7 +18,7 @@ import org.w3c.dom.NodeList;
 public class DOMTools {
 
 
-  public static Iterable<Element> list(final NodeList nl) {
+  public static Iterable<Element> listElements(final NodeList nl) {
     return new Iterable<Element>() {
 
       @Override
@@ -44,8 +44,8 @@ public class DOMTools {
     };
   }
 
-  public static Iterable<Element> children(Element e) {
-    return list(e.getChildNodes());
+  public static Iterable<Element> listChildren(Element e) {
+    return listElements(e.getChildNodes());
   }
 
 
@@ -55,14 +55,14 @@ public class DOMTools {
 
 
   public static Iterable<Element> getChildsChildrenElements(Element e0, String tagName) {
-    for (Element e : list(e0.getChildNodes()))
+    for (Element e : listElements(e0.getChildNodes()))
       if (e.getTagName().equals(tagName))
-        return list(e.getChildNodes());
+        return listElements(e.getChildNodes());
     return new ArrayList<Element>(0);
   }
 
   public static Element getChildrenElement(Element e0, String tagName) {
-    for (Element e : list(e0.getChildNodes()))
+    for (Element e : listElements(e0.getChildNodes()))
       if (e.getTagName().equals(tagName))
         return findElementSibling((e.getFirstChild()));
 
