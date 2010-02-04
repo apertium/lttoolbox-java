@@ -34,6 +34,7 @@ import static org.apertium.transfer.compile.DOMTools.*;
  * @author Jacob Nordfalk
  */
 public class ParseTranserFile {
+
   public String className;
 
   /** For checking macro names and numbers of parameters */
@@ -56,6 +57,25 @@ public class ParseTranserFile {
   private int currentNumberOfWordInParameterList;
 
   private Element currentNode;
+
+  private void processLu(Element e) {
+    // the lexical unit should only be outputted if it contains something
+    println("{");
+    println("String myword = ");
+    boolean first=true;
+    for (Element lu : listChildren(e)) {
+      println((first?"         ":"         +")+evalString(lu));
+      first = false;
+    }
+    println(first?"         \"\";":"         ;");
+    println("if (myword.length()>0)");
+    println("{");
+    append("'^'");
+    append("myword");
+    append("'$'");
+    println("}");
+    println("}");
+  }
 
   //public static final int OutputType_LU = 0;
   //public static final int OutputType_CHUNK = 1;
@@ -179,7 +199,7 @@ public class ParseTranserFile {
       String as = e.getAttribute("link-to");
       String expr=getReadClipExpr(e);
       if (as.isEmpty()) return expr;
-      else return "("+expr+".isEmpty()?\"\" : \"<"+e.getAttribute("pos")+">\")";
+      else return "("+expr+".isEmpty()?\"\" : \"<"+as+">\")";
     } else if (n.equals("lit-tag")) {
       return str("<"+e.getAttribute("v").replaceAll("\\.", "><")+">");
     } else if (n.equals("lit")) {
@@ -226,10 +246,7 @@ public class ParseTranserFile {
     for (Element e : listChildren(instr)) {
       String n = e.getTagName();
       if (n.equals("lu")) {
-        append("'^'");
-        for (Element lu : listChildren(e))
-          append(evalString(lu));
-        append("'$'");
+        processLu(e);
       } else if (n.equals("mlu")) {
         append("'^'");
         for (java.util.Iterator<Element> it = listChildren(e).iterator(); it.hasNext();) {
@@ -280,10 +297,11 @@ public class ParseTranserFile {
           append(evalString(findElementSibling(tag.getFirstChild())));
         append("'{'");
       } else if (n.equals("lu")) {
-        append("'^'");
-        for (Element lu : listChildren(c0))
-          append(evalString(lu));
-        append("'$'");
+        processLu(c0);
+        //append("'^'");
+        //for (Element lu : listChildren(c0))
+        //  append(evalString(lu));
+        //append("'$'");
       } else if (n.equals("mlu")) {
         append("'^'");
         for (java.util.Iterator<Element> it = listChildren(c0).iterator(); it.hasNext();) {
@@ -889,27 +907,44 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
         }
     }
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) throws IOException, ParserConfigurationException {
-      ParseTranserFile p = new ParseTranserFile();
+
+  private static void parseAndWriteToSrc(String t1xFile) throws IOException, InterruptedException {
+    ParseTranserFile p=new ParseTranserFile();
     try {
-      //p.parse("/home/j/esperanto/apertium/apertium-eo-en/apertium-eo-en.eo-en.t1x");
-      p.parse("/home/j/esperanto/apertium/apertium-eo-en/apertium-eo-en.en-eo.t1x");
-      //p.parse("/home/jim/NetBeansProjects/lttoolbox-java/apertium-en-ca.en-ca.t1x");
+      p.parse(t1xFile);
     } catch (Exception ex) {
       ex.printStackTrace();
     }
-      System.out.flush();
-      System.err.flush();
-      System.out.println("p.javaCode = " + p.javaCode);
-      //FileWriter fw = new FileWriter("/home/j/esperanto/apertium/apertium-eo-en/"+p.className+"java");
-      new File("src/org/apertium/transfer/generated/").mkdirs();
-      FileWriter fw = new FileWriter("src/org/apertium/transfer/generated/"+p.className+".java");
-      fw.append(p.javaCode);
-      fw.close();
-      System.out.flush();
+    Thread.sleep(100);
+    System.out.flush();
+    System.err.flush();
+    Thread.sleep(100);
+    System.err.println("p.javaCode = "+p.javaCode);
+    Thread.sleep(100);
+    System.out.flush();
+    System.err.flush();
+    Thread.sleep(100);
+    //FileWriter fw = new FileWriter("/home/j/esperanto/apertium/apertium-eo-en/"+p.className+"java");
+    new File("src/org/apertium/transfer/generated/").mkdirs();
+    FileWriter fw=new FileWriter("src/org/apertium/transfer/generated/"+p.className+".java");
+    fw.append(p.javaCode);
+    fw.close();
+  }
+
+    /**
+     * Test 
+     */
+    public static void main(String[] args) throws Exception {
+
+      System.err.println("System.out = " + System.in);
+      //parseAndWriteToSrc("/home/j/esperanto/apertium/apertium-eo-en/apertium-eo-en.en-eo.t1x");
+
+      parseAndWriteToSrc("testdata/transfer/apertium-eo-en.en-eo.t1x");
+      parseAndWriteToSrc("testdata/transfer/apertium-eo-en.eo-en.t1x");
+      parseAndWriteToSrc("testdata/transfer/apertium-nn-nb.nb-nn.t1x");
+
+    //p.parse();
+    //p.parse("/home/jim/NetBeansProjects/lttoolbox-java/apertium-en-ca.en-ca.t1x");
     }
 
 }

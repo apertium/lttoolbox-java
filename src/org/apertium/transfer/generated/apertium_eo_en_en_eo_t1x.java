@@ -295,10 +295,18 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "prnref"));
 		out.append("<SN><nom>");
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_whole, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_whole, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -312,12 +320,20 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "prn"));
 		out.append("<SN><nom>");
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_lem, true));
-		out.append(word1.target(attr_a_prn, true));
-		out.append(var_numero);
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_lem, true)
+			         +word1.target(attr_a_prn, true)
+			         +var_numero
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -330,10 +346,18 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "prnpers"));
 		out.append("<SN><nom>");
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_whole, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_whole, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -345,9 +369,17 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "num"));
 		out.append("<SN><nom>");
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_whole, true));
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_whole, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -360,22 +392,46 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "dato"));
 		out.append("<SN><nom>");
 		out.append('{');
-		out.append('^');
-		out.append(word2.target(attr_lem, true));
-		out.append("a");
-		out.append("<num><ord>");
-		out.append('$');
+		{
+			String myword = 
+			         word2.target(attr_lem, true)
+			         +"a"
+			         +"<num><ord>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(" ");
-		out.append('^');
-		out.append("de");
-		out.append("<pr>");
-		out.append('$');
+		{
+			String myword = 
+			         "de"
+			         +"<pr>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank1);
-		out.append('^');
-		out.append(word1.target(attr_lem, true));
-		out.append(word1.target(attr_tags, true));
-		out.append("<nom>");
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_lem, true)
+			         +word1.target(attr_tags, true)
+			         +"<nom>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -388,21 +444,45 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "dato"));
 		out.append("<SN><nom>");
 		out.append('{');
-		out.append('^');
-		out.append(word2.target(attr_lem, true));
-		out.append("<num><ord>");
-		out.append('$');
+		{
+			String myword = 
+			         word2.target(attr_lem, true)
+			         +"<num><ord>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(" ");
-		out.append('^');
-		out.append("de");
-		out.append("<pr>");
-		out.append('$');
+		{
+			String myword = 
+			         "de"
+			         +"<pr>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank1);
-		out.append('^');
-		out.append(word1.target(attr_lem, true));
-		out.append(word1.target(attr_tags, true));
-		out.append("<nom>");
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_lem, true)
+			         +word1.target(attr_tags, true)
+			         +"<nom>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -415,27 +495,59 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "dato"));
 		out.append("<SN><nom>");
 		out.append('{');
-		out.append('^');
-		out.append("la");
-		out.append("<det><def><sp>");
-		out.append('$');
+		{
+			String myword = 
+			         "la"
+			         +"<det><def><sp>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank1);
-		out.append('^');
-		out.append(word3.target(attr_lem, true));
-		out.append("an");
-		out.append("<num><ord>");
-		out.append('$');
+		{
+			String myword = 
+			         word3.target(attr_lem, true)
+			         +"an"
+			         +"<num><ord>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(" ");
-		out.append('^');
-		out.append("de");
-		out.append("<pr>");
-		out.append('$');
+		{
+			String myword = 
+			         "de"
+			         +"<pr>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank2);
-		out.append('^');
-		out.append(word2.target(attr_lem, true));
-		out.append(word2.target(attr_tags, true));
-		out.append("<nom>");
-		out.append('$');
+		{
+			String myword = 
+			         word2.target(attr_lem, true)
+			         +word2.target(attr_tags, true)
+			         +"<nom>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -448,27 +560,59 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "dato"));
 		out.append("<SN><nom>");
 		out.append('{');
-		out.append('^');
-		out.append("la");
-		out.append("<det><def><sp>");
-		out.append('$');
-		out.append('^');
-		out.append(word3.target(attr_lem, true));
-		out.append("n");
-		out.append("<num><ord>");
-		out.append('$');
+		{
+			String myword = 
+			         "la"
+			         +"<det><def><sp>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
+		{
+			String myword = 
+			         word3.target(attr_lem, true)
+			         +"n"
+			         +"<num><ord>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank1);
 		out.append(" ");
-		out.append('^');
-		out.append("de");
-		out.append("<pr>");
-		out.append('$');
+		{
+			String myword = 
+			         "de"
+			         +"<pr>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank2);
-		out.append('^');
-		out.append(word2.target(attr_lem, true));
-		out.append(word2.target(attr_tags, true));
-		out.append("<nom>");
-		out.append('$');
+		{
+			String myword = 
+			         word2.target(attr_lem, true)
+			         +word2.target(attr_tags, true)
+			         +"<nom>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -481,19 +625,35 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "num"));
 		out.append("<SN>");
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_whole, true));
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_whole, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 		out.append(blank1);
 		out.append('^');
 		out.append("pr");
 		out.append("<PREP>");
 		out.append('{');
-		out.append('^');
-		out.append("el");
-		out.append("<pr>");
-		out.append('$');
+		{
+			String myword = 
+			         "el"
+			         +"<pr>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -506,18 +666,42 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "num"));
 		out.append("<SN>");
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_whole, true));
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_whole, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank1);
-		out.append('^');
-		out.append("oble");
-		out.append("<cnjadv>");
-		out.append('$');
+		{
+			String myword = 
+			         "oble"
+			         +"<cnjadv>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank2);
-		out.append('^');
-		out.append(word3.target(attr_whole, true));
-		out.append('$');
+		{
+			String myword = 
+			         word3.target(attr_whole, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -530,16 +714,32 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "num"));
 		out.append("<SN><nom>");
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_whole, true));
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_whole, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank1);
-		out.append('^');
-		out.append("fojo");
-		out.append("<n>");
-		out.append(word2.target(attr_a_nbr, true));
-		out.append("<nom>");
-		out.append('$');
+		{
+			String myword = 
+			         "fojo"
+			         +"<n>"
+			         +word2.target(attr_a_nbr, true)
+			         +"<nom>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -563,12 +763,20 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "det"));
 		out.append("<SD><nom>");
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_lemh, true));
-		out.append(word1.target(attr_tags, true));
-		out.append("<2>");
-		out.append(word1.target(attr_lemq, true));
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_lemh, true)
+			         +word1.target(attr_tags, true)
+			         +"<2>"
+			         +word1.target(attr_lemq, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -582,11 +790,19 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "nom"));
 		out.append("<SN><nom>");
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_lem, true));
-		out.append(word1.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_lem, true)
+			         +word1.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -600,15 +816,31 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "more_nom"));
 		out.append("<SN><nom>");
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_whole, true));
-		out.append("<nom>");
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_whole, true)
+			         +"<nom>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank1);
-		out.append('^');
-		out.append(word2.target(attr_whole, true));
-		out.append("<nom>");
-		out.append('$');
+		{
+			String myword = 
+			         word2.target(attr_whole, true)
+			         +"<nom>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -624,11 +856,19 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("<SN><nom>");
 		out.append('{');
 		out.append(var_determiner);
-		out.append('^');
-		out.append(word2.target(attr_lem, true));
-		out.append(word2.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word2.target(attr_lem, true)
+			         +word2.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -645,20 +885,36 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("<SN><nom>");
 		out.append('{');
 		out.append(var_determiner);
-		out.append('^');
-		out.append(word2.target(attr_lem, true));
-		out.append("<adj>");
-		out.append(word2.target(attr_a_acr, true));
-		out.append(word2.target(attr_a_gen, true));
-		out.append(word3.target(attr_a_nbr, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word2.target(attr_lem, true)
+			         +"<adj>"
+			         +word2.target(attr_a_acr, true)
+			         +word2.target(attr_a_gen, true)
+			         +word3.target(attr_a_nbr, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank2);
-		out.append('^');
-		out.append(word3.target(attr_lem, true));
-		out.append(word3.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word3.target(attr_lem, true)
+			         +word3.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -676,29 +932,53 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("<SN><nom>");
 		out.append('{');
 		out.append(var_determiner);
-		out.append('^');
-		out.append(word2.target(attr_lem, true));
-		out.append("<adj>");
-		out.append(word2.target(attr_a_acr, true));
-		out.append(word2.target(attr_a_gen, true));
-		out.append(word4.target(attr_a_nbr, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word2.target(attr_lem, true)
+			         +"<adj>"
+			         +word2.target(attr_a_acr, true)
+			         +word2.target(attr_a_gen, true)
+			         +word4.target(attr_a_nbr, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank2);
-		out.append('^');
-		out.append(word3.target(attr_lem, true));
-		out.append("<adj>");
-		out.append(word3.target(attr_a_acr, true));
-		out.append(word3.target(attr_a_gen, true));
-		out.append(word4.target(attr_a_nbr, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word3.target(attr_lem, true)
+			         +"<adj>"
+			         +word3.target(attr_a_acr, true)
+			         +word3.target(attr_a_gen, true)
+			         +word4.target(attr_a_nbr, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank3);
-		out.append('^');
-		out.append(word4.target(attr_lem, true));
-		out.append(word4.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word4.target(attr_lem, true)
+			         +word4.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -717,38 +997,70 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("<SN><nom>");
 		out.append('{');
 		out.append(var_determiner);
-		out.append('^');
-		out.append(word2.target(attr_lem, true));
-		out.append("<adj>");
-		out.append(word2.target(attr_a_acr, true));
-		out.append(word2.target(attr_a_gen, true));
-		out.append(word5.target(attr_a_nbr, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word2.target(attr_lem, true)
+			         +"<adj>"
+			         +word2.target(attr_a_acr, true)
+			         +word2.target(attr_a_gen, true)
+			         +word5.target(attr_a_nbr, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank2);
-		out.append('^');
-		out.append(word3.target(attr_lem, true));
-		out.append("<adj>");
-		out.append(word3.target(attr_a_acr, true));
-		out.append(word3.target(attr_a_gen, true));
-		out.append(word5.target(attr_a_nbr, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word3.target(attr_lem, true)
+			         +"<adj>"
+			         +word3.target(attr_a_acr, true)
+			         +word3.target(attr_a_gen, true)
+			         +word5.target(attr_a_nbr, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank3);
-		out.append('^');
-		out.append(word4.target(attr_lem, true));
-		out.append("<adj>");
-		out.append(word4.target(attr_a_acr, true));
-		out.append(word4.target(attr_a_gen, true));
-		out.append(word5.target(attr_a_nbr, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word4.target(attr_lem, true)
+			         +"<adj>"
+			         +word4.target(attr_a_acr, true)
+			         +word4.target(attr_a_gen, true)
+			         +word5.target(attr_a_nbr, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank4);
-		out.append('^');
-		out.append(word5.target(attr_lem, true));
-		out.append(word5.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word5.target(attr_lem, true)
+			         +word5.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -764,9 +1076,17 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, var_chunk_name));
 		out.append("<SN><nom>");
 		out.append('{');
-		out.append('^');
-		out.append(var_adjectiu);
-		out.append('$');
+		{
+			String myword = 
+			         var_adjectiu
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -783,15 +1103,31 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("<SN><nom>");
 		out.append('{');
 		out.append(var_determiner);
-		out.append('^');
-		out.append(var_adjectiu);
-		out.append('$');
+		{
+			String myword = 
+			         var_adjectiu
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank2);
-		out.append('^');
-		out.append(word3.target(attr_lem, true));
-		out.append(word3.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word3.target(attr_lem, true)
+			         +word3.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -806,15 +1142,31 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "preadv?_adj_nom"));
 		out.append("<SN><nom>");
 		out.append('{');
-		out.append('^');
-		out.append(var_adjectiu);
-		out.append('$');
+		{
+			String myword = 
+			         var_adjectiu
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank1);
-		out.append('^');
-		out.append(word2.target(attr_lem, true));
-		out.append(word2.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word2.target(attr_lem, true)
+			         +word2.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -832,19 +1184,43 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "preadv?_adj_adj_nom"));
 		out.append("<SN><nom>");
 		out.append('{');
-		out.append('^');
-		out.append(var_tmp2);
-		out.append('$');
+		{
+			String myword = 
+			         var_tmp2
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank1);
-		out.append('^');
-		out.append(var_adjectiu);
-		out.append('$');
+		{
+			String myword = 
+			         var_adjectiu
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank2);
-		out.append('^');
-		out.append(word3.target(attr_lem, true));
-		out.append(word3.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word3.target(attr_lem, true)
+			         +word3.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -860,19 +1236,43 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("<SN><nom>");
 		out.append('{');
 		out.append(var_determiner);
-		out.append('^');
-		out.append(word2.target(attr_whole, true));
-		out.append('$');
+		{
+			String myword = 
+			         word2.target(attr_whole, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank2);
-		out.append('^');
-		out.append(word3.target(attr_whole, true));
-		out.append('$');
+		{
+			String myword = 
+			         word3.target(attr_whole, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank3);
-		out.append('^');
-		out.append(word4.target(attr_lem, true));
-		out.append(word4.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word4.target(attr_lem, true)
+			         +word4.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -891,19 +1291,43 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("<SN><nom>");
 		out.append('{');
 		out.append(var_determiner);
-		out.append('^');
-		out.append(var_tmp1);
-		out.append('$');
+		{
+			String myword = 
+			         var_tmp1
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank2);
-		out.append('^');
-		out.append(var_adjectiu);
-		out.append('$');
+		{
+			String myword = 
+			         var_adjectiu
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank3);
-		out.append('^');
-		out.append(word4.target(attr_lem, true));
-		out.append(word4.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word4.target(attr_lem, true)
+			         +word4.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -924,23 +1348,55 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("<SN><nom>");
 		out.append('{');
 		out.append(var_determiner);
-		out.append('^');
-		out.append(var_tmp1);
-		out.append('$');
+		{
+			String myword = 
+			         var_tmp1
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank2);
-		out.append('^');
-		out.append(var_tmp2);
-		out.append('$');
+		{
+			String myword = 
+			         var_tmp2
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank3);
-		out.append('^');
-		out.append(var_adjectiu);
-		out.append('$');
+		{
+			String myword = 
+			         var_adjectiu
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank4);
-		out.append('^');
-		out.append(word5.target(attr_lem, true));
-		out.append(word5.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word5.target(attr_lem, true)
+			         +word5.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -955,20 +1411,36 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "nom_nom"));
 		out.append("<SN><nom>");
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_lem, true));
-		out.append("<adj>");
-		out.append(word1.target(attr_a_acr, true));
-		out.append(word1.target(attr_a_gen, true));
-		out.append(word2.target(attr_a_nbr, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_lem, true)
+			         +"<adj>"
+			         +word1.target(attr_a_acr, true)
+			         +word1.target(attr_a_gen, true)
+			         +word2.target(attr_a_nbr, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank1);
-		out.append('^');
-		out.append(word2.target(attr_lem, true));
-		out.append(word2.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word2.target(attr_lem, true)
+			         +word2.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -981,11 +1453,19 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "ant"));
 		out.append("<SN><nom>");
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_lem, true));
-		out.append(word1.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_lem, true)
+			         +word1.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -998,17 +1478,33 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "ant_cog"));
 		out.append("<SN><nom>");
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_lem, true));
-		out.append(word1.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_lem, true)
+			         +word1.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank1);
-		out.append('^');
-		out.append(word2.target(attr_lem, true));
-		out.append(word2.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word2.target(attr_lem, true)
+			         +word2.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -1021,23 +1517,47 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "ant_cog"));
 		out.append("<SN><nom>");
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_lem, true));
-		out.append(word1.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_lem, true)
+			         +word1.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank1);
-		out.append('^');
-		out.append(word2.target(attr_lem, true));
-		out.append(word2.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word2.target(attr_lem, true)
+			         +word2.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank2);
-		out.append('^');
-		out.append(word3.target(attr_lem, true));
-		out.append(word3.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word3.target(attr_lem, true)
+			         +word3.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -1050,29 +1570,61 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "ant_ant_cog_cog"));
 		out.append("<SN><nom>");
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_lem, true));
-		out.append(word1.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_lem, true)
+			         +word1.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank1);
-		out.append('^');
-		out.append(word2.target(attr_lem, true));
-		out.append(word2.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word2.target(attr_lem, true)
+			         +word2.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank2);
-		out.append('^');
-		out.append(word3.target(attr_lem, true));
-		out.append(word3.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word3.target(attr_lem, true)
+			         +word3.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank3);
-		out.append('^');
-		out.append(word4.target(attr_lem, true));
-		out.append(word4.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word4.target(attr_lem, true)
+			         +word4.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -1085,27 +1637,59 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "ant-ant_cog"));
 		out.append("<SN><nom>");
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_lem, true));
-		out.append(word1.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_lem, true)
+			         +word1.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank1);
-		out.append('^');
-		out.append(word2.target(attr_whole, true));
-		out.append('$');
+		{
+			String myword = 
+			         word2.target(attr_whole, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank2);
-		out.append('^');
-		out.append(word3.target(attr_lem, true));
-		out.append(word3.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word3.target(attr_lem, true)
+			         +word3.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank3);
-		out.append('^');
-		out.append(word4.target(attr_lem, true));
-		out.append(word4.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word4.target(attr_lem, true)
+			         +word4.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -1118,27 +1702,59 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "ant_cog-cog"));
 		out.append("<SN><nom>");
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_lem, true));
-		out.append(word1.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_lem, true)
+			         +word1.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank1);
-		out.append('^');
-		out.append(word2.target(attr_lem, true));
-		out.append(word2.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word2.target(attr_lem, true)
+			         +word2.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank2);
-		out.append('^');
-		out.append(word3.target(attr_whole, true));
-		out.append('$');
+		{
+			String myword = 
+			         word3.target(attr_whole, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank3);
-		out.append('^');
-		out.append(word4.target(attr_lem, true));
-		out.append(word4.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word4.target(attr_lem, true)
+			         +word4.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -1151,37 +1767,85 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "ant-ant_cog-cog"));
 		out.append("<SN><nom>");
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_lem, true));
-		out.append(word1.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_lem, true)
+			         +word1.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank1);
-		out.append('^');
-		out.append(word2.target(attr_whole, true));
-		out.append('$');
+		{
+			String myword = 
+			         word2.target(attr_whole, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank2);
-		out.append('^');
-		out.append(word3.target(attr_lem, true));
-		out.append(word3.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word3.target(attr_lem, true)
+			         +word3.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank3);
-		out.append('^');
-		out.append(word4.target(attr_lem, true));
-		out.append(word4.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word4.target(attr_lem, true)
+			         +word4.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank4);
-		out.append('^');
-		out.append(word5.target(attr_whole, true));
-		out.append('$');
+		{
+			String myword = 
+			         word5.target(attr_whole, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank5);
-		out.append('^');
-		out.append(word6.target(attr_lem, true));
-		out.append(word6.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word6.target(attr_lem, true)
+			         +word6.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -1198,22 +1862,46 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "nom_gen_nom"));
 		out.append("<SN><nom>");
 		out.append('{');
-		out.append('^');
-		out.append(word3.target(attr_lem, true));
-		out.append(word3.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word3.target(attr_lem, true)
+			         +word3.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(var_blanko);
 		out.append(" ");
-		out.append('^');
-		out.append(word2.target(attr_whole, true));
-		out.append('$');
+		{
+			String myword = 
+			         word2.target(attr_whole, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank2);
-		out.append('^');
-		out.append(word1.target(attr_lem, true));
-		out.append(word1.target(attr_tags, true));
-		out.append(var_nomvar);
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_lem, true)
+			         +word1.target(attr_tags, true)
+			         +var_nomvar
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -1230,22 +1918,46 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "nom_gen_nom"));
 		out.append("<SN><nom>");
 		out.append('{');
-		out.append('^');
-		out.append(word3.target(attr_lem, true));
-		out.append(word3.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word3.target(attr_lem, true)
+			         +word3.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(var_blanko);
 		out.append(" ");
-		out.append('^');
-		out.append(word2.target(attr_whole, true));
-		out.append('$');
+		{
+			String myword = 
+			         word2.target(attr_whole, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank2);
-		out.append('^');
-		out.append(word1.target(attr_lem, true));
-		out.append(word1.target(attr_tags, true));
-		out.append(var_nomvar);
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_lem, true)
+			         +word1.target(attr_tags, true)
+			         +var_nomvar
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -1263,31 +1975,63 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "n_n_de_n"));
 		out.append("<SN><nom>");
 		out.append('{');
-		out.append('^');
-		out.append(word3.target(attr_lem, true));
-		out.append("<adj>");
-		out.append(word3.target(attr_a_acr, true));
-		out.append(word3.target(attr_a_gen, true));
-		out.append(word4.target(attr_a_nbr, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word3.target(attr_lem, true)
+			         +"<adj>"
+			         +word3.target(attr_a_acr, true)
+			         +word3.target(attr_a_gen, true)
+			         +word4.target(attr_a_nbr, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(var_blanko);
 		out.append(" ");
-		out.append('^');
-		out.append(word4.target(attr_lem, true));
-		out.append(word4.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word4.target(attr_lem, true)
+			         +word4.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank2);
-		out.append('^');
-		out.append(word2.target(attr_whole, true));
-		out.append('$');
+		{
+			String myword = 
+			         word2.target(attr_whole, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank3);
-		out.append('^');
-		out.append(word1.target(attr_lem, true));
-		out.append(word1.target(attr_tags, true));
-		out.append(var_nomvar);
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_lem, true)
+			         +word1.target(attr_tags, true)
+			         +var_nomvar
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -1308,29 +2052,61 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "det_nom_gen_det_nom"));
 		out.append("<SN><nom>");
 		out.append('{');
-		out.append('^');
-		out.append(TransferWord.copycase(word1.source(attr_lem, true), "la"));
-		out.append("<det><def><sp>");
-		out.append('$');
+		{
+			String myword = 
+			         TransferWord.copycase(word1.source(attr_lem, true), "la")
+			         +"<det><def><sp>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(var_tmp2);
 		out.append(" ");
-		out.append('^');
-		out.append(word4.target(attr_lem, true));
-		out.append(word4.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word4.target(attr_lem, true)
+			         +word4.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(var_blanko);
 		out.append(" ");
-		out.append('^');
-		out.append(word3.target(attr_whole, true));
-		out.append('$');
+		{
+			String myword = 
+			         word3.target(attr_whole, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank3);
 		out.append(var_determiner);
-		out.append('^');
-		out.append(word2.target(attr_lem, true));
-		out.append(word2.target(attr_tags, true));
-		out.append(var_nomvar);
-		out.append('$');
+		{
+			String myword = 
+			         word2.target(attr_lem, true)
+			         +word2.target(attr_tags, true)
+			         +var_nomvar
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -1354,34 +2130,74 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("<SN><nom>");
 		out.append('{');
 		out.append(var_tmp2);
-		out.append('^');
-		out.append(TransferWord.copycase(word1.source(attr_lem, true), "la"));
-		out.append("<det><def><sp>");
-		out.append('$');
+		{
+			String myword = 
+			         TransferWord.copycase(word1.source(attr_lem, true), "la")
+			         +"<det><def><sp>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank2);
-		out.append('^');
-		out.append(word5.target(attr_lem, true));
-		out.append(word5.target(attr_tags, true));
-		out.append("<2>");
-		out.append('$');
+		{
+			String myword = 
+			         word5.target(attr_lem, true)
+			         +word5.target(attr_tags, true)
+			         +"<2>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(var_blanko);
 		out.append(" ");
-		out.append('^');
-		out.append(word4.target(attr_whole, true));
-		out.append('$');
+		{
+			String myword = 
+			         word4.target(attr_whole, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank4);
 		out.append(var_determiner);
-		out.append('^');
-		out.append(word2.target(attr_lem, true));
-		out.append(word2.target(attr_tags, true));
-		out.append(var_tmp1);
-		out.append('$');
+		{
+			String myword = 
+			         word2.target(attr_lem, true)
+			         +word2.target(attr_tags, true)
+			         +var_tmp1
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(" ");
-		out.append('^');
-		out.append(word3.target(attr_lem, true));
-		out.append(word3.target(attr_tags, true));
-		out.append(var_nomvar);
-		out.append('$');
+		{
+			String myword = 
+			         word3.target(attr_lem, true)
+			         +word3.target(attr_tags, true)
+			         +var_nomvar
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -1396,9 +2212,17 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("<and_or>");
 		out.append(var_and_or_but);
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_whole, true));
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_whole, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -1412,9 +2236,17 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("<CC>");
 		out.append(var_and_or_but);
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_whole, true));
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_whole, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -1426,9 +2258,17 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "cnjadv"));
 		out.append("<CA>");
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_whole, true));
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_whole, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -1440,9 +2280,17 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "CS"));
 		out.append("<NUM>");
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_whole, true));
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_whole, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -1453,9 +2301,17 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("cm");
 		out.append("<CM>");
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_whole, true));
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_whole, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -1467,9 +2323,17 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "rel"));
 		out.append("<REL>");
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_whole, true));
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_whole, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -1481,9 +2345,17 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "preadv"));
 		out.append("<PREADV>");
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_whole, true));
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_whole, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -1495,9 +2367,17 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "predet"));
 		out.append("<PREDET>");
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_whole, true));
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_whole, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -1509,9 +2389,17 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "adv"));
 		out.append("<Adv>");
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_whole, true));
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_whole, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -1523,9 +2411,17 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "pr"));
 		out.append("<PREP>");
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_whole, true));
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_whole, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -1537,10 +2433,18 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("gen");
 		out.append("<GEN>");
 		out.append('{');
-		out.append('^');
-		out.append("a");
-		out.append("<gen>");
-		out.append('$');
+		{
+			String myword = 
+			         "a"
+			         +"<gen>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -1552,9 +2456,17 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("sent");
 		out.append("<S>");
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_whole, true));
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_whole, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -1567,9 +2479,17 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("sent");
 		out.append("<S>");
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_whole, true));
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_whole, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -1581,9 +2501,17 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "unknown"));
 		out.append("<SN><nom>");
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_whole, true));
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_whole, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -1600,12 +2528,20 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(var_tipus_verb);
 		out.append(word2.target(attr_a_tns, true));
 		out.append('{');
-		out.append('^');
-		out.append(word2.target(attr_lemh, true));
-		out.append(word2.target(attr_a_vrb, true));
-		out.append("<3>");
-		out.append(word2.target(attr_lemq, true));
-		out.append('$');
+		{
+			String myword = 
+			         word2.target(attr_lemh, true)
+			         +word2.target(attr_a_vrb, true)
+			         +"<3>"
+			         +word2.target(attr_lemq, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -1622,12 +2558,20 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(var_tipus_verb);
 		out.append("<inf>");
 		out.append('{');
-		out.append('^');
-		out.append(word2.target(attr_lemh, true));
-		out.append(word2.target(attr_a_vrb, true));
-		out.append("<3>");
-		out.append(word2.target(attr_lemq, true));
-		out.append('$');
+		{
+			String myword = 
+			         word2.target(attr_lemh, true)
+			         +word2.target(attr_a_vrb, true)
+			         +"<3>"
+			         +word2.target(attr_lemq, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -1645,12 +2589,20 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(var_tipus_verb);
 		out.append("<inf>");
 		out.append('{');
-		out.append('^');
-		out.append(word3.target(attr_lemh, true));
-		out.append(word3.target(attr_a_vrb, true));
-		out.append("<3>");
-		out.append(word3.target(attr_lemq, true));
-		out.append('$');
+		{
+			String myword = 
+			         word3.target(attr_lemh, true)
+			         +word3.target(attr_a_vrb, true)
+			         +"<3>"
+			         +word3.target(attr_lemq, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -1666,19 +2618,35 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(var_tipus_verb);
 		out.append(word1.target(attr_a_tns, true));
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_lem, true));
-		out.append(word1.target(attr_a_vrb, true));
-		out.append("<3>");
-		out.append(word1.target(attr_lemq, true));
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_lem, true)
+			         +word1.target(attr_a_vrb, true)
+			         +"<3>"
+			         +word1.target(attr_lemq, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank1);
-		out.append('^');
-		out.append(word2.target(attr_lemh, true));
-		out.append(word2.target(attr_a_vrb, true));
-		out.append(word2.target(attr_a_tns, true));
-		out.append(word2.target(attr_lemq, true));
-		out.append('$');
+		{
+			String myword = 
+			         word2.target(attr_lemh, true)
+			         +word2.target(attr_a_vrb, true)
+			         +word2.target(attr_a_tns, true)
+			         +word2.target(attr_lemq, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -1695,16 +2663,32 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(var_tipus_verb);
 		out.append(word1.target(attr_a_tns, true));
 		out.append('{');
-		out.append('^');
-		out.append("el");
-		out.append("<adv>");
-		out.append('$');
-		out.append('^');
-		out.append(word1.target(attr_lemh, true));
-		out.append(word1.target(attr_a_vrb, true));
-		out.append("<3>");
-		out.append(word1.target(attr_lemq, true));
-		out.append('$');
+		{
+			String myword = 
+			         "el"
+			         +"<adv>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
+		{
+			String myword = 
+			         word1.target(attr_lemh, true)
+			         +word1.target(attr_a_vrb, true)
+			         +"<3>"
+			         +word1.target(attr_lemq, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -1720,16 +2704,32 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(var_tipus_verb);
 		out.append(word1.target(attr_a_tns, true));
 		out.append('{');
-		out.append('^');
-		out.append(word2.target(attr_whole, true));
-		out.append('$');
+		{
+			String myword = 
+			         word2.target(attr_whole, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append(blank1);
-		out.append('^');
-		out.append(word1.target(attr_lemh, true));
-		out.append(word1.target(attr_a_vrb, true));
-		out.append("<3>");
-		out.append(word1.target(attr_lemq, true));
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_lemh, true)
+			         +word1.target(attr_a_vrb, true)
+			         +"<3>"
+			         +word1.target(attr_lemq, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -1744,22 +2744,38 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(var_tipus_verb);
 		out.append(word1.target(attr_a_tns, true));
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_lem, true));
-		out.append(word1.target(attr_a_vrb, true));
-		out.append("<3>");
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_lem, true)
+			         +word1.target(attr_a_vrb, true)
+			         +"<3>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 		out.append(blank1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "pls_verb2"));
 		out.append(word2.target(attr_a_tns, true));
 		out.append('{');
-		out.append('^');
-		out.append(word2.target(attr_lem, true));
-		out.append(word2.target(attr_a_vrb, true));
-		out.append("<inf>");
-		out.append('$');
+		{
+			String myword = 
+			         word2.target(attr_lem, true)
+			         +word2.target(attr_a_vrb, true)
+			         +"<inf>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -1776,10 +2792,18 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 			out.append(TransferWord.copycase(var_caseFirstWord, "ja2"));
 			out.append("<Adv>");
 			out.append('{');
-			out.append('^');
-			out.append("ja");
-			out.append("<adv>");
-			out.append('$');
+			{
+				String myword = 
+				         "ja"
+				         +"<adv>"
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append("}$");
 			out.append(blank1);
 			var_caseFirstWord = "aa";
@@ -1792,9 +2816,17 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "adv2"));
 		out.append("<Adv>");
 		out.append('{');
-		out.append('^');
-		out.append(word2.target(attr_whole, true));
-		out.append('$');
+		{
+			String myword = 
+			         word2.target(attr_whole, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 		out.append(blank2);
 		out.append('^');
@@ -1803,9 +2835,17 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(var_tipus_verb);
 		out.append(word1.target(attr_a_tns, true));
 		out.append('{');
-		out.append('^');
-		out.append(var_verbkonj);
-		out.append('$');
+		{
+			String myword = 
+			         var_verbkonj
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -1820,10 +2860,18 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "ja"));
 		out.append("<Adv>");
 		out.append('{');
-		out.append('^');
-		out.append("ja");
-		out.append("<adv>");
-		out.append('$');
+		{
+			String myword = 
+			         "ja"
+			         +"<adv>"
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 		out.append(blank1);
 		out.append('^');
@@ -1832,9 +2880,17 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(var_tipus_verb);
 		out.append(word1.target(attr_a_tns, true));
 		out.append('{');
-		out.append('^');
-		out.append(var_verbkonj);
-		out.append('$');
+		{
+			String myword = 
+			         var_verbkonj
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -1854,12 +2910,20 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 			out.append(var_tipus_verb);
 			out.append(var_temps);
 			out.append('{');
-			out.append('^');
-			out.append(word2.target(attr_lemh, true));
-			out.append(word2.target(attr_a_vrb, true));
-			out.append("<3>");
-			out.append(word2.target(attr_lemq, true));
-			out.append('$');
+			{
+				String myword = 
+				         word2.target(attr_lemh, true)
+				         +word2.target(attr_a_vrb, true)
+				         +"<3>"
+				         +word2.target(attr_lemq, true)
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append("}$");
 		}
 		else
@@ -1874,17 +2938,33 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 			out.append(var_tipus_verb);
 			out.append("<inf>");
 			out.append('{');
-			out.append('^');
-			out.append("povi");
-			out.append("<vaux><cni>");
-			out.append('$');
+			{
+				String myword = 
+				         "povi"
+				         +"<vaux><cni>"
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append(blank1);
-			out.append('^');
-			out.append(word2.target(attr_lemh, true));
-			out.append(word2.target(attr_a_vrb, true));
-			out.append("<3>");
-			out.append(word2.target(attr_lemq, true));
-			out.append('$');
+			{
+				String myword = 
+				         word2.target(attr_lemh, true)
+				         +word2.target(attr_a_vrb, true)
+				         +"<3>"
+				         +word2.target(attr_lemq, true)
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append("}$");
 		}
 		else
@@ -1896,19 +2976,35 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 			out.append(var_tipus_verb);
 			out.append(word1.target(attr_a_tns, true));
 			out.append('{');
-			out.append('^');
-			out.append(word1.target(attr_lemh, true));
-			out.append(word1.target(attr_a_vrb, true));
-			out.append("<3>");
-			out.append(word1.target(attr_lemq, true));
-			out.append('$');
+			{
+				String myword = 
+				         word1.target(attr_lemh, true)
+				         +word1.target(attr_a_vrb, true)
+				         +"<3>"
+				         +word1.target(attr_lemq, true)
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append(blank1);
-			out.append('^');
-			out.append(word2.target(attr_lemh, true));
-			out.append(word2.target(attr_a_vrb, true));
-			out.append(var_temps);
-			out.append(word2.target(attr_lemq, true));
-			out.append('$');
+			{
+				String myword = 
+				         word2.target(attr_lemh, true)
+				         +word2.target(attr_a_vrb, true)
+				         +var_temps
+				         +word2.target(attr_lemq, true)
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append("}$");
 		}
 	}
@@ -1929,16 +3025,32 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 			out.append(var_tipus_verb);
 			out.append(var_temps);
 			out.append('{');
-			out.append('^');
-			out.append(word2.target(attr_whole, true));
-			out.append('$');
+			{
+				String myword = 
+				         word2.target(attr_whole, true)
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append(blank2);
-			out.append('^');
-			out.append(word3.target(attr_lemh, true));
-			out.append(word3.target(attr_a_vrb, true));
-			out.append("<3>");
-			out.append(word3.target(attr_lemq, true));
-			out.append('$');
+			{
+				String myword = 
+				         word3.target(attr_lemh, true)
+				         +word3.target(attr_a_vrb, true)
+				         +"<3>"
+				         +word3.target(attr_lemq, true)
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append("}$");
 		}
 		else
@@ -1953,21 +3065,45 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 			out.append(var_tipus_verb);
 			out.append("<inf>");
 			out.append('{');
-			out.append('^');
-			out.append(word2.target(attr_whole, true));
-			out.append('$');
+			{
+				String myword = 
+				         word2.target(attr_whole, true)
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append(blank1);
-			out.append('^');
-			out.append("povi");
-			out.append("<vaux><cni>");
-			out.append('$');
+			{
+				String myword = 
+				         "povi"
+				         +"<vaux><cni>"
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append(blank2);
-			out.append('^');
-			out.append(word3.target(attr_lemh, true));
-			out.append(word3.target(attr_a_vrb, true));
-			out.append("<3>");
-			out.append(word3.target(attr_lemq, true));
-			out.append('$');
+			{
+				String myword = 
+				         word3.target(attr_lemh, true)
+				         +word3.target(attr_a_vrb, true)
+				         +"<3>"
+				         +word3.target(attr_lemq, true)
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append("}$");
 		}
 		else
@@ -1979,20 +3115,44 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 			out.append(var_tipus_verb);
 			out.append(var_temps);
 			out.append('{');
-			out.append('^');
-			out.append(word2.target(attr_whole, true));
-			out.append('$');
+			{
+				String myword = 
+				         word2.target(attr_whole, true)
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append(blank1);
-			out.append('^');
-			out.append(word1.target(attr_whole, true));
-			out.append('$');
+			{
+				String myword = 
+				         word1.target(attr_whole, true)
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append(blank2);
-			out.append('^');
-			out.append(word3.target(attr_lemh, true));
-			out.append(word3.target(attr_a_vrb, true));
-			out.append("<3>");
-			out.append(word3.target(attr_lemq, true));
-			out.append('$');
+			{
+				String myword = 
+				         word3.target(attr_lemh, true)
+				         +word3.target(attr_a_vrb, true)
+				         +"<3>"
+				         +word3.target(attr_lemq, true)
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append("}$");
 		}
 	}
@@ -2013,20 +3173,44 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 			out.append(var_tipus_verb);
 			out.append(var_temps);
 			out.append('{');
-			out.append('^');
-			out.append(word2.target(attr_whole, true));
-			out.append('$');
+			{
+				String myword = 
+				         word2.target(attr_whole, true)
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append(blank2);
-			out.append('^');
-			out.append(word3.target(attr_whole, true));
-			out.append('$');
+			{
+				String myword = 
+				         word3.target(attr_whole, true)
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append(blank3);
-			out.append('^');
-			out.append(word4.target(attr_lemh, true));
-			out.append(word4.target(attr_a_vrb, true));
-			out.append("<3>");
-			out.append(word4.target(attr_lemq, true));
-			out.append('$');
+			{
+				String myword = 
+				         word4.target(attr_lemh, true)
+				         +word4.target(attr_a_vrb, true)
+				         +"<3>"
+				         +word4.target(attr_lemq, true)
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append("}$");
 		}
 		else
@@ -2041,25 +3225,57 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 			out.append(var_tipus_verb);
 			out.append("<inf>");
 			out.append('{');
-			out.append('^');
-			out.append(word2.target(attr_whole, true));
-			out.append('$');
+			{
+				String myword = 
+				         word2.target(attr_whole, true)
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append(blank1);
-			out.append('^');
-			out.append(word3.target(attr_whole, true));
-			out.append('$');
+			{
+				String myword = 
+				         word3.target(attr_whole, true)
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append(blank2);
-			out.append('^');
-			out.append("povi");
-			out.append("<vaux><cni>");
-			out.append('$');
+			{
+				String myword = 
+				         "povi"
+				         +"<vaux><cni>"
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append(blank3);
-			out.append('^');
-			out.append(word4.target(attr_lemh, true));
-			out.append(word4.target(attr_a_vrb, true));
-			out.append("<3>");
-			out.append(word4.target(attr_lemq, true));
-			out.append('$');
+			{
+				String myword = 
+				         word4.target(attr_lemh, true)
+				         +word4.target(attr_a_vrb, true)
+				         +"<3>"
+				         +word4.target(attr_lemq, true)
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append("}$");
 		}
 		else
@@ -2071,24 +3287,56 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 			out.append(var_tipus_verb);
 			out.append(var_temps);
 			out.append('{');
-			out.append('^');
-			out.append(word1.target(attr_whole, true));
-			out.append('$');
+			{
+				String myword = 
+				         word1.target(attr_whole, true)
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append(blank1);
-			out.append('^');
-			out.append(word2.target(attr_whole, true));
-			out.append('$');
+			{
+				String myword = 
+				         word2.target(attr_whole, true)
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append(blank2);
-			out.append('^');
-			out.append(word3.target(attr_whole, true));
-			out.append('$');
+			{
+				String myword = 
+				         word3.target(attr_whole, true)
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append(blank3);
-			out.append('^');
-			out.append(word4.target(attr_lemh, true));
-			out.append(word4.target(attr_a_vrb, true));
-			out.append("<3>");
-			out.append(word4.target(attr_lemq, true));
-			out.append('$');
+			{
+				String myword = 
+				         word4.target(attr_lemh, true)
+				         +word4.target(attr_a_vrb, true)
+				         +"<3>"
+				         +word4.target(attr_lemq, true)
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append("}$");
 		}
 	}
@@ -2109,18 +3357,34 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 			out.append(var_tipus_verb);
 			out.append("<pp3>");
 			out.append('{');
-			out.append('^');
-			out.append("esti");
-			out.append("<vbser>");
-			out.append(var_temps);
-			out.append('$');
+			{
+				String myword = 
+				         "esti"
+				         +"<vbser>"
+				         +var_temps
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append(blank2);
-			out.append('^');
-			out.append(word3.target(attr_lemh, true));
-			out.append(word3.target(attr_a_vrb, true));
-			out.append("<3>");
-			out.append(word3.target(attr_lemq, true));
-			out.append('$');
+			{
+				String myword = 
+				         word3.target(attr_lemh, true)
+				         +word3.target(attr_a_vrb, true)
+				         +"<3>"
+				         +word3.target(attr_lemq, true)
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append("}$");
 		}
 		else
@@ -2134,17 +3398,33 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 			out.append(var_tipus_verb);
 			out.append(var_temps);
 			out.append('{');
-			out.append('^');
-			out.append("eble");
-			out.append("<adv>");
-			out.append('$');
+			{
+				String myword = 
+				         "eble"
+				         +"<adv>"
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append(blank2);
-			out.append('^');
-			out.append(word3.target(attr_lemh, true));
-			out.append(word3.target(attr_a_vrb, true));
-			out.append("<3>");
-			out.append(word3.target(attr_lemq, true));
-			out.append('$');
+			{
+				String myword = 
+				         word3.target(attr_lemh, true)
+				         +word3.target(attr_a_vrb, true)
+				         +"<3>"
+				         +word3.target(attr_lemq, true)
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append("}$");
 		}
 		else
@@ -2158,17 +3438,33 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 			out.append(var_tipus_verb);
 			out.append(var_temps);
 			out.append('{');
-			out.append('^');
-			out.append("eble");
-			out.append("<adv>");
-			out.append('$');
+			{
+				String myword = 
+				         "eble"
+				         +"<adv>"
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append(blank2);
-			out.append('^');
-			out.append(word3.target(attr_lemh, true));
-			out.append(word3.target(attr_a_vrb, true));
-			out.append("<3>");
-			out.append(word3.target(attr_lemq, true));
-			out.append('$');
+			{
+				String myword = 
+				         word3.target(attr_lemh, true)
+				         +word3.target(attr_a_vrb, true)
+				         +"<3>"
+				         +word3.target(attr_lemq, true)
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append("}$");
 		}
 		else
@@ -2183,17 +3479,33 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 			out.append(var_tipus_verb);
 			out.append("<inf>");
 			out.append('{');
-			out.append('^');
-			out.append("povi");
-			out.append("<vaux><past>");
-			out.append('$');
+			{
+				String myword = 
+				         "povi"
+				         +"<vaux><past>"
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append(blank2);
-			out.append('^');
-			out.append(word3.target(attr_lemh, true));
-			out.append(word3.target(attr_a_vrb, true));
-			out.append("<3>");
-			out.append(word3.target(attr_lemq, true));
-			out.append('$');
+			{
+				String myword = 
+				         word3.target(attr_lemh, true)
+				         +word3.target(attr_a_vrb, true)
+				         +"<3>"
+				         +word3.target(attr_lemq, true)
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append("}$");
 		}
 		else
@@ -2210,19 +3522,35 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 			out.append(var_tipus_verb);
 			out.append(var_temps);
 			out.append('{');
-			out.append('^');
-			out.append(word1.target(attr_lemh, true));
-			out.append(word1.target(attr_a_vrb, true));
-			out.append("<3>");
-			out.append(word1.target(attr_lemq, true));
-			out.append('$');
+			{
+				String myword = 
+				         word1.target(attr_lemh, true)
+				         +word1.target(attr_a_vrb, true)
+				         +"<3>"
+				         +word1.target(attr_lemq, true)
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append(blank2);
-			out.append('^');
-			out.append(word3.target(attr_lemh, true));
-			out.append(word3.target(attr_a_vrb, true));
-			out.append("<inf>");
-			out.append(word3.target(attr_lemq, true));
-			out.append('$');
+			{
+				String myword = 
+				         word3.target(attr_lemh, true)
+				         +word3.target(attr_a_vrb, true)
+				         +"<inf>"
+				         +word3.target(attr_lemq, true)
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append("}$");
 		}
 	}
@@ -2243,16 +3571,32 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 			out.append(var_tipus_verb);
 			out.append(var_temps);
 			out.append('{');
-			out.append('^');
-			out.append(word2.target(attr_lemh, true));
-			out.append(word2.target(attr_a_vrb, true));
-			out.append("<3>");
-			out.append(word2.target(attr_lemq, true));
-			out.append('$');
+			{
+				String myword = 
+				         word2.target(attr_lemh, true)
+				         +word2.target(attr_a_vrb, true)
+				         +"<3>"
+				         +word2.target(attr_lemq, true)
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append(blank2);
-			out.append('^');
-			out.append(word3.target(attr_whole, true));
-			out.append('$');
+			{
+				String myword = 
+				         word3.target(attr_whole, true)
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append("}$");
 		}
 		else
@@ -2264,20 +3608,44 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 			out.append(var_tipus_verb);
 			out.append(var_temps);
 			out.append('{');
-			out.append('^');
-			out.append(word1.target(attr_whole, true));
-			out.append('$');
+			{
+				String myword = 
+				         word1.target(attr_whole, true)
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append(blank1);
-			out.append('^');
-			out.append(word2.target(attr_lemh, true));
-			out.append(word2.target(attr_a_vrb, true));
-			out.append("<3>");
-			out.append(word2.target(attr_lemq, true));
-			out.append('$');
+			{
+				String myword = 
+				         word2.target(attr_lemh, true)
+				         +word2.target(attr_a_vrb, true)
+				         +"<3>"
+				         +word2.target(attr_lemq, true)
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append(blank2);
-			out.append('^');
-			out.append(word3.target(attr_whole, true));
-			out.append('$');
+			{
+				String myword = 
+				         word3.target(attr_whole, true)
+				         ;
+				if (myword.length()>0)
+				{
+					out.append('^');
+					out.append(myword);
+					out.append('$');
+				}
+			}
 			out.append("}$");
 		}
 	}
@@ -2293,12 +3661,20 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(var_tipus_verb);
 		out.append(word1.target(attr_a_tns, true));
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_lemh, true));
-		out.append(word1.target(attr_a_vrb, true));
-		out.append("<3>");
-		out.append(word1.target(attr_lemq, true));
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_lemh, true)
+			         +word1.target(attr_a_vrb, true)
+			         +"<3>"
+			         +word1.target(attr_lemq, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 	
@@ -2313,12 +3689,20 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append(var_tipus_verb);
 		out.append(word1.target(attr_a_tns, true));
 		out.append('{');
-		out.append('^');
-		out.append(word1.target(attr_lemh, true));
-		out.append(word1.target(attr_a_vrb, true));
-		out.append("<3>");
-		out.append(word1.target(attr_lemq, true));
-		out.append('$');
+		{
+			String myword = 
+			         word1.target(attr_lemh, true)
+			         +word1.target(attr_a_vrb, true)
+			         +"<3>"
+			         +word1.target(attr_lemq, true)
+			         ;
+			if (myword.length()>0)
+			{
+				out.append('^');
+				out.append(myword);
+				out.append('$');
+			}
+		}
 		out.append("}$");
 	}
 }

@@ -12,7 +12,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.io.Reader;
+import java.io.StringReader;
 import java.io.Writer;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -29,6 +31,7 @@ import org.apertium.lttoolbox.compile.Transducer;
 import org.apertium.lttoolbox.process.FSTProcessor;
 import org.apertium.transfer.TransferToken;
 import org.apertium.transfer.generated.GeneratedTransferBase;
+import org.apertium.transfer.generated.apertium_nn_nb_nb_nn_t1x;
 
 
 // apertium-transfer apertium-eo-en.en-eo.t1x en-eo.t1x.bin en-eo.autobil.bin transferinput-en-eo.t1x-malgranda.txt  transferoutput-en-eo.t1x-malgranda.txt
@@ -71,7 +74,7 @@ public class Transfer {
   int nwords;
   private GeneratedTransferBase transferObject;
 
-  public static boolean DEBUG = false;
+  public static boolean DEBUG = true;
 
 
   //map<xmlNode *, TransferInstr> evalStringCache;
@@ -175,6 +178,7 @@ public class Transfer {
     }
 
     read(new MyClassLoader().loadClassFile(classFile), datafile, fstfile);
+//    read(apertium_nn_nb_nb_nn_t1x.class, "testdata/transfer/nb-nn.t1x.bin", fstfile);
   }
 
 
@@ -452,6 +456,7 @@ public class Transfer {
     System.err.println("processRule:"+lastrule.getName()+"("+Arrays.toString(args));
     throw e;
   }
+    if (DEBUG) output.flush();
     
     //processRule(lastrule);
     lastrule=null;
@@ -519,16 +524,18 @@ public class Transfer {
     public static void main(String[] args) throws Exception {
       Transfer t = new Transfer();
       String dir = "testdata/transfer/";
+      //Class transferClass = org.apertium.transfer.generated.apertium_eo_en_eo_en_t1x.class;
+      Class transferClass = org.apertium.transfer.generated.apertium_nn_nb_nb_nn_t1x.class;
 
-      Class transferClass =
-       Class.forName("org.apertium.transfer.generated.apertium_eo_en_en_eo_t1x");
 
+      t.read(transferClass, dir+"nb-nn.t1x.bin", dir+"en-eo.autobil.bin");
 
-      t.read(transferClass, dir+"en-eo.t1x.bin", dir+"en-eo.autobil.bin");
-
-      Reader input = new FileReader(dir+"transferinput-en-eo.t1x.txt");
+      //Reader input = new FileReader(dir+"transferinput-en-eo.t1x.txt");
+      Reader input = new FileReader(dir+"transferinput-en-eo.t1x-malgranda.txt");
+      //StringReader input = new StringReader("^116<num>$^.<sent>$ ^And<cnjcoo>$ ^the<det><def><sp>$ ^dialogue<n><sg>$ ^that<rel><an><mf><sp>$ ^occur<vblex><pres><p3><sg>$ ^during<pr>$ ^that<det><dem><pl>$ ^professional<adj>$ ^development<n><sg>$\n");
       String outFile = "/tmp/transfer-output.txt";
-      Writer output = new FileWriter(outFile);
+      //Writer output = new FileWriter(outFile);
+      Writer output = new OutputStreamWriter(System.out);
       t.transfer( input, output);
       output.close();
 
@@ -537,7 +544,7 @@ public class Transfer {
       //t.transfer(new InputStreamReader( System.in ),  new OutputStreamWriter(System.out));
 /*
       //Reader input = new FileReader(dir+"transferinput-en-eo.t1x-malgranda.txt");
-?      StringReader input = new StringReader("^good<adj><sint>$ ^deal<n><sg>$\n");
+      StringReader input = new StringReader("^good<adj><sint>$ ^deal<n><sg>$\n");
 
       // echo "^good<adj><sint>$ ^deal<n><sg>$" | apertium-transfer apertium-eo-en.en-eo.t1x en-eo.t1x.bin en-eo.autobil.bin
 
