@@ -82,7 +82,7 @@ public class ApertiumTransfer {
         }
 
         Transfer t = new Transfer();
-        MyGetOpt getopt = new MyGetOpt(argv, "zh");
+        MyGetOpt getopt = new MyGetOpt(argv, "zhD");
 
         int optind = -1;
         int counter = 0;

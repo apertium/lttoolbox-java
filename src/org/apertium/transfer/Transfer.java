@@ -28,6 +28,7 @@ import org.apertium.lttoolbox.Pair;
 import org.apertium.lttoolbox.compile.Transducer;
 import org.apertium.lttoolbox.process.FSTProcessor;
 import org.apertium.transfer.TransferToken;
+import org.apertium.transfer.generated.GeneratedTransferBase;
 
 
 // apertium-transfer apertium-eo-en.en-eo.t1x en-eo.t1x.bin en-eo.autobil.bin transferinput-en-eo.t1x-malgranda.txt  transferoutput-en-eo.t1x-malgranda.txt
@@ -68,18 +69,12 @@ public class Transfer {
   private int any_tag;
   Method lastrule; //xmlNode *lastrule;
   int nwords;
-  private Object transferObject;
+  private GeneratedTransferBase transferObject;
 
   public static boolean DEBUG = false;
 
 
   //map<xmlNode *, TransferInstr> evalStringCache;
-  //public static final int OutputType_LU = 0;
-  //public static final int OutputType_CHUNK = 1;
-  public enum OutputType {
-    lu, chunk
-  };
-  OutputType defaultAttrs;
   private boolean useBilingual=true;
   /**
    * if true, flush the output when the null character is found
@@ -204,7 +199,9 @@ public class Transfer {
       if (DEBUG) System.err.println(method.getName()+"  - #words=" +method.getParameterTypes().length/2 );
     }
 
-    transferObject = transferClass.newInstance();
+    transferObject = (GeneratedTransferBase) transferClass.newInstance();
+    transferObject.debug = DEBUG;
+    transferObject.init();
 
     if (fstfile!=null&&fstfile.length()>0) {
       readBil(fstfile);
@@ -312,7 +309,7 @@ public class Transfer {
 
             if (tr.first.length()!=0)
             {
-              if (defaultAttrs==OutputType.lu)
+              if (!transferObject.isOutputChunked())
               {
                 fputwc_unlocked('^', output);
                 fputws_unlocked(tr.first, output);

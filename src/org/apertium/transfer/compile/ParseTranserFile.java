@@ -28,6 +28,7 @@ import org.xml.sax.SAXException;
 
 import static org.apertium.transfer.compile.DOMTools.*;
 
+
 /**
  *
  * @author Jacob Nordfalk
@@ -55,8 +56,14 @@ public class ParseTranserFile {
   private int currentNumberOfWordInParameterList;
 
   private Element currentNode;
-  Transfer.OutputType defaultAttrs;
 
+  //public static final int OutputType_LU = 0;
+  //public static final int OutputType_CHUNK = 1;
+  enum OutputType {
+    lu, chunk
+  };
+  OutputType defaultAttrs;
+  
 
   public String getJavaCode() {
     return javaCode.toString();
@@ -212,7 +219,7 @@ public class ParseTranserFile {
 
   private void processOut(Element instr) {
     currentNode = instr;
-    if (defaultAttrs == Transfer.OutputType.lu) {
+    if (defaultAttrs == OutputType.lu) {
     } else { // defaultAttrs == Transfer.OutputType.chunk
     }
    
@@ -690,18 +697,23 @@ public class ParseDefList {
       println("import java.io.*;");
       //println("import org.apertium.lttoolbox.transfer.*;");
       println("import org.apertium.transfer.*;");
-      println("public class "+className);
+      println("public class "+className+" extends GeneratedTransferBase");
       println("{");
 
       try {
         Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(file));
         Element root = doc.getDocumentElement();
 
-
-        defaultAttrs = Transfer.OutputType.lu;
+        println("public boolean isOutputChunked()");
+        println("{");
         if (root.getAttribute("default").equals("chunk")) {
-          defaultAttrs = Transfer.OutputType.chunk;
+          defaultAttrs = OutputType.chunk;
+          println("return true;");
+        } else {
+          defaultAttrs = OutputType.lu;
+          println("return false;");
         }
+        println("}");
 
         
         //LinkedHashMap<String,DefCat> defCats = new LinkedHashMap<String,DefCat>();
@@ -822,8 +834,10 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
           for (int i=1; i<=npar; i++) par += (i==1?", ":", String "+blank(i-1)+", ")+"TransferWord "+word(i);
           println("");
           macroList.put(n, npar);
-          println("private void macro_"+javaIdentifier(n)+"(Writer out"+par+") throws IOException");
+          String methodName = "macro_"+javaIdentifier(n);
+          println("private void "+methodName+"(Writer out"+par+") throws IOException");
           println("{");
+          println("if (debug) { logCall(\""+methodName+"\"); }; "); // TODO Check performance impact
           currentNumberOfWordInParameterList = npar;
           for (Element c1 : listElements(c0.getChildNodes())) processInstruction(c1);
           println("}");
@@ -849,6 +863,7 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
           if (!comment.isEmpty()) println("// "+comment);
           println("public void "+methodName+"(Writer out"+par+") throws IOException");
           println("{");
+          println("if (debug) { logCall(\""+methodName+"\"); }; "); // TODO Check performance impact
           for (Element c1 : getChildsChildrenElements(c0, "action")) processInstruction(c1);
           println("}");
         }
