@@ -57,7 +57,7 @@ public class apertium_eo_en_en_eo_t1x
     && word1.source(attr_a_np_acr, true).equals(""))
     || var_venontaVortoEstuMajuskla.equals("true")))
 		{
-word1.setTarget(attr_lem, TransferWord.copycase("aa", word1.target(attr_lem, true)), true);
+			word1.setTarget(attr_lem, TransferWord.copycase("aa", word1.target(attr_lem, true)), true);
 			var_caseFirstWord = "Aa";
 		}
 		else
@@ -84,7 +84,7 @@ word1.setTarget(attr_lem, TransferWord.copycase("aa", word1.target(attr_lem, tru
 	{
 		if (word1.target(attr_a_gen, true).equalsIgnoreCase("<GD>"))
 		{
-word1.setTarget(attr_a_gen, "<m>", true);
+			word1.setTarget(attr_a_gen, "<m>", true);
 		}
 	}
 	
@@ -250,7 +250,7 @@ word1.setTarget(attr_a_gen, "<m>", true);
 		}
 		else
 		{
-word1.setTarget(attr_lem, TransferWord.copycase("aa", word1.target(attr_lem, true)), true);
+			word1.setTarget(attr_lem, TransferWord.copycase("aa", word1.target(attr_lem, true)), true);
 			var_determiner = (""+"^"+word1.target(attr_lemh, true)+word1.target(attr_a_det, true)+var_numero+"<nom>"+word1.target(attr_lemq, true)+"$"+" ");
 		}
 	}
@@ -459,7 +459,8 @@ word1.setTarget(attr_lem, TransferWord.copycase("aa", word1.target(attr_lem, tru
 		out.append('$');
 		out.append("}$");
 		out.append(blank1);
-		out.append("^pr");
+		out.append('^');
+		out.append("pr");
 		out.append("<PREP>");
 		out.append('{');
 		out.append('^');
@@ -1243,7 +1244,7 @@ word1.setTarget(attr_lem, TransferWord.copycase("aa", word1.target(attr_lem, tru
 		macro_ordigu_genron(out, word2);
 		macro_ordigu_genron(out, word4);
 		macro_set_determiner_de_genitivo2(out, word1, blank1, word2);
-word1.setTarget(attr_lem, TransferWord.copycase("aa", word1.target(attr_lem, true)), true);
+		word1.setTarget(attr_lem, TransferWord.copycase("aa", word1.target(attr_lem, true)), true);
 		macro_set_blankon_se_havas_formaton2(out, word1, blank1, word2);
 		var_tmp2 = var_blanko;
 		macro_set_blankon_se_havas_formaton2(out, word2, blank2, word3);
@@ -1386,7 +1387,8 @@ word1.setTarget(attr_lem, TransferWord.copycase("aa", word1.target(attr_lem, tru
 	
 	public void rule43__cm(Writer out, TransferWord word1) throws IOException
 	{
-		out.append("^cm");
+		out.append('^');
+		out.append("cm");
 		out.append("<CM>");
 		out.append('{');
 		out.append('^');
@@ -1463,7 +1465,8 @@ word1.setTarget(attr_lem, TransferWord.copycase("aa", word1.target(attr_lem, tru
 	// REGLA: non-recognized genitive ('s) fallback :  XXX's YYY   => XXX'a YYY
 	public void rule49__gen(Writer out, TransferWord word1) throws IOException
 	{
-		out.append("^gen");
+		out.append('^');
+		out.append("gen");
 		out.append("<GEN>");
 		out.append('{');
 		out.append('^');
@@ -1476,7 +1479,8 @@ word1.setTarget(attr_lem, TransferWord.copycase("aa", word1.target(attr_lem, tru
 	// REGLA: SENT ;: - frazparto
 	public void rule50__sent_komopunkto_dupunkto(Writer out, TransferWord word1) throws IOException
 	{
-		out.append("^sent");
+		out.append('^');
+		out.append("sent");
 		out.append("<S>");
 		out.append('{');
 		out.append('^');
@@ -1489,7 +1493,8 @@ word1.setTarget(attr_lem, TransferWord.copycase("aa", word1.target(attr_lem, tru
 	public void rule51__sent(Writer out, TransferWord word1) throws IOException
 	{
 		var_EOS = "true";
-		out.append("^sent");
+		out.append('^');
+		out.append("sent");
 		out.append("<S>");
 		out.append('{');
 		out.append('^');
@@ -1713,7 +1718,8 @@ word1.setTarget(attr_lem, TransferWord.copycase("aa", word1.target(attr_lem, tru
 		out.append('$');
 		out.append("}$");
 		out.append(blank2);
-		out.append("^verbcj");
+		out.append('^');
+		out.append("verbcj");
 		out.append("<SV>");
 		out.append(var_tipus_verb);
 		out.append(word1.target(attr_a_tns, true));
@@ -1740,7 +1746,8 @@ word1.setTarget(attr_lem, TransferWord.copycase("aa", word1.target(attr_lem, tru
 		out.append('$');
 		out.append("}$");
 		out.append(blank1);
-		out.append("^verbcj2");
+		out.append('^');
+		out.append("verbcj2");
 		out.append("<SV>");
 		out.append(var_tipus_verb);
 		out.append(word1.target(attr_a_tns, true));

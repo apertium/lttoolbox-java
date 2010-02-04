@@ -62,7 +62,7 @@ public class ApertiumTransferCompile {
       File javaDest = new File(dir, p.className+".java");
       File classDest = new File(dir, p.className+".class");
 
-      System.err.println("Writing Java source code to " + javaDest);
+      //System.err.println("Writing Java source code to " + javaDest);
       //System.out.println("p.javaCode = " + p.getJavaCode());
 
       FileWriter fw = new FileWriter(javaDest);
@@ -71,7 +71,7 @@ public class ApertiumTransferCompile {
 
      
       // don't depend on an internal javac - this might not be Sun's javac
-      // System.err.println("Compiling " + javaDest);
+      //System.err.println("Compiling " + javaDest);
       //com.sun.tools.javac.Main.compile( new String[] { javaDest.getPath() } );
       System.err.println("Compiling: javac -cp dist/lttoolbox.jar "+javaDest);
       exec("javac -cp dist/lttoolbox.jar "+javaDest);
@@ -82,7 +82,7 @@ public class ApertiumTransferCompile {
       }
       
       if (!classDest.equals(dest)) {
-        System.err.println("Renaming " + classDest+" to "+dest);
+        //System.err.println("Renaming " + classDest+" to "+dest);
         classDest.renameTo(dest);
       }
     }

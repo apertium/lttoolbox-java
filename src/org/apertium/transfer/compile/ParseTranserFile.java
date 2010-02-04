@@ -18,6 +18,8 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import org.apertium.transfer.Transfer;
+import org.apertium.transfer.TransferWord;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -53,6 +55,7 @@ public class ParseTranserFile {
   private int currentNumberOfWordInParameterList;
 
   private Element currentNode;
+  Transfer.OutputType defaultAttrs;
 
 
   public String getJavaCode() {
@@ -62,6 +65,7 @@ public class ParseTranserFile {
   private void append(String str) {
     println("out.append("+str+");");
   }
+
 
 
   private String getPathAsString(Node n) {
@@ -75,7 +79,8 @@ public class ParseTranserFile {
         for (int i=0; i<attrs.getLength(); i++) attrss += " "+attrs.item(i);
       }
 
-      path = "<"+n.getNodeName() + attrss + ">/" + path;
+      if (path.length()>0) path = "/"+path;
+      path = "<"+n.getNodeName() + attrss + ">" + path;
       n = n.getParentNode();
 
     } while (!(n instanceof Document));
@@ -88,54 +93,23 @@ public class ParseTranserFile {
     System.err.println( string);
   }
 
+  private String escapeStr(String unescaped) {
+    return unescaped.replace("\\", "\\\\").replace("\"", "\\\"");
+  }
+
+
   private String attrItemRegexp(ArrayList<String> items) {
     StringBuilder re = null;
     for (String item : items) {
       if (re==null) re = new StringBuilder(items.size()*20);
       else re.append( '|');
       re.append( '<');
-      re.append(item.replace(".", "><"));
+      re.append(escapeStr(item.replace(".", "><")));
       re.append( '>');
     }
     return re.toString();
   }
 
-
-  private String evalString(Element e) {
-    currentNode = e;
-    String n = e.getTagName();
-    if (n.equals("clip")) {
-      String as = e.getAttribute("link-to");
-      String expr=getReadClipExpr(e);
-
-      if (as.isEmpty()) return expr;
-      else return "("+expr+".isEmpty()?\"\" : \"<"+e.getAttribute("pos")+">\")";
-    } else if (n.equals("var")) {
-      return var(e.getAttribute("n"));
-    } else if (n.equals("lit")) {
-      return str(e.getAttribute("v"));
-    } else if (n.equals("lit-tag")) {
-      return str("<"+e.getAttribute("v").replaceAll("\\.", "><")+">");
-    } else if (n.equals("b")) {
-      String pos = e.getAttribute("pos");
-      if (pos.isEmpty()) return(str(" "));
-      else return blank(pos);
-    } else if (n.equals("get-case-from")) {
-      String pos = e.getAttribute("pos");
-      String eval = evalString(getFirstChildElement(e));
-      boolean cond=!e.getAttribute("queue").equals("no");
-      return "TransferWord.copycase("+word(pos)+".source(attr_lem, "+cond+"), "+ eval + ")";
-    } else if (n.equals("concat")) {
-      String res = "("+str("");
-      for (Element c : listElements(e.getChildNodes())) {
-        res += "+"+ evalString(c);
-      }
-      res += ")";
-      return res;
-    }
-    println("// evalString(): not supported yet: "+e);
-    return str("");// +"/* not supported yet: "+e + "*/";
-  }
 
   /**
    * Generates Java code for reading the value of a clip
@@ -148,13 +122,11 @@ public class ParseTranserFile {
     String part=e.getAttribute("part");
     String pos=e.getAttribute("pos");
     boolean cond=!e.getAttribute("queue").equals("no");
-    String expr;
     if (side.equals("sl")) {
-      expr=""+word(pos)+".source("+attr(part)+", "+cond+")";
+      return ""+word(pos)+".source("+attr(part)+", "+cond+")";
     } else if (side.equals("tl")) {
-      expr=""+word(pos)+".target("+attr(part)+", "+cond+")";
+      return ""+word(pos)+".target("+attr(part)+", "+cond+")";
     } else throw new IllegalArgumentException(side);
-    return expr;
   }
 
   /**
@@ -189,69 +161,84 @@ public class ParseTranserFile {
     return s;
   }
 
-  private void processCallMacro(Element instr) {
-    currentNode = instr;
-    String n = instr.getAttribute("n");
-    if (!macroList.containsKey(n)) {
-      // this macro doesent exists!
-      parseError("// WARNING: Macro "+n+" is not defined. Ignoring call. Defined macros are: "+macroList.keySet());
-      return;
-    }
-    int macronpar = macroList.get(n);
-    String par = "";
-    int npar = 0;
-    for (Element c : listChildren(instr)) {
-      if (npar>=macronpar) {
-        parseError("// WARNING: Macro "+n+" is invoked with too many parameters. Ignoring: "+c);
-        break;
-      }
-      int pos = Integer.parseInt(c.getAttribute("pos"));
-      if (!par.isEmpty())  {
-        par += (pos>1?", "+blank(pos-1): ", "+str(" "));
-      }
-      par += ", "+word(pos);
-      npar++;
-    }
+  //
+  //  Code from transfer.c
+  //
 
-    while (npar<macronpar) {
-      parseError("// WARNING: Macro "+n+" is invoked with too few parameters. Adding blank parameters ");
-      if (!par.isEmpty())  {
-        par += ", "+str(" ");
-      }
-      par += ", "+str("");
-      npar++;
-    }
-
-    println("macro_"+javaIdentifier(n)+"(out"+par+");");
-  }
-
-  private void processChoose(Element e) {
+  private String evalString(Element e) {
     currentNode = e;
-    boolean first = true;
-    for (Element whenC : listChildren(e))
-    {
-      String n = whenC.getTagName();
-      Element c0 = getFirstChildElement(whenC);
-      if (!first) println("else");
-      first = false;
-
-      if (n.equals("when")) {
-        String evalLogic = processLogical( getFirstChildElement(c0));
-        c0 = findElementSibling(c0.getNextSibling());
-        println("if ("+evalLogic+")");
-      } else {
-        assert(n.equals("otherwise"));
+    String n = e.getTagName();
+    if (n.equals("clip")) {
+      String as = e.getAttribute("link-to");
+      String expr=getReadClipExpr(e);
+      if (as.isEmpty()) return expr;
+      else return "("+expr+".isEmpty()?\"\" : \"<"+e.getAttribute("pos")+">\")";
+    } else if (n.equals("lit-tag")) {
+      return str("<"+e.getAttribute("v").replaceAll("\\.", "><")+">");
+    } else if (n.equals("lit")) {
+      return str(e.getAttribute("v"));
+    } else if (n.equals("b")) {
+      String pos = e.getAttribute("pos");
+      if (pos.isEmpty()) return(str(" "));
+      else return blank(pos);
+    } else if (n.equals("get-case-from")) {
+      String pos = e.getAttribute("pos");
+      String eval = evalString(getFirstChildElement(e));
+      boolean cond=!e.getAttribute("queue").equals("no");
+      return "TransferWord.copycase("+word(pos)+".source(attr_lem, "+cond+"), "+ eval + ")";
+    } else if (n.equals("var")) {
+      return var(e.getAttribute("n"));
+    } else if (n.equals("case-of")) {
+      String side=e.getAttribute("side");
+      String part=e.getAttribute("part");
+      String pos=e.getAttribute("pos");
+      boolean cond=true; //!e.getAttribute("queue").equals("no");
+      if (side.equals("sl")) {
+        return "TransferWord.caseOf("+word(pos)+".source("+attr(part)+", "+cond+"))";
+      } else if (side.equals("tl")) {
+        return "TransferWord.caseOf("+word(pos)+".target("+attr(part)+", "+cond+"))";
+      } else throw new IllegalArgumentException(side);
+    } else if (n.equals("concat")) {
+      String res = "("+str("");
+      for (Element c : listElements(e.getChildNodes())) {
+        res += "+"+ evalString(c);
       }
+      res += ")";
+      return res;
+    }
+    throwParseError("// ERROR: unexpected rvalue expression "+e);
+    return str("");// +"/* not supported yet: "+e + "*/";
+  }
 
-      println("{");
-      while (c0 !=null)
-      {
-        processInstruction(c0);
-        c0 = findElementSibling(c0.getNextSibling());
-      }
-      println("}");
+  private void processOut(Element instr) {
+    currentNode = instr;
+    if (defaultAttrs == Transfer.OutputType.lu) {
+    } else { // defaultAttrs == Transfer.OutputType.chunk
+    }
+   
+    for (Element e : listChildren(instr)) {
+      String n = e.getTagName();
+      if (n.equals("lu")) {
+        append("'^'");
+        for (Element lu : listChildren(e))
+          append(evalString(lu));
+        append("'$'");
+      } else if (n.equals("mlu")) {
+        append("'^'");
+        for (java.util.Iterator<Element> it = listChildren(e).iterator(); it.hasNext();) {
+            Element mlu = it.next();
+            for (Element lu : listChildren(mlu)) {
+              append(evalString(lu));
+            }
+            if (it.hasNext())
+              append("'+'");
+        }
+        append("'$'");
+      } else if (n.equals("chunk")) processChunk(e);
+      else append( evalString(e) ); // takes care of 'b'
     }
   }
+
 
   private void processChunk(Element e) {
     currentNode = e;
@@ -261,20 +248,18 @@ public class ParseTranserFile {
 //    if (caseofchunkvar.isEmpty()) caseofchunkvar = "aa";
 //    else println("// not supported yet: case");
 
+    append("'^'");
     if (caseofchunkvar.isEmpty()) {
-      if (!name.isEmpty()) append(str("^"+name));
+      if (!name.isEmpty()) append(str(name));
       else if (!namefromvar.isEmpty()) {
-        append("'^'");
         append(var(namefromvar));
       }
       else parseError("// ERROR: you must specify either 'name' or 'namefrom' for the 'chunk' element");
     } else {
       if (!name.isEmpty()) {
-        append("'^'");
         append("TransferWord.copycase("+var(caseofchunkvar)+", "+str(name)+")");
       }
       else if (!namefromvar.isEmpty()) {
-        append("'^'");
         append("TransferWord.copycase("+var(caseofchunkvar)+", "+var(namefromvar)+")");
       }
       else parseError("// ERROR: you must specify either 'name' or 'namefrom' for the 'chunk' element");
@@ -310,36 +295,6 @@ public class ParseTranserFile {
     append("\"}$\"");
   }
 
-  private String processEqual(Element e) {
-    currentNode = e;
-    Element first = findElementSibling(e.getFirstChild());
-    Element second = findElementSibling(first.getNextSibling());
-    boolean caseless = "yes".equals(e.getAttribute("caseless"));
-/*
-    if (caseless) {
-      return "("+ evalString(first)+").equalsIgnoreCase("+evalString(second)+")";
-    } else {
-      return "("+ evalString(first)+").equals("+evalString(second)+")";
-    }
- */
-    if (caseless) {
-      return evalString(first)+".equalsIgnoreCase("+evalString(second)+")";
-    } else {
-      return evalString(first)+".equals("+evalString(second)+")";
-    }
-  }
-
-  private String processIn(Element e) {
-    currentNode = e;
-    Element first = getFirstChildElement(e);
-    Element second = findElementSibling(first.getNextSibling());
-    String listName = list(second.getAttribute("n"));
-
-    if (e.getAttribute("caseless").equals("yes")) {
-      return listName +".containsIgnoreCase("+evalString(first)+")";
-    }
-    return listName +".contains("+evalString(first)+")";
-  }
 
   private void processInstruction(Element instr) {
     currentNode = instr;
@@ -368,7 +323,7 @@ public class ParseTranserFile {
       processModifyCase(instr);
     }
     else
-      System.err.println("processInstruction(n = " + n);
+      throwParseError("processInstruction(n = " + n);
   }
 
   private void processLet(Element instr) {
@@ -401,41 +356,6 @@ public class ParseTranserFile {
 
 
 
-  String processLogical(Element e) {
-    currentNode = e;
-    String n=e.getTagName();
-
-    if (n.equals("equal")) {
-      return processEqual(e);
-    /* TODO
-    } else if (n.equals("begins-with")) {
-      return processBeginsWith(e);
-    } else if (n.equals("begins-with-listElements")) {
-      return processBeginsWithList(e);
-    } else if (n.equals("ends-with")) {
-      return processEndsWith(e);
-    } else if (n.equals("ends-with-listElements")) {
-      return processEndsWithList(e);
-    } else if (n.equals("contains-substring")) {
-      return processContainsSubstring(e);
-     */
-    } else if (n.equals("in")) {
-      return processIn(e);
-    } else if (n.equals("or")) {
-      Element first = getFirstChildElement(e);
-      Element second = findElementSibling(first.getNextSibling());
-      return "("+processLogical(first) + "\n    || " + processLogical(second)+")";
-    } else if (n.equals("and")) {
-      Element first = getFirstChildElement(e);
-      Element second = findElementSibling(first.getNextSibling());
-      return "("+processLogical(first) + "\n    && " + processLogical(second)+")";
-    } else if (n.equals("not")) {
-      return "!" + processLogical(getFirstChildElement(e));
-    }
-    System.err.println("not supported: processLogical(c0 = "+e);
-    return "false /*not supported: processLogical("+e+" */";
-  }
-
   private void processModifyCase(Element instr) {
     currentNode = instr;
     Element leftSide = findElementSibling(instr.getFirstChild());
@@ -455,19 +375,201 @@ public class ParseTranserFile {
     } else throwParseError(n);
   }
 
-  private void processOut(Element instr) {
+
+  private void processCallMacro(Element instr) {
     currentNode = instr;
-    // XXX TODO lu not supported
-    for (Element e : listChildren(instr)) {
-      String n = e.getTagName();
-      if (n.equals("chunk")) processChunk(e);
-      else append( evalString(e) );
+    String n = instr.getAttribute("n");
+    if (!macroList.containsKey(n)) {
+      // this macro doesent exists!
+      parseError("// WARNING: Macro "+n+" is not defined. Ignoring call. Defined macros are: "+macroList.keySet());
+      return;
+    }
+    int macronpar = macroList.get(n);
+    String par = "";
+    int npar = 0;
+    for (Element c : listChildren(instr)) {
+      if (npar>=macronpar) {
+        parseError("// WARNING: Macro "+n+" is invoked with too many parameters. Ignoring: "+c);
+        break;
+      }
+      int pos = Integer.parseInt(c.getAttribute("pos"));
+      if (!par.isEmpty())  {
+        par += (pos>1?", "+blank(pos-1): ", "+str(" "));
+      }
+      par += ", "+word(pos);
+      npar++;
+    }
+
+    while (npar<macronpar) {
+      parseError("// WARNING: Macro "+n+" is invoked with too few parameters. Adding blank parameters ");
+      if (!par.isEmpty())  {
+        par += ", "+str(" ");
+      }
+      par += ", "+"new TransferWord(\"\", \"\", 0)";
+      npar++;
+    }
+
+    println("macro_"+javaIdentifier(n)+"(out"+par+");");
+  }
+
+  private void processChoose(Element e) {
+    currentNode = e;
+    boolean first = true;
+    for (Element whenC : listChildren(e))
+    {
+      String n = whenC.getTagName();
+      Element c0 = getFirstChildElement(whenC);
+      if (!first) println("else");
+      first = false;
+
+      if (n.equals("when")) {
+        String evalLogic = processLogical( getFirstChildElement(c0));
+        c0 = findElementSibling(c0.getNextSibling());
+        println("if ("+evalLogic+")");
+      } else {
+        assert(n.equals("otherwise"));
+      }
+
+      println("{");
+      while (c0 !=null)
+      {
+        processInstruction(c0);
+        c0 = findElementSibling(c0.getNextSibling());
+      }
+      println("}");
     }
   }
 
+
+
+
+
+  String processLogical(Element e) {
+    currentNode = e;
+    String n=e.getTagName();
+
+    if (n.equals("equal")) {
+      return processEqual(e);
+    } else if (n.equals("begins-with")) {
+      return processBeginsWith(e);
+    } else if (n.equals("begins-with-listElements")) {
+      return processBeginsWithList(e);
+    } else if (n.equals("ends-with")) {
+      return processEndsWith(e);
+    } else if (n.equals("ends-with-listElements")) {
+      return processEndsWithList(e);
+    } else if (n.equals("contains-substring")) {
+      return processContainsSubstring(e);
+    } else if (n.equals("in")) {
+      return processIn(e);
+    } else if (n.equals("or")) {
+      Element first = getFirstChildElement(e);
+      Element second = findElementSibling(first.getNextSibling());
+      return "("+processLogical(first) + "\n    || " + processLogical(second)+")";
+    } else if (n.equals("and")) {
+      Element first = getFirstChildElement(e);
+      Element second = findElementSibling(first.getNextSibling());
+      return "("+processLogical(first) + "\n    && " + processLogical(second)+")";
+    } else if (n.equals("not")) {
+      return "!" + processLogical(getFirstChildElement(e));
+    }
+    parseError("// SORRY: not supported yet: processLogical(c0 = "+e);
+    return "false /*not supported: processLogical("+e+" */";
+  }
+
+  private String processEqual(Element e) {
+    currentNode = e;
+    Element first = findElementSibling(e.getFirstChild());
+    Element second = findElementSibling(first.getNextSibling());
+    boolean caseless = "yes".equals(e.getAttribute("caseless"));
+    if (caseless) {
+      return evalString(first)+".equalsIgnoreCase("+evalString(second)+")";
+    } else {
+      return evalString(first)+".equals("+evalString(second)+")";
+    }
+  }
+
+
+  private String processBeginsWith(Element e) {
+    currentNode = e;
+    Element first = findElementSibling(e.getFirstChild());
+    Element second = findElementSibling(first.getNextSibling());
+    boolean caseless = "yes".equals(e.getAttribute("caseless"));
+    if (caseless) {
+      return evalString(first)+".startsWith("+evalString(second)+")";
+    } else {
+      return evalString(first)+".toLowerCase().startsWith("+evalString(second)+".toLowerCase())";
+    }
+  }
+
+
+  private String processEndsWith(Element e) {
+    currentNode = e;
+    Element first = findElementSibling(e.getFirstChild());
+    Element second = findElementSibling(first.getNextSibling());
+    boolean caseless = "yes".equals(e.getAttribute("caseless"));
+    if (caseless) {
+      return evalString(first)+".endsWith("+evalString(second)+")";
+    } else {
+      return evalString(first)+".toLowerCase().endsWith("+evalString(second)+".toLowerCase())";
+    }
+  }
+
+  private String processBeginsWithList(Element e) {
+    currentNode = e;
+    Element first = getFirstChildElement(e);
+    Element second = findElementSibling(first.getNextSibling());
+    String listName = list(second.getAttribute("n"));
+
+    if (e.getAttribute("caseless").equals("yes")) {
+      return listName +".containsIgnoreCaseBeginningWith("+evalString(first)+")";
+    }
+    return listName +".containsBeginningWith("+evalString(first)+")";
+  }
+
+
+  private String processEndsWithList(Element e) {
+    currentNode = e;
+    Element first = getFirstChildElement(e);
+    Element second = findElementSibling(first.getNextSibling());
+    String listName = list(second.getAttribute("n"));
+
+    if (e.getAttribute("caseless").equals("yes")) {
+      return listName +".containsIgnoreCaseEndingWith("+evalString(first)+")";
+    }
+    return listName +".containsEndingWith("+evalString(first)+")";
+  }
+
+  private String processContainsSubstring(Element e) {
+    currentNode = e;
+    Element first = findElementSibling(e.getFirstChild());
+    Element second = findElementSibling(first.getNextSibling());
+    boolean caseless = "yes".equals(e.getAttribute("caseless"));
+    if (caseless) {
+      return evalString(first)+".contains("+evalString(second)+")";
+    } else {
+      return evalString(first)+".toLowerCase().contains("+evalString(second)+".toLowerCase())";
+    }
+  }
+
+
+
+  private String processIn(Element e) {
+    currentNode = e;
+    Element first = getFirstChildElement(e);
+    Element second = findElementSibling(first.getNextSibling());
+    String listName = list(second.getAttribute("n"));
+
+    if (e.getAttribute("caseless").equals("yes")) {
+      return listName +".containsIgnoreCase("+evalString(first)+")";
+    }
+    return listName +".contains("+evalString(first)+")";
+  }
+
+
   private String str(String n) {
     if (n==null) return "null";
-    return "\""+n+"\"";
+    return "\""+escapeStr(n)+"\"";
   }
 
 
@@ -478,7 +580,7 @@ public class ParseTranserFile {
 
   private void println(String string) {
     if (indent>0 && string.equals("}")) indent--;
-    print("\t\t\t\t\t\t\t\t\t".substring(0,indent));
+    print("\t\t\t\t\t\t\t\t\t\t".substring(0,indent));
     print(string+"\n");
     if (string.equals("{") && indent < 10) indent++;
   }
@@ -531,8 +633,9 @@ public class ParseTranserFile {
     if (pos <= currentNumberOfWordInParameterList) {
       return "word"+pos;
     }
-    parseError("// WARNING clip pos="+pos+" is out of range. Replacing with an empty string.");
-    return str("");
+    parseError("// WARNING clip pos="+pos+" is out of range. Replacing with an empty TransferWord.");
+
+    return "new TransferWord(\"\", \"\", 0)";
   }
 
   private String word(String pos) {
@@ -594,6 +697,13 @@ public class ParseDefList {
         Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(file));
         Element root = doc.getDocumentElement();
 
+
+        defaultAttrs = Transfer.OutputType.lu;
+        if (root.getAttribute("default").equals("chunk")) {
+          defaultAttrs = Transfer.OutputType.chunk;
+        }
+
+        
         //LinkedHashMap<String,DefCat> defCats = new LinkedHashMap<String,DefCat>();
         //LinkedHashMap<String,ParseApertiumRE> defAttrs = new LinkedHashMap<String,ParseApertiumRE>();
         //ArrayList<String> defVars = new ArrayList<String>();

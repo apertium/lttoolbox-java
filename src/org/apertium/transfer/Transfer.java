@@ -61,7 +61,7 @@ public class Transfer {
   ArrayList<String> tmpblank=new ArrayList<String>();
   ArrayList<String> tmpword2=new ArrayList<String>();
   ArrayList<String> tmpblank2=new ArrayList<String>();
-  FSTProcessor fstp;
+  FSTProcessor fstp =new FSTProcessor();
   FSTProcessor extended;
   boolean isExtended;
   private int any_char;
@@ -72,34 +72,15 @@ public class Transfer {
 
   public static boolean DEBUG = false;
 
-  boolean getNullFlush() {
-    return null_flush;
-  }
-
-  void setCaseSensitiveMode(boolean b) {
-    throw new UnsupportedOperationException("Not yet implemented");
-  }
-
-  void setNullFlush(boolean b) {
-    null_flush=b;
-  }
-
-  private void fputwc_unlocked(char c, Writer output) throws IOException {
-    output.append(c);
-  }
-
-  private void fputws_unlocked(String first, Writer output) throws IOException {
-    output.append(first);
-  }
-
-
 
   //map<xmlNode *, TransferInstr> evalStringCache;
-  enum OutputType {
+  //public static final int OutputType_LU = 0;
+  //public static final int OutputType_CHUNK = 1;
+  public enum OutputType {
     lu, chunk
   };
   OutputType defaultAttrs;
-  boolean useBilingual=true;
+  private boolean useBilingual=true;
   /**
    * if true, flush the output when the null character is found
    */
@@ -115,7 +96,6 @@ public class Transfer {
 
     Transducer t=Transducer.read(in, alphabet.size());
     //System.err.println("  t = " + t.toString());
-
 
     HashMap<Integer, Integer> finals=new HashMap<Integer, Integer>();
     // finals
@@ -174,13 +154,12 @@ public class Transfer {
   listslow[cad_k].insert(UtfConverter.toUtf8(StringUtils.tolower(cad_v)));
   }
    */
-
-
   }
 
   private void readBil(String fstfile) throws IOException {
-    fstp=new FSTProcessor();
-    fstp.load(new BufferedInputStream(new FileInputStream(fstfile)));
+    InputStream is = new BufferedInputStream(new FileInputStream(fstfile));
+    fstp.load(is);
+    is.close();
     fstp.initBiltrans();
   //String output = fstp.biltrans("house<n><sg>" , false);
   //System.err.println("output = " + output);
@@ -188,13 +167,15 @@ public class Transfer {
 
   private void setExtendedDictionary(String fstfile) throws IOException {
     extended=new FSTProcessor();
-    extended.load(new BufferedInputStream(new FileInputStream(fstfile)));
+    InputStream is = new BufferedInputStream(new FileInputStream(fstfile));
+    extended.load(is);
+    is.close();
     extended.initBiltrans();
+    isExtended = true;
   }
 
   public void read(String classFile, String datafile, String fstfile) throws Exception {
     if (!classFile.endsWith(".class")) {
-
       System.err.println("Warning: " + classFile+ " should be a Java .class file. You probably got it wrong");
     }
 
@@ -231,9 +212,9 @@ public class Transfer {
   }
 
   // this and the following methods should not implemented, as we use bytecode compiled transfer
-  private void readTransfer() {
-    throw new UnsupportedOperationException("Not implemented (and should not be)");
-  }
+  //private void readTransfer() {
+  //  throw new UnsupportedOperationException("Not implemented (and should not be)");
+  //}
 
   TransferToken readToken(Reader in) throws IOException {
     if (!input_buffer.isEmpty()) {
@@ -273,8 +254,18 @@ public class Transfer {
     }
   }
 
+  boolean getNullFlush() {
+    return null_flush;
+  }
+
+  void setNullFlush(boolean b) {
+    null_flush=b;
+  }
+
+
   private void transfer_wrapper_null_flush(Reader input, Writer output) throws Exception {
-    setNullFlush(false);
+    null_flush= false;
+    internal_null_flush = true;
     while (input.ready()) {
       transfer(input, output);
       output.write('\0');
@@ -285,6 +276,8 @@ public class Transfer {
         System.err.println("Could not flush output");
       }
     }
+    internal_null_flush = false;
+    null_flush= true;
   }
 
   public void transfer(Reader in, Writer output) throws Exception {
@@ -449,8 +442,6 @@ public class Transfer {
       args[argn++] = word[i]=new TransferWord(tmpword2.get(i), tr.first, tr.second);
     }
 
-
-
     if (DEBUG) System.err.println("word = " + Arrays.toString(word));
 
     if (DEBUG) System.err.println("#args = " + args.length);
@@ -509,6 +500,24 @@ public class Transfer {
     ms.step('$');
   }
 
+  void setCaseSensitiveMode(boolean b) {
+    throw new UnsupportedOperationException("Not yet implemented");
+  }
+
+
+  public void setUseBilingual(boolean useBilingual) {
+    this.useBilingual=useBilingual;
+  }
+
+
+  private void fputwc_unlocked(char c, Writer output) throws IOException {
+    output.append(c);
+  }
+
+  private void fputws_unlocked(String first, Writer output) throws IOException {
+    output.append(first);
+  }
+
 
     public static void main(String[] args) throws Exception {
       Transfer t = new Transfer();
@@ -559,7 +568,7 @@ class MyClassLoader extends ClassLoader {
     
     public Class loadClassFile(String filename) throws ClassNotFoundException {
         try {
-          System.err.println("filename = " + filename);
+          //System.err.println("filename = " + filename);
           File file = new File(filename);
             InputStream input = new FileInputStream(file);
             byte data[] = new byte[(int) file.length()];

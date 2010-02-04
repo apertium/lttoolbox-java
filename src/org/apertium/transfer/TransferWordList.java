@@ -12,13 +12,13 @@ import java.util.HashSet;
  * @author Jacob Nordfalk
  */
 public class TransferWordList {
-  private HashSet elements;
-  private HashSet elementsLowercase;
+  private HashSet<String> elements;
+  private HashSet<String> elementsLowercase;
 
   public TransferWordList(String[] list) {
     int cap = Math.max((int) (list.length/.75f) + 1, 16);
-    elements = new HashSet(cap);
-    elementsLowercase = new HashSet(cap);
+    elements = new HashSet<String>(cap);
+    elementsLowercase = new HashSet<String>(cap);
     for (String e : list) {
       elements.add(e);
       elementsLowercase.add(e.toLowerCase());
@@ -33,4 +33,35 @@ public class TransferWordList {
     return elements.contains(source);
   }
 
+  public boolean containsIgnoreCaseBeginningWith(String source) {
+    String s = source.toLowerCase();
+    for (String e : elementsLowercase)
+      if (e.startsWith(s))
+        return true;
+    return false;
+  }
+
+  public boolean containsBeginningWith(String source) {
+    String s = source;
+    for (String e : elements)
+      if (e.startsWith(s))
+        return true;
+    return false;
+  }
+
+  public boolean containsIgnoreCaseEndingWith(String source) {
+    String s = source.toLowerCase();
+    for (String e : elementsLowercase)
+      if (e.endsWith(s))
+        return true;
+    return false;
+  }
+
+  public boolean containsEndingWith(String source) {
+    String s = source;
+    for (String e : elements)
+      if (e.endsWith(s))
+        return true;
+    return false;
+  }
 }

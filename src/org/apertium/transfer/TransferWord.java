@@ -105,4 +105,27 @@ public class TransferWord {
     }
     return result;
   }
+
+
+
+  public static String caseOf(String s_word) {
+    if (s_word.length()==0) return "aa";
+
+    if(s_word.length()>1)
+    {
+      if (!Character.isUpperCase(s_word.charAt(0))) {
+        return "aa";
+      } else if (!Character.isUpperCase(s_word.charAt(s_word.length()-1))) {
+        return "Aa";
+      }
+      return "AA";
+    }
+    else
+    {
+      if (!Character.isUpperCase(s_word.charAt(0))) {
+        return "aa";
+      }
+      return "Aa";
+    }
+  }
 }
