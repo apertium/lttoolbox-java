@@ -74,7 +74,7 @@ public class Transfer {
   int nwords;
   private GeneratedTransferBase transferObject;
 
-  public static boolean DEBUG = true;
+  public static boolean DEBUG = false;
 
 
   //map<xmlNode *, TransferInstr> evalStringCache;
