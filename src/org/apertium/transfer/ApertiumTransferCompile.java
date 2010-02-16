@@ -17,7 +17,7 @@ package org.apertium.transfer;
  * 02111-1307, USA.
  */
 
-import com.sun.tools.javac.Main;
+//import com.sun.tools.javac.Main;
 import org.apertium.lttoolbox.*;
 import org.apertium.lttoolbox.process.FSTProcessor;
 import java.io.*;
