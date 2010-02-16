@@ -15,7 +15,7 @@ import java.io.InputStreamReader;
  *
  * @author Jacob Nordfalk
  */
-public class TestTools {
+public abstract class TestTools {
 
   public static String rm(String filename) {
     File f = new File(filename);
