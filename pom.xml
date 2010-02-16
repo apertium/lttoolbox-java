@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>lttoolbox-java</groupId>
 	<artifactId>lttoolbox-java</artifactId>
-	
+
 	<name>lttoolbox-java</name>
 	<version>0.0.1-SNAPSHOT</version>
 	<description>lttoolbox-java is able to process and generate the binary files used by lttoolbox and produce exactly the same output.</description>
@@ -34,6 +34,17 @@
 				<directory>testdata</directory>
 			</testResource>
 		</testResources>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
 
 </project>
