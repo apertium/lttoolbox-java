@@ -82,7 +82,9 @@ public class TransferWord {
 
 
   public static String copycase(String s_word, String t_word) {
+    // These 2 checks are needed to support buggy tranfer files
     if (s_word.length()==0) return t_word;
+    if (t_word.length()==0) return t_word;
 
     String result;
     boolean firstupper = Character.isUpperCase(s_word.charAt(0));
