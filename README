@@ -36,7 +36,8 @@ http://wiki.apertium.org/wiki/Lttoolbox-java
 		- make
 		- sudo make install
 
-
+	b.2 Building & installing using Maven 2 (http://maven.apache.org)
+		- mvn install
 
 
 
