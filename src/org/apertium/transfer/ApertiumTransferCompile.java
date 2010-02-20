@@ -86,24 +86,48 @@ public class ApertiumTransferCompile {
         classDest.renameTo(dest);
       }
     }
+  
+	private static void close(Closeable c) {
+		if (c != null) {
+			try {
+				c.close();
+			} catch (IOException e) {
+				// ignored
+			}
+		}
+	}
 
-  public static String exec(String cmd) throws IOException, InterruptedException  {
-    Process p=Runtime.getRuntime().exec(cmd);
-    String output="";
-    String s;
-    BufferedReader br=new BufferedReader(new InputStreamReader(p.getInputStream()));
-    while ((s=br.readLine())!=null)  output=output+s+"\n";
-    br=new BufferedReader(new InputStreamReader(p.getErrorStream()));
-    while ((s=br.readLine())!=null)  output=output+s+"\n";
-    p.waitFor();
-    if (p.exitValue()!=0) throw new RuntimeException(cmd+" reported an error: "+output);
-
-    /*
-    if (output.length()>0) {
-      System.err.println("exec: " + cmd);
-      System.err.println("output: " + output);
-      return cmd+"\n"+output;
-    }*/
-    return output;
-  }
+	public static String exec(String cmd) throws IOException,
+			InterruptedException {
+		Process p = null;
+		String output = "";
+		try {
+			p = Runtime.getRuntime().exec(cmd);
+			String s;
+			BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			while ((s = br.readLine()) != null)
+				output = output + s + "\n";
+			br = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+			while ((s = br.readLine()) != null)
+				output = output + s + "\n";
+			p.waitFor();
+			if (p.exitValue() != 0)
+				throw new RuntimeException(cmd + " reported an error: "	+ output);
+			/*
+			 * if (output.length()>0) { System.err.println("exec: " + cmd);
+			 * System.err.println("output: " + output); return cmd+"\n"+output;
+			 * }
+			 */
+		} catch (Exception err) {
+			err.printStackTrace();
+		} finally {
+			if (p != null) {
+				close(p.getOutputStream());
+				close(p.getInputStream());
+				close(p.getErrorStream());
+				p.destroy();
+			}
+		}
+		return output;
+	}
 }
