@@ -9,6 +9,9 @@ echo "	sudo make install"
 echo 
 echo "(other options are: 'make tests' to do regression testing of the package, and 'make clean' to cleanup)"
 echo 
+echo "You can also build and install this program using Maven 2 (http://maven.apache.org) using the following command:"
+echo "  mvn install"
+echo
 echo "This script just sets the installation prefix. Set another prefix by e.g.: sh autogen.sh --prefix=/usr"
 echo -n "Setting prefix to ... ";
 echo $1 | grep '\-\-prefix' > /dev/null;
