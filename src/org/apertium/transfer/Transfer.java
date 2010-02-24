@@ -534,8 +534,8 @@ public class Transfer {
       Reader input = new FileReader(dir+"transferinput-en-eo.t1x-malgranda.txt");
       //StringReader input = new StringReader("^116<num>$^.<sent>$ ^And<cnjcoo>$ ^the<det><def><sp>$ ^dialogue<n><sg>$ ^that<rel><an><mf><sp>$ ^occur<vblex><pres><p3><sg>$ ^during<pr>$ ^that<det><dem><pl>$ ^professional<adj>$ ^development<n><sg>$\n");
       String outFile = "/tmp/transfer-output.txt";
-      //Writer output = new FileWriter(outFile);
-      Writer output = new OutputStreamWriter(System.out);
+      Writer output = new FileWriter(outFile);
+      //Writer output = new OutputStreamWriter(System.out);
       t.transfer( input, output);
       output.close();
 

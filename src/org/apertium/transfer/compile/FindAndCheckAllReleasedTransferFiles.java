@@ -19,7 +19,7 @@ import org.apertium.transfer.ApertiumTransfer;
 import org.apertium.transfer.ApertiumTransferCompile;
 
 /**
- *
+ * comparison of all language pairs of interpreded and compiled version of transfer.
  * @author Jacob Nordfalk
  */
 public class FindAndCheckAllReleasedTransferFiles {
@@ -140,11 +140,11 @@ static String[] transferFilesWithDifferences = {
         e.printStackTrace();
       }
 
-      print("doesentValidate", doesentValidate);
-      print("interpretedTranferFails", interpretedTranferFails);
-      print("compiledTranferFails", compiledTranferFails);
-      print("tranferCompareOK", tranferCompareOK);
-      print("tranferCompareFail",tranferCompareFail );
+      print("Transfer files doesent validate", doesentValidate);
+      print("Interpreted (old) tranfer fails", interpretedTranferFails);
+      print("Compiled (new) tranfer fails", compiledTranferFails);
+      print("Old & new tranfer give same results", tranferCompareOK);
+      print("Old & new tranfer give different results",tranferCompareFail );
 
     }
 

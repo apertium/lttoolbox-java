@@ -14,7 +14,7 @@ import org.apertium.transfer.Transfer;
  *
  * @author Jacob Nordfalk
  */
-public class Playground {
+public class PlaygroundTransfer {
 
 
     public static void main(String[] args) throws Exception {
