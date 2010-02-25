@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package org.apertium.transfer.compile;
+package org.apertium.transfer.development;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
@@ -22,7 +22,7 @@ import org.apertium.transfer.ApertiumTransferCompile;
  * comparison of all language pairs of interpreded and compiled version of transfer.
  * @author Jacob Nordfalk
  */
-public class FindAndCheckAllReleasedTransferFiles {
+public class FindAndCompareAllReleasedTransferFiles {
 
   static String datadir = "/home/j/esperanto/apertium-svn/apertium/trunk";
 
@@ -93,8 +93,8 @@ static String[] transferFilesWithDifferences = {
 
 
         long time = System.currentTimeMillis();
-        ret = exec(new String[]{"apertium-transfer", absFile, resFileWOSufffix+".bin", testdir+"en-eo.autobil.bin",
-          inputFile, rootDir+"/expected/"+relFileWOSufffix+".txt"});
+        ret = exec("apertium-transfer", absFile, resFileWOSufffix+".bin", testdir+"en-eo.autobil.bin",
+          inputFile, rootDir+"/expected/"+relFileWOSufffix+".txt");
 
         if (ret!=0) interpretedTranferFails.add(relFile);
 
@@ -156,7 +156,7 @@ static String[] transferFilesWithDifferences = {
     System.out.println("};");
   }
 
-  private static int exec(String[] cmd) throws Exception {
+  public static int exec(String... cmd) throws Exception {
     //System.err.println("exec: " + Arrays.toString(cmd));
       Process p = Runtime.getRuntime().exec(cmd);
     BufferedReader br=new BufferedReader(new InputStreamReader(p.getErrorStream()));
@@ -174,25 +174,8 @@ static String[] transferFilesWithDifferences = {
       return ret;
   }
 
-  private static int exec(String cmd) throws Exception {
+  public static int exec(String cmd) throws Exception {
     return exec(cmd.split(" "));
-/*
-    System.err.println("exec: " + cmd);
-    Process p = Runtime.getRuntime().exec(cmd);
-    BufferedReader br=new BufferedReader(new InputStreamReader(p.getErrorStream()));
-    String s=br.readLine();
-    if (s!=null) {
-      System.err.println(s);
-      p.destroy();
-    }
-      int ret = p.waitFor();
-    System.err.println("exec finish");
-
- p.getErrorStream().close();
-      p.getInputStream().close();
-      p.getOutputStream().close();
-      return ret;
-*/
   }
 
   private static void print(String string, ArrayList<String> doesentValidate) {

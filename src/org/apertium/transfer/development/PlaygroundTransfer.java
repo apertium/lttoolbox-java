@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package org.apertium.transfer.compile;
+package org.apertium.transfer.development;
 
 import java.io.StringReader;
 import java.io.StringWriter;

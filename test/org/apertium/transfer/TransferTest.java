@@ -94,6 +94,13 @@ public class TransferTest {
     String dir = "testdata/transfer/";
     String outFile = "/tmp/transfer-output-malgranda.txt";
     ApertiumTransferCompile.main(new String[]{"testdata/transfer/apertium-eo-en.en-eo.t1x", "/tmp/en-eo.t1x.bin.class"});
+
+    /////////////////////////////
+    //
+    // NOTE:  You *need* dist/lttoolbox.jar  , so do a full rebuiild if this test fails
+    //
+    ///////////////////////////
+
     ApertiumTransfer.main(new String[]{"/tmp/en-eo.t1x.bin.class", dir+"en-eo.t1x.bin", dir+"en-eo.autobil.bin",
       dir+"transferinput-en-eo.t1x-malgranda.txt", outFile});
 

@@ -177,7 +177,7 @@ public class ParseTranserFile {
     return expr;
   }
 
-  private String javaIdentifier(String str) {
+  public static String javaIdentifier(String str) {
     return str.replaceAll("\\W", "_");
   }
 
@@ -599,7 +599,7 @@ public class ParseTranserFile {
 
 
 //  Appendable javaCode = System.out; // new StringBuilder(1000);
-  StringBuilder javaCode = new StringBuilder(1000);
+  public StringBuilder javaCode = new StringBuilder(1000);
 
   int indent = 0;
 
@@ -905,46 +905,6 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
         } catch (FileNotFoundException e) {
             throw new RuntimeException("Error: Cannot open '" + file + "'.");
         }
-    }
-
-
-  private static void parseAndWriteToSrc(String t1xFile) throws IOException, InterruptedException {
-    ParseTranserFile p=new ParseTranserFile();
-    try {
-      p.parse(t1xFile);
-    } catch (Exception ex) {
-      ex.printStackTrace();
-    }
-    Thread.sleep(100);
-    System.out.flush();
-    System.err.flush();
-    Thread.sleep(100);
-    System.err.println("p.javaCode = "+p.javaCode);
-    Thread.sleep(100);
-    System.out.flush();
-    System.err.flush();
-    Thread.sleep(100);
-    //FileWriter fw = new FileWriter("/home/j/esperanto/apertium/apertium-eo-en/"+p.className+"java");
-    new File("src/org/apertium/transfer/generated/").mkdirs();
-    FileWriter fw=new FileWriter("src/org/apertium/transfer/generated/"+p.className+".java");
-    fw.append(p.javaCode);
-    fw.close();
-  }
-
-    /**
-     * Test 
-     */
-    public static void main(String[] args) throws Exception {
-
-      System.err.println("System.out = " + System.in);
-      //parseAndWriteToSrc("/home/j/esperanto/apertium/apertium-eo-en/apertium-eo-en.en-eo.t1x");
-
-      parseAndWriteToSrc("testdata/transfer/apertium-eo-en.en-eo.t1x");
-      parseAndWriteToSrc("testdata/transfer/apertium-eo-en.eo-en.t1x");
-      parseAndWriteToSrc("testdata/transfer/apertium-nn-nb.nb-nn.t1x");
-
-    //p.parse();
-    //p.parse("/home/jim/NetBeansProjects/lttoolbox-java/apertium-en-ca.en-ca.t1x");
     }
 
 }

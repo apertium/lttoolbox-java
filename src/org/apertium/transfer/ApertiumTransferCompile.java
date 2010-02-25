@@ -68,17 +68,24 @@ public class ApertiumTransferCompile {
       FileWriter fw = new FileWriter(javaDest);
       fw.append(p.getJavaCode());
       fw.close();
-
      
       // don't depend on an internal javac - this might not be Sun's javac
       //System.err.println("Compiling " + javaDest);
       //com.sun.tools.javac.Main.compile( new String[] { javaDest.getPath() } );
-      System.err.println("Compiling: javac -cp dist/lttoolbox.jar "+javaDest);
-      exec("javac -cp dist/lttoolbox.jar "+javaDest);
+      File cp = new File("dist/lttoolbox.jar");
+      String exec = "javac -cp "+cp.getPath()+" "+javaDest;
+      System.err.println("Compiling: "+exec);
+      if (!cp.exists()) {
+        System.err.println("Error: "+cp.getPath()+" is missing.");
+        System.err.println("Please rebuild lttoolbox-java to make it appear.");
+        throw new FileNotFoundException(cp.getPath()+" is needed to be able to compile transfer files.");
+      }
 
+      exec(exec);
 
       if (!classDest.exists()) {
-        throw new InternalError("Compiled "+javaDest+" but "+classDest+" didnt appear");
+
+        throw new InternalError("Compilation error - compiled "+javaDest+" but "+classDest+" didnt appear.");
       }
       
       if (!classDest.equals(dest)) {
