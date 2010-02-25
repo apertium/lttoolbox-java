@@ -701,8 +701,8 @@ public class ParseTranserFile {
     if (pos < currentNumberOfWordInParameterList) {
       return "blank"+pos;
     }
-    parseError("// WARNING blank pos="+pos+" is out of range. Replacing with an zero-space blank.");
-    return str("");
+    parseError("// WARNING blank pos="+pos+" is out of range. Replacing with a one-space blank.");
+    return str(" ");
   }
 
   private String blank(String pos) {

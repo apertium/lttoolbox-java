@@ -30,9 +30,9 @@ static String[] transferFilesWithDifferences = {
 "apertium-nn-nb/apertium-nn-nb.nn-nb.t1x",
 "apertium-cy-en/apertium-cy-en.en-cy.t1x",
 "apertium-cy-en/apertium-cy-en.cy-en.t1x",
-"apertium-en-ca/apertium-en-ca.en-ca.t1x",
 "apertium-es-ast/apertium-es-ast.es-ast.t1x",
 };
+
 
   public static String[] findAlllTransferFilesOnDisk() throws IOException {
     ArrayList<String> transerFiles = new ArrayList<String>();
@@ -119,12 +119,14 @@ static String[] transferFilesWithDifferences = {
           System.err.println("(transfer failed so not comparing)");
         } else {
           System.err.println("Speedup factor: " + (100*interpretedTime/bytecodeCompiledTime)/100.0);
-          ret = exec("diff -q "+rootDir+"/expected/"+relFileWOSufffix+".txt "+rootDir+"/actual/"+relFileWOSufffix+".txt");
+          String diff = "diff -q "+rootDir+"/expected/"+relFileWOSufffix+".txt "+rootDir+"/actual/"+relFileWOSufffix+".txt";
+          ret = exec(diff);
           if (ret==0) {
             System.err.println("OK: Output of interpreted and bytecode compiled transfer is exactly the same");
             tranferCompareOK.add(relFile);
 
           } else {
+            System.err.println(diff);
             System.err.println("FAIL: Output of interpreted and bytecode compiled transfer HAS DIFFERENCES");
             tranferCompareFail.add(relFile);
           }
