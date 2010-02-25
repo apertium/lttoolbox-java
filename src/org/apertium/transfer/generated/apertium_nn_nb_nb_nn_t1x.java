@@ -46,11 +46,11 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	{
 		if (debug) { logCall("macro_f_bcond",  word1); } 
 		/** Per mirar si el blanc conté o no format awhatnow?  */
-		// WARNING blank pos=1 is out of range. Replacing with an zero-space blank. - for <transfer>/<section-def-macros>/<def-macro n="f_bcond" npar="1">/<choose>/<when>/<test>/<not>/<equal>/<b pos="1">
-		if (!"".equals(" "))
+		// WARNING blank pos=1 is out of range. Replacing with a one-space blank. - for <transfer>/<section-def-macros>/<def-macro n="f_bcond" npar="1">/<choose>/<when>/<test>/<not>/<equal>/<b pos="1">
+		if (!" ".equals(" "))
 		{
-			// WARNING blank pos=1 is out of range. Replacing with an zero-space blank. - for <transfer>/<section-def-macros>/<def-macro n="f_bcond" npar="1">/<choose>/<when>/<out>/<b pos="1">
-			out.append("");
+			// WARNING blank pos=1 is out of range. Replacing with a one-space blank. - for <transfer>/<section-def-macros>/<def-macro n="f_bcond" npar="1">/<choose>/<when>/<out>/<b pos="1">
+			out.append(" ");
 		}
 	}
 	

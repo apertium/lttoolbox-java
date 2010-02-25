@@ -19,15 +19,17 @@ import org.apertium.transfer.compile.ParseTranserFile;
 public class CompareAndDebugOneTestFile {
 
   static String dir = "testdata/transfer/";
-  static String inputFile = dir+"x";
-  //static String inputFile = dir+"transferinput-en-eo.t1x-malgranda.txt";
+  //static String inputFile = dir+"x";
+  static String inputFile = dir+"transferinput-en-eo.t1x-malgranda.txt";
 
   public static void main(String[] args) throws Exception {
-      compareAndDebugOneTestFile("apertium-nn-nb.nn-nb.t1x");
+      compareAndDebugOneTestFile("apertium-es-ast.es-ast.t1x");
       /*
       compareAndDebugOneTestFile("apertium-eo-en.en-eo.t1x");
-      compareAndDebugOneTestFile("apertium-eo-en.eo-en.t1x");
-      compareAndDebugOneTestFile("apertium-nn-nb.nb-nn.t1x");
+"apertium-nn-nb/apertium-nn-nb.nn-nb.t1x",
+"apertium-cy-en/apertium-cy-en.en-cy.t1x",
+"apertium-cy-en/apertium-cy-en.cy-en.t1x",
+"apertium-es-ast/apertium-es-ast.es-ast.t1x",
        */
 
     }

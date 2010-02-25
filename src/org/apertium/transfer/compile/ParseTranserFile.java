@@ -504,12 +504,20 @@ public class ParseTranserFile {
       return processIn(e);
     } else if (n.equals("or")) {
       Element first = getFirstChildElement(e);
-      Element second = findElementSibling(first.getNextSibling());
-      return "("+processLogical(first) + "\n    || " + processLogical(second)+")";
+      String str = "("+processLogical(first);
+      Element next = first;
+      while ( (next = findElementSibling(next.getNextSibling())) != null) {
+        str += "\n    || " + processLogical(next);
+      }
+      return  str+")";
     } else if (n.equals("and")) {
       Element first = getFirstChildElement(e);
-      Element second = findElementSibling(first.getNextSibling());
-      return "("+processLogical(first) + "\n    && " + processLogical(second)+")";
+      String str = "("+processLogical(first);
+      Element next = first;
+      while ( (next = findElementSibling(next.getNextSibling())) != null) {
+        str += "\n    && " + processLogical(next);
+      }
+      return  str+")";
     } else if (n.equals("not")) {
       return "!" + processLogical(getFirstChildElement(e));
     }

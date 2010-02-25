@@ -53,6 +53,16 @@ public class ParseTestTransferFiles {
       FindAndCompareAllReleasedTransferFiles.exec("apertium-preprocess-transfer "+t1xFile+" "+binFile);
   }
 
+    public static String[] generatedTestTranfserFiles = {
+      "apertium-nn-nb.nn-nb.t1x",
+      "apertium-eo-en.en-eo.t1x",
+      "apertium-eo-en.eo-en.t1x",
+      "apertium-nn-nb.nb-nn.t1x",
+      "apertium-en-ca.en-ca.t1x",
+      "apertium-cy-en.en-cy.t1x",
+      "apertium-es-ast.es-ast.t1x",
+    };
+
     /**
      * This rebuilds the included transfer files
      */
@@ -61,11 +71,14 @@ public class ParseTestTransferFiles {
       System.err.println("System.out = " + System.in);
       //parseAndWriteToSrc("/home/j/esperanto/apertium/apertium-eo-en/apertium-eo-en.en-eo.t1x");
 
-      generateTestFiles("testdata/transfer/apertium-nn-nb.nn-nb.t1x");
+      for (String t1x : generatedTestTranfserFiles) {
+        generateTestFiles("testdata/transfer/"+t1x);
+      }
+/*
       generateTestFiles("testdata/transfer/apertium-eo-en.en-eo.t1x");
       generateTestFiles("testdata/transfer/apertium-eo-en.eo-en.t1x");
-      generateTestFiles("testdata/transfer/apertium-nn-nb.nb-nn.t1x");
-
+      generateTestFiles("testdata/transfer/apertium-nn-nb.nn-nb.t1x");
+*/
     //p.parse();
     //p.parse("/home/jim/NetBeansProjects/lttoolbox-java/apertium-en-ca.en-ca.t1x");
     }

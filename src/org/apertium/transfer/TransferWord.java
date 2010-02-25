@@ -46,7 +46,7 @@ public class TransferWord {
     }
     else
     {
-      return part.match(target.substring(0, source.length() - queue_length));
+      return part.match(target.substring(0, target.length() - queue_length));
     }
   }
 

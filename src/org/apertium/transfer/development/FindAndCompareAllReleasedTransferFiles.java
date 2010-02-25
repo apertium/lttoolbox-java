@@ -85,7 +85,11 @@ static String[] transferFilesWithDifferences = {
           continue;
         }
 
-        ApertiumTransferCompile.main(new String[]{absFile, resFileWOSufffix+".class"});
+        try {
+          ApertiumTransferCompile.main(new String[]{absFile, resFileWOSufffix+".class"});
+        } catch (Exception e) {
+          System.err.println("COMPILATION failed:"+e);
+        }
         exec("apertium-preprocess-transfer "+absFile+" "+resFileWOSufffix+".bin");
 
 
