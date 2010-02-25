@@ -195,6 +195,7 @@ public class ParseTranserFile {
   //
 
   private String evalString(Element e) {
+    printComments();
     currentNode = e;
     String n = e.getTagName();
     if (n.equals("clip")) {
@@ -230,6 +231,7 @@ public class ParseTranserFile {
     } else if (n.equals("concat")) {
       String res = "("+str("");
       for (Element c : listElements(e.getChildNodes())) {
+        printComments();
         res += "+"+ evalString(c);
       }
       res += ")";
@@ -240,12 +242,14 @@ public class ParseTranserFile {
   }
 
   private void processOut(Element instr) {
+    printComments();
     currentNode = instr;
     if (defaultAttrs == OutputType.lu) {
     } else { // defaultAttrs == Transfer.OutputType.chunk
     }
    
     for (Element e : listChildren(instr)) {
+      printComments();
       String n = e.getTagName();
       if (n.equals("lu")) {
         processLu(e);
@@ -267,6 +271,7 @@ public class ParseTranserFile {
 
 
   private void processChunk(Element e) {
+    printComments();
     currentNode = e;
     String name = e.getAttribute("name");
     String namefromvar = e.getAttribute("namefrom");
@@ -293,6 +298,7 @@ public class ParseTranserFile {
 
 
     for (Element c0 : listChildren(e)) {
+      printComments();
       String n = c0.getTagName();
       if (n.equals("tags")) {
         for (Element tag : listChildren(c0))
@@ -324,6 +330,7 @@ public class ParseTranserFile {
 
 
   private void processInstruction(Element instr) {
+    printComments();
     currentNode = instr;
     String n = instr.getTagName();
     if(n.equals("choose")) {
@@ -354,6 +361,7 @@ public class ParseTranserFile {
   }
 
   private void processLet(Element instr) {
+    printComments();
     currentNode = instr;
     Element leftSide = findElementSibling(instr.getFirstChild());
     Element rightSide = findElementSibling(leftSide.getNextSibling());
@@ -369,6 +377,7 @@ public class ParseTranserFile {
 
 
   private void processAppend(Element instr) {
+    printComments();
     currentNode = instr;
     String var = var(instr.getAttribute("n"));
 
@@ -384,6 +393,7 @@ public class ParseTranserFile {
 
 
   private void processModifyCase(Element instr) {
+    printComments();
     currentNode = instr;
     Element leftSide = findElementSibling(instr.getFirstChild());
     Element rightSide = findElementSibling(leftSide.getNextSibling());
@@ -436,6 +446,7 @@ public class ParseTranserFile {
       npar++;
     }
 
+    printComments();
     println("macro_"+javaIdentifier(n)+"(out"+par+");");
   }
 
@@ -444,6 +455,7 @@ public class ParseTranserFile {
     boolean first = true;
     for (Element whenC : listChildren(e))
     {
+      printComments();
       String n = whenC.getTagName();
       Element c0 = getFirstChildElement(whenC);
       if (!first) println("else");
@@ -472,6 +484,7 @@ public class ParseTranserFile {
 
 
   String processLogical(Element e) {
+    printComments();
     currentNode = e;
     String n=e.getTagName();
 
@@ -505,6 +518,7 @@ public class ParseTranserFile {
   }
 
   private String processEqual(Element e) {
+    printComments();
     currentNode = e;
     Element first = findElementSibling(e.getFirstChild());
     Element second = findElementSibling(first.getNextSibling());
@@ -518,6 +532,7 @@ public class ParseTranserFile {
 
 
   private String processBeginsWith(Element e) {
+    printComments();
     currentNode = e;
     Element first = findElementSibling(e.getFirstChild());
     Element second = findElementSibling(first.getNextSibling());
@@ -531,6 +546,7 @@ public class ParseTranserFile {
 
 
   private String processEndsWith(Element e) {
+    printComments();
     currentNode = e;
     Element first = findElementSibling(e.getFirstChild());
     Element second = findElementSibling(first.getNextSibling());
@@ -543,6 +559,7 @@ public class ParseTranserFile {
   }
 
   private String processBeginsWithList(Element e) {
+    printComments();
     currentNode = e;
     Element first = getFirstChildElement(e);
     Element second = findElementSibling(first.getNextSibling());
@@ -556,6 +573,7 @@ public class ParseTranserFile {
 
 
   private String processEndsWithList(Element e) {
+    printComments();
     currentNode = e;
     Element first = getFirstChildElement(e);
     Element second = findElementSibling(first.getNextSibling());
@@ -568,6 +586,7 @@ public class ParseTranserFile {
   }
 
   private String processContainsSubstring(Element e) {
+    printComments();
     currentNode = e;
     Element first = findElementSibling(e.getFirstChild());
     Element second = findElementSibling(first.getNextSibling());
@@ -582,6 +601,7 @@ public class ParseTranserFile {
 
 
   private String processIn(Element e) {
+    printComments();
     currentNode = e;
     Element first = getFirstChildElement(e);
     Element second = findElementSibling(first.getNextSibling());
@@ -872,7 +892,7 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
           printComments();
           println("private void "+methodName+"(Writer out"+methodArguments+") throws IOException");
           println("{");
-          println("if (debug) { logCall(\""+methodName+"\""+logCallParameters+"); }; "); // TODO Check performance impact
+          println("if (debug) { logCall(\""+methodName+"\""+logCallParameters+"); } "); // TODO Check performance impact
           currentNumberOfWordInParameterList = npar;
           for (Element c1 : listElements(c0.getChildNodes())) {
             printComments();
@@ -905,7 +925,7 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
           if (!comment.isEmpty()) println("// "+comment);
           println("public void "+methodName+"(Writer out"+methodArguments+") throws IOException");
           println("{");
-          println("if (debug) { logCall(\""+methodName+"\""+logCallParameters+"); }; "); // TODO Check performance impact
+          println("if (debug) { logCall(\""+methodName+"\""+logCallParameters+"); } "); // TODO Check performance impact
           for (Element c1 : getChildsChildrenElements(c0, "action")) {
             printComments();
             processInstruction(c1);

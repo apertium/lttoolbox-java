@@ -34,7 +34,7 @@ public class apertium_nn_nb_nn_nb_t1x extends GeneratedTransferBase
 	
 	private void macro_set_number1(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("macro_set_number1",  word1); }; 
+		if (debug) { logCall("macro_set_number1",  word1); } 
 		/**  arg.1: determiner
            "Heuristic": If ND, let pre_number be sp
        */
@@ -54,7 +54,7 @@ public class apertium_nn_nb_nn_nb_t1x extends GeneratedTransferBase
 	
 	private void macro_set_number2(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("macro_set_number2",  word1, blank1,  word2); }; 
+		if (debug) { logCall("macro_set_number2",  word1, blank1,  word2); } 
 		/**  arg.1: noun, arg.2: determiner (or adjective)
 	   If it's ND, take that of noun, o/w take that of determiner.
            If determiner is sp or nil, or noun is sp, take that of noun.
@@ -79,7 +79,7 @@ public class apertium_nn_nb_nn_nb_t1x extends GeneratedTransferBase
 	
 	private void macro_set_gender1(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("macro_set_gender1",  word1); }; 
+		if (debug) { logCall("macro_set_gender1",  word1); } 
 		/**  arg.1: determiner
            - default: keep determiner gender
            - GD in singular or sp gets m (only nouns may be mf sp)
@@ -109,7 +109,7 @@ public class apertium_nn_nb_nn_nb_t1x extends GeneratedTransferBase
 	
 	private void macro_set_gender2(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("macro_set_gender2",  word1, blank1,  word2); }; 
+		if (debug) { logCall("macro_set_gender2",  word1, blank1,  word2); } 
 		/**  arg.1: noun, arg.2: determiner (or adjective)
 	   - iff sg AND has-some-gender, take gender of target noun 
 	   - plurals get no gender (sp, however, may want mf);
@@ -140,7 +140,7 @@ public class apertium_nn_nb_nn_nb_t1x extends GeneratedTransferBase
 	
 	private void macro_set_adj_gender(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("macro_set_adj_gender",  word1); }; 
+		if (debug) { logCall("macro_set_adj_gender",  word1); } 
 		/**  arg.1: adjective (used for determination, "art")
           Assumes var gender is set, o/w we get empty string 
 	   - if m or f or GD, use mf
@@ -166,7 +166,7 @@ public class apertium_nn_nb_nn_nb_t1x extends GeneratedTransferBase
 	// VBLEX_BLI VBLEX.PP - bli(r) lese => leses 
 	public void rule0__vblex_bli__vblexpp(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule0__vblex_bli__vblexpp",  word1, blank1,  word2); }; 
+		if (debug) { logCall("rule0__vblex_bli__vblexpp",  word1, blank1,  word2); } 
 		{
 			String myword = 
 			         word2.target(attr_lemh, true)
@@ -188,7 +188,7 @@ public class apertium_nn_nb_nn_nb_t1x extends GeneratedTransferBase
 	// VBLEX_BLI VBLEX.PP - blir ikkje lese => leses ikke 
 	public void rule1__vblex_bli__adv__vblexpp(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule1__vblex_bli__adv__vblexpp",  word1, blank1,  word2, blank2,  word3); }; 
+		if (debug) { logCall("rule1__vblex_bli__adv__vblexpp",  word1, blank1,  word2, blank2,  word3); } 
 		{
 			String myword = 
 			         word3.target(attr_lemh, true)
@@ -222,7 +222,7 @@ public class apertium_nn_nb_nn_nb_t1x extends GeneratedTransferBase
 	// VBLEX_BLI VBLEX.PP - blir nok ikkje lese => leses nok ikke 
 	public void rule2__vblex_bli__adv__adv__vblexpp(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
-		if (debug) { logCall("rule2__vblex_bli__adv__adv__vblexpp",  word1, blank1,  word2, blank2,  word3, blank3,  word4); }; 
+		if (debug) { logCall("rule2__vblex_bli__adv__adv__vblexpp",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		{
 			String myword = 
 			         word4.target(attr_lemh, true)
@@ -268,7 +268,7 @@ public class apertium_nn_nb_nn_nb_t1x extends GeneratedTransferBase
 	// VBLEX.INF.PST - lesast => leses 
 	public void rule3__vblexinfpst(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule3__vblexinfpst",  word1); }; 
+		if (debug) { logCall("rule3__vblexinfpst",  word1); } 
 		{
 			String myword = 
 			         word1.target(attr_lemh, true)
@@ -289,7 +289,7 @@ public class apertium_nn_nb_nn_nb_t1x extends GeneratedTransferBase
 	// VBLEX                    Just in case we have nb multiwords; which need                    lemq after the inflected part.                    This has to be below the passive rules.
 	public void rule4__vblex(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule4__vblex",  word1); }; 
+		if (debug) { logCall("rule4__vblex",  word1); } 
 		{
 			String myword = 
 			         word1.target(attr_lemh, true)
@@ -309,7 +309,7 @@ public class apertium_nn_nb_nn_nb_t1x extends GeneratedTransferBase
 	// DET: kva => hvilken                    If GD, choose m (we never mark determiners mf)
 	public void rule5__det(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule5__det",  word1); }; 
+		if (debug) { logCall("rule5__det",  word1); } 
 		macro_set_gender1(out, word1);
 		{
 			String myword = 
@@ -332,7 +332,7 @@ public class apertium_nn_nb_nn_nb_t1x extends GeneratedTransferBase
 	// DET NACR: eit kl => et kl
 	public void rule6__det__nacr(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule6__det__nacr",  word1, blank1,  word2); }; 
+		if (debug) { logCall("rule6__det__nacr",  word1, blank1,  word2); } 
 		{
 			String myword = 
 			         word1.target(attr_whole, true)
@@ -361,7 +361,7 @@ public class apertium_nn_nb_nn_nb_t1x extends GeneratedTransferBase
 	// DET NOM
 	public void rule7__det__nom(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule7__det__nom",  word1, blank1,  word2); }; 
+		if (debug) { logCall("rule7__det__nom",  word1, blank1,  word2); } 
 		macro_set_gender2(out, word2, " ", word1);
 		{
 			String myword = 
@@ -402,7 +402,7 @@ public class apertium_nn_nb_nn_nb_t1x extends GeneratedTransferBase
 	// DET ADJ NOM
 	public void rule8__det__adj__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule8__det__adj__nom",  word1, blank1,  word2, blank2,  word3); }; 
+		if (debug) { logCall("rule8__det__adj__nom",  word1, blank1,  word2, blank2,  word3); } 
 		macro_set_gender2(out, word3, " ", word1);
 		{
 			String myword = 
@@ -462,7 +462,7 @@ public class apertium_nn_nb_nn_nb_t1x extends GeneratedTransferBase
 	// ADJ: open(m) => åpen(mf)
 	public void rule9__adj(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule9__adj",  word1); }; 
+		if (debug) { logCall("rule9__adj",  word1); } 
 		var_gender = word1.target(attr_gen, true);
 		macro_set_adj_gender(out, word1);
 		{

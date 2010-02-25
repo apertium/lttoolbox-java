@@ -62,7 +62,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
      Prenita de "f_bcond" apertium-en-es/apertium-en-es.es-en.t1x  */
 	private void macro_sendu_blankon_se_havas_formaton2(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("macro_sendu_blankon_se_havas_formaton2",  word1, blank1,  word2); }; 
+		if (debug) { logCall("macro_sendu_blankon_se_havas_formaton2",  word1, blank1,  word2); } 
 		if (!blank1.equals(" "))
 		{
 			out.append(blank1);
@@ -88,12 +88,15 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 	private void macro_adv_adj(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("macro_adv_adj",  word1, blank1,  word2); }; 
+		if (debug) { logCall("macro_adv_adj",  word1, blank1,  word2); } 
+		/**   c="Ĉu estas pli aŭ plej? Ekz: 'tre bona'"  */
 		if (list_l_pli_plej.containsIgnoreCase(word1.source(attr_lemh, true)))
 		{
+			/**   c="Ĉu estas sinteza adjektivo? Ekz pli bona → better(sint)(comp)"  */
 			if (list_adj_kun_sint.containsIgnoreCase(word2.target(attr_lemh, true)))
 			{
 				macro_sendu_blankon_se_havas_formaton2(out, word1, blank1, word2);
+				/**   c="Ĉu pli aŭ plej? Metu (comp) aŭ (sup) en variablo"  */
 				if (word1.source(attr_lem, true).equalsIgnoreCase("pli"))
 				{
 					var_adv_adjectiu = (""+word2.target(attr_lem, true)+"<adj><sint><comp>");
@@ -114,13 +117,14 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		}
 	}
 	
-	/**   c="Ĉu estas pli aŭ plej? Ekz: 'tre bona'"   c="Ĉu estas sinteza adjektivo? Ekz pli bona → better(sint)(comp)"   c="Ĉu pli aŭ plej? Metu (comp) aŭ (sup) en variablo"  rigardas, ĉu temas pri nepersona verbo kaj preparas "it" por aldono  */
+	/**  rigardas, ĉu temas pri nepersona verbo kaj preparas "it" por aldono  */
 	private void macro_nepersona(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("macro_nepersona",  word1); }; 
+		if (debug) { logCall("macro_nepersona",  word1); } 
 		if ((list_nepersonaj_verboj.containsIgnoreCase(word1.source(attr_lemh, true))
     && !word1.source(attr_a_nepersonaj_tempoj, true).equals("")))
 		{
+			/**     <lit v="^pron"/><lit-tag v="SN.p3.nt.sg.nom.nepersona"/><lit v="{^prpers"/><lit-tag v="prn.subj.2.3.4"/><lit v="$}$ "/> */
 			var_it = (""+"^pron"+"<SN><p3><nt><sg><nom>"+"{^prpers"+"<prn><subj><2><3><4>"+"$}$ ");
 		}
 		else
@@ -129,10 +133,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		}
 	}
 	
-	/**     <lit v="^pron"/><lit-tag v="SN.p3.nt.sg.nom.nepersona"/><lit v="{^prpers"/><lit-tag v="prn.subj.2.3.4"/><lit v="$}$ "/> konvertas imperativon al infinitivo  */
+	/**  konvertas imperativon al infinitivo  */
 	private void macro_imp_inf(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("macro_imp_inf",  word1); }; 
+		if (debug) { logCall("macro_imp_inf",  word1); } 
 		if (word1.target(attr_a_tns, true).equals("<imp>"))
 		{
 			word1.setTarget(attr_a_tns, "<inf>", true);
@@ -142,7 +146,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 	/**  difinas la tipon vrb2 de la verbo   */
 	private void macro_set_vrb2(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("macro_set_vrb2",  word1); }; 
+		if (debug) { logCall("macro_set_vrb2",  word1); } 
 		if (word1.target(attr_lemh, true).equals("be"))
 		{
 			var_vrb2 = "<be>";
@@ -181,7 +185,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 	// REGULO: la 2a de julio - July 2nd
 	public void rule0__la__num_ord__de__monato(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
-		if (debug) { logCall("rule0__la__num_ord__de__monato",  word1, blank1,  word2, blank2,  word3, blank3,  word4); }; 
+		if (debug) { logCall("rule0__la__num_ord__de__monato",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: la 2a de julio - July 2nd">/<action>/<out>/<chunk case="caseFirstWord" name="dato">
@@ -224,7 +228,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 	// REGULO: DE TEMPO (de/ekde januaro -> from January -- ŝanĝo de prepozicio
 	public void rule1__de_ekde__tempo(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule1__de_ekde__tempo",  word1, blank1,  word2); }; 
+		if (debug) { logCall("rule1__de_ekde__tempo",  word1, blank1,  word2); } 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: DE TEMPO (de/ekde januaro -> from January -- ŝanĝo de prepozicio">/<action>/<out>/<chunk case="caseFirstWord" name="pr">
@@ -271,7 +275,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 	// REGULO: DE DET TEMPO (de/ekde tiu januaro -> from this January -- ŝanĝo de prepozicio
 	public void rule2__de_ekde__c_det__tempo(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule2__de_ekde__c_det__tempo",  word1, blank1,  word2, blank2,  word3); }; 
+		if (debug) { logCall("rule2__de_ekde__c_det__tempo",  word1, blank1,  word2, blank2,  word3); } 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: DE DET TEMPO (de/ekde tiu januaro -> from this January -- ŝanĝo de prepozicio">/<action>/<out>/<chunk case="caseFirstWord" name="pr">
@@ -295,6 +299,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append('^');
 		out.append("tempo");
 		out.append("<SD>");
+		/**  Sintagmo determinita  */
 		out.append(word3.target(attr_a_nbr, true));
 		out.append(word3.target(attr_a_cas, true));
 		out.append('{');
@@ -330,11 +335,11 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append("}$");
 	}
 	
-	/**  Sintagmo determinita  ne eblas "antaŭ": estas amaso da "en la aĝo de tri jaroj"; bedaŭrinde, ĉar "de tri jaroj li studas medicinon"  */
+	/**  ne eblas "antaŭ": estas amaso da "en la aĝo de tri jaroj"; bedaŭrinde, ĉar "de tri jaroj li studas medicinon"  */
 	// REGULO: DE ANTAŬ NUM TEMPO (de/ekde antaŭ tri tagoj -> since three days ago - ŝanĝo de prepozicio + ago
 	public void rule3__de_ekde__anta___num_sp__tempo2(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
-		if (debug) { logCall("rule3__de_ekde__anta___num_sp__tempo2",  word1, blank1,  word2, blank2,  word3, blank3,  word4); }; 
+		if (debug) { logCall("rule3__de_ekde__anta___num_sp__tempo2",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		/**  ne eblas "antaŭ": estas amaso da "en la aĝo de tri jaroj"; bedaŭrinde, ĉar "de tri jaroj li studas medicinon"  */
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
@@ -359,6 +364,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append('^');
 		out.append("tempo");
 		out.append("<SD>");
+		/**  Sintagmo determinita  */
 		out.append(word4.target(attr_a_nbr, true));
 		out.append(word4.target(attr_a_cas, true));
 		out.append('{');
@@ -404,11 +410,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append("}$");
 	}
 	
-	/**  Sintagmo determinita  */
 	// REGULO: DE ANTAŬ QNT TEMPO (de/ekde antaŭ kelkaj tagoj -> since some days ago - ŝanĝo de prepozicio + ago
 	public void rule4__de_ekde__anta___qnt__tempo2(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
-		if (debug) { logCall("rule4__de_ekde__anta___qnt__tempo2",  word1, blank1,  word2, blank2,  word3, blank3,  word4); }; 
+		if (debug) { logCall("rule4__de_ekde__anta___qnt__tempo2",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: DE ANTAŬ QNT TEMPO (de/ekde antaŭ kelkaj tagoj -> since some days ago - ŝanĝo de prepozicio + ago">/<action>/<out>/<chunk case="caseFirstWord" name="pr">
@@ -483,10 +488,11 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 	// REGULO: ANTAŬ NUM TEMPO (antaŭ tri tagoj -> three days ago - sen prepozicio + ago
 	public void rule5__anta___num_sp__tempo2(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule5__anta___num_sp__tempo2",  word1, blank1,  word2, blank2,  word3); }; 
+		if (debug) { logCall("rule5__anta___num_sp__tempo2",  word1, blank1,  word2, blank2,  word3); } 
 		out.append('^');
 		out.append("tempo");
 		out.append("<SD>");
+		/**  Sintagmo determinita  */
 		out.append(word3.target(attr_a_nbr, true));
 		out.append(word3.target(attr_a_cas, true));
 		out.append('{');
@@ -532,11 +538,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append("}$");
 	}
 	
-	/**  Sintagmo determinita  */
 	// REGULO: ANTAŬ QNT TEMPO (antaŭ kelkaj tagoj -> some days ago - sen prepozicio + ago
 	public void rule6__anta___qnt__tempo2(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule6__anta___qnt__tempo2",  word1, blank1,  word2, blank2,  word3); }; 
+		if (debug) { logCall("rule6__anta___qnt__tempo2",  word1, blank1,  word2, blank2,  word3); } 
 		out.append('^');
 		out.append("tempo");
 		out.append("<SN>");
@@ -592,12 +597,13 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 	// REGULO: DET
 	public void rule7__c_det(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule7__c_det",  word1); }; 
+		if (debug) { logCall("rule7__c_det",  word1); } 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: DET">/<action>/<out>/<chunk case="caseFirstWord" name="det">
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "det"));
 		out.append("<SD>");
+		/**  Sintagmo determinita  */
 		out.append(word1.target(attr_a_nbr, true));
 		out.append(word1.target(attr_a_cas, true));
 		out.append('{');
@@ -618,7 +624,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append("}$");
 	}
 	
-	/**  Sintagmo determinita 
+	/** 
   <rule comment="REGULO: PRN">
      <pattern>
        <pattern-item n="c_prn"/>
@@ -645,9 +651,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 	// REGULO: PRN
 	public void rule8__c_prn(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule8__c_prn",  word1); }; 
+		if (debug) { logCall("rule8__c_prn",  word1); } 
 		if (list_prn_kun_persono_kaj_genro.containsIgnoreCase(word1.source(attr_lem, true)))
 		{
+			/**  persona pronomo: estas persono kaj genro  */
 			out.append('^');
 			// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: PRN">/<action>/<choose>/<when>/<out>/<chunk case="caseFirstWord" name="pron">
@@ -678,6 +685,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		}
 		else
 		{
+			/**  montra, rilativa k.a. pronomoj: estas nek persono nek genro  */
 			out.append('^');
 			// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: PRN">/<action>/<choose>/<otherwise>/<out>/<chunk case="caseFirstWord" name="pron">
@@ -704,17 +712,17 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		}
 	}
 	
-	/**  persona pronomo: estas persono kaj genro  montra, rilativa k.a. pronomoj: estas nek persono nek genro  */
 	// REGULO: PREP PRN (por li -> for him)
 	public void rule9__pr__c_prn(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule9__pr__c_prn",  word1, blank1,  word2); }; 
+		if (debug) { logCall("rule9__pr__c_prn",  word1, blank1,  word2); } 
 		if (list_prn_kun_persono_kaj_genro.containsIgnoreCase(word2.source(attr_lem, true)))
 		{
 			if (word2.target(attr_a_prn, true).equalsIgnoreCase("<prn><subj>"))
 			{
 				word2.setTarget(attr_a_prn, "<prn><obj>", true);
 			}
+			/**  persona pronomo: estas persono kaj genro  */
 			out.append('^');
 			// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: PREP PRN (por li -> for him)">/<action>/<choose>/<when>/<out>/<chunk case="caseFirstWord" name="pr">
@@ -762,6 +770,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		}
 		else
 		{
+			/**  montra, rilativa k.a. pronomoj: estas nek persono nek genro  */
 			out.append('^');
 			// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: PREP PRN (por li -> for him)">/<action>/<choose>/<otherwise>/<out>/<chunk case="caseFirstWord" name="pr">
@@ -805,11 +814,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		}
 	}
 	
-	/**  persona pronomo: estas persono kaj genro  montra, rilativa k.a. pronomoj: estas nek persono nek genro  */
 	// REGULO: ADV
 	public void rule10__c_adv(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule10__c_adv",  word1); }; 
+		if (debug) { logCall("rule10__c_adv",  word1); } 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: ADV">/<action>/<out>/<chunk case="caseFirstWord" name="adv">
@@ -836,12 +844,13 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 	// REGULO: ADJ
 	public void rule11__c_adj(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule11__c_adj",  word1); }; 
+		if (debug) { logCall("rule11__c_adj",  word1); } 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: ADJ">/<action>/<out>/<chunk case="caseFirstWord" name="adj">
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "adj"));
 		out.append("<SA>");
+		/**  c="sintagmo adjektiva"  */
 		out.append(word1.target(attr_a_nbr, true));
 		out.append(word1.target(attr_a_cas, true));
 		out.append('{');
@@ -861,17 +870,17 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append("}$");
 	}
 	
-	/**  c="sintagmo adjektiva"  */
 	// REGULO: PLI/PLEJ ADJ
 	public void rule12__c_pli_plej__c_adj(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule12__c_pli_plej__c_adj",  word1, blank1,  word2); }; 
+		if (debug) { logCall("rule12__c_pli_plej__c_adj",  word1, blank1,  word2); } 
 		macro_adv_adj(out, word1, blank1, word2);
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: PLI/PLEJ ADJ">/<action>/<out>/<chunk case="caseFirstWord" name="sint?_adj">
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "sint?_adj"));
 		out.append("<SA>");
+		/**   c="sintagmo adjektiva"  */
 		out.append(word2.target(attr_a_nbr, true));
 		out.append('{');
 		{
@@ -888,11 +897,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append("}$");
 	}
 	
-	/**   c="sintagmo adjektiva"  */
 	// REGULO: NOM
 	public void rule13__c_nom(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule13__c_nom",  word1); }; 
+		if (debug) { logCall("rule13__c_nom",  word1); } 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: NOM">/<action>/<out>/<chunk case="caseFirstWord" name="nom">
@@ -921,12 +929,13 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 	// REGULO: DET NOM
 	public void rule14__c_det__c_nom(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule14__c_det__c_nom",  word1, blank1,  word2); }; 
+		if (debug) { logCall("rule14__c_det__c_nom",  word1, blank1,  word2); } 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: DET NOM">/<action>/<out>/<chunk case="caseFirstWord" name="det_nom">
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "det_nom"));
 		out.append("<SD>");
+		/**  Sintagmo determinita  */
 		out.append(word2.target(attr_a_nbr, true));
 		out.append(word2.source(attr_a_cas, true));
 		out.append('{');
@@ -962,16 +971,16 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append("}$");
 	}
 	
-	/**  Sintagmo determinita  */
 	// REGULO: NUM NOM
 	public void rule15__num__c_nom(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule15__num__c_nom",  word1, blank1,  word2); }; 
+		if (debug) { logCall("rule15__num__c_nom",  word1, blank1,  word2); } 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: NUM NOM">/<action>/<out>/<chunk case="caseFirstWord" name="det_nom">
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "det_nom"));
 		out.append("<SD>");
+		/**  Sintagmo determinita  */
 		out.append(word2.target(attr_a_nbr, true));
 		out.append(word2.source(attr_a_cas, true));
 		out.append('{');
@@ -1004,16 +1013,16 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append("}$");
 	}
 	
-	/**  Sintagmo determinita  */
 	// REGULO: DET NUM NOM
 	public void rule16__c_det__num__c_nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule16__c_det__num__c_nom",  word1, blank1,  word2, blank2,  word3); }; 
+		if (debug) { logCall("rule16__c_det__num__c_nom",  word1, blank1,  word2, blank2,  word3); } 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: DET NUM NOM">/<action>/<out>/<chunk case="caseFirstWord" name="det_nom">
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "det_nom"));
 		out.append("<SD>");
+		/**  Sintagmo determinita  */
 		out.append(word3.target(attr_a_nbr, true));
 		out.append(word3.source(attr_a_cas, true));
 		out.append('{');
@@ -1061,16 +1070,16 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append("}$");
 	}
 	
-	/**  Sintagmo determinita  */
 	// REGULO: DET NUM ADJ NOM
 	public void rule17__c_det__num__c_adj_pp__c_nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
-		if (debug) { logCall("rule17__c_det__num__c_adj_pp__c_nom",  word1, blank1,  word2, blank2,  word3, blank3,  word4); }; 
+		if (debug) { logCall("rule17__c_det__num__c_adj_pp__c_nom",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: DET NUM ADJ NOM">/<action>/<out>/<chunk case="caseFirstWord" name="det_nom">
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "det_nom"));
 		out.append("<SD>");
+		/**  Sintagmo determinita  */
 		out.append(word4.target(attr_a_nbr, true));
 		out.append(word4.source(attr_a_cas, true));
 		out.append('{');
@@ -1132,16 +1141,16 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append("}$");
 	}
 	
-	/**  Sintagmo determinita  */
 	// REGULO: DET NUM ADJ ADJ NOM
 	public void rule18__c_det__num__c_adj_pp__c_adj_pp__c_nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5) throws IOException
 	{
-		if (debug) { logCall("rule18__c_det__num__c_adj_pp__c_adj_pp__c_nom",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5); }; 
+		if (debug) { logCall("rule18__c_det__num__c_adj_pp__c_adj_pp__c_nom",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5); } 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: DET NUM ADJ ADJ NOM">/<action>/<out>/<chunk case="caseFirstWord" name="det_nom">
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "det_nom"));
 		out.append("<SD>");
+		/**  Sintagmo determinita  */
 		out.append(word5.target(attr_a_nbr, true));
 		out.append(word5.source(attr_a_cas, true));
 		out.append('{');
@@ -1217,17 +1226,17 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append("}$");
 	}
 	
-	/**  Sintagmo determinita  */
 	// REGULO: DET ADV ADJ NOM
 	public void rule19__c_det__c_adv__c_adj_pp__c_nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
-		if (debug) { logCall("rule19__c_det__c_adv__c_adj_pp__c_nom",  word1, blank1,  word2, blank2,  word3, blank3,  word4); }; 
+		if (debug) { logCall("rule19__c_det__c_adv__c_adj_pp__c_nom",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		macro_adv_adj(out, word2, blank2, word3);
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: DET ADV ADJ NOM">/<action>/<out>/<chunk case="caseFirstWord" name="det_nom">
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "det_nom"));
 		out.append("<SD>");
+		/**  Sintagmo determinita  */
 		out.append(word4.target(attr_a_nbr, true));
 		out.append(word4.source(attr_a_cas, true));
 		out.append('{');
@@ -1275,17 +1284,17 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append("}$");
 	}
 	
-	/**  Sintagmo determinita  */
 	// REGULO: DET NUM ADV ADJ NOM
 	public void rule20__c_det__num__c_adv__c_adj_pp__c_nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5) throws IOException
 	{
-		if (debug) { logCall("rule20__c_det__num__c_adv__c_adj_pp__c_nom",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5); }; 
+		if (debug) { logCall("rule20__c_det__num__c_adv__c_adj_pp__c_nom",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5); } 
 		macro_adv_adj(out, word3, blank3, word4);
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: DET NUM ADV ADJ NOM">/<action>/<out>/<chunk case="caseFirstWord" name="det_nom">
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "det_nom"));
 		out.append("<SD>");
+		/**  Sintagmo determinita  */
 		out.append(word5.target(attr_a_nbr, true));
 		out.append(word5.source(attr_a_cas, true));
 		out.append('{');
@@ -1345,11 +1354,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append("}$");
 	}
 	
-	/**  Sintagmo determinita  */
 	// REGULO: DET ADJ
 	public void rule21__c_det__c_adj_pp(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule21__c_det__c_adj_pp",  word1, blank1,  word2); }; 
+		if (debug) { logCall("rule21__c_det__c_adj_pp",  word1, blank1,  word2); } 
 		if (list_lingvoj.containsIgnoreCase(word2.source(attr_lemh, true)))
 		{
 			out.append('^');
@@ -1357,6 +1365,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: DET ADJ">/<action>/<choose>/<when>/<out>/<chunk case="caseFirstWord" name="adj">
 			out.append(TransferWord.copycase(error_UNKNOWN_VAR, "adj"));
 			out.append("<SD>");
+			/**  Sintagmo determinita  */
 			out.append(word2.target(attr_a_nbr, true));
 			out.append(word2.source(attr_a_cas, true));
 			out.append('{');
@@ -1382,6 +1391,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: DET ADJ">/<action>/<choose>/<otherwise>/<out>/<chunk case="caseFirstWord" name="det_adj">
 			out.append(TransferWord.copycase(error_UNKNOWN_VAR, "det_adj"));
 			out.append("<SD>");
+			/**  Sintagmo determinita  */
 			out.append(word2.target(attr_a_nbr, true));
 			out.append(word2.source(attr_a_cas, true));
 			out.append('{');
@@ -1417,17 +1427,17 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		}
 	}
 	
-	/**  Sintagmo determinita  Sintagmo determinita  */
 	// REGULO: DET ADV ADJ
 	public void rule22__c_det__c_adv__c_adj_pp(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule22__c_det__c_adv__c_adj_pp",  word1, blank1,  word2, blank2,  word3); }; 
+		if (debug) { logCall("rule22__c_det__c_adv__c_adj_pp",  word1, blank1,  word2, blank2,  word3); } 
 		macro_adv_adj(out, word2, blank2, word3);
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: DET ADV ADJ">/<action>/<out>/<chunk case="caseFirstWord" name="det_adj">
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "det_adj"));
 		out.append("<SD>");
+		/**  Sintagmo determinita  */
 		out.append(word3.target(attr_a_nbr, true));
 		out.append(word3.source(attr_a_cas, true));
 		out.append('{');
@@ -1460,11 +1470,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append("}$");
 	}
 	
-	/**  Sintagmo determinita  */
 	// REGULO: ADJ NOM
 	public void rule23__c_adj__c_nom(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule23__c_adj__c_nom",  word1, blank1,  word2); }; 
+		if (debug) { logCall("rule23__c_adj__c_nom",  word1, blank1,  word2); } 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: ADJ NOM">/<action>/<out>/<chunk case="caseFirstWord" name="adj_nom">
@@ -1507,12 +1516,13 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 	// REGULO: DET ADJ NOM
 	public void rule24__c_det__c_adj_pp__c_nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule24__c_det__c_adj_pp__c_nom",  word1, blank1,  word2, blank2,  word3); }; 
+		if (debug) { logCall("rule24__c_det__c_adj_pp__c_nom",  word1, blank1,  word2, blank2,  word3); } 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: DET ADJ NOM">/<action>/<out>/<chunk case="caseFirstWord" name="det_adj_nom">
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "det_adj_nom"));
 		out.append("<SD>");
+		/**  Sintagmo determinita  */
 		out.append(word3.target(attr_a_nbr, true));
 		out.append(word3.source(attr_a_cas, true));
 		out.append('{');
@@ -1562,16 +1572,16 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append("}$");
 	}
 	
-	/**  Sintagmo determinita  */
 	// REGULO: DET ADJ ADJ NOM
 	public void rule25__c_det__c_adj_pp__c_adj_pp__c_nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
-		if (debug) { logCall("rule25__c_det__c_adj_pp__c_adj_pp__c_nom",  word1, blank1,  word2, blank2,  word3, blank3,  word4); }; 
+		if (debug) { logCall("rule25__c_det__c_adj_pp__c_adj_pp__c_nom",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: DET ADJ ADJ NOM">/<action>/<out>/<chunk case="caseFirstWord" name="det_adj_nom">
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "det_adj_nom"));
 		out.append("<SD>");
+		/**  Sintagmo determinita  */
 		out.append(word4.target(attr_a_nbr, true));
 		out.append(word4.source(attr_a_cas, true));
 		out.append('{');
@@ -1635,16 +1645,16 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append("}$");
 	}
 	
-	/**  Sintagmo determinita  */
 	// REGULO: DET ADJ ADJ ADJ NOM
 	public void rule26__c_det__c_adj_pp__c_adj_pp__c_adj_pp__c_nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5) throws IOException
 	{
-		if (debug) { logCall("rule26__c_det__c_adj_pp__c_adj_pp__c_adj_pp__c_nom",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5); }; 
+		if (debug) { logCall("rule26__c_det__c_adj_pp__c_adj_pp__c_adj_pp__c_nom",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5); } 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: DET ADJ ADJ ADJ NOM">/<action>/<out>/<chunk case="caseFirstWord" name="det_adj_nom">
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "det_adj_nom"));
 		out.append("<SD>");
+		/**  Sintagmo determinita  */
 		out.append(word5.target(attr_a_nbr, true));
 		out.append(word5.source(attr_a_cas, true));
 		out.append('{');
@@ -1722,11 +1732,11 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append("}$");
 	}
 	
-	/**  Sintagmo determinita  SV  */
+	/**  SV  */
 	// REGULO: VERBO-os
 	public void rule27__c_vb_fti(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule27__c_vb_fti",  word1); }; 
+		if (debug) { logCall("rule27__c_vb_fti",  word1); } 
 		macro_set_vrb2(out, word1);
 		macro_nepersona(out, word1);
 		out.append(var_it);
@@ -1774,7 +1784,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 	// REGULO: VERBO-us
 	public void rule28__c_vb_cni(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule28__c_vb_cni",  word1); }; 
+		if (debug) { logCall("rule28__c_vb_cni",  word1); } 
 		macro_set_vrb2(out, word1);
 		macro_nepersona(out, word1);
 		if (word1.source(attr_lemh, true).equals("devi"))
@@ -1854,7 +1864,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 	// REGULO: NE VERBO-os
 	public void rule29__c_ne__c_vb_fti(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule29__c_ne__c_vb_fti",  word1, blank1,  word2); }; 
+		if (debug) { logCall("rule29__c_ne__c_vb_fti",  word1, blank1,  word2); } 
 		macro_set_vrb2(out, word2);
 		macro_nepersona(out, word2);
 		out.append(var_it);
@@ -1915,7 +1925,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 	// REGULO: NE VERBO-us
 	public void rule30__c_ne__c_vb_cni(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule30__c_ne__c_vb_cni",  word1, blank1,  word2); }; 
+		if (debug) { logCall("rule30__c_ne__c_vb_cni",  word1, blank1,  word2); } 
 		macro_set_vrb2(out, word2);
 		macro_nepersona(out, word2);
 		if (word1.source(attr_lemh, true).equals("devi"))
@@ -2021,7 +2031,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 	// REGULO: VERBO EN ONT-FORMO
 	public void rule31__c_vb_pp2(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule31__c_vb_pp2",  word1); }; 
+		if (debug) { logCall("rule31__c_vb_pp2",  word1); } 
 		macro_set_vrb2(out, word1);
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
@@ -2067,7 +2077,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 	// REGULO: VERBO EN INT-FORMO
 	public void rule32__c_vb_pp3(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule32__c_vb_pp3",  word1); }; 
+		if (debug) { logCall("rule32__c_vb_pp3",  word1); } 
 		macro_set_vrb2(out, word1);
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
@@ -2099,7 +2109,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 	// REGULO: ESTOS -INTA
 	public void rule33__c_vbser_fti__c_vb_pp3(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule33__c_vbser_fti__c_vb_pp3",  word1, blank1,  word2); }; 
+		if (debug) { logCall("rule33__c_vbser_fti__c_vb_pp3",  word1, blank1,  word2); } 
 		macro_set_vrb2(out, word2);
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
@@ -2157,7 +2167,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 	// REGULO: ESTUS -INTA
 	public void rule34__c_vbser_cni__c_vb_pp3(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule34__c_vbser_cni__c_vb_pp3",  word1, blank1,  word2); }; 
+		if (debug) { logCall("rule34__c_vbser_cni__c_vb_pp3",  word1, blank1,  word2); } 
 		macro_set_vrb2(out, word2);
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
@@ -2215,7 +2225,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 	// REGULO: ESTIsimpla-INTA
 	public void rule35__c_vbser_simpla__c_vb_pp3(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule35__c_vbser_simpla__c_vb_pp3",  word1, blank1,  word2); }; 
+		if (debug) { logCall("rule35__c_vbser_simpla__c_vb_pp3",  word1, blank1,  word2); } 
 		macro_imp_inf(out, word1);
 		macro_set_vrb2(out, word1);
 		out.append('^');
@@ -2234,6 +2244,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			         +"<vbhaver>"
 			         +word1.target(attr_a_tns, true)
 			         +"<4>"
+			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			         +"<5>"
 			         ;
 			if (myword.length()>0)
@@ -2243,6 +2254,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 				out.append('$');
 			}
 		}
+		/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 		out.append(" ");
 		{
 			String myword = 
@@ -2261,11 +2273,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append("}$");
 	}
 	
-	/**  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 	// REGULO: ESTIsimpla PP
 	public void rule36__c_vbser_simpla__c_vb_pp(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule36__c_vbser_simpla__c_vb_pp",  word1, blank1,  word2); }; 
+		if (debug) { logCall("rule36__c_vbser_simpla__c_vb_pp",  word1, blank1,  word2); } 
 		macro_imp_inf(out, word1);
 		macro_set_vrb2(out, word1);
 		out.append('^');
@@ -2284,7 +2295,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			         +word1.target(attr_a_vrb, true)
 			         +word1.target(attr_a_tns, true)
 			         +"<4>"
+			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			         +"<5>"
+			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 			         +word1.target(attr_lemq, true)
 			         ;
 			if (myword.length()>0)
@@ -2312,11 +2325,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append("}$");
 	}
 	
-	/**  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 	// REGULO: ESTIsimpla PP de (estas dirita de -> is told by)
 	public void rule37__c_vbser_simpla__c_vb_pp__de(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule37__c_vbser_simpla__c_vb_pp__de",  word1, blank1,  word2, blank2,  word3); }; 
+		if (debug) { logCall("rule37__c_vbser_simpla__c_vb_pp__de",  word1, blank1,  word2, blank2,  word3); } 
 		macro_imp_inf(out, word1);
 		macro_set_vrb2(out, word1);
 		out.append('^');
@@ -2335,7 +2347,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			         +word1.target(attr_a_vrb, true)
 			         +word1.target(attr_a_tns, true)
 			         +"<4>"
+			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			         +"<5>"
+			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 			         +word1.target(attr_lemq, true)
 			         ;
 			if (myword.length()>0)
@@ -2383,11 +2397,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append("}$");
 	}
 	
-	/**  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 	// REGULO: ESTIsimpla PP DE PRN (estas dirita de li -> is told by him)
 	public void rule38__c_vbser_simpla__c_vb_pp__de__c_prn(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
-		if (debug) { logCall("rule38__c_vbser_simpla__c_vb_pp__de__c_prn",  word1, blank1,  word2, blank2,  word3, blank3,  word4); }; 
+		if (debug) { logCall("rule38__c_vbser_simpla__c_vb_pp__de__c_prn",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		macro_imp_inf(out, word1);
 		macro_set_vrb2(out, word1);
 		out.append('^');
@@ -2406,7 +2419,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			         +word1.target(attr_a_vrb, true)
 			         +word1.target(attr_a_tns, true)
 			         +"<4>"
+			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			         +"<5>"
+			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 			         +word1.target(attr_lemq, true)
 			         ;
 			if (myword.length()>0)
@@ -2453,13 +2468,13 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		}
 		out.append("}$");
 		out.append(blank3);
-		/**  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 		if (list_prn_kun_persono_kaj_genro.containsIgnoreCase(word4.source(attr_lem, true)))
 		{
 			if (word4.target(attr_a_prn, true).equalsIgnoreCase("<prn><subj>"))
 			{
 				word4.setTarget(attr_a_prn, "<prn><obj>", true);
 			}
+			/**  persona pronomo: estas persono kaj genro  */
 			out.append('^');
 			out.append("pron");
 			out.append("<SN>");
@@ -2488,6 +2503,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		}
 		else
 		{
+			/**  montra, rilativa k.a. pronomoj: estas nek persono nek genro  */
 			out.append('^');
 			out.append("pron");
 			out.append("<SN>");
@@ -2512,11 +2528,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		}
 	}
 	
-	/**  persona pronomo: estas persono kaj genro  montra, rilativa k.a. pronomoj: estas nek persono nek genro  */
 	// REGULO: VBSER
 	public void rule39__c_vbser(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule39__c_vbser",  word1); }; 
+		if (debug) { logCall("rule39__c_vbser",  word1); } 
 		macro_imp_inf(out, word1);
 		macro_set_vrb2(out, word1);
 		out.append('^');
@@ -2527,14 +2542,17 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(var_vrb2);
 		out.append(word1.target(attr_a_tns, true));
 		out.append("<PD>");
+		/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 		out.append("<ND>");
 		out.append('{');
+		/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 		{
 			String myword = 
 			         word1.target(attr_lem, true)
 			         +word1.target(attr_a_vrb, true)
 			         +word1.target(attr_a_tns, true)
 			         +"<4>"
+			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			         +"<5>"
 			         ;
 			if (myword.length()>0)
@@ -2547,11 +2565,11 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append("}$");
 	}
 	
-	/**  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
+	/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 	// REGULO: NE VBSER
 	public void rule40__c_ne__c_vbser(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule40__c_ne__c_vbser",  word1, blank1,  word2); }; 
+		if (debug) { logCall("rule40__c_ne__c_vbser",  word1, blank1,  word2); } 
 		macro_imp_inf(out, word2);
 		macro_set_vrb2(out, word2);
 		out.append('^');
@@ -2562,14 +2580,17 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(var_vrb2);
 		out.append(word2.target(attr_a_tns, true));
 		out.append("<PD>");
+		/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 		out.append("<ND>");
 		out.append('{');
+		/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 		{
 			String myword = 
 			         word2.target(attr_lem, true)
 			         +word2.target(attr_a_vrb, true)
 			         +word2.target(attr_a_tns, true)
 			         +"<4>"
+			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			         +"<5>"
 			         ;
 			if (myword.length()>0)
@@ -2579,6 +2600,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 				out.append('$');
 			}
 		}
+		/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 		out.append(blank1);
 		{
 			String myword = 
@@ -2595,11 +2617,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append("}$");
 	}
 	
-	/**  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 	// REGULO: VBLEX
 	public void rule41__c_vblex(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule41__c_vblex",  word1); }; 
+		if (debug) { logCall("rule41__c_vblex",  word1); } 
 		macro_imp_inf(out, word1);
 		macro_set_vrb2(out, word1);
 		macro_nepersona(out, word1);
@@ -2612,15 +2633,19 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(var_vrb2);
 		out.append(word1.target(attr_a_tns, true));
 		out.append("<PD>");
+		/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 		out.append("<ND>");
 		out.append('{');
+		/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 		{
 			String myword = 
 			         word1.target(attr_lemh, true)
 			         +word1.target(attr_a_vrb, true)
 			         +word1.target(attr_a_tns, true)
 			         +"<4>"
+			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			         +"<5>"
+			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 			         +word1.target(attr_lemq, true)
 			         ;
 			if (myword.length()>0)
@@ -2633,11 +2658,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append("}$");
 	}
 	
-	/**  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 	// REGULO: NE VBLEX
 	public void rule42__c_ne__c_vblex(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule42__c_ne__c_vblex",  word1, blank1,  word2); }; 
+		if (debug) { logCall("rule42__c_ne__c_vblex",  word1, blank1,  word2); } 
 		macro_imp_inf(out, word2);
 		macro_set_vrb2(out, word2);
 		macro_nepersona(out, word2);
@@ -2652,8 +2676,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			out.append(var_vrb2);
 			out.append(word2.target(attr_a_tns, true));
 			out.append("<PD>");
+			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			out.append("<ND>");
 			out.append('{');
+			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 			{
 				String myword = 
 				         "without"
@@ -2683,6 +2709,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			}
 			out.append("}$");
 		}
+		/**  tl povas esti "vbser" eĉ se sl povas esti "vblex": ekz. "eblas -> is possible;
+ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
+ */
 		else
 		if ((word2.target(attr_a_vrb, true).equalsIgnoreCase("<vaux>")
     || word2.target(attr_a_vrb, true).equalsIgnoreCase("<vbser>")))
@@ -2696,15 +2725,19 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			out.append(var_vrb2);
 			out.append(word2.target(attr_a_tns, true));
 			out.append("<PD>");
+			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			out.append("<ND>");
 			out.append('{');
+			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 			{
 				String myword = 
 				         word2.target(attr_lemh, true)
 				         +word2.target(attr_a_vrb, true)
 				         +word2.target(attr_a_tns, true)
 				         +"<4>"
+				/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 				         +"<5>"
+				/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 				         +word2.target(attr_lemq, true)
 				         ;
 				if (myword.length()>0)
@@ -2740,14 +2773,17 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			out.append(var_vrb2);
 			out.append(word2.target(attr_a_tns, true));
 			out.append("<PD>");
+			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			out.append("<ND>");
 			out.append('{');
+			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 			{
 				String myword = 
 				         "do"
 				         +word2.target(attr_a_vrb, true)
 				         +word2.target(attr_a_tns, true)
 				         +"<4>"
+				/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 				         +"<5>"
 				         ;
 				if (myword.length()>0)
@@ -2757,6 +2793,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 					out.append('$');
 				}
 			}
+			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 			out.append(" ");
 			{
 				String myword = 
@@ -2789,13 +2826,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		}
 	}
 	
-	/**  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  tl povas esti "vbser" eĉ se sl povas esti "vblex": ekz. "eblas -> is possible;
-ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
- ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 	// REGULO: VBLEXsimpla INF
 	public void rule43__c_vblex_simpla__c_vb_inf(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule43__c_vblex_simpla__c_vb_inf",  word1, blank1,  word2); }; 
+		if (debug) { logCall("rule43__c_vblex_simpla__c_vb_inf",  word1, blank1,  word2); } 
 		macro_imp_inf(out, word1);
 		macro_set_vrb2(out, word1);
 		macro_nepersona(out, word1);
@@ -2810,15 +2844,19 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(var_vrb2);
 			out.append(word1.target(attr_a_tns, true));
 			out.append("<PD>");
+			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			out.append("<ND>");
 			out.append('{');
+			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 			{
 				String myword = 
 				         word1.target(attr_lemh, true)
 				         +word1.target(attr_a_vrb, true)
 				         +word1.target(attr_a_tns, true)
 				         +"<4>"
+				/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 				         +"<5>"
+				/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 				         +word1.target(attr_lemq, true)
 				         ;
 				if (myword.length()>0)
@@ -2856,15 +2894,19 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(var_vrb2);
 			out.append(word1.target(attr_a_tns, true));
 			out.append("<PD>");
+			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			out.append("<ND>");
 			out.append('{');
+			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 			{
 				String myword = 
 				         word1.target(attr_lemh, true)
 				         +word1.target(attr_a_vrb, true)
 				         +word1.target(attr_a_tns, true)
 				         +"<4>"
+				/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 				         +"<5>"
+				/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 				         +word1.target(attr_lemq, true)
 				         ;
 				if (myword.length()>0)
@@ -2906,11 +2948,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		}
 	}
 	
-	/**  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 	// REGULO: NE VBLEXsimpla INF
 	public void rule44__c_ne__c_vblex_simpla__c_vb_inf(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule44__c_ne__c_vblex_simpla__c_vb_inf",  word1, blank1,  word2, blank2,  word3); }; 
+		if (debug) { logCall("rule44__c_ne__c_vblex_simpla__c_vb_inf",  word1, blank1,  word2, blank2,  word3); } 
 		macro_imp_inf(out, word2);
 		macro_set_vrb2(out, word2);
 		macro_nepersona(out, word2);
@@ -2925,8 +2966,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(var_vrb2);
 			out.append(word2.target(attr_a_tns, true));
 			out.append("<PD>");
+			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			out.append("<ND>");
 			out.append('{');
+			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 			{
 				String myword = 
 				         "without"
@@ -2971,6 +3014,9 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			}
 			out.append("}$");
 		}
+		/**  tl povas esti "vbser" eĉ se sl povas esti "vblex": ekz. "eblas -> is possible;
+ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
+ */
 		else
 		if ((word2.target(attr_a_vrb, true).equalsIgnoreCase("<vaux>")
     || word2.target(attr_a_vrb, true).equalsIgnoreCase("<vbser>")))
@@ -2984,15 +3030,19 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(var_vrb2);
 			out.append(word2.target(attr_a_tns, true));
 			out.append("<PD>");
+			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			out.append("<ND>");
 			out.append('{');
+			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 			{
 				String myword = 
 				         word2.target(attr_lemh, true)
 				         +word2.target(attr_a_vrb, true)
 				         +word2.target(attr_a_tns, true)
 				         +"<4>"
+				/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 				         +"<5>"
+				/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 				         +word2.target(attr_lemq, true)
 				         ;
 				if (myword.length()>0)
@@ -3043,14 +3093,17 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(var_vrb2);
 			out.append(word2.target(attr_a_tns, true));
 			out.append("<PD>");
+			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			out.append("<ND>");
 			out.append('{');
+			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 			{
 				String myword = 
 				         "do"
 				         +word2.target(attr_a_vrb, true)
 				         +word2.target(attr_a_tns, true)
 				         +"<4>"
+				/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 				         +"<5>"
 				         ;
 				if (myword.length()>0)
@@ -3060,6 +3113,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 					out.append('$');
 				}
 			}
+			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 			out.append(" ");
 			{
 				String myword = 
@@ -3120,13 +3174,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		}
 	}
 	
-	/**  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  tl povas esti "vbser" eĉ se sl povas esti "vblex": ekz. "eblas -> is possible;
-ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
- ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 	// REGULO: VBLEXsimpla ADV INF
 	public void rule45__c_vblex_simpla__c_adv__c_vb_inf(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule45__c_vblex_simpla__c_adv__c_vb_inf",  word1, blank1,  word2, blank2,  word3); }; 
+		if (debug) { logCall("rule45__c_vblex_simpla__c_adv__c_vb_inf",  word1, blank1,  word2, blank2,  word3); } 
 		macro_imp_inf(out, word1);
 		macro_set_vrb2(out, word1);
 		macro_nepersona(out, word1);
@@ -3141,15 +3192,19 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(var_vrb2);
 			out.append(word1.target(attr_a_tns, true));
 			out.append("<PD>");
+			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			out.append("<ND>");
 			out.append('{');
+			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 			{
 				String myword = 
 				         word1.target(attr_lemh, true)
 				         +word1.target(attr_a_vrb, true)
 				         +word1.target(attr_a_tns, true)
 				         +"<4>"
+				/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 				         +"<5>"
+				/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 				         +word1.target(attr_lemq, true)
 				         ;
 				if (myword.length()>0)
@@ -3199,15 +3254,19 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(var_vrb2);
 			out.append(word1.target(attr_a_tns, true));
 			out.append("<PD>");
+			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			out.append("<ND>");
 			out.append('{');
+			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 			{
 				String myword = 
 				         word1.target(attr_lemh, true)
 				         +word1.target(attr_a_vrb, true)
 				         +word1.target(attr_a_tns, true)
 				         +"<4>"
+				/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 				         +"<5>"
+				/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 				         +word1.target(attr_lemq, true)
 				         ;
 				if (myword.length()>0)
@@ -3261,11 +3320,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		}
 	}
 	
-	/**  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 	// REGULO: NE VBLEXsimpla ADV INF
 	public void rule46__c_ne__c_vblex_simpla__c_adv__c_vb_inf(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
-		if (debug) { logCall("rule46__c_ne__c_vblex_simpla__c_adv__c_vb_inf",  word1, blank1,  word2, blank2,  word3, blank3,  word4); }; 
+		if (debug) { logCall("rule46__c_ne__c_vblex_simpla__c_adv__c_vb_inf",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		macro_imp_inf(out, word2);
 		macro_set_vrb2(out, word2);
 		macro_nepersona(out, word2);
@@ -3280,8 +3338,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(var_vrb2);
 			out.append(word2.target(attr_a_tns, true));
 			out.append("<PD>");
+			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			out.append("<ND>");
 			out.append('{');
+			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 			{
 				String myword = 
 				         "without"
@@ -3338,6 +3398,9 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			}
 			out.append("}$");
 		}
+		/**  tl povas esti "vbser" eĉ se sl povas esti "vblex": ekz. "eblas -> is possible;
+ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
+ */
 		else
 		if ((word2.target(attr_a_vrb, true).equalsIgnoreCase("<vaux>")
     || word2.target(attr_a_vrb, true).equalsIgnoreCase("<vbser>")))
@@ -3351,15 +3414,19 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(var_vrb2);
 			out.append(word2.target(attr_a_tns, true));
 			out.append("<PD>");
+			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			out.append("<ND>");
 			out.append('{');
+			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 			{
 				String myword = 
 				         word2.target(attr_lemh, true)
 				         +word2.target(attr_a_vrb, true)
 				         +word2.target(attr_a_tns, true)
 				         +"<4>"
+				/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 				         +"<5>"
+				/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 				         +word2.target(attr_lemq, true)
 				         ;
 				if (myword.length()>0)
@@ -3422,14 +3489,17 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(var_vrb2);
 			out.append(word2.target(attr_a_tns, true));
 			out.append("<PD>");
+			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			out.append("<ND>");
 			out.append('{');
+			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 			{
 				String myword = 
 				         "do"
 				         +word2.target(attr_a_vrb, true)
 				         +word2.target(attr_a_tns, true)
 				         +"<4>"
+				/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 				         +"<5>"
 				         ;
 				if (myword.length()>0)
@@ -3439,6 +3509,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 					out.append('$');
 				}
 			}
+			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 			out.append(" ");
 			{
 				String myword = 
@@ -3511,13 +3582,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		}
 	}
 	
-	/**  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  tl povas esti "vbser" eĉ se sl povas esti "vblex": ekz. "eblas -> is possible;
-ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
- ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 	// REGULO: VBLEX-os INF
 	public void rule47__c_vb_fti__c_vb_inf(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule47__c_vb_fti__c_vb_inf",  word1, blank1,  word2); }; 
+		if (debug) { logCall("rule47__c_vb_fti__c_vb_inf",  word1, blank1,  word2); } 
 		macro_set_vrb2(out, word1);
 		macro_nepersona(out, word1);
 		out.append(var_it);
@@ -3591,7 +3659,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 	// REGULO: VBLEX-us INF
 	public void rule48__c_vb_cni__c_vb_inf(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule48__c_vb_cni__c_vb_inf",  word1, blank1,  word2); }; 
+		if (debug) { logCall("rule48__c_vb_cni__c_vb_inf",  word1, blank1,  word2); } 
 		macro_set_vrb2(out, word1);
 		macro_nepersona(out, word1);
 		out.append(var_it);
@@ -3665,7 +3733,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 	// REGULO: NE VBLEX-os INF
 	public void rule49__c_ne__c_vb_fti__c_vb_inf(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule49__c_ne__c_vb_fti__c_vb_inf",  word1, blank1,  word2, blank2,  word3); }; 
+		if (debug) { logCall("rule49__c_ne__c_vb_fti__c_vb_inf",  word1, blank1,  word2, blank2,  word3); } 
 		macro_set_vrb2(out, word2);
 		macro_nepersona(out, word2);
 		out.append(var_it);
@@ -3752,7 +3820,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 	// REGULO: NE VBLEX-us INF
 	public void rule50__c_ne__c_vb_cni__c_vb_inf(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule50__c_ne__c_vb_cni__c_vb_inf",  word1, blank1,  word2, blank2,  word3); }; 
+		if (debug) { logCall("rule50__c_ne__c_vb_cni__c_vb_inf",  word1, blank1,  word2, blank2,  word3); } 
 		macro_set_vrb2(out, word2);
 		macro_nepersona(out, word2);
 		out.append(var_it);
@@ -3839,7 +3907,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 	// REGULO: VBLEX-os ADV INF
 	public void rule51__c_vb_fti__c_adv__c_vb_inf(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule51__c_vb_fti__c_adv__c_vb_inf",  word1, blank1,  word2, blank2,  word3); }; 
+		if (debug) { logCall("rule51__c_vb_fti__c_adv__c_vb_inf",  word1, blank1,  word2, blank2,  word3); } 
 		macro_set_vrb2(out, word1);
 		macro_nepersona(out, word1);
 		out.append(var_it);
@@ -3925,7 +3993,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 	// REGULO: VBLEX-us ADV INF
 	public void rule52__c_vb_cni__c_adv__c_vb_inf(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule52__c_vb_cni__c_adv__c_vb_inf",  word1, blank1,  word2, blank2,  word3); }; 
+		if (debug) { logCall("rule52__c_vb_cni__c_adv__c_vb_inf",  word1, blank1,  word2, blank2,  word3); } 
 		macro_set_vrb2(out, word1);
 		macro_nepersona(out, word1);
 		out.append(var_it);
@@ -4011,7 +4079,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 	// REGULO: NE VBLEX-os ADV INF
 	public void rule53__c_ne__c_vb_fti__c_adv__c_vb_inf(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
-		if (debug) { logCall("rule53__c_ne__c_vb_fti__c_adv__c_vb_inf",  word1, blank1,  word2, blank2,  word3, blank3,  word4); }; 
+		if (debug) { logCall("rule53__c_ne__c_vb_fti__c_adv__c_vb_inf",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		macro_set_vrb2(out, word2);
 		macro_nepersona(out, word2);
 		out.append(var_it);
@@ -4110,7 +4178,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 	// REGULO: NE VBLEX-us ADV INF
 	public void rule54__c_ne__c_vb_cni__c_adv__c_vb_inf(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
-		if (debug) { logCall("rule54__c_ne__c_vb_cni__c_adv__c_vb_inf",  word1, blank1,  word2, blank2,  word3, blank3,  word4); }; 
+		if (debug) { logCall("rule54__c_ne__c_vb_cni__c_adv__c_vb_inf",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		macro_set_vrb2(out, word2);
 		macro_nepersona(out, word2);
 		out.append(var_it);
@@ -4210,7 +4278,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 	// REGULO: PP de (dirita de -> told by)
 	public void rule55__c_vb_pp__de(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule55__c_vb_pp__de",  word1, blank1,  word2); }; 
+		if (debug) { logCall("rule55__c_vb_pp__de",  word1, blank1,  word2); } 
 		macro_imp_inf(out, word1);
 		macro_set_vrb2(out, word1);
 		out.append('^');
@@ -4221,15 +4289,19 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(var_vrb2);
 		out.append(word1.target(attr_a_tns, true));
 		out.append("<PD>");
+		/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 		out.append("<ND>");
 		out.append('{');
+		/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 		{
 			String myword = 
 			         word1.target(attr_lemh, true)
 			         +word1.target(attr_a_vrb, true)
 			         +word1.target(attr_a_tns, true)
 			         +"<4>"
+			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			         +"<5>"
+			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 			         +word1.target(attr_lemq, true)
 			         ;
 			if (myword.length()>0)
@@ -4262,11 +4334,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append("}$");
 	}
 	
-	/**  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 	// REGULO: PP DE PRN (dirita de li -> told by him)
 	public void rule56__c_vb_pp__de__c_prn(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule56__c_vb_pp__de__c_prn",  word1, blank1,  word2, blank2,  word3); }; 
+		if (debug) { logCall("rule56__c_vb_pp__de__c_prn",  word1, blank1,  word2, blank2,  word3); } 
 		macro_imp_inf(out, word1);
 		macro_set_vrb2(out, word1);
 		out.append('^');
@@ -4277,15 +4348,19 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(var_vrb2);
 		out.append(word1.target(attr_a_tns, true));
 		out.append("<PD>");
+		/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 		out.append("<ND>");
 		out.append('{');
+		/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 		{
 			String myword = 
 			         word1.target(attr_lemh, true)
 			         +word1.target(attr_a_vrb, true)
 			         +word1.target(attr_a_tns, true)
 			         +"<4>"
+			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			         +"<5>"
+			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 			         +word1.target(attr_lemq, true)
 			         ;
 			if (myword.length()>0)
@@ -4317,13 +4392,13 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		}
 		out.append("}$");
 		out.append(blank1);
-		/**  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 		if (list_prn_kun_persono_kaj_genro.containsIgnoreCase(word3.source(attr_lem, true)))
 		{
 			if (word3.target(attr_a_prn, true).equalsIgnoreCase("<prn><subj>"))
 			{
 				word3.setTarget(attr_a_prn, "<prn><obj>", true);
 			}
+			/**  persona pronomo: estas persono kaj genro  */
 			out.append('^');
 			out.append("pron");
 			out.append("<SN>");
@@ -4352,6 +4427,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		}
 		else
 		{
+			/**  montra, rilativa k.a. pronomoj: estas nek persono nek genro  */
 			out.append('^');
 			out.append("pron");
 			out.append("<SN>");
@@ -4376,11 +4452,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		}
 	}
 	
-	/**  persona pronomo: estas persono kaj genro  montra, rilativa k.a. pronomoj: estas nek persono nek genro  */
 	// REGULO: DE PRN PP (de li dirita -> told by him)
 	public void rule57__de__c_prpers__c_vb_pp(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule57__de__c_prpers__c_vb_pp",  word1, blank1,  word2, blank2,  word3); }; 
+		if (debug) { logCall("rule57__de__c_prpers__c_vb_pp",  word1, blank1,  word2, blank2,  word3); } 
 		macro_imp_inf(out, word3);
 		macro_set_vrb2(out, word3);
 		out.append('^');
@@ -4391,15 +4466,19 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(var_vrb2);
 		out.append(word3.target(attr_a_tns, true));
 		out.append("<PD>");
+		/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 		out.append("<ND>");
 		out.append('{');
+		/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 		{
 			String myword = 
 			         word3.target(attr_lemh, true)
 			         +word3.target(attr_a_vrb, true)
 			         +word3.target(attr_a_tns, true)
 			         +"<4>"
+			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			         +"<5>"
+			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 			         +word3.target(attr_lemq, true)
 			         ;
 			if (myword.length()>0)
@@ -4431,13 +4510,13 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		}
 		out.append("}$");
 		out.append(blank1);
-		/**  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 		if (list_prn_kun_persono_kaj_genro.containsIgnoreCase(word2.source(attr_lem, true)))
 		{
 			if (word2.target(attr_a_prn, true).equalsIgnoreCase("<prn><subj>"))
 			{
 				word2.setTarget(attr_a_prn, "<prn><obj>", true);
 			}
+			/**  persona pronomo: estas persono kaj genro  */
 			out.append('^');
 			out.append("pron");
 			out.append("<SN>");
@@ -4466,6 +4545,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		}
 		else
 		{
+			/**  montra, rilativa k.a. pronomoj: estas nek persono nek genro  */
 			out.append('^');
 			out.append("pron");
 			out.append("<SN>");
@@ -4490,17 +4570,17 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		}
 	}
 	
-	/**  persona pronomo: estas persono kaj genro  montra, rilativa k.a. pronomoj: estas nek persono nek genro  */
 	// REGULO: NUM
 	public void rule58__num(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule58__num",  word1); }; 
+		if (debug) { logCall("rule58__num",  word1); } 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: NUM">/<action>/<out>/<chunk case="caseFirstWord" name="num">
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "num"));
 		out.append("<SD><nom>");
 		out.append('{');
+		/**  Sintagmo determinita  */
 		{
 			String myword = 
 			         word1.target(attr_whole, true)
@@ -4515,11 +4595,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append("}$");
 	}
 	
-	/**  Sintagmo determinita  */
 	// REGULO: DE
 	public void rule59__de(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule59__de",  word1); }; 
+		if (debug) { logCall("rule59__de",  word1); } 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: DE">/<action>/<out>/<chunk case="caseFirstWord" name="pr">
@@ -4543,7 +4622,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 	// REGULO: PREP
 	public void rule60__pr(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule60__pr",  word1); }; 
+		if (debug) { logCall("rule60__pr",  word1); } 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: PREP">/<action>/<out>/<chunk case="caseFirstWord" name="pr">
@@ -4567,7 +4646,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 	// REGULO: REL
 	public void rule61__rel(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule61__rel",  word1); }; 
+		if (debug) { logCall("rule61__rel",  word1); } 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: REL">/<action>/<out>/<chunk case="caseFirstWord" name="rel">
@@ -4593,7 +4672,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 	// REGULO: KOMO
 	public void rule62__komo(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule62__komo",  word1); }; 
+		if (debug) { logCall("rule62__komo",  word1); } 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: KOMO">/<action>/<out>/<chunk case="caseFirstWord" name="komo">
