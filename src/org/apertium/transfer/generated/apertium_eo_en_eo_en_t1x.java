@@ -45,7 +45,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	
 	private void macro_sendu_blankon_se_havas_formaton2(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("macro_sendu_blankon_se_havas_formaton2"); }; 
+		if (debug) { logCall("macro_sendu_blankon_se_havas_formaton2",  word1, blank1,  word2); }; 
 		if (!blank1.equals(" "))
 		{
 			out.append(blank1);
@@ -54,7 +54,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	
 	private void macro_adv_adj(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("macro_adv_adj"); }; 
+		if (debug) { logCall("macro_adv_adj",  word1, blank1,  word2); }; 
 		if (list_l_pli_plej.containsIgnoreCase(word1.source(attr_lemh, true)))
 		{
 			if (list_adj_kun_sint.containsIgnoreCase(word2.target(attr_lemh, true)))
@@ -82,7 +82,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	
 	private void macro_nepersona(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("macro_nepersona"); }; 
+		if (debug) { logCall("macro_nepersona",  word1); }; 
 		if ((list_nepersonaj_verboj.containsIgnoreCase(word1.source(attr_lemh, true))
     && !word1.source(attr_a_nepersonaj_tempoj, true).equals("")))
 		{
@@ -96,7 +96,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	
 	private void macro_imp_inf(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("macro_imp_inf"); }; 
+		if (debug) { logCall("macro_imp_inf",  word1); }; 
 		if (word1.target(attr_a_tns, true).equals("<imp>"))
 		{
 			word1.setTarget(attr_a_tns, "<inf>", true);
@@ -105,7 +105,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	
 	private void macro_set_vrb2(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("macro_set_vrb2"); }; 
+		if (debug) { logCall("macro_set_vrb2",  word1); }; 
 		if (word1.target(attr_lemh, true).equals("be"))
 		{
 			var_vrb2 = "<be>";

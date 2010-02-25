@@ -847,15 +847,17 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
           String n = c0.getAttribute("n");
           String npars = c0.getAttribute("npar");
           int npar = npars.length()>0 ?  Integer.parseInt(npars) : 0;
-          String par = "";
           currentNumberOfWordInParameterList = npar;
-          for (int i=1; i<=npar; i++) par += (i==1?", ":", String "+blank(i-1)+", ")+"TransferWord "+word(i);
+          String methodArguments = "";
+          for (int i=1; i<=npar; i++) methodArguments += (i==1?", ":", String "+blank(i-1)+", ")+"TransferWord "+word(i);
+          String logCallParameters = "";
+          for (int i=1; i<=npar; i++) logCallParameters += (i==1?", ":", "+blank(i-1)+", ")+" "+word(i);
           println("");
           macroList.put(n, npar);
           String methodName = "macro_"+javaIdentifier(n);
-          println("private void "+methodName+"(Writer out"+par+") throws IOException");
+          println("private void "+methodName+"(Writer out"+methodArguments+") throws IOException");
           println("{");
-          println("if (debug) { logCall(\""+methodName+"\"); }; "); // TODO Check performance impact
+          println("if (debug) { logCall(\""+methodName+"\""+logCallParameters+"); }; "); // TODO Check performance impact
           currentNumberOfWordInParameterList = npar;
           for (Element c1 : listElements(c0.getChildNodes())) processInstruction(c1);
           println("}");

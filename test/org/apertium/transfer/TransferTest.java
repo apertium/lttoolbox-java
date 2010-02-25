@@ -57,6 +57,7 @@ public class TransferTest {
 
 
       t.read(transferClass, dir+"en-eo.t1x.bin", dir+"en-eo.autobil.bin");
+      t.transferObject.debug = true;
 
       StringReader input = new StringReader("^Prpers<prn><subj><p3><m><sg>$ ^see<vblex><past>$ ^the<det><def><sp>$ ^saw<n><sg>$^'s<gen>$ ^tooth<n><sg>$   ^.<sent>$\n");
       Writer output = new StringWriter();

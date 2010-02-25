@@ -41,7 +41,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	
 	private void macro_f_bcond(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("macro_f_bcond"); }; 
+		if (debug) { logCall("macro_f_bcond",  word1); }; 
 		// WARNING blank pos=1 is out of range. Replacing with an zero-space blank. - for <transfer>/<section-def-macros>/<def-macro n="f_bcond" npar="1">/<choose>/<when>/<test>/<not>/<equal>/<b pos="1">
 		if (!"".equals(" "))
 		{
@@ -52,7 +52,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	
 	private void macro_set_number1(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("macro_set_number1"); }; 
+		if (debug) { logCall("macro_set_number1",  word1); }; 
 		var_number = word1.target(attr_nbr, true);
 		var_number_no_sp = var_number;
 		if ((var_number.equals("<sp>")
@@ -64,7 +64,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	
 	private void macro_set_number2(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("macro_set_number2"); }; 
+		if (debug) { logCall("macro_set_number2",  word1, blank1,  word2); }; 
 		macro_set_number1(out, word2);
 		if (var_number.equals("<ND>"))
 		{
@@ -99,7 +99,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	
 	private void macro_set_case(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("macro_set_case"); }; 
+		if (debug) { logCall("macro_set_case",  word1); }; 
 		var_case = "";
 		if (word1.target(attr_a_nom, true).toLowerCase().startsWith("<np>".toLowerCase()))
 		{
@@ -109,7 +109,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	
 	private void macro_set_gender1(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("macro_set_gender1"); }; 
+		if (debug) { logCall("macro_set_gender1",  word1); }; 
 		var_det_gender = "";
 		macro_set_number1(out, word1);
 		if ((var_number.equals("<sg>")
@@ -130,7 +130,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	
 	private void macro_set_n_defness(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("macro_set_n_defness"); }; 
+		if (debug) { logCall("macro_set_n_defness",  word1, blank1,  word2); }; 
 		if ((word1.target(attr_art, true).equals("<ind>")
     && (list_det_indef.contains(word2.source(attr_lem, true))
     || (word2.target(attr_a_adj, true).toLowerCase().startsWith("<adj>".toLowerCase())
@@ -146,7 +146,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	
 	private void macro_set_gender2(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("macro_set_gender2"); }; 
+		if (debug) { logCall("macro_set_gender2",  word1, blank1,  word2); }; 
 		var_det_gender = "";
 		if (word2.target(attr_a_nom, true).toLowerCase().startsWith("<n>".toLowerCase()))
 		{
@@ -191,7 +191,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	
 	private void macro_set_adj_number(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("macro_set_adj_number"); }; 
+		if (debug) { logCall("macro_set_adj_number",  word1); }; 
 		var_adj_number = "";
 		if ((word1.target(attr_a_adj, true).equals("<adj><pp>")
     || word1.target(attr_a_adj, true).toLowerCase().endsWith("<posi>".toLowerCase())))
@@ -207,7 +207,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	
 	private void macro_set_adj_GND(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("macro_set_adj_GND"); }; 
+		if (debug) { logCall("macro_set_adj_GND",  word1); }; 
 		var_adj_gender = word1.target(attr_gen, true);
 		var_adj_number = word1.target(attr_nbr, true);
 		var_adj_defness = word1.target(attr_art, true);
@@ -244,14 +244,14 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	
 	private void macro_set_gender3(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("macro_set_gender3"); }; 
+		if (debug) { logCall("macro_set_gender3",  word1, blank1,  word2, blank2,  word3); }; 
 		macro_set_gender2(out, word1, blank1, word2);
 		macro_set_adj_GND(out, word3);
 	}
 	
 	private void macro_out_ndef(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("macro_out_ndef"); }; 
+		if (debug) { logCall("macro_out_ndef",  word1, blank1,  word2); }; 
 		{
 			String myword = 
 			         TransferWord.copycase(word2.source(attr_lem, true), word1.target(attr_lemh, true))
@@ -272,7 +272,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	
 	private void macro_out_posgen(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("macro_out_posgen"); }; 
+		if (debug) { logCall("macro_out_posgen",  word1); }; 
 		if (word1.source(attr_a_det, true).equals("<det><pos>"))
 		{
 			{
@@ -327,7 +327,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	
 	private void macro_out_sin(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("macro_out_sin"); }; 
+		if (debug) { logCall("macro_out_sin",  word1); }; 
 		macro_set_gender1(out, word1);
 		if ((var_number.equals("<sp>")
     || var_number.equals("")))
@@ -352,7 +352,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	
 	private void macro_out_adj(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("macro_out_adj"); }; 
+		if (debug) { logCall("macro_out_adj",  word1); }; 
 		macro_set_adj_GND(out, word1);
 		{
 			String myword = 

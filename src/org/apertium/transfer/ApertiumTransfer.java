@@ -82,7 +82,7 @@ public class ApertiumTransfer {
         }
 
         Transfer t = new Transfer();
-        MyGetOpt getopt = new MyGetOpt(argv, "zhD");
+        MyGetOpt getopt = new MyGetOpt(argv, "cvzhD");
 
         int optind = -1;
         int counter = 0;
@@ -130,6 +130,7 @@ public class ApertiumTransfer {
         Writer output;
         if (argv.length > optind+3) {
           t.read(argv[optind + 1], argv[optind + 2], argv[optind + 3]);
+          if (t.DEBUG) t.transferObject.debug = true;
         } else {
           endProgram();
         }

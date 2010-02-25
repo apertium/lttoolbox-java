@@ -14,7 +14,7 @@ import org.apertium.transfer.compile.ParseTranserFile;
  *
  * @author Jacob Nordfalk
  */
-public class GenerateTestFiles {
+public class ParseTestTransferFiles {
 
   public static String findFileNameOfBinFile(String t1xFile) {
     String binFile=new File(new File(t1xFile).getParent(), t1xFile.split("\\.")[1]).getPath()+".t1x.bin";

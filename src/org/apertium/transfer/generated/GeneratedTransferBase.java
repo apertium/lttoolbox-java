@@ -5,6 +5,8 @@
 
 package org.apertium.transfer.generated;
 
+import java.util.Arrays;
+
 /**
  *
  * @author Jacob Nordfalk
@@ -18,5 +20,9 @@ public abstract class GeneratedTransferBase {
 
   protected void logCall(String met) {
     System.err.println("call:" + met);
+  }
+
+  protected void logCall(String met, Object... args) {
+    System.err.println("call:" + met+" "+Arrays.toString(args) );
   }
 }

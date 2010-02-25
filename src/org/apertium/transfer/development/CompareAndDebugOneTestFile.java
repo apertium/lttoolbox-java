@@ -19,8 +19,8 @@ import org.apertium.transfer.compile.ParseTranserFile;
 public class CompareAndDebugOneTestFile {
 
   static String dir = "testdata/transfer/";
-  //static String inputFile = dir+"x";
-  static String inputFile = dir+"transferinput-en-eo.t1x-malgranda.txt";
+  static String inputFile = dir+"x";
+  //static String inputFile = dir+"transferinput-en-eo.t1x-malgranda.txt";
 
   public static void main(String[] args) throws Exception {
       compareAndDebugOneTestFile("apertium-nn-nb.nn-nb.t1x");
@@ -37,7 +37,7 @@ public class CompareAndDebugOneTestFile {
       Transfer t = new Transfer();
       //Class transferClass = apertium_eo_en_eo_en_t1x.class;
       Class transferClass = Class.forName("org.apertium.transfer.generated."+ParseTranserFile.javaIdentifier(t1xFile));
-      String binFile = dir+GenerateTestFiles.findFileNameOfBinFile(t1xFile);
+      String binFile = dir+ParseTestTransferFiles.findFileNameOfBinFile(t1xFile);
       t.read(transferClass, binFile, dir+"en-eo.autobil.bin");
       t.transferObject.debug = true;
 

@@ -57,7 +57,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	
 	private void macro_firstWord(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("macro_firstWord"); }; 
+		if (debug) { logCall("macro_firstWord",  word1); }; 
 		if (((var_EOS.equals("true")
     && word1.source(attr_a_np_acr, true).equals(""))
     || var_venontaVortoEstuMajuskla.equals("true")))
@@ -75,7 +75,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	
 	private void macro_set_nomvar_if_known1(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("macro_set_nomvar_if_known1"); }; 
+		if (debug) { logCall("macro_set_nomvar_if_known1",  word1); }; 
 		if (word1.target(attr_a_nbr, true).equals(""))
 		{
 			var_nomvar = "";
@@ -88,7 +88,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	
 	private void macro_ordigu_genron(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("macro_ordigu_genron"); }; 
+		if (debug) { logCall("macro_ordigu_genron",  word1); }; 
 		if (word1.target(attr_a_gen, true).equalsIgnoreCase("<GD>"))
 		{
 			word1.setTarget(attr_a_gen, "<m>", true);
@@ -97,7 +97,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	
 	private void macro_set_numero1(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("macro_set_numero1"); }; 
+		if (debug) { logCall("macro_set_numero1",  word1); }; 
 		if (word1.target(attr_a_nbr, true).equals("<pl>"))
 		{
 			var_numero = "<pl>";
@@ -110,7 +110,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	
 	private void macro_set_adjectiu2(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("macro_set_adjectiu2"); }; 
+		if (debug) { logCall("macro_set_adjectiu2",  word1, blank1,  word2); }; 
 		macro_set_numero1(out, word2);
 		var_adjectiu = "";
 		var_preadv_added = "";
@@ -138,7 +138,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	
 	private void macro_set_tipus_verbs1(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("macro_set_tipus_verbs1"); }; 
+		if (debug) { logCall("macro_set_tipus_verbs1",  word1); }; 
 		if (list_netransitivaj.containsIgnoreCase(word1.source(attr_lemh, true)))
 		{
 			var_tipus_verb = "<netransitiva>";
@@ -156,7 +156,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	
 	private void macro_set_verbkonj2_do(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("macro_set_verbkonj2_do"); }; 
+		if (debug) { logCall("macro_set_verbkonj2_do",  word1, blank1,  word2); }; 
 		if ((word1.source(attr_a_tns, true).equals("<pres>")
     || word1.source(attr_a_tns, true).equals("<inf>")))
 		{
@@ -176,7 +176,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	
 	private void macro_set_verbkonj2_willShallWould(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("macro_set_verbkonj2_willShallWould"); }; 
+		if (debug) { logCall("macro_set_verbkonj2_willShallWould",  word1, blank1,  word2); }; 
 		if ((word1.source(attr_lem, true).equalsIgnoreCase("will")
     || word1.source(attr_lem, true).equalsIgnoreCase("shall")))
 		{
@@ -196,7 +196,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	
 	private void macro_set_temps1(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("macro_set_temps1"); }; 
+		if (debug) { logCall("macro_set_temps1",  word1); }; 
 		var_temps = "<UNKNOWN>";
 		if ((word1.source(attr_lem, true).equalsIgnoreCase("will")
     || word1.source(attr_lem, true).equalsIgnoreCase("shall")))
@@ -217,7 +217,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	
 	private void macro_sendu_blankon_se_havas_formaton2(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("macro_sendu_blankon_se_havas_formaton2"); }; 
+		if (debug) { logCall("macro_sendu_blankon_se_havas_formaton2",  word1, blank1,  word2); }; 
 		if (!blank1.equals(" "))
 		{
 			out.append(blank1);
@@ -226,7 +226,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	
 	private void macro_set_blankon_se_havas_formaton2(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("macro_set_blankon_se_havas_formaton2"); }; 
+		if (debug) { logCall("macro_set_blankon_se_havas_formaton2",  word1, blank1,  word2); }; 
 		if (blank1.equals(" "))
 		{
 			var_blanko = "";
@@ -239,7 +239,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	
 	private void macro_set_determiner3(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("macro_set_determiner3"); }; 
+		if (debug) { logCall("macro_set_determiner3",  word1, blank1,  word2, blank2,  word3); }; 
 		if (word1.source(attr_lem, true).equalsIgnoreCase("a"))
 		{
 			if (blank1.equals(" "))
@@ -259,7 +259,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	
 	private void macro_set_determiner_de_genitivo2(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("macro_set_determiner_de_genitivo2"); }; 
+		if (debug) { logCall("macro_set_determiner_de_genitivo2",  word1, blank1,  word2); }; 
 		macro_set_numero1(out, word2);
 		if (word1.source(attr_lem, true).equalsIgnoreCase("a"))
 		{
@@ -274,7 +274,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	
 	private void macro_set_and_or_but(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("macro_set_and_or_but"); }; 
+		if (debug) { logCall("macro_set_and_or_but",  word1); }; 
 		if (list_listo_and_or_but.containsIgnoreCase(word1.source(attr_lem, true)))
 		{
 			var_and_or_but = "<and_or_but>";
