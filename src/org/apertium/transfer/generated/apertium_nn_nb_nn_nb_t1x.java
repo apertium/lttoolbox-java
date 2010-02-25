@@ -35,6 +35,9 @@ public class apertium_nn_nb_nn_nb_t1x extends GeneratedTransferBase
 	private void macro_set_number1(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_set_number1",  word1); }; 
+		/**  arg.1: determiner
+           "Heuristic": If ND, let pre_number be sp
+       */
 		if (word1.target(attr_nbr, true).equals("<sp>"))
 		{
 			var_pre_number = "<sp>";
@@ -52,6 +55,10 @@ public class apertium_nn_nb_nn_nb_t1x extends GeneratedTransferBase
 	private void macro_set_number2(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("macro_set_number2",  word1, blank1,  word2); }; 
+		/**  arg.1: noun, arg.2: determiner (or adjective)
+	   If it's ND, take that of noun, o/w take that of determiner.
+           If determiner is sp or nil, or noun is sp, take that of noun.
+       */
 		var_pre_number = word2.target(attr_nbr, true);
 		if (var_pre_number.equals("<ND>"))
 		{
@@ -73,6 +80,13 @@ public class apertium_nn_nb_nn_nb_t1x extends GeneratedTransferBase
 	private void macro_set_gender1(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_set_gender1",  word1); }; 
+		/**  arg.1: determiner
+           - default: keep determiner gender
+           - GD in singular or sp gets m (only nouns may be mf sp)
+           - plurals get no gender
+           - make sure we never translate to f, in case
+	     bidix has errors...
+       */
 		macro_set_number1(out, word1);
 		var_gender = word1.target(attr_gen, true);
 		if (((var_pre_number.equals("<sg>")
@@ -96,6 +110,13 @@ public class apertium_nn_nb_nn_nb_t1x extends GeneratedTransferBase
 	private void macro_set_gender2(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("macro_set_gender2",  word1, blank1,  word2); }; 
+		/**  arg.1: noun, arg.2: determiner (or adjective)
+	   - iff sg AND has-some-gender, take gender of target noun 
+	   - plurals get no gender (sp, however, may want mf);
+	   - o/w take gender of target determiner
+           - Finally, make sure we never translate to f, in case
+	     bidix has errors...
+       */
 		macro_set_number2(out, word1, blank1, word2);
 		if ((var_pre_number.equals("<sg>")
     && !word2.source(attr_gen, true).equals("")))
@@ -120,6 +141,13 @@ public class apertium_nn_nb_nn_nb_t1x extends GeneratedTransferBase
 	private void macro_set_adj_gender(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_set_adj_gender",  word1); }; 
+		/**  arg.1: adjective (used for determination, "art")
+          Assumes var gender is set, o/w we get empty string 
+	   - if m or f or GD, use mf
+	     (we might have GD if set_gender 'failed')
+	   - o/w use what we're given.
+         However, definite adjectives get no gender.
+       */
 		if ((var_gender.equals("<m>")
     || var_gender.equals("<f>")))
 		{

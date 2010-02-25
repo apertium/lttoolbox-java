@@ -5,6 +5,8 @@
 
 package org.apertium.transfer.compile;
 
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import org.w3c.dom.Element;
@@ -16,7 +18,7 @@ import org.w3c.dom.NodeList;
  * @author Jacob Nordfalk
  */
 public class DOMTools {
-
+  public static StringWriter commentHandler;
 
   public static Iterable<Element> listElements(final NodeList nl) {
     return new Iterable<Element>() {
@@ -26,7 +28,12 @@ public class DOMTools {
         return new Iterator<Element>() {
           int i = 0;
           public boolean hasNext() {
-            while (i<nl.getLength() && !(nl.item(i) instanceof Element)) i++;
+            while (i<nl.getLength() && !(nl.item(i) instanceof Element)) {
+              if (commentHandler!=null && (nl.item(i).getNodeType() == Node.COMMENT_NODE)) {
+                commentHandler.write(nl.item(i).getNodeValue());
+              }
+              i++;
+            }
             return (nl.item(i) instanceof Element);
           }
 

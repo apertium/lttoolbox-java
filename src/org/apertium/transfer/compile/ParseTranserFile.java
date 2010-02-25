@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -76,6 +77,7 @@ public class ParseTranserFile {
     println("}");
     println("}");
   }
+
 
   //public static final int OutputType_LU = 0;
   //public static final int OutputType_CHUNK = 1;
@@ -615,6 +617,14 @@ public class ParseTranserFile {
      //System.err.print(string);
   }
 
+  private void printComments() {
+    String c = commentHandler.toString();
+    if (c.length()!=0) {
+      println("/** "+c+" */");
+    }
+    commentHandler.getBuffer().setLength(0);
+  }
+
   private void throwParseError(String n) {
     throw new UnsupportedOperationException("Not yet implemented:"+n+getPathAsString(currentNode));
   }
@@ -717,6 +727,7 @@ public class ParseDefList {
       println("import org.apertium.transfer.*;");
       println("public class "+className+" extends GeneratedTransferBase");
       println("{");
+      commentHandler = new StringWriter();
 
       try {
         Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(file));
@@ -771,6 +782,7 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
           });
 
           //defAttrs.put(n,new ParseApertiumRE(n, items.toArray(new String[items.size()])));
+          printComments();
           println("ApertiumRE attr_"+javaIdentifier(n)+" = new ApertiumRE(\""+attrItemRegexp(items)+"\");");
           attrList.add(n);
         }
@@ -828,6 +840,7 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
           String n = c0.getAttribute("n");
           varList.add(n);
           String v = c0.getAttribute("v");
+          printComments();
           println("String var_"+javaIdentifier(n)+" = \""+v+"\";");
         }
 
@@ -838,6 +851,7 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
             items.add(c1.getAttribute("v"));
           //listList.put(n,new ParseDefList(n, items.toArray(new String[items.size()])));
           listList.add(n);
+          printComments();
           println("TransferWordList list_"+javaIdentifier(n)+" = new TransferWordList("+javaStringArray(items)+");");
         }
 
@@ -855,19 +869,23 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
           println("");
           macroList.put(n, npar);
           String methodName = "macro_"+javaIdentifier(n);
+          printComments();
           println("private void "+methodName+"(Writer out"+methodArguments+") throws IOException");
           println("{");
           println("if (debug) { logCall(\""+methodName+"\""+logCallParameters+"); }; "); // TODO Check performance impact
           currentNumberOfWordInParameterList = npar;
-          for (Element c1 : listElements(c0.getChildNodes())) processInstruction(c1);
+          for (Element c1 : listElements(c0.getChildNodes())) {
+            printComments();
+            processInstruction(c1);
+          }
           println("}");
         }
 
 
         int ruleNo = 0;
+        printComments();
         for (Element c0 : getChildsChildrenElements(root, "section-rules")) {
           currentNode = c0;
-          String comment = c0.getAttribute("comment");
           ArrayList<String> patternItems = new ArrayList<String>();
 
           String methodName = "rule"+(ruleNo++);
@@ -882,11 +900,16 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
           String logCallParameters = "";
           for (int i=1; i<=currentNumberOfWordInParameterList; i++) logCallParameters += (i==1?", ":", "+blank(i-1)+", ")+" "+ word(i);
           println("");
+          printComments();
+          String comment = c0.getAttribute("comment");
           if (!comment.isEmpty()) println("// "+comment);
           println("public void "+methodName+"(Writer out"+methodArguments+") throws IOException");
           println("{");
           println("if (debug) { logCall(\""+methodName+"\""+logCallParameters+"); }; "); // TODO Check performance impact
-          for (Element c1 : getChildsChildrenElements(c0, "action")) processInstruction(c1);
+          for (Element c1 : getChildsChildrenElements(c0, "action")) {
+            printComments();
+            processInstruction(c1);
+          }
           println("}");
         }
 

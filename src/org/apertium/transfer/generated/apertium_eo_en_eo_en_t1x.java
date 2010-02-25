@@ -13,6 +13,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	ApertiumRE attr_a_adv = new ApertiumRE("<preadv>|<adv>");
 	ApertiumRE attr_a_adj = new ApertiumRE("<adj><sint><comp>|<adj><sint><sup>|<vblex><ger>|<adj><comp>|<adj><sint>|<vblex><pp>|<adj><sup>|<adj>");
 	ApertiumRE attr_a_vrb = new ApertiumRE("<vblex><sep>|<vbhaver>|<vblex>|<vbser>|<vaux>");
+	/**  normala verbo: specifa formo nur por p3/sg/pres  can-verbo: ĉiuj formoj egalaj por ĉiuj personoj  be-verbo: specifaj formoj por p1 kaj p3 / sg / pres kaj past  */
 	ApertiumRE attr_a_vrb2 = new ApertiumRE("<vbreg>|<can>|<be>");
 	ApertiumRE attr_a_det = new ApertiumRE("<det><def>|<det><ind>|<det><itg>|<det><dem>|<det><pos>|<det><qnt>");
 	ApertiumRE attr_a_ord = new ApertiumRE("<num><ord>");
@@ -39,10 +40,26 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	String var_it = "";
 	TransferWordList list_l_pli_plej = new TransferWordList(new String[] { "pli", "plej", });
 	TransferWordList list_prn_kun_persono_kaj_genro = new TransferWordList(new String[] { "prpers", "si", "vi", "mi", "ni", "oni", });
+	/**  c="
+    Adjektivoj kiuj en la angla estas sintezaj,
+    ekz. big, bigger, biggest.
+    kaj ne big, more big, most big.
+    Tiuj estas markitaj en en.dix per la marko (sint)" */
 	TransferWordList list_adj_kun_sint = new TransferWordList(new String[] { "able", "angry", "apt", "avid", "bad", "bare", "barren", "big", "blind", "blond", "blunt", "bold", "brave", "bright", "brittle", "broad", "bulky", "busy", "calm", "cheap", "clean", "clear", "clever", "close", "coarse", "cold", "cool", "costly", "crazy", "crude", "dark", "deaf", "dear", "deep", "dense", "dirty", "dry", "dumb", "early", "earthly", "earthy", "easy", "empty", "fair", "false", "fancy", "far", "fast", "fat", "feeble", "fine", "firm", "fit", "flaky", "flat", "fleshy", "floppy", "fond", "free", "fresh", "friendly", "full", "fun", "funky", "funny", "fuzzy", "gentle", "glassy", "good", "grave", "gray", "greasy", "great", "green", "grey", "grim", "gross", "guilty", "hairy", "handy", "happy", "hard", "harsh", "hasty", "hazy", "healthy", "heavy", "high", "holy", "hot", "humble", "hungry", "ill", "impure", "inert", "just", "keen", "kind", "large", "late", "lazy", "lean", "lengthy", "lewd", "light", "lonely", "long", "loud", "lovely", "low", "lucky", "mean", "merry", "mild", "mock", "muddy", "naïve", "narrow", "nasty", "naughty", "near", "neat", "needy", "net", "new", "nice", "noble", "noisy", "north", "nude", "odd", "old", "peaty", "pink", "plain", "poor", "pretty", "prickly", "prompt", "proud", "pure", "purple", "quick", "quiet", "rare", "raw", "rich", "risky", "rough", "round", "safe", "salty", "sandy", "sane", "scaly", "shady", "shallow", "sharp", "shiny", "shoddy", "short", "showy", "shrewd", "shy", "sick", "silly", "simple", "sincere", "slim", "slow", "small", "smart", "smooth", "sober", "soft", "solid", "sore", "sorry", "sour", "south", "spicy", "spiky", "starry", "steep", "sticky", "still", "stormy", "strange", "stray", "streaky", "strong", "subtle", "sunny", "sure", "sweet", "tall", "tender", "thick", "thin", "tight", "tiny", "tough", "tricky", "true", "ugly", "unhappy", "unkind", "unlucky", "unworthy", "vast", "warm", "wary", "weak", "wealthy", "weird", "white", "wide", "wild", "windy", "wise", "woody", "wry", "yellow", "young", });
+	/**   c="
+    Lingvoj, por ne aldoni la artikolon antaŭ ili
+    en la angla"  */
 	TransferWordList list_lingvoj = new TransferWordList(new String[] { "angla", "germana", "dana", "norvega", "sveda", "islanda", "feroa", "nederlanda", "portugala", "hispana", "kataluna", "okcitana", "franca", "arpitana", "itala", "rumana", "rusa", "belorusa", "ukraina", "pola", "ĉeĥa", "slovaka", "slovena", "serbokroata", "serba", "kroata", "bosna", "makedona", "bulgara", "albana", "armena", "greka", "persa", "taĝika", "kurda", "paŝtua", "litova", "latva", "bretona", "kimra", "irlanda", "gaela", "hindia", "bengala", "urdua", "nepala", "eŭska", "finna", "hungara", "estona", "turka", "azerbajĝana", "uzbeka", "kazaĥa", "kirgiza", "ujgura", "araba", "malta", "ĉina", "tajvana", "japana", "korea", "vjetnama", "telugua", "tamila", "indonezia", "malaja", "tagala", "filipina", "svahila", "volofa", "fula", "joruba", "igba", "mandinka", "lingala", "konga", "ksosa", "zulua", });
+	/**        <list-item v="devi"/>  */
 	TransferWordList list_nepersonaj_verboj = new TransferWordList(new String[] { "pluvi", "neĝi", "ebli", "indi", "endi", });
 	
+	/**  Por rigardi, ĉu la blanko havas aŭ ne havas formaton.
+     Tiu makroo estas necesa en la reguloj, en kiuj malaperas vorto por decidi,
+     ĉu la blanko de la vorto devas esti forigita aŭ konservita.
+     Se ĝi havas formaton, necesas konservi ĝin; se ne, indas viŝi,
+     por ke ne aperu du sinsekvaj blankoj.
+
+     Prenita de "f_bcond" apertium-en-es/apertium-en-es.es-en.t1x  */
 	private void macro_sendu_blankon_se_havas_formaton2(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("macro_sendu_blankon_se_havas_formaton2",  word1, blank1,  word2); }; 
@@ -52,6 +69,23 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/** 
+            <chunk name="sendu_blankon_se_havas_formaton">
+              <tags><tag><lit-tag v="xx"/></tag></tags>
+              <lu>
+                <b pos="1"/>
+              </lu>
+            </chunk>
+^dark<adj><sint>$
+^dark<adj><sint><comp>$
+^dark<adj><sint><sup>$
+
+^malluma<adj><sg><nom>$
+^pli<preadv>$ ^malluma<adj><sg><nom>$
+^plej<preadv>$ ^malluma<adj><sg><nom>$
+
+ Ĉi tiu makroo akceptas adv kaj adj kiel respektive unuan kaj duan parametrojn kaj analizas, ĉu temas
+pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 	private void macro_adv_adj(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("macro_adv_adj",  word1, blank1,  word2); }; 
@@ -80,6 +114,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/**   c="Ĉu estas pli aŭ plej? Ekz: 'tre bona'"   c="Ĉu estas sinteza adjektivo? Ekz pli bona → better(sint)(comp)"   c="Ĉu pli aŭ plej? Metu (comp) aŭ (sup) en variablo"  rigardas, ĉu temas pri nepersona verbo kaj preparas "it" por aldono  */
 	private void macro_nepersona(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_nepersona",  word1); }; 
@@ -94,6 +129,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/**     <lit v="^pron"/><lit-tag v="SN.p3.nt.sg.nom.nepersona"/><lit v="{^prpers"/><lit-tag v="prn.subj.2.3.4"/><lit v="$}$ "/> konvertas imperativon al infinitivo  */
 	private void macro_imp_inf(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_imp_inf",  word1); }; 
@@ -103,6 +139,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/**  difinas la tipon vrb2 de la verbo   */
 	private void macro_set_vrb2(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_set_vrb2",  word1); }; 
@@ -121,6 +158,26 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/** 
+  <rule>
+     <pattern>
+       <pattern-item n="c_ĉu"/>
+     </pattern>
+     <action>
+       <out>
+         <chunk name="ĉu" case="caseFirstWord">
+           <tags>
+             <tag><lit-tag v="adv"/></tag>
+             <tag><lit-tag v="itg"/></tag>
+           </tags>
+           <lu>
+              <b />
+           </lu>
+         </chunk>
+       </out>
+     </action>
+  </rule>
+ DATOJ k.s.  */
 	// REGULO: la 2a de julio - July 2nd
 	public void rule0__la__num_ord__de__monato(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
@@ -273,10 +330,12 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  Sintagmo determinita  ne eblas "antaŭ": estas amaso da "en la aĝo de tri jaroj"; bedaŭrinde, ĉar "de tri jaroj li studas medicinon"  */
 	// REGULO: DE ANTAŬ NUM TEMPO (de/ekde antaŭ tri tagoj -> since three days ago - ŝanĝo de prepozicio + ago
 	public void rule3__de_ekde__anta___num_sp__tempo2(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
 		if (debug) { logCall("rule3__de_ekde__anta___num_sp__tempo2",  word1, blank1,  word2, blank2,  word3, blank3,  word4); }; 
+		/**  ne eblas "antaŭ": estas amaso da "en la aĝo de tri jaroj"; bedaŭrinde, ĉar "de tri jaroj li studas medicinon"  */
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: DE ANTAŬ NUM TEMPO (de/ekde antaŭ tri tagoj -> since three days ago - ŝanĝo de prepozicio + ago">/<action>/<out>/<chunk case="caseFirstWord" name="pr">
@@ -345,6 +404,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  Sintagmo determinita  */
 	// REGULO: DE ANTAŬ QNT TEMPO (de/ekde antaŭ kelkaj tagoj -> since some days ago - ŝanĝo de prepozicio + ago
 	public void rule4__de_ekde__anta___qnt__tempo2(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
@@ -472,6 +532,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  Sintagmo determinita  */
 	// REGULO: ANTAŬ QNT TEMPO (antaŭ kelkaj tagoj -> some days ago - sen prepozicio + ago
 	public void rule6__anta___qnt__tempo2(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
@@ -527,6 +588,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  SN  */
 	// REGULO: DET
 	public void rule7__c_det(Writer out, TransferWord word1) throws IOException
 	{
@@ -556,6 +618,30 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  Sintagmo determinita 
+  <rule comment="REGULO: PRN">
+     <pattern>
+       <pattern-item n="c_prn"/>
+     </pattern>
+     <action>
+       <out>
+         <chunk name="prn" case="caseFirstWord">
+           <tags>
+             <tag><lit-tag v="SN"/></tag>
+             <tag><clip pos="1" side="tl" part="a_nbr"/></tag>
+             <tag><clip pos="1" side="tl" part="a_cas"/></tag>
+           </tags>
+           <lu>
+             <clip pos="1" side="tl" part="lemh"/>
+             <clip pos="1" side="tl" part="a_det"/>
+             <clip pos="1" side="sl" part="a_nbr" link-to="2"/>
+             <clip pos="1" side="tl" part="lemq"/>
+           </lu>
+         </chunk>
+       </out>
+     </action>
+  </rule>
+ */
 	// REGULO: PRN
 	public void rule8__c_prn(Writer out, TransferWord word1) throws IOException
 	{
@@ -618,6 +704,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/**  persona pronomo: estas persono kaj genro  montra, rilativa k.a. pronomoj: estas nek persono nek genro  */
 	// REGULO: PREP PRN (por li -> for him)
 	public void rule9__pr__c_prn(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
@@ -718,6 +805,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/**  persona pronomo: estas persono kaj genro  montra, rilativa k.a. pronomoj: estas nek persono nek genro  */
 	// REGULO: ADV
 	public void rule10__c_adv(Writer out, TransferWord word1) throws IOException
 	{
@@ -773,6 +861,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  c="sintagmo adjektiva"  */
 	// REGULO: PLI/PLEJ ADJ
 	public void rule12__c_pli_plej__c_adj(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
@@ -799,6 +888,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**   c="sintagmo adjektiva"  */
 	// REGULO: NOM
 	public void rule13__c_nom(Writer out, TransferWord word1) throws IOException
 	{
@@ -872,6 +962,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  Sintagmo determinita  */
 	// REGULO: NUM NOM
 	public void rule15__num__c_nom(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
@@ -913,6 +1004,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  Sintagmo determinita  */
 	// REGULO: DET NUM NOM
 	public void rule16__c_det__num__c_nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
@@ -969,6 +1061,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  Sintagmo determinita  */
 	// REGULO: DET NUM ADJ NOM
 	public void rule17__c_det__num__c_adj_pp__c_nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
@@ -1039,6 +1132,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  Sintagmo determinita  */
 	// REGULO: DET NUM ADJ ADJ NOM
 	public void rule18__c_det__num__c_adj_pp__c_adj_pp__c_nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5) throws IOException
 	{
@@ -1123,6 +1217,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  Sintagmo determinita  */
 	// REGULO: DET ADV ADJ NOM
 	public void rule19__c_det__c_adv__c_adj_pp__c_nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
@@ -1180,6 +1275,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  Sintagmo determinita  */
 	// REGULO: DET NUM ADV ADJ NOM
 	public void rule20__c_det__num__c_adv__c_adj_pp__c_nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5) throws IOException
 	{
@@ -1249,6 +1345,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  Sintagmo determinita  */
 	// REGULO: DET ADJ
 	public void rule21__c_det__c_adj_pp(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
@@ -1320,6 +1417,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/**  Sintagmo determinita  Sintagmo determinita  */
 	// REGULO: DET ADV ADJ
 	public void rule22__c_det__c_adv__c_adj_pp(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
@@ -1362,6 +1460,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  Sintagmo determinita  */
 	// REGULO: ADJ NOM
 	public void rule23__c_adj__c_nom(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
@@ -1463,6 +1562,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  Sintagmo determinita  */
 	// REGULO: DET ADJ ADJ NOM
 	public void rule25__c_det__c_adj_pp__c_adj_pp__c_nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
@@ -1535,6 +1635,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  Sintagmo determinita  */
 	// REGULO: DET ADJ ADJ ADJ NOM
 	public void rule26__c_det__c_adj_pp__c_adj_pp__c_adj_pp__c_nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5) throws IOException
 	{
@@ -1621,6 +1722,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  Sintagmo determinita  SV  */
 	// REGULO: VERBO-os
 	public void rule27__c_vb_fti(Writer out, TransferWord word1) throws IOException
 	{
@@ -2159,6 +2261,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 	// REGULO: ESTIsimpla PP
 	public void rule36__c_vbser_simpla__c_vb_pp(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
@@ -2209,6 +2312,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 	// REGULO: ESTIsimpla PP de (estas dirita de -> is told by)
 	public void rule37__c_vbser_simpla__c_vb_pp__de(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
@@ -2279,6 +2383,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 	// REGULO: ESTIsimpla PP DE PRN (estas dirita de li -> is told by him)
 	public void rule38__c_vbser_simpla__c_vb_pp__de__c_prn(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
@@ -2348,6 +2453,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		}
 		out.append("}$");
 		out.append(blank3);
+		/**  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 		if (list_prn_kun_persono_kaj_genro.containsIgnoreCase(word4.source(attr_lem, true)))
 		{
 			if (word4.target(attr_a_prn, true).equalsIgnoreCase("<prn><subj>"))
@@ -2406,6 +2512,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/**  persona pronomo: estas persono kaj genro  montra, rilativa k.a. pronomoj: estas nek persono nek genro  */
 	// REGULO: VBSER
 	public void rule39__c_vbser(Writer out, TransferWord word1) throws IOException
 	{
@@ -2440,6 +2547,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 	// REGULO: NE VBSER
 	public void rule40__c_ne__c_vbser(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
@@ -2487,6 +2595,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 	// REGULO: VBLEX
 	public void rule41__c_vblex(Writer out, TransferWord word1) throws IOException
 	{
@@ -2524,6 +2633,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 	// REGULO: NE VBLEX
 	public void rule42__c_ne__c_vblex(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
@@ -2679,6 +2789,9 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/**  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  tl povas esti "vbser" eĉ se sl povas esti "vblex": ekz. "eblas -> is possible;
+ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
+ ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 	// REGULO: VBLEXsimpla INF
 	public void rule43__c_vblex_simpla__c_vb_inf(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
@@ -2793,6 +2906,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/**  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 	// REGULO: NE VBLEXsimpla INF
 	public void rule44__c_ne__c_vblex_simpla__c_vb_inf(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
@@ -3006,6 +3120,9 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/**  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  tl povas esti "vbser" eĉ se sl povas esti "vblex": ekz. "eblas -> is possible;
+ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
+ ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 	// REGULO: VBLEXsimpla ADV INF
 	public void rule45__c_vblex_simpla__c_adv__c_vb_inf(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
@@ -3144,6 +3261,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/**  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 	// REGULO: NE VBLEXsimpla ADV INF
 	public void rule46__c_ne__c_vblex_simpla__c_adv__c_vb_inf(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
@@ -3393,6 +3511,9 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/**  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  tl povas esti "vbser" eĉ se sl povas esti "vblex": ekz. "eblas -> is possible;
+ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
+ ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 	// REGULO: VBLEX-os INF
 	public void rule47__c_vb_fti__c_vb_inf(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
@@ -4085,6 +4206,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  ALIAJ REGULOJ  */
 	// REGULO: PP de (dirita de -> told by)
 	public void rule55__c_vb_pp__de(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
@@ -4140,6 +4262,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 	// REGULO: PP DE PRN (dirita de li -> told by him)
 	public void rule56__c_vb_pp__de__c_prn(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
@@ -4194,6 +4317,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		}
 		out.append("}$");
 		out.append(blank1);
+		/**  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 		if (list_prn_kun_persono_kaj_genro.containsIgnoreCase(word3.source(attr_lem, true)))
 		{
 			if (word3.target(attr_a_prn, true).equalsIgnoreCase("<prn><subj>"))
@@ -4252,6 +4376,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/**  persona pronomo: estas persono kaj genro  montra, rilativa k.a. pronomoj: estas nek persono nek genro  */
 	// REGULO: DE PRN PP (de li dirita -> told by him)
 	public void rule57__de__c_prpers__c_vb_pp(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
@@ -4306,6 +4431,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		}
 		out.append("}$");
 		out.append(blank1);
+		/**  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  ni aldonas la spacon por eventuala aldono de pers en t2x  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 		if (list_prn_kun_persono_kaj_genro.containsIgnoreCase(word2.source(attr_lem, true)))
 		{
 			if (word2.target(attr_a_prn, true).equalsIgnoreCase("<prn><subj>"))
@@ -4364,6 +4490,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/**  persona pronomo: estas persono kaj genro  montra, rilativa k.a. pronomoj: estas nek persono nek genro  */
 	// REGULO: NUM
 	public void rule58__num(Writer out, TransferWord word1) throws IOException
 	{
@@ -4388,6 +4515,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  Sintagmo determinita  */
 	// REGULO: DE
 	public void rule59__de(Writer out, TransferWord word1) throws IOException
 	{

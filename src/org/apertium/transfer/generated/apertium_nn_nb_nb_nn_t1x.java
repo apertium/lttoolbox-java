@@ -37,11 +37,15 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	String var_case = "";
 	String var_pass = "";
 	String var_n_defness = "";
+	/**  feels like these should have their own
+           sub-pos... «<det><dem> som kan ha <ind> etter seg på
+           bokmål»  */
 	TransferWordList list_det_indef = new TransferWordList(new String[] { "denne", "disse", "dette", "den", "de", "DENNE", "DISSE", "DETTE", "DEN", "DE", "Denne", "Disse", "Dette", "Den", "De", });
 	
 	private void macro_f_bcond(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_f_bcond",  word1); }; 
+		/** Per mirar si el blanc conté o no format awhatnow?  */
 		// WARNING blank pos=1 is out of range. Replacing with an zero-space blank. - for <transfer>/<section-def-macros>/<def-macro n="f_bcond" npar="1">/<choose>/<when>/<test>/<not>/<equal>/<b pos="1">
 		if (!"".equals(" "))
 		{
@@ -50,6 +54,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/**  Macros which set concordance variables:  */
 	private void macro_set_number1(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_set_number1",  word1); }; 
@@ -65,6 +70,17 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	private void macro_set_number2(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("macro_set_number2",  word1, blank1,  word2); }; 
+		/**  arg.1: noun, arg.2: determiner or adjective
+      sets number and n_number
+      - If number is sp or empty (or noun actually is sp), use nbr
+        from noun. Eg. <adj><pp> doesn't have a number, so in that case
+        use noun.
+      - If we've been given an adjective, and the noun is sg def,
+        we can be pretty sure the noun is right about this, so go with
+        sg def (set_adj_GND should make sure we add the def if adjective
+        is plural). And the other way around, pl noun versus adjective
+        is sure not to be sg def.
+       */
 		macro_set_number1(out, word2);
 		if (var_number.equals("<ND>"))
 		{
@@ -100,6 +116,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	private void macro_set_case(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_set_case",  word1); }; 
+		/**  keep only case for proper nouns  */
 		var_case = "";
 		if (word1.target(attr_a_nom, true).toLowerCase().startsWith("<np>".toLowerCase()))
 		{
@@ -110,6 +127,12 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	private void macro_set_gender1(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_set_gender1",  word1); }; 
+		/**  arg.1: determiner
+	   - iff sg and GD, take a wild guess and go for m;
+	   - plurals get no gender;
+	   - o/w take gender of target determiner;
+           - if we have sp or nothing, go with pl
+       */
 		var_det_gender = "";
 		macro_set_number1(out, word1);
 		if ((var_number.equals("<sg>")
@@ -131,6 +154,10 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	private void macro_set_n_defness(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("macro_set_n_defness",  word1, blank1,  word2); }; 
+		/**  arg.1: noun, arg.2: determiner/adjective
+           Make sure we have double definiteness marking, eg.:
+           disse<def> friheter<ind> => desse<def> fridomane<def>
+       */
 		if ((word1.target(attr_art, true).equals("<ind>")
     && (list_det_indef.contains(word2.source(attr_lem, true))
     || (word2.target(attr_a_adj, true).toLowerCase().startsWith("<adj>".toLowerCase())
@@ -147,6 +174,23 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	private void macro_set_gender2(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("macro_set_gender2",  word1, blank1,  word2); }; 
+		/**  arg.1: noun, arg.2: determiner
+           - if a noun is given as arg.2, use set_gender1 instead (but
+             set_number2 with arg.1); this is just so we can generalise
+             with the POSGEN category
+           - plurals get no gender
+           - if sg/sp (all sp determiners have gender): 
+           +++ default: take gender of target determiner
+           +++ det m:   take gender of target noun unless mf/empty
+           +++ det GD:  take gender of target noun;
+                        but if GD/mf/empty, just take masc to choose Something
+           - No number? No gender.
+           Masculine determiners in bokmål may be used with femininine gender nouns
+           without being marked as such in bidix.
+           Determiners are less ambiguous wrt. number.
+           
+           Note: does not set adj_GND, use set_gender3 or an explicit call to set_adj_GND.
+       */
 		var_det_gender = "";
 		if (word2.target(attr_a_nom, true).toLowerCase().startsWith("<n>".toLowerCase()))
 		{
@@ -189,9 +233,17 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/**  ^^^ sg gender default: determiner gender  ^^^ masc determiner => noun gender unless mf/empty  ^^^ empty/mf noun gender, GD determiner => masc  ^^^ noun had no gender (was eg. np/acr), use det  otherwise: no number, no gender  */
 	private void macro_set_adj_number(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_set_adj_number",  word1); }; 
+		/**  arg.1: adjective
+           
+           Assumes that set_number is called!
+
+           Number is only a feature of positive/pp adjectives. Use
+           variable "number" for these unless it's empty/sp.
+       */
 		var_adj_number = "";
 		if ((word1.target(attr_a_adj, true).equals("<adj><pp>")
     || word1.target(attr_a_adj, true).toLowerCase().endsWith("<posi>".toLowerCase())))
@@ -208,6 +260,17 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	private void macro_set_adj_GND(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_set_adj_GND",  word1); }; 
+		/**  arg.1: adjective
+           
+           Assumes that number and det_gender are set! Only make changes
+           for GD-marked adjectives.
+
+           adj_gender is either nt, f or mf. Most adjectives only have
+           nt or mf forms, some also have an f form. These we need to
+           mark in bidix (nb <mf> => <GD>, nb <f> => <f>). <GD> turns
+           into noun gender (or <mf> as fallback); however, we never
+           use nn <m> so any <m> noun turns into <mf> adj_gender.
+       */
 		var_adj_gender = word1.target(attr_gen, true);
 		var_adj_number = word1.target(attr_nbr, true);
 		var_adj_defness = word1.target(attr_art, true);
@@ -245,13 +308,26 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	private void macro_set_gender3(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
 		if (debug) { logCall("macro_set_gender3",  word1, blank1,  word2, blank2,  word3); }; 
+		/**  arg.1: noun, arg.2: determiner, arg.3: adjective 
+
+           call set_gender2, then set adj_gender.  adj_gender is
+           either nt, f or mf. Most adjectives only have nt or mf
+           forms, some also have an f form. These we need to mark in
+           bidix (nb <mf> => <GD>, nb <f> => <f>). <GD> turns into
+           noun gender (or <mf> as fallback); however, we never use
+           <m> so any <m> noun turns into <mf> adj_gender.
+       */
 		macro_set_gender2(out, word1, blank1, word2);
 		macro_set_adj_GND(out, word3);
 	}
 	
+	/**  Output macros:  */
 	private void macro_out_ndef(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("macro_out_ndef",  word1, blank1,  word2); }; 
+		/**  arg.1: possessed noun. arg.2 gives typographic case
+           
+           Strip case, add definiteness.   */
 		{
 			String myword = 
 			         TransferWord.copycase(word2.source(attr_lem, true), word1.target(attr_lemh, true))
@@ -273,6 +349,10 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	private void macro_out_posgen(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_out_posgen",  word1); }; 
+		/**  arg.1: possessor, either genitive noun or det.pos.
+           Assumes that "det_gender" and "number" are set.
+           Choose 'til NOUN' unless we have a determiner. Only determiners
+           use variable gender and number */
 		if (word1.source(attr_a_det, true).equals("<det><pos>"))
 		{
 			{
@@ -372,6 +452,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/**  Verbs  */
 	// VBLEX.INF.PASS: kan leses => kan lesast
 	public void rule0__vblexinfpass(Writer out, TransferWord word1) throws IOException
 	{
@@ -643,6 +724,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/**  Possessive noun phrases  First: exceptions to these, since earlier rules match first.  */
 	// NGEN_TEMPORAL: dagens => dagens.
 	public void rule5__ngen_temporal(Writer out, TransferWord word1) throws IOException
 	{
@@ -849,6 +931,12 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/**  The regular possessive noun phrases, with more complex
+         transfer operations.
+
+         Fleire reglar trengst for å matche ADJ* (eigentleg ADJ{0,4} i reglane under)
+         men det jo berre kopiere og lime inn (og fikse litt) etter at ADJ{1} regelen 
+         er ferdig. Sjå http://wiki.apertium.org/wiki/Norsk#Genitive.2Fpossessive   */
 	// NGEN: mannens => mannen sin                    Very heuristic fallback rule.                    If we can't match with the below rules, turn the                    genitive -s into 'sin' garpegenitiv instead.                    A bit more fluent where eg. input is incomplete:                          mannens *sykkel => mannen sin *sykkel                    But we don't know gen/nbr of object, so we could end                    up with                          mannens *sykler => mannen sin *sykler                    So let's just hope plurals possess plurals etc...
 	public void rule11__ngen(Writer out, TransferWord word1) throws IOException
 	{
@@ -979,6 +1067,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		macro_out_sin(out, word3);
 	}
 	
+	/**  POSGEN ADJ* NIND:  */
 	// POSGEN NIND: naboens bil => bilen til naboen                                 min mor => mora mi                                 ditt hus => huset ditt                    nind makes sure we don't match 'min Per(np)' nor 'min bils(gen)'                    Third example shows how determiners ..um..determine number.
 	public void rule14__posgen__nind(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
@@ -1129,6 +1218,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		macro_out_posgen(out, word1);
 	}
 	
+	/**  POSGEN ADJ* NGEN ADJ* NIND:  */
 	// POSGEN NGEN NIND: min katts snute => snuten til katten min                                      naboens katts snute => snuten til katten til naboen                                      (but not *'min din snute')
 	public void rule19__posgen__ngen__nind(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
@@ -1241,6 +1331,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		macro_out_posgen(out, word1);
 	}
 	
+	/**  DETNONPOS* ADJ* NGEN ADJ* NIND:  */
 	// DETNONPOS NGEN NIND: en katts snute => snuten til ein katt
 	public void rule22__detnonpos__ngen__nind(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
@@ -1503,6 +1594,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/**  Other determiner/noun phrases  */
 	// DET: en => ein      Frequency is on our side, but politically incorrect..hmm..
 	public void rule26__det(Writer out, TransferWord word1) throws IOException
 	{
@@ -1637,6 +1729,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/**  Adjectives  */
 	// ADJ: åpne (hus) => opne (hus), liten(f) => lita
 	public void rule30__adj(Writer out, TransferWord word1) throws IOException
 	{

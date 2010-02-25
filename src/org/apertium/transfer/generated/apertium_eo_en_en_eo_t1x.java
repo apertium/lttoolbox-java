@@ -8,6 +8,12 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	{
 		return true;
 	}
+	/**  TODO
+ make a transfer rule saying  DET + ADJ  can be a SN:
+  The first was an animated feature     and
+  the second was a TV live action version.
+
+ */
 	ApertiumRE attr_a_nom = new ApertiumRE("<n><acr><re>|<np><ant>|<np><cog>|<np><top>|<n><acr>|<np><al>|<np>|<n>");
 	ApertiumRE attr_a_acr = new ApertiumRE("<acr><re>|<np><top>|<np><al>|<acr>");
 	ApertiumRE attr_a_any = new ApertiumRE("<np>|<n>");
@@ -15,6 +21,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	ApertiumRE attr_a_adj = new ApertiumRE("<adj><sint><comp>|<adj><sint><sup>|<adj><pst>|<adj><itg>|<adj><pos>|<adj>");
 	ApertiumRE attr_a_vrb = new ApertiumRE("<vblex><sep>|<vblex>|<vbser>|<vaux>");
 	ApertiumRE attr_a_det = new ApertiumRE("<det><def>|<det><ind>|<det><pos>|<det><qnt>|<det><itg>|<det><qnt>|<det><dem>");
+	/**  Jacob added  */
 	ApertiumRE attr_a_prn = new ApertiumRE("<prn><subj>|<prn><ref>|<prn><itg>|<prn><obj>|<prn><tn>|<prn>");
 	ApertiumRE attr_a_prn__sen__subj_obj = new ApertiumRE("<prn><ref>|<prn><itg>|<prn><tn>|<prn>");
 	ApertiumRE attr_a_tns = new ApertiumRE("<pres>|<subs>|<pprs>|<past>|<pri>|<imp>|<inf>|<cni>|<ger>|<fti>|<pp>");
@@ -22,6 +29,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	ApertiumRE attr_a_prs = new ApertiumRE("<p1>|<p2>|<p3>");
 	ApertiumRE attr_a_nbr = new ApertiumRE("<sp>|<sg>|<pl>|<ND>");
 	ApertiumRE attr_a_cas = new ApertiumRE("<nom>|<acc>");
+	/**  taken from en-es.t1x, for use in macro firstWord  */
 	ApertiumRE attr_a_np_acr = new ApertiumRE("<acr>|<np>");
 	ApertiumRE attr_lem = new ApertiumRE("(([^<]|\"\\<\")+)");
 	ApertiumRE attr_lemq = new ApertiumRE("\\#[- _][^<]+");
@@ -31,30 +39,62 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	ApertiumRE attr_chname = new ApertiumRE("(\\{([^/]+)\\/)");
 	ApertiumRE attr_chcontent = new ApertiumRE("(\\{.+)");
 	ApertiumRE attr_content = new ApertiumRE("(\\{.+)");
+	/**  TODO
+ make a transfer rule saying  DET + ADJ  can be a SN:
+  The first was an animated feature     and
+  the second was a TV live action version.
+
+ */
 	String var_numero = "";
 	String var_temps = "";
 	String var_adjectiu = "";
+	/** - adjektivo - eble kun preadverbo (pli, plej)  */
 	String var_preadv_added = "";
+	/**  if a "more" or "most" was added before an adj  */
 	String var_nomvar = "";
 	String var_tmp1 = "";
 	String var_tmp2 = "";
 	String var_caseFirstWord = "";
+	/**  macro firstWord  */
 	String var_EOS = "false";
+	/**  macro firstWord     <def-var n="EOS" v="true"/> macro firstWord  */
 	String var_venontaVortoEstuMajuskla = "";
+	/**  macro firstWord  */
 	String var_tipus_verb = "";
+	/**  taken from en-ca.t1x, for use in macro tipus_verbs  */
 	String var_macro_tmp1 = "";
+	/**  taken from en-ca.t1x, for use in macro "set_verbkonj2"  */
 	String var_verbkonj = "";
+	/**  taken from en-ca.t1x, for use in macro "set_verbkonj2"  */
 	String var_chunk_name = "";
+	/**  taken from en-ca.t1x, for use in macro "set_verbkonj2"  */
 	String var_determiner = "";
+	/** - determiner kun tag'oj kaj ebla spaco  */
 	String var_blanko = "";
+	/** - de "set_blankon_se_havas_formaton2"  */
 	String var_and_or_but = "";
 	String var_DEBUG = "";
+	/**  TODO
+ make a transfer rule saying  DET + ADJ  can be a SN:
+  The first was an animated feature     and
+  the second was a TV live action version.
+
+  <list-item v="never"/>  */
 	TransferWordList list_adv_neg = new TransferWordList(new String[] { "not", });
+	/**  verboj ne postulantaj THAT  */
 	TransferWordList list_reportingverb = new TransferWordList(new String[] { "say", "admit", "agree", "decide", "deny", "explain", "insist", "promise", "recommend", "suggest", "point", "think", "believe", "hope", "fear", "suppose", });
+	/**  ne-transitivaj verboj.   */
 	TransferWordList list_netransitivaj = new TransferWordList(new String[] { "be", "seem", "become", "appear", "there be", });
+	/**  help verboj kiuj malaperos en Esperantp */
 	TransferWordList list_willwouldshallhave = new TransferWordList(new String[] { "have", "will", "would", "shall", });
 	TransferWordList list_listo_and_or_but = new TransferWordList(new String[] { "and", "but", "or", });
 	
+	/**  TODO
+ make a transfer rule saying  DET + ADJ  can be a SN:
+  The first was an animated feature     and
+  the second was a TV live action version.
+
+ ekzamenas la vorton kaj metas majuskligajn informojn en variablo "firstWord"  */
 	private void macro_firstWord(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_firstWord",  word1); }; 
@@ -73,6 +113,9 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		var_venontaVortoEstuMajuskla = "false";
 	}
 	
+	/**  kontrolas cxu la parametro estas konata vorto.
+         Se jes "nomvar" := <nom>. Se ne nomvar="".
+         Tio cxu estas por eviti ke nekonataj vortoj ricevos tag'on kiu poste estas montrata.  */
 	private void macro_set_nomvar_if_known1(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_set_nomvar_if_known1",  word1); }; 
@@ -86,6 +129,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/**  Sxangxas la genron de vorto: Se la genro estas nekonata "GD" gxi estas sxangxata al vira genro  */
 	private void macro_ordigu_genron(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_ordigu_genron",  word1); }; 
@@ -95,6 +139,18 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/**  Sxangxas la numeron de vorto: Se la numero estas nekonata "sp" gxi estas sxangxata al singularo
+    <def-macro n="ordigu_numeron1" npar="1">
+      <choose>
+        <when>
+          <test>
+            <equal caseless="yes"><clip pos="1" side="tl" part="a_nbr"/><lit-tag v="sp"/></equal>
+          </test>
+          <let><clip pos="1" side="tl" part="a_nbr"/><lit-tag v="sg"/></let>
+        </when>
+      </choose>
+    </def-macro>
+ atribuas "numero"  al "pl" se estas pluralo, kaj al "sg" alikaze  (ND, sp aux nekonata vorto sen numero-etikedo) */
 	private void macro_set_numero1(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_set_numero1",  word1); }; 
@@ -108,6 +164,9 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/**  Tiu cxi makroo rigardas anglan adjektivon kaj la rilatan substantivon kaj poste
+         adjectiu = ^pli<preadv>$ ^bona<adj>
+         preadv_added = yes    */
 	private void macro_set_adjectiu2(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("macro_set_adjectiu2",  word1, blank1,  word2); }; 
@@ -136,6 +195,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/**  ^pli<preadv>$ ^bona<adj><2>$  ^plej<preadv>$ ^bona<adj><2>$  ^bona<adj><2>$  ^bona<adj><2>$  */
 	private void macro_set_tipus_verbs1(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_set_tipus_verbs1",  word1); }; 
@@ -154,6 +214,41 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/** 
+        <when>
+          <test>
+            <or>
+              <equal caseless="yes"><clip pos="1" side="sl" part="lemh"/><lit v="be"/></equal>
+              <equal caseless="yes"><clip pos="1" side="sl" part="lemh"/><lit v="seem"/></equal>
+            </or>
+          </test>
+          <let><var n="tipus_verb"/><lit-tag v="netransitiva2"/></let>
+        </when>
+        <when>
+          <test>
+            <or>
+              <equal caseless="yes"><clip pos="1" side="sl" part="lemh"/><lit v="like"/></equal>
+              <equal caseless="yes"><clip pos="1" side="tl" part="lemh"/><lit v="encantar"/></equal>
+            </or>
+          </test>
+          <let><var n="tipus_verb"/><lit-tag v="like"/></let>
+        </when>
+        <when>
+          <test>
+            <or>
+              <equal caseless="yes"><clip pos="1" side="sl" part="lem"/><lit v="be# sorry"/></equal>
+              <equal caseless="yes"><clip pos="1" side="sl" part="lem"/><lit v="be# very sorry"/></equal>
+            </or>
+          </test>
+          <let><var n="tipus_verb"/><lit-tag v="sorry"/></let>
+        </when>
+        konjugacias verbon konsistanta en helpverbo kaj nepersona formo (will come).
+pos 1= do, will, shall aŭ would.
+pos 2= nekonjugaciita verbo
+
+La rezulto estas unu sola leksika formo (venos):
+verbfinal = pensi<vblex><pres>
+  */
 	private void macro_set_verbkonj2_do(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("macro_set_verbkonj2_do",  word1, blank1,  word2); }; 
@@ -215,6 +310,20 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/** 
+      <when>
+        <test>
+          <equal caseless="yes"><clip pos="1" side="sl" part="lem"/><lit v="did"/></equal>
+        </test>
+        <let><var n="temps"/><lit-tag v="past"/></let>
+      </when>
+ Por rigardi, ĉu la blanko havas aŭ ne havas formaton.
+     Tiu makroo estas necesa en la reguloj, en kiuj malaperas vorto por decidi,
+     ĉu la blanko de la vorto devas esti forigita aŭ konservita.
+     Se ĝi havas formaton, necesas konservi ĝin; se ne, indas viŝi,
+     por ke ne aperu du sinsekvaj blankoj.
+
+     Prenita de "f_bcond" apertium-en-es/apertium-en-es.es-en.t1x  */
 	private void macro_sendu_blankon_se_havas_formaton2(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("macro_sendu_blankon_se_havas_formaton2",  word1, blank1,  word2); }; 
@@ -224,6 +333,16 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/** 
+            <chunk name="sendu_blankon_se_havas_formaton">
+              <tags><tag><lit-tag v="xx"/></tag></tags>
+              <lu>
+                <b pos="1"/>
+              </lu>
+            </chunk> Por rigardi, ĉu la blanko havas aŭ ne havas formaton.
+     "blanko" havos valoron "" se estas nur blanko " ", kaj
+     la enhavon de la blanko gxi enhavis ion alian.
+  */
 	private void macro_set_blankon_se_havas_formaton2(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("macro_set_blankon_se_havas_formaton2",  word1, blank1,  word2); }; 
@@ -237,6 +356,17 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/** 
+        <choose>
+        <when>
+          <test>
+            <equal><clip pos="1" side="sl" part="lem"/><lit v="A"/></equal>
+          </test>
+          <let><var n="venontaVortoEstuMajuskla"/><lit v="true"/></let>
+        </when>
+        </choose>
+          <let><var n="EOS"/><lit v="false"/></let>
+ */
 	private void macro_set_determiner3(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
 		if (debug) { logCall("macro_set_determiner3",  word1, blank1,  word2, blank2,  word3); }; 
@@ -257,6 +387,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/**  lemh por subteni "most of<det>"  */
 	private void macro_set_determiner_de_genitivo2(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("macro_set_determiner_de_genitivo2",  word1, blank1,  word2); }; 
@@ -272,6 +403,11 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/**  lemh por subteni "most of<det>" 
+    c="and or but povas esti komenco de demando, sed la aliaj cnjoo NE povas esti parto de demando:
+    ekzemple:   and/or/but did they acquire any influence?   - demando
+    ekzemple:   neither/nor did they acquire any influence   - konstato
+    "  */
 	private void macro_set_and_or_but(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_set_and_or_but",  word1); }; 
@@ -285,6 +421,12 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/**  TODO
+ make a transfer rule saying  DET + ADJ  can be a SN:
+  The first was an animated feature     and
+  the second was a TV live action version.
+
+ */
 	// REGLA: prnref   - himself, themselves
 	public void rule0__prnref(Writer out, TransferWord word1) throws IOException
 	{
@@ -705,6 +847,48 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/** 
+    <rule comment="REGLA NUM of the     5 of the => 5 el la ">
+      <pattern>
+        <pattern-item n="num"/>
+        <pattern-item n="of"/>
+        <pattern-item n="the"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <out>
+          <chunk name="num" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="whole"/>
+            </lu>
+          </chunk>
+          <b pos="1"/>
+          <chunk name="pr">
+            <tags>
+              <tag><lit-tag v="PREP"/></tag>
+            </tags>
+                <lu>
+                  <lit v="el"/>
+                  <lit-tag v="pr"/>
+                </lu>
+          </chunk>
+          <b pos="2"/>
+          <chunk name="det5">
+            <tags>
+              <tag><lit-tag v="SD"/></tag>
+              <tag><lit-tag v="sp"/></tag>
+            </tags>
+                <lu>
+                  <clip pos="3" side="tl" part="whole"/>
+                </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+ */
 	// REGLA NUM time   5 times => 5 fojoj, 5th time => 5a fojo,   
 	public void rule10__num__times(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
@@ -780,6 +964,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  Sintagmas nominales  */
 	// REGLA: NOM
 	public void rule13__nom(Writer out, TransferWord word1) throws IOException
 	{
@@ -844,6 +1029,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  <lit-tag v="2"/> no, keep <nom>  <lit-tag v="2"/> no, keep <nom>  */
 	// REGLA: DET NOM
 	public void rule15__det__nom(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
@@ -872,6 +1058,49 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/** 
+    <rule comment="REGLA: DET NOM NOM (malnova)  la testo-firmaoj">
+      <pattern>
+        <pattern-item n="det"/>
+        <pattern-item n="nom"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <call-macro n="ordigu_genron"><with-param pos="2"/></call-macro>
+        <call-macro n="ordigu_genron"><with-param pos="3"/></call-macro>
+            <out>
+              <chunk name="det_nom_guio_nom" case="caseFirstWord">
+                <tags>
+                  <tag><lit-tag v="SN.nom"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="1" side="tl" part="lem"/>
+                  <clip pos="1" side="tl" part="a_det"/>
+                  <clip pos="3" side="tl" part="a_nbr"/>
+                  <lit-tag v="2"/>
+                </lu>
+                <b pos="1"/>
+                <lu>
+                  <clip pos="2" side="tl" part="lem"/>
+                  <clip pos="2" side="tl" part="tags"/>
+                  <lit-tag v="nom"/>
+                </lu>
+                <lu>
+                  <lit v="-"/>
+                  <lit-tag v="guio"/>
+                </lu>
+                <*-*- <b pos="2"/> inserts a space. Could just ONE space be deleted and rest of the blank be inserted. Francis: not that i'm aware of -*-*>
+                <lu>
+                  <clip pos="3" side="tl" part="lem"/>
+                  <clip pos="3" side="tl" part="tags"/>
+                  <lit-tag v="2"/>
+                </lu>
+              </chunk>
+            </out>
+      </action>
+    </rule>
+ */
 	// REGLA: DET NOM NOM (nova)  la testaj firmaoj
 	public void rule16__det__nom__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
@@ -918,6 +1147,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  se estas akronimo  se havas genron  */
 	// REGLA: DET NOM NOM NOM 
 	public void rule17__det__nom__nom__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
@@ -982,6 +1212,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  se estas akronimo  se havas genron  se estas akronimo  se havas genron  */
 	// REGLA: DET NOM NOM NOM NOM
 	public void rule18__det__nom__nom__nom__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5) throws IOException
 	{
@@ -1064,6 +1295,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  se estas akronimo  se havas genron  se estas akronimo  se havas genron  se estas akronimo  se havas genron  */
 	// REGLA: ADJ
 	public void rule19__adj(Writer out, TransferWord word1) throws IOException
 	{
@@ -1131,6 +1363,38 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  enmeti??
+    <rule comment="REGLA: DET UNKNOWN/ADV/NUM NOM">
+      <pattern>
+        <pattern-item n="det"/>
+        <pattern-item n="unknown_adv_num"/>
+        <pattern-item n="nom_prnaltres"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <call-macro n="ordigu_genron"><with-param pos="3"/></call-macro>
+        <call-macro n="set_determiner3"><with-param pos="1"/><with-param pos="2"/><with-param pos="3"/></call-macro>
+
+        <out>
+        <chunk name="det_unknown_nom" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="SN.nom"/></tag>
+            </tags>
+            <var n="determiner"/>
+            <lu>
+              <clip pos="2" side="tl" part="whole"/>
+            </lu>
+            <b pos="2"/>
+            <lu>
+              <clip pos="3" side="tl" part="lem"/>
+              <clip pos="3" side="tl" part="tags"/>
+              <lit-tag v="2"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+ */
 	// REGLA: ADJ NOM
 	public void rule21__adj__nom(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
@@ -1400,6 +1664,41 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**   TODO: ADJ NOM NOM:  Private testing companies 
+    <rule comment="REGLA: NOM NOM   - testo-firmaoj (malnova)">
+      <pattern>
+        <pattern-item n="nom"/>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <call-macro n="ordigu_genron"><with-param pos="1"/></call-macro>
+        <call-macro n="ordigu_genron"><with-param pos="2"/></call-macro>
+            <out>
+              <chunk name="nom_guio_nom" case="caseFirstWord">
+                <tags>
+                  <tag><lit-tag v="SN.nom"/></tag>
+                </tags>
+                <lu>
+                  <clip pos="1" side="tl" part="lem"/>
+                  <clip pos="1" side="tl" part="a_nom"/>
+                  <lit-tag v="sg.nom"/>
+                </lu>
+                <lu>
+                  <lit v="-"/>
+                  <lit-tag v="guio"/>
+                </lu>
+                <*-*- <b pos="1"/> inserts a space. Could just ONE space be deleted and rest of the blank be inserted. Francis: not that i'm aware of -*-*>
+                <lu>
+                  <clip pos="2" side="tl" part="lem"/>
+                  <clip pos="2" side="tl" part="tags"/>
+                  <lit-tag v="2"/>
+                </lu>
+              </chunk>
+            </out>
+      </action>
+    </rule>
+ */
 	// REGLA: NOM NOM   - testaj firmaoj (nova provo)
 	public void rule26__nom__nom(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
@@ -1905,6 +2204,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  hundo  senspaca, sed eble estas aliaj aferoj en gxi  de  gxardenisto  */
 	// REGLA: NOM/ANT 's NOM:  gardener's dog => hundo de gxardenisto
 	public void rule35__genitive_possessors__gen__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
@@ -1961,6 +2261,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  hundo  senspaca, sed eble estas aliaj aferoj en gxi  de  gxardenisto  */
 	// REGLA: NOM/ANT 's NOM NOM:  gardener's dog house => hunda domo de gxardenisto
 	public void rule36__genitive_possessors__gen__nom__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
@@ -2035,6 +2336,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  hundA  se estas akronimo  se havas genron  senspaca, sed eble estas aliaj aferoj en gxi  domo  de  gxardenisto  */
 	// REGLA: DET NOM/ANT 's NOM:  his gardener's dog => la hundo de lia gxardenisto
 	public void rule37__det__genitive_possessors__gen__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
@@ -2110,6 +2412,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  la  senspaca, sed eble estas aliaj aferoj en gxi  hundo  senspaca, sed eble estas aliaj aferoj en gxi  de  lia  gxardenisto  */
 	// REGLA: DET NOM/ANT NOM/ANT 's NOM:  his garden man's dog   - La hundo de lia ĝardeno viro 
 	public void rule38__det__genitive_possessors__genitive_possessors__gen__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5) throws IOException
 	{
@@ -2201,6 +2504,17 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  la  hundo  senspaca, sed eble estas aliaj aferoj en gxi  de  lia  ĝardeno  viro   Its Not clear this rule makes more harm than good
+
+    <rule comment="REGLA: NOM/ANT NOM/ANT 's NOM:  Jacob Smith's dog   => hundo de Jacob Smith">
+      <pattern>
+        <pattern-item n="genitive_possessors"/>
+        <pattern-item n="genitive_possessors"/>
+        <pattern-item n="gen"/>
+        <pattern-item n="nom"/>
+      </pattern>
+...
+ ************************************************************* **                                                         ** **                    DIVERSAJ                             ** **                                                         ** ************************************************************* */
 	// rekunu and, or kaj nor aparte - ĉar povas esti parto de listo de aferoj
 	public void rule39__and_or_nor(Writer out, TransferWord word1) throws IOException
 	{
@@ -2226,6 +2540,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  Conjunctions  */
 	public void rule40__cnjcoo(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule40__cnjcoo",  word1); }; 
@@ -2315,6 +2630,14 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/** 
+where:where<rel><adv>
+after which:after which<rel><an><mf><sp>
+which:which<rel><an><mf><sp>
+whom:whom<rel><an><mf><sp>
+the ones that:the ones that<rel><nn><mf><pl>
+the ones who:the ones who<rel><nn><mf><pl>
+ */
 	public void rule44__rel(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule44__rel",  word1); }; 
@@ -2337,6 +2660,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  any, as, how, just as, more, most, pretty, really, so, too, very, fairly  */
 	public void rule45__preadv(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule45__preadv",  word1); }; 
@@ -2359,6 +2683,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  all<predet><sp>  */
 	public void rule46__predet(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule46__predet",  word1); }; 
@@ -2381,6 +2706,26 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  regulo en antax_t2x ne funkscias, bedauxrinde.....
+    <rule>
+      <pattern>
+        <pattern-item n="out"/>
+      </pattern>
+      <action>
+        <call-macro n="firstWord"><with-param pos="1"/></call-macro>
+        <out>
+          <chunk name="out" case="caseFirstWord">
+            <tags>
+              <tag><lit-tag v="Adv"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="whole"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
+ */
 	public void rule47__adv(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule47__adv",  word1); }; 
@@ -2403,6 +2748,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  of<pr> off<pr> on<pr> onto<pr> over<pr> per<pr> ...  */
 	public void rule48__pr(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule48__pr",  word1); }; 
@@ -2515,6 +2861,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  Traktu nekonatajn vortojn kiel nomoj en la venontaj stagxo  ************************************************************* **                                                         ** **                    VERBOJ                               ** **                                                         ** ************************************************************* to run, to swim  */
 	// REGLA: to VBLEXinf
 	public void rule53__to__vblexinf(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
@@ -2606,6 +2953,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/**  ^be/be<vbser><inf>$ ^being/be<vbser><ger>$  ^been/be<vbser><pp>$ ^applying/apply<vblex><ger>$   */
 	// REGLA: be VBLEXger
 	public void rule56__vbser__vblexger(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
@@ -2894,6 +3242,17 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		out.append("}$");
 	}
 	
+	/** 
+can:can<vaux><pres>
+could:can<vaux><past>
+will:will<vaux><inf>
+shall:shall<vaux><inf>
+would:would<vaux><inf>
+must:must<vaux><inf>
+should:should<vaux><inf>
+may:may<vaux><inf>
+might:might<vaux><inf>
+ */
 	// REGLA: VAUX VBLEX
 	public void rule62__vaux_vbhaver__vblex_vbser(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
@@ -3009,6 +3368,32 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/**  I may wash.
+          <when>
+            <test>
+              <equal caseless="yes"><clip pos="1" side="sl" part="lem"/><lit v="may"/></equal>
+            </test>
+            <let><var n="temps"/><lit-tag v="cni"/></let>
+            <out>
+              <chunk name="vaux_verb" case="caseFirstWord">
+                <tags>
+                  <tag><lit-tag v="SV"/></tag>
+                  <tag><var n="tipus_verb"/></tag>
+                </tags>
+                <lu>
+                  <lit v="eble"/><lit-tag v="adv"/>
+                </lu>
+                <b pos="1"/>
+                <lu>
+                  <clip pos="2" side="tl" part="lemh"/>
+                  <clip pos="2" side="tl" part="a_vrb"/>
+                  <lit-tag v="inf"/>
+                  <clip pos="2" side="tl" part="lemq"/>
+                </lu>
+              </chunk>
+            </out>
+          </when>
+ */
 	// REGLA: VAUX ADV VBLEX
 	public void rule63__vaux_vbhaver__adv__vblex_vbser(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
@@ -3650,6 +4035,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		}
 	}
 	
+	/**  <b/><lu><lit v="DEBUG_vaux_vbser_vblexger"/></lu>  */
 	public void rule67__vbdo(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule67__vbdo",  word1); }; 
