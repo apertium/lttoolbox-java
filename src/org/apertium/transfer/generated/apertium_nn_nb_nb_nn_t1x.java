@@ -58,7 +58,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	private void macro_set_number1(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_set_number1",  word1); } 
-		var_number = word1.target(attr_nbr, true);
+		var_number = word1.tl(attr_nbr);
 		var_number_no_sp = var_number;
 		if ((var_number.equals("<sp>")
     || var_number.equals("")))
@@ -84,30 +84,31 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		macro_set_number1(out, word2);
 		if (var_number.equals("<ND>"))
 		{
-			var_number = word1.target(attr_nbr, true);
+			var_number = word1.tl(attr_nbr);
 		}
 		var_n_number = var_number;
-		if ((word2.target(attr_a_adj, true).equals("<adj><pp>")
-    || word2.target(attr_a_adj, true).toLowerCase().endsWith("<posi>".toLowerCase())))
+		if ((word2.tl(attr_a_adj).equals("<adj><pp>")
+    || word2.tl(attr_a_adj).toLowerCase().endsWith("<posi>".toLowerCase())))
 		{
-			if ((word1.target(attr_nbr, true).equals("<sg>")
-    && word1.target(attr_art, true).equals("<def>")))
+			if ((word1.tl(attr_nbr).equals("<sg>")
+    && word1.tl(attr_art).equals("<def>")))
 			{
 				var_number = "<sg>";
 			}
-			if (word1.target(attr_nbr, true).equals("<pl>"))
+			if (word1.tl(attr_nbr).equals("<pl>"))
 			{
 				var_number = "<pl>";
 			}
 			var_n_number = var_number;
 		}
 		if ((var_n_number.equals("<sp>")
-    || var_n_number.equals("")))
+    || var_n_number.equals("")
+    || word1.tl(attr_nbr).equals("<sp>")))
 		{
-			var_n_number = word1.target(attr_nbr, true);
+			var_n_number = word1.tl(attr_nbr);
 		}
-		if ((word1.target(attr_a_nom, true).toLowerCase().startsWith("<np>".toLowerCase())
-    || word1.target(attr_a_nom, true).toLowerCase().endsWith("<acr>".toLowerCase())))
+		if ((word1.tl(attr_a_nom).toLowerCase().startsWith("<np>".toLowerCase())
+    || word1.tl(attr_a_nom).toLowerCase().endsWith("<acr>".toLowerCase())))
 		{
 			var_n_number = "";
 		}
@@ -118,7 +119,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		if (debug) { logCall("macro_set_case",  word1); } 
 		/**  keep only case for proper nouns  */
 		var_case = "";
-		if (word1.target(attr_a_nom, true).toLowerCase().startsWith("<np>".toLowerCase()))
+		if (word1.tl(attr_a_nom).toLowerCase().startsWith("<np>".toLowerCase()))
 		{
 			var_case = "<gen>";
 		}
@@ -136,7 +137,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		var_det_gender = "";
 		macro_set_number1(out, word1);
 		if ((var_number.equals("<sg>")
-    && word1.target(attr_gen, true).equals("<GD>")))
+    && word1.tl(attr_gen).equals("<GD>")))
 		{
 			var_det_gender = "<m>";
 		}
@@ -147,7 +148,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		}
 		else
 		{
-			var_det_gender = word1.target(attr_gen, true);
+			var_det_gender = word1.tl(attr_gen);
 		}
 	}
 	
@@ -158,16 +159,16 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
            Make sure we have double definiteness marking, eg.:
            disse<def> friheter<ind> => desse<def> fridomane<def>
        */
-		if ((word1.target(attr_art, true).equals("<ind>")
-    && (list_det_indef.contains(word2.source(attr_lem, true))
-    || (word2.target(attr_a_adj, true).toLowerCase().startsWith("<adj>".toLowerCase())
-    && word2.target(attr_art, true).equals("<def>")))))
+		if ((word1.tl(attr_art).equals("<ind>")
+    && (list_det_indef.contains(word2.sl(attr_lem))
+    || (word2.tl(attr_a_adj).toLowerCase().startsWith("<adj>".toLowerCase())
+    && word2.tl(attr_art).equals("<def>")))))
 		{
 			var_n_defness = "<def>";
 		}
 		else
 		{
-			var_n_defness = word1.target(attr_art, true);
+			var_n_defness = word1.tl(attr_art);
 		}
 	}
 	
@@ -192,7 +193,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
            Note: does not set adj_GND, use set_gender3 or an explicit call to set_adj_GND.
        */
 		var_det_gender = "";
-		if (word2.target(attr_a_nom, true).toLowerCase().startsWith("<n>".toLowerCase()))
+		if (word2.tl(attr_a_nom).toLowerCase().startsWith("<n>".toLowerCase()))
 		{
 			macro_set_gender1(out, word1);
 			macro_set_number2(out, word1, " ", word1);
@@ -208,18 +209,19 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 			if ((var_number.equals("<sg>")
     || var_number.equals("<sp>")))
 			{
-				var_det_gender = word2.target(attr_gen, true);
+				var_det_gender = word2.tl(attr_gen);
 				/**  ^^^ sg gender default: determiner gender  */
 				if ((var_det_gender.equals("<m>")
-    && !word1.target(attr_gen, true).equals("")))
+    && !word1.tl(attr_gen).equals("")
+    && !word1.tl(attr_gen).equals("<mf>")))
 				{
-					var_det_gender = word1.target(attr_gen, true);
+					var_det_gender = word1.tl(attr_gen);
 				}
 				/**  ^^^ masc determiner => noun gender unless mf/empty  */
 				else
 				if (var_det_gender.equals("<GD>"))
 				{
-					var_det_gender = word1.target(attr_gen, true);
+					var_det_gender = word1.tl(attr_gen);
 					if ((var_det_gender.equals("")
     || var_det_gender.equals("<mf>")))
 					{
@@ -230,7 +232,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 				else
 				if (var_det_gender.equals(""))
 				{
-					var_det_gender = word2.target(attr_gen, true);
+					var_det_gender = word2.tl(attr_gen);
 				}
 			}
 		}
@@ -248,14 +250,14 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
            variable "number" for these unless it's empty/sp.
        */
 		var_adj_number = "";
-		if ((word1.target(attr_a_adj, true).equals("<adj><pp>")
-    || word1.target(attr_a_adj, true).toLowerCase().endsWith("<posi>".toLowerCase())))
+		if ((word1.tl(attr_a_adj).equals("<adj><pp>")
+    || word1.tl(attr_a_adj).toLowerCase().endsWith("<posi>".toLowerCase())))
 		{
 			var_adj_number = var_number;
 			if ((var_adj_number.equals("")
     || var_adj_number.equals("<sp>")))
 			{
-				var_adj_number = word1.target(attr_nbr, true);
+				var_adj_number = word1.tl(attr_nbr);
 			}
 		}
 	}
@@ -274,9 +276,9 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
            into noun gender (or <mf> as fallback); however, we never
            use nn <m> so any <m> noun turns into <mf> adj_gender.
        */
-		var_adj_gender = word1.target(attr_gen, true);
-		var_adj_number = word1.target(attr_nbr, true);
-		var_adj_defness = word1.target(attr_art, true);
+		var_adj_gender = word1.tl(attr_gen);
+		var_adj_number = word1.tl(attr_nbr);
+		var_adj_defness = word1.tl(attr_art);
 		if (var_adj_gender.equals("<GD>"))
 		{
 			macro_set_adj_number(out, word1);
@@ -333,12 +335,12 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
            Strip case, add definiteness.   */
 		{
 			String myword = 
-			         TransferWord.copycase(word2.source(attr_lem, true), word1.target(attr_lemh, true))
-			         +word1.target(attr_a_nom, true)
-			         +word1.target(attr_gen, true)
-			         +word1.target(attr_nbr, true)
+			         TransferWord.copycase(word2.sl(attr_lem), word1.tl(attr_lemh))
+			         +word1.tl(attr_a_nom)
+			         +word1.tl(attr_gen)
+			         +word1.tl(attr_nbr)
 			         +"<def>"
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -356,15 +358,15 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
            Assumes that "det_gender" and "number" are set.
            Choose 'til NOUN' unless we have a determiner. Only determiners
            use variable gender and number */
-		if (word1.source(attr_a_det, true).equals("<det><pos>"))
+		if (word1.sl(attr_a_det).equals("<det><pos>"))
 		{
 			{
 				String myword = 
-				         word1.target(attr_lemh, true)
-				         +word1.target(attr_a_det, true)
+				         word1.tl(attr_lemh)
+				         +word1.tl(attr_a_det)
 				         +var_det_gender
 				         +var_number
-				         +word1.target(attr_lemq, true)
+				         +word1.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -391,12 +393,12 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 			out.append(" ");
 			{
 				String myword = 
-				         word1.target(attr_lemh, true)
-				         +word1.target(attr_a_nom, true)
-				         +word1.target(attr_gen, true)
-				         +word1.target(attr_nbr, true)
-				         +word1.target(attr_art, true)
-				         +word1.target(attr_lemq, true)
+				         word1.tl(attr_lemh)
+				         +word1.tl(attr_a_nom)
+				         +word1.tl(attr_gen)
+				         +word1.tl(attr_nbr)
+				         +word1.tl(attr_art)
+				         +word1.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -439,12 +441,12 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		macro_set_adj_GND(out, word1);
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_adj, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_adj)
 			         +var_adj_gender
 			         +var_adj_number
 			         +var_adj_defness
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -460,7 +462,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	public void rule0__vblexinfpass(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule0__vblexinfpass",  word1); } 
-		if (word1.target(attr_a_verb, true).equals("<vblex><pstv>"))
+		if (word1.tl(attr_a_verb).equals("<vblex><pstv>"))
 		{
 			var_pass = "";
 		}
@@ -470,11 +472,11 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		}
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_verb, true)
-			         +word1.target(attr_temps, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_verb)
+			         +word1.tl(attr_temps)
 			         +var_pass
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -489,11 +491,11 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	public void rule1__vblexprespass(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule1__vblexprespass",  word1); } 
-		if (word1.target(attr_a_verb, true).equals("<vblex><pstv>"))
+		if (word1.tl(attr_a_verb).equals("<vblex><pstv>"))
 		{
 			{
 				String myword = 
-				         word1.target(attr_whole, true)
+				         word1.tl(attr_whole)
 				         ;
 				if (myword.length()>0)
 				{
@@ -507,7 +509,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		{
 			{
 				String myword = 
-				         TransferWord.copycase(word1.source(attr_lem, true), "bli")
+				         TransferWord.copycase(word1.sl(attr_lem), "bli")
 				         +"<vblex><pres>"
 				         ;
 				if (myword.length()>0)
@@ -520,10 +522,10 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 			out.append(" ");
 			{
 				String myword = 
-				         word1.target(attr_lemh, true)
-				         +word1.target(attr_a_verb, true)
+				         word1.tl(attr_lemh)
+				         +word1.tl(attr_a_verb)
 				         +"<pp>"
-				         +word1.target(attr_lemq, true)
+				         +word1.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -539,11 +541,11 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	public void rule2__vblexprespass__adv(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule2__vblexprespass__adv",  word1, blank1,  word2); } 
-		if (word1.target(attr_a_verb, true).equals("<vblex><pstv>"))
+		if (word1.tl(attr_a_verb).equals("<vblex><pstv>"))
 		{
 			{
 				String myword = 
-				         word1.target(attr_whole, true)
+				         word1.tl(attr_whole)
 				         ;
 				if (myword.length()>0)
 				{
@@ -555,7 +557,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 			out.append(blank1);
 			{
 				String myword = 
-				         word2.target(attr_whole, true)
+				         word2.tl(attr_whole)
 				         ;
 				if (myword.length()>0)
 				{
@@ -569,7 +571,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		{
 			{
 				String myword = 
-				         TransferWord.copycase(word1.source(attr_lem, true), "bli")
+				         TransferWord.copycase(word1.sl(attr_lem), "bli")
 				         +"<vblex><pres>"
 				         ;
 				if (myword.length()>0)
@@ -582,7 +584,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 			out.append(blank1);
 			{
 				String myword = 
-				         word2.target(attr_whole, true)
+				         word2.tl(attr_whole)
 				         ;
 				if (myword.length()>0)
 				{
@@ -594,10 +596,10 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 			out.append(" ");
 			{
 				String myword = 
-				         word1.target(attr_lemh, true)
-				         +word1.target(attr_a_verb, true)
+				         word1.tl(attr_lemh)
+				         +word1.tl(attr_a_verb)
 				         +"<pp>"
-				         +word1.target(attr_lemq, true)
+				         +word1.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -613,11 +615,11 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	public void rule3__vblexprespass__adv__adv(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
 		if (debug) { logCall("rule3__vblexprespass__adv__adv",  word1, blank1,  word2, blank2,  word3); } 
-		if (word1.target(attr_a_verb, true).equals("<vblex><pstv>"))
+		if (word1.tl(attr_a_verb).equals("<vblex><pstv>"))
 		{
 			{
 				String myword = 
-				         word1.target(attr_whole, true)
+				         word1.tl(attr_whole)
 				         ;
 				if (myword.length()>0)
 				{
@@ -629,7 +631,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 			out.append(blank1);
 			{
 				String myword = 
-				         word2.target(attr_whole, true)
+				         word2.tl(attr_whole)
 				         ;
 				if (myword.length()>0)
 				{
@@ -641,7 +643,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 			out.append(blank2);
 			{
 				String myword = 
-				         word3.target(attr_whole, true)
+				         word3.tl(attr_whole)
 				         ;
 				if (myword.length()>0)
 				{
@@ -655,7 +657,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		{
 			{
 				String myword = 
-				         TransferWord.copycase(word1.source(attr_lem, true), "bli")
+				         TransferWord.copycase(word1.sl(attr_lem), "bli")
 				         +"<vblex><pres>"
 				         ;
 				if (myword.length()>0)
@@ -668,7 +670,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 			out.append(blank1);
 			{
 				String myword = 
-				         word2.target(attr_whole, true)
+				         word2.tl(attr_whole)
 				         ;
 				if (myword.length()>0)
 				{
@@ -680,7 +682,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 			out.append(blank2);
 			{
 				String myword = 
-				         word3.target(attr_whole, true)
+				         word3.tl(attr_whole)
 				         ;
 				if (myword.length()>0)
 				{
@@ -692,10 +694,10 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 			out.append(" ");
 			{
 				String myword = 
-				         word1.target(attr_lemh, true)
-				         +word1.target(attr_a_verb, true)
+				         word1.tl(attr_lemh)
+				         +word1.tl(attr_a_verb)
 				         +"<pp>"
-				         +word1.target(attr_lemq, true)
+				         +word1.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -713,10 +715,10 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		if (debug) { logCall("rule4__vblex",  word1); } 
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_verb, true)
-			         +word1.target(attr_temps, true)
-			         +word1.target(attr_lemq, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_verb)
+			         +word1.tl(attr_temps)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -734,7 +736,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		if (debug) { logCall("rule5__ngen_temporal",  word1); } 
 		{
 			String myword = 
-			         word1.target(attr_whole, true)
+			         word1.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -751,7 +753,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		if (debug) { logCall("rule6__ngen_temporal__nind",  word1, blank1,  word2); } 
 		{
 			String myword = 
-			         word1.target(attr_whole, true)
+			         word1.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -763,7 +765,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_whole, true)
+			         word2.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -781,12 +783,12 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		macro_set_gender2(out, word2, " ", word1);
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_det, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_det)
 			         +var_det_gender
 			         +var_number
-			         +word1.target(attr_art, true)
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_art)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -798,7 +800,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_whole, true)
+			         word2.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -810,7 +812,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		out.append(blank2);
 		{
 			String myword = 
-			         word3.target(attr_whole, true)
+			         word3.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -828,7 +830,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		macro_set_gender3(out, word3, blank1, word2, blank1, word2);
 		{
 			String myword = 
-			         word1.target(attr_whole, true)
+			         word1.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -842,7 +844,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		out.append(blank2);
 		{
 			String myword = 
-			         word3.target(attr_whole, true)
+			         word3.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -862,7 +864,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_whole, true)
+			         word2.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -874,7 +876,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		out.append(blank2);
 		{
 			String myword = 
-			         word3.target(attr_whole, true)
+			         word3.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -892,12 +894,12 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		macro_set_gender3(out, word3, " ", word1, blank1, word2);
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_det, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_det)
 			         +var_det_gender
 			         +var_number
-			         +word1.target(attr_art, true)
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_art)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -911,7 +913,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		out.append(blank2);
 		{
 			String myword = 
-			         word3.target(attr_whole, true)
+			         word3.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -923,7 +925,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		out.append(blank3);
 		{
 			String myword = 
-			         word4.target(attr_whole, true)
+			         word4.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -946,12 +948,12 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		if (debug) { logCall("rule11__ngen",  word1); } 
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_nom, true)
-			         +word1.target(attr_gen, true)
-			         +word1.target(attr_nbr, true)
-			         +word1.target(attr_art, true)
-			         +word1.target(attr_lemq, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_nom)
+			         +word1.tl(attr_gen)
+			         +word1.tl(attr_nbr)
+			         +word1.tl(attr_art)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -971,12 +973,12 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		macro_set_gender3(out, word2, " ", word1, " ", word1);
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_adj, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_adj)
 			         +var_adj_gender
 			         +var_adj_number
 			         +var_adj_defness
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -988,12 +990,12 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_nom, true)
-			         +word2.target(attr_gen, true)
-			         +word2.target(attr_nbr, true)
-			         +word2.target(attr_art, true)
-			         +word2.target(attr_lemq, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_nom)
+			         +word2.tl(attr_gen)
+			         +word2.tl(attr_nbr)
+			         +word2.tl(attr_art)
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1018,12 +1020,12 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		}
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_det, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_det)
 			         +var_det_gender
 			         +var_number
-			         +word1.target(attr_art, true)
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_art)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1035,12 +1037,12 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_adj, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_adj)
 			         +var_adj_gender
 			         +var_adj_number
 			         +var_adj_defness
-			         +word2.target(attr_lemq, true)
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1052,12 +1054,12 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		out.append(blank2);
 		{
 			String myword = 
-			         word3.target(attr_lemh, true)
-			         +word3.target(attr_a_nom, true)
-			         +word3.target(attr_gen, true)
-			         +word3.target(attr_nbr, true)
-			         +word3.target(attr_art, true)
-			         +word3.target(attr_lemq, true)
+			         word3.tl(attr_lemh)
+			         +word3.tl(attr_a_nom)
+			         +word3.tl(attr_gen)
+			         +word3.tl(attr_nbr)
+			         +word3.tl(attr_art)
+			         +word3.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1075,7 +1077,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	public void rule14__posgen__nind(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule14__posgen__nind",  word1, blank1,  word2); } 
-		word1.setTarget(attr_lemh, TransferWord.copycase(word2.target(attr_lemh, true), word1.target(attr_lemh, true)), true);
+		word1.tlSet(attr_lemh, TransferWord.copycase(word2.tl(attr_lemh), word1.tl(attr_lemh)));
 		macro_set_gender2(out, word2, " ", word1);
 		macro_out_ndef(out, word2, " ", word1);
 		out.append(blank1);
@@ -1086,11 +1088,11 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	public void rule15__posgen__adj__nind(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
 		if (debug) { logCall("rule15__posgen__adj__nind",  word1, blank1,  word2, blank2,  word3); } 
-		word1.setTarget(attr_lemh, TransferWord.copycase(word2.target(attr_lemh, true), word1.target(attr_lemh, true)), true);
+		word1.tlSet(attr_lemh, TransferWord.copycase(word2.tl(attr_lemh), word1.tl(attr_lemh)));
 		macro_set_gender3(out, word3, " ", word1, blank1, word2);
 		{
 			String myword = 
-			         TransferWord.copycase(word1.source(attr_lem, true), "den")
+			         TransferWord.copycase(word1.sl(attr_lem), "den")
 			         +"<det><dem>"
 			         +var_det_gender
 			         +var_number_no_sp
@@ -1105,12 +1107,12 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_adj, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_adj)
 			         +var_adj_gender
 			         +var_adj_number
 			         +var_adj_defness
-			         +word2.target(attr_lemq, true)
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1129,11 +1131,11 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	public void rule16__posgen__adj__adj__nind(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
 		if (debug) { logCall("rule16__posgen__adj__adj__nind",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
-		word1.setTarget(attr_lemh, TransferWord.copycase(word2.target(attr_lemh, true), word1.target(attr_lemh, true)), true);
+		word1.tlSet(attr_lemh, TransferWord.copycase(word2.tl(attr_lemh), word1.tl(attr_lemh)));
 		macro_set_gender3(out, word4, " ", word1, blank2, word3);
 		{
 			String myword = 
-			         TransferWord.copycase(word1.source(attr_lem, true), "den")
+			         TransferWord.copycase(word1.sl(attr_lem), "den")
 			         +"<det><dem>"
 			         +var_det_gender
 			         +var_number_no_sp
@@ -1159,11 +1161,11 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	public void rule17__posgen__adj__adj__adj__nind(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5) throws IOException
 	{
 		if (debug) { logCall("rule17__posgen__adj__adj__adj__nind",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5); } 
-		word1.setTarget(attr_lemh, TransferWord.copycase(word2.target(attr_lemh, true), word1.target(attr_lemh, true)), true);
+		word1.tlSet(attr_lemh, TransferWord.copycase(word2.tl(attr_lemh), word1.tl(attr_lemh)));
 		macro_set_gender3(out, word5, " ", word1, blank3, word4);
 		{
 			String myword = 
-			         TransferWord.copycase(word1.source(attr_lem, true), "den")
+			         TransferWord.copycase(word1.sl(attr_lem), "den")
 			         +"<det><dem>"
 			         +var_det_gender
 			         +var_number_no_sp
@@ -1191,11 +1193,11 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	public void rule18__posgen__adj__adj__adj__adj__nind(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5, String blank5, TransferWord word6) throws IOException
 	{
 		if (debug) { logCall("rule18__posgen__adj__adj__adj__adj__nind",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5, blank5,  word6); } 
-		word1.setTarget(attr_lemh, TransferWord.copycase(word2.target(attr_lemh, true), word1.target(attr_lemh, true)), true);
+		word1.tlSet(attr_lemh, TransferWord.copycase(word2.tl(attr_lemh), word1.tl(attr_lemh)));
 		macro_set_gender3(out, word6, " ", word1, blank4, word5);
 		{
 			String myword = 
-			         TransferWord.copycase(word1.source(attr_lem, true), "den")
+			         TransferWord.copycase(word1.sl(attr_lem), "den")
 			         +"<det><dem>"
 			         +var_det_gender
 			         +var_number_no_sp
@@ -1226,7 +1228,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	public void rule19__posgen__ngen__nind(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
 		if (debug) { logCall("rule19__posgen__ngen__nind",  word1, blank1,  word2, blank2,  word3); } 
-		word1.setTarget(attr_lemh, TransferWord.copycase(word3.target(attr_lemh, true), word1.target(attr_lemh, true)), true);
+		word1.tlSet(attr_lemh, TransferWord.copycase(word3.tl(attr_lemh), word1.tl(attr_lemh)));
 		macro_set_gender2(out, word2, " ", word1);
 		macro_out_ndef(out, word3, " ", word1);
 		out.append(blank1);
@@ -1252,7 +1254,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	public void rule20__posgen__adj__ngen__nind(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
 		if (debug) { logCall("rule20__posgen__adj__ngen__nind",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
-		word1.setTarget(attr_lemh, TransferWord.copycase(word4.target(attr_lemh, true), word1.target(attr_lemh, true)), true);
+		word1.tlSet(attr_lemh, TransferWord.copycase(word4.tl(attr_lemh), word1.tl(attr_lemh)));
 		macro_set_gender3(out, word3, " ", word1, blank1, word2);
 		macro_out_ndef(out, word4, " ", word1);
 		out.append(blank1);
@@ -1295,11 +1297,11 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	public void rule21__posgen__ngen__adj__nind(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
 		if (debug) { logCall("rule21__posgen__ngen__adj__nind",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
-		word1.setTarget(attr_lemh, TransferWord.copycase(word4.target(attr_lemh, true), word1.target(attr_lemh, true)), true);
+		word1.tlSet(attr_lemh, TransferWord.copycase(word4.tl(attr_lemh), word1.tl(attr_lemh)));
 		macro_set_gender3(out, word2, " ", word1, blank2, word3);
 		{
 			String myword = 
-			         TransferWord.copycase(word1.source(attr_lem, true), "den")
+			         TransferWord.copycase(word1.sl(attr_lem), "den")
 			         +"<det><dem>"
 			         +var_det_gender
 			         +var_number_no_sp
@@ -1340,7 +1342,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	{
 		if (debug) { logCall("rule22__detnonpos__ngen__nind",  word1, blank1,  word2, blank2,  word3); } 
 		macro_set_gender2(out, word2, " ", word1);
-		word1.setTarget(attr_lemh, TransferWord.copycase(word3.target(attr_lemh, true), word1.target(attr_lemh, true)), true);
+		word1.tlSet(attr_lemh, TransferWord.copycase(word3.tl(attr_lemh), word1.tl(attr_lemh)));
 		macro_out_ndef(out, word3, " ", word1);
 		out.append(blank1);
 		{
@@ -1358,12 +1360,12 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		out.append(" ");
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_det, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_det)
 			         +var_det_gender
 			         +var_number
-			         +word1.target(attr_art, true)
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_art)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1375,12 +1377,12 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		out.append(blank2);
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_nom, true)
-			         +word2.target(attr_gen, true)
-			         +word2.target(attr_nbr, true)
-			         +word2.target(attr_art, true)
-			         +word2.target(attr_lemq, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_nom)
+			         +word2.tl(attr_gen)
+			         +word2.tl(attr_nbr)
+			         +word2.tl(attr_art)
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1395,7 +1397,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	public void rule23__detnonpos__adj__ngen__nind(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
 		if (debug) { logCall("rule23__detnonpos__adj__ngen__nind",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
-		word1.setTarget(attr_lemh, TransferWord.copycase(word4.target(attr_lemh, true), word1.target(attr_lemh, true)), true);
+		word1.tlSet(attr_lemh, TransferWord.copycase(word4.tl(attr_lemh), word1.tl(attr_lemh)));
 		macro_set_gender3(out, word3, " ", word1, blank1, word2);
 		macro_out_ndef(out, word4, " ", word1);
 		out.append(blank1);
@@ -1414,12 +1416,12 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		out.append(" ");
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_det, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_det)
 			         +var_det_gender
 			         +var_number
-			         +word1.target(attr_art, true)
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_art)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1433,12 +1435,12 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		out.append(blank3);
 		{
 			String myword = 
-			         word3.target(attr_lemh, true)
-			         +word3.target(attr_a_nom, true)
-			         +word3.target(attr_gen, true)
-			         +word3.target(attr_nbr, true)
-			         +word3.target(attr_art, true)
-			         +word3.target(attr_lemq, true)
+			         word3.tl(attr_lemh)
+			         +word3.tl(attr_a_nom)
+			         +word3.tl(attr_gen)
+			         +word3.tl(attr_nbr)
+			         +word3.tl(attr_art)
+			         +word3.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1453,7 +1455,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	public void rule24__detnonpos__detnonpos__ngen__nind(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
 		if (debug) { logCall("rule24__detnonpos__detnonpos__ngen__nind",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
-		word1.setTarget(attr_lemh, TransferWord.copycase(word4.target(attr_lemh, true), word1.target(attr_lemh, true)), true);
+		word1.tlSet(attr_lemh, TransferWord.copycase(word4.tl(attr_lemh), word1.tl(attr_lemh)));
 		macro_out_ndef(out, word4, " ", word1);
 		macro_set_gender2(out, word3, " ", word1);
 		out.append(blank1);
@@ -1472,12 +1474,12 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		out.append(" ");
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_det, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_det)
 			         +var_det_gender
 			         +var_number
-			         +word1.target(attr_art, true)
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_art)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1490,12 +1492,12 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		macro_set_gender2(out, word3, blank1, word2);
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_det, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_det)
 			         +var_det_gender
 			         +var_number
-			         +word2.target(attr_art, true)
-			         +word2.target(attr_lemq, true)
+			         +word2.tl(attr_art)
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1507,12 +1509,12 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		out.append(blank3);
 		{
 			String myword = 
-			         word3.target(attr_lemh, true)
-			         +word3.target(attr_a_nom, true)
-			         +word3.target(attr_gen, true)
-			         +word3.target(attr_nbr, true)
-			         +word3.target(attr_art, true)
-			         +word3.target(attr_lemq, true)
+			         word3.tl(attr_lemh)
+			         +word3.tl(attr_a_nom)
+			         +word3.tl(attr_gen)
+			         +word3.tl(attr_nbr)
+			         +word3.tl(attr_art)
+			         +word3.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1527,11 +1529,11 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	public void rule25__detnonpos__ngen__adj__nind(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
 		if (debug) { logCall("rule25__detnonpos__ngen__adj__nind",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
-		word1.setTarget(attr_lemh, TransferWord.copycase(word4.target(attr_lemh, true), word1.target(attr_lemh, true)), true);
+		word1.tlSet(attr_lemh, TransferWord.copycase(word4.tl(attr_lemh), word1.tl(attr_lemh)));
 		macro_set_gender1(out, word4);
 		{
 			String myword = 
-			         TransferWord.copycase(word1.source(attr_lem, true), "den")
+			         TransferWord.copycase(word1.sl(attr_lem), "den")
 			         +"<det><dem>"
 			         +var_det_gender
 			         +var_number_no_sp
@@ -1564,12 +1566,12 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		out.append(" ");
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_det, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_det)
 			         +var_det_gender
 			         +var_number
-			         +word1.target(attr_art, true)
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_art)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1581,12 +1583,12 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		out.append(blank3);
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_nom, true)
-			         +word2.target(attr_gen, true)
-			         +word2.target(attr_nbr, true)
-			         +word2.target(attr_art, true)
-			         +word2.target(attr_lemq, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_nom)
+			         +word2.tl(attr_gen)
+			         +word2.tl(attr_nbr)
+			         +word2.tl(attr_art)
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1605,12 +1607,12 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		macro_set_gender1(out, word1);
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_det, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_det)
 			         +var_det_gender
 			         +var_number
-			         +word1.target(attr_art, true)
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_art)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1628,12 +1630,12 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		macro_set_gender1(out, word1);
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_det, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_det)
 			         +var_det_gender
 			         +var_number
-			         +word1.target(attr_art, true)
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_art)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1645,7 +1647,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_whole, true)
+			         word2.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1663,7 +1665,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		macro_set_gender2(out, word1, blank1, word2);
 		{
 			String myword = 
-			         word1.target(attr_whole, true)
+			         word1.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1675,12 +1677,12 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_det, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_det)
 			         +var_det_gender
-			         +word2.target(attr_nbr, true)
-			         +word2.target(attr_art, true)
-			         +word2.target(attr_lemq, true)
+			         +word2.tl(attr_nbr)
+			         +word2.tl(attr_art)
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1699,12 +1701,12 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		macro_set_n_defness(out, word2, " ", word1);
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_det, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_det)
 			         +var_det_gender
-			         +word1.target(attr_nbr, true)
-			         +word1.target(attr_art, true)
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_nbr)
+			         +word1.tl(attr_art)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1716,12 +1718,12 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_nom, true)
-			         +word2.target(attr_gen, true)
-			         +word2.target(attr_nbr, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_nom)
+			         +word2.tl(attr_gen)
+			         +word2.tl(attr_nbr)
 			         +var_n_defness
-			         +word2.target(attr_lemq, true)
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1749,12 +1751,12 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		macro_set_n_defness(out, word2, " ", word1);
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_adj, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_adj)
 			         +var_adj_gender
 			         +var_adj_number
 			         +var_adj_defness
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1766,13 +1768,13 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_nom, true)
-			         +word2.target(attr_gen, true)
-			         +word2.target(attr_nbr, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_nom)
+			         +word2.tl(attr_gen)
+			         +word2.tl(attr_nbr)
 			         +var_n_defness
-			         +word2.target(attr_cas, true)
-			         +word2.target(attr_lemq, true)
+			         +word2.tl(attr_cas)
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1790,12 +1792,12 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		macro_set_gender1(out, word1);
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_det, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_det)
 			         +var_det_gender
 			         +var_number
-			         +word1.target(attr_art, true)
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_art)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1816,12 +1818,12 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		macro_set_n_defness(out, word3, " ", word1);
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_det, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_det)
 			         +var_det_gender
 			         +var_number
-			         +word1.target(attr_art, true)
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_art)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1833,12 +1835,12 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_adj, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_adj)
 			         +var_adj_gender
 			         +var_adj_number
 			         +var_adj_defness
-			         +word2.target(attr_lemq, true)
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1850,13 +1852,13 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		out.append(blank2);
 		{
 			String myword = 
-			         word3.target(attr_lemh, true)
-			         +word3.target(attr_a_nom, true)
-			         +word3.target(attr_gen, true)
-			         +word3.target(attr_nbr, true)
+			         word3.tl(attr_lemh)
+			         +word3.tl(attr_a_nom)
+			         +word3.tl(attr_gen)
+			         +word3.tl(attr_nbr)
 			         +var_n_defness
-			         +word3.target(attr_cas, true)
-			         +word3.target(attr_lemq, true)
+			         +word3.tl(attr_cas)
+			         +word3.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{

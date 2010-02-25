@@ -90,30 +90,30 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 	{
 		if (debug) { logCall("macro_adv_adj",  word1, blank1,  word2); } 
 		/**   c="Ĉu estas pli aŭ plej? Ekz: 'tre bona'"  */
-		if (list_l_pli_plej.containsIgnoreCase(word1.source(attr_lemh, true)))
+		if (list_l_pli_plej.containsIgnoreCase(word1.sl(attr_lemh)))
 		{
 			/**   c="Ĉu estas sinteza adjektivo? Ekz pli bona → better(sint)(comp)"  */
-			if (list_adj_kun_sint.containsIgnoreCase(word2.target(attr_lemh, true)))
+			if (list_adj_kun_sint.containsIgnoreCase(word2.tl(attr_lemh)))
 			{
 				macro_sendu_blankon_se_havas_formaton2(out, word1, blank1, word2);
 				/**   c="Ĉu pli aŭ plej? Metu (comp) aŭ (sup) en variablo"  */
-				if (word1.source(attr_lem, true).equalsIgnoreCase("pli"))
+				if (word1.sl(attr_lem).equalsIgnoreCase("pli"))
 				{
-					var_adv_adjectiu = (""+word2.target(attr_lem, true)+"<adj><sint><comp>");
+					var_adv_adjectiu = (""+word2.tl(attr_lem)+"<adj><sint><comp>");
 				}
 				else
 				{
-					var_adv_adjectiu = (""+word2.target(attr_lem, true)+"<adj><sint><sup>");
+					var_adv_adjectiu = (""+word2.tl(attr_lem)+"<adj><sint><sup>");
 				}
 			}
 			else
 			{
-				var_adv_adjectiu = (""+word1.target(attr_whole, true)+"$"+blank1+"^"+word2.target(attr_lemh, true)+word2.target(attr_a_adj, true)+word2.target(attr_lemq, true));
+				var_adv_adjectiu = (""+word1.tl(attr_whole)+"$"+blank1+"^"+word2.tl(attr_lemh)+word2.tl(attr_a_adj)+word2.tl(attr_lemq));
 			}
 		}
 		else
 		{
-			var_adv_adjectiu = (""+word1.target(attr_whole, true)+"$"+blank1+"^"+word2.target(attr_lemh, true)+word2.target(attr_a_adj, true)+word2.target(attr_lemq, true));
+			var_adv_adjectiu = (""+word1.tl(attr_whole)+"$"+blank1+"^"+word2.tl(attr_lemh)+word2.tl(attr_a_adj)+word2.tl(attr_lemq));
 		}
 	}
 	
@@ -121,8 +121,8 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 	private void macro_nepersona(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_nepersona",  word1); } 
-		if ((list_nepersonaj_verboj.containsIgnoreCase(word1.source(attr_lemh, true))
-    && !word1.source(attr_a_nepersonaj_tempoj, true).equals("")))
+		if ((list_nepersonaj_verboj.containsIgnoreCase(word1.sl(attr_lemh))
+    && !word1.sl(attr_a_nepersonaj_tempoj).equals("")))
 		{
 			/**     <lit v="^pron"/><lit-tag v="SN.p3.nt.sg.nom.nepersona"/><lit v="{^prpers"/><lit-tag v="prn.subj.2.3.4"/><lit v="$}$ "/> */
 			var_it = (""+"^pron"+"<SN><p3><nt><sg><nom>"+"{^prpers"+"<prn><subj><2><3><4>"+"$}$ ");
@@ -137,9 +137,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 	private void macro_imp_inf(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_imp_inf",  word1); } 
-		if (word1.target(attr_a_tns, true).equals("<imp>"))
+		if (word1.tl(attr_a_tns).equals("<imp>"))
 		{
-			word1.setTarget(attr_a_tns, "<inf>", true);
+			word1.tlSet(attr_a_tns, "<inf>");
 		}
 	}
 	
@@ -147,12 +147,12 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 	private void macro_set_vrb2(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_set_vrb2",  word1); } 
-		if (word1.target(attr_lemh, true).equals("be"))
+		if (word1.tl(attr_lemh).equals("be"))
 		{
 			var_vrb2 = "<be>";
 		}
 		else
-		if (word1.target(attr_lemh, true).equals("can"))
+		if (word1.tl(attr_lemh).equals("can"))
 		{
 			var_vrb2 = "<can>";
 		}
@@ -191,15 +191,15 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: la 2a de julio - July 2nd">/<action>/<out>/<chunk case="caseFirstWord" name="dato">
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "dato"));
 		out.append("<SN>");
-		out.append(word4.target(attr_a_nbr, true));
-		out.append(word4.target(attr_a_cas, true));
+		out.append(word4.tl(attr_a_nbr));
+		out.append(word4.tl(attr_a_cas));
 		out.append('{');
 		{
 			String myword = 
-			         word4.target(attr_lemh, true)
-			         +word4.target(attr_a_nom, true)
-			         +(word4.target(attr_a_nbr, true).isEmpty()?"" : "<2>")
-			         +word4.target(attr_lemq, true)
+			         word4.tl(attr_lemh)
+			         +word4.tl(attr_a_nom)
+			         +(word4.tl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +word4.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -211,9 +211,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(" ");
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_ord, true)
-			         +word2.target(attr_lemq, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_ord)
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -252,15 +252,15 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append('^');
 		out.append("tempo");
 		out.append("<SN>");
-		out.append(word2.target(attr_a_nbr, true));
-		out.append(word2.target(attr_a_cas, true));
+		out.append(word2.tl(attr_a_nbr));
+		out.append(word2.tl(attr_a_cas));
 		out.append('{');
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_nom, true)
-			         +(word2.target(attr_a_nbr, true).isEmpty()?"" : "<2>")
-			         +word2.target(attr_lemq, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_nom)
+			         +(word2.tl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -300,15 +300,15 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append("tempo");
 		out.append("<SD>");
 		/**  Sintagmo determinita  */
-		out.append(word3.target(attr_a_nbr, true));
-		out.append(word3.target(attr_a_cas, true));
+		out.append(word3.tl(attr_a_nbr));
+		out.append(word3.tl(attr_a_cas));
 		out.append('{');
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_det, true)
-			         +(word2.source(attr_a_nbr, true).isEmpty()?"" : "<2>")
-			         +word2.target(attr_lemq, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_det)
+			         +(word2.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -320,10 +320,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(blank2);
 		{
 			String myword = 
-			         word3.target(attr_lemh, true)
-			         +word3.target(attr_a_nom, true)
-			         +(word3.target(attr_a_nbr, true).isEmpty()?"" : "<2>")
-			         +word3.target(attr_lemq, true)
+			         word3.tl(attr_lemh)
+			         +word3.tl(attr_a_nom)
+			         +(word3.tl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +word3.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -365,12 +365,12 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append("tempo");
 		out.append("<SD>");
 		/**  Sintagmo determinita  */
-		out.append(word4.target(attr_a_nbr, true));
-		out.append(word4.target(attr_a_cas, true));
+		out.append(word4.tl(attr_a_nbr));
+		out.append(word4.tl(attr_a_cas));
 		out.append('{');
 		{
 			String myword = 
-			         word3.target(attr_whole, true)
+			         word3.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -382,10 +382,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(blank3);
 		{
 			String myword = 
-			         word4.target(attr_lemh, true)
-			         +word4.target(attr_a_nom, true)
-			         +(word4.target(attr_a_nbr, true).isEmpty()?"" : "<2>")
-			         +word4.target(attr_lemq, true)
+			         word4.tl(attr_lemh)
+			         +word4.tl(attr_a_nom)
+			         +(word4.tl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +word4.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -437,15 +437,15 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append('^');
 		out.append("tempo");
 		out.append("<SN>");
-		out.append(word4.target(attr_a_nbr, true));
-		out.append(word4.target(attr_a_cas, true));
+		out.append(word4.tl(attr_a_nbr));
+		out.append(word4.tl(attr_a_cas));
 		out.append('{');
 		{
 			String myword = 
-			         word3.target(attr_lemh, true)
-			         +word3.target(attr_a_det, true)
-			         +(word3.source(attr_a_nbr, true).isEmpty()?"" : "<2>")
-			         +word3.target(attr_lemq, true)
+			         word3.tl(attr_lemh)
+			         +word3.tl(attr_a_det)
+			         +(word3.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +word3.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -457,10 +457,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(blank3);
 		{
 			String myword = 
-			         word4.target(attr_lemh, true)
-			         +word4.target(attr_a_nom, true)
-			         +(word4.target(attr_a_nbr, true).isEmpty()?"" : "<2>")
-			         +word4.target(attr_lemq, true)
+			         word4.tl(attr_lemh)
+			         +word4.tl(attr_a_nom)
+			         +(word4.tl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +word4.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -493,12 +493,12 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append("tempo");
 		out.append("<SD>");
 		/**  Sintagmo determinita  */
-		out.append(word3.target(attr_a_nbr, true));
-		out.append(word3.target(attr_a_cas, true));
+		out.append(word3.tl(attr_a_nbr));
+		out.append(word3.tl(attr_a_cas));
 		out.append('{');
 		{
 			String myword = 
-			         word2.target(attr_whole, true)
+			         word2.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -510,10 +510,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(blank2);
 		{
 			String myword = 
-			         word3.target(attr_lemh, true)
-			         +word3.target(attr_a_nom, true)
-			         +(word3.target(attr_a_nbr, true).isEmpty()?"" : "<2>")
-			         +word3.target(attr_lemq, true)
+			         word3.tl(attr_lemh)
+			         +word3.tl(attr_a_nom)
+			         +(word3.tl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +word3.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -545,15 +545,15 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append('^');
 		out.append("tempo");
 		out.append("<SN>");
-		out.append(word3.target(attr_a_nbr, true));
-		out.append(word3.target(attr_a_cas, true));
+		out.append(word3.tl(attr_a_nbr));
+		out.append(word3.tl(attr_a_cas));
 		out.append('{');
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_det, true)
-			         +(word2.source(attr_a_nbr, true).isEmpty()?"" : "<2>")
-			         +word2.target(attr_lemq, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_det)
+			         +(word2.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -565,10 +565,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(blank2);
 		{
 			String myword = 
-			         word3.target(attr_lemh, true)
-			         +word3.target(attr_a_nom, true)
-			         +(word3.target(attr_a_nbr, true).isEmpty()?"" : "<2>")
-			         +word3.target(attr_lemq, true)
+			         word3.tl(attr_lemh)
+			         +word3.tl(attr_a_nom)
+			         +(word3.tl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +word3.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -604,15 +604,15 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "det"));
 		out.append("<SD>");
 		/**  Sintagmo determinita  */
-		out.append(word1.target(attr_a_nbr, true));
-		out.append(word1.target(attr_a_cas, true));
+		out.append(word1.tl(attr_a_nbr));
+		out.append(word1.tl(attr_a_cas));
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_det, true)
-			         +(word1.source(attr_a_nbr, true).isEmpty()?"" : "<2>")
-			         +word1.target(attr_lemq, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_det)
+			         +(word1.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -652,7 +652,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 	public void rule8__c_prn(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule8__c_prn",  word1); } 
-		if (list_prn_kun_persono_kaj_genro.containsIgnoreCase(word1.source(attr_lem, true)))
+		if (list_prn_kun_persono_kaj_genro.containsIgnoreCase(word1.sl(attr_lem)))
 		{
 			/**  persona pronomo: estas persono kaj genro  */
 			out.append('^');
@@ -660,19 +660,19 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: PRN">/<action>/<choose>/<when>/<out>/<chunk case="caseFirstWord" name="pron">
 			out.append(TransferWord.copycase(error_UNKNOWN_VAR, "pron"));
 			out.append("<SN>");
-			out.append(word1.target(attr_a_prs, true));
-			out.append(word1.target(attr_a_gen, true));
-			out.append(word1.target(attr_a_nbr, true));
-			out.append(word1.source(attr_a_cas, true));
+			out.append(word1.tl(attr_a_prs));
+			out.append(word1.tl(attr_a_gen));
+			out.append(word1.tl(attr_a_nbr));
+			out.append(word1.sl(attr_a_cas));
 			out.append('{');
 			{
 				String myword = 
-				         word1.target(attr_lemh, true)
-				         +word1.target(attr_a_prn, true)
-				         +(word1.target(attr_a_prs, true).isEmpty()?"" : "<2>")
-				         +(word1.target(attr_a_gen, true).isEmpty()?"" : "<3>")
-				         +(word1.target(attr_a_nbr, true).isEmpty()?"" : "<4>")
-				         +word1.target(attr_lemq, true)
+				         word1.tl(attr_lemh)
+				         +word1.tl(attr_a_prn)
+				         +(word1.tl(attr_a_prs).isEmpty()?"" : "<2>")
+				         +(word1.tl(attr_a_gen).isEmpty()?"" : "<3>")
+				         +(word1.tl(attr_a_nbr).isEmpty()?"" : "<4>")
+				         +word1.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -691,15 +691,15 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: PRN">/<action>/<choose>/<otherwise>/<out>/<chunk case="caseFirstWord" name="pron">
 			out.append(TransferWord.copycase(error_UNKNOWN_VAR, "pron"));
 			out.append("<SN>");
-			out.append(word1.target(attr_a_nbr, true));
-			out.append(word1.source(attr_a_cas, true));
+			out.append(word1.tl(attr_a_nbr));
+			out.append(word1.sl(attr_a_cas));
 			out.append('{');
 			{
 				String myword = 
-				         word1.target(attr_lemh, true)
-				         +word1.target(attr_a_prn, true)
-				         +(word1.target(attr_a_nbr, true).isEmpty()?"" : "<2>")
-				         +word1.target(attr_lemq, true)
+				         word1.tl(attr_lemh)
+				         +word1.tl(attr_a_prn)
+				         +(word1.tl(attr_a_nbr).isEmpty()?"" : "<2>")
+				         +word1.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -716,11 +716,11 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 	public void rule9__pr__c_prn(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule9__pr__c_prn",  word1, blank1,  word2); } 
-		if (list_prn_kun_persono_kaj_genro.containsIgnoreCase(word2.source(attr_lem, true)))
+		if (list_prn_kun_persono_kaj_genro.containsIgnoreCase(word2.sl(attr_lem)))
 		{
-			if (word2.target(attr_a_prn, true).equalsIgnoreCase("<prn><subj>"))
+			if (word2.tl(attr_a_prn).equalsIgnoreCase("<prn><subj>"))
 			{
-				word2.setTarget(attr_a_prn, "<prn><obj>", true);
+				word2.tlSet(attr_a_prn, "<prn><obj>");
 			}
 			/**  persona pronomo: estas persono kaj genro  */
 			out.append('^');
@@ -731,7 +731,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			out.append('{');
 			{
 				String myword = 
-				         word1.target(attr_whole, true)
+				         word1.tl(attr_whole)
 				         ;
 				if (myword.length()>0)
 				{
@@ -745,19 +745,19 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			out.append('^');
 			out.append("pron");
 			out.append("<SN>");
-			out.append(word2.target(attr_a_prs, true));
-			out.append(word2.target(attr_a_gen, true));
-			out.append(word2.target(attr_a_nbr, true));
-			out.append(word2.source(attr_a_cas, true));
+			out.append(word2.tl(attr_a_prs));
+			out.append(word2.tl(attr_a_gen));
+			out.append(word2.tl(attr_a_nbr));
+			out.append(word2.sl(attr_a_cas));
 			out.append('{');
 			{
 				String myword = 
-				         word2.target(attr_lemh, true)
-				         +word2.target(attr_a_prn, true)
-				         +(word2.target(attr_a_prs, true).isEmpty()?"" : "<2>")
-				         +(word2.target(attr_a_gen, true).isEmpty()?"" : "<3>")
-				         +(word2.target(attr_a_nbr, true).isEmpty()?"" : "<4>")
-				         +word2.target(attr_lemq, true)
+				         word2.tl(attr_lemh)
+				         +word2.tl(attr_a_prn)
+				         +(word2.tl(attr_a_prs).isEmpty()?"" : "<2>")
+				         +(word2.tl(attr_a_gen).isEmpty()?"" : "<3>")
+				         +(word2.tl(attr_a_nbr).isEmpty()?"" : "<4>")
+				         +word2.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -779,7 +779,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			out.append('{');
 			{
 				String myword = 
-				         word1.target(attr_whole, true)
+				         word1.tl(attr_whole)
 				         ;
 				if (myword.length()>0)
 				{
@@ -793,15 +793,15 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			out.append('^');
 			out.append("pron");
 			out.append("<SN>");
-			out.append(word2.target(attr_a_nbr, true));
-			out.append(word2.source(attr_a_cas, true));
+			out.append(word2.tl(attr_a_nbr));
+			out.append(word2.sl(attr_a_cas));
 			out.append('{');
 			{
 				String myword = 
-				         word2.target(attr_lemh, true)
-				         +word2.target(attr_a_prn, true)
-				         +(word2.target(attr_a_nbr, true).isEmpty()?"" : "<2>")
-				         +word2.target(attr_lemq, true)
+				         word2.tl(attr_lemh)
+				         +word2.tl(attr_a_prn)
+				         +(word2.tl(attr_a_nbr).isEmpty()?"" : "<2>")
+				         +word2.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -823,13 +823,13 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: ADV">/<action>/<out>/<chunk case="caseFirstWord" name="adv">
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "adv"));
 		out.append("<SADV>");
-		out.append(word1.target(attr_a_cas, true));
+		out.append(word1.tl(attr_a_cas));
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_adv, true)
-			         +word1.target(attr_lemq, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_adv)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -851,14 +851,14 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "adj"));
 		out.append("<SA>");
 		/**  c="sintagmo adjektiva"  */
-		out.append(word1.target(attr_a_nbr, true));
-		out.append(word1.target(attr_a_cas, true));
+		out.append(word1.tl(attr_a_nbr));
+		out.append(word1.tl(attr_a_cas));
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_adj, true)
-			         +word1.target(attr_lemq, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_adj)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -881,7 +881,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "sint?_adj"));
 		out.append("<SA>");
 		/**   c="sintagmo adjektiva"  */
-		out.append(word2.target(attr_a_nbr, true));
+		out.append(word2.tl(attr_a_nbr));
 		out.append('{');
 		{
 			String myword = 
@@ -906,15 +906,15 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: NOM">/<action>/<out>/<chunk case="caseFirstWord" name="nom">
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "nom"));
 		out.append("<SN>");
-		out.append(word1.target(attr_a_nbr, true));
-		out.append(word1.target(attr_a_cas, true));
+		out.append(word1.tl(attr_a_nbr));
+		out.append(word1.tl(attr_a_cas));
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_nom, true)
-			         +(word1.target(attr_a_nbr, true).isEmpty()?"" : "<2>")
-			         +word1.target(attr_lemq, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_nom)
+			         +(word1.tl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -936,15 +936,15 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "det_nom"));
 		out.append("<SD>");
 		/**  Sintagmo determinita  */
-		out.append(word2.target(attr_a_nbr, true));
-		out.append(word2.source(attr_a_cas, true));
+		out.append(word2.tl(attr_a_nbr));
+		out.append(word2.sl(attr_a_cas));
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_det, true)
-			         +(word1.source(attr_a_nbr, true).isEmpty()?"" : "<2>")
-			         +word1.target(attr_lemq, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_det)
+			         +(word1.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -956,10 +956,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_nom, true)
-			         +(word2.source(attr_a_nbr, true).isEmpty()?"" : "<2>")
-			         +word2.target(attr_lemq, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_nom)
+			         +(word2.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -981,12 +981,12 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "det_nom"));
 		out.append("<SD>");
 		/**  Sintagmo determinita  */
-		out.append(word2.target(attr_a_nbr, true));
-		out.append(word2.source(attr_a_cas, true));
+		out.append(word2.tl(attr_a_nbr));
+		out.append(word2.sl(attr_a_cas));
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_whole, true)
+			         word1.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -998,10 +998,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_nom, true)
-			         +(word2.source(attr_a_nbr, true).isEmpty()?"" : "<2>")
-			         +word2.target(attr_lemq, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_nom)
+			         +(word2.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1023,15 +1023,15 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "det_nom"));
 		out.append("<SD>");
 		/**  Sintagmo determinita  */
-		out.append(word3.target(attr_a_nbr, true));
-		out.append(word3.source(attr_a_cas, true));
+		out.append(word3.tl(attr_a_nbr));
+		out.append(word3.sl(attr_a_cas));
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_det, true)
-			         +(word1.source(attr_a_nbr, true).isEmpty()?"" : "<2>")
-			         +word1.target(attr_lemq, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_det)
+			         +(word1.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1043,7 +1043,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_whole, true)
+			         word2.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1055,10 +1055,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(blank2);
 		{
 			String myword = 
-			         word3.target(attr_lemh, true)
-			         +word3.target(attr_a_nom, true)
-			         +(word3.source(attr_a_nbr, true).isEmpty()?"" : "<2>")
-			         +word3.target(attr_lemq, true)
+			         word3.tl(attr_lemh)
+			         +word3.tl(attr_a_nom)
+			         +(word3.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +word3.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1080,15 +1080,15 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "det_nom"));
 		out.append("<SD>");
 		/**  Sintagmo determinita  */
-		out.append(word4.target(attr_a_nbr, true));
-		out.append(word4.source(attr_a_cas, true));
+		out.append(word4.tl(attr_a_nbr));
+		out.append(word4.sl(attr_a_cas));
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_det, true)
-			         +(word1.source(attr_a_nbr, true).isEmpty()?"" : "<2>")
-			         +word1.target(attr_lemq, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_det)
+			         +(word1.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1100,7 +1100,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_whole, true)
+			         word2.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1112,9 +1112,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(blank2);
 		{
 			String myword = 
-			         word3.target(attr_lemh, true)
-			         +word3.target(attr_a_adj, true)
-			         +word3.target(attr_lemq, true)
+			         word3.tl(attr_lemh)
+			         +word3.tl(attr_a_adj)
+			         +word3.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1126,10 +1126,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(blank3);
 		{
 			String myword = 
-			         word4.target(attr_lemh, true)
-			         +word4.target(attr_a_nom, true)
-			         +(word4.source(attr_a_nbr, true).isEmpty()?"" : "<2>")
-			         +word4.target(attr_lemq, true)
+			         word4.tl(attr_lemh)
+			         +word4.tl(attr_a_nom)
+			         +(word4.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +word4.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1151,15 +1151,15 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "det_nom"));
 		out.append("<SD>");
 		/**  Sintagmo determinita  */
-		out.append(word5.target(attr_a_nbr, true));
-		out.append(word5.source(attr_a_cas, true));
+		out.append(word5.tl(attr_a_nbr));
+		out.append(word5.sl(attr_a_cas));
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_det, true)
-			         +(word1.source(attr_a_nbr, true).isEmpty()?"" : "<2>")
-			         +word1.target(attr_lemq, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_det)
+			         +(word1.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1171,7 +1171,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_whole, true)
+			         word2.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1183,9 +1183,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(blank2);
 		{
 			String myword = 
-			         word3.target(attr_lemh, true)
-			         +word3.target(attr_a_adj, true)
-			         +word3.target(attr_lemq, true)
+			         word3.tl(attr_lemh)
+			         +word3.tl(attr_a_adj)
+			         +word3.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1197,9 +1197,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(blank3);
 		{
 			String myword = 
-			         word4.target(attr_lemh, true)
-			         +word4.target(attr_a_adj, true)
-			         +word4.target(attr_lemq, true)
+			         word4.tl(attr_lemh)
+			         +word4.tl(attr_a_adj)
+			         +word4.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1211,10 +1211,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(blank4);
 		{
 			String myword = 
-			         word5.target(attr_lemh, true)
-			         +word5.target(attr_a_nom, true)
-			         +(word5.source(attr_a_nbr, true).isEmpty()?"" : "<2>")
-			         +word5.target(attr_lemq, true)
+			         word5.tl(attr_lemh)
+			         +word5.tl(attr_a_nom)
+			         +(word5.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +word5.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1237,15 +1237,15 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "det_nom"));
 		out.append("<SD>");
 		/**  Sintagmo determinita  */
-		out.append(word4.target(attr_a_nbr, true));
-		out.append(word4.source(attr_a_cas, true));
+		out.append(word4.tl(attr_a_nbr));
+		out.append(word4.sl(attr_a_cas));
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_det, true)
-			         +(word1.source(attr_a_nbr, true).isEmpty()?"" : "<2>")
-			         +word1.target(attr_lemq, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_det)
+			         +(word1.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1269,10 +1269,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(blank3);
 		{
 			String myword = 
-			         word4.target(attr_lemh, true)
-			         +word4.target(attr_a_nom, true)
-			         +(word4.source(attr_a_nbr, true).isEmpty()?"" : "<2>")
-			         +word4.target(attr_lemq, true)
+			         word4.tl(attr_lemh)
+			         +word4.tl(attr_a_nom)
+			         +(word4.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +word4.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1295,15 +1295,15 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "det_nom"));
 		out.append("<SD>");
 		/**  Sintagmo determinita  */
-		out.append(word5.target(attr_a_nbr, true));
-		out.append(word5.source(attr_a_cas, true));
+		out.append(word5.tl(attr_a_nbr));
+		out.append(word5.sl(attr_a_cas));
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_det, true)
-			         +(word1.source(attr_a_nbr, true).isEmpty()?"" : "<2>")
-			         +word1.target(attr_lemq, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_det)
+			         +(word1.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1315,7 +1315,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_whole, true)
+			         word2.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1339,10 +1339,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(blank4);
 		{
 			String myword = 
-			         word5.target(attr_lemh, true)
-			         +word5.target(attr_a_nom, true)
-			         +(word5.source(attr_a_nbr, true).isEmpty()?"" : "<2>")
-			         +word5.target(attr_lemq, true)
+			         word5.tl(attr_lemh)
+			         +word5.tl(attr_a_nom)
+			         +(word5.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +word5.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1358,7 +1358,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 	public void rule21__c_det__c_adj_pp(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule21__c_det__c_adj_pp",  word1, blank1,  word2); } 
-		if (list_lingvoj.containsIgnoreCase(word2.source(attr_lemh, true)))
+		if (list_lingvoj.containsIgnoreCase(word2.sl(attr_lemh)))
 		{
 			out.append('^');
 			// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
@@ -1366,14 +1366,14 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			out.append(TransferWord.copycase(error_UNKNOWN_VAR, "adj"));
 			out.append("<SD>");
 			/**  Sintagmo determinita  */
-			out.append(word2.target(attr_a_nbr, true));
-			out.append(word2.source(attr_a_cas, true));
+			out.append(word2.tl(attr_a_nbr));
+			out.append(word2.sl(attr_a_cas));
 			out.append('{');
 			{
 				String myword = 
-				         word2.target(attr_lemh, true)
-				         +word2.target(attr_a_adj, true)
-				         +word2.target(attr_lemq, true)
+				         word2.tl(attr_lemh)
+				         +word2.tl(attr_a_adj)
+				         +word2.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -1392,15 +1392,15 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			out.append(TransferWord.copycase(error_UNKNOWN_VAR, "det_adj"));
 			out.append("<SD>");
 			/**  Sintagmo determinita  */
-			out.append(word2.target(attr_a_nbr, true));
-			out.append(word2.source(attr_a_cas, true));
+			out.append(word2.tl(attr_a_nbr));
+			out.append(word2.sl(attr_a_cas));
 			out.append('{');
 			{
 				String myword = 
-				         word1.target(attr_lemh, true)
-				         +word1.target(attr_a_det, true)
-				         +(word1.source(attr_a_nbr, true).isEmpty()?"" : "<2>")
-				         +word1.target(attr_lemq, true)
+				         word1.tl(attr_lemh)
+				         +word1.tl(attr_a_det)
+				         +(word1.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+				         +word1.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -1412,9 +1412,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			out.append(blank1);
 			{
 				String myword = 
-				         word2.target(attr_lemh, true)
-				         +word2.target(attr_a_adj, true)
-				         +word2.target(attr_lemq, true)
+				         word2.tl(attr_lemh)
+				         +word2.tl(attr_a_adj)
+				         +word2.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -1438,15 +1438,15 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "det_adj"));
 		out.append("<SD>");
 		/**  Sintagmo determinita  */
-		out.append(word3.target(attr_a_nbr, true));
-		out.append(word3.source(attr_a_cas, true));
+		out.append(word3.tl(attr_a_nbr));
+		out.append(word3.sl(attr_a_cas));
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_det, true)
-			         +(word1.source(attr_a_nbr, true).isEmpty()?"" : "<2>")
-			         +word1.target(attr_lemq, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_det)
+			         +(word1.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1479,14 +1479,14 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: ADJ NOM">/<action>/<out>/<chunk case="caseFirstWord" name="adj_nom">
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "adj_nom"));
 		out.append("<SN>");
-		out.append(word2.target(attr_a_nbr, true));
-		out.append(word2.source(attr_a_cas, true));
+		out.append(word2.tl(attr_a_nbr));
+		out.append(word2.sl(attr_a_cas));
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_adj, true)
-			         +word1.target(attr_lemq, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_adj)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1498,10 +1498,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_nom, true)
-			         +(word2.source(attr_a_nbr, true).isEmpty()?"" : "<2>")
-			         +word2.target(attr_lemq, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_nom)
+			         +(word2.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1523,15 +1523,15 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "det_adj_nom"));
 		out.append("<SD>");
 		/**  Sintagmo determinita  */
-		out.append(word3.target(attr_a_nbr, true));
-		out.append(word3.source(attr_a_cas, true));
+		out.append(word3.tl(attr_a_nbr));
+		out.append(word3.sl(attr_a_cas));
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_det, true)
-			         +(word1.source(attr_a_nbr, true).isEmpty()?"" : "<2>")
-			         +word1.target(attr_lemq, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_det)
+			         +(word1.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1543,9 +1543,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_adj, true)
-			         +word2.target(attr_lemq, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_adj)
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1557,10 +1557,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(blank2);
 		{
 			String myword = 
-			         word3.target(attr_lemh, true)
-			         +word3.target(attr_a_nom, true)
-			         +(word3.source(attr_a_nbr, true).isEmpty()?"" : "<2>")
-			         +word3.target(attr_lemq, true)
+			         word3.tl(attr_lemh)
+			         +word3.tl(attr_a_nom)
+			         +(word3.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +word3.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1582,15 +1582,15 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "det_adj_nom"));
 		out.append("<SD>");
 		/**  Sintagmo determinita  */
-		out.append(word4.target(attr_a_nbr, true));
-		out.append(word4.source(attr_a_cas, true));
+		out.append(word4.tl(attr_a_nbr));
+		out.append(word4.sl(attr_a_cas));
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_det, true)
-			         +(word1.source(attr_a_nbr, true).isEmpty()?"" : "<2>")
-			         +word1.target(attr_lemq, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_det)
+			         +(word1.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1602,9 +1602,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_adj, true)
-			         +word2.target(attr_lemq, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_adj)
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1616,9 +1616,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(blank2);
 		{
 			String myword = 
-			         word3.target(attr_lemh, true)
-			         +word3.target(attr_a_adj, true)
-			         +word3.target(attr_lemq, true)
+			         word3.tl(attr_lemh)
+			         +word3.tl(attr_a_adj)
+			         +word3.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1630,10 +1630,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(blank3);
 		{
 			String myword = 
-			         word4.target(attr_lemh, true)
-			         +word4.target(attr_a_nom, true)
-			         +(word4.source(attr_a_nbr, true).isEmpty()?"" : "<2>")
-			         +word4.target(attr_lemq, true)
+			         word4.tl(attr_lemh)
+			         +word4.tl(attr_a_nom)
+			         +(word4.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +word4.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1655,15 +1655,15 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "det_adj_nom"));
 		out.append("<SD>");
 		/**  Sintagmo determinita  */
-		out.append(word5.target(attr_a_nbr, true));
-		out.append(word5.source(attr_a_cas, true));
+		out.append(word5.tl(attr_a_nbr));
+		out.append(word5.sl(attr_a_cas));
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_det, true)
-			         +(word1.source(attr_a_nbr, true).isEmpty()?"" : "<2>")
-			         +word1.target(attr_lemq, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_det)
+			         +(word1.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1675,9 +1675,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_adj, true)
-			         +word2.target(attr_lemq, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_adj)
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1689,9 +1689,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(blank2);
 		{
 			String myword = 
-			         word3.target(attr_lemh, true)
-			         +word3.target(attr_a_adj, true)
-			         +word3.target(attr_lemq, true)
+			         word3.tl(attr_lemh)
+			         +word3.tl(attr_a_adj)
+			         +word3.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1703,9 +1703,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(blank3);
 		{
 			String myword = 
-			         word4.target(attr_lemh, true)
-			         +word4.target(attr_a_adj, true)
-			         +word4.target(attr_lemq, true)
+			         word4.tl(attr_lemh)
+			         +word4.tl(attr_a_adj)
+			         +word4.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1717,10 +1717,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(blank4);
 		{
 			String myword = 
-			         word5.target(attr_lemh, true)
-			         +word5.target(attr_a_nom, true)
-			         +(word5.source(attr_a_nbr, true).isEmpty()?"" : "<2>")
-			         +word5.target(attr_lemq, true)
+			         word5.tl(attr_lemh)
+			         +word5.tl(attr_a_nom)
+			         +(word5.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +word5.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1746,9 +1746,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vb_fti"));
 		out.append("<SV>");
 		out.append(var_vrb2);
-		out.append(word1.target(attr_a_tns, true));
-		out.append(word1.target(attr_a_prs, true));
-		out.append(word1.target(attr_a_nbr, true));
+		out.append(word1.tl(attr_a_tns));
+		out.append(word1.tl(attr_a_prs));
+		out.append(word1.tl(attr_a_nbr));
 		out.append('{');
 		{
 			String myword = 
@@ -1766,10 +1766,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(" ");
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_vrb, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_vrb)
 			         +"<inf>"
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1787,7 +1787,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		if (debug) { logCall("rule28__c_vb_cni",  word1); } 
 		macro_set_vrb2(out, word1);
 		macro_nepersona(out, word1);
-		if (word1.source(attr_lemh, true).equals("devi"))
+		if (word1.sl(attr_lemh).equals("devi"))
 		{
 			out.append(var_it);
 			out.append('^');
@@ -1796,16 +1796,16 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vb_cni"));
 			out.append("<SV>");
 			out.append(var_vrb2);
-			out.append(word1.target(attr_a_tns, true));
-			out.append(word1.target(attr_a_prs, true));
-			out.append(word1.target(attr_a_nbr, true));
+			out.append(word1.tl(attr_a_tns));
+			out.append(word1.tl(attr_a_prs));
+			out.append(word1.tl(attr_a_nbr));
 			out.append('{');
 			{
 				String myword = 
-				         word1.target(attr_lemh, true)
-				         +word1.target(attr_a_vrb, true)
+				         word1.tl(attr_lemh)
+				         +word1.tl(attr_a_vrb)
 				         +"<inf>"
-				         +word1.target(attr_lemq, true)
+				         +word1.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -1825,9 +1825,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vb_cni"));
 			out.append("<SV>");
 			out.append(var_vrb2);
-			out.append(word1.target(attr_a_tns, true));
-			out.append(word1.target(attr_a_prs, true));
-			out.append(word1.target(attr_a_nbr, true));
+			out.append(word1.tl(attr_a_tns));
+			out.append(word1.tl(attr_a_prs));
+			out.append(word1.tl(attr_a_nbr));
 			out.append('{');
 			{
 				String myword = 
@@ -1845,10 +1845,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			out.append(" ");
 			{
 				String myword = 
-				         word1.target(attr_lemh, true)
-				         +word1.target(attr_a_vrb, true)
+				         word1.tl(attr_lemh)
+				         +word1.tl(attr_a_vrb)
 				         +"<inf>"
-				         +word1.target(attr_lemq, true)
+				         +word1.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -1874,9 +1874,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vb_fti"));
 		out.append("<SV>");
 		out.append(var_vrb2);
-		out.append(word2.target(attr_a_tns, true));
-		out.append(word2.target(attr_a_prs, true));
-		out.append(word2.target(attr_a_nbr, true));
+		out.append(word2.tl(attr_a_tns));
+		out.append(word2.tl(attr_a_prs));
+		out.append(word2.tl(attr_a_nbr));
 		out.append('{');
 		{
 			String myword = 
@@ -1907,10 +1907,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_vrb, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_vrb)
 			         +"<inf>"
-			         +word2.target(attr_lemq, true)
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1928,7 +1928,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		if (debug) { logCall("rule30__c_ne__c_vb_cni",  word1, blank1,  word2); } 
 		macro_set_vrb2(out, word2);
 		macro_nepersona(out, word2);
-		if (word1.source(attr_lemh, true).equals("devi"))
+		if (word1.sl(attr_lemh).equals("devi"))
 		{
 			out.append(var_it);
 			out.append('^');
@@ -1937,16 +1937,16 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vb_cni"));
 			out.append("<SV>");
 			out.append(var_vrb2);
-			out.append(word2.target(attr_a_tns, true));
-			out.append(word2.target(attr_a_prs, true));
-			out.append(word2.target(attr_a_nbr, true));
+			out.append(word2.tl(attr_a_tns));
+			out.append(word2.tl(attr_a_prs));
+			out.append(word2.tl(attr_a_nbr));
 			out.append('{');
 			{
 				String myword = 
-				         word2.target(attr_lemh, true)
-				         +word2.target(attr_a_vrb, true)
+				         word2.tl(attr_lemh)
+				         +word2.tl(attr_a_vrb)
 				         +"<inf>"
-				         +word2.target(attr_lemq, true)
+				         +word2.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -1979,9 +1979,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vb_cni"));
 			out.append("<SV>");
 			out.append(var_vrb2);
-			out.append(word2.target(attr_a_tns, true));
-			out.append(word2.target(attr_a_prs, true));
-			out.append(word2.target(attr_a_nbr, true));
+			out.append(word2.tl(attr_a_tns));
+			out.append(word2.tl(attr_a_prs));
+			out.append(word2.tl(attr_a_nbr));
 			out.append('{');
 			{
 				String myword = 
@@ -2012,10 +2012,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			out.append(blank1);
 			{
 				String myword = 
-				         word2.target(attr_lemh, true)
-				         +word2.target(attr_a_vrb, true)
+				         word2.tl(attr_lemh)
+				         +word2.tl(attr_a_vrb)
 				         +"<inf>"
-				         +word2.target(attr_lemq, true)
+				         +word2.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -2039,9 +2039,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vb_pp2"));
 		out.append("<SV>");
 		out.append(var_vrb2);
-		out.append(word1.target(attr_a_tns, true));
-		out.append(word1.target(attr_a_prs, true));
-		out.append(word1.target(attr_a_nbr, true));
+		out.append(word1.tl(attr_a_tns));
+		out.append(word1.tl(attr_a_prs));
+		out.append(word1.tl(attr_a_nbr));
 		out.append('{');
 		{
 			String myword = 
@@ -2059,10 +2059,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(" ");
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_vrb, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_vrb)
 			         +"<inf>"
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2085,16 +2085,16 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vb_pp3"));
 		out.append("<SV>");
 		out.append(var_vrb2);
-		out.append(word1.target(attr_a_tns, true));
-		out.append(word1.target(attr_a_prs, true));
-		out.append(word1.target(attr_a_nbr, true));
+		out.append(word1.tl(attr_a_tns));
+		out.append(word1.tl(attr_a_prs));
+		out.append(word1.tl(attr_a_nbr));
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_vrb, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_vrb)
 			         +"<pp>"
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2117,7 +2117,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vbfti_vbpp3"));
 		out.append("<SV>");
 		out.append(var_vrb2);
-		out.append(word1.target(attr_a_tns, true));
+		out.append(word1.tl(attr_a_tns));
 		out.append('{');
 		{
 			String myword = 
@@ -2149,10 +2149,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(" ");
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_vrb, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_vrb)
 			         +"<pp>"
-			         +word2.target(attr_lemq, true)
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2175,7 +2175,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vbcni_vbpp3"));
 		out.append("<SV>");
 		out.append(var_vrb2);
-		out.append(word1.target(attr_a_tns, true));
+		out.append(word1.tl(attr_a_tns));
 		out.append('{');
 		{
 			String myword = 
@@ -2207,10 +2207,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(" ");
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_vrb, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_vrb)
 			         +"<pp>"
-			         +word2.target(attr_lemq, true)
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2234,7 +2234,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vbser1"));
 		out.append("<SV>");
 		out.append(var_vrb2);
-		out.append(word1.target(attr_a_tns, true));
+		out.append(word1.tl(attr_a_tns));
 		out.append("<PD>");
 		out.append("<ND>");
 		out.append('{');
@@ -2242,7 +2242,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			String myword = 
 			         "have"
 			         +"<vbhaver>"
-			         +word1.target(attr_a_tns, true)
+			         +word1.tl(attr_a_tns)
 			         +"<4>"
 			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			         +"<5>"
@@ -2258,10 +2258,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(" ");
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_vrb, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_vrb)
 			         +"<pp>"
-			         +word2.target(attr_lemq, true)
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2285,20 +2285,20 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vbser2"));
 		out.append("<SV>");
 		out.append(var_vrb2);
-		out.append(word1.target(attr_a_tns, true));
+		out.append(word1.tl(attr_a_tns));
 		out.append("<PD>");
 		out.append("<ND>");
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_vrb, true)
-			         +word1.target(attr_a_tns, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_vrb)
+			         +word1.tl(attr_a_tns)
 			         +"<4>"
 			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			         +"<5>"
 			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2310,10 +2310,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_vrb, true)
-			         +word2.target(attr_a_tns, true)
-			         +word2.target(attr_lemq, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_vrb)
+			         +word2.tl(attr_a_tns)
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2337,20 +2337,20 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vbser3"));
 		out.append("<SV>");
 		out.append(var_vrb2);
-		out.append(word1.target(attr_a_tns, true));
+		out.append(word1.tl(attr_a_tns));
 		out.append("<PD>");
 		out.append("<ND>");
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_vrb, true)
-			         +word1.target(attr_a_tns, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_vrb)
+			         +word1.tl(attr_a_tns)
 			         +"<4>"
 			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			         +"<5>"
 			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2362,10 +2362,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_vrb, true)
-			         +word2.target(attr_a_tns, true)
-			         +word2.target(attr_lemq, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_vrb)
+			         +word2.tl(attr_a_tns)
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2409,20 +2409,20 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vbser4"));
 		out.append("<SV>");
 		out.append(var_vrb2);
-		out.append(word1.target(attr_a_tns, true));
+		out.append(word1.tl(attr_a_tns));
 		out.append("<PD>");
 		out.append("<ND>");
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_vrb, true)
-			         +word1.target(attr_a_tns, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_vrb)
+			         +word1.tl(attr_a_tns)
 			         +"<4>"
 			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			         +"<5>"
 			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2434,10 +2434,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_vrb, true)
-			         +word2.target(attr_a_tns, true)
-			         +word2.target(attr_lemq, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_vrb)
+			         +word2.tl(attr_a_tns)
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2468,29 +2468,29 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		}
 		out.append("}$");
 		out.append(blank3);
-		if (list_prn_kun_persono_kaj_genro.containsIgnoreCase(word4.source(attr_lem, true)))
+		if (list_prn_kun_persono_kaj_genro.containsIgnoreCase(word4.sl(attr_lem)))
 		{
-			if (word4.target(attr_a_prn, true).equalsIgnoreCase("<prn><subj>"))
+			if (word4.tl(attr_a_prn).equalsIgnoreCase("<prn><subj>"))
 			{
-				word4.setTarget(attr_a_prn, "<prn><obj>", true);
+				word4.tlSet(attr_a_prn, "<prn><obj>");
 			}
 			/**  persona pronomo: estas persono kaj genro  */
 			out.append('^');
 			out.append("pron");
 			out.append("<SN>");
-			out.append(word4.target(attr_a_prs, true));
-			out.append(word4.target(attr_a_gen, true));
-			out.append(word4.target(attr_a_nbr, true));
-			out.append(word4.source(attr_a_cas, true));
+			out.append(word4.tl(attr_a_prs));
+			out.append(word4.tl(attr_a_gen));
+			out.append(word4.tl(attr_a_nbr));
+			out.append(word4.sl(attr_a_cas));
 			out.append('{');
 			{
 				String myword = 
-				         word4.target(attr_lemh, true)
-				         +word4.target(attr_a_prn, true)
-				         +(word4.target(attr_a_prs, true).isEmpty()?"" : "<2>")
-				         +(word4.target(attr_a_gen, true).isEmpty()?"" : "<3>")
-				         +(word4.target(attr_a_nbr, true).isEmpty()?"" : "<4>")
-				         +word4.target(attr_lemq, true)
+				         word4.tl(attr_lemh)
+				         +word4.tl(attr_a_prn)
+				         +(word4.tl(attr_a_prs).isEmpty()?"" : "<2>")
+				         +(word4.tl(attr_a_gen).isEmpty()?"" : "<3>")
+				         +(word4.tl(attr_a_nbr).isEmpty()?"" : "<4>")
+				         +word4.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -2507,15 +2507,15 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			out.append('^');
 			out.append("pron");
 			out.append("<SN>");
-			out.append(word4.target(attr_a_nbr, true));
-			out.append(word4.source(attr_a_cas, true));
+			out.append(word4.tl(attr_a_nbr));
+			out.append(word4.sl(attr_a_cas));
 			out.append('{');
 			{
 				String myword = 
-				         word4.target(attr_lemh, true)
-				         +word4.target(attr_a_prn, true)
-				         +(word4.target(attr_a_nbr, true).isEmpty()?"" : "<2>")
-				         +word4.target(attr_lemq, true)
+				         word4.tl(attr_lemh)
+				         +word4.tl(attr_a_prn)
+				         +(word4.tl(attr_a_nbr).isEmpty()?"" : "<2>")
+				         +word4.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -2540,7 +2540,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vbser5"));
 		out.append("<SV>");
 		out.append(var_vrb2);
-		out.append(word1.target(attr_a_tns, true));
+		out.append(word1.tl(attr_a_tns));
 		out.append("<PD>");
 		/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 		out.append("<ND>");
@@ -2548,9 +2548,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 		{
 			String myword = 
-			         word1.target(attr_lem, true)
-			         +word1.target(attr_a_vrb, true)
-			         +word1.target(attr_a_tns, true)
+			         word1.tl(attr_lem)
+			         +word1.tl(attr_a_vrb)
+			         +word1.tl(attr_a_tns)
 			         +"<4>"
 			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			         +"<5>"
@@ -2578,7 +2578,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vbser6"));
 		out.append("<SV>");
 		out.append(var_vrb2);
-		out.append(word2.target(attr_a_tns, true));
+		out.append(word2.tl(attr_a_tns));
 		out.append("<PD>");
 		/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 		out.append("<ND>");
@@ -2586,9 +2586,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 		{
 			String myword = 
-			         word2.target(attr_lem, true)
-			         +word2.target(attr_a_vrb, true)
-			         +word2.target(attr_a_tns, true)
+			         word2.tl(attr_lem)
+			         +word2.tl(attr_a_vrb)
+			         +word2.tl(attr_a_tns)
 			         +"<4>"
 			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			         +"<5>"
@@ -2631,7 +2631,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vblex"));
 		out.append("<SV>");
 		out.append(var_vrb2);
-		out.append(word1.target(attr_a_tns, true));
+		out.append(word1.tl(attr_a_tns));
 		out.append("<PD>");
 		/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 		out.append("<ND>");
@@ -2639,14 +2639,14 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_vrb, true)
-			         +word1.target(attr_a_tns, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_vrb)
+			         +word1.tl(attr_a_tns)
 			         +"<4>"
 			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			         +"<5>"
 			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2665,7 +2665,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		macro_imp_inf(out, word2);
 		macro_set_vrb2(out, word2);
 		macro_nepersona(out, word2);
-		if (word2.target(attr_a_tns, true).equals("<ger>"))
+		if (word2.tl(attr_a_tns).equals("<ger>"))
 		{
 			out.append(var_it);
 			out.append('^');
@@ -2674,7 +2674,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vblex"));
 			out.append("<SV>");
 			out.append(var_vrb2);
-			out.append(word2.target(attr_a_tns, true));
+			out.append(word2.tl(attr_a_tns));
 			out.append("<PD>");
 			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			out.append("<ND>");
@@ -2695,10 +2695,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			out.append(blank1);
 			{
 				String myword = 
-				         word2.target(attr_lemh, true)
-				         +word2.target(attr_a_vrb, true)
-				         +word2.target(attr_a_tns, true)
-				         +word2.target(attr_lemq, true)
+				         word2.tl(attr_lemh)
+				         +word2.tl(attr_a_vrb)
+				         +word2.tl(attr_a_tns)
+				         +word2.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -2713,8 +2713,8 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
  */
 		else
-		if ((word2.target(attr_a_vrb, true).equalsIgnoreCase("<vaux>")
-    || word2.target(attr_a_vrb, true).equalsIgnoreCase("<vbser>")))
+		if ((word2.tl(attr_a_vrb).equalsIgnoreCase("<vaux>")
+    || word2.tl(attr_a_vrb).equalsIgnoreCase("<vbser>")))
 		{
 			out.append(var_it);
 			out.append('^');
@@ -2723,7 +2723,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vblex"));
 			out.append("<SV>");
 			out.append(var_vrb2);
-			out.append(word2.target(attr_a_tns, true));
+			out.append(word2.tl(attr_a_tns));
 			out.append("<PD>");
 			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			out.append("<ND>");
@@ -2731,14 +2731,14 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 			{
 				String myword = 
-				         word2.target(attr_lemh, true)
-				         +word2.target(attr_a_vrb, true)
-				         +word2.target(attr_a_tns, true)
+				         word2.tl(attr_lemh)
+				         +word2.tl(attr_a_vrb)
+				         +word2.tl(attr_a_tns)
 				         +"<4>"
 				/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 				         +"<5>"
 				/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-				         +word2.target(attr_lemq, true)
+				         +word2.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -2771,7 +2771,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vblex"));
 			out.append("<SV>");
 			out.append(var_vrb2);
-			out.append(word2.target(attr_a_tns, true));
+			out.append(word2.tl(attr_a_tns));
 			out.append("<PD>");
 			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			out.append("<ND>");
@@ -2780,8 +2780,8 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			{
 				String myword = 
 				         "do"
-				         +word2.target(attr_a_vrb, true)
-				         +word2.target(attr_a_tns, true)
+				         +word2.tl(attr_a_vrb)
+				         +word2.tl(attr_a_tns)
 				         +"<4>"
 				/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 				         +"<5>"
@@ -2810,10 +2810,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(blank1);
 			{
 				String myword = 
-				         word2.target(attr_lemh, true)
-				         +word2.target(attr_a_vrb, true)
+				         word2.tl(attr_lemh)
+				         +word2.tl(attr_a_vrb)
 				         +"<inf>"
-				         +word2.target(attr_lemq, true)
+				         +word2.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -2833,7 +2833,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		macro_imp_inf(out, word1);
 		macro_set_vrb2(out, word1);
 		macro_nepersona(out, word1);
-		if (word1.target(attr_a_vrb, true).equalsIgnoreCase("<vaux>"))
+		if (word1.tl(attr_a_vrb).equalsIgnoreCase("<vaux>"))
 		{
 			out.append(var_it);
 			out.append('^');
@@ -2842,7 +2842,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vblex_inf"));
 			out.append("<SV>");
 			out.append(var_vrb2);
-			out.append(word1.target(attr_a_tns, true));
+			out.append(word1.tl(attr_a_tns));
 			out.append("<PD>");
 			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			out.append("<ND>");
@@ -2850,14 +2850,14 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 			{
 				String myword = 
-				         word1.target(attr_lemh, true)
-				         +word1.target(attr_a_vrb, true)
-				         +word1.target(attr_a_tns, true)
+				         word1.tl(attr_lemh)
+				         +word1.tl(attr_a_vrb)
+				         +word1.tl(attr_a_tns)
 				         +"<4>"
 				/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 				         +"<5>"
 				/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-				         +word1.target(attr_lemq, true)
+				         +word1.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -2869,10 +2869,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(blank1);
 			{
 				String myword = 
-				         word2.target(attr_lemh, true)
-				         +word2.target(attr_a_vrb, true)
-				         +word2.target(attr_a_tns, true)
-				         +word2.target(attr_lemq, true)
+				         word2.tl(attr_lemh)
+				         +word2.tl(attr_a_vrb)
+				         +word2.tl(attr_a_tns)
+				         +word2.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -2892,7 +2892,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vblex_inf"));
 			out.append("<SV>");
 			out.append(var_vrb2);
-			out.append(word1.target(attr_a_tns, true));
+			out.append(word1.tl(attr_a_tns));
 			out.append("<PD>");
 			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			out.append("<ND>");
@@ -2900,14 +2900,14 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 			{
 				String myword = 
-				         word1.target(attr_lemh, true)
-				         +word1.target(attr_a_vrb, true)
-				         +word1.target(attr_a_tns, true)
+				         word1.tl(attr_lemh)
+				         +word1.tl(attr_a_vrb)
+				         +word1.tl(attr_a_tns)
 				         +"<4>"
 				/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 				         +"<5>"
 				/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-				         +word1.target(attr_lemq, true)
+				         +word1.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -2932,10 +2932,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(" ");
 			{
 				String myword = 
-				         word2.target(attr_lemh, true)
-				         +word2.target(attr_a_vrb, true)
-				         +word2.target(attr_a_tns, true)
-				         +word2.target(attr_lemq, true)
+				         word2.tl(attr_lemh)
+				         +word2.tl(attr_a_vrb)
+				         +word2.tl(attr_a_tns)
+				         +word2.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -2955,7 +2955,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		macro_imp_inf(out, word2);
 		macro_set_vrb2(out, word2);
 		macro_nepersona(out, word2);
-		if (word2.target(attr_a_tns, true).equals("<ger>"))
+		if (word2.tl(attr_a_tns).equals("<ger>"))
 		{
 			out.append(var_it);
 			out.append('^');
@@ -2964,7 +2964,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vblex"));
 			out.append("<SV>");
 			out.append(var_vrb2);
-			out.append(word2.target(attr_a_tns, true));
+			out.append(word2.tl(attr_a_tns));
 			out.append("<PD>");
 			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			out.append("<ND>");
@@ -2985,10 +2985,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(blank1);
 			{
 				String myword = 
-				         word2.target(attr_lemh, true)
-				         +word2.target(attr_a_vrb, true)
-				         +word2.target(attr_a_tns, true)
-				         +word2.target(attr_lemq, true)
+				         word2.tl(attr_lemh)
+				         +word2.tl(attr_a_vrb)
+				         +word2.tl(attr_a_tns)
+				         +word2.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3000,10 +3000,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(blank2);
 			{
 				String myword = 
-				         word3.target(attr_lemh, true)
-				         +word3.target(attr_a_vrb, true)
-				         +word3.target(attr_a_tns, true)
-				         +word3.target(attr_lemq, true)
+				         word3.tl(attr_lemh)
+				         +word3.tl(attr_a_vrb)
+				         +word3.tl(attr_a_tns)
+				         +word3.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3018,8 +3018,8 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
  */
 		else
-		if ((word2.target(attr_a_vrb, true).equalsIgnoreCase("<vaux>")
-    || word2.target(attr_a_vrb, true).equalsIgnoreCase("<vbser>")))
+		if ((word2.tl(attr_a_vrb).equalsIgnoreCase("<vaux>")
+    || word2.tl(attr_a_vrb).equalsIgnoreCase("<vbser>")))
 		{
 			out.append(var_it);
 			out.append('^');
@@ -3028,7 +3028,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vblex"));
 			out.append("<SV>");
 			out.append(var_vrb2);
-			out.append(word2.target(attr_a_tns, true));
+			out.append(word2.tl(attr_a_tns));
 			out.append("<PD>");
 			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			out.append("<ND>");
@@ -3036,14 +3036,14 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 			{
 				String myword = 
-				         word2.target(attr_lemh, true)
-				         +word2.target(attr_a_vrb, true)
-				         +word2.target(attr_a_tns, true)
+				         word2.tl(attr_lemh)
+				         +word2.tl(attr_a_vrb)
+				         +word2.tl(attr_a_tns)
 				         +"<4>"
 				/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 				         +"<5>"
 				/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-				         +word2.target(attr_lemq, true)
+				         +word2.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3068,10 +3068,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(blank2);
 			{
 				String myword = 
-				         word3.target(attr_lemh, true)
-				         +word3.target(attr_a_vrb, true)
-				         +word3.target(attr_a_tns, true)
-				         +word3.target(attr_lemq, true)
+				         word3.tl(attr_lemh)
+				         +word3.tl(attr_a_vrb)
+				         +word3.tl(attr_a_tns)
+				         +word3.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3091,7 +3091,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vblex_inf"));
 			out.append("<SV>");
 			out.append(var_vrb2);
-			out.append(word2.target(attr_a_tns, true));
+			out.append(word2.tl(attr_a_tns));
 			out.append("<PD>");
 			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			out.append("<ND>");
@@ -3100,8 +3100,8 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			{
 				String myword = 
 				         "do"
-				         +word2.target(attr_a_vrb, true)
-				         +word2.target(attr_a_tns, true)
+				         +word2.tl(attr_a_vrb)
+				         +word2.tl(attr_a_tns)
 				         +"<4>"
 				/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 				         +"<5>"
@@ -3130,10 +3130,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(blank1);
 			{
 				String myword = 
-				         word2.target(attr_lemh, true)
-				         +word2.target(attr_a_vrb, true)
+				         word2.tl(attr_lemh)
+				         +word2.tl(attr_a_vrb)
 				         +"<inf>"
-				         +word2.target(attr_lemq, true)
+				         +word2.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3158,10 +3158,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(" ");
 			{
 				String myword = 
-				         word3.target(attr_lemh, true)
-				         +word3.target(attr_a_vrb, true)
-				         +word3.target(attr_a_tns, true)
-				         +word3.target(attr_lemq, true)
+				         word3.tl(attr_lemh)
+				         +word3.tl(attr_a_vrb)
+				         +word3.tl(attr_a_tns)
+				         +word3.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3181,7 +3181,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		macro_imp_inf(out, word1);
 		macro_set_vrb2(out, word1);
 		macro_nepersona(out, word1);
-		if (word1.target(attr_a_vrb, true).equalsIgnoreCase("<vaux>"))
+		if (word1.tl(attr_a_vrb).equalsIgnoreCase("<vaux>"))
 		{
 			out.append(var_it);
 			out.append('^');
@@ -3190,7 +3190,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vblex_inf"));
 			out.append("<SV>");
 			out.append(var_vrb2);
-			out.append(word1.target(attr_a_tns, true));
+			out.append(word1.tl(attr_a_tns));
 			out.append("<PD>");
 			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			out.append("<ND>");
@@ -3198,14 +3198,14 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 			{
 				String myword = 
-				         word1.target(attr_lemh, true)
-				         +word1.target(attr_a_vrb, true)
-				         +word1.target(attr_a_tns, true)
+				         word1.tl(attr_lemh)
+				         +word1.tl(attr_a_vrb)
+				         +word1.tl(attr_a_tns)
 				         +"<4>"
 				/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 				         +"<5>"
 				/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-				         +word1.target(attr_lemq, true)
+				         +word1.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3217,7 +3217,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(blank1);
 			{
 				String myword = 
-				         word2.target(attr_whole, true)
+				         word2.tl(attr_whole)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3229,10 +3229,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(blank2);
 			{
 				String myword = 
-				         word3.target(attr_lemh, true)
-				         +word3.target(attr_a_vrb, true)
-				         +word3.target(attr_a_tns, true)
-				         +word3.target(attr_lemq, true)
+				         word3.tl(attr_lemh)
+				         +word3.tl(attr_a_vrb)
+				         +word3.tl(attr_a_tns)
+				         +word3.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3252,7 +3252,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vblex_inf"));
 			out.append("<SV>");
 			out.append(var_vrb2);
-			out.append(word1.target(attr_a_tns, true));
+			out.append(word1.tl(attr_a_tns));
 			out.append("<PD>");
 			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			out.append("<ND>");
@@ -3260,14 +3260,14 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 			{
 				String myword = 
-				         word1.target(attr_lemh, true)
-				         +word1.target(attr_a_vrb, true)
-				         +word1.target(attr_a_tns, true)
+				         word1.tl(attr_lemh)
+				         +word1.tl(attr_a_vrb)
+				         +word1.tl(attr_a_tns)
 				         +"<4>"
 				/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 				         +"<5>"
 				/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-				         +word1.target(attr_lemq, true)
+				         +word1.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3292,7 +3292,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(" ");
 			{
 				String myword = 
-				         word2.target(attr_whole, true)
+				         word2.tl(attr_whole)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3304,10 +3304,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(blank2);
 			{
 				String myword = 
-				         word3.target(attr_lemh, true)
-				         +word3.target(attr_a_vrb, true)
-				         +word3.target(attr_a_tns, true)
-				         +word3.target(attr_lemq, true)
+				         word3.tl(attr_lemh)
+				         +word3.tl(attr_a_vrb)
+				         +word3.tl(attr_a_tns)
+				         +word3.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3327,7 +3327,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		macro_imp_inf(out, word2);
 		macro_set_vrb2(out, word2);
 		macro_nepersona(out, word2);
-		if (word2.target(attr_a_tns, true).equals("<ger>"))
+		if (word2.tl(attr_a_tns).equals("<ger>"))
 		{
 			out.append(var_it);
 			out.append('^');
@@ -3336,7 +3336,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vblex"));
 			out.append("<SV>");
 			out.append(var_vrb2);
-			out.append(word2.target(attr_a_tns, true));
+			out.append(word2.tl(attr_a_tns));
 			out.append("<PD>");
 			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			out.append("<ND>");
@@ -3357,10 +3357,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(blank1);
 			{
 				String myword = 
-				         word2.target(attr_lemh, true)
-				         +word2.target(attr_a_vrb, true)
-				         +word2.target(attr_a_tns, true)
-				         +word2.target(attr_lemq, true)
+				         word2.tl(attr_lemh)
+				         +word2.tl(attr_a_vrb)
+				         +word2.tl(attr_a_tns)
+				         +word2.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3372,7 +3372,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(blank2);
 			{
 				String myword = 
-				         word3.target(attr_whole, true)
+				         word3.tl(attr_whole)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3384,10 +3384,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(blank3);
 			{
 				String myword = 
-				         word4.target(attr_lemh, true)
-				         +word4.target(attr_a_vrb, true)
-				         +word4.target(attr_a_tns, true)
-				         +word4.target(attr_lemq, true)
+				         word4.tl(attr_lemh)
+				         +word4.tl(attr_a_vrb)
+				         +word4.tl(attr_a_tns)
+				         +word4.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3402,8 +3402,8 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
  */
 		else
-		if ((word2.target(attr_a_vrb, true).equalsIgnoreCase("<vaux>")
-    || word2.target(attr_a_vrb, true).equalsIgnoreCase("<vbser>")))
+		if ((word2.tl(attr_a_vrb).equalsIgnoreCase("<vaux>")
+    || word2.tl(attr_a_vrb).equalsIgnoreCase("<vbser>")))
 		{
 			out.append(var_it);
 			out.append('^');
@@ -3412,7 +3412,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vblex"));
 			out.append("<SV>");
 			out.append(var_vrb2);
-			out.append(word2.target(attr_a_tns, true));
+			out.append(word2.tl(attr_a_tns));
 			out.append("<PD>");
 			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			out.append("<ND>");
@@ -3420,14 +3420,14 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 			{
 				String myword = 
-				         word2.target(attr_lemh, true)
-				         +word2.target(attr_a_vrb, true)
-				         +word2.target(attr_a_tns, true)
+				         word2.tl(attr_lemh)
+				         +word2.tl(attr_a_vrb)
+				         +word2.tl(attr_a_tns)
 				         +"<4>"
 				/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 				         +"<5>"
 				/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-				         +word2.target(attr_lemq, true)
+				         +word2.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3452,7 +3452,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(blank2);
 			{
 				String myword = 
-				         word3.target(attr_whole, true)
+				         word3.tl(attr_whole)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3464,10 +3464,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(blank3);
 			{
 				String myword = 
-				         word4.target(attr_lemh, true)
-				         +word4.target(attr_a_vrb, true)
-				         +word4.target(attr_a_tns, true)
-				         +word4.target(attr_lemq, true)
+				         word4.tl(attr_lemh)
+				         +word4.tl(attr_a_vrb)
+				         +word4.tl(attr_a_tns)
+				         +word4.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3487,7 +3487,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vblex_inf"));
 			out.append("<SV>");
 			out.append(var_vrb2);
-			out.append(word2.target(attr_a_tns, true));
+			out.append(word2.tl(attr_a_tns));
 			out.append("<PD>");
 			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			out.append("<ND>");
@@ -3496,8 +3496,8 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			{
 				String myword = 
 				         "do"
-				         +word2.target(attr_a_vrb, true)
-				         +word2.target(attr_a_tns, true)
+				         +word2.tl(attr_a_vrb)
+				         +word2.tl(attr_a_tns)
 				         +"<4>"
 				/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 				         +"<5>"
@@ -3526,10 +3526,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(blank1);
 			{
 				String myword = 
-				         word2.target(attr_lemh, true)
-				         +word2.target(attr_a_vrb, true)
+				         word2.tl(attr_lemh)
+				         +word2.tl(attr_a_vrb)
 				         +"<inf>"
-				         +word2.target(attr_lemq, true)
+				         +word2.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3554,7 +3554,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(" ");
 			{
 				String myword = 
-				         word3.target(attr_whole, true)
+				         word3.tl(attr_whole)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3566,10 +3566,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append(blank3);
 			{
 				String myword = 
-				         word4.target(attr_lemh, true)
-				         +word4.target(attr_a_vrb, true)
-				         +word4.target(attr_a_tns, true)
-				         +word4.target(attr_lemq, true)
+				         word4.tl(attr_lemh)
+				         +word4.tl(attr_a_vrb)
+				         +word4.tl(attr_a_tns)
+				         +word4.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3595,7 +3595,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vblex_inf"));
 		out.append("<SV>");
 		out.append(var_vrb2);
-		out.append(word1.target(attr_a_tns, true));
+		out.append(word1.tl(attr_a_tns));
 		out.append('{');
 		{
 			String myword = 
@@ -3613,10 +3613,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(" ");
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_vrb, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_vrb)
 			         +"<inf>"
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -3641,10 +3641,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(" ");
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_vrb, true)
-			         +word2.target(attr_a_tns, true)
-			         +word2.target(attr_lemq, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_vrb)
+			         +word2.tl(attr_a_tns)
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -3669,7 +3669,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vblex_inf"));
 		out.append("<SV>");
 		out.append(var_vrb2);
-		out.append(word1.target(attr_a_tns, true));
+		out.append(word1.tl(attr_a_tns));
 		out.append('{');
 		{
 			String myword = 
@@ -3687,10 +3687,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(" ");
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_vrb, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_vrb)
 			         +"<inf>"
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -3715,10 +3715,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(" ");
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_vrb, true)
-			         +word2.target(attr_a_tns, true)
-			         +word2.target(attr_lemq, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_vrb)
+			         +word2.tl(attr_a_tns)
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -3743,7 +3743,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vblex_inf"));
 		out.append("<SV>");
 		out.append(var_vrb2);
-		out.append(word2.target(attr_a_tns, true));
+		out.append(word2.tl(attr_a_tns));
 		out.append('{');
 		{
 			String myword = 
@@ -3774,10 +3774,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_vrb, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_vrb)
 			         +"<inf>"
-			         +word2.target(attr_lemq, true)
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -3802,10 +3802,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(" ");
 		{
 			String myword = 
-			         word3.target(attr_lemh, true)
-			         +word3.target(attr_a_vrb, true)
-			         +word3.target(attr_a_tns, true)
-			         +word3.target(attr_lemq, true)
+			         word3.tl(attr_lemh)
+			         +word3.tl(attr_a_vrb)
+			         +word3.tl(attr_a_tns)
+			         +word3.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -3830,7 +3830,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vblex_inf"));
 		out.append("<SV>");
 		out.append(var_vrb2);
-		out.append(word2.target(attr_a_tns, true));
+		out.append(word2.tl(attr_a_tns));
 		out.append('{');
 		{
 			String myword = 
@@ -3861,10 +3861,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_vrb, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_vrb)
 			         +"<inf>"
-			         +word2.target(attr_lemq, true)
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -3889,10 +3889,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(" ");
 		{
 			String myword = 
-			         word3.target(attr_lemh, true)
-			         +word3.target(attr_a_vrb, true)
-			         +word3.target(attr_a_tns, true)
-			         +word3.target(attr_lemq, true)
+			         word3.tl(attr_lemh)
+			         +word3.tl(attr_a_vrb)
+			         +word3.tl(attr_a_tns)
+			         +word3.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -3917,7 +3917,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vblex_inf"));
 		out.append("<SV>");
 		out.append(var_vrb2);
-		out.append(word1.target(attr_a_tns, true));
+		out.append(word1.tl(attr_a_tns));
 		out.append('{');
 		{
 			String myword = 
@@ -3935,10 +3935,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(" ");
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_vrb, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_vrb)
 			         +"<inf>"
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -3963,7 +3963,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(" ");
 		{
 			String myword = 
-			         word2.target(attr_whole, true)
+			         word2.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -3975,10 +3975,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(blank2);
 		{
 			String myword = 
-			         word3.target(attr_lemh, true)
-			         +word3.target(attr_a_vrb, true)
-			         +word3.target(attr_a_tns, true)
-			         +word3.target(attr_lemq, true)
+			         word3.tl(attr_lemh)
+			         +word3.tl(attr_a_vrb)
+			         +word3.tl(attr_a_tns)
+			         +word3.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -4003,7 +4003,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vblex_inf"));
 		out.append("<SV>");
 		out.append(var_vrb2);
-		out.append(word1.target(attr_a_tns, true));
+		out.append(word1.tl(attr_a_tns));
 		out.append('{');
 		{
 			String myword = 
@@ -4021,10 +4021,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(" ");
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_vrb, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_vrb)
 			         +"<inf>"
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -4049,7 +4049,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(" ");
 		{
 			String myword = 
-			         word2.target(attr_whole, true)
+			         word2.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -4061,10 +4061,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(blank2);
 		{
 			String myword = 
-			         word3.target(attr_lemh, true)
-			         +word3.target(attr_a_vrb, true)
-			         +word3.target(attr_a_tns, true)
-			         +word3.target(attr_lemq, true)
+			         word3.tl(attr_lemh)
+			         +word3.tl(attr_a_vrb)
+			         +word3.tl(attr_a_tns)
+			         +word3.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -4089,7 +4089,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vblex_inf"));
 		out.append("<SV>");
 		out.append(var_vrb2);
-		out.append(word2.target(attr_a_tns, true));
+		out.append(word2.tl(attr_a_tns));
 		out.append('{');
 		{
 			String myword = 
@@ -4120,10 +4120,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_vrb, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_vrb)
 			         +"<inf>"
-			         +word2.target(attr_lemq, true)
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -4148,7 +4148,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(" ");
 		{
 			String myword = 
-			         word3.target(attr_whole, true)
+			         word3.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -4160,10 +4160,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(blank3);
 		{
 			String myword = 
-			         word4.target(attr_lemh, true)
-			         +word4.target(attr_a_vrb, true)
-			         +word4.target(attr_a_tns, true)
-			         +word4.target(attr_lemq, true)
+			         word4.tl(attr_lemh)
+			         +word4.tl(attr_a_vrb)
+			         +word4.tl(attr_a_tns)
+			         +word4.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -4188,7 +4188,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vblex_inf"));
 		out.append("<SV>");
 		out.append(var_vrb2);
-		out.append(word2.target(attr_a_tns, true));
+		out.append(word2.tl(attr_a_tns));
 		out.append('{');
 		{
 			String myword = 
@@ -4219,10 +4219,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_vrb, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_vrb)
 			         +"<inf>"
-			         +word2.target(attr_lemq, true)
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -4247,7 +4247,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(" ");
 		{
 			String myword = 
-			         word3.target(attr_whole, true)
+			         word3.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -4259,10 +4259,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(blank3);
 		{
 			String myword = 
-			         word4.target(attr_lemh, true)
-			         +word4.target(attr_a_vrb, true)
-			         +word4.target(attr_a_tns, true)
-			         +word4.target(attr_lemq, true)
+			         word4.tl(attr_lemh)
+			         +word4.tl(attr_a_vrb)
+			         +word4.tl(attr_a_tns)
+			         +word4.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -4287,7 +4287,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vblex"));
 		out.append("<SV>");
 		out.append(var_vrb2);
-		out.append(word1.target(attr_a_tns, true));
+		out.append(word1.tl(attr_a_tns));
 		out.append("<PD>");
 		/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 		out.append("<ND>");
@@ -4295,14 +4295,14 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_vrb, true)
-			         +word1.target(attr_a_tns, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_vrb)
+			         +word1.tl(attr_a_tns)
 			         +"<4>"
 			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			         +"<5>"
 			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -4346,7 +4346,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vblex"));
 		out.append("<SV>");
 		out.append(var_vrb2);
-		out.append(word1.target(attr_a_tns, true));
+		out.append(word1.tl(attr_a_tns));
 		out.append("<PD>");
 		/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 		out.append("<ND>");
@@ -4354,14 +4354,14 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_vrb, true)
-			         +word1.target(attr_a_tns, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_vrb)
+			         +word1.tl(attr_a_tns)
 			         +"<4>"
 			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			         +"<5>"
 			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -4392,29 +4392,29 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		}
 		out.append("}$");
 		out.append(blank1);
-		if (list_prn_kun_persono_kaj_genro.containsIgnoreCase(word3.source(attr_lem, true)))
+		if (list_prn_kun_persono_kaj_genro.containsIgnoreCase(word3.sl(attr_lem)))
 		{
-			if (word3.target(attr_a_prn, true).equalsIgnoreCase("<prn><subj>"))
+			if (word3.tl(attr_a_prn).equalsIgnoreCase("<prn><subj>"))
 			{
-				word3.setTarget(attr_a_prn, "<prn><obj>", true);
+				word3.tlSet(attr_a_prn, "<prn><obj>");
 			}
 			/**  persona pronomo: estas persono kaj genro  */
 			out.append('^');
 			out.append("pron");
 			out.append("<SN>");
-			out.append(word3.target(attr_a_prs, true));
-			out.append(word3.target(attr_a_gen, true));
-			out.append(word3.target(attr_a_nbr, true));
-			out.append(word3.source(attr_a_cas, true));
+			out.append(word3.tl(attr_a_prs));
+			out.append(word3.tl(attr_a_gen));
+			out.append(word3.tl(attr_a_nbr));
+			out.append(word3.sl(attr_a_cas));
 			out.append('{');
 			{
 				String myword = 
-				         word3.target(attr_lemh, true)
-				         +word3.target(attr_a_prn, true)
-				         +(word3.target(attr_a_prs, true).isEmpty()?"" : "<2>")
-				         +(word3.target(attr_a_gen, true).isEmpty()?"" : "<3>")
-				         +(word3.target(attr_a_nbr, true).isEmpty()?"" : "<4>")
-				         +word3.target(attr_lemq, true)
+				         word3.tl(attr_lemh)
+				         +word3.tl(attr_a_prn)
+				         +(word3.tl(attr_a_prs).isEmpty()?"" : "<2>")
+				         +(word3.tl(attr_a_gen).isEmpty()?"" : "<3>")
+				         +(word3.tl(attr_a_nbr).isEmpty()?"" : "<4>")
+				         +word3.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -4431,15 +4431,15 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append('^');
 			out.append("pron");
 			out.append("<SN>");
-			out.append(word3.target(attr_a_nbr, true));
-			out.append(word3.source(attr_a_cas, true));
+			out.append(word3.tl(attr_a_nbr));
+			out.append(word3.sl(attr_a_cas));
 			out.append('{');
 			{
 				String myword = 
-				         word3.target(attr_lemh, true)
-				         +word3.target(attr_a_prn, true)
-				         +(word3.target(attr_a_nbr, true).isEmpty()?"" : "<2>")
-				         +word3.target(attr_lemq, true)
+				         word3.tl(attr_lemh)
+				         +word3.tl(attr_a_prn)
+				         +(word3.tl(attr_a_nbr).isEmpty()?"" : "<2>")
+				         +word3.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -4464,7 +4464,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "vblex"));
 		out.append("<SV>");
 		out.append(var_vrb2);
-		out.append(word3.target(attr_a_tns, true));
+		out.append(word3.tl(attr_a_tns));
 		out.append("<PD>");
 		/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 		out.append("<ND>");
@@ -4472,14 +4472,14 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 		{
 			String myword = 
-			         word3.target(attr_lemh, true)
-			         +word3.target(attr_a_vrb, true)
-			         +word3.target(attr_a_tns, true)
+			         word3.tl(attr_lemh)
+			         +word3.tl(attr_a_vrb)
+			         +word3.tl(attr_a_tns)
 			         +"<4>"
 			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
 			         +"<5>"
 			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-			         +word3.target(attr_lemq, true)
+			         +word3.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -4510,29 +4510,29 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		}
 		out.append("}$");
 		out.append(blank1);
-		if (list_prn_kun_persono_kaj_genro.containsIgnoreCase(word2.source(attr_lem, true)))
+		if (list_prn_kun_persono_kaj_genro.containsIgnoreCase(word2.sl(attr_lem)))
 		{
-			if (word2.target(attr_a_prn, true).equalsIgnoreCase("<prn><subj>"))
+			if (word2.tl(attr_a_prn).equalsIgnoreCase("<prn><subj>"))
 			{
-				word2.setTarget(attr_a_prn, "<prn><obj>", true);
+				word2.tlSet(attr_a_prn, "<prn><obj>");
 			}
 			/**  persona pronomo: estas persono kaj genro  */
 			out.append('^');
 			out.append("pron");
 			out.append("<SN>");
-			out.append(word2.target(attr_a_prs, true));
-			out.append(word2.target(attr_a_gen, true));
-			out.append(word2.target(attr_a_nbr, true));
-			out.append(word2.source(attr_a_cas, true));
+			out.append(word2.tl(attr_a_prs));
+			out.append(word2.tl(attr_a_gen));
+			out.append(word2.tl(attr_a_nbr));
+			out.append(word2.sl(attr_a_cas));
 			out.append('{');
 			{
 				String myword = 
-				         word2.target(attr_lemh, true)
-				         +word2.target(attr_a_prn, true)
-				         +(word2.target(attr_a_prs, true).isEmpty()?"" : "<2>")
-				         +(word2.target(attr_a_gen, true).isEmpty()?"" : "<3>")
-				         +(word2.target(attr_a_nbr, true).isEmpty()?"" : "<4>")
-				         +word2.target(attr_lemq, true)
+				         word2.tl(attr_lemh)
+				         +word2.tl(attr_a_prn)
+				         +(word2.tl(attr_a_prs).isEmpty()?"" : "<2>")
+				         +(word2.tl(attr_a_gen).isEmpty()?"" : "<3>")
+				         +(word2.tl(attr_a_nbr).isEmpty()?"" : "<4>")
+				         +word2.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -4549,15 +4549,15 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append('^');
 			out.append("pron");
 			out.append("<SN>");
-			out.append(word2.target(attr_a_nbr, true));
-			out.append(word2.source(attr_a_cas, true));
+			out.append(word2.tl(attr_a_nbr));
+			out.append(word2.sl(attr_a_cas));
 			out.append('{');
 			{
 				String myword = 
-				         word2.target(attr_lemh, true)
-				         +word2.target(attr_a_prn, true)
-				         +(word2.target(attr_a_nbr, true).isEmpty()?"" : "<2>")
-				         +word2.target(attr_lemq, true)
+				         word2.tl(attr_lemh)
+				         +word2.tl(attr_a_prn)
+				         +(word2.tl(attr_a_nbr).isEmpty()?"" : "<2>")
+				         +word2.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -4583,7 +4583,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		/**  Sintagmo determinita  */
 		{
 			String myword = 
-			         word1.target(attr_whole, true)
+			         word1.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -4607,7 +4607,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_whole, true)
+			         word1.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -4631,7 +4631,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_whole, true)
+			         word1.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -4652,12 +4652,12 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: REL">/<action>/<out>/<chunk case="caseFirstWord" name="rel">
 		out.append(TransferWord.copycase(error_UNKNOWN_VAR, "rel"));
 		out.append("<REL>");
-		out.append(word1.target(attr_a_nbr, true));
-		out.append(word1.source(attr_a_cas, true));
+		out.append(word1.tl(attr_a_nbr));
+		out.append(word1.sl(attr_a_cas));
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_whole, true)
+			         word1.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -4681,7 +4681,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_whole, true)
+			         word1.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{

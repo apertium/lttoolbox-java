@@ -58,9 +58,7 @@ public class ParseTestTransferFiles {
       "apertium-eo-en.en-eo.t1x",
       "apertium-eo-en.eo-en.t1x",
       "apertium-nn-nb.nb-nn.t1x",
-      "apertium-en-ca.en-ca.t1x",
       "apertium-cy-en.en-cy.t1x",
-      "apertium-es-ast.es-ast.t1x",
     };
 
     /**

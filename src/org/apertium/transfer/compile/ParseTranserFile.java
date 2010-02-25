@@ -150,12 +150,8 @@ public class ParseTranserFile {
     String side=e.getAttribute("side");
     String part=e.getAttribute("part");
     String pos=e.getAttribute("pos");
-    boolean cond=!e.getAttribute("queue").equals("no");
-    if (side.equals("sl")) {
-      return ""+word(pos)+".source("+attr(part)+", "+cond+")";
-    } else if (side.equals("tl")) {
-      return ""+word(pos)+".target("+attr(part)+", "+cond+")";
-    } else throw new IllegalArgumentException(side);
+    String queue = (e.getAttribute("queue").equals("no")?"NoQueue":"");
+    return word(pos)+"."+side+queue+"("+attr(part)+")";
   }
 
   /**
@@ -169,6 +165,9 @@ public class ParseTranserFile {
     String side=e.getAttribute("side");
     String part=e.getAttribute("part");
     String pos=e.getAttribute("pos");
+    String queue = (e.getAttribute("queue").equals("no")?"NoQueue":"");
+    return word(pos)+"."+side+"Set"+queue+"("+attr(part)+", "+value+");";
+/*
     boolean cond=!e.getAttribute("queue").equals("no");
     String expr;
     if (side.equals("sl")) {
@@ -177,6 +176,7 @@ public class ParseTranserFile {
       expr=""+word(pos)+".setTarget("+attr(part)+", "+value+", "+cond+");";
     } else throw new IllegalArgumentException(side);
     return expr;
+ */
   }
 
   public static String javaIdentifier(String str) {
@@ -214,20 +214,15 @@ public class ParseTranserFile {
     } else if (n.equals("get-case-from")) {
       String pos = e.getAttribute("pos");
       String eval = evalString(getFirstChildElement(e));
-      boolean cond=!e.getAttribute("queue").equals("no");
-      return "TransferWord.copycase("+word(pos)+".source(attr_lem, "+cond+"), "+ eval + ")";
+      String queue = (e.getAttribute("queue").equals("no")?"NoQueue":"");
+      return "TransferWord.copycase("+word(pos)+".sl"+queue+"(attr_lem), "+ eval + ")";
     } else if (n.equals("var")) {
       return var(e.getAttribute("n"));
     } else if (n.equals("case-of")) {
       String side=e.getAttribute("side");
       String part=e.getAttribute("part");
       String pos=e.getAttribute("pos");
-      boolean cond=true; //!e.getAttribute("queue").equals("no");
-      if (side.equals("sl")) {
-        return "TransferWord.caseOf("+word(pos)+".source("+attr(part)+", "+cond+"))";
-      } else if (side.equals("tl")) {
-        return "TransferWord.caseOf("+word(pos)+".target("+attr(part)+", "+cond+"))";
-      } else throw new IllegalArgumentException(side);
+      return "TransferWord.caseOf("+word(pos)+"."+side+"("+attr(part)+"))";
     } else if (n.equals("concat")) {
       String res = "("+str("");
       for (Element c : listElements(e.getChildNodes())) {

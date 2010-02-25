@@ -99,10 +99,10 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	{
 		if (debug) { logCall("macro_firstWord",  word1); } 
 		if (((var_EOS.equals("true")
-    && word1.source(attr_a_np_acr, true).equals(""))
+    && word1.sl(attr_a_np_acr).equals(""))
     || var_venontaVortoEstuMajuskla.equals("true")))
 		{
-			word1.setTarget(attr_lem, TransferWord.copycase("aa", word1.target(attr_lem, true)), true);
+			word1.tlSet(attr_lem, TransferWord.copycase("aa", word1.tl(attr_lem)));
 			var_caseFirstWord = "Aa";
 		}
 		else
@@ -119,7 +119,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	private void macro_set_nomvar_if_known1(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_set_nomvar_if_known1",  word1); } 
-		if (word1.target(attr_a_nbr, true).equals(""))
+		if (word1.tl(attr_a_nbr).equals(""))
 		{
 			var_nomvar = "";
 		}
@@ -133,9 +133,9 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	private void macro_ordigu_genron(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_ordigu_genron",  word1); } 
-		if (word1.target(attr_a_gen, true).equalsIgnoreCase("<GD>"))
+		if (word1.tl(attr_a_gen).equalsIgnoreCase("<GD>"))
 		{
-			word1.setTarget(attr_a_gen, "<m>", true);
+			word1.tlSet(attr_a_gen, "<m>");
 		}
 	}
 	
@@ -154,7 +154,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	private void macro_set_numero1(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_set_numero1",  word1); } 
-		if (word1.target(attr_a_nbr, true).equals("<pl>"))
+		if (word1.tl(attr_a_nbr).equals("<pl>"))
 		{
 			var_numero = "<pl>";
 		}
@@ -173,41 +173,41 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		macro_set_numero1(out, word2);
 		var_adjectiu = "";
 		var_preadv_added = "";
-		if (word1.source(attr_a_adj, true).equals("<adj><sint><comp>"))
+		if (word1.sl(attr_a_adj).equals("<adj><sint><comp>"))
 		{
 			/**  ^pli<preadv>$ ^bona<adj><2>$  */
-			var_adjectiu = (""+TransferWord.copycase(word1.source(attr_lem, true), "pli")+"<preadv>"+"$ ^"+word1.target(attr_lem, true)+"<adj>"+var_numero+"<2>");
+			var_adjectiu = (""+TransferWord.copycase(word1.sl(attr_lem), "pli")+"<preadv>"+"$ ^"+word1.tl(attr_lem)+"<adj>"+var_numero+"<2>");
 			var_preadv_added = "preadv_";
 		}
 		else
-		if (word1.source(attr_a_adj, true).equals("<adj><sint><sup>"))
+		if (word1.sl(attr_a_adj).equals("<adj><sint><sup>"))
 		{
 			/**  ^plej<preadv>$ ^bona<adj><2>$  */
-			var_adjectiu = (""+TransferWord.copycase(word1.source(attr_lem, true), "plej")+"<preadv>"+"$ ^"+word1.target(attr_lem, true)+"<adj>"+var_numero+"<2>");
+			var_adjectiu = (""+TransferWord.copycase(word1.sl(attr_lem), "plej")+"<preadv>"+"$ ^"+word1.tl(attr_lem)+"<adj>"+var_numero+"<2>");
 			var_preadv_added = "preadv_";
 		}
 		else
-		if (word1.target(attr_a_adj, true).equals("<adj>"))
+		if (word1.tl(attr_a_adj).equals("<adj>"))
 		{
 			/**  ^bona<adj><2>$  */
-			var_adjectiu = (""+word1.target(attr_lem, true)+"<adj>"+var_numero+"<2>");
+			var_adjectiu = (""+word1.tl(attr_lem)+"<adj>"+var_numero+"<2>");
 		}
 		else
 		{
 			/**  ^bona<adj><2>$  */
-			var_adjectiu = (""+word1.target(attr_lem, true)+"<adj>"+var_numero+"<2>");
+			var_adjectiu = (""+word1.tl(attr_lem)+"<adj>"+var_numero+"<2>");
 		}
 	}
 	
 	private void macro_set_tipus_verbs1(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_set_tipus_verbs1",  word1); } 
-		if (list_netransitivaj.containsIgnoreCase(word1.source(attr_lemh, true)))
+		if (list_netransitivaj.containsIgnoreCase(word1.sl(attr_lemh)))
 		{
 			var_tipus_verb = "<netransitiva>";
 		}
 		else
-		if (list_reportingverb.containsIgnoreCase(word1.source(attr_lemh, true)))
+		if (list_reportingverb.containsIgnoreCase(word1.sl(attr_lemh)))
 		{
 			var_tipus_verb = "<reporting>";
 		}
@@ -256,59 +256,59 @@ verbfinal = pensi<vblex><pres>
 	private void macro_set_verbkonj2_do(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("macro_set_verbkonj2_do",  word1, blank1,  word2); } 
-		if ((word1.source(attr_a_tns, true).equals("<pres>")
-    || word1.source(attr_a_tns, true).equals("<inf>")))
+		if ((word1.sl(attr_a_tns).equals("<pres>")
+    || word1.sl(attr_a_tns).equals("<inf>")))
 		{
 			var_macro_tmp1 = "<pres>";
 		}
 		else
-		if (word1.source(attr_a_tns, true).equals("<past>"))
+		if (word1.sl(attr_a_tns).equals("<past>"))
 		{
 			var_macro_tmp1 = "<past>";
 		}
 		else
 		{
-			var_macro_tmp1 = (""+"<ERROR1_>"+word1.source(attr_a_tns, true));
+			var_macro_tmp1 = (""+"<ERROR1_>"+word1.sl(attr_a_tns));
 		}
-		var_verbkonj = (""+word2.target(attr_lemh, true)+word2.target(attr_a_vrb, true)+var_macro_tmp1+word2.target(attr_lemq, true));
+		var_verbkonj = (""+word2.tl(attr_lemh)+word2.tl(attr_a_vrb)+var_macro_tmp1+word2.tl(attr_lemq));
 	}
 	
 	private void macro_set_verbkonj2_willShallWould(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("macro_set_verbkonj2_willShallWould",  word1, blank1,  word2); } 
-		if ((word1.source(attr_lem, true).equalsIgnoreCase("will")
-    || word1.source(attr_lem, true).equalsIgnoreCase("shall")))
+		if ((word1.sl(attr_lem).equalsIgnoreCase("will")
+    || word1.sl(attr_lem).equalsIgnoreCase("shall")))
 		{
 			var_macro_tmp1 = "<fti>";
 		}
 		else
-		if (word1.source(attr_lem, true).equalsIgnoreCase("would"))
+		if (word1.sl(attr_lem).equalsIgnoreCase("would"))
 		{
 			var_macro_tmp1 = "<cni>";
 		}
 		else
 		{
-			var_macro_tmp1 = (""+"<ERROR2_>"+word1.source(attr_a_tns, true));
+			var_macro_tmp1 = (""+"<ERROR2_>"+word1.sl(attr_a_tns));
 		}
-		var_verbkonj = (""+word2.target(attr_lemh, true)+word2.target(attr_a_vrb, true)+var_macro_tmp1+word2.target(attr_lemq, true));
+		var_verbkonj = (""+word2.tl(attr_lemh)+word2.tl(attr_a_vrb)+var_macro_tmp1+word2.tl(attr_lemq));
 	}
 	
 	private void macro_set_temps1(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_set_temps1",  word1); } 
 		var_temps = "<UNKNOWN>";
-		if ((word1.source(attr_lem, true).equalsIgnoreCase("will")
-    || word1.source(attr_lem, true).equalsIgnoreCase("shall")))
+		if ((word1.sl(attr_lem).equalsIgnoreCase("will")
+    || word1.sl(attr_lem).equalsIgnoreCase("shall")))
 		{
 			var_temps = "<fti>";
 		}
 		else
-		if (word1.source(attr_lem, true).equalsIgnoreCase("would"))
+		if (word1.sl(attr_lem).equalsIgnoreCase("would"))
 		{
 			var_temps = "<cni>";
 		}
 		else
-		if (word1.source(attr_lem, true).equalsIgnoreCase("have"))
+		if (word1.sl(attr_lem).equalsIgnoreCase("have"))
 		{
 			var_temps = "<past>";
 		}
@@ -374,7 +374,7 @@ verbfinal = pensi<vblex><pres>
 	private void macro_set_determiner3(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
 		if (debug) { logCall("macro_set_determiner3",  word1, blank1,  word2, blank2,  word3); } 
-		if (word1.source(attr_lem, true).equalsIgnoreCase("a"))
+		if (word1.sl(attr_lem).equalsIgnoreCase("a"))
 		{
 			if (blank1.equals(" "))
 			{
@@ -388,7 +388,7 @@ verbfinal = pensi<vblex><pres>
 		else
 		{
 			/**  lemh por subteni "most of<det>"  */
-			var_determiner = (""+"^"+word1.target(attr_lemh, true)+word1.target(attr_a_det, true)+word3.target(attr_a_nbr, true)+"<2>"+word1.target(attr_lemq, true)+"$"+blank1);
+			var_determiner = (""+"^"+word1.tl(attr_lemh)+word1.tl(attr_a_det)+word3.tl(attr_a_nbr)+"<2>"+word1.tl(attr_lemq)+"$"+blank1);
 		}
 	}
 	
@@ -396,15 +396,15 @@ verbfinal = pensi<vblex><pres>
 	{
 		if (debug) { logCall("macro_set_determiner_de_genitivo2",  word1, blank1,  word2); } 
 		macro_set_numero1(out, word2);
-		if (word1.source(attr_lem, true).equalsIgnoreCase("a"))
+		if (word1.sl(attr_lem).equalsIgnoreCase("a"))
 		{
 			var_determiner = "";
 		}
 		else
 		{
-			word1.setTarget(attr_lem, TransferWord.copycase("aa", word1.target(attr_lem, true)), true);
+			word1.tlSet(attr_lem, TransferWord.copycase("aa", word1.tl(attr_lem)));
 			/**  lemh por subteni "most of<det>"  */
-			var_determiner = (""+"^"+word1.target(attr_lemh, true)+word1.target(attr_a_det, true)+var_numero+"<nom>"+word1.target(attr_lemq, true)+"$"+" ");
+			var_determiner = (""+"^"+word1.tl(attr_lemh)+word1.tl(attr_a_det)+var_numero+"<nom>"+word1.tl(attr_lemq)+"$"+" ");
 		}
 	}
 	
@@ -416,7 +416,7 @@ verbfinal = pensi<vblex><pres>
 	private void macro_set_and_or_but(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_set_and_or_but",  word1); } 
-		if (list_listo_and_or_but.containsIgnoreCase(word1.source(attr_lem, true)))
+		if (list_listo_and_or_but.containsIgnoreCase(word1.sl(attr_lem)))
 		{
 			var_and_or_but = "<and_or_but>";
 		}
@@ -444,7 +444,7 @@ verbfinal = pensi<vblex><pres>
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_whole, true)
+			         word1.tl(attr_whole)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -469,8 +469,8 @@ verbfinal = pensi<vblex><pres>
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lem, true)
-			         +word1.target(attr_a_prn, true)
+			         word1.tl(attr_lem)
+			         +word1.tl(attr_a_prn)
 			         +var_numero
 			         +"<2>"
 			         ;
@@ -495,7 +495,7 @@ verbfinal = pensi<vblex><pres>
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_whole, true)
+			         word1.tl(attr_whole)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -518,7 +518,7 @@ verbfinal = pensi<vblex><pres>
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_whole, true)
+			         word1.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -541,7 +541,7 @@ verbfinal = pensi<vblex><pres>
 		out.append('{');
 		{
 			String myword = 
-			         word2.target(attr_lem, true)
+			         word2.tl(attr_lem)
 			         +"a"
 			         +"<num><ord>"
 			         ;
@@ -568,8 +568,8 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank1);
 		{
 			String myword = 
-			         word1.target(attr_lem, true)
-			         +word1.target(attr_tags, true)
+			         word1.tl(attr_lem)
+			         +word1.tl(attr_tags)
 			         +"<nom>"
 			         ;
 			if (myword.length()>0)
@@ -593,7 +593,7 @@ verbfinal = pensi<vblex><pres>
 		out.append('{');
 		{
 			String myword = 
-			         word2.target(attr_lem, true)
+			         word2.tl(attr_lem)
 			         +"<num><ord>"
 			         ;
 			if (myword.length()>0)
@@ -619,8 +619,8 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank1);
 		{
 			String myword = 
-			         word1.target(attr_lem, true)
-			         +word1.target(attr_tags, true)
+			         word1.tl(attr_lem)
+			         +word1.tl(attr_tags)
 			         +"<nom>"
 			         ;
 			if (myword.length()>0)
@@ -657,7 +657,7 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank1);
 		{
 			String myword = 
-			         word3.target(attr_lem, true)
+			         word3.tl(attr_lem)
 			         +"an"
 			         +"<num><ord>"
 			         ;
@@ -684,8 +684,8 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank2);
 		{
 			String myword = 
-			         word2.target(attr_lem, true)
-			         +word2.target(attr_tags, true)
+			         word2.tl(attr_lem)
+			         +word2.tl(attr_tags)
 			         +"<nom>"
 			         ;
 			if (myword.length()>0)
@@ -721,7 +721,7 @@ verbfinal = pensi<vblex><pres>
 		}
 		{
 			String myword = 
-			         word3.target(attr_lem, true)
+			         word3.tl(attr_lem)
 			         +"n"
 			         +"<num><ord>"
 			         ;
@@ -749,8 +749,8 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank2);
 		{
 			String myword = 
-			         word2.target(attr_lem, true)
-			         +word2.target(attr_tags, true)
+			         word2.tl(attr_lem)
+			         +word2.tl(attr_tags)
 			         +"<nom>"
 			         ;
 			if (myword.length()>0)
@@ -774,7 +774,7 @@ verbfinal = pensi<vblex><pres>
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_whole, true)
+			         word1.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -815,7 +815,7 @@ verbfinal = pensi<vblex><pres>
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_whole, true)
+			         word1.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -840,7 +840,7 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank2);
 		{
 			String myword = 
-			         word3.target(attr_whole, true)
+			         word3.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -905,7 +905,7 @@ verbfinal = pensi<vblex><pres>
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_whole, true)
+			         word1.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -919,7 +919,7 @@ verbfinal = pensi<vblex><pres>
 			String myword = 
 			         "fojo"
 			         +"<n>"
-			         +word2.target(attr_a_nbr, true)
+			         +word2.tl(attr_a_nbr)
 			         +"<nom>"
 			         ;
 			if (myword.length()>0)
@@ -936,7 +936,7 @@ verbfinal = pensi<vblex><pres>
 	public void rule11__a(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule11__a",  word1); } 
-		if (word1.source(attr_lem, true).equals("A"))
+		if (word1.sl(attr_lem).equals("A"))
 		{
 			var_venontaVortoEstuMajuskla = "true";
 		}
@@ -954,10 +954,10 @@ verbfinal = pensi<vblex><pres>
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_tags, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_tags)
 			         +"<2>"
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -982,8 +982,8 @@ verbfinal = pensi<vblex><pres>
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lem, true)
-			         +word1.target(attr_tags, true)
+			         word1.tl(attr_lem)
+			         +word1.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -1008,7 +1008,7 @@ verbfinal = pensi<vblex><pres>
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_whole, true)
+			         word1.tl(attr_whole)
 			/**  <lit-tag v="2"/> no, keep <nom>  */
 			         +"<nom>"
 			         ;
@@ -1022,7 +1022,7 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_whole, true)
+			         word2.tl(attr_whole)
 			/**  <lit-tag v="2"/> no, keep <nom>  */
 			         +"<nom>"
 			         ;
@@ -1050,8 +1050,8 @@ verbfinal = pensi<vblex><pres>
 		out.append(var_determiner);
 		{
 			String myword = 
-			         word2.target(attr_lem, true)
-			         +word2.target(attr_tags, true)
+			         word2.tl(attr_lem)
+			         +word2.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -1122,13 +1122,13 @@ verbfinal = pensi<vblex><pres>
 		out.append(var_determiner);
 		{
 			String myword = 
-			         word2.target(attr_lem, true)
+			         word2.tl(attr_lem)
 			         +"<adj>"
-			         +word2.target(attr_a_acr, true)
+			         +word2.tl(attr_a_acr)
 			/**  se estas akronimo  */
-			         +word2.target(attr_a_gen, true)
+			         +word2.tl(attr_a_gen)
 			/**  se havas genron  */
-			         +word3.target(attr_a_nbr, true)
+			         +word3.tl(attr_a_nbr)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -1141,8 +1141,8 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank2);
 		{
 			String myword = 
-			         word3.target(attr_lem, true)
-			         +word3.target(attr_tags, true)
+			         word3.tl(attr_lem)
+			         +word3.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -1171,13 +1171,13 @@ verbfinal = pensi<vblex><pres>
 		out.append(var_determiner);
 		{
 			String myword = 
-			         word2.target(attr_lem, true)
+			         word2.tl(attr_lem)
 			         +"<adj>"
-			         +word2.target(attr_a_acr, true)
+			         +word2.tl(attr_a_acr)
 			/**  se estas akronimo  */
-			         +word2.target(attr_a_gen, true)
+			         +word2.tl(attr_a_gen)
 			/**  se havas genron  */
-			         +word4.target(attr_a_nbr, true)
+			         +word4.tl(attr_a_nbr)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -1190,13 +1190,13 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank2);
 		{
 			String myword = 
-			         word3.target(attr_lem, true)
+			         word3.tl(attr_lem)
 			         +"<adj>"
-			         +word3.target(attr_a_acr, true)
+			         +word3.tl(attr_a_acr)
 			/**  se estas akronimo  */
-			         +word3.target(attr_a_gen, true)
+			         +word3.tl(attr_a_gen)
 			/**  se havas genron  */
-			         +word4.target(attr_a_nbr, true)
+			         +word4.tl(attr_a_nbr)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -1209,8 +1209,8 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank3);
 		{
 			String myword = 
-			         word4.target(attr_lem, true)
-			         +word4.target(attr_tags, true)
+			         word4.tl(attr_lem)
+			         +word4.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -1240,13 +1240,13 @@ verbfinal = pensi<vblex><pres>
 		out.append(var_determiner);
 		{
 			String myword = 
-			         word2.target(attr_lem, true)
+			         word2.tl(attr_lem)
 			         +"<adj>"
-			         +word2.target(attr_a_acr, true)
+			         +word2.tl(attr_a_acr)
 			/**  se estas akronimo  */
-			         +word2.target(attr_a_gen, true)
+			         +word2.tl(attr_a_gen)
 			/**  se havas genron  */
-			         +word5.target(attr_a_nbr, true)
+			         +word5.tl(attr_a_nbr)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -1259,13 +1259,13 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank2);
 		{
 			String myword = 
-			         word3.target(attr_lem, true)
+			         word3.tl(attr_lem)
 			         +"<adj>"
-			         +word3.target(attr_a_acr, true)
+			         +word3.tl(attr_a_acr)
 			/**  se estas akronimo  */
-			         +word3.target(attr_a_gen, true)
+			         +word3.tl(attr_a_gen)
 			/**  se havas genron  */
-			         +word5.target(attr_a_nbr, true)
+			         +word5.tl(attr_a_nbr)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -1278,13 +1278,13 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank3);
 		{
 			String myword = 
-			         word4.target(attr_lem, true)
+			         word4.tl(attr_lem)
 			         +"<adj>"
-			         +word4.target(attr_a_acr, true)
+			         +word4.tl(attr_a_acr)
 			/**  se estas akronimo  */
-			         +word4.target(attr_a_gen, true)
+			         +word4.tl(attr_a_gen)
 			/**  se havas genron  */
-			         +word5.target(attr_a_nbr, true)
+			         +word5.tl(attr_a_nbr)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -1297,8 +1297,8 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank4);
 		{
 			String myword = 
-			         word5.target(attr_lem, true)
-			         +word5.target(attr_tags, true)
+			         word5.tl(attr_lem)
+			         +word5.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -1364,8 +1364,8 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank2);
 		{
 			String myword = 
-			         word3.target(attr_lem, true)
-			         +word3.target(attr_tags, true)
+			         word3.tl(attr_lem)
+			         +word3.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -1435,8 +1435,8 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_lem, true)
-			         +word2.target(attr_tags, true)
+			         word2.tl(attr_lem)
+			         +word2.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -1489,8 +1489,8 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank2);
 		{
 			String myword = 
-			         word3.target(attr_lem, true)
-			         +word3.target(attr_tags, true)
+			         word3.tl(attr_lem)
+			         +word3.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -1517,7 +1517,7 @@ verbfinal = pensi<vblex><pres>
 		out.append(var_determiner);
 		{
 			String myword = 
-			         word2.target(attr_whole, true)
+			         word2.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1529,7 +1529,7 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank2);
 		{
 			String myword = 
-			         word3.target(attr_whole, true)
+			         word3.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1541,8 +1541,8 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank3);
 		{
 			String myword = 
-			         word4.target(attr_lem, true)
-			         +word4.target(attr_tags, true)
+			         word4.tl(attr_lem)
+			         +word4.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -1596,8 +1596,8 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank3);
 		{
 			String myword = 
-			         word4.target(attr_lem, true)
-			         +word4.target(attr_tags, true)
+			         word4.tl(attr_lem)
+			         +word4.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -1665,8 +1665,8 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank4);
 		{
 			String myword = 
-			         word5.target(attr_lem, true)
-			         +word5.target(attr_tags, true)
+			         word5.tl(attr_lem)
+			         +word5.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -1727,11 +1727,11 @@ verbfinal = pensi<vblex><pres>
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lem, true)
+			         word1.tl(attr_lem)
 			         +"<adj>"
-			         +word1.target(attr_a_acr, true)
-			         +word1.target(attr_a_gen, true)
-			         +word2.target(attr_a_nbr, true)
+			         +word1.tl(attr_a_acr)
+			         +word1.tl(attr_a_gen)
+			         +word2.tl(attr_a_nbr)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -1744,8 +1744,8 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_lem, true)
-			         +word2.target(attr_tags, true)
+			         word2.tl(attr_lem)
+			         +word2.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -1769,8 +1769,8 @@ verbfinal = pensi<vblex><pres>
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lem, true)
-			         +word1.target(attr_tags, true)
+			         word1.tl(attr_lem)
+			         +word1.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -1794,8 +1794,8 @@ verbfinal = pensi<vblex><pres>
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lem, true)
-			         +word1.target(attr_tags, true)
+			         word1.tl(attr_lem)
+			         +word1.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -1808,8 +1808,8 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_lem, true)
-			         +word2.target(attr_tags, true)
+			         word2.tl(attr_lem)
+			         +word2.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -1833,8 +1833,8 @@ verbfinal = pensi<vblex><pres>
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lem, true)
-			         +word1.target(attr_tags, true)
+			         word1.tl(attr_lem)
+			         +word1.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -1847,8 +1847,8 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_lem, true)
-			         +word2.target(attr_tags, true)
+			         word2.tl(attr_lem)
+			         +word2.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -1861,8 +1861,8 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank2);
 		{
 			String myword = 
-			         word3.target(attr_lem, true)
-			         +word3.target(attr_tags, true)
+			         word3.tl(attr_lem)
+			         +word3.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -1886,8 +1886,8 @@ verbfinal = pensi<vblex><pres>
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lem, true)
-			         +word1.target(attr_tags, true)
+			         word1.tl(attr_lem)
+			         +word1.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -1900,8 +1900,8 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_lem, true)
-			         +word2.target(attr_tags, true)
+			         word2.tl(attr_lem)
+			         +word2.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -1914,8 +1914,8 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank2);
 		{
 			String myword = 
-			         word3.target(attr_lem, true)
-			         +word3.target(attr_tags, true)
+			         word3.tl(attr_lem)
+			         +word3.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -1928,8 +1928,8 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank3);
 		{
 			String myword = 
-			         word4.target(attr_lem, true)
-			         +word4.target(attr_tags, true)
+			         word4.tl(attr_lem)
+			         +word4.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -1953,8 +1953,8 @@ verbfinal = pensi<vblex><pres>
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lem, true)
-			         +word1.target(attr_tags, true)
+			         word1.tl(attr_lem)
+			         +word1.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -1967,7 +1967,7 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_whole, true)
+			         word2.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -1979,8 +1979,8 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank2);
 		{
 			String myword = 
-			         word3.target(attr_lem, true)
-			         +word3.target(attr_tags, true)
+			         word3.tl(attr_lem)
+			         +word3.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -1993,8 +1993,8 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank3);
 		{
 			String myword = 
-			         word4.target(attr_lem, true)
-			         +word4.target(attr_tags, true)
+			         word4.tl(attr_lem)
+			         +word4.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -2018,8 +2018,8 @@ verbfinal = pensi<vblex><pres>
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lem, true)
-			         +word1.target(attr_tags, true)
+			         word1.tl(attr_lem)
+			         +word1.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -2032,8 +2032,8 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_lem, true)
-			         +word2.target(attr_tags, true)
+			         word2.tl(attr_lem)
+			         +word2.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -2046,7 +2046,7 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank2);
 		{
 			String myword = 
-			         word3.target(attr_whole, true)
+			         word3.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2058,8 +2058,8 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank3);
 		{
 			String myword = 
-			         word4.target(attr_lem, true)
-			         +word4.target(attr_tags, true)
+			         word4.tl(attr_lem)
+			         +word4.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -2083,8 +2083,8 @@ verbfinal = pensi<vblex><pres>
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lem, true)
-			         +word1.target(attr_tags, true)
+			         word1.tl(attr_lem)
+			         +word1.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -2097,7 +2097,7 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_whole, true)
+			         word2.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2109,8 +2109,8 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank2);
 		{
 			String myword = 
-			         word3.target(attr_lem, true)
-			         +word3.target(attr_tags, true)
+			         word3.tl(attr_lem)
+			         +word3.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -2123,8 +2123,8 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank3);
 		{
 			String myword = 
-			         word4.target(attr_lem, true)
-			         +word4.target(attr_tags, true)
+			         word4.tl(attr_lem)
+			         +word4.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -2137,7 +2137,7 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank4);
 		{
 			String myword = 
-			         word5.target(attr_whole, true)
+			         word5.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2149,8 +2149,8 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank5);
 		{
 			String myword = 
-			         word6.target(attr_lem, true)
-			         +word6.target(attr_tags, true)
+			         word6.tl(attr_lem)
+			         +word6.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -2178,9 +2178,9 @@ verbfinal = pensi<vblex><pres>
 		out.append('{');
 		{
 			String myword = 
-			         word3.target(attr_lem, true)
+			         word3.tl(attr_lem)
 			/**  hundo  */
-			         +word3.target(attr_tags, true)
+			         +word3.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -2195,7 +2195,7 @@ verbfinal = pensi<vblex><pres>
 		out.append(" ");
 		{
 			String myword = 
-			         word2.target(attr_whole, true)
+			         word2.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2208,9 +2208,9 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank2);
 		{
 			String myword = 
-			         word1.target(attr_lem, true)
+			         word1.tl(attr_lem)
 			/**  gxardenisto  */
-			         +word1.target(attr_tags, true)
+			         +word1.tl(attr_tags)
 			         +var_nomvar
 			         ;
 			if (myword.length()>0)
@@ -2238,9 +2238,9 @@ verbfinal = pensi<vblex><pres>
 		out.append('{');
 		{
 			String myword = 
-			         word3.target(attr_lem, true)
+			         word3.tl(attr_lem)
 			/**  hundo  */
-			         +word3.target(attr_tags, true)
+			         +word3.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -2255,7 +2255,7 @@ verbfinal = pensi<vblex><pres>
 		out.append(" ");
 		{
 			String myword = 
-			         word2.target(attr_whole, true)
+			         word2.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2268,9 +2268,9 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank2);
 		{
 			String myword = 
-			         word1.target(attr_lem, true)
+			         word1.tl(attr_lem)
 			/**  gxardenisto  */
-			         +word1.target(attr_tags, true)
+			         +word1.tl(attr_tags)
 			         +var_nomvar
 			         ;
 			if (myword.length()>0)
@@ -2299,14 +2299,14 @@ verbfinal = pensi<vblex><pres>
 		out.append('{');
 		{
 			String myword = 
-			         word3.target(attr_lem, true)
+			         word3.tl(attr_lem)
 			/**  hundA  */
 			         +"<adj>"
-			         +word3.target(attr_a_acr, true)
+			         +word3.tl(attr_a_acr)
 			/**  se estas akronimo  */
-			         +word3.target(attr_a_gen, true)
+			         +word3.tl(attr_a_gen)
 			/**  se havas genron  */
-			         +word4.target(attr_a_nbr, true)
+			         +word4.tl(attr_a_nbr)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -2321,9 +2321,9 @@ verbfinal = pensi<vblex><pres>
 		out.append(" ");
 		{
 			String myword = 
-			         word4.target(attr_lem, true)
+			         word4.tl(attr_lem)
 			/**  domo  */
-			         +word4.target(attr_tags, true)
+			         +word4.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -2336,7 +2336,7 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank2);
 		{
 			String myword = 
-			         word2.target(attr_whole, true)
+			         word2.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2349,9 +2349,9 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank3);
 		{
 			String myword = 
-			         word1.target(attr_lem, true)
+			         word1.tl(attr_lem)
 			/**  gxardenisto  */
-			         +word1.target(attr_tags, true)
+			         +word1.tl(attr_tags)
 			         +var_nomvar
 			         ;
 			if (myword.length()>0)
@@ -2373,7 +2373,7 @@ verbfinal = pensi<vblex><pres>
 		macro_ordigu_genron(out, word2);
 		macro_ordigu_genron(out, word4);
 		macro_set_determiner_de_genitivo2(out, word1, blank1, word2);
-		word1.setTarget(attr_lem, TransferWord.copycase("aa", word1.target(attr_lem, true)), true);
+		word1.tlSet(attr_lem, TransferWord.copycase("aa", word1.tl(attr_lem)));
 		macro_set_blankon_se_havas_formaton2(out, word1, blank1, word2);
 		var_tmp2 = var_blanko;
 		macro_set_blankon_se_havas_formaton2(out, word2, blank2, word3);
@@ -2383,7 +2383,7 @@ verbfinal = pensi<vblex><pres>
 		out.append('{');
 		{
 			String myword = 
-			         TransferWord.copycase(word1.source(attr_lem, true), "la")
+			         TransferWord.copycase(word1.sl(attr_lem), "la")
 			         +"<det><def><sp>"
 			         ;
 			if (myword.length()>0)
@@ -2399,9 +2399,9 @@ verbfinal = pensi<vblex><pres>
 		out.append(" ");
 		{
 			String myword = 
-			         word4.target(attr_lem, true)
+			         word4.tl(attr_lem)
 			/**  hundo  */
-			         +word4.target(attr_tags, true)
+			         +word4.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -2416,7 +2416,7 @@ verbfinal = pensi<vblex><pres>
 		out.append(" ");
 		{
 			String myword = 
-			         word3.target(attr_whole, true)
+			         word3.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2431,9 +2431,9 @@ verbfinal = pensi<vblex><pres>
 		/**  lia  */
 		{
 			String myword = 
-			         word2.target(attr_lem, true)
+			         word2.tl(attr_lem)
 			/**  gxardenisto  */
-			         +word2.target(attr_tags, true)
+			         +word2.tl(attr_tags)
 			         +var_nomvar
 			         ;
 			if (myword.length()>0)
@@ -2468,7 +2468,7 @@ verbfinal = pensi<vblex><pres>
 		out.append(var_tmp2);
 		{
 			String myword = 
-			         TransferWord.copycase(word1.source(attr_lem, true), "la")
+			         TransferWord.copycase(word1.sl(attr_lem), "la")
 			         +"<det><def><sp>"
 			         ;
 			if (myword.length()>0)
@@ -2482,9 +2482,9 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank2);
 		{
 			String myword = 
-			         word5.target(attr_lem, true)
+			         word5.tl(attr_lem)
 			/**  hundo  */
-			         +word5.target(attr_tags, true)
+			         +word5.tl(attr_tags)
 			         +"<2>"
 			         ;
 			if (myword.length()>0)
@@ -2499,7 +2499,7 @@ verbfinal = pensi<vblex><pres>
 		out.append(" ");
 		{
 			String myword = 
-			         word4.target(attr_whole, true)
+			         word4.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2514,9 +2514,9 @@ verbfinal = pensi<vblex><pres>
 		/**  lia  */
 		{
 			String myword = 
-			         word2.target(attr_lem, true)
+			         word2.tl(attr_lem)
 			/**  ĝardeno  */
-			         +word2.target(attr_tags, true)
+			         +word2.tl(attr_tags)
 			         +var_tmp1
 			         ;
 			if (myword.length()>0)
@@ -2529,9 +2529,9 @@ verbfinal = pensi<vblex><pres>
 		out.append(" ");
 		{
 			String myword = 
-			         word3.target(attr_lem, true)
+			         word3.tl(attr_lem)
 			/**  viro   */
-			         +word3.target(attr_tags, true)
+			         +word3.tl(attr_tags)
 			         +var_nomvar
 			         ;
 			if (myword.length()>0)
@@ -2568,7 +2568,7 @@ verbfinal = pensi<vblex><pres>
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_whole, true)
+			         word1.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2593,7 +2593,7 @@ verbfinal = pensi<vblex><pres>
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_whole, true)
+			         word1.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2615,7 +2615,7 @@ verbfinal = pensi<vblex><pres>
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_whole, true)
+			         word1.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2637,7 +2637,7 @@ verbfinal = pensi<vblex><pres>
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_whole, true)
+			         word1.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2658,7 +2658,7 @@ verbfinal = pensi<vblex><pres>
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_whole, true)
+			         word1.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2688,7 +2688,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_whole, true)
+			         word1.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2711,7 +2711,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_whole, true)
+			         word1.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2734,7 +2734,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_whole, true)
+			         word1.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2776,7 +2776,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_whole, true)
+			         word1.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2799,7 +2799,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_whole, true)
+			         word1.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2844,7 +2844,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_whole, true)
+			         word1.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2867,7 +2867,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_whole, true)
+			         word1.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2890,7 +2890,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_whole, true)
+			         word1.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2914,14 +2914,14 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append(TransferWord.copycase(var_caseFirstWord, "verbInf"));
 		out.append("<SV>");
 		out.append(var_tipus_verb);
-		out.append(word2.target(attr_a_tns, true));
+		out.append(word2.tl(attr_a_tns));
 		out.append('{');
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_vrb, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_vrb)
 			         +"<3>"
-			         +word2.target(attr_lemq, true)
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2948,10 +2948,10 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append('{');
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_vrb, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_vrb)
 			         +"<3>"
-			         +word2.target(attr_lemq, true)
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -2979,10 +2979,10 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append('{');
 		{
 			String myword = 
-			         word3.target(attr_lemh, true)
-			         +word3.target(attr_a_vrb, true)
+			         word3.tl(attr_lemh)
+			         +word3.tl(attr_a_vrb)
 			         +"<3>"
-			         +word3.target(attr_lemq, true)
+			         +word3.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -3005,14 +3005,14 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append(TransferWord.copycase(var_caseFirstWord, "be_vbger"));
 		out.append("<SV>");
 		out.append(var_tipus_verb);
-		out.append(word1.target(attr_a_tns, true));
+		out.append(word1.tl(attr_a_tns));
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lem, true)
-			         +word1.target(attr_a_vrb, true)
+			         word1.tl(attr_lem)
+			         +word1.tl(attr_a_vrb)
 			         +"<3>"
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -3024,10 +3024,10 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append(blank1);
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_vrb, true)
-			         +word2.target(attr_a_tns, true)
-			         +word2.target(attr_lemq, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_vrb)
+			         +word2.tl(attr_a_tns)
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -3050,7 +3050,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append(TransferWord.copycase(var_caseFirstWord, "el_verb"));
 		out.append("<SV>");
 		out.append(var_tipus_verb);
-		out.append(word1.target(attr_a_tns, true));
+		out.append(word1.tl(attr_a_tns));
 		out.append('{');
 		{
 			String myword = 
@@ -3066,10 +3066,10 @@ the ones who:the ones who<rel><nn><mf><pl>
 		}
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_vrb, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_vrb)
 			         +"<3>"
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -3091,11 +3091,11 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append(TransferWord.copycase(var_caseFirstWord, "ser_not"));
 		out.append("<SV>");
 		out.append(var_tipus_verb);
-		out.append(word1.target(attr_a_tns, true));
+		out.append(word1.tl(attr_a_tns));
 		out.append('{');
 		{
 			String myword = 
-			         word2.target(attr_whole, true)
+			         word2.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -3107,10 +3107,10 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append(blank1);
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_vrb, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_vrb)
 			         +"<3>"
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -3131,12 +3131,12 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append(TransferWord.copycase(var_caseFirstWord, "pls_verb1"));
 		out.append("<SV>");
 		out.append(var_tipus_verb);
-		out.append(word1.target(attr_a_tns, true));
+		out.append(word1.tl(attr_a_tns));
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lem, true)
-			         +word1.target(attr_a_vrb, true)
+			         word1.tl(attr_lem)
+			         +word1.tl(attr_a_vrb)
 			         +"<3>"
 			         ;
 			if (myword.length()>0)
@@ -3150,12 +3150,12 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append(blank1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "pls_verb2"));
-		out.append(word2.target(attr_a_tns, true));
+		out.append(word2.tl(attr_a_tns));
 		out.append('{');
 		{
 			String myword = 
-			         word2.target(attr_lem, true)
-			         +word2.target(attr_a_vrb, true)
+			         word2.tl(attr_lem)
+			         +word2.tl(attr_a_vrb)
 			         +"<inf>"
 			         ;
 			if (myword.length()>0)
@@ -3175,7 +3175,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 		macro_firstWord(out, word1);
 		macro_set_tipus_verbs1(out, word3);
 		macro_set_verbkonj2_do(out, word1, blank2, word3);
-		if (!word2.source(attr_lem, true).equalsIgnoreCase("not"))
+		if (!word2.sl(attr_lem).equalsIgnoreCase("not"))
 		{
 			out.append('^');
 			out.append(TransferWord.copycase(var_caseFirstWord, "ja2"));
@@ -3207,7 +3207,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append('{');
 		{
 			String myword = 
-			         word2.target(attr_whole, true)
+			         word2.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -3222,7 +3222,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append("verbcj");
 		out.append("<SV>");
 		out.append(var_tipus_verb);
-		out.append(word1.target(attr_a_tns, true));
+		out.append(word1.tl(attr_a_tns));
 		out.append('{');
 		{
 			String myword = 
@@ -3267,7 +3267,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append("verbcj2");
 		out.append("<SV>");
 		out.append(var_tipus_verb);
-		out.append(word1.target(attr_a_tns, true));
+		out.append(word1.tl(attr_a_tns));
 		out.append('{');
 		{
 			String myword = 
@@ -3300,7 +3300,7 @@ might:might<vaux><inf>
 		if (debug) { logCall("rule62__vaux_vbhaver__vblex_vbser",  word1, blank1,  word2); } 
 		macro_firstWord(out, word1);
 		macro_set_tipus_verbs1(out, word2);
-		if (list_willwouldshallhave.containsIgnoreCase(word1.source(attr_lem, true)))
+		if (list_willwouldshallhave.containsIgnoreCase(word1.sl(attr_lem)))
 		{
 			macro_set_temps1(out, word1);
 			macro_sendu_blankon_se_havas_formaton2(out, word1, blank1, word2);
@@ -3312,10 +3312,10 @@ might:might<vaux><inf>
 			out.append('{');
 			{
 				String myword = 
-				         word2.target(attr_lemh, true)
-				         +word2.target(attr_a_vrb, true)
+				         word2.tl(attr_lemh)
+				         +word2.tl(attr_a_vrb)
 				         +"<3>"
-				         +word2.target(attr_lemq, true)
+				         +word2.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3327,9 +3327,9 @@ might:might<vaux><inf>
 			out.append("}$");
 		}
 		else
-		if (((word1.source(attr_lem, true).equalsIgnoreCase("can")
-    && word1.source(attr_a_tns, true).equalsIgnoreCase("<past>"))
-    || word1.source(attr_lem, true).equalsIgnoreCase("might")))
+		if (((word1.sl(attr_lem).equalsIgnoreCase("can")
+    && word1.sl(attr_a_tns).equalsIgnoreCase("<past>"))
+    || word1.sl(attr_lem).equalsIgnoreCase("might")))
 		{
 			var_temps = "<cni>";
 			out.append('^');
@@ -3353,10 +3353,10 @@ might:might<vaux><inf>
 			out.append(blank1);
 			{
 				String myword = 
-				         word2.target(attr_lemh, true)
-				         +word2.target(attr_a_vrb, true)
+				         word2.tl(attr_lemh)
+				         +word2.tl(attr_a_vrb)
 				         +"<3>"
-				         +word2.target(attr_lemq, true)
+				         +word2.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3395,19 +3395,19 @@ might:might<vaux><inf>
  */
 		else
 		{
-			var_temps = word2.source(attr_a_tns, true);
+			var_temps = word2.sl(attr_a_tns);
 			out.append('^');
 			out.append(TransferWord.copycase(var_caseFirstWord, "vaux_verb2"));
 			out.append("<SV>");
 			out.append(var_tipus_verb);
-			out.append(word1.target(attr_a_tns, true));
+			out.append(word1.tl(attr_a_tns));
 			out.append('{');
 			{
 				String myword = 
-				         word1.target(attr_lemh, true)
-				         +word1.target(attr_a_vrb, true)
+				         word1.tl(attr_lemh)
+				         +word1.tl(attr_a_vrb)
 				         +"<3>"
-				         +word1.target(attr_lemq, true)
+				         +word1.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3419,10 +3419,10 @@ might:might<vaux><inf>
 			out.append(blank1);
 			{
 				String myword = 
-				         word2.target(attr_lemh, true)
-				         +word2.target(attr_a_vrb, true)
+				         word2.tl(attr_lemh)
+				         +word2.tl(attr_a_vrb)
 				         +var_temps
-				         +word2.target(attr_lemq, true)
+				         +word2.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3441,7 +3441,7 @@ might:might<vaux><inf>
 		if (debug) { logCall("rule63__vaux_vbhaver__adv__vblex_vbser",  word1, blank1,  word2, blank2,  word3); } 
 		macro_firstWord(out, word1);
 		macro_set_tipus_verbs1(out, word3);
-		if (list_willwouldshallhave.containsIgnoreCase(word1.source(attr_lem, true)))
+		if (list_willwouldshallhave.containsIgnoreCase(word1.sl(attr_lem)))
 		{
 			macro_sendu_blankon_se_havas_formaton2(out, word1, blank1, word2);
 			macro_set_temps1(out, word1);
@@ -3453,7 +3453,7 @@ might:might<vaux><inf>
 			out.append('{');
 			{
 				String myword = 
-				         word2.target(attr_whole, true)
+				         word2.tl(attr_whole)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3465,10 +3465,10 @@ might:might<vaux><inf>
 			out.append(blank2);
 			{
 				String myword = 
-				         word3.target(attr_lemh, true)
-				         +word3.target(attr_a_vrb, true)
+				         word3.tl(attr_lemh)
+				         +word3.tl(attr_a_vrb)
 				         +"<3>"
-				         +word3.target(attr_lemq, true)
+				         +word3.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3480,9 +3480,9 @@ might:might<vaux><inf>
 			out.append("}$");
 		}
 		else
-		if (((word1.source(attr_lem, true).equalsIgnoreCase("can")
-    && word1.source(attr_a_tns, true).equalsIgnoreCase("<past>"))
-    || word1.source(attr_lem, true).equalsIgnoreCase("might")))
+		if (((word1.sl(attr_lem).equalsIgnoreCase("can")
+    && word1.sl(attr_a_tns).equalsIgnoreCase("<past>"))
+    || word1.sl(attr_lem).equalsIgnoreCase("might")))
 		{
 			var_temps = "<cni>";
 			out.append('^');
@@ -3493,7 +3493,7 @@ might:might<vaux><inf>
 			out.append('{');
 			{
 				String myword = 
-				         word2.target(attr_whole, true)
+				         word2.tl(attr_whole)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3518,10 +3518,10 @@ might:might<vaux><inf>
 			out.append(blank2);
 			{
 				String myword = 
-				         word3.target(attr_lemh, true)
-				         +word3.target(attr_a_vrb, true)
+				         word3.tl(attr_lemh)
+				         +word3.tl(attr_a_vrb)
 				         +"<3>"
-				         +word3.target(attr_lemq, true)
+				         +word3.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3534,7 +3534,7 @@ might:might<vaux><inf>
 		}
 		else
 		{
-			var_temps = word3.source(attr_a_tns, true);
+			var_temps = word3.sl(attr_a_tns);
 			out.append('^');
 			out.append(TransferWord.copycase(var_caseFirstWord, "vaux_verb4"));
 			out.append("<SV>");
@@ -3543,7 +3543,7 @@ might:might<vaux><inf>
 			out.append('{');
 			{
 				String myword = 
-				         word2.target(attr_whole, true)
+				         word2.tl(attr_whole)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3555,7 +3555,7 @@ might:might<vaux><inf>
 			out.append(blank1);
 			{
 				String myword = 
-				         word1.target(attr_whole, true)
+				         word1.tl(attr_whole)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3567,10 +3567,10 @@ might:might<vaux><inf>
 			out.append(blank2);
 			{
 				String myword = 
-				         word3.target(attr_lemh, true)
-				         +word3.target(attr_a_vrb, true)
+				         word3.tl(attr_lemh)
+				         +word3.tl(attr_a_vrb)
 				         +"<3>"
-				         +word3.target(attr_lemq, true)
+				         +word3.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3589,7 +3589,7 @@ might:might<vaux><inf>
 		if (debug) { logCall("rule64__vaux_vbhaver__adv__adv__vblex_vbser",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		macro_firstWord(out, word1);
 		macro_set_tipus_verbs1(out, word4);
-		if (list_willwouldshallhave.containsIgnoreCase(word1.source(attr_lem, true)))
+		if (list_willwouldshallhave.containsIgnoreCase(word1.sl(attr_lem)))
 		{
 			macro_set_temps1(out, word1);
 			macro_sendu_blankon_se_havas_formaton2(out, word1, blank1, word2);
@@ -3601,7 +3601,7 @@ might:might<vaux><inf>
 			out.append('{');
 			{
 				String myword = 
-				         word2.target(attr_whole, true)
+				         word2.tl(attr_whole)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3613,7 +3613,7 @@ might:might<vaux><inf>
 			out.append(blank2);
 			{
 				String myword = 
-				         word3.target(attr_whole, true)
+				         word3.tl(attr_whole)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3625,10 +3625,10 @@ might:might<vaux><inf>
 			out.append(blank3);
 			{
 				String myword = 
-				         word4.target(attr_lemh, true)
-				         +word4.target(attr_a_vrb, true)
+				         word4.tl(attr_lemh)
+				         +word4.tl(attr_a_vrb)
 				         +"<3>"
-				         +word4.target(attr_lemq, true)
+				         +word4.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3640,9 +3640,9 @@ might:might<vaux><inf>
 			out.append("}$");
 		}
 		else
-		if (((word1.source(attr_lem, true).equalsIgnoreCase("can")
-    && word1.source(attr_a_tns, true).equalsIgnoreCase("<past>"))
-    || word1.source(attr_lem, true).equalsIgnoreCase("might")))
+		if (((word1.sl(attr_lem).equalsIgnoreCase("can")
+    && word1.sl(attr_a_tns).equalsIgnoreCase("<past>"))
+    || word1.sl(attr_lem).equalsIgnoreCase("might")))
 		{
 			var_temps = "<cni>";
 			out.append('^');
@@ -3653,7 +3653,7 @@ might:might<vaux><inf>
 			out.append('{');
 			{
 				String myword = 
-				         word2.target(attr_whole, true)
+				         word2.tl(attr_whole)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3665,7 +3665,7 @@ might:might<vaux><inf>
 			out.append(blank1);
 			{
 				String myword = 
-				         word3.target(attr_whole, true)
+				         word3.tl(attr_whole)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3690,10 +3690,10 @@ might:might<vaux><inf>
 			out.append(blank3);
 			{
 				String myword = 
-				         word4.target(attr_lemh, true)
-				         +word4.target(attr_a_vrb, true)
+				         word4.tl(attr_lemh)
+				         +word4.tl(attr_a_vrb)
 				         +"<3>"
-				         +word4.target(attr_lemq, true)
+				         +word4.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3706,7 +3706,7 @@ might:might<vaux><inf>
 		}
 		else
 		{
-			var_temps = word4.source(attr_a_tns, true);
+			var_temps = word4.sl(attr_a_tns);
 			out.append('^');
 			out.append(TransferWord.copycase(var_caseFirstWord, "vaux_verb6"));
 			out.append("<SV>");
@@ -3715,7 +3715,7 @@ might:might<vaux><inf>
 			out.append('{');
 			{
 				String myword = 
-				         word1.target(attr_whole, true)
+				         word1.tl(attr_whole)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3727,7 +3727,7 @@ might:might<vaux><inf>
 			out.append(blank1);
 			{
 				String myword = 
-				         word2.target(attr_whole, true)
+				         word2.tl(attr_whole)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3739,7 +3739,7 @@ might:might<vaux><inf>
 			out.append(blank2);
 			{
 				String myword = 
-				         word3.target(attr_whole, true)
+				         word3.tl(attr_whole)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3751,10 +3751,10 @@ might:might<vaux><inf>
 			out.append(blank3);
 			{
 				String myword = 
-				         word4.target(attr_lemh, true)
-				         +word4.target(attr_a_vrb, true)
+				         word4.tl(attr_lemh)
+				         +word4.tl(attr_a_vrb)
 				         +"<3>"
-				         +word4.target(attr_lemq, true)
+				         +word4.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3773,7 +3773,7 @@ might:might<vaux><inf>
 		if (debug) { logCall("rule65__vaux_vbhaver__vbhaver__vblex_vbser",  word1, blank1,  word2, blank2,  word3); } 
 		macro_firstWord(out, word1);
 		macro_set_tipus_verbs1(out, word3);
-		if (list_willwouldshallhave.containsIgnoreCase(word1.source(attr_lem, true)))
+		if (list_willwouldshallhave.containsIgnoreCase(word1.sl(attr_lem)))
 		{
 			macro_set_temps1(out, word1);
 			macro_sendu_blankon_se_havas_formaton2(out, word1, blank1, word2);
@@ -3799,10 +3799,10 @@ might:might<vaux><inf>
 			out.append(blank2);
 			{
 				String myword = 
-				         word3.target(attr_lemh, true)
-				         +word3.target(attr_a_vrb, true)
+				         word3.tl(attr_lemh)
+				         +word3.tl(attr_a_vrb)
 				         +"<3>"
-				         +word3.target(attr_lemq, true)
+				         +word3.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3814,7 +3814,7 @@ might:might<vaux><inf>
 			out.append("}$");
 		}
 		else
-		if (word1.source(attr_lem, true).equalsIgnoreCase("may"))
+		if (word1.sl(attr_lem).equalsIgnoreCase("may"))
 		{
 			var_temps = "<past>";
 			macro_sendu_blankon_se_havas_formaton2(out, word1, blank1, word2);
@@ -3839,10 +3839,10 @@ might:might<vaux><inf>
 			out.append(blank2);
 			{
 				String myword = 
-				         word3.target(attr_lemh, true)
-				         +word3.target(attr_a_vrb, true)
+				         word3.tl(attr_lemh)
+				         +word3.tl(attr_a_vrb)
 				         +"<3>"
-				         +word3.target(attr_lemq, true)
+				         +word3.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3854,7 +3854,7 @@ might:might<vaux><inf>
 			out.append("}$");
 		}
 		else
-		if (word1.source(attr_lem, true).equalsIgnoreCase("might"))
+		if (word1.sl(attr_lem).equalsIgnoreCase("might"))
 		{
 			var_temps = "<cni>";
 			macro_sendu_blankon_se_havas_formaton2(out, word1, blank1, word2);
@@ -3879,10 +3879,10 @@ might:might<vaux><inf>
 			out.append(blank2);
 			{
 				String myword = 
-				         word3.target(attr_lemh, true)
-				         +word3.target(attr_a_vrb, true)
+				         word3.tl(attr_lemh)
+				         +word3.tl(attr_a_vrb)
 				         +"<3>"
-				         +word3.target(attr_lemq, true)
+				         +word3.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3894,8 +3894,8 @@ might:might<vaux><inf>
 			out.append("}$");
 		}
 		else
-		if ((word1.source(attr_lem, true).equalsIgnoreCase("can")
-    || word1.source(attr_a_tns, true).equals("past")))
+		if ((word1.sl(attr_lem).equalsIgnoreCase("can")
+    || word1.sl(attr_a_tns).equals("past")))
 		{
 			var_temps = "<cni>";
 			macro_sendu_blankon_se_havas_formaton2(out, word1, blank1, word2);
@@ -3920,10 +3920,10 @@ might:might<vaux><inf>
 			out.append(blank2);
 			{
 				String myword = 
-				         word3.target(attr_lemh, true)
-				         +word3.target(attr_a_vrb, true)
+				         word3.tl(attr_lemh)
+				         +word3.tl(attr_a_vrb)
 				         +"<3>"
-				         +word3.target(attr_lemq, true)
+				         +word3.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3937,7 +3937,7 @@ might:might<vaux><inf>
 		else
 		{
 			var_temps = "<past>";
-			if (word1.source(attr_lem, true).equalsIgnoreCase("should"))
+			if (word1.sl(attr_lem).equalsIgnoreCase("should"))
 			{
 				var_temps = "<cni>";
 			}
@@ -3950,10 +3950,10 @@ might:might<vaux><inf>
 			out.append('{');
 			{
 				String myword = 
-				         word1.target(attr_lemh, true)
-				         +word1.target(attr_a_vrb, true)
+				         word1.tl(attr_lemh)
+				         +word1.tl(attr_a_vrb)
 				         +"<3>"
-				         +word1.target(attr_lemq, true)
+				         +word1.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3965,10 +3965,10 @@ might:might<vaux><inf>
 			out.append(blank2);
 			{
 				String myword = 
-				         word3.target(attr_lemh, true)
-				         +word3.target(attr_a_vrb, true)
+				         word3.tl(attr_lemh)
+				         +word3.tl(attr_a_vrb)
 				         +"<inf>"
-				         +word3.target(attr_lemq, true)
+				         +word3.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -3987,7 +3987,7 @@ might:might<vaux><inf>
 		if (debug) { logCall("rule66__vaux_vbhaver__vbser__vblexger",  word1, blank1,  word2, blank2,  word3); } 
 		macro_firstWord(out, word1);
 		macro_set_tipus_verbs1(out, word3);
-		if (list_willwouldshallhave.containsIgnoreCase(word1.source(attr_lem, true)))
+		if (list_willwouldshallhave.containsIgnoreCase(word1.sl(attr_lem)))
 		{
 			macro_set_temps1(out, word1);
 			macro_sendu_blankon_se_havas_formaton2(out, word1, blank1, word2);
@@ -3999,10 +3999,10 @@ might:might<vaux><inf>
 			out.append('{');
 			{
 				String myword = 
-				         word2.target(attr_lemh, true)
-				         +word2.target(attr_a_vrb, true)
+				         word2.tl(attr_lemh)
+				         +word2.tl(attr_a_vrb)
 				         +"<3>"
-				         +word2.target(attr_lemq, true)
+				         +word2.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -4014,7 +4014,7 @@ might:might<vaux><inf>
 			out.append(blank2);
 			{
 				String myword = 
-				         word3.target(attr_whole, true)
+				         word3.tl(attr_whole)
 				         ;
 				if (myword.length()>0)
 				{
@@ -4027,7 +4027,7 @@ might:might<vaux><inf>
 		}
 		else
 		{
-			var_temps = word2.source(attr_a_tns, true);
+			var_temps = word2.sl(attr_a_tns);
 			out.append('^');
 			out.append(TransferWord.copycase(var_caseFirstWord, "vaux_verb8"));
 			out.append("<SV>");
@@ -4036,7 +4036,7 @@ might:might<vaux><inf>
 			out.append('{');
 			{
 				String myword = 
-				         word1.target(attr_whole, true)
+				         word1.tl(attr_whole)
 				         ;
 				if (myword.length()>0)
 				{
@@ -4048,10 +4048,10 @@ might:might<vaux><inf>
 			out.append(blank1);
 			{
 				String myword = 
-				         word2.target(attr_lemh, true)
-				         +word2.target(attr_a_vrb, true)
+				         word2.tl(attr_lemh)
+				         +word2.tl(attr_a_vrb)
 				         +"<3>"
-				         +word2.target(attr_lemq, true)
+				         +word2.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -4063,7 +4063,7 @@ might:might<vaux><inf>
 			out.append(blank2);
 			{
 				String myword = 
-				         word3.target(attr_whole, true)
+				         word3.tl(attr_whole)
 				         ;
 				if (myword.length()>0)
 				{
@@ -4086,14 +4086,14 @@ might:might<vaux><inf>
 		out.append(TransferWord.copycase(var_caseFirstWord, "vbdo"));
 		out.append("<SV>");
 		out.append(var_tipus_verb);
-		out.append(word1.target(attr_a_tns, true));
+		out.append(word1.tl(attr_a_tns));
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_vrb, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_vrb)
 			         +"<3>"
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -4114,14 +4114,14 @@ might:might<vaux><inf>
 		out.append(TransferWord.copycase(var_caseFirstWord, "verb_all"));
 		out.append("<SV>");
 		out.append(var_tipus_verb);
-		out.append(word1.target(attr_a_tns, true));
+		out.append(word1.tl(attr_a_tns));
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_vrb, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_vrb)
 			         +"<3>"
-			         +word1.target(attr_lemq, true)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{

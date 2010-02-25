@@ -14,6 +14,7 @@ public class TransferWord {
   public String target;
   int queue_length;
 
+  @Override
   public String toString() {
     return source+"->"+target+"/"+queue_length;
   }
@@ -24,61 +25,112 @@ public class TransferWord {
     queue_length = queue;
   }
 
+  public String sl(ApertiumRE part) {
+    if (part==null) return ""; // this can happen if an undefined attribute is used
+    return part.match(source);
+  }
+
+  public String slNoQueue(ApertiumRE part) {
+    if (part==null) return ""; // this can happen if an undefined attribute is used
+    return part.match(source.substring(0, source.length() - queue_length));
+  }
+
+  public String tl(ApertiumRE part) {
+    if (part==null) return ""; // this can happen if an undefined attribute is used
+    return part.match(target);
+  }
+
+  public String tlNoQueue(ApertiumRE part) {
+    if (part==null) return ""; // this can happen if an undefined attribute is used
+    return part.match(target.substring(0, target.length() - queue_length));
+  }
+
+
+  public void slSet(ApertiumRE part, String value)
+  {
+    if (part==null) return; // this can happen if an undefined attribute is used
+    source = part.replace(source, value);
+  }
+
+
+  public void slSetNoQueue(ApertiumRE part, String value)
+  {
+    if (part==null) return; // this can happen if an undefined attribute is used
+    String mystring = source.substring(0, source.length() - queue_length);
+    mystring = part.replace(mystring, value);
+    source = mystring + source.substring(source.length() - queue_length);
+  }
+
+
+  public void tlSet(ApertiumRE part, String value)
+  {
+    if (part==null) return; // this can happen if an undefined attribute is used
+    target = part.replace(target, value);
+  }
+
+
+  public void tlSetNoQueue(ApertiumRE part, String value)
+  {
+    if (part==null) return; // this can happen if an undefined attribute is used
+    String mystring = target.substring(0, target.length() - queue_length);
+    mystring = part.replace(mystring, value);
+    target = mystring + target.substring(target.length() - queue_length);
+  }
+
+
+
+  /**
+   * The C code correspodants - not used anymore
+   */
   public String source(ApertiumRE part, boolean with_queue)
   {
-    if (part==null) return ""; // this can happen if an undefined attribute is used
     if(with_queue)
     {
-      return part.match(source);
+      return sl(part);
     }
     else
     {
-      return part.match(source.substring(0, source.length() - queue_length));
+      return slNoQueue(part);
     }
   }
 
   public String target(ApertiumRE part, boolean with_queue)
   {
-    if (part==null) return ""; // this can happen if an undefined attribute is used
     if(with_queue)
     {
-      return part.match(target);
+      return tl(part);
     }
     else
     {
-      return part.match(target.substring(0, target.length() - queue_length));
+      return tlNoQueue(part);
     }
   }
 
+
   public void setSource(ApertiumRE part, String value, boolean with_queue)
   {
-    if (part==null) return; // this can happen if an undefined attribute is used
     if(with_queue)
     {
-      source = part.replace(source, value);
+      slSet(part, value);
     }
     else
     {
-      String mystring = source.substring(0, source.length() - queue_length);
-      mystring = part.replace(mystring, value);
-      source = mystring + source.substring(source.length() - queue_length);
+      slSetNoQueue(part, value);
     }
   }
 
   public void setTarget(ApertiumRE part, String value, boolean with_queue)
   {
-    if (part==null) return; // this can happen if an undefined attribute is used
     if(with_queue)
     {
-      target = part.replace(target, value);
+      tlSet(part, value);
     }
     else
     {
-      String mystring = target.substring(0, target.length() - queue_length);
-      mystring = part.replace(mystring, value);
-      target = mystring + target.substring(target.length() - queue_length);
+      tlSetNoQueue(part, value);
     }
   }
+
 
 
   public static String copycase(String s_word, String t_word) {

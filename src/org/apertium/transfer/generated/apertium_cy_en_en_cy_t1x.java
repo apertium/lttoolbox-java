@@ -37,11 +37,11 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 	private void macro_firstWord(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_firstWord",  word1); } 
-		if (word1.source(attr_a_np_acr, true).equals(""))
+		if (word1.sl(attr_a_np_acr).equals(""))
 		{
 			if (var_EOS.equals("true"))
 			{
-				word1.setTarget(attr_lem, TransferWord.copycase("aa", word1.target(attr_lem, true)), true);
+				word1.tlSet(attr_lem, TransferWord.copycase("aa", word1.tl(attr_lem)));
 				var_caseFirstWord = "Aa";
 			}
 		}
@@ -56,20 +56,22 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 	{
 		if (debug) { logCall("macro_adjectiu",  word1); } 
 		var_adjectiu1 = "";
-		if ((word1.source(attr_a_adj, true).equals("<adj><sint>")
-    && word1.source(attr_deg, true).equals("<comp>")))
+		if ((word1.sl(attr_a_adj).equals("<adj><sint>")
+    && word1.sl(attr_deg).equals("<comp>")
+    && word1.tl(attr_a_adj).equals("<adj>")))
 		{
-			var_adjectiu1 = (""+"mawr"+"<adj><sint><comp>"+"$ ^"+word1.target(attr_lem, true)+word1.target(attr_a_adj, true));
+			var_adjectiu1 = (""+"mawr"+"<adj><sint><comp>"+"$ ^"+word1.tl(attr_lem)+word1.tl(attr_a_adj));
 		}
 		else
-		if ((word1.source(attr_a_adj, true).equals("<adj><sint>")
-    && word1.source(attr_deg, true).equals("<sup>")))
+		if ((word1.sl(attr_a_adj).equals("<adj><sint>")
+    && word1.sl(attr_deg).equals("<sup>")
+    && word1.tl(attr_a_adj).equals("<adj>")))
 		{
-			var_adjectiu1 = (""+"mawr"+"<adj><sint><sup>"+"$ ^"+word1.target(attr_lem, true)+word1.target(attr_a_adj, true));
+			var_adjectiu1 = (""+"mawr"+"<adj><sint><sup>"+"$ ^"+word1.tl(attr_lem)+word1.tl(attr_a_adj));
 		}
 		else
 		{
-			var_adjectiu1 = (""+word1.target(attr_whole, true));
+			var_adjectiu1 = (""+word1.tl(attr_whole));
 		}
 	}
 	
@@ -80,16 +82,16 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "nom"));
 		out.append("<SN>");
-		out.append(word1.target(attr_gen, true));
-		out.append(word1.target(attr_nbr, true));
+		out.append(word1.tl(attr_gen));
+		out.append(word1.tl(attr_nbr));
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_nom, true)
-			         +(word1.target(attr_gen, true).isEmpty()?"" : "<2>")
-			         +(word1.target(attr_nbr, true).isEmpty()?"" : "<3>")
-			         +word1.target(attr_lemq, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_nom)
+			         +(word1.tl(attr_gen).isEmpty()?"" : "<2>")
+			         +(word1.tl(attr_nbr).isEmpty()?"" : "<3>")
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -106,21 +108,21 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 	public void rule1__det__nom(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule1__det__nom",  word1, blank1,  word2); } 
-		if (word1.source(attr_a_det, true).equals("<det><ind>"))
+		if (word1.sl(attr_a_det).equals("<det><ind>"))
 		{
 			out.append('^');
 			out.append(TransferWord.copycase(var_caseFirstWord, "det_nom"));
 			out.append("<SN>");
-			out.append(word2.target(attr_gen, true));
-			out.append(word2.target(attr_nbr, true));
+			out.append(word2.tl(attr_gen));
+			out.append(word2.tl(attr_nbr));
 			out.append('{');
 			{
 				String myword = 
-				         word2.target(attr_lemh, true)
-				         +word2.target(attr_a_nom, true)
-				         +(word2.target(attr_gen, true).isEmpty()?"" : "<2>")
-				         +(word2.target(attr_nbr, true).isEmpty()?"" : "<3>")
-				         +word2.target(attr_lemq, true)
+				         word2.tl(attr_lemh)
+				         +word2.tl(attr_a_nom)
+				         +(word2.tl(attr_gen).isEmpty()?"" : "<2>")
+				         +(word2.tl(attr_nbr).isEmpty()?"" : "<3>")
+				         +word2.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -136,12 +138,12 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 			out.append('^');
 			out.append(TransferWord.copycase(var_caseFirstWord, "det_nom"));
 			out.append("<SN>");
-			out.append(word2.target(attr_gen, true));
-			out.append(word2.target(attr_nbr, true));
+			out.append(word2.tl(attr_gen));
+			out.append(word2.tl(attr_nbr));
 			out.append('{');
 			{
 				String myword = 
-				         word1.target(attr_whole, true)
+				         word1.tl(attr_whole)
 				         ;
 				if (myword.length()>0)
 				{
@@ -153,11 +155,11 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 			out.append(" ");
 			{
 				String myword = 
-				         word2.target(attr_lemh, true)
-				         +word2.target(attr_a_nom, true)
-				         +(word2.target(attr_gen, true).isEmpty()?"" : "<2>")
-				         +(word2.target(attr_nbr, true).isEmpty()?"" : "<3>")
-				         +word2.target(attr_lemq, true)
+				         word2.tl(attr_lemh)
+				         +word2.tl(attr_a_nom)
+				         +(word2.tl(attr_gen).isEmpty()?"" : "<2>")
+				         +(word2.tl(attr_nbr).isEmpty()?"" : "<3>")
+				         +word2.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -176,17 +178,17 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 	{
 		if (debug) { logCall("rule2__det__adj__nom",  word1, blank1,  word2, blank2,  word3); } 
 		macro_adjectiu(out, word2);
-		if (list_prepos_adjs.containsIgnoreCase(word2.target(attr_lem, true)))
+		if (list_prepos_adjs.containsIgnoreCase(word2.tl(attr_lem)))
 		{
 			out.append('^');
 			out.append(TransferWord.copycase(var_caseFirstWord, "det_adj_nom"));
 			out.append("<SN>");
-			out.append(word3.target(attr_gen, true));
-			out.append(word3.target(attr_nbr, true));
+			out.append(word3.tl(attr_gen));
+			out.append(word3.tl(attr_nbr));
 			out.append('{');
 			{
 				String myword = 
-				         word1.target(attr_whole, true)
+				         word1.tl(attr_whole)
 				         ;
 				if (myword.length()>0)
 				{
@@ -198,9 +200,9 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 			out.append(" ");
 			{
 				String myword = 
-				         word2.target(attr_lem, true)
-				         +word2.target(attr_a_adj, true)
-				         +word2.target(attr_deg, true)
+				         word2.tl(attr_lem)
+				         +word2.tl(attr_a_adj)
+				         +word2.tl(attr_deg)
 				         ;
 				if (myword.length()>0)
 				{
@@ -212,11 +214,11 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 			out.append(" ");
 			{
 				String myword = 
-				         word3.target(attr_lemh, true)
-				         +word3.target(attr_a_nom, true)
-				         +(word3.target(attr_gen, true).isEmpty()?"" : "<2>")
-				         +(word3.target(attr_nbr, true).isEmpty()?"" : "<3>")
-				         +word3.target(attr_lemq, true)
+				         word3.tl(attr_lemh)
+				         +word3.tl(attr_a_nom)
+				         +(word3.tl(attr_gen).isEmpty()?"" : "<2>")
+				         +(word3.tl(attr_nbr).isEmpty()?"" : "<3>")
+				         +word3.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -233,12 +235,12 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 			out.append('^');
 			out.append(TransferWord.copycase(var_caseFirstWord, "det_nom_adj"));
 			out.append("<SN>");
-			out.append(word3.target(attr_gen, true));
-			out.append(word3.target(attr_nbr, true));
+			out.append(word3.tl(attr_gen));
+			out.append(word3.tl(attr_nbr));
 			out.append('{');
 			{
 				String myword = 
-				         word1.target(attr_whole, true)
+				         word1.tl(attr_whole)
 				         ;
 				if (myword.length()>0)
 				{
@@ -250,11 +252,11 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 			out.append(" ");
 			{
 				String myword = 
-				         word3.target(attr_lemh, true)
-				         +word3.target(attr_a_nom, true)
-				         +(word3.target(attr_gen, true).isEmpty()?"" : "<2>")
-				         +(word3.target(attr_nbr, true).isEmpty()?"" : "<3>")
-				         +word3.target(attr_lemq, true)
+				         word3.tl(attr_lemh)
+				         +word3.tl(attr_a_nom)
+				         +(word3.tl(attr_gen).isEmpty()?"" : "<2>")
+				         +(word3.tl(attr_nbr).isEmpty()?"" : "<3>")
+				         +word3.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
 				{
@@ -284,7 +286,7 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 	public void rule3__det(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule3__det",  word1); } 
-		if (word1.source(attr_a_det, true).equals("<det><ind>"))
+		if (word1.sl(attr_a_det).equals("<det><ind>"))
 		{
 			out.append(" ");
 		}
@@ -293,14 +295,14 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 			out.append('^');
 			out.append(TransferWord.copycase(var_caseFirstWord, "nom"));
 			out.append("<SN>");
-			out.append(word1.target(attr_gen, true));
-			out.append(word1.target(attr_nbr, true));
+			out.append(word1.tl(attr_gen));
+			out.append(word1.tl(attr_nbr));
 			out.append('{');
 			{
 				String myword = 
-				         word1.target(attr_lem, true)
-				         +word1.target(attr_a_det, true)
-				         +word1.target(attr_nbr, true)
+				         word1.tl(attr_lem)
+				         +word1.tl(attr_a_det)
+				         +word1.tl(attr_nbr)
 				         ;
 				if (myword.length()>0)
 				{
@@ -321,16 +323,16 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "verb"));
 		out.append("<SV>");
-		out.append(word1.target(attr_nbr, true));
+		out.append(word1.tl(attr_nbr));
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_lemh, true)
-			         +word1.target(attr_a_verb, true)
-			         +word1.target(attr_temps, true)
-			         +word1.target(attr_pers, true)
-			         +word1.target(attr_nbr, true)
-			         +word1.target(attr_lemq, true)
+			         word1.tl(attr_lemh)
+			         +word1.tl(attr_a_verb)
+			         +word1.tl(attr_temps)
+			         +word1.tl(attr_pers)
+			         +word1.tl(attr_nbr)
+			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -350,12 +352,12 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "verbinf"));
 		out.append("<SV>");
-		out.append(word2.target(attr_a_verb, true));
+		out.append(word2.tl(attr_a_verb));
 		out.append("<inf>");
 		out.append('{');
 		{
 			String myword = 
-			         word1.target(attr_whole, true)
+			         word1.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
@@ -367,10 +369,10 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 		out.append(" ");
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_verb, true)
-			         +(word2.target(attr_temps, true).isEmpty()?"" : "<3>")
-			         +word2.target(attr_lemq, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_verb)
+			         +(word2.tl(attr_temps).isEmpty()?"" : "<3>")
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -390,21 +392,21 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "prn_verb"));
 		out.append("<SV>");
-		out.append(word1.target(attr_pers, true));
-		out.append(word1.target(attr_nbr, true));
+		out.append(word1.tl(attr_pers));
+		out.append(word1.tl(attr_nbr));
 		out.append('{');
 		{
 			String myword = 
-			         word2.target(attr_lemh, true)
-			         +word2.target(attr_a_verb, true)
-			         +word2.target(attr_temps, true)
+			         word2.tl(attr_lemh)
+			         +word2.tl(attr_a_verb)
+			         +word2.tl(attr_temps)
 			         +"<2>"
 			         +"<3>"
 			/** 
               <clip pos="2" side="tl" part="pers" link-to="2"/>
               <clip pos="2" side="tl" part="nbr" link-to="3"/>
 	       */
-			         +word2.target(attr_lemq, true)
+			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
 			{
@@ -416,7 +418,7 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 		out.append(" ");
 		{
 			String myword = 
-			         word1.target(attr_whole, true)
+			         word1.tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
