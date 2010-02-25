@@ -127,18 +127,52 @@ public class ParseTransferFile {
   }
 
 
+
+  private String attrItemRegexpSimple(ArrayList<String> items) {
+    StringBuilder re = null;
+    for (String item : items) {
+      if (re==null) re = new StringBuilder(items.size()*20);
+      else re.append( ">|<");
+      re.append(escapeStr(item.replace(".", "><")));
+    }
+    return "<"+ re.toString() + ">";
+  }
+
+  // Optimization doesent seem to do much difference...
   private String attrItemRegexp(ArrayList<String> items) {
+
+    String item0 = items.get(0);
+    int startSame = 0;
+    stop:
+    while (startSame<item0.length()) {
+      char ch = item0.charAt(startSame);
+      for (String item : items)
+        if (startSame==item.length() || item.charAt(startSame) != ch) break stop;
+      startSame++;
+    }
+
+    int stopSame = 0;
+    stop:
+    while (stopSame<item0.length()-startSame) {
+      char ch = item0.charAt(item0.length()- stopSame-1);
+      for (String item : items)
+        if (stopSame==item.length() || item.charAt(item.length()- stopSame-1) != ch) break stop;
+      stopSame++;
+    }
+
     StringBuilder re = null;
     for (String item : items) {
       if (re==null) re = new StringBuilder(items.size()*20);
       else re.append( '|');
-      re.append( '<');
-      re.append(escapeStr(item.replace(".", "><")));
-      re.append( '>');
+      re.append(escapeStr(item.substring(startSame,item.length()- stopSame)));
     }
-    return re.toString();
-  }
+    String res = "<"+item0.substring(0,startSame)+(re.length()==0? "": "(?:"+ re.toString() + ")")+item0.substring(item0.length()- stopSame)+">";
+    res = res.replace(".", "><");
 
+    //System.err.println("items = " + items);
+    //System.err.println("res = " + res);
+    return res;
+  }
 
   /**
    * Generates Java code for reading the value of a clip
@@ -219,10 +253,7 @@ public class ParseTransferFile {
     } else if (n.equals("var")) {
       return var(e.getAttribute("n"));
     } else if (n.equals("case-of")) {
-      String side=e.getAttribute("side");
-      String part=e.getAttribute("part");
-      String pos=e.getAttribute("pos");
-      return "TransferWord.caseOf("+word(pos)+"."+side+"("+attr(part)+"))";
+      return "TransferWord.caseOf("+getReadClipExpr(e)+")";
     } else if (n.equals("concat")) {
       String res = "("+str("");
       for (Element c : listElements(e.getChildNodes())) {

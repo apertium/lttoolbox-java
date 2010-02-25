@@ -8,22 +8,22 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	{
 		return true;
 	}
-	ApertiumRE attr_a_nom = new ApertiumRE("<np><ant><mf>|<np><cog><mf>|<n><acr><re>|<np><ant><m>|<np><ant><f>|<np><ant>|<np><top>|<np><ant>|<np><cog>|<np><top>|<n><acr>|<np><al>|<np>|<n>");
+	ApertiumRE attr_a_nom = new ApertiumRE("<n(?:p><ant><mf|p><cog><mf|><acr><re|p><ant><m|p><ant><f|p><ant|p><top|p><ant|p><cog|p><top|><acr|p><al|p|)>");
 	ApertiumRE attr_a_prp = new ApertiumRE("<pr>");
-	ApertiumRE attr_a_adv = new ApertiumRE("<preadv>|<adv>");
-	ApertiumRE attr_a_adj = new ApertiumRE("<adj><sint><comp>|<adj><sint><sup>|<vblex><ger>|<adj><comp>|<adj><sint>|<vblex><pp>|<adj><sup>|<adj>");
-	ApertiumRE attr_a_vrb = new ApertiumRE("<vblex><sep>|<vbhaver>|<vblex>|<vbser>|<vaux>");
+	ApertiumRE attr_a_adv = new ApertiumRE("<(?:pre|)adv>");
+	ApertiumRE attr_a_adj = new ApertiumRE("<(?:adj><sint><comp|adj><sint><sup|vblex><ger|adj><comp|adj><sint|vblex><pp|adj><sup|adj)>");
+	ApertiumRE attr_a_vrb = new ApertiumRE("<v(?:blex><sep|bhaver|blex|bser|aux)>");
 	/**  normala verbo: specifa formo nur por p3/sg/pres  can-verbo: ĉiuj formoj egalaj por ĉiuj personoj  be-verbo: specifaj formoj por p1 kaj p3 / sg / pres kaj past  */
-	ApertiumRE attr_a_vrb2 = new ApertiumRE("<vbreg>|<can>|<be>");
-	ApertiumRE attr_a_det = new ApertiumRE("<det><def>|<det><ind>|<det><itg>|<det><dem>|<det><pos>|<det><qnt>");
+	ApertiumRE attr_a_vrb2 = new ApertiumRE("<(?:vbreg|can|be)>");
+	ApertiumRE attr_a_det = new ApertiumRE("<det><(?:def|ind|itg|dem|pos|qnt)>");
 	ApertiumRE attr_a_ord = new ApertiumRE("<num><ord>");
-	ApertiumRE attr_a_prn = new ApertiumRE("<prn><subj>|<prn><itg>|<prn><obj>|<prn><ref>|<prn><tn>|<prn>");
-	ApertiumRE attr_a_tns = new ApertiumRE("<past>|<pres>|<inf>|<imp>|<fti>|<cni>|<pp2>|<pp3>|<ger>|<pp>");
-	ApertiumRE attr_a_nepersonaj_tempoj = new ApertiumRE("<past>|<pres>|<fti>|<cni>");
-	ApertiumRE attr_a_gen = new ApertiumRE("<nt>|<mf>|<m>|<f>");
-	ApertiumRE attr_a_prs = new ApertiumRE("<p1>|<p2>|<p3>");
-	ApertiumRE attr_a_nbr = new ApertiumRE("<sg>|<sp>|<pl>|<ND>");
-	ApertiumRE attr_a_cas = new ApertiumRE("<nom>|<acc>");
+	ApertiumRE attr_a_prn = new ApertiumRE("<prn(?:><subj|><itg|><obj|><ref|><tn|)>");
+	ApertiumRE attr_a_tns = new ApertiumRE("<(?:past|pres|inf|imp|fti|cni|pp2|pp3|ger|pp)>");
+	ApertiumRE attr_a_nepersonaj_tempoj = new ApertiumRE("<(?:past|pres|fti|cni)>");
+	ApertiumRE attr_a_gen = new ApertiumRE("<(?:nt|mf|m|f)>");
+	ApertiumRE attr_a_prs = new ApertiumRE("<p(?:1|2|3)>");
+	ApertiumRE attr_a_nbr = new ApertiumRE("<(?:sg|sp|pl|ND)>");
+	ApertiumRE attr_a_cas = new ApertiumRE("<(?:nom|acc)>");
 	ApertiumRE attr_lem = new ApertiumRE("(([^<]|\"\\<\")+)");
 	ApertiumRE attr_lemq = new ApertiumRE("\\#[- _][^<]+");
 	ApertiumRE attr_lemh = new ApertiumRE("(([^<#]|\"\\<\"|\"\\#\")+)");

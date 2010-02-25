@@ -14,23 +14,23 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
   the second was a TV live action version.
 
  */
-	ApertiumRE attr_a_nom = new ApertiumRE("<n><acr><re>|<np><ant>|<np><cog>|<np><top>|<n><acr>|<np><al>|<np>|<n>");
-	ApertiumRE attr_a_acr = new ApertiumRE("<acr><re>|<np><top>|<np><al>|<acr>");
-	ApertiumRE attr_a_any = new ApertiumRE("<np>|<n>");
+	ApertiumRE attr_a_nom = new ApertiumRE("<n(?:><acr><re|p><ant|p><cog|p><top|><acr|p><al|p|)>");
+	ApertiumRE attr_a_acr = new ApertiumRE("<(?:acr><re|np><top|np><al|acr)>");
+	ApertiumRE attr_a_any = new ApertiumRE("<n(?:p|)>");
 	ApertiumRE attr_a_prp = new ApertiumRE("<pr>");
-	ApertiumRE attr_a_adj = new ApertiumRE("<adj><sint><comp>|<adj><sint><sup>|<adj><pst>|<adj><itg>|<adj><pos>|<adj>");
-	ApertiumRE attr_a_vrb = new ApertiumRE("<vblex><sep>|<vblex>|<vbser>|<vaux>");
-	ApertiumRE attr_a_det = new ApertiumRE("<det><def>|<det><ind>|<det><pos>|<det><qnt>|<det><itg>|<det><qnt>|<det><dem>");
+	ApertiumRE attr_a_adj = new ApertiumRE("<adj(?:><sint><comp|><sint><sup|><pst|><itg|><pos|)>");
+	ApertiumRE attr_a_vrb = new ApertiumRE("<v(?:blex><sep|blex|bser|aux)>");
+	ApertiumRE attr_a_det = new ApertiumRE("<det><(?:def|ind|pos|qnt|itg|qnt|dem)>");
 	/**  Jacob added  */
-	ApertiumRE attr_a_prn = new ApertiumRE("<prn><subj>|<prn><ref>|<prn><itg>|<prn><obj>|<prn><tn>|<prn>");
-	ApertiumRE attr_a_prn__sen__subj_obj = new ApertiumRE("<prn><ref>|<prn><itg>|<prn><tn>|<prn>");
-	ApertiumRE attr_a_tns = new ApertiumRE("<pres>|<subs>|<pprs>|<past>|<pri>|<imp>|<inf>|<cni>|<ger>|<fti>|<pp>");
-	ApertiumRE attr_a_gen = new ApertiumRE("<nt>|<mf>|<GD>|<m>|<f>");
-	ApertiumRE attr_a_prs = new ApertiumRE("<p1>|<p2>|<p3>");
-	ApertiumRE attr_a_nbr = new ApertiumRE("<sp>|<sg>|<pl>|<ND>");
-	ApertiumRE attr_a_cas = new ApertiumRE("<nom>|<acc>");
+	ApertiumRE attr_a_prn = new ApertiumRE("<prn(?:><subj|><ref|><itg|><obj|><tn|)>");
+	ApertiumRE attr_a_prn__sen__subj_obj = new ApertiumRE("<prn(?:><ref|><itg|><tn|)>");
+	ApertiumRE attr_a_tns = new ApertiumRE("<(?:pres|subs|pprs|past|pri|imp|inf|cni|ger|fti|pp)>");
+	ApertiumRE attr_a_gen = new ApertiumRE("<(?:nt|mf|GD|m|f)>");
+	ApertiumRE attr_a_prs = new ApertiumRE("<p(?:1|2|3)>");
+	ApertiumRE attr_a_nbr = new ApertiumRE("<(?:sp|sg|pl|ND)>");
+	ApertiumRE attr_a_cas = new ApertiumRE("<(?:nom|acc)>");
 	/**  taken from en-es.t1x, for use in macro firstWord  */
-	ApertiumRE attr_a_np_acr = new ApertiumRE("<acr>|<np>");
+	ApertiumRE attr_a_np_acr = new ApertiumRE("<(?:acr|np)>");
 	ApertiumRE attr_lem = new ApertiumRE("(([^<]|\"\\<\")+)");
 	ApertiumRE attr_lemq = new ApertiumRE("\\#[- _][^<]+");
 	ApertiumRE attr_lemh = new ApertiumRE("(([^<#]|\"\\<\"|\"\\#\")+)");

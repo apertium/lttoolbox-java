@@ -8,16 +8,16 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 	{
 		return true;
 	}
-	ApertiumRE attr_a_det = new ApertiumRE("<det><ind>|<det><def>|<det><dem>|<det><pos>|<det><ord>");
-	ApertiumRE attr_a_verb = new ApertiumRE("<vbhaver>|<vblex>|<vbmod>|<vbser>");
-	ApertiumRE attr_a_adj = new ApertiumRE("<adj><sint>|<adj>");
-	ApertiumRE attr_a_nom = new ApertiumRE("<np><loc>|<np><ant>|<n><acr>|<n><unc>|<n>");
-	ApertiumRE attr_a_np_acr = new ApertiumRE("<acr>|<np>");
-	ApertiumRE attr_pers = new ApertiumRE("<p1>|<p2>|<p3>");
-	ApertiumRE attr_deg = new ApertiumRE("<comp>|<sup>");
-	ApertiumRE attr_nbr = new ApertiumRE("<sg>|<pl>|<sp>|<ND>");
-	ApertiumRE attr_gen = new ApertiumRE("<mf>|<nt>|<f>|<m>");
-	ApertiumRE attr_temps = new ApertiumRE("<past>|<pres>|<prs>|<cni>|<pii>|<fut>|<imp>|<inf>|<plu>|<cns>|<ger>");
+	ApertiumRE attr_a_det = new ApertiumRE("<det><(?:ind|def|dem|pos|ord)>");
+	ApertiumRE attr_a_verb = new ApertiumRE("<vb(?:haver|lex|mod|ser)>");
+	ApertiumRE attr_a_adj = new ApertiumRE("<adj(?:><sint|)>");
+	ApertiumRE attr_a_nom = new ApertiumRE("<n(?:p><loc|p><ant|><acr|><unc|)>");
+	ApertiumRE attr_a_np_acr = new ApertiumRE("<(?:acr|np)>");
+	ApertiumRE attr_pers = new ApertiumRE("<p(?:1|2|3)>");
+	ApertiumRE attr_deg = new ApertiumRE("<(?:com|su)p>");
+	ApertiumRE attr_nbr = new ApertiumRE("<(?:sg|pl|sp|ND)>");
+	ApertiumRE attr_gen = new ApertiumRE("<(?:mf|nt|f|m)>");
+	ApertiumRE attr_temps = new ApertiumRE("<(?:past|pres|prs|cni|pii|fut|imp|inf|plu|cns|ger)>");
 	ApertiumRE attr_lem = new ApertiumRE("(([^<]|\"\\<\")+)");
 	ApertiumRE attr_lemq = new ApertiumRE("\\#[- _][^<]+");
 	ApertiumRE attr_lemh = new ApertiumRE("(([^<#]|\"\\<\"|\"\\#\")+)");
