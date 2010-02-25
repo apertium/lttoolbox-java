@@ -8,7 +8,7 @@ package org.apertium.transfer.development;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import org.apertium.transfer.compile.ParseTranserFile;
+import org.apertium.transfer.compile.ParseTransferFile;
 
 /**
  *
@@ -22,7 +22,7 @@ public class ParseTestTransferFiles {
   }
 
   private static String parseAndWriteToSrc(String t1xFile) throws IOException, InterruptedException {
-    ParseTranserFile p=new ParseTranserFile();
+    ParseTransferFile p=new ParseTransferFile();
     try {
       p.parse(t1xFile);
     } catch (Exception ex) {

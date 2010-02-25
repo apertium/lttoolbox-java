@@ -10,7 +10,7 @@ import java.io.FileWriter;
 import java.io.Reader;
 import java.io.Writer;
 import org.apertium.transfer.Transfer;
-import org.apertium.transfer.compile.ParseTranserFile;
+import org.apertium.transfer.compile.ParseTransferFile;
 
 /**
  *
@@ -38,7 +38,7 @@ public class CompareAndDebugOneTestFile {
 
       Transfer t = new Transfer();
       //Class transferClass = apertium_eo_en_eo_en_t1x.class;
-      Class transferClass = Class.forName("org.apertium.transfer.generated."+ParseTranserFile.javaIdentifier(t1xFile));
+      Class transferClass = Class.forName("org.apertium.transfer.generated."+ParseTransferFile.javaIdentifier(t1xFile));
       String binFile = dir+ParseTestTransferFiles.findFileNameOfBinFile(t1xFile);
       t.read(transferClass, binFile, dir+"en-eo.autobil.bin");
       t.transferObject.debug = true;

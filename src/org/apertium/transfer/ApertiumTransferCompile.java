@@ -22,7 +22,7 @@ import org.apertium.lttoolbox.*;
 import org.apertium.lttoolbox.process.FSTProcessor;
 import java.io.*;
 import org.apertium.lttoolbox.process.State;
-import org.apertium.transfer.compile.ParseTranserFile;
+import org.apertium.transfer.compile.ParseTransferFile;
 import static org.apertium.lttoolbox.LTProc.*;
 
 /**
@@ -48,7 +48,7 @@ public class ApertiumTransferCompile {
           endProgram("apertium-preprocess-transfer-bytecode-j");
       }
 
-      ParseTranserFile p = new ParseTranserFile();
+      ParseTransferFile p = new ParseTransferFile();
       System.err.println("Parsing " + argv[0]);
       p.parse(argv[0]);
 

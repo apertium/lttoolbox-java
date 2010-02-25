@@ -34,7 +34,7 @@ import static org.apertium.transfer.compile.DOMTools.*;
  *
  * @author Jacob Nordfalk
  */
-public class ParseTranserFile {
+public class ParseTransferFile {
 
   public String className;
 
