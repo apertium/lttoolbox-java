@@ -876,14 +876,16 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
             methodName += "__"+javaIdentifier(n);
             patternItems.add(n);
           }
-          String par = "";
           currentNumberOfWordInParameterList = patternItems.size();
-          for (int i=1; i<=currentNumberOfWordInParameterList; i++) par += (i==1?", ":", String "+blank(i-1)+", ")+"TransferWord "+ word(i);
+          String methodArguments = "";
+          for (int i=1; i<=currentNumberOfWordInParameterList; i++) methodArguments += (i==1?", ":", String "+blank(i-1)+", ")+"TransferWord "+ word(i);
+          String logCallParameters = "";
+          for (int i=1; i<=currentNumberOfWordInParameterList; i++) logCallParameters += (i==1?", ":", "+blank(i-1)+", ")+" "+ word(i);
           println("");
           if (!comment.isEmpty()) println("// "+comment);
-          println("public void "+methodName+"(Writer out"+par+") throws IOException");
+          println("public void "+methodName+"(Writer out"+methodArguments+") throws IOException");
           println("{");
-          println("if (debug) { logCall(\""+methodName+"\"); }; "); // TODO Check performance impact
+          println("if (debug) { logCall(\""+methodName+"\""+logCallParameters+"); }; "); // TODO Check performance impact
           for (Element c1 : getChildsChildrenElements(c0, "action")) processInstruction(c1);
           println("}");
         }

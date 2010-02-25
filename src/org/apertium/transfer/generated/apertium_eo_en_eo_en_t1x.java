@@ -124,7 +124,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: la 2a de julio - July 2nd
 	public void rule0__la__num_ord__de__monato(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
-		if (debug) { logCall("rule0__la__num_ord__de__monato"); }; 
+		if (debug) { logCall("rule0__la__num_ord__de__monato",  word1, blank1,  word2, blank2,  word3, blank3,  word4); }; 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: la 2a de julio - July 2nd">/<action>/<out>/<chunk case="caseFirstWord" name="dato">
@@ -167,7 +167,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: DE TEMPO (de/ekde januaro -> from January -- ŝanĝo de prepozicio
 	public void rule1__de_ekde__tempo(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule1__de_ekde__tempo"); }; 
+		if (debug) { logCall("rule1__de_ekde__tempo",  word1, blank1,  word2); }; 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: DE TEMPO (de/ekde januaro -> from January -- ŝanĝo de prepozicio">/<action>/<out>/<chunk case="caseFirstWord" name="pr">
@@ -214,7 +214,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: DE DET TEMPO (de/ekde tiu januaro -> from this January -- ŝanĝo de prepozicio
 	public void rule2__de_ekde__c_det__tempo(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule2__de_ekde__c_det__tempo"); }; 
+		if (debug) { logCall("rule2__de_ekde__c_det__tempo",  word1, blank1,  word2, blank2,  word3); }; 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: DE DET TEMPO (de/ekde tiu januaro -> from this January -- ŝanĝo de prepozicio">/<action>/<out>/<chunk case="caseFirstWord" name="pr">
@@ -276,7 +276,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: DE ANTAŬ NUM TEMPO (de/ekde antaŭ tri tagoj -> since three days ago - ŝanĝo de prepozicio + ago
 	public void rule3__de_ekde__anta___num_sp__tempo2(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
-		if (debug) { logCall("rule3__de_ekde__anta___num_sp__tempo2"); }; 
+		if (debug) { logCall("rule3__de_ekde__anta___num_sp__tempo2",  word1, blank1,  word2, blank2,  word3, blank3,  word4); }; 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: DE ANTAŬ NUM TEMPO (de/ekde antaŭ tri tagoj -> since three days ago - ŝanĝo de prepozicio + ago">/<action>/<out>/<chunk case="caseFirstWord" name="pr">
@@ -348,7 +348,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: DE ANTAŬ QNT TEMPO (de/ekde antaŭ kelkaj tagoj -> since some days ago - ŝanĝo de prepozicio + ago
 	public void rule4__de_ekde__anta___qnt__tempo2(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
-		if (debug) { logCall("rule4__de_ekde__anta___qnt__tempo2"); }; 
+		if (debug) { logCall("rule4__de_ekde__anta___qnt__tempo2",  word1, blank1,  word2, blank2,  word3, blank3,  word4); }; 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: DE ANTAŬ QNT TEMPO (de/ekde antaŭ kelkaj tagoj -> since some days ago - ŝanĝo de prepozicio + ago">/<action>/<out>/<chunk case="caseFirstWord" name="pr">
@@ -423,7 +423,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: ANTAŬ NUM TEMPO (antaŭ tri tagoj -> three days ago - sen prepozicio + ago
 	public void rule5__anta___num_sp__tempo2(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule5__anta___num_sp__tempo2"); }; 
+		if (debug) { logCall("rule5__anta___num_sp__tempo2",  word1, blank1,  word2, blank2,  word3); }; 
 		out.append('^');
 		out.append("tempo");
 		out.append("<SD>");
@@ -475,7 +475,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: ANTAŬ QNT TEMPO (antaŭ kelkaj tagoj -> some days ago - sen prepozicio + ago
 	public void rule6__anta___qnt__tempo2(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule6__anta___qnt__tempo2"); }; 
+		if (debug) { logCall("rule6__anta___qnt__tempo2",  word1, blank1,  word2, blank2,  word3); }; 
 		out.append('^');
 		out.append("tempo");
 		out.append("<SN>");
@@ -530,7 +530,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: DET
 	public void rule7__c_det(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule7__c_det"); }; 
+		if (debug) { logCall("rule7__c_det",  word1); }; 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: DET">/<action>/<out>/<chunk case="caseFirstWord" name="det">
@@ -559,7 +559,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: PRN
 	public void rule8__c_prn(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule8__c_prn"); }; 
+		if (debug) { logCall("rule8__c_prn",  word1); }; 
 		if (list_prn_kun_persono_kaj_genro.containsIgnoreCase(word1.source(attr_lem, true)))
 		{
 			out.append('^');
@@ -621,7 +621,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: PREP PRN (por li -> for him)
 	public void rule9__pr__c_prn(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule9__pr__c_prn"); }; 
+		if (debug) { logCall("rule9__pr__c_prn",  word1, blank1,  word2); }; 
 		if (list_prn_kun_persono_kaj_genro.containsIgnoreCase(word2.source(attr_lem, true)))
 		{
 			if (word2.target(attr_a_prn, true).equalsIgnoreCase("<prn><subj>"))
@@ -721,7 +721,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: ADV
 	public void rule10__c_adv(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule10__c_adv"); }; 
+		if (debug) { logCall("rule10__c_adv",  word1); }; 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: ADV">/<action>/<out>/<chunk case="caseFirstWord" name="adv">
@@ -748,7 +748,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: ADJ
 	public void rule11__c_adj(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule11__c_adj"); }; 
+		if (debug) { logCall("rule11__c_adj",  word1); }; 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: ADJ">/<action>/<out>/<chunk case="caseFirstWord" name="adj">
@@ -776,7 +776,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: PLI/PLEJ ADJ
 	public void rule12__c_pli_plej__c_adj(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule12__c_pli_plej__c_adj"); }; 
+		if (debug) { logCall("rule12__c_pli_plej__c_adj",  word1, blank1,  word2); }; 
 		macro_adv_adj(out, word1, blank1, word2);
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
@@ -802,7 +802,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: NOM
 	public void rule13__c_nom(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule13__c_nom"); }; 
+		if (debug) { logCall("rule13__c_nom",  word1); }; 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: NOM">/<action>/<out>/<chunk case="caseFirstWord" name="nom">
@@ -831,7 +831,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: DET NOM
 	public void rule14__c_det__c_nom(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule14__c_det__c_nom"); }; 
+		if (debug) { logCall("rule14__c_det__c_nom",  word1, blank1,  word2); }; 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: DET NOM">/<action>/<out>/<chunk case="caseFirstWord" name="det_nom">
@@ -875,7 +875,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: NUM NOM
 	public void rule15__num__c_nom(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule15__num__c_nom"); }; 
+		if (debug) { logCall("rule15__num__c_nom",  word1, blank1,  word2); }; 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: NUM NOM">/<action>/<out>/<chunk case="caseFirstWord" name="det_nom">
@@ -916,7 +916,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: DET NUM NOM
 	public void rule16__c_det__num__c_nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule16__c_det__num__c_nom"); }; 
+		if (debug) { logCall("rule16__c_det__num__c_nom",  word1, blank1,  word2, blank2,  word3); }; 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: DET NUM NOM">/<action>/<out>/<chunk case="caseFirstWord" name="det_nom">
@@ -972,7 +972,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: DET NUM ADJ NOM
 	public void rule17__c_det__num__c_adj_pp__c_nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
-		if (debug) { logCall("rule17__c_det__num__c_adj_pp__c_nom"); }; 
+		if (debug) { logCall("rule17__c_det__num__c_adj_pp__c_nom",  word1, blank1,  word2, blank2,  word3, blank3,  word4); }; 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: DET NUM ADJ NOM">/<action>/<out>/<chunk case="caseFirstWord" name="det_nom">
@@ -1042,7 +1042,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: DET NUM ADJ ADJ NOM
 	public void rule18__c_det__num__c_adj_pp__c_adj_pp__c_nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5) throws IOException
 	{
-		if (debug) { logCall("rule18__c_det__num__c_adj_pp__c_adj_pp__c_nom"); }; 
+		if (debug) { logCall("rule18__c_det__num__c_adj_pp__c_adj_pp__c_nom",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5); }; 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: DET NUM ADJ ADJ NOM">/<action>/<out>/<chunk case="caseFirstWord" name="det_nom">
@@ -1126,7 +1126,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: DET ADV ADJ NOM
 	public void rule19__c_det__c_adv__c_adj_pp__c_nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
-		if (debug) { logCall("rule19__c_det__c_adv__c_adj_pp__c_nom"); }; 
+		if (debug) { logCall("rule19__c_det__c_adv__c_adj_pp__c_nom",  word1, blank1,  word2, blank2,  word3, blank3,  word4); }; 
 		macro_adv_adj(out, word2, blank2, word3);
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
@@ -1183,7 +1183,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: DET NUM ADV ADJ NOM
 	public void rule20__c_det__num__c_adv__c_adj_pp__c_nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5) throws IOException
 	{
-		if (debug) { logCall("rule20__c_det__num__c_adv__c_adj_pp__c_nom"); }; 
+		if (debug) { logCall("rule20__c_det__num__c_adv__c_adj_pp__c_nom",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5); }; 
 		macro_adv_adj(out, word3, blank3, word4);
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
@@ -1252,7 +1252,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: DET ADJ
 	public void rule21__c_det__c_adj_pp(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule21__c_det__c_adj_pp"); }; 
+		if (debug) { logCall("rule21__c_det__c_adj_pp",  word1, blank1,  word2); }; 
 		if (list_lingvoj.containsIgnoreCase(word2.source(attr_lemh, true)))
 		{
 			out.append('^');
@@ -1323,7 +1323,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: DET ADV ADJ
 	public void rule22__c_det__c_adv__c_adj_pp(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule22__c_det__c_adv__c_adj_pp"); }; 
+		if (debug) { logCall("rule22__c_det__c_adv__c_adj_pp",  word1, blank1,  word2, blank2,  word3); }; 
 		macro_adv_adj(out, word2, blank2, word3);
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
@@ -1365,7 +1365,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: ADJ NOM
 	public void rule23__c_adj__c_nom(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule23__c_adj__c_nom"); }; 
+		if (debug) { logCall("rule23__c_adj__c_nom",  word1, blank1,  word2); }; 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: ADJ NOM">/<action>/<out>/<chunk case="caseFirstWord" name="adj_nom">
@@ -1408,7 +1408,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: DET ADJ NOM
 	public void rule24__c_det__c_adj_pp__c_nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule24__c_det__c_adj_pp__c_nom"); }; 
+		if (debug) { logCall("rule24__c_det__c_adj_pp__c_nom",  word1, blank1,  word2, blank2,  word3); }; 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: DET ADJ NOM">/<action>/<out>/<chunk case="caseFirstWord" name="det_adj_nom">
@@ -1466,7 +1466,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: DET ADJ ADJ NOM
 	public void rule25__c_det__c_adj_pp__c_adj_pp__c_nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
-		if (debug) { logCall("rule25__c_det__c_adj_pp__c_adj_pp__c_nom"); }; 
+		if (debug) { logCall("rule25__c_det__c_adj_pp__c_adj_pp__c_nom",  word1, blank1,  word2, blank2,  word3, blank3,  word4); }; 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: DET ADJ ADJ NOM">/<action>/<out>/<chunk case="caseFirstWord" name="det_adj_nom">
@@ -1538,7 +1538,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: DET ADJ ADJ ADJ NOM
 	public void rule26__c_det__c_adj_pp__c_adj_pp__c_adj_pp__c_nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5) throws IOException
 	{
-		if (debug) { logCall("rule26__c_det__c_adj_pp__c_adj_pp__c_adj_pp__c_nom"); }; 
+		if (debug) { logCall("rule26__c_det__c_adj_pp__c_adj_pp__c_adj_pp__c_nom",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5); }; 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: DET ADJ ADJ ADJ NOM">/<action>/<out>/<chunk case="caseFirstWord" name="det_adj_nom">
@@ -1624,7 +1624,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: VERBO-os
 	public void rule27__c_vb_fti(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule27__c_vb_fti"); }; 
+		if (debug) { logCall("rule27__c_vb_fti",  word1); }; 
 		macro_set_vrb2(out, word1);
 		macro_nepersona(out, word1);
 		out.append(var_it);
@@ -1672,7 +1672,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: VERBO-us
 	public void rule28__c_vb_cni(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule28__c_vb_cni"); }; 
+		if (debug) { logCall("rule28__c_vb_cni",  word1); }; 
 		macro_set_vrb2(out, word1);
 		macro_nepersona(out, word1);
 		if (word1.source(attr_lemh, true).equals("devi"))
@@ -1752,7 +1752,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: NE VERBO-os
 	public void rule29__c_ne__c_vb_fti(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule29__c_ne__c_vb_fti"); }; 
+		if (debug) { logCall("rule29__c_ne__c_vb_fti",  word1, blank1,  word2); }; 
 		macro_set_vrb2(out, word2);
 		macro_nepersona(out, word2);
 		out.append(var_it);
@@ -1813,7 +1813,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: NE VERBO-us
 	public void rule30__c_ne__c_vb_cni(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule30__c_ne__c_vb_cni"); }; 
+		if (debug) { logCall("rule30__c_ne__c_vb_cni",  word1, blank1,  word2); }; 
 		macro_set_vrb2(out, word2);
 		macro_nepersona(out, word2);
 		if (word1.source(attr_lemh, true).equals("devi"))
@@ -1919,7 +1919,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: VERBO EN ONT-FORMO
 	public void rule31__c_vb_pp2(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule31__c_vb_pp2"); }; 
+		if (debug) { logCall("rule31__c_vb_pp2",  word1); }; 
 		macro_set_vrb2(out, word1);
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
@@ -1965,7 +1965,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: VERBO EN INT-FORMO
 	public void rule32__c_vb_pp3(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule32__c_vb_pp3"); }; 
+		if (debug) { logCall("rule32__c_vb_pp3",  word1); }; 
 		macro_set_vrb2(out, word1);
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
@@ -1997,7 +1997,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: ESTOS -INTA
 	public void rule33__c_vbser_fti__c_vb_pp3(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule33__c_vbser_fti__c_vb_pp3"); }; 
+		if (debug) { logCall("rule33__c_vbser_fti__c_vb_pp3",  word1, blank1,  word2); }; 
 		macro_set_vrb2(out, word2);
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
@@ -2055,7 +2055,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: ESTUS -INTA
 	public void rule34__c_vbser_cni__c_vb_pp3(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule34__c_vbser_cni__c_vb_pp3"); }; 
+		if (debug) { logCall("rule34__c_vbser_cni__c_vb_pp3",  word1, blank1,  word2); }; 
 		macro_set_vrb2(out, word2);
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
@@ -2113,7 +2113,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: ESTIsimpla-INTA
 	public void rule35__c_vbser_simpla__c_vb_pp3(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule35__c_vbser_simpla__c_vb_pp3"); }; 
+		if (debug) { logCall("rule35__c_vbser_simpla__c_vb_pp3",  word1, blank1,  word2); }; 
 		macro_imp_inf(out, word1);
 		macro_set_vrb2(out, word1);
 		out.append('^');
@@ -2162,7 +2162,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: ESTIsimpla PP
 	public void rule36__c_vbser_simpla__c_vb_pp(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule36__c_vbser_simpla__c_vb_pp"); }; 
+		if (debug) { logCall("rule36__c_vbser_simpla__c_vb_pp",  word1, blank1,  word2); }; 
 		macro_imp_inf(out, word1);
 		macro_set_vrb2(out, word1);
 		out.append('^');
@@ -2212,7 +2212,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: ESTIsimpla PP de (estas dirita de -> is told by)
 	public void rule37__c_vbser_simpla__c_vb_pp__de(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule37__c_vbser_simpla__c_vb_pp__de"); }; 
+		if (debug) { logCall("rule37__c_vbser_simpla__c_vb_pp__de",  word1, blank1,  word2, blank2,  word3); }; 
 		macro_imp_inf(out, word1);
 		macro_set_vrb2(out, word1);
 		out.append('^');
@@ -2282,7 +2282,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: ESTIsimpla PP DE PRN (estas dirita de li -> is told by him)
 	public void rule38__c_vbser_simpla__c_vb_pp__de__c_prn(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
-		if (debug) { logCall("rule38__c_vbser_simpla__c_vb_pp__de__c_prn"); }; 
+		if (debug) { logCall("rule38__c_vbser_simpla__c_vb_pp__de__c_prn",  word1, blank1,  word2, blank2,  word3, blank3,  word4); }; 
 		macro_imp_inf(out, word1);
 		macro_set_vrb2(out, word1);
 		out.append('^');
@@ -2409,7 +2409,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: VBSER
 	public void rule39__c_vbser(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule39__c_vbser"); }; 
+		if (debug) { logCall("rule39__c_vbser",  word1); }; 
 		macro_imp_inf(out, word1);
 		macro_set_vrb2(out, word1);
 		out.append('^');
@@ -2443,7 +2443,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: NE VBSER
 	public void rule40__c_ne__c_vbser(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule40__c_ne__c_vbser"); }; 
+		if (debug) { logCall("rule40__c_ne__c_vbser",  word1, blank1,  word2); }; 
 		macro_imp_inf(out, word2);
 		macro_set_vrb2(out, word2);
 		out.append('^');
@@ -2490,7 +2490,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: VBLEX
 	public void rule41__c_vblex(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule41__c_vblex"); }; 
+		if (debug) { logCall("rule41__c_vblex",  word1); }; 
 		macro_imp_inf(out, word1);
 		macro_set_vrb2(out, word1);
 		macro_nepersona(out, word1);
@@ -2527,7 +2527,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: NE VBLEX
 	public void rule42__c_ne__c_vblex(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule42__c_ne__c_vblex"); }; 
+		if (debug) { logCall("rule42__c_ne__c_vblex",  word1, blank1,  word2); }; 
 		macro_imp_inf(out, word2);
 		macro_set_vrb2(out, word2);
 		macro_nepersona(out, word2);
@@ -2682,7 +2682,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: VBLEXsimpla INF
 	public void rule43__c_vblex_simpla__c_vb_inf(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule43__c_vblex_simpla__c_vb_inf"); }; 
+		if (debug) { logCall("rule43__c_vblex_simpla__c_vb_inf",  word1, blank1,  word2); }; 
 		macro_imp_inf(out, word1);
 		macro_set_vrb2(out, word1);
 		macro_nepersona(out, word1);
@@ -2796,7 +2796,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: NE VBLEXsimpla INF
 	public void rule44__c_ne__c_vblex_simpla__c_vb_inf(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule44__c_ne__c_vblex_simpla__c_vb_inf"); }; 
+		if (debug) { logCall("rule44__c_ne__c_vblex_simpla__c_vb_inf",  word1, blank1,  word2, blank2,  word3); }; 
 		macro_imp_inf(out, word2);
 		macro_set_vrb2(out, word2);
 		macro_nepersona(out, word2);
@@ -3009,7 +3009,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: VBLEXsimpla ADV INF
 	public void rule45__c_vblex_simpla__c_adv__c_vb_inf(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule45__c_vblex_simpla__c_adv__c_vb_inf"); }; 
+		if (debug) { logCall("rule45__c_vblex_simpla__c_adv__c_vb_inf",  word1, blank1,  word2, blank2,  word3); }; 
 		macro_imp_inf(out, word1);
 		macro_set_vrb2(out, word1);
 		macro_nepersona(out, word1);
@@ -3147,7 +3147,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: NE VBLEXsimpla ADV INF
 	public void rule46__c_ne__c_vblex_simpla__c_adv__c_vb_inf(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
-		if (debug) { logCall("rule46__c_ne__c_vblex_simpla__c_adv__c_vb_inf"); }; 
+		if (debug) { logCall("rule46__c_ne__c_vblex_simpla__c_adv__c_vb_inf",  word1, blank1,  word2, blank2,  word3, blank3,  word4); }; 
 		macro_imp_inf(out, word2);
 		macro_set_vrb2(out, word2);
 		macro_nepersona(out, word2);
@@ -3396,7 +3396,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: VBLEX-os INF
 	public void rule47__c_vb_fti__c_vb_inf(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule47__c_vb_fti__c_vb_inf"); }; 
+		if (debug) { logCall("rule47__c_vb_fti__c_vb_inf",  word1, blank1,  word2); }; 
 		macro_set_vrb2(out, word1);
 		macro_nepersona(out, word1);
 		out.append(var_it);
@@ -3470,7 +3470,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: VBLEX-us INF
 	public void rule48__c_vb_cni__c_vb_inf(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule48__c_vb_cni__c_vb_inf"); }; 
+		if (debug) { logCall("rule48__c_vb_cni__c_vb_inf",  word1, blank1,  word2); }; 
 		macro_set_vrb2(out, word1);
 		macro_nepersona(out, word1);
 		out.append(var_it);
@@ -3544,7 +3544,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: NE VBLEX-os INF
 	public void rule49__c_ne__c_vb_fti__c_vb_inf(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule49__c_ne__c_vb_fti__c_vb_inf"); }; 
+		if (debug) { logCall("rule49__c_ne__c_vb_fti__c_vb_inf",  word1, blank1,  word2, blank2,  word3); }; 
 		macro_set_vrb2(out, word2);
 		macro_nepersona(out, word2);
 		out.append(var_it);
@@ -3631,7 +3631,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: NE VBLEX-us INF
 	public void rule50__c_ne__c_vb_cni__c_vb_inf(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule50__c_ne__c_vb_cni__c_vb_inf"); }; 
+		if (debug) { logCall("rule50__c_ne__c_vb_cni__c_vb_inf",  word1, blank1,  word2, blank2,  word3); }; 
 		macro_set_vrb2(out, word2);
 		macro_nepersona(out, word2);
 		out.append(var_it);
@@ -3718,7 +3718,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: VBLEX-os ADV INF
 	public void rule51__c_vb_fti__c_adv__c_vb_inf(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule51__c_vb_fti__c_adv__c_vb_inf"); }; 
+		if (debug) { logCall("rule51__c_vb_fti__c_adv__c_vb_inf",  word1, blank1,  word2, blank2,  word3); }; 
 		macro_set_vrb2(out, word1);
 		macro_nepersona(out, word1);
 		out.append(var_it);
@@ -3804,7 +3804,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: VBLEX-us ADV INF
 	public void rule52__c_vb_cni__c_adv__c_vb_inf(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule52__c_vb_cni__c_adv__c_vb_inf"); }; 
+		if (debug) { logCall("rule52__c_vb_cni__c_adv__c_vb_inf",  word1, blank1,  word2, blank2,  word3); }; 
 		macro_set_vrb2(out, word1);
 		macro_nepersona(out, word1);
 		out.append(var_it);
@@ -3890,7 +3890,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: NE VBLEX-os ADV INF
 	public void rule53__c_ne__c_vb_fti__c_adv__c_vb_inf(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
-		if (debug) { logCall("rule53__c_ne__c_vb_fti__c_adv__c_vb_inf"); }; 
+		if (debug) { logCall("rule53__c_ne__c_vb_fti__c_adv__c_vb_inf",  word1, blank1,  word2, blank2,  word3, blank3,  word4); }; 
 		macro_set_vrb2(out, word2);
 		macro_nepersona(out, word2);
 		out.append(var_it);
@@ -3989,7 +3989,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: NE VBLEX-us ADV INF
 	public void rule54__c_ne__c_vb_cni__c_adv__c_vb_inf(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
-		if (debug) { logCall("rule54__c_ne__c_vb_cni__c_adv__c_vb_inf"); }; 
+		if (debug) { logCall("rule54__c_ne__c_vb_cni__c_adv__c_vb_inf",  word1, blank1,  word2, blank2,  word3, blank3,  word4); }; 
 		macro_set_vrb2(out, word2);
 		macro_nepersona(out, word2);
 		out.append(var_it);
@@ -4088,7 +4088,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: PP de (dirita de -> told by)
 	public void rule55__c_vb_pp__de(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule55__c_vb_pp__de"); }; 
+		if (debug) { logCall("rule55__c_vb_pp__de",  word1, blank1,  word2); }; 
 		macro_imp_inf(out, word1);
 		macro_set_vrb2(out, word1);
 		out.append('^');
@@ -4143,7 +4143,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: PP DE PRN (dirita de li -> told by him)
 	public void rule56__c_vb_pp__de__c_prn(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule56__c_vb_pp__de__c_prn"); }; 
+		if (debug) { logCall("rule56__c_vb_pp__de__c_prn",  word1, blank1,  word2, blank2,  word3); }; 
 		macro_imp_inf(out, word1);
 		macro_set_vrb2(out, word1);
 		out.append('^');
@@ -4255,7 +4255,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: DE PRN PP (de li dirita -> told by him)
 	public void rule57__de__c_prpers__c_vb_pp(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule57__de__c_prpers__c_vb_pp"); }; 
+		if (debug) { logCall("rule57__de__c_prpers__c_vb_pp",  word1, blank1,  word2, blank2,  word3); }; 
 		macro_imp_inf(out, word3);
 		macro_set_vrb2(out, word3);
 		out.append('^');
@@ -4367,7 +4367,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: NUM
 	public void rule58__num(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule58__num"); }; 
+		if (debug) { logCall("rule58__num",  word1); }; 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: NUM">/<action>/<out>/<chunk case="caseFirstWord" name="num">
@@ -4391,7 +4391,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: DE
 	public void rule59__de(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule59__de"); }; 
+		if (debug) { logCall("rule59__de",  word1); }; 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: DE">/<action>/<out>/<chunk case="caseFirstWord" name="pr">
@@ -4415,7 +4415,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: PREP
 	public void rule60__pr(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule60__pr"); }; 
+		if (debug) { logCall("rule60__pr",  word1); }; 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: PREP">/<action>/<out>/<chunk case="caseFirstWord" name="pr">
@@ -4439,7 +4439,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: REL
 	public void rule61__rel(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule61__rel"); }; 
+		if (debug) { logCall("rule61__rel",  word1); }; 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: REL">/<action>/<out>/<chunk case="caseFirstWord" name="rel">
@@ -4465,7 +4465,7 @@ public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase
 	// REGULO: KOMO
 	public void rule62__komo(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule62__komo"); }; 
+		if (debug) { logCall("rule62__komo",  word1); }; 
 		out.append('^');
 		// WARNING variable caseFirstWord doesent exist. Valid variables are: [number, genere, vrb2, adv_adjectiu, superlatiu1, it]
 // Replacing with error_UNKNOWN_VAR - for <transfer default="chunk">/<section-rules>/<rule comment="REGULO: KOMO">/<action>/<out>/<chunk case="caseFirstWord" name="komo">

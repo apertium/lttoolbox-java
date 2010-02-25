@@ -288,7 +288,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: prnref   - himself, themselves
 	public void rule0__prnref(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule0__prnref"); }; 
+		if (debug) { logCall("rule0__prnref",  word1); }; 
 		macro_firstWord(out, word1);
 		macro_ordigu_genron(out, word1);
 		out.append('^');
@@ -313,7 +313,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: Prn
 	public void rule1__prnaltres(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule1__prnaltres"); }; 
+		if (debug) { logCall("rule1__prnaltres",  word1); }; 
 		macro_firstWord(out, word1);
 		macro_set_numero1(out, word1);
 		out.append('^');
@@ -340,7 +340,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: PrnPers
 	public void rule2__prnpers(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule2__prnpers"); }; 
+		if (debug) { logCall("rule2__prnpers",  word1); }; 
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "prnpers"));
@@ -363,7 +363,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	
 	public void rule3__num(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule3__num"); }; 
+		if (debug) { logCall("rule3__num",  word1); }; 
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "num"));
@@ -386,7 +386,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// July 2 - 2a de julio
 	public void rule4__monato__num_dato(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule4__monato__num_dato"); }; 
+		if (debug) { logCall("rule4__monato__num_dato",  word1, blank1,  word2); }; 
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "dato"));
@@ -438,7 +438,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// July 2nd - 2a de julio
 	public void rule5__monato__num_ord(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule5__monato__num_ord"); }; 
+		if (debug) { logCall("rule5__monato__num_ord",  word1, blank1,  word2); }; 
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "dato"));
@@ -489,7 +489,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// on July 2 - la 2an de julio
 	public void rule6__on__monato__num_dato(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule6__on__monato__num_dato"); }; 
+		if (debug) { logCall("rule6__on__monato__num_dato",  word1, blank1,  word2, blank2,  word3); }; 
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "dato"));
@@ -554,7 +554,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// on July 2nd - la 2a de julio
 	public void rule7__on__monato__num_ord(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule7__on__monato__num_ord"); }; 
+		if (debug) { logCall("rule7__on__monato__num_ord",  word1, blank1,  word2, blank2,  word3); }; 
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "dato"));
@@ -619,7 +619,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA NUM of      5 of => 5 el 
 	public void rule8__num_sen_ord__of(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule8__num_sen_ord__of"); }; 
+		if (debug) { logCall("rule8__num_sen_ord__of",  word1, blank1,  word2); }; 
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "num"));
@@ -660,7 +660,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA NUM times NUM  5 times 8 => 5 oble 8 
 	public void rule9__num_sen_ord__times__num_sen_ord(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule9__num_sen_ord__times__num_sen_ord"); }; 
+		if (debug) { logCall("rule9__num_sen_ord__times__num_sen_ord",  word1, blank1,  word2, blank2,  word3); }; 
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "num"));
@@ -708,7 +708,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA NUM time   5 times => 5 fojoj, 5th time => 5a fojo,   
 	public void rule10__num__times(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule10__num__times"); }; 
+		if (debug) { logCall("rule10__num__times",  word1, blank1,  word2); }; 
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "num"));
@@ -746,7 +746,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: DET:a  - the derminier 'a' should just be deleted. Having this rule makes it possible to avoid handling 'a' in all the other rules
 	public void rule11__a(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule11__a"); }; 
+		if (debug) { logCall("rule11__a",  word1); }; 
 		if (word1.source(attr_lem, true).equals("A"))
 		{
 			var_venontaVortoEstuMajuskla = "true";
@@ -757,7 +757,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: DET the, his, ... (alia ol 'a')
 	public void rule12__det(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule12__det"); }; 
+		if (debug) { logCall("rule12__det",  word1); }; 
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "det"));
@@ -783,7 +783,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: NOM
 	public void rule13__nom(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule13__nom"); }; 
+		if (debug) { logCall("rule13__nom",  word1); }; 
 		macro_firstWord(out, word1);
 		macro_ordigu_genron(out, word1);
 		out.append('^');
@@ -809,7 +809,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: more NOM, f.eks. 'more tea'  to 'Pli da teo'
 	public void rule14__more__nom(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule14__more__nom"); }; 
+		if (debug) { logCall("rule14__more__nom",  word1, blank1,  word2); }; 
 		macro_firstWord(out, word1);
 		macro_ordigu_genron(out, word2);
 		out.append('^');
@@ -847,7 +847,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: DET NOM
 	public void rule15__det__nom(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule15__det__nom"); }; 
+		if (debug) { logCall("rule15__det__nom",  word1, blank1,  word2); }; 
 		macro_firstWord(out, word1);
 		macro_ordigu_genron(out, word2);
 		macro_set_determiner3(out, word1, blank1, word2, blank1, word2);
@@ -875,7 +875,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: DET NOM NOM (nova)  la testaj firmaoj
 	public void rule16__det__nom__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule16__det__nom__nom"); }; 
+		if (debug) { logCall("rule16__det__nom__nom",  word1, blank1,  word2, blank2,  word3); }; 
 		macro_firstWord(out, word1);
 		macro_ordigu_genron(out, word2);
 		macro_ordigu_genron(out, word3);
@@ -921,7 +921,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: DET NOM NOM NOM 
 	public void rule17__det__nom__nom__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
-		if (debug) { logCall("rule17__det__nom__nom__nom"); }; 
+		if (debug) { logCall("rule17__det__nom__nom__nom",  word1, blank1,  word2, blank2,  word3, blank3,  word4); }; 
 		macro_firstWord(out, word1);
 		macro_ordigu_genron(out, word2);
 		macro_ordigu_genron(out, word3);
@@ -985,7 +985,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: DET NOM NOM NOM NOM
 	public void rule18__det__nom__nom__nom__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5) throws IOException
 	{
-		if (debug) { logCall("rule18__det__nom__nom__nom__nom"); }; 
+		if (debug) { logCall("rule18__det__nom__nom__nom__nom",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5); }; 
 		macro_firstWord(out, word1);
 		macro_ordigu_genron(out, word2);
 		macro_ordigu_genron(out, word3);
@@ -1067,7 +1067,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: ADJ
 	public void rule19__adj(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule19__adj"); }; 
+		if (debug) { logCall("rule19__adj",  word1); }; 
 		macro_firstWord(out, word1);
 		macro_set_adjectiu2(out, word1, " ", word1);
 		macro_ordigu_genron(out, word1);
@@ -1093,7 +1093,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: DET ADJ NOM
 	public void rule20__det__adj__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule20__det__adj__nom"); }; 
+		if (debug) { logCall("rule20__det__adj__nom",  word1, blank1,  word2, blank2,  word3); }; 
 		macro_firstWord(out, word1);
 		macro_ordigu_genron(out, word3);
 		macro_set_adjectiu2(out, word2, blank2, word3);
@@ -1134,7 +1134,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: ADJ NOM
 	public void rule21__adj__nom(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule21__adj__nom"); }; 
+		if (debug) { logCall("rule21__adj__nom",  word1, blank1,  word2); }; 
 		macro_firstWord(out, word1);
 		macro_set_adjectiu2(out, word1, blank1, word2);
 		macro_ordigu_genron(out, word2);
@@ -1173,7 +1173,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: ADJ ADJ NOM
 	public void rule22__adj__adj__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule22__adj__adj__nom"); }; 
+		if (debug) { logCall("rule22__adj__adj__nom",  word1, blank1,  word2, blank2,  word3); }; 
 		macro_firstWord(out, word1);
 		macro_set_adjectiu2(out, word1, blank2, word3);
 		macro_ordigu_genron(out, word3);
@@ -1227,7 +1227,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: DET UNKNOWN/ADV/NUM UNKNOWN/ADV/NUM NOM
 	public void rule23__det__unknown_adv_num__unknown_adv_num__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
-		if (debug) { logCall("rule23__det__unknown_adv_num__unknown_adv_num__nom"); }; 
+		if (debug) { logCall("rule23__det__unknown_adv_num__unknown_adv_num__nom",  word1, blank1,  word2, blank2,  word3, blank3,  word4); }; 
 		macro_firstWord(out, word1);
 		macro_ordigu_genron(out, word4);
 		macro_set_determiner3(out, word1, blank1, word2, blank3, word4);
@@ -1279,7 +1279,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: DET ADJ ADJ NOM
 	public void rule24__det__adj__adj__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
-		if (debug) { logCall("rule24__det__adj__adj__nom"); }; 
+		if (debug) { logCall("rule24__det__adj__adj__nom",  word1, blank1,  word2, blank2,  word3, blank3,  word4); }; 
 		macro_firstWord(out, word1);
 		macro_ordigu_genron(out, word4);
 		macro_set_adjectiu2(out, word2, blank3, word4);
@@ -1334,7 +1334,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: DET ADJ ADJ ADJ NOM
 	public void rule25__det__adj__adj__adj__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5) throws IOException
 	{
-		if (debug) { logCall("rule25__det__adj__adj__adj__nom"); }; 
+		if (debug) { logCall("rule25__det__adj__adj__adj__nom",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5); }; 
 		macro_firstWord(out, word1);
 		macro_ordigu_genron(out, word5);
 		macro_set_adjectiu2(out, word2, blank4, word5);
@@ -1403,7 +1403,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: NOM NOM   - testaj firmaoj (nova provo)
 	public void rule26__nom__nom(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule26__nom__nom"); }; 
+		if (debug) { logCall("rule26__nom__nom",  word1, blank1,  word2); }; 
 		macro_firstWord(out, word1);
 		macro_ordigu_genron(out, word1);
 		macro_ordigu_genron(out, word2);
@@ -1447,7 +1447,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: ANT
 	public void rule27__ant_cog(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule27__ant_cog"); }; 
+		if (debug) { logCall("rule27__ant_cog",  word1); }; 
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "ant"));
@@ -1472,7 +1472,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: ANT ANT
 	public void rule28__ant_cog__ant_cog(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule28__ant_cog__ant_cog"); }; 
+		if (debug) { logCall("rule28__ant_cog__ant_cog",  word1, blank1,  word2); }; 
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "ant_cog"));
@@ -1511,7 +1511,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: ANT ANT ANT
 	public void rule29__ant_cog__ant_cog__ant_cog(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule29__ant_cog__ant_cog__ant_cog"); }; 
+		if (debug) { logCall("rule29__ant_cog__ant_cog__ant_cog",  word1, blank1,  word2, blank2,  word3); }; 
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "ant_cog"));
@@ -1564,7 +1564,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: ANT ANT ANT ANT
 	public void rule30__ant_cog__ant_cog__ant_cog__ant_cog(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
-		if (debug) { logCall("rule30__ant_cog__ant_cog__ant_cog__ant_cog"); }; 
+		if (debug) { logCall("rule30__ant_cog__ant_cog__ant_cog__ant_cog",  word1, blank1,  word2, blank2,  word3, blank3,  word4); }; 
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "ant_ant_cog_cog"));
@@ -1631,7 +1631,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: ANT - ANT ANT
 	public void rule31__ant_cog__guio__ant_cog__ant_cog(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
-		if (debug) { logCall("rule31__ant_cog__guio__ant_cog__ant_cog"); }; 
+		if (debug) { logCall("rule31__ant_cog__guio__ant_cog__ant_cog",  word1, blank1,  word2, blank2,  word3, blank3,  word4); }; 
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "ant-ant_cog"));
@@ -1696,7 +1696,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: ANT ANT - ANT
 	public void rule32__ant_cog__ant_cog__guio__ant_cog(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
-		if (debug) { logCall("rule32__ant_cog__ant_cog__guio__ant_cog"); }; 
+		if (debug) { logCall("rule32__ant_cog__ant_cog__guio__ant_cog",  word1, blank1,  word2, blank2,  word3, blank3,  word4); }; 
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "ant_cog-cog"));
@@ -1761,7 +1761,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: ANT - ANT ANT - ANT
 	public void rule33__ant_cog__guio__ant_cog__ant_cog__guio__ant_cog(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5, String blank5, TransferWord word6) throws IOException
 	{
-		if (debug) { logCall("rule33__ant_cog__guio__ant_cog__ant_cog__guio__ant_cog"); }; 
+		if (debug) { logCall("rule33__ant_cog__guio__ant_cog__ant_cog__guio__ant_cog",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5, blank5,  word6); }; 
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "ant-ant_cog-cog"));
@@ -1852,7 +1852,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: NOM/ANT 's NOM:  gardener's dog => la hundo de gxardenisto
 	public void rule34__genitive_possessors__gen__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule34__genitive_possessors__gen__nom"); }; 
+		if (debug) { logCall("rule34__genitive_possessors__gen__nom",  word1, blank1,  word2, blank2,  word3); }; 
 		macro_firstWord(out, word1);
 		macro_set_nomvar_if_known1(out, word1);
 		macro_ordigu_genron(out, word1);
@@ -1908,7 +1908,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: NOM/ANT 's NOM:  gardener's dog => hundo de gxardenisto
 	public void rule35__genitive_possessors__gen__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule35__genitive_possessors__gen__nom"); }; 
+		if (debug) { logCall("rule35__genitive_possessors__gen__nom",  word1, blank1,  word2, blank2,  word3); }; 
 		macro_firstWord(out, word1);
 		macro_set_nomvar_if_known1(out, word1);
 		macro_ordigu_genron(out, word1);
@@ -1964,7 +1964,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: NOM/ANT 's NOM NOM:  gardener's dog house => hunda domo de gxardenisto
 	public void rule36__genitive_possessors__gen__nom__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
-		if (debug) { logCall("rule36__genitive_possessors__gen__nom__nom"); }; 
+		if (debug) { logCall("rule36__genitive_possessors__gen__nom__nom",  word1, blank1,  word2, blank2,  word3, blank3,  word4); }; 
 		macro_firstWord(out, word1);
 		macro_set_nomvar_if_known1(out, word1);
 		macro_ordigu_genron(out, word1);
@@ -2038,7 +2038,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: DET NOM/ANT 's NOM:  his gardener's dog => la hundo de lia gxardenisto
 	public void rule37__det__genitive_possessors__gen__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
-		if (debug) { logCall("rule37__det__genitive_possessors__gen__nom"); }; 
+		if (debug) { logCall("rule37__det__genitive_possessors__gen__nom",  word1, blank1,  word2, blank2,  word3, blank3,  word4); }; 
 		macro_firstWord(out, word1);
 		macro_set_nomvar_if_known1(out, word2);
 		macro_ordigu_genron(out, word2);
@@ -2113,7 +2113,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: DET NOM/ANT NOM/ANT 's NOM:  his garden man's dog   - La hundo de lia ĝardeno viro 
 	public void rule38__det__genitive_possessors__genitive_possessors__gen__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5) throws IOException
 	{
-		if (debug) { logCall("rule38__det__genitive_possessors__genitive_possessors__gen__nom"); }; 
+		if (debug) { logCall("rule38__det__genitive_possessors__genitive_possessors__gen__nom",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5); }; 
 		macro_firstWord(out, word1);
 		macro_set_nomvar_if_known1(out, word2);
 		var_tmp1 = var_nomvar;
@@ -2204,7 +2204,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// rekunu and, or kaj nor aparte - ĉar povas esti parto de listo de aferoj
 	public void rule39__and_or_nor(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule39__and_or_nor"); }; 
+		if (debug) { logCall("rule39__and_or_nor",  word1); }; 
 		macro_firstWord(out, word1);
 		macro_set_and_or_but(out, word1);
 		out.append('^');
@@ -2228,7 +2228,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	
 	public void rule40__cnjcoo(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule40__cnjcoo"); }; 
+		if (debug) { logCall("rule40__cnjcoo",  word1); }; 
 		macro_firstWord(out, word1);
 		macro_set_and_or_but(out, word1);
 		out.append('^');
@@ -2252,7 +2252,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	
 	public void rule41__cnjadv(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule41__cnjadv"); }; 
+		if (debug) { logCall("rule41__cnjadv",  word1); }; 
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "cnjadv"));
@@ -2274,7 +2274,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	
 	public void rule42__cnjsub(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule42__cnjsub"); }; 
+		if (debug) { logCall("rule42__cnjsub",  word1); }; 
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "CS"));
@@ -2296,7 +2296,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	
 	public void rule43__cm(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule43__cm"); }; 
+		if (debug) { logCall("rule43__cm",  word1); }; 
 		out.append('^');
 		out.append("cm");
 		out.append("<CM>");
@@ -2317,7 +2317,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	
 	public void rule44__rel(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule44__rel"); }; 
+		if (debug) { logCall("rule44__rel",  word1); }; 
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "rel"));
@@ -2339,7 +2339,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	
 	public void rule45__preadv(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule45__preadv"); }; 
+		if (debug) { logCall("rule45__preadv",  word1); }; 
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "preadv"));
@@ -2361,7 +2361,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	
 	public void rule46__predet(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule46__predet"); }; 
+		if (debug) { logCall("rule46__predet",  word1); }; 
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "predet"));
@@ -2383,7 +2383,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	
 	public void rule47__adv(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule47__adv"); }; 
+		if (debug) { logCall("rule47__adv",  word1); }; 
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "adv"));
@@ -2405,7 +2405,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	
 	public void rule48__pr(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule48__pr"); }; 
+		if (debug) { logCall("rule48__pr",  word1); }; 
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "pr"));
@@ -2428,7 +2428,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: non-recognized genitive ('s) fallback :  XXX's YYY   => XXX'a YYY
 	public void rule49__gen(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule49__gen"); }; 
+		if (debug) { logCall("rule49__gen",  word1); }; 
 		out.append('^');
 		out.append("gen");
 		out.append("<GEN>");
@@ -2451,7 +2451,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: SENT ;: - frazparto
 	public void rule50__sent_komopunkto_dupunkto(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule50__sent_komopunkto_dupunkto"); }; 
+		if (debug) { logCall("rule50__sent_komopunkto_dupunkto",  word1); }; 
 		out.append('^');
 		out.append("sent");
 		out.append("<S>");
@@ -2473,7 +2473,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: SENT .?!  - fino de frazo
 	public void rule51__sent(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule51__sent"); }; 
+		if (debug) { logCall("rule51__sent",  word1); }; 
 		var_EOS = "true";
 		out.append('^');
 		out.append("sent");
@@ -2495,7 +2495,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	
 	public void rule52__unknown(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule52__unknown"); }; 
+		if (debug) { logCall("rule52__unknown",  word1); }; 
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "unknown"));
@@ -2518,7 +2518,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: to VBLEXinf
 	public void rule53__to__vblexinf(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule53__to__vblexinf"); }; 
+		if (debug) { logCall("rule53__to__vblexinf",  word1, blank1,  word2); }; 
 		macro_firstWord(out, word1);
 		macro_set_tipus_verbs1(out, word2);
 		macro_sendu_blankon_se_havas_formaton2(out, word1, blank1, word2);
@@ -2548,7 +2548,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: of VBLEXger - of being, of running, of looking - esti, kuri, vidi
 	public void rule54__of__vblexger(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule54__of__vblexger"); }; 
+		if (debug) { logCall("rule54__of__vblexger",  word1, blank1,  word2); }; 
 		macro_firstWord(out, word1);
 		macro_set_tipus_verbs1(out, word2);
 		macro_sendu_blankon_se_havas_formaton2(out, word1, blank1, word2);
@@ -2578,7 +2578,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: to have suffered  -  suferi
 	public void rule55__to__vbhaverinf__vblex_vbser(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule55__to__vbhaverinf__vblex_vbser"); }; 
+		if (debug) { logCall("rule55__to__vbhaverinf__vblex_vbser",  word1, blank1,  word2, blank2,  word3); }; 
 		macro_firstWord(out, word1);
 		macro_set_tipus_verbs1(out, word3);
 		macro_sendu_blankon_se_havas_formaton2(out, word1, blank1, word2);
@@ -2609,7 +2609,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: be VBLEXger
 	public void rule56__vbser__vblexger(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule56__vbser__vblexger"); }; 
+		if (debug) { logCall("rule56__vbser__vblexger",  word1, blank1,  word2); }; 
 		macro_firstWord(out, word1);
 		macro_set_tipus_verbs1(out, word2);
 		out.append('^');
@@ -2653,7 +2653,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: level out - elebenigi
 	public void rule57__vblex__out(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule57__vblex__out"); }; 
+		if (debug) { logCall("rule57__vblex__out",  word1, blank1,  word2); }; 
 		macro_firstWord(out, word1);
 		macro_set_tipus_verbs1(out, word1);
 		macro_sendu_blankon_se_havas_formaton2(out, word1, blank1, word2);
@@ -2695,7 +2695,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: VBSER not
 	public void rule58__vbser__not(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule58__vbser__not"); }; 
+		if (debug) { logCall("rule58__vbser__not",  word1, blank1,  word2); }; 
 		macro_firstWord(out, word1);
 		macro_set_tipus_verbs1(out, word1);
 		out.append('^');
@@ -2736,7 +2736,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// RULE: please + vblex in present => please + vblex in infinitive
 	public void rule59__please__c_vblex_pres(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule59__please__c_vblex_pres"); }; 
+		if (debug) { logCall("rule59__please__c_vblex_pres",  word1, blank1,  word2); }; 
 		macro_set_tipus_verbs1(out, word2);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "pls_verb1"));
@@ -2782,7 +2782,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: do ADV VERB (I do not think -> mi ne pensas. I do always think -> mi ja ĉiam pensas)
 	public void rule60__do__adv__infpres(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule60__do__adv__infpres"); }; 
+		if (debug) { logCall("rule60__do__adv__infpres",  word1, blank1,  word2, blank2,  word3); }; 
 		macro_firstWord(out, word1);
 		macro_set_tipus_verbs1(out, word3);
 		macro_set_verbkonj2_do(out, word1, blank2, word3);
@@ -2852,7 +2852,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: do VERB (I do think -> mi ja pensas) 
 	public void rule61__do__infpres(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule61__do__infpres"); }; 
+		if (debug) { logCall("rule61__do__infpres",  word1, blank1,  word2); }; 
 		macro_firstWord(out, word1);
 		macro_set_tipus_verbs1(out, word2);
 		macro_set_verbkonj2_do(out, word1, blank1, word2);
@@ -2897,7 +2897,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: VAUX VBLEX
 	public void rule62__vaux_vbhaver__vblex_vbser(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
-		if (debug) { logCall("rule62__vaux_vbhaver__vblex_vbser"); }; 
+		if (debug) { logCall("rule62__vaux_vbhaver__vblex_vbser",  word1, blank1,  word2); }; 
 		macro_firstWord(out, word1);
 		macro_set_tipus_verbs1(out, word2);
 		if (list_willwouldshallhave.containsIgnoreCase(word1.source(attr_lem, true)))
@@ -3012,7 +3012,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: VAUX ADV VBLEX
 	public void rule63__vaux_vbhaver__adv__vblex_vbser(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule63__vaux_vbhaver__adv__vblex_vbser"); }; 
+		if (debug) { logCall("rule63__vaux_vbhaver__adv__vblex_vbser",  word1, blank1,  word2, blank2,  word3); }; 
 		macro_firstWord(out, word1);
 		macro_set_tipus_verbs1(out, word3);
 		if (list_willwouldshallhave.containsIgnoreCase(word1.source(attr_lem, true)))
@@ -3160,7 +3160,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: VAUX ADV ADV VBLEX - have also abruptly changed - ankaŭ abrupte ŝanĝis
 	public void rule64__vaux_vbhaver__adv__adv__vblex_vbser(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
-		if (debug) { logCall("rule64__vaux_vbhaver__adv__adv__vblex_vbser"); }; 
+		if (debug) { logCall("rule64__vaux_vbhaver__adv__adv__vblex_vbser",  word1, blank1,  word2, blank2,  word3, blank3,  word4); }; 
 		macro_firstWord(out, word1);
 		macro_set_tipus_verbs1(out, word4);
 		if (list_willwouldshallhave.containsIgnoreCase(word1.source(attr_lem, true)))
@@ -3344,7 +3344,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: VAUX VBHAVER VBLEX/VBSER - would have been,  would have ended,  might have allowed,  could have levelled out, may have represented,  might have been
 	public void rule65__vaux_vbhaver__vbhaver__vblex_vbser(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule65__vaux_vbhaver__vbhaver__vblex_vbser"); }; 
+		if (debug) { logCall("rule65__vaux_vbhaver__vbhaver__vblex_vbser",  word1, blank1,  word2, blank2,  word3); }; 
 		macro_firstWord(out, word1);
 		macro_set_tipus_verbs1(out, word3);
 		if (list_willwouldshallhave.containsIgnoreCase(word1.source(attr_lem, true)))
@@ -3558,7 +3558,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	// REGLA: VAUX VBSER VBLEXGER
 	public void rule66__vaux_vbhaver__vbser__vblexger(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
-		if (debug) { logCall("rule66__vaux_vbhaver__vbser__vblexger"); }; 
+		if (debug) { logCall("rule66__vaux_vbhaver__vbser__vblexger",  word1, blank1,  word2, blank2,  word3); }; 
 		macro_firstWord(out, word1);
 		macro_set_tipus_verbs1(out, word3);
 		if (list_willwouldshallhave.containsIgnoreCase(word1.source(attr_lem, true)))
@@ -3652,7 +3652,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	
 	public void rule67__vbdo(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule67__vbdo"); }; 
+		if (debug) { logCall("rule67__vbdo",  word1); }; 
 		macro_firstWord(out, word1);
 		macro_set_tipus_verbs1(out, word1);
 		out.append('^');
@@ -3680,7 +3680,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	
 	public void rule68__vb_all(Writer out, TransferWord word1) throws IOException
 	{
-		if (debug) { logCall("rule68__vb_all"); }; 
+		if (debug) { logCall("rule68__vb_all",  word1); }; 
 		macro_firstWord(out, word1);
 		macro_set_tipus_verbs1(out, word1);
 		out.append('^');
