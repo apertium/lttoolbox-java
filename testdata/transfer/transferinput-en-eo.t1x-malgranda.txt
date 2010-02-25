@@ -1,3 +1,4 @@
+^Some<det><qnt><sp>$ ^ASCII<n><acr><re><sp>$ ^artist<n><pl>$ ^have<vbhaver><inf>$ ^produce<vblex><pp>$ ^art<n><sg>$ ^for<pr>$ ^display<n><sg>$ ^in<pr>$ ^such<det><ind><sp>$ ^font<n><pl>$^.<sent>$
 ^And<cnjcoo>$ ^that<cnjsub>$ ^would<vaux><cni>$ ^be<vbser><inf>$ ^a<det><ind><sg>$ ^different<adj>$ ^kind<n><sg>$ ^of<pr>$ ^report<n><sg>$ ^that<cnjsub>$ ^one<num><sg>$ ^can<vaux><past>$ ^get<vblex><inf>$ ^of<pr>$ ^individual<adj>$ ^student<n><sg>$ ^performance<n><sg>$^.<sent>$
 ^And<cnjcoo>$ ^be<vbser><pres><p3><sg>$ ^that<cnjsub>$ ^a<det><ind><sg>$ ^issue<n><sg>$ ^at<pr>$ ^all<prn><tn><sp>$^?<sent>$ ^Or<cnjcoo>$ ^be<vbser><pres><p3><sg>$ ^that<cnjsub>$ ^a<det><ind><sg>$ ^non<adv>$^-<guio>$^issue<n><sg>$^?<sent>$
 ^David<np><ant><m><sg>$^,<cm>$ ^some<det><qnt><sp>$ ^opening<adj>$ ^remark<n><pl>$^.<sent>$
