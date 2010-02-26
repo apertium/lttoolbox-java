@@ -63,8 +63,8 @@ static String[] transferFileList = {
       // Average speedup: 4.189285714285715 - individual: [3.96, 4.01, 4.43, 4.46, 4.27, 3.97, 4.4, 4.36, 4.44, 4.56, 4.34, 4.03, 4.21, 3.94, 4.75, 4.48, 3.83, 4.2, 4.41, 4.1, 4.8, 4.3, 4.09, 4.85, 4.22, 4.59, 3.68, 3.93, 4.78, 3.42, 4.54, 4.86, 4.56, 3.2, 3.97, 3.8, 4.86, 3.33, 4.09, 2.97, 4.54, 4.52, 4.64, 4.91, 3.27, 4.11, 4.3, 4.1, 4.34, 3.67, 3.68, 4.13, 4.35, 3.27, 4.46, 4.32]
       //String inputFile = testdir+"transferinput-en-eo.t1x.txt";
 
-      //String[] transferFiles = transferFileList;
-      String[] transferFiles = findAlllTransferFilesOnDisk();
+      String[] transferFiles = transferFileList;
+      transferFiles = findAlllTransferFilesOnDisk();
       //printFilesAsJavaArray(transferFiles);
 
 

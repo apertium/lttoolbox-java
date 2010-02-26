@@ -353,8 +353,7 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 		out.append(TransferWord.copycase(var_caseFirstWord, "verbinf"));
 		out.append("<SV>");
 		out.append(word2.tl(attr_a_verb));
-		out.append("<inf>");
-		out.append('{');
+		out.append("<inf>{");
 		{
 			String myword = 
 			         word1.tl(attr_whole)
@@ -381,8 +380,7 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 				out.append('$');
 			}
 		}
-		out.append("}$");
-		out.append(" ");
+		out.append("}$ ");
 	}
 	
 	// REGLA: PRSUBJ VBLEX
@@ -403,11 +401,9 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 		out.append(word2.tl(attr_lemh));
 		out.append(word2.tl(attr_a_verb));
 		out.append(word2.tl(attr_temps));
-		out.append("<2>");
-		out.append("<3>");
+		out.append("<2><3>");
 		out.append(word2.tl(attr_lemq));
-		out.append('$');
-		out.append(" ");
+		out.append("$ ");
 		{
 			String myword = 
 			         word1.tl(attr_whole)

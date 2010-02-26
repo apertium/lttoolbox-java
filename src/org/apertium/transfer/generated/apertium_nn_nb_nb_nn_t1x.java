@@ -370,11 +370,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		}
 		else
 		{
-			out.append('^');
-			out.append("til");
-			out.append("<pr>");
-			out.append('$');
-			out.append(" ");
+			out.append("^til<pr>$ ");
 			{
 				String myword = 
 				         word1.tl(attr_lemh)
@@ -403,9 +399,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		{
 			var_det_gender = "";
 		}
-		out.append('^');
-		out.append("sin");
-		out.append("<det><pos>");
+		out.append("^sin<det><pos>");
 		out.append(var_det_gender);
 		out.append(var_number_no_sp);
 		out.append('$');
@@ -485,10 +479,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		{
 			out.append('^');
 			out.append(TransferWord.copycase(word1.sl(attr_lem), "bli"));
-			out.append("<vblex><pres>");
-			out.append('$');
-			out.append(" ");
-			out.append('^');
+			out.append("<vblex><pres>$ ^");
 			out.append(word1.tl(attr_lemh));
 			out.append(word1.tl(attr_a_verb));
 			out.append("<pp>");
@@ -531,8 +522,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		{
 			out.append('^');
 			out.append(TransferWord.copycase(word1.sl(attr_lem), "bli"));
-			out.append("<vblex><pres>");
-			out.append('$');
+			out.append("<vblex><pres>$");
 			out.append(blank1);
 			{
 				String myword = 
@@ -545,8 +535,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 					out.append('$');
 				}
 			}
-			out.append(" ");
-			out.append('^');
+			out.append(" ^");
 			out.append(word1.tl(attr_lemh));
 			out.append(word1.tl(attr_a_verb));
 			out.append("<pp>");
@@ -601,8 +590,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		{
 			out.append('^');
 			out.append(TransferWord.copycase(word1.sl(attr_lem), "bli"));
-			out.append("<vblex><pres>");
-			out.append('$');
+			out.append("<vblex><pres>$");
 			out.append(blank1);
 			{
 				String myword = 
@@ -627,8 +615,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 					out.append('$');
 				}
 			}
-			out.append(" ");
-			out.append('^');
+			out.append(" ^");
 			out.append(word1.tl(attr_lemh));
 			out.append(word1.tl(attr_a_verb));
 			out.append("<pp>");
@@ -1128,11 +1115,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		macro_set_gender2(out, word2, " ", word1);
 		macro_out_ndef(out, word3, " ", word1);
 		out.append(blank1);
-		out.append('^');
-		out.append("til");
-		out.append("<pr>");
-		out.append('$');
-		out.append(" ");
+		out.append("^til<pr>$ ");
 		macro_out_ndef(out, word2, blank1, word2);
 		out.append(blank2);
 		macro_out_posgen(out, word1);
@@ -1146,18 +1129,10 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		macro_set_gender3(out, word3, " ", word1, blank1, word2);
 		macro_out_ndef(out, word4, " ", word1);
 		out.append(blank1);
-		out.append('^');
-		out.append("til");
-		out.append("<pr>");
-		out.append('$');
-		out.append(" ");
-		out.append('^');
-		out.append("den");
-		out.append("<det><dem>");
+		out.append("^til<pr>$ ^den<det><dem>");
 		out.append(var_det_gender);
 		out.append(var_number_no_sp);
-		out.append('$');
-		out.append(" ");
+		out.append("$ ");
 		macro_out_adj(out, word2);
 		out.append(blank2);
 		macro_out_ndef(out, word3, blank2, word3);
@@ -1176,17 +1151,12 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		out.append("<det><dem>");
 		out.append(var_det_gender);
 		out.append(var_number_no_sp);
-		out.append('$');
-		out.append(" ");
+		out.append("$ ");
 		macro_out_adj(out, word3);
 		out.append(blank1);
 		macro_out_ndef(out, word4, blank3, word4);
 		out.append(blank2);
-		out.append('^');
-		out.append("til");
-		out.append("<pr>");
-		out.append('$');
-		out.append(" ");
+		out.append("^til<pr>$ ");
 		macro_out_ndef(out, word2, blank1, word2);
 		out.append(blank3);
 		macro_out_posgen(out, word1);
@@ -1201,11 +1171,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		word1.tlSet(attr_lemh, TransferWord.copycase(word3.tl(attr_lemh), word1.tl(attr_lemh)));
 		macro_out_ndef(out, word3, " ", word1);
 		out.append(blank1);
-		out.append('^');
-		out.append("til");
-		out.append("<pr>");
-		out.append('$');
-		out.append(" ");
+		out.append("^til<pr>$ ");
 		{
 			String myword = 
 			         word1.tl(attr_lemh)
@@ -1249,11 +1215,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		macro_set_gender3(out, word3, " ", word1, blank1, word2);
 		macro_out_ndef(out, word4, " ", word1);
 		out.append(blank1);
-		out.append('^');
-		out.append("til");
-		out.append("<pr>");
-		out.append('$');
-		out.append(" ");
+		out.append("^til<pr>$ ");
 		{
 			String myword = 
 			         word1.tl(attr_lemh)
@@ -1299,11 +1261,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		macro_out_ndef(out, word4, " ", word1);
 		macro_set_gender2(out, word3, " ", word1);
 		out.append(blank1);
-		out.append('^');
-		out.append("til");
-		out.append("<pr>");
-		out.append('$');
-		out.append(" ");
+		out.append("^til<pr>$ ");
 		{
 			String myword = 
 			         word1.tl(attr_lemh)
@@ -1368,18 +1326,13 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		out.append("<det><dem>");
 		out.append(var_det_gender);
 		out.append(var_number_no_sp);
-		out.append('$');
-		out.append(" ");
+		out.append("$ ");
 		macro_out_adj(out, word3);
 		out.append(blank1);
 		macro_out_ndef(out, word4, blank3, word4);
 		macro_set_gender2(out, word2, " ", word1);
 		out.append(blank2);
-		out.append('^');
-		out.append("til");
-		out.append("<pr>");
-		out.append('$');
-		out.append(" ");
+		out.append("^til<pr>$ ");
 		{
 			String myword = 
 			         word1.tl(attr_lemh)

@@ -40,7 +40,7 @@ public class ParseTestTransferFiles {
     //FileWriter fw = new FileWriter("/home/j/esperanto/apertium/apertium-eo-en/"+p.className+"java");
     new File("src/org/apertium/transfer/generated/").mkdirs();
     FileWriter fw=new FileWriter("src/org/apertium/transfer/generated/"+p.className+".java");
-    fw.append(p.javaCode);
+    fw.append(p.getOptimizedJavaCode());
     fw.close();
     return p.className;
   }

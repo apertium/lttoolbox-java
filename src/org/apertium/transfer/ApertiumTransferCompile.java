@@ -66,7 +66,7 @@ public class ApertiumTransferCompile {
       //System.out.println("p.javaCode = " + p.getJavaCode());
 
       FileWriter fw = new FileWriter(javaDest);
-      fw.append(p.getJavaCode());
+      fw.append(p.getOptimizedJavaCode());
       fw.close();
      
       // don't depend on an internal javac - this might not be Sun's javac

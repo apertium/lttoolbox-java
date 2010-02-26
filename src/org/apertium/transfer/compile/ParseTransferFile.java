@@ -17,6 +17,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.regex.Matcher;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apertium.transfer.Transfer;
@@ -81,14 +82,12 @@ public class ParseTransferFile {
     if (surelyNotEmpty) {
       luelems.add(0,"'^'"); // insert first
       luelems.add("'$'"); // append
-      optimizeLuElems(luelems);
       for (String s : luelems) {
         append(s);
       }
     } else {
       // Perhaps empty expression. Do a temp string and evaluate runtime
       println("{");
-      optimizeLuElems(luelems);
       println("String myword = ");
       for (int i=0; i<luelems.size(); i++) {
         String s = luelems.get(i);
@@ -106,19 +105,28 @@ public class ParseTransferFile {
 
   }
 
-  private void optimizeLuElems(ArrayList<String> luelems) {
-    /*
-    for (int i=1; i<luelems.size(); i++) {
-      String prev = luelems.get(i-1).replaceAll("'", "\"");
-      String pres = luelems.get(i).replaceAll("'", "\"");
-      if (prev.endsWith("\"") && pres.startsWith("\"")) {
-        prev = prev + "+" + pres;
-        luelems.remove(i);
-        i--;
-      }
+    public static void main(String[] args) throws Exception {
+      String res = optimizeCode(
+			"    out.append('{');\n"+
+			"   out.append('^');\n"
+          );
+
+      System.err.println("res = " + res);
     }
-     */
+
+  private static String optimizeCode(String code) {
+    // Replace 2 following appends as one, if they are both strings/chars
+    String newCode = code.replaceAll(
+        "out\\.append\\(['\"]([^'\"]+)['\"]\\);\\s*"+
+        "out\\.append\\(['\"]([^'\"]+)['\"]"
+        , 
+        "out.append(\"$1$2\"");
+
+    // Repeat until stable
+    if (newCode.equals(code)) return newCode;
+    return optimizeCode(newCode);
   }
+
 
   /*
   private void processLu(Element e) {
@@ -153,6 +161,11 @@ public class ParseTransferFile {
   public String getJavaCode() {
     return javaCode.toString();
   }
+
+  public String getOptimizedJavaCode() {
+    return optimizeCode(javaCode.toString());
+  }
+
 
   private void append(String str) {
     println("out.append("+str+");");
@@ -718,7 +731,7 @@ public class ParseTransferFile {
 
 
 //  Appendable javaCode = System.out; // new StringBuilder(1000);
-  public StringBuilder javaCode = new StringBuilder(1000);
+  private StringBuilder javaCode = new StringBuilder(1000);
 
   int indent = 0;
 
@@ -1049,6 +1062,8 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
         } catch (FileNotFoundException e) {
             throw new RuntimeException("Error: Cannot open '" + file + "'.");
         }
+
+
     }
 
 }

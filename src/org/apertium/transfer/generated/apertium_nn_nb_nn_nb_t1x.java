@@ -250,8 +250,7 @@ public class apertium_nn_nb_nn_nb_t1x extends GeneratedTransferBase
 		out.append('^');
 		out.append(word1.tl(attr_lemh));
 		out.append(word1.tl(attr_a_verb));
-		out.append("<inf>");
-		out.append("<pass>");
+		out.append("<inf><pass>");
 		out.append(word1.tl(attr_lemq));
 		out.append('$');
 	}

@@ -440,13 +440,9 @@ verbfinal = pensi<vblex><pres>
 		macro_ordigu_genron(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "prnref"));
-		out.append("<SN><nom>");
-		out.append('{');
-		out.append('^');
+		out.append("<SN><nom>{^");
 		out.append(word1.tl(attr_whole));
-		out.append("<2>");
-		out.append('$');
-		out.append("}$");
+		out.append("<2>$}$");
 	}
 	
 	// REGLA: Prn
@@ -457,15 +453,11 @@ verbfinal = pensi<vblex><pres>
 		macro_set_numero1(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "prn"));
-		out.append("<SN><nom>");
-		out.append('{');
-		out.append('^');
+		out.append("<SN><nom>{^");
 		out.append(word1.tl(attr_lem));
 		out.append(word1.tl(attr_a_prn));
 		out.append(var_numero);
-		out.append("<2>");
-		out.append('$');
-		out.append("}$");
+		out.append("<2>$}$");
 	}
 	
 	// REGLA: PrnPers
@@ -475,13 +467,9 @@ verbfinal = pensi<vblex><pres>
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "prnpers"));
-		out.append("<SN><nom>");
-		out.append('{');
-		out.append('^');
+		out.append("<SN><nom>{^");
 		out.append(word1.tl(attr_whole));
-		out.append("<2>");
-		out.append('$');
-		out.append("}$");
+		out.append("<2>$}$");
 	}
 	
 	public void rule3__num(Writer out, TransferWord word1) throws IOException
@@ -490,8 +478,7 @@ verbfinal = pensi<vblex><pres>
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "num"));
-		out.append("<SN><nom>");
-		out.append('{');
+		out.append("<SN><nom>{");
 		{
 			String myword = 
 			         word1.tl(attr_whole)
@@ -513,25 +500,14 @@ verbfinal = pensi<vblex><pres>
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "dato"));
-		out.append("<SN><nom>");
-		out.append('{');
-		out.append('^');
+		out.append("<SN><nom>{^");
 		out.append(word2.tl(attr_lem));
-		out.append("a");
-		out.append("<num><ord>");
-		out.append('$');
-		out.append(" ");
-		out.append('^');
-		out.append("de");
-		out.append("<pr>");
-		out.append('$');
+		out.append("a<num><ord>$ ^de<pr>$");
 		out.append(blank1);
 		out.append('^');
 		out.append(word1.tl(attr_lem));
 		out.append(word1.tl(attr_tags));
-		out.append("<nom>");
-		out.append('$');
-		out.append("}$");
+		out.append("<nom>$}$");
 	}
 	
 	// July 2nd - 2a de julio
@@ -541,24 +517,14 @@ verbfinal = pensi<vblex><pres>
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "dato"));
-		out.append("<SN><nom>");
-		out.append('{');
-		out.append('^');
+		out.append("<SN><nom>{^");
 		out.append(word2.tl(attr_lem));
-		out.append("<num><ord>");
-		out.append('$');
-		out.append(" ");
-		out.append('^');
-		out.append("de");
-		out.append("<pr>");
-		out.append('$');
+		out.append("<num><ord>$ ^de<pr>$");
 		out.append(blank1);
 		out.append('^');
 		out.append(word1.tl(attr_lem));
 		out.append(word1.tl(attr_tags));
-		out.append("<nom>");
-		out.append('$');
-		out.append("}$");
+		out.append("<nom>$}$");
 	}
 	
 	// on July 2 - la 2an de julio
@@ -568,30 +534,16 @@ verbfinal = pensi<vblex><pres>
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "dato"));
-		out.append("<SN><nom>");
-		out.append('{');
-		out.append('^');
-		out.append("la");
-		out.append("<det><def><sp>");
-		out.append('$');
+		out.append("<SN><nom>{^la<det><def><sp>$");
 		out.append(blank1);
 		out.append('^');
 		out.append(word3.tl(attr_lem));
-		out.append("an");
-		out.append("<num><ord>");
-		out.append('$');
-		out.append(" ");
-		out.append('^');
-		out.append("de");
-		out.append("<pr>");
-		out.append('$');
+		out.append("an<num><ord>$ ^de<pr>$");
 		out.append(blank2);
 		out.append('^');
 		out.append(word2.tl(attr_lem));
 		out.append(word2.tl(attr_tags));
-		out.append("<nom>");
-		out.append('$');
-		out.append("}$");
+		out.append("<nom>$}$");
 	}
 	
 	// on July 2nd - la 2a de julio
@@ -601,30 +553,16 @@ verbfinal = pensi<vblex><pres>
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "dato"));
-		out.append("<SN><nom>");
-		out.append('{');
-		out.append('^');
-		out.append("la");
-		out.append("<det><def><sp>");
-		out.append('$');
-		out.append('^');
+		out.append("<SN><nom>{^la<det><def><sp>$^");
 		out.append(word3.tl(attr_lem));
-		out.append("n");
-		out.append("<num><ord>");
-		out.append('$');
+		out.append("n<num><ord>$");
 		out.append(blank1);
-		out.append(" ");
-		out.append('^');
-		out.append("de");
-		out.append("<pr>");
-		out.append('$');
+		out.append(" ^de<pr>$");
 		out.append(blank2);
 		out.append('^');
 		out.append(word2.tl(attr_lem));
 		out.append(word2.tl(attr_tags));
-		out.append("<nom>");
-		out.append('$');
-		out.append("}$");
+		out.append("<nom>$}$");
 	}
 	
 	// REGLA NUM of      5 of => 5 el 
@@ -634,8 +572,7 @@ verbfinal = pensi<vblex><pres>
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "num"));
-		out.append("<SN>");
-		out.append('{');
+		out.append("<SN>{");
 		{
 			String myword = 
 			         word1.tl(attr_whole)
@@ -649,15 +586,7 @@ verbfinal = pensi<vblex><pres>
 		}
 		out.append("}$");
 		out.append(blank1);
-		out.append('^');
-		out.append("pr");
-		out.append("<PREP>");
-		out.append('{');
-		out.append('^');
-		out.append("el");
-		out.append("<pr>");
-		out.append('$');
-		out.append("}$");
+		out.append("^pr<PREP>{^el<pr>$}$");
 	}
 	
 	// REGLA NUM times NUM  5 times 8 => 5 oble 8 
@@ -667,8 +596,7 @@ verbfinal = pensi<vblex><pres>
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "num"));
-		out.append("<SN>");
-		out.append('{');
+		out.append("<SN>{");
 		{
 			String myword = 
 			         word1.tl(attr_whole)
@@ -681,10 +609,7 @@ verbfinal = pensi<vblex><pres>
 			}
 		}
 		out.append(blank1);
-		out.append('^');
-		out.append("oble");
-		out.append("<cnjadv>");
-		out.append('$');
+		out.append("^oble<cnjadv>$");
 		out.append(blank2);
 		{
 			String myword = 
@@ -749,8 +674,7 @@ verbfinal = pensi<vblex><pres>
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "num"));
-		out.append("<SN><nom>");
-		out.append('{');
+		out.append("<SN><nom>{");
 		{
 			String myword = 
 			         word1.tl(attr_whole)
@@ -763,13 +687,9 @@ verbfinal = pensi<vblex><pres>
 			}
 		}
 		out.append(blank1);
-		out.append('^');
-		out.append("fojo");
-		out.append("<n>");
+		out.append("^fojo<n>");
 		out.append(word2.tl(attr_a_nbr));
-		out.append("<nom>");
-		out.append('$');
-		out.append("}$");
+		out.append("<nom>$}$");
 	}
 	
 	// REGLA: DET:a  - the derminier 'a' should just be deleted. Having this rule makes it possible to avoid handling 'a' in all the other rules
@@ -790,15 +710,12 @@ verbfinal = pensi<vblex><pres>
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "det"));
-		out.append("<SD><nom>");
-		out.append('{');
-		out.append('^');
+		out.append("<SD><nom>{^");
 		out.append(word1.tl(attr_lemh));
 		out.append(word1.tl(attr_tags));
 		out.append("<2>");
 		out.append(word1.tl(attr_lemq));
-		out.append('$');
-		out.append("}$");
+		out.append("$}$");
 	}
 	
 	/**  Sintagmas nominales  */
@@ -810,14 +727,10 @@ verbfinal = pensi<vblex><pres>
 		macro_ordigu_genron(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "nom"));
-		out.append("<SN><nom>");
-		out.append('{');
-		out.append('^');
+		out.append("<SN><nom>{^");
 		out.append(word1.tl(attr_lem));
 		out.append(word1.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
-		out.append("}$");
+		out.append("<2>$}$");
 	}
 	
 	// REGLA: more NOM, f.eks. 'more tea'  to 'Pli da teo'
@@ -828,20 +741,16 @@ verbfinal = pensi<vblex><pres>
 		macro_ordigu_genron(out, word2);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "more_nom"));
-		out.append("<SN><nom>");
-		out.append('{');
+		out.append("<SN><nom>{");
 		/**  <lit-tag v="2"/> no, keep <nom>  */
 		out.append('^');
 		out.append(word1.tl(attr_whole));
-		out.append("<nom>");
-		out.append('$');
+		out.append("<nom>$");
 		out.append(blank1);
 		/**  <lit-tag v="2"/> no, keep <nom>  */
 		out.append('^');
 		out.append(word2.tl(attr_whole));
-		out.append("<nom>");
-		out.append('$');
-		out.append("}$");
+		out.append("<nom>$}$");
 	}
 	
 	// REGLA: DET NOM
@@ -853,15 +762,12 @@ verbfinal = pensi<vblex><pres>
 		macro_set_determiner3(out, word1, blank1, word2, blank1, word2);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "det_nom"));
-		out.append("<SN><nom>");
-		out.append('{');
+		out.append("<SN><nom>{");
 		out.append(var_determiner);
 		out.append('^');
 		out.append(word2.tl(attr_lem));
 		out.append(word2.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
-		out.append("}$");
+		out.append("<2>$}$");
 	}
 	
 	/** 
@@ -917,8 +823,7 @@ verbfinal = pensi<vblex><pres>
 		macro_set_determiner3(out, word1, blank1, word2, blank2, word3);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "det_2nom"));
-		out.append("<SN><nom>");
-		out.append('{');
+		out.append("<SN><nom>{");
 		out.append(var_determiner);
 		/**  se estas akronimo  */
 		/**  se havas genron  */
@@ -928,15 +833,12 @@ verbfinal = pensi<vblex><pres>
 		out.append(word2.tl(attr_a_acr));
 		out.append(word2.tl(attr_a_gen));
 		out.append(word3.tl(attr_a_nbr));
-		out.append("<2>");
-		out.append('$');
+		out.append("<2>$");
 		out.append(blank2);
 		out.append('^');
 		out.append(word3.tl(attr_lem));
 		out.append(word3.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
-		out.append("}$");
+		out.append("<2>$}$");
 	}
 	
 	// REGLA: DET NOM NOM NOM 
@@ -950,8 +852,7 @@ verbfinal = pensi<vblex><pres>
 		macro_set_determiner3(out, word1, blank1, word2, blank3, word4);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "det_3nom"));
-		out.append("<SN><nom>");
-		out.append('{');
+		out.append("<SN><nom>{");
 		out.append(var_determiner);
 		/**  se estas akronimo  */
 		/**  se havas genron  */
@@ -961,8 +862,7 @@ verbfinal = pensi<vblex><pres>
 		out.append(word2.tl(attr_a_acr));
 		out.append(word2.tl(attr_a_gen));
 		out.append(word4.tl(attr_a_nbr));
-		out.append("<2>");
-		out.append('$');
+		out.append("<2>$");
 		out.append(blank2);
 		/**  se estas akronimo  */
 		/**  se havas genron  */
@@ -972,15 +872,12 @@ verbfinal = pensi<vblex><pres>
 		out.append(word3.tl(attr_a_acr));
 		out.append(word3.tl(attr_a_gen));
 		out.append(word4.tl(attr_a_nbr));
-		out.append("<2>");
-		out.append('$');
+		out.append("<2>$");
 		out.append(blank3);
 		out.append('^');
 		out.append(word4.tl(attr_lem));
 		out.append(word4.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
-		out.append("}$");
+		out.append("<2>$}$");
 	}
 	
 	// REGLA: DET NOM NOM NOM NOM
@@ -995,8 +892,7 @@ verbfinal = pensi<vblex><pres>
 		macro_set_determiner3(out, word1, blank1, word2, blank4, word5);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "det_4nom"));
-		out.append("<SN><nom>");
-		out.append('{');
+		out.append("<SN><nom>{");
 		out.append(var_determiner);
 		/**  se estas akronimo  */
 		/**  se havas genron  */
@@ -1006,8 +902,7 @@ verbfinal = pensi<vblex><pres>
 		out.append(word2.tl(attr_a_acr));
 		out.append(word2.tl(attr_a_gen));
 		out.append(word5.tl(attr_a_nbr));
-		out.append("<2>");
-		out.append('$');
+		out.append("<2>$");
 		out.append(blank2);
 		/**  se estas akronimo  */
 		/**  se havas genron  */
@@ -1017,8 +912,7 @@ verbfinal = pensi<vblex><pres>
 		out.append(word3.tl(attr_a_acr));
 		out.append(word3.tl(attr_a_gen));
 		out.append(word5.tl(attr_a_nbr));
-		out.append("<2>");
-		out.append('$');
+		out.append("<2>$");
 		out.append(blank3);
 		/**  se estas akronimo  */
 		/**  se havas genron  */
@@ -1028,15 +922,12 @@ verbfinal = pensi<vblex><pres>
 		out.append(word4.tl(attr_a_acr));
 		out.append(word4.tl(attr_a_gen));
 		out.append(word5.tl(attr_a_nbr));
-		out.append("<2>");
-		out.append('$');
+		out.append("<2>$");
 		out.append(blank4);
 		out.append('^');
 		out.append(word5.tl(attr_lem));
 		out.append(word5.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
-		out.append("}$");
+		out.append("<2>$}$");
 	}
 	
 	// REGLA: ADJ
@@ -1049,8 +940,7 @@ verbfinal = pensi<vblex><pres>
 		var_chunk_name = (""+"adj"+var_preadv_added);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, var_chunk_name));
-		out.append("<SN><nom>");
-		out.append('{');
+		out.append("<SN><nom>{");
 		{
 			String myword = 
 			         var_adjectiu
@@ -1075,8 +965,7 @@ verbfinal = pensi<vblex><pres>
 		macro_set_determiner3(out, word1, blank1, word2, blank2, word3);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "det_preadv?_adj_nom"));
-		out.append("<SN><nom>");
-		out.append('{');
+		out.append("<SN><nom>{");
 		out.append(var_determiner);
 		{
 			String myword = 
@@ -1093,9 +982,7 @@ verbfinal = pensi<vblex><pres>
 		out.append('^');
 		out.append(word3.tl(attr_lem));
 		out.append(word3.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
-		out.append("}$");
+		out.append("<2>$}$");
 	}
 	
 	/**  enmeti??
@@ -1139,8 +1026,7 @@ verbfinal = pensi<vblex><pres>
 		macro_ordigu_genron(out, word2);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "preadv?_adj_nom"));
-		out.append("<SN><nom>");
-		out.append('{');
+		out.append("<SN><nom>{");
 		{
 			String myword = 
 			         var_adjectiu
@@ -1156,9 +1042,7 @@ verbfinal = pensi<vblex><pres>
 		out.append('^');
 		out.append(word2.tl(attr_lem));
 		out.append(word2.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
-		out.append("}$");
+		out.append("<2>$}$");
 	}
 	
 	// REGLA: ADJ ADJ NOM
@@ -1173,8 +1057,7 @@ verbfinal = pensi<vblex><pres>
 		macro_set_adjectiu2(out, word2, blank2, word3);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "preadv?_adj_adj_nom"));
-		out.append("<SN><nom>");
-		out.append('{');
+		out.append("<SN><nom>{");
 		{
 			String myword = 
 			         var_tmp2
@@ -1202,9 +1085,7 @@ verbfinal = pensi<vblex><pres>
 		out.append('^');
 		out.append(word3.tl(attr_lem));
 		out.append(word3.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
-		out.append("}$");
+		out.append("<2>$}$");
 	}
 	
 	// REGLA: DET UNKNOWN/ADV/NUM UNKNOWN/ADV/NUM NOM
@@ -1216,8 +1097,7 @@ verbfinal = pensi<vblex><pres>
 		macro_set_determiner3(out, word1, blank1, word2, blank3, word4);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "det_unkn_unkn_nom"));
-		out.append("<SN><nom>");
-		out.append('{');
+		out.append("<SN><nom>{");
 		out.append(var_determiner);
 		{
 			String myword = 
@@ -1246,9 +1126,7 @@ verbfinal = pensi<vblex><pres>
 		out.append('^');
 		out.append(word4.tl(attr_lem));
 		out.append(word4.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
-		out.append("}$");
+		out.append("<2>$}$");
 	}
 	
 	// REGLA: DET ADJ ADJ NOM
@@ -1263,8 +1141,7 @@ verbfinal = pensi<vblex><pres>
 		macro_set_determiner3(out, word1, blank1, word2, blank3, word4);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "det_preadv?_adj_adj_nom"));
-		out.append("<SN><nom>");
-		out.append('{');
+		out.append("<SN><nom>{");
 		out.append(var_determiner);
 		{
 			String myword = 
@@ -1293,9 +1170,7 @@ verbfinal = pensi<vblex><pres>
 		out.append('^');
 		out.append(word4.tl(attr_lem));
 		out.append(word4.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
-		out.append("}$");
+		out.append("<2>$}$");
 	}
 	
 	// REGLA: DET ADJ ADJ ADJ NOM
@@ -1312,8 +1187,7 @@ verbfinal = pensi<vblex><pres>
 		macro_set_determiner3(out, word1, blank1, word2, blank4, word5);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "det_preadv?_adj_adj_adj_nom"));
-		out.append("<SN><nom>");
-		out.append('{');
+		out.append("<SN><nom>{");
 		out.append(var_determiner);
 		{
 			String myword = 
@@ -1354,9 +1228,7 @@ verbfinal = pensi<vblex><pres>
 		out.append('^');
 		out.append(word5.tl(attr_lem));
 		out.append(word5.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
-		out.append("}$");
+		out.append("<2>$}$");
 	}
 	
 	/**   TODO: ADJ NOM NOM:  Private testing companies 
@@ -1403,23 +1275,18 @@ verbfinal = pensi<vblex><pres>
 		macro_ordigu_genron(out, word2);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "nom_nom"));
-		out.append("<SN><nom>");
-		out.append('{');
-		out.append('^');
+		out.append("<SN><nom>{^");
 		out.append(word1.tl(attr_lem));
 		out.append("<adj>");
 		out.append(word1.tl(attr_a_acr));
 		out.append(word1.tl(attr_a_gen));
 		out.append(word2.tl(attr_a_nbr));
-		out.append("<2>");
-		out.append('$');
+		out.append("<2>$");
 		out.append(blank1);
 		out.append('^');
 		out.append(word2.tl(attr_lem));
 		out.append(word2.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
-		out.append("}$");
+		out.append("<2>$}$");
 	}
 	
 	// REGLA: ANT
@@ -1429,14 +1296,10 @@ verbfinal = pensi<vblex><pres>
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "ant"));
-		out.append("<SN><nom>");
-		out.append('{');
-		out.append('^');
+		out.append("<SN><nom>{^");
 		out.append(word1.tl(attr_lem));
 		out.append(word1.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
-		out.append("}$");
+		out.append("<2>$}$");
 	}
 	
 	// REGLA: ANT ANT
@@ -1446,20 +1309,15 @@ verbfinal = pensi<vblex><pres>
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "ant_cog"));
-		out.append("<SN><nom>");
-		out.append('{');
-		out.append('^');
+		out.append("<SN><nom>{^");
 		out.append(word1.tl(attr_lem));
 		out.append(word1.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
+		out.append("<2>$");
 		out.append(blank1);
 		out.append('^');
 		out.append(word2.tl(attr_lem));
 		out.append(word2.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
-		out.append("}$");
+		out.append("<2>$}$");
 	}
 	
 	// REGLA: ANT ANT ANT
@@ -1469,26 +1327,20 @@ verbfinal = pensi<vblex><pres>
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "ant_cog"));
-		out.append("<SN><nom>");
-		out.append('{');
-		out.append('^');
+		out.append("<SN><nom>{^");
 		out.append(word1.tl(attr_lem));
 		out.append(word1.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
+		out.append("<2>$");
 		out.append(blank1);
 		out.append('^');
 		out.append(word2.tl(attr_lem));
 		out.append(word2.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
+		out.append("<2>$");
 		out.append(blank2);
 		out.append('^');
 		out.append(word3.tl(attr_lem));
 		out.append(word3.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
-		out.append("}$");
+		out.append("<2>$}$");
 	}
 	
 	// REGLA: ANT ANT ANT ANT
@@ -1498,32 +1350,25 @@ verbfinal = pensi<vblex><pres>
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "ant_ant_cog_cog"));
-		out.append("<SN><nom>");
-		out.append('{');
-		out.append('^');
+		out.append("<SN><nom>{^");
 		out.append(word1.tl(attr_lem));
 		out.append(word1.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
+		out.append("<2>$");
 		out.append(blank1);
 		out.append('^');
 		out.append(word2.tl(attr_lem));
 		out.append(word2.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
+		out.append("<2>$");
 		out.append(blank2);
 		out.append('^');
 		out.append(word3.tl(attr_lem));
 		out.append(word3.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
+		out.append("<2>$");
 		out.append(blank3);
 		out.append('^');
 		out.append(word4.tl(attr_lem));
 		out.append(word4.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
-		out.append("}$");
+		out.append("<2>$}$");
 	}
 	
 	// REGLA: ANT - ANT ANT
@@ -1533,13 +1378,10 @@ verbfinal = pensi<vblex><pres>
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "ant-ant_cog"));
-		out.append("<SN><nom>");
-		out.append('{');
-		out.append('^');
+		out.append("<SN><nom>{^");
 		out.append(word1.tl(attr_lem));
 		out.append(word1.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
+		out.append("<2>$");
 		out.append(blank1);
 		{
 			String myword = 
@@ -1556,15 +1398,12 @@ verbfinal = pensi<vblex><pres>
 		out.append('^');
 		out.append(word3.tl(attr_lem));
 		out.append(word3.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
+		out.append("<2>$");
 		out.append(blank3);
 		out.append('^');
 		out.append(word4.tl(attr_lem));
 		out.append(word4.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
-		out.append("}$");
+		out.append("<2>$}$");
 	}
 	
 	// REGLA: ANT ANT - ANT
@@ -1574,19 +1413,15 @@ verbfinal = pensi<vblex><pres>
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "ant_cog-cog"));
-		out.append("<SN><nom>");
-		out.append('{');
-		out.append('^');
+		out.append("<SN><nom>{^");
 		out.append(word1.tl(attr_lem));
 		out.append(word1.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
+		out.append("<2>$");
 		out.append(blank1);
 		out.append('^');
 		out.append(word2.tl(attr_lem));
 		out.append(word2.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
+		out.append("<2>$");
 		out.append(blank2);
 		{
 			String myword = 
@@ -1603,9 +1438,7 @@ verbfinal = pensi<vblex><pres>
 		out.append('^');
 		out.append(word4.tl(attr_lem));
 		out.append(word4.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
-		out.append("}$");
+		out.append("<2>$}$");
 	}
 	
 	// REGLA: ANT - ANT ANT - ANT
@@ -1615,13 +1448,10 @@ verbfinal = pensi<vblex><pres>
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "ant-ant_cog-cog"));
-		out.append("<SN><nom>");
-		out.append('{');
-		out.append('^');
+		out.append("<SN><nom>{^");
 		out.append(word1.tl(attr_lem));
 		out.append(word1.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
+		out.append("<2>$");
 		out.append(blank1);
 		{
 			String myword = 
@@ -1638,14 +1468,12 @@ verbfinal = pensi<vblex><pres>
 		out.append('^');
 		out.append(word3.tl(attr_lem));
 		out.append(word3.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
+		out.append("<2>$");
 		out.append(blank3);
 		out.append('^');
 		out.append(word4.tl(attr_lem));
 		out.append(word4.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
+		out.append("<2>$");
 		out.append(blank4);
 		{
 			String myword = 
@@ -1662,9 +1490,7 @@ verbfinal = pensi<vblex><pres>
 		out.append('^');
 		out.append(word6.tl(attr_lem));
 		out.append(word6.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
-		out.append("}$");
+		out.append("<2>$}$");
 	}
 	
 	// REGLA: NOM/ANT 's NOM:  gardener's dog => la hundo de gxardenisto
@@ -1678,14 +1504,12 @@ verbfinal = pensi<vblex><pres>
 		macro_set_blankon_se_havas_formaton2(out, word1, blank1, word2);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "nom_gen_nom"));
-		out.append("<SN><nom>");
-		out.append('{');
+		out.append("<SN><nom>{");
 		/**  hundo  */
 		out.append('^');
 		out.append(word3.tl(attr_lem));
 		out.append(word3.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
+		out.append("<2>$");
 		out.append(var_blanko);
 		/**  senspaca, sed eble estas aliaj aferoj en gxi  */
 		out.append(" ");
@@ -1730,14 +1554,12 @@ verbfinal = pensi<vblex><pres>
 		macro_set_blankon_se_havas_formaton2(out, word1, blank1, word2);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "nom_gen_nom"));
-		out.append("<SN><nom>");
-		out.append('{');
+		out.append("<SN><nom>{");
 		/**  hundo  */
 		out.append('^');
 		out.append(word3.tl(attr_lem));
 		out.append(word3.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
+		out.append("<2>$");
 		out.append(var_blanko);
 		/**  senspaca, sed eble estas aliaj aferoj en gxi  */
 		out.append(" ");
@@ -1783,8 +1605,7 @@ verbfinal = pensi<vblex><pres>
 		macro_set_blankon_se_havas_formaton2(out, word1, blank1, word2);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "n_n_de_n"));
-		out.append("<SN><nom>");
-		out.append('{');
+		out.append("<SN><nom>{");
 		/**  hundA  */
 		/**  se estas akronimo  */
 		/**  se havas genron  */
@@ -1794,8 +1615,7 @@ verbfinal = pensi<vblex><pres>
 		out.append(word3.tl(attr_a_acr));
 		out.append(word3.tl(attr_a_gen));
 		out.append(word4.tl(attr_a_nbr));
-		out.append("<2>");
-		out.append('$');
+		out.append("<2>$");
 		out.append(var_blanko);
 		/**  senspaca, sed eble estas aliaj aferoj en gxi  */
 		out.append(" ");
@@ -1803,8 +1623,7 @@ verbfinal = pensi<vblex><pres>
 		out.append('^');
 		out.append(word4.tl(attr_lem));
 		out.append(word4.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
+		out.append("<2>$");
 		out.append(blank2);
 		{
 			String myword = 
@@ -1851,12 +1670,9 @@ verbfinal = pensi<vblex><pres>
 		macro_set_blankon_se_havas_formaton2(out, word2, blank2, word3);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "det_nom_gen_det_nom"));
-		out.append("<SN><nom>");
-		out.append('{');
-		out.append('^');
+		out.append("<SN><nom>{^");
 		out.append(TransferWord.copycase(word1.sl(attr_lem), "la"));
-		out.append("<det><def><sp>");
-		out.append('$');
+		out.append("<det><def><sp>$");
 		/**  la  */
 		out.append(var_tmp2);
 		/**  senspaca, sed eble estas aliaj aferoj en gxi  */
@@ -1865,8 +1681,7 @@ verbfinal = pensi<vblex><pres>
 		out.append('^');
 		out.append(word4.tl(attr_lem));
 		out.append(word4.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
+		out.append("<2>$");
 		out.append(var_blanko);
 		/**  senspaca, sed eble estas aliaj aferoj en gxi  */
 		out.append(" ");
@@ -1919,21 +1734,18 @@ verbfinal = pensi<vblex><pres>
 		macro_set_blankon_se_havas_formaton2(out, word3, blank3, word4);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "det_nom_gen_det_nom_nom"));
-		out.append("<SN><nom>");
-		out.append('{');
+		out.append("<SN><nom>{");
 		out.append(var_tmp2);
 		out.append('^');
 		out.append(TransferWord.copycase(word1.sl(attr_lem), "la"));
-		out.append("<det><def><sp>");
-		out.append('$');
+		out.append("<det><def><sp>$");
 		/**  la  */
 		out.append(blank2);
 		/**  hundo  */
 		out.append('^');
 		out.append(word5.tl(attr_lem));
 		out.append(word5.tl(attr_tags));
-		out.append("<2>");
-		out.append('$');
+		out.append("<2>$");
 		out.append(var_blanko);
 		/**  senspaca, sed eble estas aliaj aferoj en gxi  */
 		out.append(" ");
@@ -2051,8 +1863,7 @@ verbfinal = pensi<vblex><pres>
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "cnjadv"));
-		out.append("<CA>");
-		out.append('{');
+		out.append("<CA>{");
 		{
 			String myword = 
 			         word1.tl(attr_whole)
@@ -2073,8 +1884,7 @@ verbfinal = pensi<vblex><pres>
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "CS"));
-		out.append("<NUM>");
-		out.append('{');
+		out.append("<NUM>{");
 		{
 			String myword = 
 			         word1.tl(attr_whole)
@@ -2092,10 +1902,7 @@ verbfinal = pensi<vblex><pres>
 	public void rule43__cm(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule43__cm",  word1); } 
-		out.append('^');
-		out.append("cm");
-		out.append("<CM>");
-		out.append('{');
+		out.append("^cm<CM>{");
 		{
 			String myword = 
 			         word1.tl(attr_whole)
@@ -2124,8 +1931,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "rel"));
-		out.append("<REL>");
-		out.append('{');
+		out.append("<REL>{");
 		{
 			String myword = 
 			         word1.tl(attr_whole)
@@ -2147,8 +1953,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "preadv"));
-		out.append("<PREADV>");
-		out.append('{');
+		out.append("<PREADV>{");
 		{
 			String myword = 
 			         word1.tl(attr_whole)
@@ -2170,8 +1975,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "predet"));
-		out.append("<PREDET>");
-		out.append('{');
+		out.append("<PREDET>{");
 		{
 			String myword = 
 			         word1.tl(attr_whole)
@@ -2212,8 +2016,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "adv"));
-		out.append("<Adv>");
-		out.append('{');
+		out.append("<Adv>{");
 		{
 			String myword = 
 			         word1.tl(attr_whole)
@@ -2235,8 +2038,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 		macro_firstWord(out, word1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "pr"));
-		out.append("<PREP>");
-		out.append('{');
+		out.append("<PREP>{");
 		{
 			String myword = 
 			         word1.tl(attr_whole)
@@ -2255,25 +2057,14 @@ the ones who:the ones who<rel><nn><mf><pl>
 	public void rule49__gen(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule49__gen",  word1); } 
-		out.append('^');
-		out.append("gen");
-		out.append("<GEN>");
-		out.append('{');
-		out.append('^');
-		out.append("a");
-		out.append("<gen>");
-		out.append('$');
-		out.append("}$");
+		out.append("^gen<GEN>{^a<gen>$}$");
 	}
 	
 	// REGLA: SENT ;: - frazparto
 	public void rule50__sent_komopunkto_dupunkto(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule50__sent_komopunkto_dupunkto",  word1); } 
-		out.append('^');
-		out.append("sent");
-		out.append("<S>");
-		out.append('{');
+		out.append("^sent<S>{");
 		{
 			String myword = 
 			         word1.tl(attr_whole)
@@ -2293,10 +2084,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 	{
 		if (debug) { logCall("rule51__sent",  word1); } 
 		var_EOS = "true";
-		out.append('^');
-		out.append("sent");
-		out.append("<S>");
-		out.append('{');
+		out.append("^sent<S>{");
 		{
 			String myword = 
 			         word1.tl(attr_whole)
@@ -2318,8 +2106,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "unknown"));
 		/**  Traktu nekonatajn vortojn kiel nomoj en la venontaj stagxo  */
-		out.append("<SN><nom>");
-		out.append('{');
+		out.append("<SN><nom>{");
 		{
 			String myword = 
 			         word1.tl(attr_whole)
@@ -2347,14 +2134,12 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append("<SV>");
 		out.append(var_tipus_verb);
 		out.append(word2.tl(attr_a_tns));
-		out.append('{');
-		out.append('^');
+		out.append("{^");
 		out.append(word2.tl(attr_lemh));
 		out.append(word2.tl(attr_a_vrb));
 		out.append("<3>");
 		out.append(word2.tl(attr_lemq));
-		out.append('$');
-		out.append("}$");
+		out.append("$}$");
 	}
 	
 	// REGLA: of VBLEXger - of being, of running, of looking - esti, kuri, vidi
@@ -2368,15 +2153,12 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append(TransferWord.copycase(var_caseFirstWord, "verbInf"));
 		out.append("<SV>");
 		out.append(var_tipus_verb);
-		out.append("<inf>");
-		out.append('{');
-		out.append('^');
+		out.append("<inf>{^");
 		out.append(word2.tl(attr_lemh));
 		out.append(word2.tl(attr_a_vrb));
 		out.append("<3>");
 		out.append(word2.tl(attr_lemq));
-		out.append('$');
-		out.append("}$");
+		out.append("$}$");
 	}
 	
 	// REGLA: to have suffered  -  suferi
@@ -2391,15 +2173,12 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append(TransferWord.copycase(var_caseFirstWord, "verbInf2"));
 		out.append("<SV>");
 		out.append(var_tipus_verb);
-		out.append("<inf>");
-		out.append('{');
-		out.append('^');
+		out.append("<inf>{^");
 		out.append(word3.tl(attr_lemh));
 		out.append(word3.tl(attr_a_vrb));
 		out.append("<3>");
 		out.append(word3.tl(attr_lemq));
-		out.append('$');
-		out.append("}$");
+		out.append("$}$");
 	}
 	
 	/**  ^be/be<vbser><inf>$ ^being/be<vbser><ger>$  ^been/be<vbser><pp>$ ^applying/apply<vblex><ger>$   */
@@ -2414,8 +2193,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append("<SV>");
 		out.append(var_tipus_verb);
 		out.append(word1.tl(attr_a_tns));
-		out.append('{');
-		out.append('^');
+		out.append("{^");
 		out.append(word1.tl(attr_lem));
 		out.append(word1.tl(attr_a_vrb));
 		out.append("<3>");
@@ -2451,18 +2229,12 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append("<SV>");
 		out.append(var_tipus_verb);
 		out.append(word1.tl(attr_a_tns));
-		out.append('{');
-		out.append('^');
-		out.append("el");
-		out.append("<adv>");
-		out.append('$');
-		out.append('^');
+		out.append("{^el<adv>$^");
 		out.append(word1.tl(attr_lemh));
 		out.append(word1.tl(attr_a_vrb));
 		out.append("<3>");
 		out.append(word1.tl(attr_lemq));
-		out.append('$');
-		out.append("}$");
+		out.append("$}$");
 	}
 	
 	// REGLA: VBSER not
@@ -2494,8 +2266,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append(word1.tl(attr_a_vrb));
 		out.append("<3>");
 		out.append(word1.tl(attr_lemq));
-		out.append('$');
-		out.append("}$");
+		out.append("$}$");
 	}
 	
 	// RULE: please + vblex in present => please + vblex in infinitive
@@ -2508,24 +2279,18 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append("<SV>");
 		out.append(var_tipus_verb);
 		out.append(word1.tl(attr_a_tns));
-		out.append('{');
-		out.append('^');
+		out.append("{^");
 		out.append(word1.tl(attr_lem));
 		out.append(word1.tl(attr_a_vrb));
-		out.append("<3>");
-		out.append('$');
-		out.append("}$");
+		out.append("<3>$}$");
 		out.append(blank1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "pls_verb2"));
 		out.append(word2.tl(attr_a_tns));
-		out.append('{');
-		out.append('^');
+		out.append("{^");
 		out.append(word2.tl(attr_lem));
 		out.append(word2.tl(attr_a_vrb));
-		out.append("<inf>");
-		out.append('$');
-		out.append("}$");
+		out.append("<inf>$}$");
 	}
 	
 	// REGLA: do ADV VERB (I do not think -> mi ne pensas. I do always think -> mi ja ĉiam pensas)
@@ -2539,13 +2304,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 		{
 			out.append('^');
 			out.append(TransferWord.copycase(var_caseFirstWord, "ja2"));
-			out.append("<Adv>");
-			out.append('{');
-			out.append('^');
-			out.append("ja");
-			out.append("<adv>");
-			out.append('$');
-			out.append("}$");
+			out.append("<Adv>{^ja<adv>$}$");
 			out.append(blank1);
 			var_caseFirstWord = "aa";
 		}
@@ -2555,8 +2314,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 		}
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "adv2"));
-		out.append("<Adv>");
-		out.append('{');
+		out.append("<Adv>{");
 		{
 			String myword = 
 			         word2.tl(attr_whole)
@@ -2570,9 +2328,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 		}
 		out.append("}$");
 		out.append(blank2);
-		out.append('^');
-		out.append("verbcj");
-		out.append("<SV>");
+		out.append("^verbcj<SV>");
 		out.append(var_tipus_verb);
 		out.append(word1.tl(attr_a_tns));
 		out.append('{');
@@ -2599,17 +2355,9 @@ the ones who:the ones who<rel><nn><mf><pl>
 		macro_set_verbkonj2_do(out, word1, blank1, word2);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "ja"));
-		out.append("<Adv>");
-		out.append('{');
-		out.append('^');
-		out.append("ja");
-		out.append("<adv>");
-		out.append('$');
-		out.append("}$");
+		out.append("<Adv>{^ja<adv>$}$");
 		out.append(blank1);
-		out.append('^');
-		out.append("verbcj2");
-		out.append("<SV>");
+		out.append("^verbcj2<SV>");
 		out.append(var_tipus_verb);
 		out.append(word1.tl(attr_a_tns));
 		out.append('{');
@@ -2653,14 +2401,12 @@ might:might<vaux><inf>
 			out.append("<SV>");
 			out.append(var_tipus_verb);
 			out.append(var_temps);
-			out.append('{');
-			out.append('^');
+			out.append("{^");
 			out.append(word2.tl(attr_lemh));
 			out.append(word2.tl(attr_a_vrb));
 			out.append("<3>");
 			out.append(word2.tl(attr_lemq));
-			out.append('$');
-			out.append("}$");
+			out.append("$}$");
 		}
 		else
 		if (((word1.sl(attr_lem).equalsIgnoreCase("can")
@@ -2672,20 +2418,14 @@ might:might<vaux><inf>
 			out.append(TransferWord.copycase(var_caseFirstWord, "vaux_verb"));
 			out.append("<SV>");
 			out.append(var_tipus_verb);
-			out.append("<inf>");
-			out.append('{');
-			out.append('^');
-			out.append("povi");
-			out.append("<vaux><cni>");
-			out.append('$');
+			out.append("<inf>{^povi<vaux><cni>$");
 			out.append(blank1);
 			out.append('^');
 			out.append(word2.tl(attr_lemh));
 			out.append(word2.tl(attr_a_vrb));
 			out.append("<3>");
 			out.append(word2.tl(attr_lemq));
-			out.append('$');
-			out.append("}$");
+			out.append("$}$");
 		}
 		/**  I may wash.
           <when>
@@ -2721,8 +2461,7 @@ might:might<vaux><inf>
 			out.append("<SV>");
 			out.append(var_tipus_verb);
 			out.append(word1.tl(attr_a_tns));
-			out.append('{');
-			out.append('^');
+			out.append("{^");
 			out.append(word1.tl(attr_lemh));
 			out.append(word1.tl(attr_a_vrb));
 			out.append("<3>");
@@ -2780,8 +2519,7 @@ might:might<vaux><inf>
 			out.append(word3.tl(attr_a_vrb));
 			out.append("<3>");
 			out.append(word3.tl(attr_lemq));
-			out.append('$');
-			out.append("}$");
+			out.append("$}$");
 		}
 		else
 		if (((word1.sl(attr_lem).equalsIgnoreCase("can")
@@ -2793,8 +2531,7 @@ might:might<vaux><inf>
 			out.append(TransferWord.copycase(var_caseFirstWord, "vaux_verb3"));
 			out.append("<SV>");
 			out.append(var_tipus_verb);
-			out.append("<inf>");
-			out.append('{');
+			out.append("<inf>{");
 			{
 				String myword = 
 				         word2.tl(attr_whole)
@@ -2807,18 +2544,14 @@ might:might<vaux><inf>
 				}
 			}
 			out.append(blank1);
-			out.append('^');
-			out.append("povi");
-			out.append("<vaux><cni>");
-			out.append('$');
+			out.append("^povi<vaux><cni>$");
 			out.append(blank2);
 			out.append('^');
 			out.append(word3.tl(attr_lemh));
 			out.append(word3.tl(attr_a_vrb));
 			out.append("<3>");
 			out.append(word3.tl(attr_lemq));
-			out.append('$');
-			out.append("}$");
+			out.append("$}$");
 		}
 		else
 		{
@@ -2858,8 +2591,7 @@ might:might<vaux><inf>
 			out.append(word3.tl(attr_a_vrb));
 			out.append("<3>");
 			out.append(word3.tl(attr_lemq));
-			out.append('$');
-			out.append("}$");
+			out.append("$}$");
 		}
 	}
 	
@@ -2908,8 +2640,7 @@ might:might<vaux><inf>
 			out.append(word4.tl(attr_a_vrb));
 			out.append("<3>");
 			out.append(word4.tl(attr_lemq));
-			out.append('$');
-			out.append("}$");
+			out.append("$}$");
 		}
 		else
 		if (((word1.sl(attr_lem).equalsIgnoreCase("can")
@@ -2921,8 +2652,7 @@ might:might<vaux><inf>
 			out.append(TransferWord.copycase(var_caseFirstWord, "vaux_verb5"));
 			out.append("<SV>");
 			out.append(var_tipus_verb);
-			out.append("<inf>");
-			out.append('{');
+			out.append("<inf>{");
 			{
 				String myword = 
 				         word2.tl(attr_whole)
@@ -2947,18 +2677,14 @@ might:might<vaux><inf>
 				}
 			}
 			out.append(blank2);
-			out.append('^');
-			out.append("povi");
-			out.append("<vaux><cni>");
-			out.append('$');
+			out.append("^povi<vaux><cni>$");
 			out.append(blank3);
 			out.append('^');
 			out.append(word4.tl(attr_lemh));
 			out.append(word4.tl(attr_a_vrb));
 			out.append("<3>");
 			out.append(word4.tl(attr_lemq));
-			out.append('$');
-			out.append("}$");
+			out.append("$}$");
 		}
 		else
 		{
@@ -3010,8 +2736,7 @@ might:might<vaux><inf>
 			out.append(word4.tl(attr_a_vrb));
 			out.append("<3>");
 			out.append(word4.tl(attr_lemq));
-			out.append('$');
-			out.append("}$");
+			out.append("$}$");
 		}
 	}
 	
@@ -3029,11 +2754,7 @@ might:might<vaux><inf>
 			out.append(TransferWord.copycase(var_caseFirstWord, "verb_pp"));
 			out.append("<SV>");
 			out.append(var_tipus_verb);
-			out.append("<pp3>");
-			out.append('{');
-			out.append('^');
-			out.append("esti");
-			out.append("<vbser>");
+			out.append("<pp3>{^esti<vbser>");
 			out.append(var_temps);
 			out.append('$');
 			out.append(blank2);
@@ -3042,8 +2763,7 @@ might:might<vaux><inf>
 			out.append(word3.tl(attr_a_vrb));
 			out.append("<3>");
 			out.append(word3.tl(attr_lemq));
-			out.append('$');
-			out.append("}$");
+			out.append("$}$");
 		}
 		else
 		if (word1.sl(attr_lem).equalsIgnoreCase("may"))
@@ -3055,19 +2775,14 @@ might:might<vaux><inf>
 			out.append("<SV>");
 			out.append(var_tipus_verb);
 			out.append(var_temps);
-			out.append('{');
-			out.append('^');
-			out.append("eble");
-			out.append("<adv>");
-			out.append('$');
+			out.append("{^eble<adv>$");
 			out.append(blank2);
 			out.append('^');
 			out.append(word3.tl(attr_lemh));
 			out.append(word3.tl(attr_a_vrb));
 			out.append("<3>");
 			out.append(word3.tl(attr_lemq));
-			out.append('$');
-			out.append("}$");
+			out.append("$}$");
 		}
 		else
 		if (word1.sl(attr_lem).equalsIgnoreCase("might"))
@@ -3079,19 +2794,14 @@ might:might<vaux><inf>
 			out.append("<SV>");
 			out.append(var_tipus_verb);
 			out.append(var_temps);
-			out.append('{');
-			out.append('^');
-			out.append("eble");
-			out.append("<adv>");
-			out.append('$');
+			out.append("{^eble<adv>$");
 			out.append(blank2);
 			out.append('^');
 			out.append(word3.tl(attr_lemh));
 			out.append(word3.tl(attr_a_vrb));
 			out.append("<3>");
 			out.append(word3.tl(attr_lemq));
-			out.append('$');
-			out.append("}$");
+			out.append("$}$");
 		}
 		else
 		if ((word1.sl(attr_lem).equalsIgnoreCase("can")
@@ -3103,20 +2813,14 @@ might:might<vaux><inf>
 			out.append(TransferWord.copycase(var_caseFirstWord, "vaux_pp"));
 			out.append("<SV>");
 			out.append(var_tipus_verb);
-			out.append("<inf>");
-			out.append('{');
-			out.append('^');
-			out.append("povi");
-			out.append("<vaux><past>");
-			out.append('$');
+			out.append("<inf>{^povi<vaux><past>$");
 			out.append(blank2);
 			out.append('^');
 			out.append(word3.tl(attr_lemh));
 			out.append(word3.tl(attr_a_vrb));
 			out.append("<3>");
 			out.append(word3.tl(attr_lemq));
-			out.append('$');
-			out.append("}$");
+			out.append("$}$");
 		}
 		else
 		{
@@ -3131,8 +2835,7 @@ might:might<vaux><inf>
 			out.append("<SV>");
 			out.append(var_tipus_verb);
 			out.append(var_temps);
-			out.append('{');
-			out.append('^');
+			out.append("{^");
 			out.append(word1.tl(attr_lemh));
 			out.append(word1.tl(attr_a_vrb));
 			out.append("<3>");
@@ -3144,8 +2847,7 @@ might:might<vaux><inf>
 			out.append(word3.tl(attr_a_vrb));
 			out.append("<inf>");
 			out.append(word3.tl(attr_lemq));
-			out.append('$');
-			out.append("}$");
+			out.append("$}$");
 		}
 	}
 	
@@ -3164,8 +2866,7 @@ might:might<vaux><inf>
 			out.append("<SV>");
 			out.append(var_tipus_verb);
 			out.append(var_temps);
-			out.append('{');
-			out.append('^');
+			out.append("{^");
 			out.append(word2.tl(attr_lemh));
 			out.append(word2.tl(attr_a_vrb));
 			out.append("<3>");
@@ -3239,14 +2940,12 @@ might:might<vaux><inf>
 		out.append("<SV>");
 		out.append(var_tipus_verb);
 		out.append(word1.tl(attr_a_tns));
-		out.append('{');
-		out.append('^');
+		out.append("{^");
 		out.append(word1.tl(attr_lemh));
 		out.append(word1.tl(attr_a_vrb));
 		out.append("<3>");
 		out.append(word1.tl(attr_lemq));
-		out.append('$');
-		out.append("}$");
+		out.append("$}$");
 	}
 	
 	public void rule68__vb_all(Writer out, TransferWord word1) throws IOException
@@ -3259,13 +2958,11 @@ might:might<vaux><inf>
 		out.append("<SV>");
 		out.append(var_tipus_verb);
 		out.append(word1.tl(attr_a_tns));
-		out.append('{');
-		out.append('^');
+		out.append("{^");
 		out.append(word1.tl(attr_lemh));
 		out.append(word1.tl(attr_a_vrb));
 		out.append("<3>");
 		out.append(word1.tl(attr_lemq));
-		out.append('$');
-		out.append("}$");
+		out.append("$}$");
 	}
 }
