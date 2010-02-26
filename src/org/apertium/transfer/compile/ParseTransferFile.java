@@ -17,6 +17,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -59,6 +60,43 @@ public class ParseTransferFile {
   private int currentNumberOfWordInParameterList;
 
   private Element currentNode;
+
+  public void writeMethodBody_optimized(Element c0) {
+    // Investigate need of caching clip expressions
+    int codeMark=javaCode.length();
+    clipExprReadCache_reset();
+    int instrNoForlastMacro=0;
+    int instrNo=0;
+    for (Element instr : listElements(c0.getChildNodes())) {
+      processInstruction(instr);
+      if (instr.getTagName().equals("call-macro")) {
+        instrNoForlastMacro=instrNo;
+        clipExprReadCache_reset(); // can't cache as macro could modify
+      }
+      instrNo++;
+    }
+    printComments(); // flush
+    javaCode.setLength(codeMark);
+    //System.err.println(methodName+" clipExprReadCount = " + clipExprReadCount);
+    // now do the real code generation
+    clipExprReadCache_decide();
+    clipExprReadCache_generate();
+    instrNo=0;
+    for (Element instr : listElements(c0.getChildNodes())) {
+      printComments();
+      processInstruction(instr);
+      if (instrNo==instrNoForlastMacro) {
+      }
+      instrNo++;
+    }
+  }
+
+  public void writeMethodBody(Element c0) {
+    for (Element instr : listElements(c0.getChildNodes())) {
+      printComments();
+      processInstruction(instr);
+    }
+  }
 
   private void processLu(Element e) {
     // the lexical unit should only be outputted if it contains something
@@ -250,6 +288,29 @@ public class ParseTransferFile {
     return res;
   }
 
+  LinkedHashMap<String, Integer> clipExprReadCount = new LinkedHashMap<String,Integer>();
+  LinkedHashMap<String, String> clipExprCacheVars = new LinkedHashMap<String,String>();
+  
+  private void clipExprReadCache_reset() {
+    clipExprReadCount.clear();
+    clipExprCacheVars.clear();
+  }
+
+  private void clipExprReadCache_decide() {
+    for (String clipReadExpr : clipExprReadCount.keySet()) {
+      if (clipExprReadCount.get(clipReadExpr)<= 0) continue; // Only used once, don''t cache
+      String var = "cached_"+ javaIdentifier(clipReadExpr);
+      clipExprCacheVars.put(clipReadExpr, var);
+    }
+  }
+
+  private void clipExprReadCache_generate() {
+    // iterate alphabetivally (thru TreeSet)
+    for (String clipReadExpr : new TreeSet<String>(clipExprCacheVars.keySet())) {
+      String var = clipExprCacheVars.get(clipReadExpr);
+      println("String "+var+" = "+clipReadExpr+";");
+    }
+  }
   /**
    * Generates Java code for reading the value of a clip
    * @param e the clip tag
@@ -261,7 +322,18 @@ public class ParseTransferFile {
     String part=e.getAttribute("part");
     String pos=e.getAttribute("pos");
     String queue = (e.getAttribute("queue").equals("no")?"NoQueue":"");
-    return word(pos)+"."+side+queue+"("+attr(part)+")";
+
+    String clipReadExpr = word(pos)+"."+side+queue+"("+attr(part)+")";
+
+    // Update/check cache
+    Integer count = clipExprReadCount.get(clipReadExpr);
+    count = count==null? 1 : count+1;
+    //System.err.println("getReadClipExpr clipReadExpr = " + clipReadExpr+ " count="+count);
+    clipExprReadCount.put(clipReadExpr, count);
+    String cacheVar = clipExprCacheVars.get(clipReadExpr);
+    if (cacheVar!=null) return cacheVar;
+
+    return clipReadExpr;
   }
 
   /**
@@ -276,17 +348,19 @@ public class ParseTransferFile {
     String part=e.getAttribute("part");
     String pos=e.getAttribute("pos");
     String queue = (e.getAttribute("queue").equals("no")?"NoQueue":"");
-    return word(pos)+"."+side+"Set"+queue+"("+attr(part)+", "+value+");";
-/*
-    boolean cond=!e.getAttribute("queue").equals("no");
-    String expr;
-    if (side.equals("sl")) {
-      expr=""+word(pos)+".setSource("+attr(part)+", "+value+", "+cond+");";
-    } else if (side.equals("tl")) {
-      expr=""+word(pos)+".setTarget("+attr(part)+", "+value+", "+cond+");";
-    } else throw new IllegalArgumentException(side);
-    return expr;
- */
+
+    String clipReadExpr = word(pos)+"."+side+queue+"("+attr(part)+")";
+
+    // check if cached variable needs to be updated
+    String cacheVar = clipExprCacheVars.get(clipReadExpr);
+    if (cacheVar==null) {
+      return word(pos)+"."+side+"Set"+queue+"("+attr(part)+", "+value+");";    
+    } else {
+      String writeClipWithUpdateOfCachedVar = word(pos)+"."+side+"Set"+queue+"("+attr(part)+", ("+cacheVar+"="+value+"));";
+      System.err.println("writeClipWithUpdateOfCachedVar = " + writeClipWithUpdateOfCachedVar);
+      return writeClipWithUpdateOfCachedVar;
+    }
+
   }
 
   public static String javaIdentifier(String str) {
@@ -325,6 +399,7 @@ public class ParseTransferFile {
       String pos = e.getAttribute("pos");
       String eval = evalString(getFirstChildElement(e));
       String queue = (e.getAttribute("queue").equals("no")?"NoQueue":"");
+      // TODO cache
       return "TransferWord.copycase("+word(pos)+".sl"+queue+"(attr_lem), "+ eval + ")";
     } else if (n.equals("var")) {
       return var(e.getAttribute("n"));
@@ -819,31 +894,6 @@ public class ParseTransferFile {
     return blank(Integer.parseInt(pos));
   }
 
-
-public class ParseApertiumRE {
-  String n;
-  String[] items;
-
-  public ParseApertiumRE(String n, String[] items) {
-      this.n = n; this.items = items;
-  }
-
-  @Override
-  public String toString() { return "def-attr n="+n+":"+Arrays.toString(items); }
-  }
-
-
-public class ParseDefList {
-  String n;
-  String[] items;
-
-  public ParseDefList(String n, String[] items) {
-      this.n = n; this.items = items;
-  }
-
-  @Override
-  public String toString() { return "def-list n="+n+":"+Arrays.toString(items); }
-  }
  
    /**
      * @param file the address of the XML file to be read
@@ -851,7 +901,7 @@ public class ParseDefList {
     public void parse(String file) throws IOException, ParserConfigurationException, SAXException {
       className = javaIdentifier(new File(file).getName());
       println("package org.apertium.transfer.generated;");
-      println("import java.util.*;");
+      //println("import java.util.*;");
       println("import java.io.*;");
       //println("import org.apertium.lttoolbox.transfer.*;");
       println("import org.apertium.transfer.*;");
@@ -875,22 +925,6 @@ public class ParseDefList {
         println("}");
 
         
-        //LinkedHashMap<String,DefCat> defCats = new LinkedHashMap<String,DefCat>();
-        //LinkedHashMap<String,ParseApertiumRE> defAttrs = new LinkedHashMap<String,ParseApertiumRE>();
-        //ArrayList<String> defVars = new ArrayList<String>();
-        //LinkedHashMap<String,ParseDefList> defLists = new LinkedHashMap<String,ParseDefList>();
-
-        /*
-        for (Element c0 : getChildsChildrenElements(root, "section-def-cats")) {
-          String n = c0.getAttribute("n");
-          ArrayList<CatItem> items = new ArrayList<CatItem>();
-          for (Element c1 : listChildren(c0)) {
-            items.add(new CatItem(c1.getAttribute("lemma"), c1.getAttribute("tags")));
-          }
-          defCats.put(n,new DefCat(n, items.toArray(new CatItem[items.size()])));
-          println("DefCat cat_"+n+" = new DefCat("+str(n)+", "+javaCatItemArray(items)+");");
-        }*/
-
 
 
         for (Element c0 : getChildsChildrenElements(root, "section-def-attrs")) {
@@ -898,7 +932,6 @@ public class ParseDefList {
           ArrayList<String> items = new ArrayList<String>();
           for (Element c1 : listChildren(c0))
             items.add(c1.getAttribute("tags"));
-
 
           /* FIX:
 java match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  is '<prn>'
@@ -911,16 +944,23 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
             }
           });
 
-          //defAttrs.put(n,new ParseApertiumRE(n, items.toArray(new String[items.size()])));
           printComments();
           println("ApertiumRE attr_"+javaIdentifier(n)+" = new ApertiumRE(\""+attrItemRegexp(items)+"\");");
           attrList.add(n);
         }
 
-        //println("public void initAttrLists(ApertiumRE[] attrList) {");
-        //int no = 0;
-        //for (String name : attrList) println("attr_"+name +" = attrList["+no++ +"];");
-        //println("}");
+        /*
+        from transfer_data.cc:
+        // adding fixed attr_items
+        attr_items[L"lem"]          = L"(([^<]|\"\\<\")+)";
+        attr_items[L"lemq"]        = L"\\#[- _][^<]+";
+        attr_items[L"lemh"]        = L"(([^<#]|\"\\<\"|\"\\#\")+)";
+        attr_items[L"whole"]       = L"(.+)";
+        attr_items[L"tags"]         = L"((<[^>]+>)+)";
+        attr_items[L"chname"]    = L"({([^/]+)\\/)"; // includes delimiters { and / !!!
+        attr_items[L"chcontent"] = L"(\\{.+)";
+        attr_items[L"content"]    = L"(\\{.+)";
+        */
 
         String[][] fixed_attributes = {
           { "lem" , "(([^<]|\\\"\\\\<\\\")+)" },
@@ -941,30 +981,6 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
           }
         }
 
-        /*
-  transfer_data.cc:
-  // adding fixed attr_items
-  attr_items[L"lem"]          = L"(([^<]|\"\\<\")+)";
-  attr_items[L"lemq"]        = L"\\#[- _][^<]+";
-  attr_items[L"lemh"]        = L"(([^<#]|\"\\<\"|\"\\#\")+)";
-  attr_items[L"whole"]       = L"(.+)";
-  attr_items[L"tags"]         = L"((<[^>]+>)+)";
-  attr_items[L"chname"]    = L"({([^/]+)\\/)"; // includes delimiters { and / !!!
-  attr_items[L"chcontent"] = L"(\\{.+)";
-  attr_items[L"content"]    = L"(\\{.+)";
- */
-
-/*
-  println("ApertiumRE attr_lem = new ApertiumRE(\"(([^<]|\\\"\\\\<\\\")+)\");");
-  println("ApertiumRE attr_lemq = new ApertiumRE(\"\\\\#[- _][^<]+\");");
-  println("ApertiumRE attr_lemh = new ApertiumRE(\"(([^<#]|\\\"\\\\<\\\"|\\\"\\\\#\\\")+)\");");
-  println("ApertiumRE attr_whole = new ApertiumRE(\"(.+)\");");
-  println("ApertiumRE attr_tags = new ApertiumRE(\"((<[^>]+>)+)\");");
-  //println("ApertiumRE attr_chname = new ApertiumRE(\"({([^/]+)\\\\/)\");"); // includes delimiters { and / !!!
-  println("ApertiumRE attr_chname = new ApertiumRE(\"(\\\\{([^/]+)\\\\/)\");"); // includes delimiters { and / !!!
-  println("ApertiumRE attr_chcontent = new ApertiumRE(\"(\\\\{.+)\");");
-  println("ApertiumRE attr_content = new ApertiumRE(\"(\\\\{.+)\");");
-*/
 
         for (Element c0 : getChildsChildrenElements(root, "section-def-vars")) {
           String n = c0.getAttribute("n");
@@ -977,9 +993,9 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
         for (Element c0 : getChildsChildrenElements(root, "section-def-lists")) {
           String n = c0.getAttribute("n");
           ArrayList<String> items = new ArrayList<String>();
-          for (Element c1 : listChildren(c0))
+          for (Element c1 : listChildren(c0)) {
             items.add(c1.getAttribute("v"));
-          //listList.put(n,new ParseDefList(n, items.toArray(new String[items.size()])));
+          }
           listList.add(n);
           printComments();
           println("TransferWordList list_"+javaIdentifier(n)+" = new TransferWordList("+javaStringArray(items)+");");
@@ -988,26 +1004,24 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
 
         for (Element c0 : getChildsChildrenElements(root, "section-def-macros")) {
           currentNode = c0;
-          String n = c0.getAttribute("n");
+          String name = c0.getAttribute("n");
           String npars = c0.getAttribute("npar");
           int npar = npars.length()>0 ?  Integer.parseInt(npars) : 0;
           currentNumberOfWordInParameterList = npar;
+          macroList.put(name, npar);
           String methodArguments = "";
           for (int i=1; i<=npar; i++) methodArguments += (i==1?", ":", String "+blank(i-1)+", ")+"TransferWord "+word(i);
           String logCallParameters = "";
           for (int i=1; i<=npar; i++) logCallParameters += (i==1?", ":", "+blank(i-1)+", ")+" "+word(i);
           println("");
-          macroList.put(n, npar);
-          String methodName = "macro_"+javaIdentifier(n);
           printComments();
+          String methodName = "macro_"+javaIdentifier(name);
           println("private void "+methodName+"(Writer out"+methodArguments+") throws IOException");
           println("{");
           println("if (debug) { logCall(\""+methodName+"\""+logCallParameters+"); } "); // TODO Check performance impact
-          currentNumberOfWordInParameterList = npar;
-          for (Element c1 : listElements(c0.getChildNodes())) {
-            printComments();
-            processInstruction(c1);
-          }
+
+          writeMethodBody(c0);
+
           println("}");
         }
 
@@ -1036,10 +1050,10 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
           println("public void "+methodName+"(Writer out"+methodArguments+") throws IOException");
           println("{");
           println("if (debug) { logCall(\""+methodName+"\""+logCallParameters+"); } "); // TODO Check performance impact
-          for (Element c1 : getChildsChildrenElements(c0, "action")) {
-            printComments();
-            processInstruction(c1);
-          }
+
+         
+          writeMethodBody((Element) getChildrenElement(c0, "action").getParentNode());
+
           println("}");
         }
 
@@ -1058,12 +1072,9 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
 
         println("}");
 
-
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException("Error: Cannot open '" + file + "'.");
-        }
-
-
-    }
+      } catch (FileNotFoundException e) {
+          throw new RuntimeException("Error: Cannot open '" + file + "'.");
+      }
+  }
 
 }

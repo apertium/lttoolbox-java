@@ -19,6 +19,7 @@ import org.apertium.lttoolbox.Compression;
 public class ApertiumRE {
   Pattern re;
 
+  // Consider using http://jakarta.apache.org/regexp/apidocs/org/apache/regexp/RE.html
   public ApertiumRE(String regex) {
     re = Pattern.compile(regex, Pattern.DOTALL|Pattern.CASE_INSENSITIVE); // |Pattern.UNICODE_CASE
     // PCRE_DOTALL|PCRE_CASELESS|PCRE_EXTENDED|PCRE_UTF8,

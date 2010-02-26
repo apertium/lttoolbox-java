@@ -45,7 +45,6 @@ public class ParseTestTransferFiles {
     return p.className;
   }
 
-
   private static void generateTestFiles(String t1xFile) throws Exception {
       String className = parseAndWriteToSrc(t1xFile);
       String binFile = findFileNameOfBinFile(t1xFile);
