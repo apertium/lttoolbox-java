@@ -163,36 +163,15 @@ public class ParseTransferFile {
     // Replace 2 following appends as one, if they are both strings/chars
     String newCode = code.replaceAll(
         "out\\.append\\(['\"]([^'\"]+)['\"]\\);\\s*"+
-        "out\\.append\\(['\"]([^'\"]+)['\"]"
+        "out\\.append\\(['\"]([^'\"]+)['\"]\\);"
         , 
-        "out.append(\"$1$2\"");
+        "out.append(\"$1$2\");");
 
     // Repeat until stable
     if (newCode.equals(code)) return newCode;
     return optimizeCode(newCode);
   }
 
-
-  /*
-  private void processLu(Element e) {
-    // the lexical unit should only be outputted if it contains something
-    println("{");
-    println("String myword = ");
-    boolean first=true;
-    for (Element lu : listChildren(e)) {
-      println((first?"         ":"         +")+evalString(lu));
-      first = false;
-    }
-    println(first?"         \"\";":"         ;");
-    println("if (myword.length()>0)");
-    println("{");
-    append("'^'");
-    append("myword");
-    append("'$'");
-    println("}");
-    println("}");
-  }
-   */
 
 
   //public static final int OutputType_LU = 0;
@@ -208,6 +187,7 @@ public class ParseTransferFile {
   }
 
   public String getOptimizedJavaCode() {
+    //return optimizeCode(javaCode.toString());
     return optimizeCode(javaCode.toString());
   }
 

@@ -32,7 +32,8 @@ static String[] transferFileList = {
 "apertium-cy-en/apertium-cy-en.en-cy.t1x",
 "apertium-cy-en/apertium-cy-en.cy-en.t1x",
    */
-"apertium-es-ast/apertium-es-ast.es-ast.t1x",
+//"apertium-es-ast/apertium-es-ast.es-ast.t1x",
+"apertium-en-ca/apertium-en-ca.en-ca.t1x",
 };
 
 
@@ -67,10 +68,11 @@ static String[] transferFileList = {
 
       String[] transferFiles = transferFileList;
       //transferFiles = findAlllTransferFilesOnDisk();
-      //printFilesAsJavaArray(transferFiles);
 
+      inputFile = testdir+ "transferinput-en-eo.t1x-malgranda.txt";
       redoInterpretedTransfer = false;
       //redoBytecodeCompilation = false;
+      //printFilesAsJavaArray(transferFiles);
 
       /*
 apertium-bn-en/apertium-bn-en.en-bn.t1x, apertium-sl-mk/apertium-sl-mk.sl-mk.t1x, apertium-en-es/apertium-en-es.es-en.t1x,
