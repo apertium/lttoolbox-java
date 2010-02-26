@@ -169,21 +169,13 @@ public class apertium_nn_nb_nn_nb_t1x extends GeneratedTransferBase
 	public void rule0__vblex_bli__vblexpp(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule0__vblex_bli__vblexpp",  word1, blank1,  word2); } 
-		{
-			String myword = 
-			         word2.tl(attr_lemh)
-			         +word2.tl(attr_a_verb)
-			         +word1.tl(attr_temps)
-			         +"<pass>"
-			         +word2.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word2.tl(attr_lemh));
+		out.append(word2.tl(attr_a_verb));
+		out.append(word1.tl(attr_temps));
+		out.append("<pass>");
+		out.append(word2.tl(attr_lemq));
+		out.append('$');
 		out.append(blank1);
 	}
 	
@@ -191,21 +183,13 @@ public class apertium_nn_nb_nn_nb_t1x extends GeneratedTransferBase
 	public void rule1__vblex_bli__adv__vblexpp(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
 		if (debug) { logCall("rule1__vblex_bli__adv__vblexpp",  word1, blank1,  word2, blank2,  word3); } 
-		{
-			String myword = 
-			         word3.tl(attr_lemh)
-			         +word3.tl(attr_a_verb)
-			         +word1.tl(attr_temps)
-			         +"<pass>"
-			         +word3.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word3.tl(attr_lemh));
+		out.append(word3.tl(attr_a_verb));
+		out.append(word1.tl(attr_temps));
+		out.append("<pass>");
+		out.append(word3.tl(attr_lemq));
+		out.append('$');
 		out.append(blank1);
 		{
 			String myword = 
@@ -225,21 +209,13 @@ public class apertium_nn_nb_nn_nb_t1x extends GeneratedTransferBase
 	public void rule2__vblex_bli__adv__adv__vblexpp(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
 		if (debug) { logCall("rule2__vblex_bli__adv__adv__vblexpp",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
-		{
-			String myword = 
-			         word4.tl(attr_lemh)
-			         +word4.tl(attr_a_verb)
-			         +word1.tl(attr_temps)
-			         +"<pass>"
-			         +word4.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word4.tl(attr_lemh));
+		out.append(word4.tl(attr_a_verb));
+		out.append(word1.tl(attr_temps));
+		out.append("<pass>");
+		out.append(word4.tl(attr_lemq));
+		out.append('$');
 		out.append(blank1);
 		{
 			String myword = 
@@ -271,21 +247,13 @@ public class apertium_nn_nb_nn_nb_t1x extends GeneratedTransferBase
 	public void rule3__vblexinfpst(Writer out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule3__vblexinfpst",  word1); } 
-		{
-			String myword = 
-			         word1.tl(attr_lemh)
-			         +word1.tl(attr_a_verb)
-			         +"<inf>"
-			         +"<pass>"
-			         +word1.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word1.tl(attr_lemh));
+		out.append(word1.tl(attr_a_verb));
+		out.append("<inf>");
+		out.append("<pass>");
+		out.append(word1.tl(attr_lemq));
+		out.append('$');
 	}
 	
 	// VBLEX                    Just in case we have nb multiwords; which need                    lemq after the inflected part.                    This has to be below the passive rules.

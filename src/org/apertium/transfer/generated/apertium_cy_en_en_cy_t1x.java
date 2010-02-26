@@ -395,26 +395,18 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 		out.append(word1.tl(attr_pers));
 		out.append(word1.tl(attr_nbr));
 		out.append('{');
-		{
-			String myword = 
-			         word2.tl(attr_lemh)
-			         +word2.tl(attr_a_verb)
-			         +word2.tl(attr_temps)
-			         +"<2>"
-			         +"<3>"
-			/** 
+		/** 
               <clip pos="2" side="tl" part="pers" link-to="2"/>
               <clip pos="2" side="tl" part="nbr" link-to="3"/>
 	       */
-			         +word2.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word2.tl(attr_lemh));
+		out.append(word2.tl(attr_a_verb));
+		out.append(word2.tl(attr_temps));
+		out.append("<2>");
+		out.append("<3>");
+		out.append(word2.tl(attr_lemq));
+		out.append('$');
 		out.append(" ");
 		{
 			String myword = 

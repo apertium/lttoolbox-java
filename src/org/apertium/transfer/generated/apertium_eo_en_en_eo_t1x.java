@@ -442,18 +442,10 @@ verbfinal = pensi<vblex><pres>
 		out.append(TransferWord.copycase(var_caseFirstWord, "prnref"));
 		out.append("<SN><nom>");
 		out.append('{');
-		{
-			String myword = 
-			         word1.tl(attr_whole)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word1.tl(attr_whole));
+		out.append("<2>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -467,20 +459,12 @@ verbfinal = pensi<vblex><pres>
 		out.append(TransferWord.copycase(var_caseFirstWord, "prn"));
 		out.append("<SN><nom>");
 		out.append('{');
-		{
-			String myword = 
-			         word1.tl(attr_lem)
-			         +word1.tl(attr_a_prn)
-			         +var_numero
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word1.tl(attr_lem));
+		out.append(word1.tl(attr_a_prn));
+		out.append(var_numero);
+		out.append("<2>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -493,18 +477,10 @@ verbfinal = pensi<vblex><pres>
 		out.append(TransferWord.copycase(var_caseFirstWord, "prnpers"));
 		out.append("<SN><nom>");
 		out.append('{');
-		{
-			String myword = 
-			         word1.tl(attr_whole)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word1.tl(attr_whole));
+		out.append("<2>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -539,46 +515,22 @@ verbfinal = pensi<vblex><pres>
 		out.append(TransferWord.copycase(var_caseFirstWord, "dato"));
 		out.append("<SN><nom>");
 		out.append('{');
-		{
-			String myword = 
-			         word2.tl(attr_lem)
-			         +"a"
-			         +"<num><ord>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word2.tl(attr_lem));
+		out.append("a");
+		out.append("<num><ord>");
+		out.append('$');
 		out.append(" ");
-		{
-			String myword = 
-			         "de"
-			         +"<pr>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("de");
+		out.append("<pr>");
+		out.append('$');
 		out.append(blank1);
-		{
-			String myword = 
-			         word1.tl(attr_lem)
-			         +word1.tl(attr_tags)
-			         +"<nom>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word1.tl(attr_lem));
+		out.append(word1.tl(attr_tags));
+		out.append("<nom>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -591,45 +543,21 @@ verbfinal = pensi<vblex><pres>
 		out.append(TransferWord.copycase(var_caseFirstWord, "dato"));
 		out.append("<SN><nom>");
 		out.append('{');
-		{
-			String myword = 
-			         word2.tl(attr_lem)
-			         +"<num><ord>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word2.tl(attr_lem));
+		out.append("<num><ord>");
+		out.append('$');
 		out.append(" ");
-		{
-			String myword = 
-			         "de"
-			         +"<pr>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("de");
+		out.append("<pr>");
+		out.append('$');
 		out.append(blank1);
-		{
-			String myword = 
-			         word1.tl(attr_lem)
-			         +word1.tl(attr_tags)
-			         +"<nom>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word1.tl(attr_lem));
+		out.append(word1.tl(attr_tags));
+		out.append("<nom>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -642,59 +570,27 @@ verbfinal = pensi<vblex><pres>
 		out.append(TransferWord.copycase(var_caseFirstWord, "dato"));
 		out.append("<SN><nom>");
 		out.append('{');
-		{
-			String myword = 
-			         "la"
-			         +"<det><def><sp>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("la");
+		out.append("<det><def><sp>");
+		out.append('$');
 		out.append(blank1);
-		{
-			String myword = 
-			         word3.tl(attr_lem)
-			         +"an"
-			         +"<num><ord>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word3.tl(attr_lem));
+		out.append("an");
+		out.append("<num><ord>");
+		out.append('$');
 		out.append(" ");
-		{
-			String myword = 
-			         "de"
-			         +"<pr>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("de");
+		out.append("<pr>");
+		out.append('$');
 		out.append(blank2);
-		{
-			String myword = 
-			         word2.tl(attr_lem)
-			         +word2.tl(attr_tags)
-			         +"<nom>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word2.tl(attr_lem));
+		out.append(word2.tl(attr_tags));
+		out.append("<nom>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -707,59 +603,27 @@ verbfinal = pensi<vblex><pres>
 		out.append(TransferWord.copycase(var_caseFirstWord, "dato"));
 		out.append("<SN><nom>");
 		out.append('{');
-		{
-			String myword = 
-			         "la"
-			         +"<det><def><sp>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
-		{
-			String myword = 
-			         word3.tl(attr_lem)
-			         +"n"
-			         +"<num><ord>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("la");
+		out.append("<det><def><sp>");
+		out.append('$');
+		out.append('^');
+		out.append(word3.tl(attr_lem));
+		out.append("n");
+		out.append("<num><ord>");
+		out.append('$');
 		out.append(blank1);
 		out.append(" ");
-		{
-			String myword = 
-			         "de"
-			         +"<pr>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("de");
+		out.append("<pr>");
+		out.append('$');
 		out.append(blank2);
-		{
-			String myword = 
-			         word2.tl(attr_lem)
-			         +word2.tl(attr_tags)
-			         +"<nom>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word2.tl(attr_lem));
+		out.append(word2.tl(attr_tags));
+		out.append("<nom>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -789,18 +653,10 @@ verbfinal = pensi<vblex><pres>
 		out.append("pr");
 		out.append("<PREP>");
 		out.append('{');
-		{
-			String myword = 
-			         "el"
-			         +"<pr>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("el");
+		out.append("<pr>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -825,18 +681,10 @@ verbfinal = pensi<vblex><pres>
 			}
 		}
 		out.append(blank1);
-		{
-			String myword = 
-			         "oble"
-			         +"<cnjadv>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("oble");
+		out.append("<cnjadv>");
+		out.append('$');
 		out.append(blank2);
 		{
 			String myword = 
@@ -915,20 +763,12 @@ verbfinal = pensi<vblex><pres>
 			}
 		}
 		out.append(blank1);
-		{
-			String myword = 
-			         "fojo"
-			         +"<n>"
-			         +word2.tl(attr_a_nbr)
-			         +"<nom>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("fojo");
+		out.append("<n>");
+		out.append(word2.tl(attr_a_nbr));
+		out.append("<nom>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -952,20 +792,12 @@ verbfinal = pensi<vblex><pres>
 		out.append(TransferWord.copycase(var_caseFirstWord, "det"));
 		out.append("<SD><nom>");
 		out.append('{');
-		{
-			String myword = 
-			         word1.tl(attr_lemh)
-			         +word1.tl(attr_tags)
-			         +"<2>"
-			         +word1.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word1.tl(attr_lemh));
+		out.append(word1.tl(attr_tags));
+		out.append("<2>");
+		out.append(word1.tl(attr_lemq));
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -980,19 +812,11 @@ verbfinal = pensi<vblex><pres>
 		out.append(TransferWord.copycase(var_caseFirstWord, "nom"));
 		out.append("<SN><nom>");
 		out.append('{');
-		{
-			String myword = 
-			         word1.tl(attr_lem)
-			         +word1.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word1.tl(attr_lem));
+		out.append(word1.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -1006,33 +830,17 @@ verbfinal = pensi<vblex><pres>
 		out.append(TransferWord.copycase(var_caseFirstWord, "more_nom"));
 		out.append("<SN><nom>");
 		out.append('{');
-		{
-			String myword = 
-			         word1.tl(attr_whole)
-			/**  <lit-tag v="2"/> no, keep <nom>  */
-			         +"<nom>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		/**  <lit-tag v="2"/> no, keep <nom>  */
+		out.append('^');
+		out.append(word1.tl(attr_whole));
+		out.append("<nom>");
+		out.append('$');
 		out.append(blank1);
-		{
-			String myword = 
-			         word2.tl(attr_whole)
-			/**  <lit-tag v="2"/> no, keep <nom>  */
-			         +"<nom>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		/**  <lit-tag v="2"/> no, keep <nom>  */
+		out.append('^');
+		out.append(word2.tl(attr_whole));
+		out.append("<nom>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -1048,19 +856,11 @@ verbfinal = pensi<vblex><pres>
 		out.append("<SN><nom>");
 		out.append('{');
 		out.append(var_determiner);
-		{
-			String myword = 
-			         word2.tl(attr_lem)
-			         +word2.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word2.tl(attr_lem));
+		out.append(word2.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -1120,38 +920,22 @@ verbfinal = pensi<vblex><pres>
 		out.append("<SN><nom>");
 		out.append('{');
 		out.append(var_determiner);
-		{
-			String myword = 
-			         word2.tl(attr_lem)
-			         +"<adj>"
-			         +word2.tl(attr_a_acr)
-			/**  se estas akronimo  */
-			         +word2.tl(attr_a_gen)
-			/**  se havas genron  */
-			         +word3.tl(attr_a_nbr)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		/**  se estas akronimo  */
+		/**  se havas genron  */
+		out.append('^');
+		out.append(word2.tl(attr_lem));
+		out.append("<adj>");
+		out.append(word2.tl(attr_a_acr));
+		out.append(word2.tl(attr_a_gen));
+		out.append(word3.tl(attr_a_nbr));
+		out.append("<2>");
+		out.append('$');
 		out.append(blank2);
-		{
-			String myword = 
-			         word3.tl(attr_lem)
-			         +word3.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word3.tl(attr_lem));
+		out.append(word3.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -1169,57 +953,33 @@ verbfinal = pensi<vblex><pres>
 		out.append("<SN><nom>");
 		out.append('{');
 		out.append(var_determiner);
-		{
-			String myword = 
-			         word2.tl(attr_lem)
-			         +"<adj>"
-			         +word2.tl(attr_a_acr)
-			/**  se estas akronimo  */
-			         +word2.tl(attr_a_gen)
-			/**  se havas genron  */
-			         +word4.tl(attr_a_nbr)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		/**  se estas akronimo  */
+		/**  se havas genron  */
+		out.append('^');
+		out.append(word2.tl(attr_lem));
+		out.append("<adj>");
+		out.append(word2.tl(attr_a_acr));
+		out.append(word2.tl(attr_a_gen));
+		out.append(word4.tl(attr_a_nbr));
+		out.append("<2>");
+		out.append('$');
 		out.append(blank2);
-		{
-			String myword = 
-			         word3.tl(attr_lem)
-			         +"<adj>"
-			         +word3.tl(attr_a_acr)
-			/**  se estas akronimo  */
-			         +word3.tl(attr_a_gen)
-			/**  se havas genron  */
-			         +word4.tl(attr_a_nbr)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		/**  se estas akronimo  */
+		/**  se havas genron  */
+		out.append('^');
+		out.append(word3.tl(attr_lem));
+		out.append("<adj>");
+		out.append(word3.tl(attr_a_acr));
+		out.append(word3.tl(attr_a_gen));
+		out.append(word4.tl(attr_a_nbr));
+		out.append("<2>");
+		out.append('$');
 		out.append(blank3);
-		{
-			String myword = 
-			         word4.tl(attr_lem)
-			         +word4.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word4.tl(attr_lem));
+		out.append(word4.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -1238,76 +998,44 @@ verbfinal = pensi<vblex><pres>
 		out.append("<SN><nom>");
 		out.append('{');
 		out.append(var_determiner);
-		{
-			String myword = 
-			         word2.tl(attr_lem)
-			         +"<adj>"
-			         +word2.tl(attr_a_acr)
-			/**  se estas akronimo  */
-			         +word2.tl(attr_a_gen)
-			/**  se havas genron  */
-			         +word5.tl(attr_a_nbr)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		/**  se estas akronimo  */
+		/**  se havas genron  */
+		out.append('^');
+		out.append(word2.tl(attr_lem));
+		out.append("<adj>");
+		out.append(word2.tl(attr_a_acr));
+		out.append(word2.tl(attr_a_gen));
+		out.append(word5.tl(attr_a_nbr));
+		out.append("<2>");
+		out.append('$');
 		out.append(blank2);
-		{
-			String myword = 
-			         word3.tl(attr_lem)
-			         +"<adj>"
-			         +word3.tl(attr_a_acr)
-			/**  se estas akronimo  */
-			         +word3.tl(attr_a_gen)
-			/**  se havas genron  */
-			         +word5.tl(attr_a_nbr)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		/**  se estas akronimo  */
+		/**  se havas genron  */
+		out.append('^');
+		out.append(word3.tl(attr_lem));
+		out.append("<adj>");
+		out.append(word3.tl(attr_a_acr));
+		out.append(word3.tl(attr_a_gen));
+		out.append(word5.tl(attr_a_nbr));
+		out.append("<2>");
+		out.append('$');
 		out.append(blank3);
-		{
-			String myword = 
-			         word4.tl(attr_lem)
-			         +"<adj>"
-			         +word4.tl(attr_a_acr)
-			/**  se estas akronimo  */
-			         +word4.tl(attr_a_gen)
-			/**  se havas genron  */
-			         +word5.tl(attr_a_nbr)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		/**  se estas akronimo  */
+		/**  se havas genron  */
+		out.append('^');
+		out.append(word4.tl(attr_lem));
+		out.append("<adj>");
+		out.append(word4.tl(attr_a_acr));
+		out.append(word4.tl(attr_a_gen));
+		out.append(word5.tl(attr_a_nbr));
+		out.append("<2>");
+		out.append('$');
 		out.append(blank4);
-		{
-			String myword = 
-			         word5.tl(attr_lem)
-			         +word5.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word5.tl(attr_lem));
+		out.append(word5.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -1362,19 +1090,11 @@ verbfinal = pensi<vblex><pres>
 			}
 		}
 		out.append(blank2);
-		{
-			String myword = 
-			         word3.tl(attr_lem)
-			         +word3.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word3.tl(attr_lem));
+		out.append(word3.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -1433,19 +1153,11 @@ verbfinal = pensi<vblex><pres>
 			}
 		}
 		out.append(blank1);
-		{
-			String myword = 
-			         word2.tl(attr_lem)
-			         +word2.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word2.tl(attr_lem));
+		out.append(word2.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -1487,19 +1199,11 @@ verbfinal = pensi<vblex><pres>
 			}
 		}
 		out.append(blank2);
-		{
-			String myword = 
-			         word3.tl(attr_lem)
-			         +word3.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word3.tl(attr_lem));
+		out.append(word3.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -1539,19 +1243,11 @@ verbfinal = pensi<vblex><pres>
 			}
 		}
 		out.append(blank3);
-		{
-			String myword = 
-			         word4.tl(attr_lem)
-			         +word4.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word4.tl(attr_lem));
+		out.append(word4.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -1594,19 +1290,11 @@ verbfinal = pensi<vblex><pres>
 			}
 		}
 		out.append(blank3);
-		{
-			String myword = 
-			         word4.tl(attr_lem)
-			         +word4.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word4.tl(attr_lem));
+		out.append(word4.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -1663,19 +1351,11 @@ verbfinal = pensi<vblex><pres>
 			}
 		}
 		out.append(blank4);
-		{
-			String myword = 
-			         word5.tl(attr_lem)
-			         +word5.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word5.tl(attr_lem));
+		out.append(word5.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -1725,36 +1405,20 @@ verbfinal = pensi<vblex><pres>
 		out.append(TransferWord.copycase(var_caseFirstWord, "nom_nom"));
 		out.append("<SN><nom>");
 		out.append('{');
-		{
-			String myword = 
-			         word1.tl(attr_lem)
-			         +"<adj>"
-			         +word1.tl(attr_a_acr)
-			         +word1.tl(attr_a_gen)
-			         +word2.tl(attr_a_nbr)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word1.tl(attr_lem));
+		out.append("<adj>");
+		out.append(word1.tl(attr_a_acr));
+		out.append(word1.tl(attr_a_gen));
+		out.append(word2.tl(attr_a_nbr));
+		out.append("<2>");
+		out.append('$');
 		out.append(blank1);
-		{
-			String myword = 
-			         word2.tl(attr_lem)
-			         +word2.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word2.tl(attr_lem));
+		out.append(word2.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -1767,19 +1431,11 @@ verbfinal = pensi<vblex><pres>
 		out.append(TransferWord.copycase(var_caseFirstWord, "ant"));
 		out.append("<SN><nom>");
 		out.append('{');
-		{
-			String myword = 
-			         word1.tl(attr_lem)
-			         +word1.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word1.tl(attr_lem));
+		out.append(word1.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -1792,33 +1448,17 @@ verbfinal = pensi<vblex><pres>
 		out.append(TransferWord.copycase(var_caseFirstWord, "ant_cog"));
 		out.append("<SN><nom>");
 		out.append('{');
-		{
-			String myword = 
-			         word1.tl(attr_lem)
-			         +word1.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word1.tl(attr_lem));
+		out.append(word1.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append(blank1);
-		{
-			String myword = 
-			         word2.tl(attr_lem)
-			         +word2.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word2.tl(attr_lem));
+		out.append(word2.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -1831,47 +1471,23 @@ verbfinal = pensi<vblex><pres>
 		out.append(TransferWord.copycase(var_caseFirstWord, "ant_cog"));
 		out.append("<SN><nom>");
 		out.append('{');
-		{
-			String myword = 
-			         word1.tl(attr_lem)
-			         +word1.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word1.tl(attr_lem));
+		out.append(word1.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append(blank1);
-		{
-			String myword = 
-			         word2.tl(attr_lem)
-			         +word2.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word2.tl(attr_lem));
+		out.append(word2.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append(blank2);
-		{
-			String myword = 
-			         word3.tl(attr_lem)
-			         +word3.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word3.tl(attr_lem));
+		out.append(word3.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -1884,61 +1500,29 @@ verbfinal = pensi<vblex><pres>
 		out.append(TransferWord.copycase(var_caseFirstWord, "ant_ant_cog_cog"));
 		out.append("<SN><nom>");
 		out.append('{');
-		{
-			String myword = 
-			         word1.tl(attr_lem)
-			         +word1.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word1.tl(attr_lem));
+		out.append(word1.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append(blank1);
-		{
-			String myword = 
-			         word2.tl(attr_lem)
-			         +word2.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word2.tl(attr_lem));
+		out.append(word2.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append(blank2);
-		{
-			String myword = 
-			         word3.tl(attr_lem)
-			         +word3.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word3.tl(attr_lem));
+		out.append(word3.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append(blank3);
-		{
-			String myword = 
-			         word4.tl(attr_lem)
-			         +word4.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word4.tl(attr_lem));
+		out.append(word4.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -1951,19 +1535,11 @@ verbfinal = pensi<vblex><pres>
 		out.append(TransferWord.copycase(var_caseFirstWord, "ant-ant_cog"));
 		out.append("<SN><nom>");
 		out.append('{');
-		{
-			String myword = 
-			         word1.tl(attr_lem)
-			         +word1.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word1.tl(attr_lem));
+		out.append(word1.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append(blank1);
 		{
 			String myword = 
@@ -1977,33 +1553,17 @@ verbfinal = pensi<vblex><pres>
 			}
 		}
 		out.append(blank2);
-		{
-			String myword = 
-			         word3.tl(attr_lem)
-			         +word3.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word3.tl(attr_lem));
+		out.append(word3.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append(blank3);
-		{
-			String myword = 
-			         word4.tl(attr_lem)
-			         +word4.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word4.tl(attr_lem));
+		out.append(word4.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -2016,33 +1576,17 @@ verbfinal = pensi<vblex><pres>
 		out.append(TransferWord.copycase(var_caseFirstWord, "ant_cog-cog"));
 		out.append("<SN><nom>");
 		out.append('{');
-		{
-			String myword = 
-			         word1.tl(attr_lem)
-			         +word1.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word1.tl(attr_lem));
+		out.append(word1.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append(blank1);
-		{
-			String myword = 
-			         word2.tl(attr_lem)
-			         +word2.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word2.tl(attr_lem));
+		out.append(word2.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append(blank2);
 		{
 			String myword = 
@@ -2056,19 +1600,11 @@ verbfinal = pensi<vblex><pres>
 			}
 		}
 		out.append(blank3);
-		{
-			String myword = 
-			         word4.tl(attr_lem)
-			         +word4.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word4.tl(attr_lem));
+		out.append(word4.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -2081,19 +1617,11 @@ verbfinal = pensi<vblex><pres>
 		out.append(TransferWord.copycase(var_caseFirstWord, "ant-ant_cog-cog"));
 		out.append("<SN><nom>");
 		out.append('{');
-		{
-			String myword = 
-			         word1.tl(attr_lem)
-			         +word1.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word1.tl(attr_lem));
+		out.append(word1.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append(blank1);
 		{
 			String myword = 
@@ -2107,33 +1635,17 @@ verbfinal = pensi<vblex><pres>
 			}
 		}
 		out.append(blank2);
-		{
-			String myword = 
-			         word3.tl(attr_lem)
-			         +word3.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word3.tl(attr_lem));
+		out.append(word3.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append(blank3);
-		{
-			String myword = 
-			         word4.tl(attr_lem)
-			         +word4.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word4.tl(attr_lem));
+		out.append(word4.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append(blank4);
 		{
 			String myword = 
@@ -2147,19 +1659,11 @@ verbfinal = pensi<vblex><pres>
 			}
 		}
 		out.append(blank5);
-		{
-			String myword = 
-			         word6.tl(attr_lem)
-			         +word6.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word6.tl(attr_lem));
+		out.append(word6.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -2176,20 +1680,12 @@ verbfinal = pensi<vblex><pres>
 		out.append(TransferWord.copycase(var_caseFirstWord, "nom_gen_nom"));
 		out.append("<SN><nom>");
 		out.append('{');
-		{
-			String myword = 
-			         word3.tl(attr_lem)
-			/**  hundo  */
-			         +word3.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		/**  hundo  */
+		out.append('^');
+		out.append(word3.tl(attr_lem));
+		out.append(word3.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append(var_blanko);
 		/**  senspaca, sed eble estas aliaj aferoj en gxi  */
 		out.append(" ");
@@ -2206,10 +1702,10 @@ verbfinal = pensi<vblex><pres>
 		}
 		/**  de  */
 		out.append(blank2);
+		/**  gxardenisto  */
 		{
 			String myword = 
 			         word1.tl(attr_lem)
-			/**  gxardenisto  */
 			         +word1.tl(attr_tags)
 			         +var_nomvar
 			         ;
@@ -2236,20 +1732,12 @@ verbfinal = pensi<vblex><pres>
 		out.append(TransferWord.copycase(var_caseFirstWord, "nom_gen_nom"));
 		out.append("<SN><nom>");
 		out.append('{');
-		{
-			String myword = 
-			         word3.tl(attr_lem)
-			/**  hundo  */
-			         +word3.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		/**  hundo  */
+		out.append('^');
+		out.append(word3.tl(attr_lem));
+		out.append(word3.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append(var_blanko);
 		/**  senspaca, sed eble estas aliaj aferoj en gxi  */
 		out.append(" ");
@@ -2266,10 +1754,10 @@ verbfinal = pensi<vblex><pres>
 		}
 		/**  de  */
 		out.append(blank2);
+		/**  gxardenisto  */
 		{
 			String myword = 
 			         word1.tl(attr_lem)
-			/**  gxardenisto  */
 			         +word1.tl(attr_tags)
 			         +var_nomvar
 			         ;
@@ -2297,42 +1785,26 @@ verbfinal = pensi<vblex><pres>
 		out.append(TransferWord.copycase(var_caseFirstWord, "n_n_de_n"));
 		out.append("<SN><nom>");
 		out.append('{');
-		{
-			String myword = 
-			         word3.tl(attr_lem)
-			/**  hundA  */
-			         +"<adj>"
-			         +word3.tl(attr_a_acr)
-			/**  se estas akronimo  */
-			         +word3.tl(attr_a_gen)
-			/**  se havas genron  */
-			         +word4.tl(attr_a_nbr)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		/**  hundA  */
+		/**  se estas akronimo  */
+		/**  se havas genron  */
+		out.append('^');
+		out.append(word3.tl(attr_lem));
+		out.append("<adj>");
+		out.append(word3.tl(attr_a_acr));
+		out.append(word3.tl(attr_a_gen));
+		out.append(word4.tl(attr_a_nbr));
+		out.append("<2>");
+		out.append('$');
 		out.append(var_blanko);
 		/**  senspaca, sed eble estas aliaj aferoj en gxi  */
 		out.append(" ");
-		{
-			String myword = 
-			         word4.tl(attr_lem)
-			/**  domo  */
-			         +word4.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		/**  domo  */
+		out.append('^');
+		out.append(word4.tl(attr_lem));
+		out.append(word4.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append(blank2);
 		{
 			String myword = 
@@ -2347,10 +1819,10 @@ verbfinal = pensi<vblex><pres>
 		}
 		/**  de  */
 		out.append(blank3);
+		/**  gxardenisto  */
 		{
 			String myword = 
 			         word1.tl(attr_lem)
-			/**  gxardenisto  */
 			         +word1.tl(attr_tags)
 			         +var_nomvar
 			         ;
@@ -2381,36 +1853,20 @@ verbfinal = pensi<vblex><pres>
 		out.append(TransferWord.copycase(var_caseFirstWord, "det_nom_gen_det_nom"));
 		out.append("<SN><nom>");
 		out.append('{');
-		{
-			String myword = 
-			         TransferWord.copycase(word1.sl(attr_lem), "la")
-			         +"<det><def><sp>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(TransferWord.copycase(word1.sl(attr_lem), "la"));
+		out.append("<det><def><sp>");
+		out.append('$');
 		/**  la  */
 		out.append(var_tmp2);
 		/**  senspaca, sed eble estas aliaj aferoj en gxi  */
 		out.append(" ");
-		{
-			String myword = 
-			         word4.tl(attr_lem)
-			/**  hundo  */
-			         +word4.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		/**  hundo  */
+		out.append('^');
+		out.append(word4.tl(attr_lem));
+		out.append(word4.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append(var_blanko);
 		/**  senspaca, sed eble estas aliaj aferoj en gxi  */
 		out.append(" ");
@@ -2429,10 +1885,10 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank3);
 		out.append(var_determiner);
 		/**  lia  */
+		/**  gxardenisto  */
 		{
 			String myword = 
 			         word2.tl(attr_lem)
-			/**  gxardenisto  */
 			         +word2.tl(attr_tags)
 			         +var_nomvar
 			         ;
@@ -2466,34 +1922,18 @@ verbfinal = pensi<vblex><pres>
 		out.append("<SN><nom>");
 		out.append('{');
 		out.append(var_tmp2);
-		{
-			String myword = 
-			         TransferWord.copycase(word1.sl(attr_lem), "la")
-			         +"<det><def><sp>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(TransferWord.copycase(word1.sl(attr_lem), "la"));
+		out.append("<det><def><sp>");
+		out.append('$');
 		/**  la  */
 		out.append(blank2);
-		{
-			String myword = 
-			         word5.tl(attr_lem)
-			/**  hundo  */
-			         +word5.tl(attr_tags)
-			         +"<2>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		/**  hundo  */
+		out.append('^');
+		out.append(word5.tl(attr_lem));
+		out.append(word5.tl(attr_tags));
+		out.append("<2>");
+		out.append('$');
 		out.append(var_blanko);
 		/**  senspaca, sed eble estas aliaj aferoj en gxi  */
 		out.append(" ");
@@ -2512,10 +1952,10 @@ verbfinal = pensi<vblex><pres>
 		out.append(blank4);
 		out.append(var_determiner);
 		/**  lia  */
+		/**  ĝardeno  */
 		{
 			String myword = 
 			         word2.tl(attr_lem)
-			/**  ĝardeno  */
 			         +word2.tl(attr_tags)
 			         +var_tmp1
 			         ;
@@ -2527,10 +1967,10 @@ verbfinal = pensi<vblex><pres>
 			}
 		}
 		out.append(" ");
+		/**  viro   */
 		{
 			String myword = 
 			         word3.tl(attr_lem)
-			/**  viro   */
 			         +word3.tl(attr_tags)
 			         +var_nomvar
 			         ;
@@ -2819,18 +2259,10 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append("gen");
 		out.append("<GEN>");
 		out.append('{');
-		{
-			String myword = 
-			         "a"
-			         +"<gen>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("a");
+		out.append("<gen>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -2916,20 +2348,12 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append(var_tipus_verb);
 		out.append(word2.tl(attr_a_tns));
 		out.append('{');
-		{
-			String myword = 
-			         word2.tl(attr_lemh)
-			         +word2.tl(attr_a_vrb)
-			         +"<3>"
-			         +word2.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word2.tl(attr_lemh));
+		out.append(word2.tl(attr_a_vrb));
+		out.append("<3>");
+		out.append(word2.tl(attr_lemq));
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -2946,20 +2370,12 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append(var_tipus_verb);
 		out.append("<inf>");
 		out.append('{');
-		{
-			String myword = 
-			         word2.tl(attr_lemh)
-			         +word2.tl(attr_a_vrb)
-			         +"<3>"
-			         +word2.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word2.tl(attr_lemh));
+		out.append(word2.tl(attr_a_vrb));
+		out.append("<3>");
+		out.append(word2.tl(attr_lemq));
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -2977,20 +2393,12 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append(var_tipus_verb);
 		out.append("<inf>");
 		out.append('{');
-		{
-			String myword = 
-			         word3.tl(attr_lemh)
-			         +word3.tl(attr_a_vrb)
-			         +"<3>"
-			         +word3.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word3.tl(attr_lemh));
+		out.append(word3.tl(attr_a_vrb));
+		out.append("<3>");
+		out.append(word3.tl(attr_lemq));
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -3007,20 +2415,12 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append(var_tipus_verb);
 		out.append(word1.tl(attr_a_tns));
 		out.append('{');
-		{
-			String myword = 
-			         word1.tl(attr_lem)
-			         +word1.tl(attr_a_vrb)
-			         +"<3>"
-			         +word1.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word1.tl(attr_lem));
+		out.append(word1.tl(attr_a_vrb));
+		out.append("<3>");
+		out.append(word1.tl(attr_lemq));
+		out.append('$');
 		out.append(blank1);
 		{
 			String myword = 
@@ -3052,32 +2452,16 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append(var_tipus_verb);
 		out.append(word1.tl(attr_a_tns));
 		out.append('{');
-		{
-			String myword = 
-			         "el"
-			         +"<adv>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
-		{
-			String myword = 
-			         word1.tl(attr_lemh)
-			         +word1.tl(attr_a_vrb)
-			         +"<3>"
-			         +word1.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("el");
+		out.append("<adv>");
+		out.append('$');
+		out.append('^');
+		out.append(word1.tl(attr_lemh));
+		out.append(word1.tl(attr_a_vrb));
+		out.append("<3>");
+		out.append(word1.tl(attr_lemq));
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -3105,20 +2489,12 @@ the ones who:the ones who<rel><nn><mf><pl>
 			}
 		}
 		out.append(blank1);
-		{
-			String myword = 
-			         word1.tl(attr_lemh)
-			         +word1.tl(attr_a_vrb)
-			         +"<3>"
-			         +word1.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word1.tl(attr_lemh));
+		out.append(word1.tl(attr_a_vrb));
+		out.append("<3>");
+		out.append(word1.tl(attr_lemq));
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -3133,38 +2509,22 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append(var_tipus_verb);
 		out.append(word1.tl(attr_a_tns));
 		out.append('{');
-		{
-			String myword = 
-			         word1.tl(attr_lem)
-			         +word1.tl(attr_a_vrb)
-			         +"<3>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word1.tl(attr_lem));
+		out.append(word1.tl(attr_a_vrb));
+		out.append("<3>");
+		out.append('$');
 		out.append("}$");
 		out.append(blank1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "pls_verb2"));
 		out.append(word2.tl(attr_a_tns));
 		out.append('{');
-		{
-			String myword = 
-			         word2.tl(attr_lem)
-			         +word2.tl(attr_a_vrb)
-			         +"<inf>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word2.tl(attr_lem));
+		out.append(word2.tl(attr_a_vrb));
+		out.append("<inf>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -3181,18 +2541,10 @@ the ones who:the ones who<rel><nn><mf><pl>
 			out.append(TransferWord.copycase(var_caseFirstWord, "ja2"));
 			out.append("<Adv>");
 			out.append('{');
-			{
-				String myword = 
-				         "ja"
-				         +"<adv>"
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append("ja");
+			out.append("<adv>");
+			out.append('$');
 			out.append("}$");
 			out.append(blank1);
 			var_caseFirstWord = "aa";
@@ -3249,18 +2601,10 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append(TransferWord.copycase(var_caseFirstWord, "ja"));
 		out.append("<Adv>");
 		out.append('{');
-		{
-			String myword = 
-			         "ja"
-			         +"<adv>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("ja");
+		out.append("<adv>");
+		out.append('$');
 		out.append("}$");
 		out.append(blank1);
 		out.append('^');
@@ -3310,20 +2654,12 @@ might:might<vaux><inf>
 			out.append(var_tipus_verb);
 			out.append(var_temps);
 			out.append('{');
-			{
-				String myword = 
-				         word2.tl(attr_lemh)
-				         +word2.tl(attr_a_vrb)
-				         +"<3>"
-				         +word2.tl(attr_lemq)
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append(word2.tl(attr_lemh));
+			out.append(word2.tl(attr_a_vrb));
+			out.append("<3>");
+			out.append(word2.tl(attr_lemq));
+			out.append('$');
 			out.append("}$");
 		}
 		else
@@ -3338,33 +2674,17 @@ might:might<vaux><inf>
 			out.append(var_tipus_verb);
 			out.append("<inf>");
 			out.append('{');
-			{
-				String myword = 
-				         "povi"
-				         +"<vaux><cni>"
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append("povi");
+			out.append("<vaux><cni>");
+			out.append('$');
 			out.append(blank1);
-			{
-				String myword = 
-				         word2.tl(attr_lemh)
-				         +word2.tl(attr_a_vrb)
-				         +"<3>"
-				         +word2.tl(attr_lemq)
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append(word2.tl(attr_lemh));
+			out.append(word2.tl(attr_a_vrb));
+			out.append("<3>");
+			out.append(word2.tl(attr_lemq));
+			out.append('$');
 			out.append("}$");
 		}
 		/**  I may wash.
@@ -3402,20 +2722,12 @@ might:might<vaux><inf>
 			out.append(var_tipus_verb);
 			out.append(word1.tl(attr_a_tns));
 			out.append('{');
-			{
-				String myword = 
-				         word1.tl(attr_lemh)
-				         +word1.tl(attr_a_vrb)
-				         +"<3>"
-				         +word1.tl(attr_lemq)
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append(word1.tl(attr_lemh));
+			out.append(word1.tl(attr_a_vrb));
+			out.append("<3>");
+			out.append(word1.tl(attr_lemq));
+			out.append('$');
 			out.append(blank1);
 			{
 				String myword = 
@@ -3463,20 +2775,12 @@ might:might<vaux><inf>
 				}
 			}
 			out.append(blank2);
-			{
-				String myword = 
-				         word3.tl(attr_lemh)
-				         +word3.tl(attr_a_vrb)
-				         +"<3>"
-				         +word3.tl(attr_lemq)
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append(word3.tl(attr_lemh));
+			out.append(word3.tl(attr_a_vrb));
+			out.append("<3>");
+			out.append(word3.tl(attr_lemq));
+			out.append('$');
 			out.append("}$");
 		}
 		else
@@ -3503,33 +2807,17 @@ might:might<vaux><inf>
 				}
 			}
 			out.append(blank1);
-			{
-				String myword = 
-				         "povi"
-				         +"<vaux><cni>"
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append("povi");
+			out.append("<vaux><cni>");
+			out.append('$');
 			out.append(blank2);
-			{
-				String myword = 
-				         word3.tl(attr_lemh)
-				         +word3.tl(attr_a_vrb)
-				         +"<3>"
-				         +word3.tl(attr_lemq)
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append(word3.tl(attr_lemh));
+			out.append(word3.tl(attr_a_vrb));
+			out.append("<3>");
+			out.append(word3.tl(attr_lemq));
+			out.append('$');
 			out.append("}$");
 		}
 		else
@@ -3565,20 +2853,12 @@ might:might<vaux><inf>
 				}
 			}
 			out.append(blank2);
-			{
-				String myword = 
-				         word3.tl(attr_lemh)
-				         +word3.tl(attr_a_vrb)
-				         +"<3>"
-				         +word3.tl(attr_lemq)
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append(word3.tl(attr_lemh));
+			out.append(word3.tl(attr_a_vrb));
+			out.append("<3>");
+			out.append(word3.tl(attr_lemq));
+			out.append('$');
 			out.append("}$");
 		}
 	}
@@ -3623,20 +2903,12 @@ might:might<vaux><inf>
 				}
 			}
 			out.append(blank3);
-			{
-				String myword = 
-				         word4.tl(attr_lemh)
-				         +word4.tl(attr_a_vrb)
-				         +"<3>"
-				         +word4.tl(attr_lemq)
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append(word4.tl(attr_lemh));
+			out.append(word4.tl(attr_a_vrb));
+			out.append("<3>");
+			out.append(word4.tl(attr_lemq));
+			out.append('$');
 			out.append("}$");
 		}
 		else
@@ -3675,33 +2947,17 @@ might:might<vaux><inf>
 				}
 			}
 			out.append(blank2);
-			{
-				String myword = 
-				         "povi"
-				         +"<vaux><cni>"
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append("povi");
+			out.append("<vaux><cni>");
+			out.append('$');
 			out.append(blank3);
-			{
-				String myword = 
-				         word4.tl(attr_lemh)
-				         +word4.tl(attr_a_vrb)
-				         +"<3>"
-				         +word4.tl(attr_lemq)
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append(word4.tl(attr_lemh));
+			out.append(word4.tl(attr_a_vrb));
+			out.append("<3>");
+			out.append(word4.tl(attr_lemq));
+			out.append('$');
 			out.append("}$");
 		}
 		else
@@ -3749,20 +3005,12 @@ might:might<vaux><inf>
 				}
 			}
 			out.append(blank3);
-			{
-				String myword = 
-				         word4.tl(attr_lemh)
-				         +word4.tl(attr_a_vrb)
-				         +"<3>"
-				         +word4.tl(attr_lemq)
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append(word4.tl(attr_lemh));
+			out.append(word4.tl(attr_a_vrb));
+			out.append("<3>");
+			out.append(word4.tl(attr_lemq));
+			out.append('$');
 			out.append("}$");
 		}
 	}
@@ -3783,34 +3031,18 @@ might:might<vaux><inf>
 			out.append(var_tipus_verb);
 			out.append("<pp3>");
 			out.append('{');
-			{
-				String myword = 
-				         "esti"
-				         +"<vbser>"
-				         +var_temps
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append("esti");
+			out.append("<vbser>");
+			out.append(var_temps);
+			out.append('$');
 			out.append(blank2);
-			{
-				String myword = 
-				         word3.tl(attr_lemh)
-				         +word3.tl(attr_a_vrb)
-				         +"<3>"
-				         +word3.tl(attr_lemq)
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append(word3.tl(attr_lemh));
+			out.append(word3.tl(attr_a_vrb));
+			out.append("<3>");
+			out.append(word3.tl(attr_lemq));
+			out.append('$');
 			out.append("}$");
 		}
 		else
@@ -3824,33 +3056,17 @@ might:might<vaux><inf>
 			out.append(var_tipus_verb);
 			out.append(var_temps);
 			out.append('{');
-			{
-				String myword = 
-				         "eble"
-				         +"<adv>"
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append("eble");
+			out.append("<adv>");
+			out.append('$');
 			out.append(blank2);
-			{
-				String myword = 
-				         word3.tl(attr_lemh)
-				         +word3.tl(attr_a_vrb)
-				         +"<3>"
-				         +word3.tl(attr_lemq)
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append(word3.tl(attr_lemh));
+			out.append(word3.tl(attr_a_vrb));
+			out.append("<3>");
+			out.append(word3.tl(attr_lemq));
+			out.append('$');
 			out.append("}$");
 		}
 		else
@@ -3864,33 +3080,17 @@ might:might<vaux><inf>
 			out.append(var_tipus_verb);
 			out.append(var_temps);
 			out.append('{');
-			{
-				String myword = 
-				         "eble"
-				         +"<adv>"
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append("eble");
+			out.append("<adv>");
+			out.append('$');
 			out.append(blank2);
-			{
-				String myword = 
-				         word3.tl(attr_lemh)
-				         +word3.tl(attr_a_vrb)
-				         +"<3>"
-				         +word3.tl(attr_lemq)
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append(word3.tl(attr_lemh));
+			out.append(word3.tl(attr_a_vrb));
+			out.append("<3>");
+			out.append(word3.tl(attr_lemq));
+			out.append('$');
 			out.append("}$");
 		}
 		else
@@ -3905,33 +3105,17 @@ might:might<vaux><inf>
 			out.append(var_tipus_verb);
 			out.append("<inf>");
 			out.append('{');
-			{
-				String myword = 
-				         "povi"
-				         +"<vaux><past>"
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append("povi");
+			out.append("<vaux><past>");
+			out.append('$');
 			out.append(blank2);
-			{
-				String myword = 
-				         word3.tl(attr_lemh)
-				         +word3.tl(attr_a_vrb)
-				         +"<3>"
-				         +word3.tl(attr_lemq)
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append(word3.tl(attr_lemh));
+			out.append(word3.tl(attr_a_vrb));
+			out.append("<3>");
+			out.append(word3.tl(attr_lemq));
+			out.append('$');
 			out.append("}$");
 		}
 		else
@@ -3948,35 +3132,19 @@ might:might<vaux><inf>
 			out.append(var_tipus_verb);
 			out.append(var_temps);
 			out.append('{');
-			{
-				String myword = 
-				         word1.tl(attr_lemh)
-				         +word1.tl(attr_a_vrb)
-				         +"<3>"
-				         +word1.tl(attr_lemq)
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append(word1.tl(attr_lemh));
+			out.append(word1.tl(attr_a_vrb));
+			out.append("<3>");
+			out.append(word1.tl(attr_lemq));
+			out.append('$');
 			out.append(blank2);
-			{
-				String myword = 
-				         word3.tl(attr_lemh)
-				         +word3.tl(attr_a_vrb)
-				         +"<inf>"
-				         +word3.tl(attr_lemq)
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append(word3.tl(attr_lemh));
+			out.append(word3.tl(attr_a_vrb));
+			out.append("<inf>");
+			out.append(word3.tl(attr_lemq));
+			out.append('$');
 			out.append("}$");
 		}
 	}
@@ -3997,20 +3165,12 @@ might:might<vaux><inf>
 			out.append(var_tipus_verb);
 			out.append(var_temps);
 			out.append('{');
-			{
-				String myword = 
-				         word2.tl(attr_lemh)
-				         +word2.tl(attr_a_vrb)
-				         +"<3>"
-				         +word2.tl(attr_lemq)
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append(word2.tl(attr_lemh));
+			out.append(word2.tl(attr_a_vrb));
+			out.append("<3>");
+			out.append(word2.tl(attr_lemq));
+			out.append('$');
 			out.append(blank2);
 			{
 				String myword = 
@@ -4046,20 +3206,12 @@ might:might<vaux><inf>
 				}
 			}
 			out.append(blank1);
-			{
-				String myword = 
-				         word2.tl(attr_lemh)
-				         +word2.tl(attr_a_vrb)
-				         +"<3>"
-				         +word2.tl(attr_lemq)
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append(word2.tl(attr_lemh));
+			out.append(word2.tl(attr_a_vrb));
+			out.append("<3>");
+			out.append(word2.tl(attr_lemq));
+			out.append('$');
 			out.append(blank2);
 			{
 				String myword = 
@@ -4088,20 +3240,12 @@ might:might<vaux><inf>
 		out.append(var_tipus_verb);
 		out.append(word1.tl(attr_a_tns));
 		out.append('{');
-		{
-			String myword = 
-			         word1.tl(attr_lemh)
-			         +word1.tl(attr_a_vrb)
-			         +"<3>"
-			         +word1.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word1.tl(attr_lemh));
+		out.append(word1.tl(attr_a_vrb));
+		out.append("<3>");
+		out.append(word1.tl(attr_lemq));
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -4116,20 +3260,12 @@ might:might<vaux><inf>
 		out.append(var_tipus_verb);
 		out.append(word1.tl(attr_a_tns));
 		out.append('{');
-		{
-			String myword = 
-			         word1.tl(attr_lemh)
-			         +word1.tl(attr_a_vrb)
-			         +"<3>"
-			         +word1.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word1.tl(attr_lemh));
+		out.append(word1.tl(attr_a_vrb));
+		out.append("<3>");
+		out.append(word1.tl(attr_lemq));
+		out.append('$');
 		out.append("}$");
 	}
 }

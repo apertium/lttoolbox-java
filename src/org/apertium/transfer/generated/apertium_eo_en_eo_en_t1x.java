@@ -259,18 +259,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(TransferWord.copycase(var_caseFirstWord, "pr"));
 		out.append("<PREP>");
 		out.append('{');
-		{
-			String myword = 
-			         "from"
-			         +"<pr>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("from");
+		out.append("<pr>");
+		out.append('$');
 		out.append("}$");
 		out.append(blank1);
 		out.append('^');
@@ -305,18 +297,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(TransferWord.copycase(var_caseFirstWord, "pr"));
 		out.append("<PREP>");
 		out.append('{');
-		{
-			String myword = 
-			         "from"
-			         +"<pr>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("from");
+		out.append("<pr>");
+		out.append('$');
 		out.append("}$");
 		out.append(blank1);
 		out.append('^');
@@ -369,18 +353,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(TransferWord.copycase(var_caseFirstWord, "pr"));
 		out.append("<PREP>");
 		out.append('{');
-		{
-			String myword = 
-			         "since"
-			         +"<pr>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("since");
+		out.append("<pr>");
+		out.append('$');
 		out.append("}$");
 		out.append(blank1);
 		out.append('^');
@@ -417,18 +393,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			}
 		}
 		out.append(" ");
-		{
-			String myword = 
-			         "ago"
-			         +"<adv>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("ago");
+		out.append("<adv>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -441,18 +409,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(TransferWord.copycase(var_caseFirstWord, "pr"));
 		out.append("<PREP>");
 		out.append('{');
-		{
-			String myword = 
-			         "since"
-			         +"<pr>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("since");
+		out.append("<pr>");
+		out.append('$');
 		out.append("}$");
 		out.append(blank1);
 		out.append('^');
@@ -491,18 +451,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			}
 		}
 		out.append(" ");
-		{
-			String myword = 
-			         "ago"
-			         +"<adv>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("ago");
+		out.append("<adv>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -545,18 +497,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			}
 		}
 		out.append(" ");
-		{
-			String myword = 
-			         "ago"
-			         +"<adv>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("ago");
+		out.append("<adv>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -601,18 +545,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			}
 		}
 		out.append(" ");
-		{
-			String myword = 
-			         "ago"
-			         +"<adv>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("ago");
+		out.append("<adv>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -1749,34 +1685,18 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(word1.tl(attr_a_prs));
 		out.append(word1.tl(attr_a_nbr));
 		out.append('{');
-		{
-			String myword = 
-			         "will"
-			         +"<vaux>"
-			         +"<inf>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("will");
+		out.append("<vaux>");
+		out.append("<inf>");
+		out.append('$');
 		out.append(" ");
-		{
-			String myword = 
-			         word1.tl(attr_lemh)
-			         +word1.tl(attr_a_vrb)
-			         +"<inf>"
-			         +word1.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word1.tl(attr_lemh));
+		out.append(word1.tl(attr_a_vrb));
+		out.append("<inf>");
+		out.append(word1.tl(attr_lemq));
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -1798,20 +1718,12 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			out.append(word1.tl(attr_a_prs));
 			out.append(word1.tl(attr_a_nbr));
 			out.append('{');
-			{
-				String myword = 
-				         word1.tl(attr_lemh)
-				         +word1.tl(attr_a_vrb)
-				         +"<inf>"
-				         +word1.tl(attr_lemq)
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append(word1.tl(attr_lemh));
+			out.append(word1.tl(attr_a_vrb));
+			out.append("<inf>");
+			out.append(word1.tl(attr_lemq));
+			out.append('$');
 			out.append("}$");
 		}
 		else
@@ -1825,34 +1737,18 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			out.append(word1.tl(attr_a_prs));
 			out.append(word1.tl(attr_a_nbr));
 			out.append('{');
-			{
-				String myword = 
-				         "would"
-				         +"<vaux>"
-				         +"<inf>"
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append("would");
+			out.append("<vaux>");
+			out.append("<inf>");
+			out.append('$');
 			out.append(" ");
-			{
-				String myword = 
-				         word1.tl(attr_lemh)
-				         +word1.tl(attr_a_vrb)
-				         +"<inf>"
-				         +word1.tl(attr_lemq)
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append(word1.tl(attr_lemh));
+			out.append(word1.tl(attr_a_vrb));
+			out.append("<inf>");
+			out.append(word1.tl(attr_lemq));
+			out.append('$');
 			out.append("}$");
 		}
 	}
@@ -1873,47 +1769,23 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(word2.tl(attr_a_prs));
 		out.append(word2.tl(attr_a_nbr));
 		out.append('{');
-		{
-			String myword = 
-			         "will"
-			         +"<vaux>"
-			         +"<inf>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("will");
+		out.append("<vaux>");
+		out.append("<inf>");
+		out.append('$');
 		out.append(" ");
-		{
-			String myword = 
-			         "not"
-			         +"<adv>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("not");
+		out.append("<adv>");
+		out.append('$');
 		out.append(blank1);
-		{
-			String myword = 
-			         word2.tl(attr_lemh)
-			         +word2.tl(attr_a_vrb)
-			         +"<inf>"
-			         +word2.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word2.tl(attr_lemh));
+		out.append(word2.tl(attr_a_vrb));
+		out.append("<inf>");
+		out.append(word2.tl(attr_lemq));
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -1935,33 +1807,17 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			out.append(word2.tl(attr_a_prs));
 			out.append(word2.tl(attr_a_nbr));
 			out.append('{');
-			{
-				String myword = 
-				         word2.tl(attr_lemh)
-				         +word2.tl(attr_a_vrb)
-				         +"<inf>"
-				         +word2.tl(attr_lemq)
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append(word2.tl(attr_lemh));
+			out.append(word2.tl(attr_a_vrb));
+			out.append("<inf>");
+			out.append(word2.tl(attr_lemq));
+			out.append('$');
 			out.append(blank1);
-			{
-				String myword = 
-				         "not"
-				         +"<adv>"
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append("not");
+			out.append("<adv>");
+			out.append('$');
 			out.append("}$");
 		}
 		else
@@ -1975,47 +1831,23 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			out.append(word2.tl(attr_a_prs));
 			out.append(word2.tl(attr_a_nbr));
 			out.append('{');
-			{
-				String myword = 
-				         "would"
-				         +"<vaux>"
-				         +"<inf>"
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append("would");
+			out.append("<vaux>");
+			out.append("<inf>");
+			out.append('$');
 			out.append(" ");
-			{
-				String myword = 
-				         "not"
-				         +"<adv>"
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append("not");
+			out.append("<adv>");
+			out.append('$');
 			out.append(blank1);
-			{
-				String myword = 
-				         word2.tl(attr_lemh)
-				         +word2.tl(attr_a_vrb)
-				         +"<inf>"
-				         +word2.tl(attr_lemq)
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append(word2.tl(attr_lemh));
+			out.append(word2.tl(attr_a_vrb));
+			out.append("<inf>");
+			out.append(word2.tl(attr_lemq));
+			out.append('$');
 			out.append("}$");
 		}
 	}
@@ -2034,34 +1866,18 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(word1.tl(attr_a_prs));
 		out.append(word1.tl(attr_a_nbr));
 		out.append('{');
-		{
-			String myword = 
-			         "would"
-			         +"<vaux>"
-			         +"<inf>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("would");
+		out.append("<vaux>");
+		out.append("<inf>");
+		out.append('$');
 		out.append(" ");
-		{
-			String myword = 
-			         word1.tl(attr_lemh)
-			         +word1.tl(attr_a_vrb)
-			         +"<inf>"
-			         +word1.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word1.tl(attr_lemh));
+		out.append(word1.tl(attr_a_vrb));
+		out.append("<inf>");
+		out.append(word1.tl(attr_lemq));
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -2079,20 +1895,12 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(word1.tl(attr_a_prs));
 		out.append(word1.tl(attr_a_nbr));
 		out.append('{');
-		{
-			String myword = 
-			         word1.tl(attr_lemh)
-			         +word1.tl(attr_a_vrb)
-			         +"<pp>"
-			         +word1.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word1.tl(attr_lemh));
+		out.append(word1.tl(attr_a_vrb));
+		out.append("<pp>");
+		out.append(word1.tl(attr_lemq));
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -2108,48 +1916,24 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(var_vrb2);
 		out.append(word1.tl(attr_a_tns));
 		out.append('{');
-		{
-			String myword = 
-			         "will"
-			         +"<vaux>"
-			         +"<inf>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("will");
+		out.append("<vaux>");
+		out.append("<inf>");
+		out.append('$');
 		out.append(" ");
-		{
-			String myword = 
-			         "have"
-			         +"<vbhaver>"
-			         +"<inf>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("have");
+		out.append("<vbhaver>");
+		out.append("<inf>");
+		out.append('$');
 		out.append(" ");
-		{
-			String myword = 
-			         word2.tl(attr_lemh)
-			         +word2.tl(attr_a_vrb)
-			         +"<pp>"
-			         +word2.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word2.tl(attr_lemh));
+		out.append(word2.tl(attr_a_vrb));
+		out.append("<pp>");
+		out.append(word2.tl(attr_lemq));
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -2165,48 +1949,24 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(var_vrb2);
 		out.append(word1.tl(attr_a_tns));
 		out.append('{');
-		{
-			String myword = 
-			         "would"
-			         +"<vaux>"
-			         +"<inf>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("would");
+		out.append("<vaux>");
+		out.append("<inf>");
+		out.append('$');
 		out.append(" ");
-		{
-			String myword = 
-			         "have"
-			         +"<vbhaver>"
-			         +"<inf>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("have");
+		out.append("<vbhaver>");
+		out.append("<inf>");
+		out.append('$');
 		out.append(" ");
-		{
-			String myword = 
-			         word2.tl(attr_lemh)
-			         +word2.tl(attr_a_vrb)
-			         +"<pp>"
-			         +word2.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word2.tl(attr_lemh));
+		out.append(word2.tl(attr_a_vrb));
+		out.append("<pp>");
+		out.append(word2.tl(attr_lemq));
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -2225,38 +1985,22 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append("<PD>");
 		out.append("<ND>");
 		out.append('{');
-		{
-			String myword = 
-			         "have"
-			         +"<vbhaver>"
-			         +word1.tl(attr_a_tns)
-			         +"<4>"
-			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
-			         +"<5>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
+		out.append('^');
+		out.append("have");
+		out.append("<vbhaver>");
+		out.append(word1.tl(attr_a_tns));
+		out.append("<4>");
+		out.append("<5>");
+		out.append('$');
 		/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 		out.append(" ");
-		{
-			String myword = 
-			         word2.tl(attr_lemh)
-			         +word2.tl(attr_a_vrb)
-			         +"<pp>"
-			         +word2.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word2.tl(attr_lemh));
+		out.append(word2.tl(attr_a_vrb));
+		out.append("<pp>");
+		out.append(word2.tl(attr_lemq));
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -2275,24 +2019,16 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append("<PD>");
 		out.append("<ND>");
 		out.append('{');
-		{
-			String myword = 
-			         word1.tl(attr_lemh)
-			         +word1.tl(attr_a_vrb)
-			         +word1.tl(attr_a_tns)
-			         +"<4>"
-			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
-			         +"<5>"
-			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-			         +word1.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
+		/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
+		out.append('^');
+		out.append(word1.tl(attr_lemh));
+		out.append(word1.tl(attr_a_vrb));
+		out.append(word1.tl(attr_a_tns));
+		out.append("<4>");
+		out.append("<5>");
+		out.append(word1.tl(attr_lemq));
+		out.append('$');
 		out.append(blank1);
 		{
 			String myword = 
@@ -2326,24 +2062,16 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append("<PD>");
 		out.append("<ND>");
 		out.append('{');
-		{
-			String myword = 
-			         word1.tl(attr_lemh)
-			         +word1.tl(attr_a_vrb)
-			         +word1.tl(attr_a_tns)
-			         +"<4>"
-			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
-			         +"<5>"
-			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-			         +word1.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
+		/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
+		out.append('^');
+		out.append(word1.tl(attr_lemh));
+		out.append(word1.tl(attr_a_vrb));
+		out.append(word1.tl(attr_a_tns));
+		out.append("<4>");
+		out.append("<5>");
+		out.append(word1.tl(attr_lemq));
+		out.append('$');
 		out.append(blank1);
 		{
 			String myword = 
@@ -2365,18 +2093,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(TransferWord.copycase(var_caseFirstWord, "pr"));
 		out.append("<PREP>");
 		out.append('{');
-		{
-			String myword = 
-			         "by"
-			         +"<pr>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("by");
+		out.append("<pr>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -2395,24 +2115,16 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append("<PD>");
 		out.append("<ND>");
 		out.append('{');
-		{
-			String myword = 
-			         word1.tl(attr_lemh)
-			         +word1.tl(attr_a_vrb)
-			         +word1.tl(attr_a_tns)
-			         +"<4>"
-			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
-			         +"<5>"
-			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-			         +word1.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
+		/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
+		out.append('^');
+		out.append(word1.tl(attr_lemh));
+		out.append(word1.tl(attr_a_vrb));
+		out.append(word1.tl(attr_a_tns));
+		out.append("<4>");
+		out.append("<5>");
+		out.append(word1.tl(attr_lemq));
+		out.append('$');
 		out.append(blank1);
 		{
 			String myword = 
@@ -2434,18 +2146,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append(TransferWord.copycase(var_caseFirstWord, "pr"));
 		out.append("<PREP>");
 		out.append('{');
-		{
-			String myword = 
-			         "by"
-			         +"<pr>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("by");
+		out.append("<pr>");
+		out.append('$');
 		out.append("}$");
 		out.append(blank3);
 		if (list_prn_kun_persono_kaj_genro.containsIgnoreCase(word4.sl(attr_lem)))
@@ -2525,22 +2229,14 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append("<ND>");
 		out.append('{');
 		/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-		{
-			String myword = 
-			         word1.tl(attr_lem)
-			         +word1.tl(attr_a_vrb)
-			         +word1.tl(attr_a_tns)
-			         +"<4>"
-			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
-			         +"<5>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
+		out.append('^');
+		out.append(word1.tl(attr_lem));
+		out.append(word1.tl(attr_a_vrb));
+		out.append(word1.tl(attr_a_tns));
+		out.append("<4>");
+		out.append("<5>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -2562,36 +2258,20 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append("<ND>");
 		out.append('{');
 		/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-		{
-			String myword = 
-			         word2.tl(attr_lem)
-			         +word2.tl(attr_a_vrb)
-			         +word2.tl(attr_a_tns)
-			         +"<4>"
-			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
-			         +"<5>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
+		out.append('^');
+		out.append(word2.tl(attr_lem));
+		out.append(word2.tl(attr_a_vrb));
+		out.append(word2.tl(attr_a_tns));
+		out.append("<4>");
+		out.append("<5>");
+		out.append('$');
 		/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 		out.append(blank1);
-		{
-			String myword = 
-			         "not"
-			         +"<adv>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("not");
+		out.append("<adv>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -2614,24 +2294,16 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 		out.append("<ND>");
 		out.append('{');
 		/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-		{
-			String myword = 
-			         word1.tl(attr_lemh)
-			         +word1.tl(attr_a_vrb)
-			         +word1.tl(attr_a_tns)
-			         +"<4>"
-			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
-			         +"<5>"
-			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-			         +word1.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
+		/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
+		out.append('^');
+		out.append(word1.tl(attr_lemh));
+		out.append(word1.tl(attr_a_vrb));
+		out.append(word1.tl(attr_a_tns));
+		out.append("<4>");
+		out.append("<5>");
+		out.append(word1.tl(attr_lemq));
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -2656,18 +2328,10 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			out.append("<ND>");
 			out.append('{');
 			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-			{
-				String myword = 
-				         "without"
-				         +"<pr>"
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append("without");
+			out.append("<pr>");
+			out.append('$');
 			out.append(blank1);
 			{
 				String myword = 
@@ -2703,37 +2367,21 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append("<ND>");
 			out.append('{');
 			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-			{
-				String myword = 
-				         word2.tl(attr_lemh)
-				         +word2.tl(attr_a_vrb)
-				         +word2.tl(attr_a_tns)
-				         +"<4>"
-				/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
-				         +"<5>"
-				/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-				         +word2.tl(attr_lemq)
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
+			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
+			out.append('^');
+			out.append(word2.tl(attr_lemh));
+			out.append(word2.tl(attr_a_vrb));
+			out.append(word2.tl(attr_a_tns));
+			out.append("<4>");
+			out.append("<5>");
+			out.append(word2.tl(attr_lemq));
+			out.append('$');
 			out.append(blank1);
-			{
-				String myword = 
-				         "not"
-				         +"<adv>"
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append("not");
+			out.append("<adv>");
+			out.append('$');
 			out.append("}$");
 		}
 		else
@@ -2749,51 +2397,27 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append("<ND>");
 			out.append('{');
 			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-			{
-				String myword = 
-				         "do"
-				         +word2.tl(attr_a_vrb)
-				         +word2.tl(attr_a_tns)
-				         +"<4>"
-				/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
-				         +"<5>"
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
+			out.append('^');
+			out.append("do");
+			out.append(word2.tl(attr_a_vrb));
+			out.append(word2.tl(attr_a_tns));
+			out.append("<4>");
+			out.append("<5>");
+			out.append('$');
 			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 			out.append(" ");
-			{
-				String myword = 
-				         "not"
-				         +"<adv>"
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append("not");
+			out.append("<adv>");
+			out.append('$');
 			out.append(blank1);
-			{
-				String myword = 
-				         word2.tl(attr_lemh)
-				         +word2.tl(attr_a_vrb)
-				         +"<inf>"
-				         +word2.tl(attr_lemq)
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append(word2.tl(attr_lemh));
+			out.append(word2.tl(attr_a_vrb));
+			out.append("<inf>");
+			out.append(word2.tl(attr_lemq));
+			out.append('$');
 			out.append("}$");
 		}
 	}
@@ -2819,24 +2443,16 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append("<ND>");
 			out.append('{');
 			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-			{
-				String myword = 
-				         word1.tl(attr_lemh)
-				         +word1.tl(attr_a_vrb)
-				         +word1.tl(attr_a_tns)
-				         +"<4>"
-				/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
-				         +"<5>"
-				/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-				         +word1.tl(attr_lemq)
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
+			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
+			out.append('^');
+			out.append(word1.tl(attr_lemh));
+			out.append(word1.tl(attr_a_vrb));
+			out.append(word1.tl(attr_a_tns));
+			out.append("<4>");
+			out.append("<5>");
+			out.append(word1.tl(attr_lemq));
+			out.append('$');
 			out.append(blank1);
 			{
 				String myword = 
@@ -2867,37 +2483,21 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append("<ND>");
 			out.append('{');
 			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-			{
-				String myword = 
-				         word1.tl(attr_lemh)
-				         +word1.tl(attr_a_vrb)
-				         +word1.tl(attr_a_tns)
-				         +"<4>"
-				/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
-				         +"<5>"
-				/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-				         +word1.tl(attr_lemq)
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
+			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
+			out.append('^');
+			out.append(word1.tl(attr_lemh));
+			out.append(word1.tl(attr_a_vrb));
+			out.append(word1.tl(attr_a_tns));
+			out.append("<4>");
+			out.append("<5>");
+			out.append(word1.tl(attr_lemq));
+			out.append('$');
 			out.append(blank1);
-			{
-				String myword = 
-				         "to"
-				         +"<pr>"
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append("to");
+			out.append("<pr>");
+			out.append('$');
 			out.append(" ");
 			{
 				String myword = 
@@ -2938,18 +2538,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append("<ND>");
 			out.append('{');
 			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-			{
-				String myword = 
-				         "without"
-				         +"<pr>"
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append("without");
+			out.append("<pr>");
+			out.append('$');
 			out.append(blank1);
 			{
 				String myword = 
@@ -3000,37 +2592,21 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append("<ND>");
 			out.append('{');
 			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-			{
-				String myword = 
-				         word2.tl(attr_lemh)
-				         +word2.tl(attr_a_vrb)
-				         +word2.tl(attr_a_tns)
-				         +"<4>"
-				/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
-				         +"<5>"
-				/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-				         +word2.tl(attr_lemq)
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
+			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
+			out.append('^');
+			out.append(word2.tl(attr_lemh));
+			out.append(word2.tl(attr_a_vrb));
+			out.append(word2.tl(attr_a_tns));
+			out.append("<4>");
+			out.append("<5>");
+			out.append(word2.tl(attr_lemq));
+			out.append('$');
 			out.append(blank1);
-			{
-				String myword = 
-				         "not"
-				         +"<adv>"
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append("not");
+			out.append("<adv>");
+			out.append('$');
 			out.append(blank2);
 			{
 				String myword = 
@@ -3061,64 +2637,32 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append("<ND>");
 			out.append('{');
 			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-			{
-				String myword = 
-				         "do"
-				         +word2.tl(attr_a_vrb)
-				         +word2.tl(attr_a_tns)
-				         +"<4>"
-				/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
-				         +"<5>"
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
+			out.append('^');
+			out.append("do");
+			out.append(word2.tl(attr_a_vrb));
+			out.append(word2.tl(attr_a_tns));
+			out.append("<4>");
+			out.append("<5>");
+			out.append('$');
 			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 			out.append(" ");
-			{
-				String myword = 
-				         "not"
-				         +"<adv>"
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append("not");
+			out.append("<adv>");
+			out.append('$');
 			out.append(blank1);
-			{
-				String myword = 
-				         word2.tl(attr_lemh)
-				         +word2.tl(attr_a_vrb)
-				         +"<inf>"
-				         +word2.tl(attr_lemq)
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append(word2.tl(attr_lemh));
+			out.append(word2.tl(attr_a_vrb));
+			out.append("<inf>");
+			out.append(word2.tl(attr_lemq));
+			out.append('$');
 			out.append(blank2);
-			{
-				String myword = 
-				         "to"
-				         +"<pr>"
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append("to");
+			out.append("<pr>");
+			out.append('$');
 			out.append(" ");
 			{
 				String myword = 
@@ -3159,24 +2703,16 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append("<ND>");
 			out.append('{');
 			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-			{
-				String myword = 
-				         word1.tl(attr_lemh)
-				         +word1.tl(attr_a_vrb)
-				         +word1.tl(attr_a_tns)
-				         +"<4>"
-				/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
-				         +"<5>"
-				/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-				         +word1.tl(attr_lemq)
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
+			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
+			out.append('^');
+			out.append(word1.tl(attr_lemh));
+			out.append(word1.tl(attr_a_vrb));
+			out.append(word1.tl(attr_a_tns));
+			out.append("<4>");
+			out.append("<5>");
+			out.append(word1.tl(attr_lemq));
+			out.append('$');
 			out.append(blank1);
 			{
 				String myword = 
@@ -3219,37 +2755,21 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append("<ND>");
 			out.append('{');
 			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-			{
-				String myword = 
-				         word1.tl(attr_lemh)
-				         +word1.tl(attr_a_vrb)
-				         +word1.tl(attr_a_tns)
-				         +"<4>"
-				/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
-				         +"<5>"
-				/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-				         +word1.tl(attr_lemq)
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
+			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
+			out.append('^');
+			out.append(word1.tl(attr_lemh));
+			out.append(word1.tl(attr_a_vrb));
+			out.append(word1.tl(attr_a_tns));
+			out.append("<4>");
+			out.append("<5>");
+			out.append(word1.tl(attr_lemq));
+			out.append('$');
 			out.append(blank1);
-			{
-				String myword = 
-				         "to"
-				         +"<pr>"
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append("to");
+			out.append("<pr>");
+			out.append('$');
 			out.append(" ");
 			{
 				String myword = 
@@ -3302,18 +2822,10 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append("<ND>");
 			out.append('{');
 			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-			{
-				String myword = 
-				         "without"
-				         +"<pr>"
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append("without");
+			out.append("<pr>");
+			out.append('$');
 			out.append(blank1);
 			{
 				String myword = 
@@ -3376,37 +2888,21 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append("<ND>");
 			out.append('{');
 			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-			{
-				String myword = 
-				         word2.tl(attr_lemh)
-				         +word2.tl(attr_a_vrb)
-				         +word2.tl(attr_a_tns)
-				         +"<4>"
-				/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
-				         +"<5>"
-				/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-				         +word2.tl(attr_lemq)
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
+			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
+			out.append('^');
+			out.append(word2.tl(attr_lemh));
+			out.append(word2.tl(attr_a_vrb));
+			out.append(word2.tl(attr_a_tns));
+			out.append("<4>");
+			out.append("<5>");
+			out.append(word2.tl(attr_lemq));
+			out.append('$');
 			out.append(blank1);
-			{
-				String myword = 
-				         "not"
-				         +"<adv>"
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append("not");
+			out.append("<adv>");
+			out.append('$');
 			out.append(blank2);
 			{
 				String myword = 
@@ -3449,64 +2945,32 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 			out.append("<ND>");
 			out.append('{');
 			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-			{
-				String myword = 
-				         "do"
-				         +word2.tl(attr_a_vrb)
-				         +word2.tl(attr_a_tns)
-				         +"<4>"
-				/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
-				         +"<5>"
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
+			out.append('^');
+			out.append("do");
+			out.append(word2.tl(attr_a_vrb));
+			out.append(word2.tl(attr_a_tns));
+			out.append("<4>");
+			out.append("<5>");
+			out.append('$');
 			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
 			out.append(" ");
-			{
-				String myword = 
-				         "not"
-				         +"<adv>"
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append("not");
+			out.append("<adv>");
+			out.append('$');
 			out.append(blank1);
-			{
-				String myword = 
-				         word2.tl(attr_lemh)
-				         +word2.tl(attr_a_vrb)
-				         +"<inf>"
-				         +word2.tl(attr_lemq)
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append(word2.tl(attr_lemh));
+			out.append(word2.tl(attr_a_vrb));
+			out.append("<inf>");
+			out.append(word2.tl(attr_lemq));
+			out.append('$');
 			out.append(blank2);
-			{
-				String myword = 
-				         "to"
-				         +"<pr>"
-				         ;
-				if (myword.length()>0)
-				{
-					out.append('^');
-					out.append(myword);
-					out.append('$');
-				}
-			}
+			out.append('^');
+			out.append("to");
+			out.append("<pr>");
+			out.append('$');
 			out.append(" ");
 			{
 				String myword = 
@@ -3552,47 +3016,23 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(var_vrb2);
 		out.append(word1.tl(attr_a_tns));
 		out.append('{');
-		{
-			String myword = 
-			         "will"
-			         +"<vaux>"
-			         +"<inf>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("will");
+		out.append("<vaux>");
+		out.append("<inf>");
+		out.append('$');
 		out.append(" ");
-		{
-			String myword = 
-			         word1.tl(attr_lemh)
-			         +word1.tl(attr_a_vrb)
-			         +"<inf>"
-			         +word1.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word1.tl(attr_lemh));
+		out.append(word1.tl(attr_a_vrb));
+		out.append("<inf>");
+		out.append(word1.tl(attr_lemq));
+		out.append('$');
 		out.append(blank1);
-		{
-			String myword = 
-			         "to"
-			         +"<pr>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("to");
+		out.append("<pr>");
+		out.append('$');
 		out.append(" ");
 		{
 			String myword = 
@@ -3625,47 +3065,23 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(var_vrb2);
 		out.append(word1.tl(attr_a_tns));
 		out.append('{');
-		{
-			String myword = 
-			         "would"
-			         +"<vaux>"
-			         +"<inf>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("would");
+		out.append("<vaux>");
+		out.append("<inf>");
+		out.append('$');
 		out.append(" ");
-		{
-			String myword = 
-			         word1.tl(attr_lemh)
-			         +word1.tl(attr_a_vrb)
-			         +"<inf>"
-			         +word1.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word1.tl(attr_lemh));
+		out.append(word1.tl(attr_a_vrb));
+		out.append("<inf>");
+		out.append(word1.tl(attr_lemq));
+		out.append('$');
 		out.append(blank1);
-		{
-			String myword = 
-			         "to"
-			         +"<pr>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("to");
+		out.append("<pr>");
+		out.append('$');
 		out.append(" ");
 		{
 			String myword = 
@@ -3698,60 +3114,28 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(var_vrb2);
 		out.append(word2.tl(attr_a_tns));
 		out.append('{');
-		{
-			String myword = 
-			         "will"
-			         +"<vaux>"
-			         +"<inf>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("will");
+		out.append("<vaux>");
+		out.append("<inf>");
+		out.append('$');
 		out.append(" ");
-		{
-			String myword = 
-			         "not"
-			         +"<adv>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("not");
+		out.append("<adv>");
+		out.append('$');
 		out.append(blank1);
-		{
-			String myword = 
-			         word2.tl(attr_lemh)
-			         +word2.tl(attr_a_vrb)
-			         +"<inf>"
-			         +word2.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word2.tl(attr_lemh));
+		out.append(word2.tl(attr_a_vrb));
+		out.append("<inf>");
+		out.append(word2.tl(attr_lemq));
+		out.append('$');
 		out.append(blank2);
-		{
-			String myword = 
-			         "to"
-			         +"<pr>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("to");
+		out.append("<pr>");
+		out.append('$');
 		out.append(" ");
 		{
 			String myword = 
@@ -3784,60 +3168,28 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(var_vrb2);
 		out.append(word2.tl(attr_a_tns));
 		out.append('{');
-		{
-			String myword = 
-			         "would"
-			         +"<vaux>"
-			         +"<inf>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("would");
+		out.append("<vaux>");
+		out.append("<inf>");
+		out.append('$');
 		out.append(" ");
-		{
-			String myword = 
-			         "not"
-			         +"<adv>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("not");
+		out.append("<adv>");
+		out.append('$');
 		out.append(blank1);
-		{
-			String myword = 
-			         word2.tl(attr_lemh)
-			         +word2.tl(attr_a_vrb)
-			         +"<inf>"
-			         +word2.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word2.tl(attr_lemh));
+		out.append(word2.tl(attr_a_vrb));
+		out.append("<inf>");
+		out.append(word2.tl(attr_lemq));
+		out.append('$');
 		out.append(blank2);
-		{
-			String myword = 
-			         "to"
-			         +"<pr>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("to");
+		out.append("<pr>");
+		out.append('$');
 		out.append(" ");
 		{
 			String myword = 
@@ -3870,47 +3222,23 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(var_vrb2);
 		out.append(word1.tl(attr_a_tns));
 		out.append('{');
-		{
-			String myword = 
-			         "will"
-			         +"<vaux>"
-			         +"<inf>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("will");
+		out.append("<vaux>");
+		out.append("<inf>");
+		out.append('$');
 		out.append(" ");
-		{
-			String myword = 
-			         word1.tl(attr_lemh)
-			         +word1.tl(attr_a_vrb)
-			         +"<inf>"
-			         +word1.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word1.tl(attr_lemh));
+		out.append(word1.tl(attr_a_vrb));
+		out.append("<inf>");
+		out.append(word1.tl(attr_lemq));
+		out.append('$');
 		out.append(blank1);
-		{
-			String myword = 
-			         "to"
-			         +"<pr>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("to");
+		out.append("<pr>");
+		out.append('$');
 		out.append(" ");
 		{
 			String myword = 
@@ -3955,47 +3283,23 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(var_vrb2);
 		out.append(word1.tl(attr_a_tns));
 		out.append('{');
-		{
-			String myword = 
-			         "would"
-			         +"<vaux>"
-			         +"<inf>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("would");
+		out.append("<vaux>");
+		out.append("<inf>");
+		out.append('$');
 		out.append(" ");
-		{
-			String myword = 
-			         word1.tl(attr_lemh)
-			         +word1.tl(attr_a_vrb)
-			         +"<inf>"
-			         +word1.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word1.tl(attr_lemh));
+		out.append(word1.tl(attr_a_vrb));
+		out.append("<inf>");
+		out.append(word1.tl(attr_lemq));
+		out.append('$');
 		out.append(blank1);
-		{
-			String myword = 
-			         "to"
-			         +"<pr>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("to");
+		out.append("<pr>");
+		out.append('$');
 		out.append(" ");
 		{
 			String myword = 
@@ -4040,60 +3344,28 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(var_vrb2);
 		out.append(word2.tl(attr_a_tns));
 		out.append('{');
-		{
-			String myword = 
-			         "will"
-			         +"<vaux>"
-			         +"<inf>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("will");
+		out.append("<vaux>");
+		out.append("<inf>");
+		out.append('$');
 		out.append(" ");
-		{
-			String myword = 
-			         "not"
-			         +"<adv>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("not");
+		out.append("<adv>");
+		out.append('$');
 		out.append(blank1);
-		{
-			String myword = 
-			         word2.tl(attr_lemh)
-			         +word2.tl(attr_a_vrb)
-			         +"<inf>"
-			         +word2.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word2.tl(attr_lemh));
+		out.append(word2.tl(attr_a_vrb));
+		out.append("<inf>");
+		out.append(word2.tl(attr_lemq));
+		out.append('$');
 		out.append(blank2);
-		{
-			String myword = 
-			         "to"
-			         +"<pr>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("to");
+		out.append("<pr>");
+		out.append('$');
 		out.append(" ");
 		{
 			String myword = 
@@ -4138,60 +3410,28 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append(var_vrb2);
 		out.append(word2.tl(attr_a_tns));
 		out.append('{');
-		{
-			String myword = 
-			         "would"
-			         +"<vaux>"
-			         +"<inf>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("would");
+		out.append("<vaux>");
+		out.append("<inf>");
+		out.append('$');
 		out.append(" ");
-		{
-			String myword = 
-			         "not"
-			         +"<adv>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("not");
+		out.append("<adv>");
+		out.append('$');
 		out.append(blank1);
-		{
-			String myword = 
-			         word2.tl(attr_lemh)
-			         +word2.tl(attr_a_vrb)
-			         +"<inf>"
-			         +word2.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append(word2.tl(attr_lemh));
+		out.append(word2.tl(attr_a_vrb));
+		out.append("<inf>");
+		out.append(word2.tl(attr_lemq));
+		out.append('$');
 		out.append(blank2);
-		{
-			String myword = 
-			         "to"
-			         +"<pr>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("to");
+		out.append("<pr>");
+		out.append('$');
 		out.append(" ");
 		{
 			String myword = 
@@ -4240,42 +3480,26 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append("<ND>");
 		out.append('{');
 		/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-		{
-			String myword = 
-			         word1.tl(attr_lemh)
-			         +word1.tl(attr_a_vrb)
-			         +word1.tl(attr_a_tns)
-			         +"<4>"
-			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
-			         +"<5>"
-			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-			         +word1.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
+		/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
+		out.append('^');
+		out.append(word1.tl(attr_lemh));
+		out.append(word1.tl(attr_a_vrb));
+		out.append(word1.tl(attr_a_tns));
+		out.append("<4>");
+		out.append("<5>");
+		out.append(word1.tl(attr_lemq));
+		out.append('$');
 		out.append("}$");
 		out.append(blank1);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "pr"));
 		out.append("<PREP>");
 		out.append('{');
-		{
-			String myword = 
-			         "by"
-			         +"<pr>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("by");
+		out.append("<pr>");
+		out.append('$');
 		out.append("}$");
 	}
 	
@@ -4296,42 +3520,26 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append("<ND>");
 		out.append('{');
 		/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-		{
-			String myword = 
-			         word1.tl(attr_lemh)
-			         +word1.tl(attr_a_vrb)
-			         +word1.tl(attr_a_tns)
-			         +"<4>"
-			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
-			         +"<5>"
-			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-			         +word1.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
+		/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
+		out.append('^');
+		out.append(word1.tl(attr_lemh));
+		out.append(word1.tl(attr_a_vrb));
+		out.append(word1.tl(attr_a_tns));
+		out.append("<4>");
+		out.append("<5>");
+		out.append(word1.tl(attr_lemq));
+		out.append('$');
 		out.append("}$");
 		out.append(blank2);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "pr"));
 		out.append("<PREP>");
 		out.append('{');
-		{
-			String myword = 
-			         "by"
-			         +"<pr>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("by");
+		out.append("<pr>");
+		out.append('$');
 		out.append("}$");
 		out.append(blank1);
 		if (list_prn_kun_persono_kaj_genro.containsIgnoreCase(word3.sl(attr_lem)))
@@ -4411,42 +3619,26 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 		out.append("<ND>");
 		out.append('{');
 		/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-		{
-			String myword = 
-			         word3.tl(attr_lemh)
-			         +word3.tl(attr_a_vrb)
-			         +word3.tl(attr_a_tns)
-			         +"<4>"
-			/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
-			         +"<5>"
-			/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
-			         +word3.tl(attr_lemq)
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		/**  ni aldonas la spacon por eventuala aldono de pers en t2x  */
+		/**  ni aldonas la spacon por eventuala aldono de nbr en t2x  */
+		out.append('^');
+		out.append(word3.tl(attr_lemh));
+		out.append(word3.tl(attr_a_vrb));
+		out.append(word3.tl(attr_a_tns));
+		out.append("<4>");
+		out.append("<5>");
+		out.append(word3.tl(attr_lemq));
+		out.append('$');
 		out.append("}$");
 		out.append(blank2);
 		out.append('^');
 		out.append(TransferWord.copycase(var_caseFirstWord, "pr"));
 		out.append("<PREP>");
 		out.append('{');
-		{
-			String myword = 
-			         "by"
-			         +"<pr>"
-			         ;
-			if (myword.length()>0)
-			{
-				out.append('^');
-				out.append(myword);
-				out.append('$');
-			}
-		}
+		out.append('^');
+		out.append("by");
+		out.append("<pr>");
+		out.append('$');
 		out.append("}$");
 		out.append(blank1);
 		if (list_prn_kun_persono_kaj_genro.containsIgnoreCase(word2.sl(attr_lem)))

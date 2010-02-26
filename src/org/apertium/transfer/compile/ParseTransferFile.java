@@ -61,6 +61,68 @@ public class ParseTransferFile {
 
   private void processLu(Element e) {
     // the lexical unit should only be outputted if it contains something
+    boolean surelyNotEmpty=false;
+
+    ArrayList<String> luelems = new ArrayList<String>();
+
+    for (Element lu : listChildren(e)) {
+      String s = evalString(lu);
+      luelems.add(s);
+      if (s.length()>2 && s.startsWith("\"")) {
+        surelyNotEmpty = true;
+      }
+    }
+
+    if (luelems.size()==0) {
+      System.err.println("!!!!!!!!!! XXXXXXXXXXXXX luelems.size() = " + luelems.size());
+      return; 
+    }
+
+    if (surelyNotEmpty) {
+      luelems.add(0,"'^'"); // insert first
+      luelems.add("'$'"); // append
+      optimizeLuElems(luelems);
+      for (String s : luelems) {
+        append(s);
+      }
+    } else {
+      // Perhaps empty expression. Do a temp string and evaluate runtime
+      println("{");
+      optimizeLuElems(luelems);
+      println("String myword = ");
+      for (int i=0; i<luelems.size(); i++) {
+        String s = luelems.get(i);
+        println((i==0?"         ":"         +")+s);
+      }
+      println(luelems.size()==0?"         \"\";":"         ;");
+      println("if (myword.length()>0)");
+      println("{");
+      append("'^'");
+      append("myword");
+      append("'$'");
+      println("}");
+      println("}");
+    }
+
+  }
+
+  private void optimizeLuElems(ArrayList<String> luelems) {
+    /*
+    for (int i=1; i<luelems.size(); i++) {
+      String prev = luelems.get(i-1).replaceAll("'", "\"");
+      String pres = luelems.get(i).replaceAll("'", "\"");
+      if (prev.endsWith("\"") && pres.startsWith("\"")) {
+        prev = prev + "+" + pres;
+        luelems.remove(i);
+        i--;
+      }
+    }
+     */
+  }
+
+  /*
+  private void processLu(Element e) {
+    // the lexical unit should only be outputted if it contains something
     println("{");
     println("String myword = ");
     boolean first=true;
@@ -77,6 +139,7 @@ public class ParseTransferFile {
     println("}");
     println("}");
   }
+   */
 
 
   //public static final int OutputType_LU = 0;
