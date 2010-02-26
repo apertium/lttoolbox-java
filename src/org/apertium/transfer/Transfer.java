@@ -30,6 +30,7 @@ import org.apertium.lttoolbox.Pair;
 import org.apertium.lttoolbox.compile.Transducer;
 import org.apertium.lttoolbox.process.FSTProcessor;
 import org.apertium.transfer.TransferToken;
+import org.apertium.transfer.development.Timing;
 import org.apertium.transfer.generated.GeneratedTransferBase;
 import org.apertium.transfer.generated.apertium_nn_nb_nb_nn_t1x;
 
@@ -51,13 +52,7 @@ public class Transfer {
   LinkedHashMap<String, String> variables = new LinkedHashMap<String, String>(); // map<string, string, Ltstr> variables;  
   LinkedHashMap<String, Integer> macros= new LinkedHashMap<String, Integer>(); // map<string, int, Ltstr> macros;
   
-  /*  
-  map<string, set<string, Ltstr>, Ltstr> lists;
-  map<string, set<string, Ltstr>, Ltstr> listslow;
-  vector<xmlNode *> macro_map;
-  xmlDoc *doc;
-  xmlNode *root_element;
-   */
+
   Method[] rule_map=null;// vector<xmlNode *> rule_map;
   int lword, lblank;
   BufferT<TransferToken> input_buffer=new BufferT<TransferToken>();
@@ -93,7 +88,7 @@ public class Transfer {
     any_tag=alphabet.cast(TRXReader__ANY_TAG);
 
     Transducer t=Transducer.read(in, alphabet.size());
-    //System.err.println("  t = " + t.toString());
+    //System.err.println("  timing = " + timing.toString());
 
     HashMap<Integer, Integer> finals=new HashMap<Integer, Integer>();
     // finals
@@ -281,6 +276,10 @@ public class Transfer {
     null_flush= true;
   }
 
+
+  public Timing timing;
+  public static final boolean DO_TIMING = true;
+
   public void transfer(Reader in, Writer output) throws Exception {
     if (getNullFlush()) {
       transfer_wrapper_null_flush(in, output);
@@ -288,6 +287,7 @@ public class Transfer {
 
     int last=0;
     ms.init(me.getInitial());
+    if (DO_TIMING) timing=new Timing("Transfer");
     while (true) {
       if (ms.size()==0) {
         if (lastrule!=null) {
@@ -305,7 +305,9 @@ public class Transfer {
                   tr.first="%"+tr.first;
                 }
               } else {
+                if (DO_TIMING) timing.log("transfer");
                 tr=fstp.biltransWithQueue(tmpword.get(0), false);
+                if (DO_TIMING) timing.log("transfer/fstp.biltransWithQueue ");
               }
             } else {
               tr=new Pair<String, Integer>(tmpword.get(0), 0);
@@ -348,7 +350,9 @@ public class Transfer {
           }
         }
       }
+      if (DO_TIMING) timing.log("transfer");
       int val=ms.classifyFinals(me.getFinals());
+      if (DO_TIMING) timing.log("transfer/ms.classifyFinals");
       if (val!=-1) {
 
         lastrule=rule_map[(val-1)];
@@ -358,13 +362,15 @@ public class Transfer {
         if (DEBUG) System.err.println("lastrule = "+(val-1)+ " "+lastrule.getName());
         if (DEBUG) System.err.println("tmpword = " + tmpword.size()+ "  tmpblank = " + tmpblank.size());
         if (DEBUG) System.err.println("tmpword = " + tmpword+ "  tmpblank = " + tmpblank);
-    tmpword2.clear();
-    tmpblank2.clear();
+        tmpword2.clear();
+        tmpblank2.clear();
         tmpword2.addAll(tmpword);
         tmpblank2.addAll(tmpblank);
       }
 
+      if (DO_TIMING) timing.log("transfer");
       TransferToken current=readToken(in);
+      if (DO_TIMING) timing.log("readToken");
 
       switch (current.type) {
         case tt_word:
@@ -383,6 +389,10 @@ public class Transfer {
             ms.clear();
           } else {
             fputws_unlocked(current.content, output);
+            if (DO_TIMING) {
+              timing.log("transfer");
+              timing.report();
+            }
             return;
           }
           break;
@@ -397,6 +407,7 @@ public class Transfer {
 
   private void applyRule(Writer output) throws Exception {
     if (DEBUG) System.err.println("tmpword = " + tmpword2+ "  tmpblank = " + tmpblank2);
+    if (DO_TIMING) timing.log("other1");
 
     int limit=tmpword2.size();
 
@@ -433,7 +444,9 @@ public class Transfer {
       Pair<String, Integer> tr;
       if (useBilingual)
       {
+        if (DO_TIMING) timing.log("applyRule 1");
         tr=fstp.biltransWithQueue(tmpword2.get(i), false);
+        if (DO_TIMING) timing.log("applyRule/fstp.biltransWithQueue ");
       } 
       else
       {
@@ -447,15 +460,17 @@ public class Transfer {
 
     if (DEBUG) System.err.println("#args = " + args.length);
     if (DEBUG) System.err.println("processRule:"+lastrule.getName()+"("+Arrays.toString(args));
-  try {
-    lastrule.invoke(transferObject, args);
-  } catch (Exception e) {
-    System.err.println("Error during invokation of "+lastrule);
-    System.err.println("word = " + Arrays.toString(word));
-    System.err.println("#args = " + args.length);
-    System.err.println("processRule:"+lastrule.getName()+"("+Arrays.toString(args));
-    throw e;
-  }
+    try {
+      if (DO_TIMING) timing.log("applyRule 1");
+      lastrule.invoke(transferObject, args);
+      if (DO_TIMING) timing.log("rule invoke");
+    } catch (Exception e) {
+      System.err.println("Error during invokation of "+lastrule);
+      System.err.println("word = " + Arrays.toString(word));
+      System.err.println("#args = " + args.length);
+      System.err.println("processRule:"+lastrule.getName()+"("+Arrays.toString(args));
+      throw e;
+    }
     if (DEBUG) output.flush();
     
     //processRule(lastrule);
@@ -467,10 +482,13 @@ public class Transfer {
     tmpblank.clear();
     tmpword2.clear();
     tmpblank2.clear();
+    if (DO_TIMING) timing.log("applyRule 1");
     ms.init(me.getInitial());
+    if (DO_TIMING) timing.log("applyRule 2");
   }
 
   void applyWord(String word_str) {
+    if (DO_TIMING) timing.log("other");
     ms.step('^');
     for (int i=0, limit=word_str.length(); i<limit; i++) {
       switch (word_str.charAt(i)) {
@@ -500,6 +518,7 @@ public class Transfer {
       }
     }
     ms.step('$');
+    if (DO_TIMING) timing.log("applyWord");
   }
 
   void setCaseSensitiveMode(boolean b) {

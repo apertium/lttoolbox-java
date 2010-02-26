@@ -1,11 +1,18 @@
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.io.Reader;
+import java.io.Writer;
 import org.apertium.lttoolbox.LTComp;
 import org.apertium.lttoolbox.process.FSTProcessor;
 import org.apertium.lttoolbox.process.SetOfCharacters;
+import org.apertium.transfer.ApertiumTransfer;
+import org.apertium.transfer.ApertiumTransferCompile;
+import org.apertium.transfer.Transfer;
 
 
 /**
@@ -31,6 +38,7 @@ public class Profiling {
       
         System.gc();
         p.testTransfer();
+        /*
         System.gc();
         p.testjavaAnalysis();
         System.gc();
@@ -90,8 +98,23 @@ public class Profiling {
     report("generation -p");
   }
 
-  private void testTransfer() {
+  private void testTransfer() throws Exception {
 
+      Transfer t = new Transfer();
+      String dir = "testdata/transfer/";
+
+      Class transferClass =org.apertium.transfer.generated.apertium_eo_en_en_eo_t1x.class;
+
+
+      t.read(transferClass, dir+"en-eo.t1x.bin", dir+"en-eo.autobil.bin");
+
+      Reader input = new FileReader(dir+"transferinput-en-eo.t1x-malgranda.txt");
+      String outFile = "/tmp/transfer-output-malgranda.txt";
+      Writer output = new FileWriter(outFile);
+      t.transfer( input, output);
+      output.close();
+
+      report("transfer");
   }
 
 

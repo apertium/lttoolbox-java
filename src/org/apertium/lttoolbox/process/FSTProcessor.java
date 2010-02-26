@@ -1625,79 +1625,87 @@ public class FSTProcessor {
     public Pair<String, Integer> biltransWithQueue(String input_word, boolean with_delim) {
         State current_state = initial_state.copy();
         StringBuilder result = new StringBuilder("");
-        int start_point = 1;
-        int end_point = input_word.length() - 2;
         StringBuilder queue = new StringBuilder("");
         boolean mark=false;
 
-        if (!with_delim) {
+        int start_point, end_point;
+
+
+        if (with_delim) {
+            start_point = 1;
+            end_point = input_word.length() - 2;
+        } else {
             start_point = 0;
             end_point = input_word.length() - 1;
         }
 
-        if (input_word.charAt(start_point) == '*') {
+        char ch = input_word.charAt(start_point);
+        if (ch == '*') {
             return new Pair<String, Integer>(input_word, 0);
         }
 
-        if (input_word.charAt(start_point) == '=') {
+        if (ch == '=') {
             start_point++;
             mark = true;
         }
 
-        boolean firstupper = Character.isUpperCase(input_word.charAt(start_point));
+        boolean firstupper = Character.isUpperCase(ch);
         boolean uppercase = firstupper && Character.isUpperCase(input_word.charAt(start_point + 1));
 
         for (int i = start_point; i <= end_point; i++) {
             int val = 0;
             String symbol = "";
-
-            if (input_word.charAt(i) == '\\') {
+            ch = input_word.charAt(i);
+            if (ch == '\\') {
                 i++;
                 val = input_word.charAt(i);
-            } else if (input_word.charAt(i) == '<') {
+            } else if (ch == '<') {
                 symbol = "<";
                 for (int j = i + 1; j <= end_point; j++) {
-                    symbol += input_word.charAt(j);
-                    if (input_word.charAt(j) == '>') {
+                    char ch_j = input_word.charAt(j);
+                    symbol += ch_j;
+                    if (ch_j == '>') {
                         i = j;
                         break;
                     }
                 }
                 val = alphabet.cast(symbol);
             } else {
-                val = input_word.charAt(i);
+                val = ch;
             }
 
             current_state.step_case(val, caseSensitive);
 
             if (current_state.isFinal(all_finals)) {
-                result = new StringBuilder(current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper));
+                String res0 = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
                 if (with_delim) {
                     if (mark) {
-                        result = new StringBuilder("^=" + result.substring(1));
+                        result = new StringBuilder("^=" + res0.substring(1));
                     } else {
+                        result = new StringBuilder(res0);
                         result.setCharAt(0, '^');
                     }
                 } else {
                     if (mark) {
-                        result = new StringBuilder("=" + result.substring(1));
+                        result = new StringBuilder(res0);
+                        //result = new StringBuilder("=" + result.substring(1));
+                        result.setCharAt(0, '=');
                     } else {
-                        result = new StringBuilder(result.substring(1));
+                        result = new StringBuilder(res0.substring(1));
                     }
                 }
             }
 
             if (current_state.size() == 0) {
-                if (!symbol.equals("") && !result.toString().equals("")) {
+                if (!symbol.isEmpty() && !(result.length()==0)) {
                     queue.append(symbol);
                 } else {
                     // word is not present
                     if (with_delim) {
-                        result = new StringBuilder("^@" + input_word.substring(1));
+                        return new Pair<String, Integer>("^@" + input_word.substring(1), 0);
                     } else {
-                        result = new StringBuilder("@" + input_word);
+                        return new Pair<String, Integer>("@" + input_word, 0);
                     }
-                    return new Pair<String, Integer>(result.toString(), 0);
                 }
             }
         }
@@ -1705,10 +1713,11 @@ public class FSTProcessor {
         // attach unmatched queue automatically
 
         if (queue.length() > 0) {
-            StringBuilder result_with_queue = new StringBuilder("");
+            StringBuilder result_with_queue = new StringBuilder();
             boolean multiple_translation = false;
             for (int i = 0,  limit = result.length(); i != limit; i++) {
-                switch (result.charAt(i)) {
+                ch = result.charAt(i);
+                switch (ch) {
                     case '\\':
                         result_with_queue.append('\\');
                         i++;
@@ -1722,7 +1731,7 @@ public class FSTProcessor {
                     default:
                         break;
                 }
-                result_with_queue.append(result.charAt(i));
+                result_with_queue.append(ch);
             }
             result_with_queue.append(queue);
 

@@ -58,8 +58,8 @@ public class CompareAndDebugOneTestFile {
 
       FindAndCompareAllReleasedTransferFiles.exec("diff","/tmp/"+t1xFile+"-expected.txt", outFile );
 
-      //t.read(args[0], args[1], args[2]);
-      //t.transfer(new InputStreamReader( System.in ),  new OutputStreamWriter(System.out));
+      //timing.read(args[0], args[1], args[2]);
+      //timing.transfer(new InputStreamReader( System.in ),  new OutputStreamWriter(System.out));
 /*
       //Reader input = new FileReader(dir+"transferinput-en-eo.t1x-malgranda.txt");
       StringReader input = new StringReader("^good<adj><sint>$ ^deal<n><sg>$\n");
@@ -69,12 +69,12 @@ public class CompareAndDebugOneTestFile {
       Writer output = new StringWriter(); //new PrintWriter(System.err); //
       //Writer output = new OutputStreamWriter(System.out);
       //Writer output = new FileWriter("/tmp/transferoutput-en-eo.t1x.txt");
-      t.transfer( input, output);
+      timing.transfer( input, output);
       output.flush();
       System.err.println("transfer output = " + output);
 
 
-      String outputs = t.fstp.biltransWithQueue("good<adj><sint>" , false).first;
+      String outputs = timing.fstp.biltransWithQueue("good<adj><sint>" , false).first;
       System.err.println("output = " + outputs);
 */
 

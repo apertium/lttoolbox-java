@@ -112,19 +112,19 @@ public class TransferTest {
 /*
   @Test
   public void testTransferGranda() throws Exception {
-      Transfer t = new Transfer();
+      Transfer timing = new Transfer();
       String dir = "testdata/transfer/";
 
       Class transferClass =
        Class.forName("org.apertium.transfer.generated.apertium_eo_en_en_eo_t1x");
 
 
-      t.read(transferClass, dir+"en-eo.t1x.bin", dir+"en-eo.autobil.bin");
+      timing.read(transferClass, dir+"en-eo.t1x.bin", dir+"en-eo.autobil.bin");
 
       Reader input = new FileReader(dir+"transferinput-en-eo.t1x.txt");
       String outFile = "/tmp/transfer-output.txt";
       Writer output = new FileWriter(outFile);
-      t.transfer( input, output);
+      timing.transfer( input, output);
       output.close();
 
      assertEquals("Difference", "", exec("diff "+dir+"transferoutput-en-eo.t1x.txt "+outFile));
