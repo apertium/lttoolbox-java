@@ -44,6 +44,9 @@
       <cat-item tags="rel.*"/>
     </def-cat>
 
+    <def-cat n="sent">
+      <cat-item tags="sent"/>
+    </def-cat>
 
   <def-cat n="c_vblex">
      <cat-item tags="vblex.*"/>
@@ -423,6 +426,8 @@
   <def-var n="adv_adjectiu"/>
   <def-var n="superlatiu1"/>
   <def-var n="it"/>
+  <def-var n="caseFirstWord"/>
+  <def-var n="EOS" v="true"/>
 </section-def-vars>
 
 
@@ -921,6 +926,52 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
   </choose>
 </def-macro>
 
+    <def-macro n="firstWord" npar="1">
+      <choose>
+        <when>
+          <test>
+            <equal>
+              <clip pos="1" side="sl" part="a_np_acr"/>
+              <lit v=""/>
+            </equal>
+          </test>
+          <choose>
+            <when>
+              <test>
+                <equal> 
+                  <var n="EOS"/>
+                  <lit v="true"/>
+                </equal> 
+              </test>
+              <modify-case>
+                <clip pos="1" side="tl" part="lem"/>
+                <lit v="aa"/>
+              </modify-case>
+              <let>
+                <var n="caseFirstWord"/>
+                <lit v="Aa"/>
+              </let>
+            </when>
+            <otherwise> 
+              <let>
+                <var n="caseFirstWord"/>
+                <lit v="aa"/>
+              </let>
+            </otherwise>
+          </choose>
+        </when>
+        <otherwise>
+          <let>
+            <var n="caseFirstWord"/>
+            <lit v="aa"/>
+          </let>
+        </otherwise>
+      </choose>
+      <let>
+        <var n="EOS"/>
+        <lit v="false"/>
+      </let>
+    </def-macro>
 
   </section-def-macros>
 
@@ -957,6 +1008,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
         <pattern-item n="monato"/>
       </pattern>
       <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
         <out>
           <chunk name="dato" case="caseFirstWord">
            <tags>
@@ -988,6 +1042,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
   <pattern-item n="tempo"/>
       </pattern>
       <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
   <out>
     <chunk name="pr" case="caseFirstWord">
       <tags>
@@ -1024,6 +1081,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
   <pattern-item n="tempo"/>
       </pattern>
       <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
   <out>
     <chunk name="pr" case="caseFirstWord">
       <tags>
@@ -1069,6 +1129,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
   <pattern-item n="tempo2"/>
       </pattern>
       <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
   <out>
     <chunk name="pr" case="caseFirstWord">
       <tags>
@@ -1114,6 +1177,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
   <pattern-item n="tempo2"/>
       </pattern>
       <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
   <out>
     <chunk name="pr" case="caseFirstWord">
       <tags>
@@ -1161,6 +1227,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
   <pattern-item n="tempo2"/>
       </pattern>
       <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
   <out>
     <chunk name="tempo">
            <tags>
@@ -1196,6 +1265,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
   <pattern-item n="tempo2"/>
       </pattern>
       <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
   <out>
     <chunk name="tempo">
            <tags>
@@ -1234,6 +1306,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
        <pattern-item n="c_det"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <out>
          <chunk name="det" case="caseFirstWord">
            <tags>
@@ -1258,6 +1333,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
        <pattern-item n="c_prn"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <out>
          <chunk name="prn" case="caseFirstWord">
            <tags>
@@ -1282,6 +1360,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
        <pattern-item n="c_prn"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
       <choose>
         <when>
           <test>
@@ -1335,6 +1416,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
        <pattern-item n="c_prn"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
       <choose>
         <when>
           <test>
@@ -1413,6 +1497,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
        <pattern-item n="c_adv"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <out>
          <chunk name="adv" case="caseFirstWord">
            <tags>
@@ -1438,6 +1525,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
        <pattern-item n="c_adj"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <out>
          <chunk name="adj" case="caseFirstWord">
            <tags>
@@ -1464,6 +1554,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
        <pattern-item n="c_adj"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
       <call-macro n="adv_adj"><with-param pos="1"/><with-param pos="2"/></call-macro>
        <out>
          <chunk name="sint?_adj" case="caseFirstWord">
@@ -1485,6 +1578,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
        <pattern-item n="c_nom"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <out>
          <chunk name="nom" case="caseFirstWord">
            <tags>
@@ -1510,6 +1606,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
        <pattern-item n="c_nom"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <out>
          <chunk name="det_nom" case="caseFirstWord">
            <tags>
@@ -1542,6 +1641,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
        <pattern-item n="c_nom"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <out>
          <chunk name="det_nom" case="caseFirstWord">
            <tags>
@@ -1572,6 +1674,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
        <pattern-item n="c_nom"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <out>
          <chunk name="det_nom" case="caseFirstWord">
            <tags>
@@ -1610,6 +1715,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
        <pattern-item n="c_nom"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <out>
          <chunk name="det_nom" case="caseFirstWord">
            <tags>
@@ -1655,6 +1763,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
        <pattern-item n="c_nom"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <out>
          <chunk name="det_nom" case="caseFirstWord">
            <tags>
@@ -1706,6 +1817,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
      </pattern>
      <action>
       <call-macro n="adv_adj"><with-param pos="2"/><with-param pos="3"/></call-macro>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <out>
          <chunk name="det_nom" case="caseFirstWord">
            <tags>
@@ -1746,6 +1860,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
      </pattern>
      <action>
       <call-macro n="adv_adj"><with-param pos="3"/><with-param pos="4"/></call-macro>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <out>
          <chunk name="det_nom" case="caseFirstWord">
            <tags>
@@ -1786,6 +1903,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
        <pattern-item n="c_adj_pp"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <choose>
          <when>
          <test>
@@ -1841,6 +1961,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
        <pattern-item n="c_adj_pp"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
       <call-macro n="adv_adj"><with-param pos="2"/><with-param pos="3"/></call-macro>
        <out>
          <chunk name="det_adj" case="caseFirstWord">
@@ -1871,6 +1994,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
        <pattern-item n="c_nom"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <out>
          <chunk name="adj_nom" case="caseFirstWord">
            <tags>
@@ -1902,6 +2028,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
        <pattern-item n="c_nom"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <out>
          <chunk name="det_adj_nom" case="caseFirstWord">
            <tags>
@@ -1941,6 +2070,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
        <pattern-item n="c_nom"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <out>
          <chunk name="det_adj_nom" case="caseFirstWord">
            <tags>
@@ -1987,6 +2119,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
        <pattern-item n="c_nom"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <out>
          <chunk name="det_adj_nom" case="caseFirstWord">
            <tags>
@@ -2038,6 +2173,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
        <pattern-item n="c_vb_fti"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <call-macro n="set_vrb2"><with-param pos="1"/></call-macro>
        <call-macro n="nepersona"><with-param pos="1"/></call-macro>
        <out>
@@ -2070,6 +2208,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
       <pattern-item n="c_vb_cni"/>
     </pattern>
     <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
       <call-macro n="set_vrb2"><with-param pos="1"/></call-macro>
       <call-macro n="nepersona"><with-param pos="1"/></call-macro>
       <choose>
@@ -2130,6 +2271,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
        <pattern-item n="c_vb_fti"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <call-macro n="set_vrb2"><with-param pos="2"/></call-macro>
        <call-macro n="nepersona"><with-param pos="2"/></call-macro>
        <out>
@@ -2167,6 +2311,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
        <pattern-item n="c_vb_cni"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <call-macro n="set_vrb2"><with-param pos="2"/></call-macro>
        <call-macro n="nepersona"><with-param pos="2"/></call-macro>
       <choose>
@@ -2237,6 +2384,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
        <pattern-item n="c_vb_pp2"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <call-macro n="set_vrb2"><with-param pos="1"/></call-macro>
        <out>
          <chunk name="vb_pp2" case="caseFirstWord">
@@ -2269,6 +2419,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
        <pattern-item n="c_vb_pp3"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <call-macro n="set_vrb2"><with-param pos="1"/></call-macro>
        <out>
          <chunk name="vb_pp3" case="caseFirstWord">
@@ -2297,6 +2450,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
        <pattern-item n="c_vb_pp3"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <call-macro n="set_vrb2"><with-param pos="2"/></call-macro>
        <out>
          <chunk name="vbfti_vbpp3" case="caseFirstWord">
@@ -2331,6 +2487,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
        <pattern-item n="c_vb_pp3"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <call-macro n="set_vrb2"><with-param pos="2"/></call-macro>
        <out>
          <chunk name="vbcni_vbpp3" case="caseFirstWord">
@@ -2365,6 +2524,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
        <pattern-item n="c_vb_pp3"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <call-macro n="imp_inf"><with-param pos="1"/></call-macro>
        <call-macro n="set_vrb2"><with-param pos="1"/></call-macro>
        <out>
@@ -2402,6 +2564,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
        <pattern-item n="c_vb_pp"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <call-macro n="imp_inf"><with-param pos="1"/></call-macro>
        <call-macro n="set_vrb2"><with-param pos="1"/></call-macro>
        <out>
@@ -2440,6 +2605,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
        <pattern-item n="de"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <call-macro n="imp_inf"><with-param pos="1"/></call-macro>
        <call-macro n="set_vrb2"><with-param pos="1"/></call-macro>
        <out>
@@ -2489,6 +2657,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
        <pattern-item n="c_prn"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <call-macro n="imp_inf"><with-param pos="1"/></call-macro>
        <call-macro n="set_vrb2"><with-param pos="1"/></call-macro>
         <out>
@@ -2590,6 +2761,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
        <pattern-item n="c_vbser"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <call-macro n="imp_inf"><with-param pos="1"/></call-macro>
        <call-macro n="set_vrb2"><with-param pos="1"/></call-macro>
        <out>
@@ -2621,6 +2795,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
        <pattern-item n="c_vbser"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <call-macro n="imp_inf"><with-param pos="2"/></call-macro>
        <call-macro n="set_vrb2"><with-param pos="2"/></call-macro>
        <out>
@@ -2656,6 +2833,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
        <pattern-item n="c_vblex"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <call-macro n="imp_inf"><with-param pos="1"/></call-macro>
        <call-macro n="set_vrb2"><with-param pos="1"/></call-macro>
        <call-macro n="nepersona"><with-param pos="1"/></call-macro>
@@ -2689,6 +2869,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla -->
        <pattern-item n="c_vblex"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <call-macro n="imp_inf"><with-param pos="2"/></call-macro>
        <call-macro n="set_vrb2"><with-param pos="2"/></call-macro>
        <call-macro n="nepersona"><with-param pos="2"/></call-macro>
@@ -2800,6 +2983,9 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
        <pattern-item n="c_vb_inf"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <call-macro n="imp_inf"><with-param pos="1"/></call-macro>
        <call-macro n="set_vrb2"><with-param pos="1"/></call-macro>
        <call-macro n="nepersona"><with-param pos="1"/></call-macro>
@@ -2880,6 +3066,9 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
        <pattern-item n="c_vb_inf"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <call-macro n="imp_inf"><with-param pos="2"/></call-macro>
        <call-macro n="set_vrb2"><with-param pos="2"/></call-macro>
        <call-macro n="nepersona"><with-param pos="2"/></call-macro>
@@ -3016,6 +3205,9 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
        <pattern-item n="c_vb_inf"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <call-macro n="imp_inf"><with-param pos="1"/></call-macro>
        <call-macro n="set_vrb2"><with-param pos="1"/></call-macro>
        <call-macro n="nepersona"><with-param pos="1"/></call-macro>
@@ -3105,6 +3297,9 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
        <pattern-item n="c_vb_inf"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <call-macro n="imp_inf"><with-param pos="2"/></call-macro>
        <call-macro n="set_vrb2"><with-param pos="2"/></call-macro>
        <call-macro n="nepersona"><with-param pos="2"/></call-macro>
@@ -3252,6 +3447,9 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
        <pattern-item n="c_vb_inf"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <call-macro n="set_vrb2"><with-param pos="1"/></call-macro>
        <call-macro n="nepersona"><with-param pos="1"/></call-macro>
        <out>
@@ -3295,6 +3493,9 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
        <pattern-item n="c_vb_inf"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <call-macro n="set_vrb2"><with-param pos="1"/></call-macro>
        <call-macro n="nepersona"><with-param pos="1"/></call-macro>
        <out>
@@ -3339,6 +3540,9 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
        <pattern-item n="c_vb_inf"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <call-macro n="set_vrb2"><with-param pos="2"/></call-macro>
        <call-macro n="nepersona"><with-param pos="2"/></call-macro>
        <out>
@@ -3387,6 +3591,9 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
        <pattern-item n="c_vb_inf"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <call-macro n="set_vrb2"><with-param pos="2"/></call-macro>
        <call-macro n="nepersona"><with-param pos="2"/></call-macro>
        <out>
@@ -3435,6 +3642,9 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
        <pattern-item n="c_vb_inf"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <call-macro n="set_vrb2"><with-param pos="1"/></call-macro>
        <call-macro n="nepersona"><with-param pos="1"/></call-macro>
        <out>
@@ -3483,6 +3693,9 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
        <pattern-item n="c_vb_inf"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <call-macro n="set_vrb2"><with-param pos="1"/></call-macro>
        <call-macro n="nepersona"><with-param pos="1"/></call-macro>
        <out>
@@ -3532,6 +3745,9 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
        <pattern-item n="c_vb_inf"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <call-macro n="set_vrb2"><with-param pos="2"/></call-macro>
        <call-macro n="nepersona"><with-param pos="2"/></call-macro>
        <out>
@@ -3585,6 +3801,9 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
        <pattern-item n="c_vb_inf"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <call-macro n="set_vrb2"><with-param pos="2"/></call-macro>
        <call-macro n="nepersona"><with-param pos="2"/></call-macro>
        <out>
@@ -3639,6 +3858,9 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
        <pattern-item n="de"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <call-macro n="imp_inf"><with-param pos="1"/></call-macro>
        <call-macro n="set_vrb2"><with-param pos="1"/></call-macro>
        <out>
@@ -3679,6 +3901,9 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
        <pattern-item n="c_prn"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <call-macro n="imp_inf"><with-param pos="1"/></call-macro>
        <call-macro n="set_vrb2"><with-param pos="1"/></call-macro>
         <out>
@@ -3772,6 +3997,9 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
        <pattern-item n="c_vb_pp"/>
      </pattern>
      <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
        <call-macro n="imp_inf"><with-param pos="3"/></call-macro>
        <call-macro n="set_vrb2"><with-param pos="3"/></call-macro>
         <out>
@@ -3865,6 +4093,9 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
         <pattern-item n="num"/>
       </pattern>
       <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
         <out>
           <chunk name="num" case="caseFirstWord">
             <tags>
@@ -3883,6 +4114,9 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
         <pattern-item n="de"/>
       </pattern>
       <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
         <out>
           <chunk name="pr" case="caseFirstWord">
             <tags>
@@ -3901,6 +4135,9 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
         <pattern-item n="pr"/>
       </pattern>
       <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
         <out>
           <chunk name="pr" case="caseFirstWord">
             <tags>
@@ -3919,6 +4156,9 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
         <pattern-item n="rel"/>
       </pattern>
       <action>
+        <call-macro n="firstWord">
+          <with-param pos="1"/>
+        </call-macro>
         <out>
           <chunk name="rel" case="caseFirstWord">
             <tags>
@@ -3954,6 +4194,45 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
       </action>
     </rule>
 
+    <rule comment="REGLA: reset variables">
+      <pattern>
+        <pattern-item n="sent"/>
+      </pattern>
+      <action>
+        <choose>
+          <when>
+            <test>
+              <not>
+                <or>
+                  <equal>
+                    <clip pos="1" side="sl" part="lem"/>
+                    <lit v=";"/>
+                  </equal>
+                  <equal>
+                    <clip pos="1" side="sl" part="lem"/>
+                    <lit v=":"/>
+                  </equal>
+                </or>
+              </not>
+            </test>           
+            <let>
+              <var n="EOS"/>
+              <lit v="true"/>
+            </let>
+          </when>
+        </choose>
+        <out>
+          <chunk name="punt">
+            <tags>
+              <tag><lit-tag v="sent"/></tag>
+            </tags>
+            <lu>
+              <clip pos="1" side="tl" part="whole"/>
+            </lu>
+          </chunk>
+        </out>
+      </action>
+    </rule>
 
 
 </section-rules>
