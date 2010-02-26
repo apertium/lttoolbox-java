@@ -1,5 +1,4 @@
 package org.apertium.transfer.generated;
-import java.util.*;
 import java.io.*;
 import org.apertium.transfer.*;
 public class apertium_eo_en_eo_en_t1x extends GeneratedTransferBase

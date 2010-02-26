@@ -1,6 +1,5 @@
 package org.apertium.transfer;
 
-import org.apertium.lttoolbox.process.*;
 
 /*
  * This program is free software; you can redistribute it and/or
@@ -68,7 +67,6 @@ public class BufferT<E> {
     BufferT(int buf_size) {
         if (buf_size == 0) {
             throw new RuntimeException("Error: Cannot create empty buffer.");
-
         }
         buf = (E[]) new Object[buf_size];
         size = buf_size;
