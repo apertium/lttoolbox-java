@@ -24,38 +24,32 @@ public class TransferWord {
     target = tgt;
     queue_length = queue;
   }
-
+  
   public String sl(ApertiumRE part) {
-    if (part==null) return ""; // this can happen if an undefined attribute is used
     return part.match(source);
   }
 
   public String slNoQueue(ApertiumRE part) {
-    if (part==null) return ""; // this can happen if an undefined attribute is used
     return part.match(source.substring(0, source.length() - queue_length));
   }
 
   public String tl(ApertiumRE part) {
-    if (part==null) return ""; // this can happen if an undefined attribute is used
     return part.match(target);
   }
 
   public String tlNoQueue(ApertiumRE part) {
-    if (part==null) return ""; // this can happen if an undefined attribute is used
     return part.match(target.substring(0, target.length() - queue_length));
   }
 
 
   public void slSet(ApertiumRE part, String value)
   {
-    if (part==null) return; // this can happen if an undefined attribute is used
     source = part.replace(source, value);
   }
 
 
   public void slSetNoQueue(ApertiumRE part, String value)
   {
-    if (part==null) return; // this can happen if an undefined attribute is used
     String mystring = source.substring(0, source.length() - queue_length);
     mystring = part.replace(mystring, value);
     source = mystring + source.substring(source.length() - queue_length);
@@ -64,14 +58,12 @@ public class TransferWord {
 
   public void tlSet(ApertiumRE part, String value)
   {
-    if (part==null) return; // this can happen if an undefined attribute is used
     target = part.replace(target, value);
   }
 
 
   public void tlSetNoQueue(ApertiumRE part, String value)
   {
-    if (part==null) return; // this can happen if an undefined attribute is used
     String mystring = target.substring(0, target.length() - queue_length);
     mystring = part.replace(mystring, value);
     target = mystring + target.substring(target.length() - queue_length);
