@@ -1,7 +1,10 @@
+^The<det><def><sp>$ ^cool<adj><sint>$\/^*temperate$ ^climate<n><sg>$.<sent>$
+^Currently<adv>$ ^the<det><def><sp>$ ^new<adj><sint>$ \$^909<num>$ ^million<n><sg>$ ^*Edmonton$ ^Clinic<n><sg>$^.<sent>$
 ^Some<det><qnt><sp>$ ^ASCII<n><acr><re><sp>$ ^artist<n><pl>$ ^have<vbhaver><inf>$ ^produce<vblex><pp>$ ^art<n><sg>$ ^for<pr>$ ^display<n><sg>$ ^in<pr>$ ^such<det><ind><sp>$ ^font<n><pl>$^.<sent>$
+^The<det><def><sp>$[ 111 ]^test<n><sg>$i[ 222] ^should<vaux><cni>$ [333 ]^be<vbser><inf>$ ^problem<n><sg>$ ^base<vblex><past>$ ^rather<adv>$ ^than<cnjcoo>$ ^multiple<adj>$[ 444 ]^choice<n><sg>$^.<sent>$
+^David<np><ant><m><sg>$^,<cm>$ ^some<det><qnt><sp>$[ 11 ]^opening<adj>$[ 22 ]^remark<n><pl>$^.<sent>$
 ^And<cnjcoo>$ ^that<cnjsub>$ ^would<vaux><cni>$ ^be<vbser><inf>$ ^a<det><ind><sg>$ ^different<adj>$ ^kind<n><sg>$ ^of<pr>$ ^report<n><sg>$ ^that<cnjsub>$ ^one<num><sg>$ ^can<vaux><past>$ ^get<vblex><inf>$ ^of<pr>$ ^individual<adj>$ ^student<n><sg>$ ^performance<n><sg>$^.<sent>$
 ^And<cnjcoo>$ ^be<vbser><pres><p3><sg>$ ^that<cnjsub>$ ^a<det><ind><sg>$ ^issue<n><sg>$ ^at<pr>$ ^all<prn><tn><sp>$^?<sent>$ ^Or<cnjcoo>$ ^be<vbser><pres><p3><sg>$ ^that<cnjsub>$ ^a<det><ind><sg>$ ^non<adv>$^-<guio>$^issue<n><sg>$^?<sent>$
-^David<np><ant><m><sg>$^,<cm>$ ^some<det><qnt><sp>$ ^opening<adj>$ ^remark<n><pl>$^.<sent>$
 ^Prpers<prn><subj><p3><nt><sg>$ ^seem<vblex><pres><p3><sg>$ ^to<pr>$ ^prpers<prn><obj><p1><mf><sg>$ ^that<cnjsub>$ ^that<prn><tn><sg>$ ^be<vbser><pres><p3><sg>$ ^exactly<adv>$ ^the<det><def><sp>$ ^kind<n><sg>$ ^of<pr>$ ^data<n><sg>$ ^that<cnjsub>$ ^prpers<prn><subj><p1><mf><pl>$ ^would<vaux><cni>$ ^need<vblex><inf>$^.<sent>$
 ^Then<adv>$^,<cm>$ ^prpers<prn><subj><p1><mf><pl>$ ^figure<vblex><pres>$ ^out<adv>$ ^the<det><def><sp>$ ^thing<n><pl>$ ^that<rel><an><mf><sp>$ ^happen<vblex><pres>$ ^to<pr>$ ^lead<vblex><inf>$ ^to<pr>$ ^that<det><dem><sg>$ ^assessment<n><sg>$^.<sent>$
 ^Sharon<np><ant><f><sg>$ ^be<vbser><pres><p3><sg>$ ^go<vblex><ger>$ ^to<pr>$ ^talk<vblex><inf>$ ^now<adv>$^.<sent>$
@@ -131,7 +134,6 @@
 ^And<cnjcoo>$ ^the<det><def><sp>$ ^student<n><pl>$ ^who<prn><itg><sp>$ ^be<vbser><past>$ ^the<det><def><sp>$ ^high<adj><sint><comp>$ ^scorer<n><pl>$ ^do<vblex><past>$ ^ever<adv>$ ^so much<det><qnt><sg>$ ^good<adj><sint><comp>$^.<sent>$
 ^Sharon<np><ant><f><sg>$ ^express<vblex><past>$ ^a<det><ind><sg>$ ^opinion<n><sg>$ ^about<pr>$ ^read<vblex><pp>$ ^time<n><sg>$^.<sent>$
 ^At<pr>$ ^this<det><dem><sg>$ ^point<n><sg>$^,<cm>$ ^prpers<prn><subj><p1><mf><pl>$ ^have<vbhaver><pres>$ ^take<vblex><pp>$ ^the<det><def><sp>$ ^initiative<n><sg>$ ^and<cnjcoo>$ ^turn<vblex><pp>$ ^over<pr>$ ^all<prn><tn><sp>$ ^of<pr>$ ^the<det><def><sp>$ ^-<guio>$^-<guio>$
-^The<det><def><sp>$ ^test<n><sg>$ ^should<vaux><cni>$ ^be<vbser><inf>$ ^problem<n><sg>$ ^base<vblex><past>$ ^rather<adv>$ ^than<cnjcoo>$ ^multiple<adj>$ ^choice<n><sg>$^.<sent>$
 ^Tuesday<n><sg>$ ^-<guio>$^-<guio>$
 ^prpers<prn><subj><p1><mf><sg>$ ^also<adv>$ ^understand<vblex><inf>$ ^how<adv><itg>$ ^that<rel><an><mf><sp>$ ^can<vaux><past>$ ^possibly<adv>$ ^mean<vblex><inf>$ ^in<pr>$ ^some<det><qnt><sp>$ ^classroom<n><pl>$^,<cm>$ ^not<adv>$ ^only<adv>$ ^in<pr>$ ^Colorado<np><top><sg>$^,<cm>$ ^but<cnjcoo>$ ^across the country<adv>$^.<sent>$
 ^So<cnjadv>$ ^prpers<prn><subj><p1><mf><sg>$ ^just<adv>$ ^think<vblex><inf>$ ^prpers<prn><subj><p1><mf><pl>$ ^need<vblex><pres>$ ^to<pr>$ ^take<vblex><inf>$ ^that<cnjsub>$ ^into<pr>$ ^account<n><sg>$^,<cm>$ ^too<adv>$^,<cm>$ ^when<adv><itg>$ ^prpers<prn><subj><p1><mf><pl>$ ^be<vbser><pres>$ ^discuss<vblex><ger>$ ^time<n><sg>$^.<sent>$

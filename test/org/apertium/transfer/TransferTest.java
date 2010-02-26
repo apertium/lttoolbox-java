@@ -12,6 +12,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import org.apertium.transfer.development.FindAndCompareAllReleasedTransferFiles;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -46,16 +47,13 @@ public class TransferTest {
     }
 
 
+    String dir = "testdata/transfer/";
 
   @Test
   public void testTransfer1Prase() throws Exception {
       Transfer t = new Transfer();
-      String dir = "testdata/transfer/";
 
-      Class transferClass =
-       Class.forName("org.apertium.transfer.generated.apertium_eo_en_en_eo_t1x");
-
-
+      Class transferClass = org.apertium.transfer.generated.apertium_eo_en_en_eo_t1x.class;
       t.read(transferClass, dir+"en-eo.t1x.bin", dir+"en-eo.autobil.bin");
       t.transferObject.debug = true;
 
@@ -67,45 +65,47 @@ public class TransferTest {
   }
 
   @Test
-  public void testTransferMalgranda() throws Exception {
+  public void testTransferMalgranda_en_eo() throws Exception {
       Transfer t = new Transfer();
-      String dir = "testdata/transfer/";
-
       Class transferClass = org.apertium.transfer.generated.apertium_eo_en_en_eo_t1x.class;
-
-
       t.read(transferClass, dir+"en-eo.t1x.bin", dir+"en-eo.autobil.bin");
-
       Reader input = new FileReader(dir+"transferinput-en-eo.t1x-malgranda.txt");
-      //StringReader input = new StringReader("^Prpers<prn><subj><p3><m><sg>$ ^see<vblex><past>$ ^the<det><def><sp>$ ^saw<n><sg>$^'s<gen>$ ^tooth<n><sg>$   ^.<sent>$  \n");
-      //Writer output = new StringWriter(); //new PrintWriter(System.err); //
-      //Writer output = new OutputStreamWriter(System.out);
       String outFile = "/tmp/transfer-output-malgranda.txt";
       Writer output = new FileWriter(outFile);
       t.transfer( input, output);
       output.close();
-
-     assertEquals("Difference", "", exec("diff "+dir+"transferoutput-en-eo.t1x-malgranda.txt "+outFile));
-     rm(outFile);
+      assertEquals("Difference", "", exec("diff "+dir+"transferoutput-en-eo.t1x-malgranda.txt "+outFile));
+      rm(outFile);
   }
 
+
   @Test
-  public void testTransferAndCompilationMalgranda() throws Exception {
-    String dir = "testdata/transfer/";
+  public void testTransferAndCompilationMalgranda_en_eo() throws Exception {
     String outFile = "/tmp/transfer-output-malgranda.txt";
-    ApertiumTransferCompile.main(new String[]{"testdata/transfer/apertium-eo-en.en-eo.t1x", "/tmp/en-eo.t1x.bin.class"});
+    String t1xFile = dir+"apertium-eo-en.en-eo.t1x";
+    String binFile = dir+"en-eo.t1x.bin";
+    ApertiumTransferCompile.main(new String[]{t1xFile, "/tmp/t1x.bin.class"});
 
     /////////////////////////////
     //
     // NOTE:  You *need* dist/lttoolbox.jar  , so do a full rebuiild if this test fails
     //
     ///////////////////////////
+    ApertiumTransfer.main(new String[]{"/tmp/t1x.bin.class", binFile, dir+"en-eo.autobil.bin", dir+"transferinput-en-eo.t1x-malgranda.txt", outFile});
 
-    ApertiumTransfer.main(new String[]{"/tmp/en-eo.t1x.bin.class", dir+"en-eo.t1x.bin", dir+"en-eo.autobil.bin",
-      dir+"transferinput-en-eo.t1x-malgranda.txt", outFile});
+    assertEquals("Difference", "", exec("diff "+dir+"transferoutput-en-eo.t1x-malgranda.txt "+outFile));
+    rm(outFile);
+  }
 
-     assertEquals("Difference", "", exec("diff "+dir+"transferoutput-en-eo.t1x-malgranda.txt "+outFile));
-     rm(outFile);
+
+  @Test
+  public void testInterpretedTransferMalgranda_en_eo() throws Exception {
+    String outFile = "/tmp/transfer-output-malgranda.txt";
+    String t1xFile = dir+"apertium-eo-en.en-eo.t1x";
+    String binFile = dir+"en-eo.t1x.bin";
+    FindAndCompareAllReleasedTransferFiles.exec("apertium-transfer", t1xFile, binFile, dir+"en-eo.autobil.bin", dir+"transferinput-en-eo.t1x-malgranda.txt", outFile);
+    assertEquals("Difference", "", exec("diff "+dir+"transferoutput-en-eo.t1x-malgranda.txt "+outFile));
+    rm(outFile);
   }
 
 

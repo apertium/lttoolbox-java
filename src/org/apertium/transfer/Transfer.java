@@ -8,6 +8,7 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -278,7 +279,7 @@ public class Transfer {
 
 
   public Timing timing;
-  public static final boolean DO_TIMING = true;
+  public static final boolean DO_TIMING = false;
 
   public void transfer(Reader in, Writer output) throws Exception {
     if (getNullFlush()) {
@@ -548,8 +549,7 @@ class MyClassLoader extends ClassLoader {
     }
 
     
-    public Class loadClassFile(String filename) throws ClassNotFoundException {
-        try {
+    public Class loadClassFile(String filename) throws ClassNotFoundException, IOException {
           //System.err.println("filename = " + filename);
           File file = new File(filename);
             InputStream input = new FileInputStream(file);
@@ -557,9 +557,5 @@ class MyClassLoader extends ClassLoader {
             input.read(data);
             input.close();
             return defineClass(null, data, 0, data.length);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 }

@@ -34,6 +34,8 @@ static String[] transferFileList = {
    */
 //"apertium-es-ast/apertium-es-ast.es-ast.t1x",
 "apertium-en-ca/apertium-en-ca.en-ca.t1x",
+
+//apertium-en-gl/apertium-en-gl.gl-en.t1x, apertium-en-ca/apertium-en-ca.en-ca.t1x
 };
 
 
@@ -58,28 +60,20 @@ static String[] transferFileList = {
       boolean redoInterpretedTransfer = true;
       boolean redoBytecodeCompilation = true;
 
-      // Average speedup: 1.168421052631579 - individual: [0.28, 0.63, 0.65, 1.07, 1.13, 1.01, 1.28, 1.24, 1.1, 1.33, 1.36, 1.0, 0.91, 0.94, 1.37, 1.47, 0.54, 1.69, 1.42, 1.37, 1.47, 1.51, 1.61, 1.6, 1.48, 1.35, 0.36, 1.63, 1.57, 1.46, 1.47, 1.22, 1.31, 0.31, 1.45, 1.52, 1.23, 0.34, 1.21, 1.64, 0.28, 1.49, 1.76, 1.4, 1.72, 0.43, 1.5, 0.65, 1.12, 1.27, 0.42, 1.45, 1.4, 1.05, 1.58, 1.1, 0.45]
-//Average speedup: 1.2274137931034483 - individual: [0.21, 0.73, 0.7, 1.76, 1.91, 1.06, 1.18, 0.89, 1.12, 1.25, 1.77, 1.84, 0.79, 1.45, 1.25, 1.5, 1.48, 0.46, 1.75, 1.17, 1.22, 1.3, 1.38, 1.68, 1.85, 1.36, 1.54, 0.29, 1.53, 1.61, 1.26, 1.43, 0.83, 1.5, 0.31, 1.94, 1.28, 1.34, 0.28, 1.28, 1.17, 0.29, 1.67, 1.52, 1.12, 1.5, 0.35, 1.68, 1.23, 1.53, 1.3, 0.42, 1.72, 1.42, 1.62, 0.94, 1.6, 0.63]
-
+      // Average speedup: 4.189285714285715 - individual: [3.96, 4.01, 4.43, 4.46, 4.27, 3.97, 4.4, 4.36, 4.44, 4.56, 4.34, 4.03, 4.21, 3.94, 4.75, 4.48, 3.83, 4.2, 4.41, 4.1, 4.8, 4.3, 4.09, 4.85, 4.22, 4.59, 3.68, 3.93, 4.78, 3.42, 4.54, 4.86, 4.56, 3.2, 3.97, 3.8, 4.86, 3.33, 4.09, 2.97, 4.54, 4.52, 4.64, 4.91, 3.27, 4.11, 4.3, 4.1, 4.34, 3.67, 3.68, 4.13, 4.35, 3.27, 4.46, 4.32]
       String inputFile = testdir+"transferinput-en-eo.t1x.txt";
 
-      // Average speedup: 4.189285714285715 - individual: [3.96, 4.01, 4.43, 4.46, 4.27, 3.97, 4.4, 4.36, 4.44, 4.56, 4.34, 4.03, 4.21, 3.94, 4.75, 4.48, 3.83, 4.2, 4.41, 4.1, 4.8, 4.3, 4.09, 4.85, 4.22, 4.59, 3.68, 3.93, 4.78, 3.42, 4.54, 4.86, 4.56, 3.2, 3.97, 3.8, 4.86, 3.33, 4.09, 2.97, 4.54, 4.52, 4.64, 4.91, 3.27, 4.11, 4.3, 4.1, 4.34, 3.67, 3.68, 4.13, 4.35, 3.27, 4.46, 4.32]
-      //String inputFile = testdir+"transferinput-en-eo.t1x.txt";
+      // Average speedup: 1.168421052631579 - individual: [0.28, 0.63, 0.65, 1.07, 1.13, 1.01, 1.28, 1.24, 1.1, 1.33, 1.36, 1.0, 0.91, 0.94, 1.37, 1.47, 0.54, 1.69, 1.42, 1.37, 1.47, 1.51, 1.61, 1.6, 1.48, 1.35, 0.36, 1.63, 1.57, 1.46, 1.47, 1.22, 1.31, 0.31, 1.45, 1.52, 1.23, 0.34, 1.21, 1.64, 0.28, 1.49, 1.76, 1.4, 1.72, 0.43, 1.5, 0.65, 1.12, 1.27, 0.42, 1.45, 1.4, 1.05, 1.58, 1.1, 0.45]
+      // Average speedup: 1.2274137931034483 - individual: [0.21, 0.73, 0.7, 1.76, 1.91, 1.06, 1.18, 0.89, 1.12, 1.25, 1.77, 1.84, 0.79, 1.45, 1.25, 1.5, 1.48, 0.46, 1.75, 1.17, 1.22, 1.3, 1.38, 1.68, 1.85, 1.36, 1.54, 0.29, 1.53, 1.61, 1.26, 1.43, 0.83, 1.5, 0.31, 1.94, 1.28, 1.34, 0.28, 1.28, 1.17, 0.29, 1.67, 1.52, 1.12, 1.5, 0.35, 1.68, 1.23, 1.53, 1.3, 0.42, 1.72, 1.42, 1.62, 0.94, 1.6, 0.63]
+      //inputFile = testdir+ "transferinput-en-eo.t1x-malgranda.txt";
 
       String[] transferFiles = transferFileList;
-      //transferFiles = findAlllTransferFilesOnDisk();
+      transferFiles = findAlllTransferFilesOnDisk();
 
-      inputFile = testdir+ "transferinput-en-eo.t1x-malgranda.txt";
-      redoInterpretedTransfer = false;
+      //redoInterpretedTransfer = false;
       //redoBytecodeCompilation = false;
       //printFilesAsJavaArray(transferFiles);
 
-      /*
-apertium-bn-en/apertium-bn-en.en-bn.t1x, apertium-sl-mk/apertium-sl-mk.sl-mk.t1x, apertium-en-es/apertium-en-es.es-en.t1x,
-    apertium-en-es/apertium-en-es.en-es.t1x, apertium-en-gl/apertium-en-gl.gl-en.t1x, apertium-en-gl/apertium-en-gl.en-gl.t1x,
-    apertium-en-ca/apertium-en-ca.ca-en.t1x,
-    apertium-ca-ro/apertium-ca-ro.ro-ca.t1x
-*/
       ArrayList<String> doesentValidate = new ArrayList<String>();
       ArrayList<String> interpretedTranferFails = new ArrayList<String>();
       ArrayList<String> compiledTranferFails = new ArrayList<String>();
@@ -87,8 +81,6 @@ apertium-bn-en/apertium-bn-en.en-bn.t1x, apertium-sl-mk/apertium-sl-mk.sl-mk.t1x
       ArrayList<String> tranferCompareFail = new ArrayList<String>();
       ArrayList<Double> speedUps = new ArrayList<Double>();
       double speedupSum = 0;
-
-
 
       for (String relFile : transferFiles) try {
         System.err.println("\n============");
@@ -103,7 +95,6 @@ apertium-bn-en/apertium-bn-en.en-bn.t1x, apertium-sl-mk/apertium-sl-mk.sl-mk.t1x
           new File(rootDir+"/expected/"+relFile).getParentFile().mkdirs();
           ret = exec("apertium-validate-transfer "+absFile);
           if (ret!=0) {
-  //          System.err.println(t1xFile+" does not pass apertium-validate-transfer");
             System.err.println("ERROR: "+absFile+"\ndoes not pass apertium-validate-transfer. Skipping...");
             doesentValidate.add(relFile);
             continue;
