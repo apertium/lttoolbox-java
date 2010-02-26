@@ -77,6 +77,15 @@ public class DOMTools {
     return null;
   }
 
+  public static Element getElement(Element e0, String tagName) {
+    for (Element e : listElements(e0.getChildNodes()))
+      if (e.getTagName().equals(tagName))
+        return e;
+
+    new IllegalStateException(e0+" has no child "+tagName).printStackTrace();
+    return null;
+  }
+
   public static Element findElementSibling(Node n) {
     while (n!=null && !(n instanceof Element)) n = n.getNextSibling();
     return (Element) n;

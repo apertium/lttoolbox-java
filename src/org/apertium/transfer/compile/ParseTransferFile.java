@@ -23,6 +23,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apertium.transfer.Transfer;
 import org.apertium.transfer.TransferWord;
+import org.apertium.transfer.development.ParseTestTransferFiles;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -61,16 +62,16 @@ public class ParseTransferFile {
 
   private Element currentNode;
 
-  public void writeMethodBody_optimized(Element c0) {
+  private void writeMethodBody_optimized(Element c0) {
     // Investigate need of caching clip expressions
     int codeMark=javaCode.length();
     clipExprReadCache_reset();
-    int instrNoForlastMacro=0;
+    int generateJustBeforeInstrNo=0;
     int instrNo=0;
     for (Element instr : listElements(c0.getChildNodes())) {
       processInstruction(instr);
       if (instr.getTagName().equals("call-macro")) {
-        instrNoForlastMacro=instrNo;
+        generateJustBeforeInstrNo=instrNo+1;
         clipExprReadCache_reset(); // can't cache as macro could modify
       }
       instrNo++;
@@ -80,21 +81,26 @@ public class ParseTransferFile {
     //System.err.println(methodName+" clipExprReadCount = " + clipExprReadCount);
     // now do the real code generation
     clipExprReadCache_decide();
-    clipExprReadCache_generate();
     instrNo=0;
     for (Element instr : listElements(c0.getChildNodes())) {
+      if (instrNo==generateJustBeforeInstrNo) {
+        clipExprReadCache_generate();
+      }
       printComments();
       processInstruction(instr);
-      if (instrNo==instrNoForlastMacro) {
-      }
       instrNo++;
     }
   }
 
-  public void writeMethodBody(Element c0) {
-    for (Element instr : listElements(c0.getChildNodes())) {
-      printComments();
-      processInstruction(instr);
+  boolean cacheClipExcpression = false;
+  private void writeMethodBody(Element c0) {
+    if (cacheClipExcpression) {
+      writeMethodBody_optimized(c0);
+    } else {
+      for (Element instr : listElements(c0.getChildNodes())) {
+        printComments();
+        processInstruction(instr);
+      }
     }
   }
 
@@ -144,6 +150,7 @@ public class ParseTransferFile {
   }
 
     public static void main(String[] args) throws Exception {
+      ParseTestTransferFiles.main(args);
       String res = optimizeCode(
 			"    out.append('{');\n"+
 			"   out.append('^');\n"
@@ -290,26 +297,30 @@ public class ParseTransferFile {
 
   LinkedHashMap<String, Integer> clipExprReadCount = new LinkedHashMap<String,Integer>();
   LinkedHashMap<String, String> clipExprCacheVars = new LinkedHashMap<String,String>();
+  LinkedHashMap<String, String> clipExprCacheVars_decided = new LinkedHashMap<String,String>();
   
   private void clipExprReadCache_reset() {
     clipExprReadCount.clear();
     clipExprCacheVars.clear();
+    clipExprCacheVars_decided.clear();
   }
 
   private void clipExprReadCache_decide() {
     for (String clipReadExpr : clipExprReadCount.keySet()) {
-      if (clipExprReadCount.get(clipReadExpr)<= 0) continue; // Only used once, don''t cache
+      if (clipExprReadCount.get(clipReadExpr)<= 4) continue; // If only used a few times, don''t cache
       String var = "cached_"+ javaIdentifier(clipReadExpr);
-      clipExprCacheVars.put(clipReadExpr, var);
+      clipExprCacheVars_decided.put(clipReadExpr, var);
     }
   }
 
   private void clipExprReadCache_generate() {
     // iterate alphabetivally (thru TreeSet)
-    for (String clipReadExpr : new TreeSet<String>(clipExprCacheVars.keySet())) {
-      String var = clipExprCacheVars.get(clipReadExpr);
+    for (String clipReadExpr : new TreeSet<String>(clipExprCacheVars_decided.keySet())) {
+      String var = clipExprCacheVars_decided.get(clipReadExpr);
       println("String "+var+" = "+clipReadExpr+";");
+      clipExprCacheVars.put(clipReadExpr, var);
     }
+    
   }
   /**
    * Generates Java code for reading the value of a clip
@@ -357,7 +368,7 @@ public class ParseTransferFile {
       return word(pos)+"."+side+"Set"+queue+"("+attr(part)+", "+value+");";    
     } else {
       String writeClipWithUpdateOfCachedVar = word(pos)+"."+side+"Set"+queue+"("+attr(part)+", ("+cacheVar+"="+value+"));";
-      System.err.println("writeClipWithUpdateOfCachedVar = " + writeClipWithUpdateOfCachedVar);
+      //System.err.println("writeClipWithUpdateOfCachedVar = " + writeClipWithUpdateOfCachedVar);
       return writeClipWithUpdateOfCachedVar;
     }
 
@@ -1051,8 +1062,9 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
           println("{");
           println("if (debug) { logCall(\""+methodName+"\""+logCallParameters+"); } "); // TODO Check performance impact
 
-         
-          writeMethodBody((Element) getChildrenElement(c0, "action").getParentNode());
+          //System.err.println("methodName = " + methodName);
+
+          writeMethodBody((Element) getElement(c0, "action"));
 
           println("}");
         }
