@@ -92,7 +92,15 @@ public class ParseTransferFile {
     }
   }
 
+  /** Set to true of cache evalutation of clip expressions in local variables.
+   * Note that THIS CAN MAKE SOME CONSTRUCTS FAIL, like:
+   * 		String cached_word2_tl_attr_nbr_ = word2.tl(attr_nbr);
+   *
+   * 				word2.tlSet(attr_whole, var_paraula1);
+   *  ... now also attr_nbr is changed, but the cache is not!
+   */
   boolean cacheClipExcpression = false;
+
   private void writeMethodBody(Element c0) {
     if (cacheClipExcpression) {
       writeMethodBody_optimized(c0);

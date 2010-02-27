@@ -27,4 +27,14 @@ public class TransferEnCaTest extends TransferEoEnTest {
     binFile = folder+dir+".t1x.bin";
   }
 
+  @Override
+  public void testTransferMalgranda() throws Exception {
+    super.testTransferMalgranda();
+  }
+
+  @Override
+   public void testTransferAndCompilationMalgranda() throws Exception {
+    super.testTransferAndCompilationMalgranda();
+  }
+
 }

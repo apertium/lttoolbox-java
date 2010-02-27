@@ -65,14 +65,8 @@ static String[] transferFileList = {
       String[] transferFiles = transferFileList;
       transferFiles = findAlllTransferFilesOnDisk();
 
-transferFiles = new String[] {
-"apertium-en-gl/apertium-en-gl.gl-en.t1x",
-"apertium-es-ro/apertium-es-ro.es-ro.t1x",
-"apertium-en-ca/apertium-en-ca.en-ca.t1x",
-};
 
-
-      //redoInterpretedTransfer = false;
+      redoInterpretedTransfer = false;
       //redoBytecodeCompilation = false;
       //printFilesAsJavaArray(transferFiles);
 

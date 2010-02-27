@@ -28,6 +28,8 @@ public abstract class TestTools {
 
 
   public static String exec(String cmd) throws IOException, InterruptedException, IOException {
+
+    System.err.println("exec: " + cmd);
     Process p=Runtime.getRuntime().exec(cmd);
     String output="";
     String s;
