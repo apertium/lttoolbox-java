@@ -1,3 +1,4 @@
+^*Atari$ ^and<cnjcoo>$ ^*Galaksija$ ^computer<n><pl>$ ^also<adv>$ ^use<vblex><pp>$ ^ASCII<n><acr><re><sp>$ ^*variants$^.<sent>$
 ^The<det><def><sp>$ ^cool<adj><sint>$\/^*temperate$ ^climate<n><sg>$.<sent>$
 ^Currently<adv>$ ^the<det><def><sp>$ ^new<adj><sint>$ \$^909<num>$ ^million<n><sg>$ ^*Edmonton$ ^Clinic<n><sg>$^.<sent>$
 ^Some<det><qnt><sp>$ ^ASCII<n><acr><re><sp>$ ^artist<n><pl>$ ^have<vbhaver><inf>$ ^produce<vblex><pp>$ ^art<n><sg>$ ^for<pr>$ ^display<n><sg>$ ^in<pr>$ ^such<det><ind><sp>$ ^font<n><pl>$^.<sent>$

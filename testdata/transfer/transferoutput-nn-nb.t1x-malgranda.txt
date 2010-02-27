@@ -1,3 +1,4 @@
+^*Atari$ ^kaj<cnjcoo>$ ^*Galaksija$ ^komputilo<n><pl>$ ^ankaŭ<adv>$ ^uzi<vblex><pp>$ ^ASCII<n><acr><re><sp>$ ^*variants$^.<sent>$
 ^La<det><sp><def>$ ^freŝa<adj>$\/^*temperate$ ^klimato<n><sg>$^.<sent>$
 ^Nuntempe<adv>$ ^la<det><sp><def>$ ^nova<adj>$ \$^909<num>$ ^miliono<n><sg>$ ^*Edmonton$ ^Kliniko<n><sg>$^.<sent>$
 ^Kelka<det><qnt><pl>$ ^ASCII<n><acr><sp>$ ^artisto<n><pl>$ ^havi<vblex><inf>$ ^produkti<vblex><pp>$ ^arto<n><sg>$ ^por<pr>$ ^montriĝo<n><sg>$ ^en<pr>$ ^tia<det><ind><sp><ind>$ ^fonto<n><pl>$^.<sent>$

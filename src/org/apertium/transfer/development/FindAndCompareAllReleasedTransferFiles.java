@@ -190,7 +190,7 @@ static String[] transferFileList = {
   }
 
   public static int exec(String... cmd) throws Exception {
-    System.err.println("exec: " + Arrays.toString(cmd).replaceAll(", ", " "));
+    //System.err.println("exec: " + Arrays.toString(cmd).replaceAll(", ", " "));
     Process p = Runtime.getRuntime().exec(cmd);
     BufferedReader br=new BufferedReader(new InputStreamReader(p.getInputStream()));
     String s=br.readLine();
