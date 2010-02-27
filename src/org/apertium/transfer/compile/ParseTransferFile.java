@@ -608,7 +608,7 @@ public class ParseTransferFile {
     while (npar<macronpar) {
       parseError("// WARNING: Macro "+n+" is invoked with too few parameters. Adding blank parameters ");
       if (!par.isEmpty())  {
-        par += ", "+str(" ");
+        par += ", "+str("");
       }
       par += ", "+"new TransferWord(\"\", \"\", 0)";
       npar++;
@@ -877,8 +877,8 @@ public class ParseTransferFile {
     if (pos < currentNumberOfWordInParameterList) {
       return "blank"+pos;
     }
-    parseError("// WARNING blank pos="+pos+" is out of range. Replacing with a one-space blank.");
-    return str(" ");
+    parseError("// WARNING blank pos="+pos+" is out of range. Replacing with a zero-space blank.");
+    return str("");
   }
 
   private String blank(String pos) {

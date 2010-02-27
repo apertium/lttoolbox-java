@@ -4,17 +4,12 @@
  */
 
 package org.apertium.transfer.development;
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import org.apertium.lttoolbox.process.FSTProcessor;
 import org.apertium.transfer.ApertiumTransfer;
 import org.apertium.transfer.ApertiumTransferCompile;
 
@@ -69,6 +64,13 @@ static String[] transferFileList = {
 
       String[] transferFiles = transferFileList;
       transferFiles = findAlllTransferFilesOnDisk();
+
+transferFiles = new String[] {
+"apertium-en-gl/apertium-en-gl.gl-en.t1x",
+"apertium-es-ro/apertium-es-ro.es-ro.t1x",
+"apertium-en-ca/apertium-en-ca.en-ca.t1x",
+};
+
 
       //redoInterpretedTransfer = false;
       //redoBytecodeCompilation = false;
@@ -186,7 +188,7 @@ static String[] transferFileList = {
     }
 
   public static void printFilesAsJavaArray(String[] transferFiles) {
-    System.out.println("static String[] transferFiles = {");
+    System.out.println("transferFiles = new String[] {");
     for (String relFile : transferFiles) {
       System.out.println("\""+relFile+"\",");
     }
@@ -194,10 +196,17 @@ static String[] transferFileList = {
   }
 
   public static int exec(String... cmd) throws Exception {
-    //System.err.println("exec: " + Arrays.toString(cmd));
-      Process p = Runtime.getRuntime().exec(cmd);
-    BufferedReader br=new BufferedReader(new InputStreamReader(p.getErrorStream()));
+    System.err.println("exec: " + Arrays.toString(cmd).replaceAll(", ", " "));
+    Process p = Runtime.getRuntime().exec(cmd);
+    BufferedReader br=new BufferedReader(new InputStreamReader(p.getInputStream()));
     String s=br.readLine();
+    if (s!=null) {
+      System.err.println(s);
+      p.destroy();
+      return -1;
+    }
+    br=new BufferedReader(new InputStreamReader(p.getErrorStream()));
+    s=br.readLine();
     if (s!=null) {
       System.err.println(s);
       p.destroy();

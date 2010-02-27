@@ -5,6 +5,14 @@
 
 package org.apertium.transfer;
 
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+
 /**
  *
  * @author Jacob Nordfalk
