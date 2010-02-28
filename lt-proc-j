@@ -27,6 +27,6 @@ then
 	fi
 fi
 
-# echo java -Dfile.encoding=UTF-8 -Xms${defaultMinMem}m -Xmx${defaultMaxMem}m -jar ${library} $0 $*
-java -Dfile.encoding=UTF-8 -Xms${defaultMinMem}m -Xmx${defaultMaxMem}m -jar ${library} $0 $*
+# echo java -Dlttoolbox.jar=${library} -Dfile.encoding=UTF-8 -Xms${defaultMinMem}m -Xmx${defaultMaxMem}m -jar ${library} $0 $*
+java -Dlttoolbox.jar=${library} -Dfile.encoding=UTF-8 -Xms${defaultMinMem}m -Xmx${defaultMaxMem}m -jar ${library} $0 $*
 

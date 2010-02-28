@@ -59,13 +59,15 @@ public class TransferEnEoTest {
     String outFile = "/tmp/transferoutput-en-eo.t1x-malgranda.txt";
     String t1xFile = dir+"apertium-eo-en.en-eo.t1x";
     String binFile = dir+"en-eo.t1x.bin";
-    ApertiumTransferCompile.main(new String[]{t1xFile, "/tmp/t1x.bin.class"});
 
     /////////////////////////////
     //
     // NOTE:  You *need* dist/lttoolbox.jar  , so do a full rebuiild if this test fails
     //
     ///////////////////////////
+    ApertiumTransferCompile.main(new String[]{t1xFile, "/tmp/t1x.bin.class"});
+
+
     ApertiumTransfer.main(new String[]{"/tmp/t1x.bin.class", binFile, dir+"en-eo.autobil.bin", dir+"transferinput-en-eo.t1x-malgranda.txt", outFile});
 
     assertEquals("Difference", "", exec("diff "+dir+"transferoutput-en-eo.t1x-malgranda.txt "+outFile));

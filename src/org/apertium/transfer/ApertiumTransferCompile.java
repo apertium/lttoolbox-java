@@ -72,7 +72,15 @@ public class ApertiumTransferCompile {
       // don't depend on an internal javac - this might not be Sun's javac
       //System.err.println("Compiling " + javaDest);
       //com.sun.tools.javac.Main.compile( new String[] { javaDest.getPath() } );
-      File cp = new File("dist/lttoolbox.jar");
+      String cps =  System.getProperty("lttoolbox.jar");
+      File cp = new File(cps!=null? cps : "lttoolbox.jar");
+      if (!cp.exists()) cp = new File("dist/lttoolbox.jar");
+      if (!cp.exists()) cp = new File("/usr/local/share/apertium/lttoolbox.jar");
+      if (!cp.exists()) cp = new File("/usr/share/apertium/lttoolbox.jar");
+      if (cps==null) {
+          System.err.println("Please specify location of lttoolbox.jar, for example writing java -Dlttoolbox.jar="+cp.getPath());
+      }
+
       String exec = "javac -cp "+cp.getPath()+" "+javaDest;
       System.err.println("Compiling: "+exec);
       if (!cp.exists()) {

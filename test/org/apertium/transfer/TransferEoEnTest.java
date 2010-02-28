@@ -47,13 +47,14 @@ public class TransferEoEnTest {
 
   @Test
   public void testTransferAndCompilationMalgranda() throws Exception {
-    ApertiumTransferCompile.main(new String[]{t1xFile, "/tmp/t1x.bin.class"});
 
     /////////////////////////////
     //
     // NOTE:  You *need* dist/lttoolbox.jar  , so do a full rebuiild if this test fails
     //
     ///////////////////////////
+    ApertiumTransferCompile.main(new String[]{t1xFile, "/tmp/t1x.bin.class"});
+
     ApertiumTransfer.main(new String[]{"/tmp/t1x.bin.class", binFile, folder+"en-eo.autobil.bin", folder+"transferinput-en-eo.t1x-malgranda.txt", "/tmp/"+outFile});
 
     assertEquals("Difference", "", exec("diff "+folder+outFile+" /tmp/"+outFile));
