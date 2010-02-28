@@ -1,7 +1,7 @@
 PACKAGE=lttoolbox-java-3.2.0
 DISTFILES=README dist/lttoolbox.jar autogen.sh build.xml COPYING lt-comp-j lt-expand-j lt-proc-j lt-validate-j Makefile nbproject src test testdata
 
-all: dist/lttoolbox.jar
+all: dist/lttoolbox.jar symlinks
 
 dist/lttoolbox.jar:
 	ant -quiet jar

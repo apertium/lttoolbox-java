@@ -52,10 +52,13 @@ static String[] transferFileList = {
 
     public static void main(String[] args) throws Exception {
       String testdir = "testdata/transfer/";
+      //String rootDirRoot = "/tmp/transfertest/";
+      String rootDirRoot = "transfertest/";
       boolean redoInterpretedTransfer = true;
       boolean redoBytecodeCompilation = true;
 
       // Average speedup: 4.189285714285715 - individual: [3.96, 4.01, 4.43, 4.46, 4.27, 3.97, 4.4, 4.36, 4.44, 4.56, 4.34, 4.03, 4.21, 3.94, 4.75, 4.48, 3.83, 4.2, 4.41, 4.1, 4.8, 4.3, 4.09, 4.85, 4.22, 4.59, 3.68, 3.93, 4.78, 3.42, 4.54, 4.86, 4.56, 3.2, 3.97, 3.8, 4.86, 3.33, 4.09, 2.97, 4.54, 4.52, 4.64, 4.91, 3.27, 4.11, 4.3, 4.1, 4.34, 3.67, 3.68, 4.13, 4.35, 3.27, 4.46, 4.32]
+      // Average speedup: 4.945645161290321 - individual: [4.36, 4.29, 5.04, 4.49, 5.76, 4.29, 5.06, 4.92, 4.05, 5.37, 5.02, 5.63, 6.87, 5.83, 5.78, 4.64, 4.76, 5.45, 4.6, 5.21, 4.06, 5.32, 4.5, 5.76, 4.67, 5.41, 5.68, 6.63, 5.37, 6.13, 4.84, 5.6, 3.82, 4.7, 5.13, 4.92, 6.12, 4.72, 3.95, 5.33, 5.3, 4.62, 4.01, 3.21, 7.8, 3.48, 4.49, 4.97, 4.73, 4.78, 3.81, 4.74, 4.62, 5.9, 4.19, 4.55, 3.2, 4.05, 4.32, 5.64, 5.03, 5.11]
       String inputFile = testdir+"transferinput-en-eo.t1x.txt";
 
       // Average speedup: 1.168421052631579 - individual: [0.28, 0.63, 0.65, 1.07, 1.13, 1.01, 1.28, 1.24, 1.1, 1.33, 1.36, 1.0, 0.91, 0.94, 1.37, 1.47, 0.54, 1.69, 1.42, 1.37, 1.47, 1.51, 1.61, 1.6, 1.48, 1.35, 0.36, 1.63, 1.57, 1.46, 1.47, 1.22, 1.31, 0.31, 1.45, 1.52, 1.23, 0.34, 1.21, 1.64, 0.28, 1.49, 1.76, 1.4, 1.72, 0.43, 1.5, 0.65, 1.12, 1.27, 0.42, 1.45, 1.4, 1.05, 1.58, 1.1, 0.45]
@@ -66,7 +69,7 @@ static String[] transferFileList = {
       transferFiles = findAlllTransferFilesOnDisk();
 
 
-      redoInterpretedTransfer = false;
+      //redoInterpretedTransfer = false;
       //redoBytecodeCompilation = false;
       //printFilesAsJavaArray(transferFiles);
 
@@ -82,13 +85,12 @@ static String[] transferFileList = {
         System.err.println("\n============");
         String absFile = datadir + File.separator + relFile;
         String relFileWOSufffix = relFile.substring(0,relFile.lastIndexOf('.'));
-        String rootDir = "/tmp/transfertest/";
-        String resFileWOSufffix = rootDir+"/res/"+relFileWOSufffix;
+        String resFileWOSufffix = rootDirRoot+"/res/"+relFileWOSufffix;
         int ret = 0;
         if (redoInterpretedTransfer) {
-          new File(rootDir+"/res/"+relFile).getParentFile().mkdirs();
-          new File(rootDir+"/actual/"+relFile).getParentFile().mkdirs();
-          new File(rootDir+"/expected/"+relFile).getParentFile().mkdirs();
+          new File(rootDirRoot+"/res/"+relFile).getParentFile().mkdirs();
+          new File(rootDirRoot+"/actual/"+relFile).getParentFile().mkdirs();
+          new File(rootDirRoot+"/expected/"+relFile).getParentFile().mkdirs();
           ret = exec("apertium-validate-transfer "+absFile);
           if (ret!=0) {
             System.err.println("ERROR: "+absFile+"\ndoes not pass apertium-validate-transfer. Skipping...");
@@ -96,7 +98,7 @@ static String[] transferFileList = {
             continue;
           }
           exec("apertium-preprocess-transfer "+absFile+" "+resFileWOSufffix+".bin");
-          exec("cp "+absFile+" "+new File(rootDir+"/res/"+relFile).getParent());
+          exec("cp "+absFile+" "+new File(rootDirRoot+"/res/"+relFile).getParent());
         } else if (!new File(resFileWOSufffix+".bin").exists()) {
           System.err.println("ERROR: "+absFile+"\ndid not pass apertium-validate-transfer. Skipping...");          
           continue;
@@ -117,9 +119,9 @@ static String[] transferFileList = {
 
         long time = System.currentTimeMillis();
         long interpretedTime = 1000; // 1 sekundo, se ni transsaltas
-        if (redoInterpretedTransfer || !new File(rootDir+"/expected/"+relFileWOSufffix+".txt").exists() ) {
+        if (redoInterpretedTransfer || !new File(rootDirRoot+"/expected/"+relFileWOSufffix+".txt").exists() ) {
           ret = exec("apertium-transfer", absFile, resFileWOSufffix+".bin", testdir+"en-eo.autobil.bin",
-            inputFile, rootDir+"/expected/"+relFileWOSufffix+".txt");
+            inputFile, rootDirRoot+"/expected/"+relFileWOSufffix+".txt");
 
           if (ret!=0) interpretedTranferFails.add(relFile);
 
@@ -130,7 +132,7 @@ static String[] transferFileList = {
 
         try {
         ApertiumTransfer.main(new String[]{resFileWOSufffix+".class", resFileWOSufffix+".bin", testdir+"en-eo.autobil.bin",
-          inputFile, rootDir+"/actual/"+relFileWOSufffix+".txt"});
+          inputFile, rootDirRoot+"/actual/"+relFileWOSufffix+".txt"});
         } catch (Exception e) {
           e.printStackTrace();
           compiledTranferFails.add(relFile);
@@ -147,7 +149,7 @@ static String[] transferFileList = {
           speedupSum += speedup;
           speedUps.add(speedup);
           System.err.println("Speedup factor: " +speedup);
-          String diff = "diff -q "+rootDir+"/expected/"+relFileWOSufffix+".txt "+rootDir+"/actual/"+relFileWOSufffix+".txt";
+          String diff = "diff -q "+rootDirRoot+"/expected/"+relFileWOSufffix+".txt "+rootDirRoot+"/actual/"+relFileWOSufffix+".txt";
           ret = exec(diff);
           if (ret==0) {
             System.err.println("OK: Output of interpreted and bytecode compiled transfer is exactly the same");
