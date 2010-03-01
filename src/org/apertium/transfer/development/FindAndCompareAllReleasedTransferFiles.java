@@ -24,9 +24,9 @@ public class FindAndCompareAllReleasedTransferFiles {
 static String[] transferFileList = {
   /*
 "apertium-nn-nb/apertium-nn-nb.nn-nb.t1x",
+   */
 "apertium-cy-en/apertium-cy-en.en-cy.t1x",
 "apertium-cy-en/apertium-cy-en.cy-en.t1x",
-   */
 //"apertium-es-ast/apertium-es-ast.es-ast.t1x",
 "apertium-en-ca/apertium-en-ca.en-ca.t1x",
 
@@ -66,7 +66,7 @@ static String[] transferFileList = {
       //inputFile = testdir+ "transferinput-en-eo.t1x-malgranda.txt";
 
       String[] transferFiles = transferFileList;
-      transferFiles = findAlllTransferFilesOnDisk();
+      //transferFiles = findAlllTransferFilesOnDisk();
 
 
       //redoInterpretedTransfer = false;

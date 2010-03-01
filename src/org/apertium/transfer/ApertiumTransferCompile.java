@@ -21,6 +21,7 @@ package org.apertium.transfer;
 import org.apertium.lttoolbox.*;
 import org.apertium.lttoolbox.process.FSTProcessor;
 import java.io.*;
+import java.lang.reflect.Method;
 import org.apertium.lttoolbox.process.State;
 import org.apertium.transfer.compile.ParseTransferFile;
 import static org.apertium.lttoolbox.LTProc.*;
@@ -72,27 +73,41 @@ public class ApertiumTransferCompile {
       // don't depend on an internal javac - this might not be Sun's javac
       //System.err.println("Compiling " + javaDest);
       //com.sun.tools.javac.Main.compile( new String[] { javaDest.getPath() } );
-      String cps =  System.getProperty("lttoolbox.jar");
-      File cp = new File(cps!=null? cps : "lttoolbox.jar");
-      if (!cp.exists()) cp = new File("dist/lttoolbox.jar");
-      if (!cp.exists()) cp = new File("/usr/local/share/apertium/lttoolbox.jar");
-      if (!cp.exists()) cp = new File("/usr/share/apertium/lttoolbox.jar");
-      if (cps==null) {
-          System.err.println("Please specify location of lttoolbox.jar, for example writing java -Dlttoolbox.jar="+cp.getPath());
-      }
-
-      String exec = "javac -cp "+cp.getPath()+" "+javaDest;
-      System.err.println("Compiling: "+exec);
-      if (!cp.exists()) {
-        System.err.println("Error: "+cp.getPath()+" is missing.");
-        System.err.println("Please rebuild lttoolbox-java to make it appear.");
-        throw new FileNotFoundException(cp.getPath()+" is needed to be able to compile transfer files.");
-      }
-
-      exec(exec);
+      /*
+       * see http://kickjava.com/src/com/caucho/java/InternalCompiler.java.htm
+       *
+      try {
+        String[] args = { javaDest.getPath() };
+        Method compileMet = Class.forName("com.sun.tools.javac.Main").getMethod("compile", args.getClass());
+        compileMet.invoke(null,  new Object[] { args });
+      } catch (Exception e) {
+        e.printStackTrace();
+      }*/
 
       if (!classDest.exists()) {
+        // Try invoking javac
+        String cps =  System.getProperty("lttoolbox.jar");
+        File cp = new File(cps!=null? cps : "lttoolbox.jar");
+        if (!cp.exists()) cp = new File("dist/lttoolbox.jar");
+        if (!cp.exists()) cp = new File("/usr/local/share/apertium/lttoolbox.jar");
+        if (!cp.exists()) cp = new File("/usr/share/apertium/lttoolbox.jar");
+        if (!cp.exists()) cp = new File("dist/lttoolbox.jar"); // fall back to this, to give the best suggestion below
+        if (cps==null) {
+            System.err.println("Please specify location of lttoolbox.jar, for example writing java -Dlttoolbox.jar="+cp.getPath());
+        }
 
+        String exec = "javac -cp "+cp.getPath()+" "+javaDest;
+        System.err.println("Compiling: "+exec);
+        if (!cp.exists()) {
+          System.err.println("Error: "+cp.getPath()+" is missing.");
+          System.err.println("Please rebuild lttoolbox-java to make it appear.");
+          throw new FileNotFoundException(cp.getPath()+" is needed to be able to compile transfer files.");
+        }
+        exec(exec);
+      }
+
+
+      if (!classDest.exists()) {
         throw new InternalError("Compilation error - compiled "+javaDest+" but "+classDest+" didnt appear.");
       }
       
