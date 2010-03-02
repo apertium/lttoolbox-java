@@ -93,10 +93,15 @@
 				<version>2.2</version>
 				<configuration>
 					<archive>
+						<manifest>
+							<mainClass>org.apertium.lttoolbox.LTToolbox</mainClass>
+							<packageName>org.apertium.lttoolbox</packageName>
+						</manifest>
 						<manifestEntries>
 							<mode>development</mode>
 							<url>${pom.url}</url>
 						</manifestEntries>
+						<manifestFile>manifest.mf</manifestFile>
 					</archive>
 				</configuration>
 			</plugin>
