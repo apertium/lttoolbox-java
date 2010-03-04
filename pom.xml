@@ -139,6 +139,20 @@
 -->	
 	<dependencies>
 		<dependency>
+			<groupId>trove4j</groupId>
+			<artifactId>trove4j</artifactId>
+			<version>3.0.0a3</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/trove-3.0.0a3.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>pcj</groupId>
+			<artifactId>pcj</artifactId>
+			<version>1.2</version>
+		</dependency>
+
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.7</version>
