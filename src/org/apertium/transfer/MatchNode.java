@@ -34,13 +34,13 @@ public class MatchNode {
   private Map<Integer,MatchNode> transitions;
 
   public MatchNode() {
-    transitions = new HashMap<Integer,MatchNode>(4);
-    //transitions = new TreeMap<Integer,MatchNode>();
+    //transitions = new HashMap<Integer,MatchNode>(4);
+    transitions = new TreeMap<Integer,MatchNode>();
   }
 
   public MatchNode(int svsize) {
-    transitions = new HashMap<Integer,MatchNode>(svsize);
-    //transitions = new TreeMap<Integer,MatchNode>();
+    //transitions = new HashMap<Integer,MatchNode>(svsize);
+    transitions = new TreeMap<Integer,MatchNode>();
   }
 
   public MatchNode(MatchNode n) {

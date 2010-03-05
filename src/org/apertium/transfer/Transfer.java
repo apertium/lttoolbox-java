@@ -5,35 +5,23 @@
 package org.apertium.transfer;
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
 import java.io.Reader;
-import java.io.StringReader;
 import java.io.Writer;
 import java.lang.reflect.Method;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import org.apertium.lttoolbox.Alphabet;
 import org.apertium.lttoolbox.Compression;
 import org.apertium.lttoolbox.Pair;
 import org.apertium.lttoolbox.compile.Transducer;
 import org.apertium.lttoolbox.process.FSTProcessor;
-import org.apertium.transfer.TransferToken;
 import org.apertium.transfer.development.Timing;
 import org.apertium.transfer.generated.GeneratedTransferBase;
-import org.apertium.transfer.generated.apertium_nn_nb_nb_nn_t1x;
 
 
 // apertium-transfer apertium-eo-en.en-eo.t1x en-eo.t1x.bin en-eo.autobil.bin transferinput-en-eo.t1x-malgranda.txt  transferoutput-en-eo.t1x-malgranda.txt

@@ -1,17 +1,9 @@
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.InputStream;
-import java.io.PrintStream;
 import java.io.Reader;
 import java.io.Writer;
 import org.apertium.lttoolbox.LTComp;
-import org.apertium.lttoolbox.process.FSTProcessor;
-import org.apertium.lttoolbox.process.SetOfCharacters;
-import org.apertium.transfer.ApertiumTransfer;
-import org.apertium.transfer.ApertiumTransferCompile;
 import org.apertium.transfer.Transfer;
 
 
@@ -51,10 +43,9 @@ public class Profiling {
         p.testjavaPostgeneration();
         System.gc();
         p.testjavaAnalysis();
-/**
         System.gc();
     LTComp.main(new String[] { "rl", "testdata/apertium-fr-es.fr.dix", "tmp/testJava.bin"});
-    report("lt-comp  ");
+    report("lt-comp");
 /**/
         //System.err.println("SetOfCharacters.max_encountered = " + SetOfCharacters.max_encountered);
       }
@@ -101,30 +92,21 @@ public class Profiling {
 
   private void testTransfer() throws Exception {
 
-      Transfer t = new Transfer();
+      Transfer t;
 
-      Class transferClass =org.apertium.transfer.generated.apertium_eo_en_en_eo_t1x.class;
+      //Class transferClass =org.apertium.transfer.generated.apertium_eo_en_en_eo_t1x.class;
+      Class transferClass =org.apertium.transfer.generated.apertium_en_ca_en_ca_t1x.class;
 
 //      t.read(transferClass, dir+"en-eo.t1x.bin", dir+"en-eo.autobil.bin");
+      report("start");
       t = new Transfer();
       t.read(transferClass, tdir+"en-ca.t1x.bin", tdir+"en-eo.autobil.bin");
-      report("transfer");
-      t = new Transfer();
-      t.read(transferClass, tdir+"en-ca.t1x.bin", tdir+"en-eo.autobil.bin");
-      report("transfer");
-      t = new Transfer();
-      t.read(transferClass, tdir+"en-ca.t1x.bin", tdir+"en-eo.autobil.bin");
-      report("transfer");
-      t = new Transfer();
-      t.read(transferClass, tdir+"en-ca.t1x.bin", tdir+"en-eo.autobil.bin");
-      report("transfer");
-/*
-      Reader input = new FileReader(dir+"transferinput-en-eo.t1x-malgranda.txt");
+      report("transfer-init");
+      Reader input = new FileReader(tdir+"transferinput-en-eo.t1x-malgranda.txt");
       String outFile = "/tmp/transfer-output-malgranda.txt";
       Writer output = new FileWriter(outFile);
       t.transfer( input, output);
       output.close();
-*/
       report("transfer");
   }
 
@@ -291,4 +273,18 @@ generation -p took sec 134 msec
 analysis -a   took sec 564 msec
 lt-comp   took sec 10110 msec
 BUILD SUCCESSFUL (total time: 13 seconds)
+
+
+Profiling Fri Mar 05 11:54:16 CET 2010
+analysis -a   took sec 1324 msec
+generation -g took sec 540 msec
+generation -d took sec 382 msec
+generation -n took sec 366 msec
+generation -p took sec 162 msec
+analysis -a   took sec 411 msec
+final@inconditional 61 858
+main@standard 62442 96775
+lt-comp   took sec 8136 msec
+BUILD SUCCESSFUL (total time: 12 seconds)
+
  */
