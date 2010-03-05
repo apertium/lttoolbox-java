@@ -66,24 +66,23 @@ public class TransExe {
 
 
         final int number_of_states = Compression.multibyte_read(input);
+        base = number_of_states;
+
+        //System.out.println("number of states : "+number_of_states);
+        //int maxmax = 0;
+        //int ant1 = 0;
 
         node_list2 = new Node[number_of_states];
         for (int current_state = 0; current_state<number_of_states; current_state++) {
           node_list2[current_state] = new Node();
         }
 
-        base = number_of_states;
-        //System.out.println("number of states : "+number_of_states);
-        //int maxmax = 0;
-        //int ant1 = 0;
-
         for (int current_state = 0; current_state<number_of_states; current_state++) {
           Node sourceNode = node_list2[current_state];
             
           int number_of_local_transitions = Compression.multibyte_read(input);
-          int tagbase = 0;
-
           sourceNode.initTransitions(number_of_local_transitions);
+          int tagbase = 0;
 
           while (number_of_local_transitions > 0) {
               number_of_local_transitions--;

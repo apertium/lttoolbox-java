@@ -21,6 +21,7 @@ package org.apertium.transfer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.Vector;
 
 public class MatchNode {
@@ -34,10 +35,12 @@ public class MatchNode {
 
   public MatchNode() {
     transitions = new HashMap<Integer,MatchNode>(4);
+    //transitions = new TreeMap<Integer,MatchNode>();
   }
 
   public MatchNode(int svsize) {
     transitions = new HashMap<Integer,MatchNode>(svsize);
+    //transitions = new TreeMap<Integer,MatchNode>();
   }
 
   public MatchNode(MatchNode n) {

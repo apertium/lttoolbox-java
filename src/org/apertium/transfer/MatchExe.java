@@ -102,7 +102,9 @@ public class MatchExe {
     for (int first =0; first<limit; first++) {
       final Map<Integer, Set<Integer>> second = t.transitions.get(first);
       node_list[first] = new MatchNode(second.size());
+      System.err.println("second.size() = " + second.size());
     }
+
 
     // set up the transitions
     for (int first =0; first<t.transitions.size(); first++) {

@@ -108,8 +108,6 @@ addTransition(i = 117
 
  */
     void initTransitions(int number_of_local_transitions) {
-
-//    System.err.println("number_of_local_transitions = " + number_of_local_transitions);
         transitions = new HashMap<Integer, Transition>(number_of_local_transitions);
     }
 
