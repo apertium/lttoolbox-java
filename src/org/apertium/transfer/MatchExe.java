@@ -19,6 +19,8 @@ package org.apertium.transfer;
  */
 
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +29,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Vector;
+import org.apertium.lttoolbox.Compression;
 import org.apertium.lttoolbox.compile.Transducer;
 
 public class MatchExe {
@@ -57,8 +60,30 @@ public class MatchExe {
     copy(te);
   }
 
-  public MatchExe(Transducer t, Map<Integer, Integer> final_type) {
 
+
+  public MatchExe(Transducer t, InputStream in) throws IOException {
+
+    // memory allocation
+    node_list = new MatchNode[t.transitions.size()];
+    int ni=0;
+
+    for (int first =0; first<t.transitions.size(); first++) {
+      final Map<Integer, Set<Integer>> second = t.transitions.get(first);
+      node_list[ni++] = new MatchNode(second.size());
+    }
+
+    // set up finals
+    for (int i=0, limit=Compression.multibyte_read(in); i!=limit; i++) {
+      int key=Compression.multibyte_read(in);
+      finals.put(node_list[key], Compression.multibyte_read(in));
+    }
+
+    setupTransitions(t);
+  }
+
+
+  public MatchExe(Transducer t, Map<Integer, Integer> final_type) {
     // System.err.println("final_type = " + new TreeMap<Integer, Integer>(final_type));
     // approx evry 7th value is set. For en-ca (big pair)
     // final_type = {14=1, 41=2, 48=2, 55=2, 62=2, 69=2, 76=2, 83=2, 90=2, 97=2, 103=90, 106=90, 109=90,
@@ -73,7 +98,7 @@ public class MatchExe {
     
     //System.err.println("t.transitions.keySet() = " + new TreeSet(t.transitions.keySet()));
 
-    for (Integer first : t.transitions.keySet()) {
+    for (int first =0; first<t.transitions.size(); first++) {
       final Map<Integer, Set<Integer>> second = t.transitions.get(first);
       node_list[ni++] = new MatchNode(second.size());
     }
@@ -85,22 +110,27 @@ public class MatchExe {
       finals.put(node_list[first], second);
     }
 
+    setupTransitions(t);
+  }
+
+  private void setupTransitions(Transducer t) {
     // set up initial node
     initial_id = t.getInitial();
 
     // set up the transitions
-    for (Integer itFirst : t.transitions.keySet()) {
-      MatchNode mynode = node_list[itFirst];
-      int i = 0;
-      final Map<Integer, Set<Integer>>  itSecond = t.transitions.get(itFirst);
+    for (int itFirst =0; itFirst<t.transitions.size(); itFirst++) {
+      MatchNode mynode=node_list[itFirst];
+      int i=0;
+      final Map<Integer, Set<Integer>> itSecond=t.transitions.get(itFirst);
       for (Integer it2First : itSecond.keySet()) {
-        final Collection<Integer> it2Second = itSecond.get(it2First);
+        final Collection<Integer> it2Second=itSecond.get(it2First);
         for (Integer integer : it2Second) {
           mynode.addTransition(it2First, node_list[integer], i++);
         }
       }
     }
   }
+
 
   public void copy(MatchExe te) {
     initial_id = te.initial_id;

@@ -91,6 +91,8 @@ public class Transfer {
     Transducer t=Transducer.read(in, alphabet.size());
     //System.err.println("  timing = " + timing.toString());
 
+    /* old code
+     * 
     HashMap<Integer, Integer> finals=new HashMap<Integer, Integer>();
     // finals
     for (int i=0, limit=Compression.multibyte_read(in); i!=limit; i++) {
@@ -98,9 +100,12 @@ public class Transfer {
       finals.put(key, Compression.multibyte_read(in));
     }
 
-    //System.err.println("finals = " + finals);
-
     me=new MatchExe(t, finals);
+     */
+
+    // faster - let it read itselv, thus no need to make a big hashmap
+    me=new MatchExe(t, in);
+
 
   //System.err.println("me = " + me);
 
