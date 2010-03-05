@@ -1,6 +1,8 @@
 PACKAGE=lttoolbox-java-3.2.0
 DISTFILES=README dist/lttoolbox.jar autogen.sh build.xml COPYING lt-comp-j lt-expand-j lt-proc-j lt-validate-j Makefile nbproject src test testdata
 
+.PHONY : test dist
+
 all: dist/lttoolbox.jar symlinks
 
 dist/lttoolbox.jar:
@@ -33,14 +35,14 @@ install: dist/lttoolbox.jar
 #	cp -a lt-proc-j lt-expand-j lt-comp-j lt-validate-j `cat prefix`/bin/;
 	cp -a apertium-transfer-j apertium-preprocess-transfer-bytecode-j lt-proc-j lt-expand-j lt-comp-j lt-validate-j `cat prefix`/bin/;
 
-tests:
+test:
 	ant -quiet test
 
 clean:
 	ant -quiet clean
 	rm -f prefix;
 
-dists: dist/lttoolbox.jar
+dist: dist/lttoolbox.jar
 	rm -rf ${PACKAGE}
 	mkdir ${PACKAGE}
 	cp -a ${DISTFILES} ${PACKAGE}
