@@ -984,8 +984,9 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
         for (Element c0 : getChildsChildrenElements(root, "section-def-vars")) {
           String n = c0.getAttribute("n");
           varList.add(n);
-          // fix e.g. <def-var n="nombre" v="&amp;lt;sg&amp;gt;"/>
-          String v = c0.getAttribute("v").replace("&amp;lt;", "<").replace("&amp;gt;", ">");
+          // fix e.g. <def-var n="nombre" v="&amp;lt;sg&amp;gt;"/> that gives
+          // String var_nombre = "&lt;sg&gt;";
+          String v = c0.getAttribute("v").replace("&lt;", "<").replace("&gt;", ">");
           printComments();
           println("String var_"+javaIdentifier(n)+" = \""+v+"\";");
         }
