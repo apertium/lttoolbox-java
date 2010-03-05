@@ -17,6 +17,7 @@ package org.apertium.lttoolbox.compile;
  * 02111-1307, USA.
  */
 
+import org.apertium.lttoolbox.IntSet;
 import org.apertium.lttoolbox.*;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -50,7 +51,7 @@ public class Transducer {
     /**
      * Final state set
      */
-    Set<Integer> finals = new HashSet<Integer>();
+    IntSet finals = new IntSet();
 
     /**
      * Transitions of the transducer.
@@ -117,7 +118,8 @@ public class Transducer {
     }
 
     public void setFinal(int state) {
-      setFinal(state, true);
+      //setFinal(state, true);
+      finals.add(state);
     }
 
     public void setFinal(int state, boolean valor) {
@@ -255,7 +257,7 @@ public class Transducer {
         this.linkStates(source, first_state + t.initial, epsilon_tag);
 
         // return the unique final state of the inserted transducer
-        Integer untranslated_final = t.finals.iterator().next();
+        int untranslated_final = t.finals.first();
         return first_state + untranslated_final;
     }
     
@@ -314,6 +316,13 @@ public class Transducer {
     return place;
   }
 
+  private void ensureCreatedPlace(int state) {
+    if (transitions.size()<=state) {
+      transitions.add(new TreeMap<Integer, Set<Integer>>());
+    }
+  }
+
+
     /**
      * Computes whether two sets have elements in common
      * @param s1 the first set
@@ -328,6 +337,22 @@ public class Transducer {
         }
         return true;
     }
+
+    /**
+     * Computes whether two sets have elements in common
+     * @param s1 the first set
+     * @param s2 the second set
+     * @return true if the sets don't intersect
+     */
+    private boolean isEmptyIntersection(Set<Integer> s1, IntSet s2) {
+        for (Integer i : s1) {
+            if (s2.contains(i)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     /**
      * Determinize the transducer
@@ -352,7 +377,7 @@ public class Transducer {
         R.get(0).add(0);
 
         int initial_prima = 0;
-        Set<Integer> finals_prima = new TreeSet<Integer>();
+        IntSet finals_prima = new IntSet();
 
         if (finals.contains(initial)) {
             finals_prima.add(0);
@@ -426,10 +451,16 @@ public class Transducer {
     void joinFinals() {
         if (finals.size() > 1) {
             Integer state = newState();
+
+             for (int it = finals.next(0); it >= 0; it = finals.next(it+1)) {
+                linkStates(it, state, epsilon_tag);
+             }
+             /*
             Iterator<Integer> it = finals.iterator();
             while (it.hasNext()) {
                 linkStates(it.next(), state, epsilon_tag);
             }
+              */
             finals.clear();
             finals.add(state);
             //return state;
@@ -451,7 +482,7 @@ public class Transducer {
         initial = state;
 
         state = newState();
-        linkStates((Integer) finals.toArray()[0], state, epsilon_tag);
+        linkStates((Integer) finals.first(), state, epsilon_tag);
         finals.clear();
         finals.add(state);
         linkStates(state, initial, epsilon_tag);
@@ -468,7 +499,7 @@ public class Transducer {
         initial = state;
 
         state = newState();
-        linkStates((Integer) finals.toArray()[0], state, epsilon_tag);
+        linkStates((Integer) finals.first(), state, epsilon_tag);
         finals.clear();
         finals.add(state);
         linkStates(initial, state, epsilon_tag);
@@ -512,7 +543,7 @@ public class Transducer {
                 }
             }
         }
-        Integer newInitial = finals.iterator().next();
+        Integer newInitial = finals.first();
         finals.clear();
         finals.add(initial);
         initial = newInitial;
@@ -577,7 +608,7 @@ public class Transducer {
     private void addTransition(Map<Integer, Set<Integer>> place, int tagbase, int state) {
        // unneccesary according to test , but needed according to C++ code:
        // new_t.transitions[state].clear(); // force create
-       getCreatePlace(state);
+       ensureCreatedPlace(state);
 
         // new_t.transitions[current_state].insert(pair<int, int>(tagbase, state));
        /* old code
@@ -617,6 +648,7 @@ public class Transducer {
             sameFinals = false;
             return false;
         }
+        /*
         for (Integer i : finals) {
             if (!other.finals.contains(i)) {
                 System.out.println("the state " + i + " is a final state in the first transducer but not in the second one");
@@ -624,6 +656,7 @@ public class Transducer {
             return false;
             }
         }
+         */
         if (transitions.size() != other.transitions.size()) {
             System.out.println("the two transducers have different sizes for their attribute transitions");
             sameSize = false;
@@ -686,13 +719,19 @@ public class Transducer {
         //reading the initial state
         t.initial = Compression.multibyte_read(input);
 
+
+        //System.err.println("t.initial  = " + t.initial );
+        
         //reading the final states
         int base = 0;
         for (int i = Compression.multibyte_read(input); i > 0; i--) {
             int read = Compression.multibyte_read(input);
-            t.finals.add(read + base);
             base += read;
+            t.finals.add(base);
         }
+
+
+        //System.err.println("t.finals = " + t.finals.size());
 
         //reading the transitions
         int number_of_states = Compression.multibyte_read(input);
@@ -728,10 +767,17 @@ public class Transducer {
         Compression.multibyte_write(initial, output);
         Compression.multibyte_write(finals.size(), output);
         int base = 0;
+
+         for (int it = finals.next(0); it >= 0; it = finals.next(it+1)) {
+            Compression.multibyte_write(it - base, output);
+            base = it;
+         }
+/*
         for (Integer it : finals) {
             Compression.multibyte_write(it - base, output);
             base = it;
         }
+*/
         base = transitions.size();
         Compression.multibyte_write(base, output);
         for(int itFirst=0; itFirst<transitions.size(); itFirst++) {
@@ -755,4 +801,5 @@ public class Transducer {
             }
         }
     }
+
 }

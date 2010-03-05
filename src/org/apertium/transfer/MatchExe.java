@@ -100,13 +100,13 @@ public class MatchExe {
     int limit=t.transitions.size();
 
     for (int first =0; first<limit; first++) {
-      final Map<Integer, Set<Integer>> second = t.transitions.get(first);
-      node_list[first] = new MatchNode(second.size());
+      //final Map<Integer, Set<Integer>> second = t.transitions.get(first);
+      //node_list[first] = new MatchNode(second.size());
+      node_list[first] = new MatchNode();
     }
 
-
     // set up the transitions
-    for (int first =0; first<t.transitions.size(); first++) {
+    for (int first =0; first<limit; first++) {
       MatchNode mynode=node_list[first];
       int i=0;
       final Map<Integer, Set<Integer>> second=t.transitions.get(first);
