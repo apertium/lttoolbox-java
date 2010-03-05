@@ -64,22 +64,13 @@ public class MatchExe {
 
   public MatchExe(Transducer t, InputStream in) throws IOException {
 
-    // memory allocation
-    node_list = new MatchNode[t.transitions.size()];
-    int ni=0;
-
-    for (int first =0; first<t.transitions.size(); first++) {
-      final Map<Integer, Set<Integer>> second = t.transitions.get(first);
-      node_list[ni++] = new MatchNode(second.size());
-    }
+    setupTransitionsAndNodes(t);
 
     // set up finals
     for (int i=0, limit=Compression.multibyte_read(in); i!=limit; i++) {
       int key=Compression.multibyte_read(in);
       finals.put(node_list[key], Compression.multibyte_read(in));
     }
-
-    setupTransitions(t);
   }
 
 
@@ -91,43 +82,41 @@ public class MatchExe {
     // 420739=211, 420741=213, 420743=215, 420745=215, 420747=215, 420749=216}
 
 
-    // memory allocation
-    node_list = new MatchNode[t.transitions.size()];
-    int ni=0;
-
-    
-    //System.err.println("t.transitions.keySet() = " + new TreeSet(t.transitions.keySet()));
-
-    for (int first =0; first<t.transitions.size(); first++) {
-      final Map<Integer, Set<Integer>> second = t.transitions.get(first);
-      node_list[ni++] = new MatchNode(second.size());
-    }
-
+    setupTransitionsAndNodes(t);
 
     // set up finals
     for (Integer first : final_type.keySet()) {
       final Integer second = final_type.get(first);
       finals.put(node_list[first], second);
     }
-
-    setupTransitions(t);
   }
 
-  private void setupTransitions(Transducer t) {
+  private void setupTransitionsAndNodes(Transducer t) {
     // set up initial node
     initial_id = t.getInitial();
 
+    // memory allocation
+    node_list = new MatchNode[t.transitions.size()];
+    int limit=t.transitions.size();
+
+    for (int first =0; first<limit; first++) {
+      final Map<Integer, Set<Integer>> second = t.transitions.get(first);
+      node_list[first] = new MatchNode(second.size());
+    }
+
     // set up the transitions
-    for (int itFirst =0; itFirst<t.transitions.size(); itFirst++) {
-      MatchNode mynode=node_list[itFirst];
+    for (int first =0; first<t.transitions.size(); first++) {
+      MatchNode mynode=node_list[first];
       int i=0;
-      final Map<Integer, Set<Integer>> itSecond=t.transitions.get(itFirst);
-      for (Integer it2First : itSecond.keySet()) {
-        final Collection<Integer> it2Second=itSecond.get(it2First);
+      final Map<Integer, Set<Integer>> second=t.transitions.get(first);
+      for (Integer it2First : second.keySet()) {
+        final Collection<Integer> it2Second=second.get(it2First);
         for (Integer integer : it2Second) {
           mynode.addTransition(it2First, node_list[integer], i++);
         }
       }
+
+      //System.err.println("mynode = " + mynode.transitions.keySet());
     }
   }
 

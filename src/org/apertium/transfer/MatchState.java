@@ -67,7 +67,7 @@ public class MatchState {
   }
 
   void applySymbol(MatchNode pnode, int symbol) {
-    MatchNode aux = pnode.transitions.get(symbol);
+    MatchNode aux = pnode.transitions_get(symbol);
     if (aux != null) {
       state[last] = aux;
       last = (last + 1) % BUF_LIMIT;

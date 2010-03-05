@@ -30,13 +30,14 @@ public class MatchNode {
    * The outgoing transitions from this node.
    * Schema: (input symbol, destination)
    */
-  Map<Integer,MatchNode> transitions = new HashMap<Integer,MatchNode>();
+  private Map<Integer,MatchNode> transitions;
 
   public MatchNode() {
+    transitions = new HashMap<Integer,MatchNode>(4);
   }
 
   public MatchNode(int svsize) {
-    //transitions = new Vector<MatchNode>(svsize);
+    transitions = new HashMap<Integer,MatchNode>(svsize);
   }
 
   public MatchNode(MatchNode n) {
@@ -55,5 +56,9 @@ public class MatchNode {
     if (n!=null) {
       System.err.println("HMM!!! n = " + n);
     }
+  }
+
+  MatchNode transitions_get(int symbol) {
+    return transitions.get(symbol);
   }
 }

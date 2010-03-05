@@ -580,7 +580,6 @@ public class Transducer {
        getCreatePlace(state);
 
         // new_t.transitions[current_state].insert(pair<int, int>(tagbase, state));
-
        /* old code
         Set<Integer> set = place.get(tagbase);
         if (set == null) {
@@ -588,7 +587,6 @@ public class Transducer {
             place.put(tagbase, set);
         }
          */
-
         // new faster code assumes no set it already present - might be wrong for new uses
         Set<Integer> set = new TreeSet<Integer>();
         place.put(tagbase, set);
