@@ -67,7 +67,7 @@ public class testTransducer {
 
         int number_of_states = base;
         int current_state = 0;
-
+/*
         while (number_of_states > 0) {
             //System.out.println("number of states : "+number_of_states);
             int number_of_local_transitions = Compression.multibyte_read(input);
@@ -93,6 +93,8 @@ public class testTransducer {
             number_of_states--;
             current_state++;
         }
+ *
+ */
         return t;
     }
     
@@ -116,7 +118,7 @@ public class testTransducer {
             int temp = 0;
             int max = 0;
             float average = 0;
-            for (Integer i :c.sections.get(s).transitions.keySet()) {
+            for (int i=0; i<c.sections.get(s).transitions.size(); i++) {
                 temp+=c.sections.get(s).transitions.get(i).size();
                 average+=temp;
                 max=(temp>max)?temp:max;
@@ -168,14 +170,14 @@ public class testTransducer {
             int max1 = 0;
             int count2 = 0;
             int max2 = 0;
-            for (Integer i : c.sections.get(s).transitions.keySet()) {
+            for (int i=0; i<c.sections.get(s).transitions.size(); i++) {
                 if (i>max1) {max1=i;}
                 for (Integer j : c.sections.get(s).transitions.get(i).keySet()) {
                     
                     count1 += c.sections.get(s).transitions.get(i).get(j).size();
                 }
             }
-            for (Integer i : sections.get(s).transitions.keySet()) {
+            for (int i=0; i<sections.get(s).transitions.size(); i++) {
                 if (i>max2) {max2=i;}
                 for (Integer j : sections.get(s).transitions.get(i).keySet()) {
                     count2 += sections.get(s).transitions.get(i).get(j).size();
