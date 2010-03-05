@@ -285,6 +285,15 @@ public class Transducer {
         optional();
     }
 
+  private Map<Integer, Set<Integer>> getCreatePlace(int state) {
+    Map<Integer, Set<Integer>> place=transitions.get(state);
+    if (place==null) {
+      place=new TreeMap<Integer, Set<Integer>>();
+      transitions.put(state, place);
+    } // new_t.transitions[state].clear(); // force create
+    return place;
+  }
+
     /**
      * Computes whether two sets have elements in common
      * @param s1 the first set
@@ -532,20 +541,21 @@ public class Transducer {
      * @param label the tag
      * @param destination the target state
      */
-    void addTransition(Integer current_state, Integer tagbase, Integer state) {
-        Map<Integer, Set<Integer>> place = transitions.get(current_state);
-        if (place == null) {
-            place = new TreeMap<Integer, Set<Integer>>();
-            transitions.put(current_state, place);
-        }
+    private void addTransition(int current_state, int tagbase, int state) {
+        Map<Integer, Set<Integer>> place=getCreatePlace(current_state);
+        addTransition(place, tagbase, state);
+    }
 
-        // unneccesary according to test , but needed according to C++ code:
-        // new_t.transitions[state].clear(); // force create
-        Map<Integer, Set<Integer>> destplace = transitions.get(state);
-        if (destplace == null) {
-           destplace = new TreeMap<Integer, Set<Integer>>();
-            transitions.put(state, destplace);
-        }
+    /**
+     * Add a transduction to the transducer
+     * @param source the source state
+     * @param label the tag
+     * @param destination the target state
+     */
+    private void addTransition(Map<Integer, Set<Integer>> place, int tagbase, int state) {
+       // unneccesary according to test , but needed according to C++ code:
+       // new_t.transitions[state].clear(); // force create
+       getCreatePlace(state);
 
         // new_t.transitions[current_state].insert(pair<int, int>(tagbase, state));
         Set<Integer> set = new TreeSet<Integer>();
@@ -666,12 +676,16 @@ public class Transducer {
 
         for (int i = number_of_states; i > 0; i--) {
             int number_of_local_transitions = Compression.multibyte_read(input);
-            int tagbase = 0;
+            if (number_of_local_transitions>0) {
+              int tagbase = 0;
+              Map<Integer, Set<Integer>> place=t.getCreatePlace(current_state);
 
-            for (int j = number_of_local_transitions; j > 0; j--) {
-                tagbase += Compression.multibyte_read(input)- decalage;
-                int state = (current_state + Compression.multibyte_read(input)) % number_of_states;
-                t.addTransition(current_state, tagbase, state);
+              for (int j = number_of_local_transitions; j > 0; j--) {
+                  tagbase += Compression.multibyte_read(input)- decalage;
+                  int state = (current_state + Compression.multibyte_read(input)) % number_of_states;
+                  // t.addTransition(current_state, tagbase, state);
+                  t.addTransition(place, tagbase, state);
+              }
             }
             current_state++;
         }

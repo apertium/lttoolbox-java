@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.Vector;
 import org.apertium.lttoolbox.compile.Transducer;
 
@@ -32,45 +34,55 @@ public class MatchExe {
   /**
    * Initial state
    */
-  int initial_id;
+  private int initial_id;
 
   /**
    * MatchNode list
    */
-  List<MatchNode> node_list;
+  private MatchNode[] node_list;
 
   /**
    * Set of final nodes
    */
-  Map<MatchNode, Integer> finals= new HashMap<MatchNode, Integer>();
+  private Map<MatchNode, Integer> finals= new HashMap<MatchNode, Integer>();
 
+  /** in practice the number of elements are known, so use an array directly .
+     therefore this constructur has been deleted 
   public MatchExe() {
     node_list = new Vector<MatchNode>();
   }
+*/
 
   public MatchExe(MatchExe te) {
     copy(te);
   }
 
   public MatchExe(Transducer t, Map<Integer, Integer> final_type) {
+
+    // System.err.println("final_type = " + new TreeMap<Integer, Integer>(final_type));
+    // approx evry 7th value is set. For en-ca (big pair)
+    // final_type = {14=1, 41=2, 48=2, 55=2, 62=2, 69=2, 76=2, 83=2, 90=2, 97=2, 103=90, 106=90, 109=90,
+    // ...
+    // 420739=211, 420741=213, 420743=215, 420745=215, 420747=215, 420749=216}
+
+
     // memory allocation
-    node_list = new Vector<MatchNode>(t.transitions.size());
+    node_list = new MatchNode[t.transitions.size()];
+    int ni=0;
+
+    
+    //System.err.println("t.transitions.keySet() = " + new TreeSet(t.transitions.keySet()));
 
     for (Integer first : t.transitions.keySet()) {
       final Map<Integer, Set<Integer>> second = t.transitions.get(first);
-      node_list.add(new MatchNode(second.size()));
+      node_list[ni++] = new MatchNode(second.size());
     }
-
-
-    //System.err.println("t.transitions.size() = " + t.transitions.size());
-
-    //System.err.println("node_list.size() = " + node_list.size());
 
 
     // set up finals
     for (Integer first : final_type.keySet()) {
       final Integer second = final_type.get(first);
-      finals.put(node_list.get(first), second);
+      finals.put(node_list[first], second);
     }
 
     // set up initial node
@@ -78,13 +90,13 @@ public class MatchExe {
 
     // set up the transitions
     for (Integer itFirst : t.transitions.keySet()) {
-      MatchNode mynode = node_list.get(itFirst);
+      MatchNode mynode = node_list[itFirst];
       int i = 0;
       final Map<Integer, Set<Integer>>  itSecond = t.transitions.get(itFirst);
       for (Integer it2First : itSecond.keySet()) {
         final Collection<Integer> it2Second = itSecond.get(it2First);
         for (Integer integer : it2Second) {
-          mynode.addTransition(it2First, node_list.get(integer), i++);
+          mynode.addTransition(it2First, node_list[integer], i++);
         }
       }
     }
@@ -97,7 +109,7 @@ public class MatchExe {
   }
 
   public MatchNode getInitial() {
-    return node_list.get(initial_id);
+    return node_list[initial_id];
   }
 
   public Map<MatchNode, Integer> getFinals() {

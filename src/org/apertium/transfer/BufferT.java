@@ -45,7 +45,7 @@ public class BufferT<E> {
     int lastpos;
 
   BufferT() {
-    this(2048);
+    this(64);
   }
 
     /**

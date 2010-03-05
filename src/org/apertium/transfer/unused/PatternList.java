@@ -15,6 +15,22 @@ import org.apertium.lttoolbox.compile.Transducer;
 
 /**
  * Created by Nic Cottrell, Jan 27, 2009 5:00:21 PM
+ * Used in:
+morpho_stream.cc:  me = td->getPatternList().newMatchExe();
+morpho_stream.cc:  alphabet = td->getPatternList().getAlphabet();
+morpho_stream.cc:  ca_any_char = alphabet(PatternList::ANY_CHAR);
+morpho_stream.cc:  ca_any_tag = alphabet(PatternList::ANY_TAG);
+Binara dosiero morpho_stream.o kongruas
+tagger_data.cc:PatternList &
+tagger_data.cc:TaggerData::getPatternList()
+tagger_data.cc:TaggerData::setPatternList(PatternList const &pl)
+tagger_data.h:  PatternList plist;
+tagger_data.h:  void setPatternList(PatternList const &pl);
+tagger_data.h:  PatternList & getPatternList();
+Binara dosiero tagger_data.o kongruas
+tsx_reader.cc:  plist = &(tdata.getPatternList());
+tsx_reader.h:  PatternList *plist;
+
  */
 
 public class PatternList {

@@ -62,6 +62,7 @@ public class Profiling {
 
 
   String dir = "testdata/regression/";
+  String tdir = "testdata/transfer/";
 
 
   public void testjavaAnalysis() throws Exception {
@@ -104,14 +105,26 @@ public class Profiling {
 
       Class transferClass =org.apertium.transfer.generated.apertium_eo_en_en_eo_t1x.class;
 
-      t.read(transferClass, dir+"en-eo.t1x.bin", dir+"en-eo.autobil.bin");
-
+//      t.read(transferClass, dir+"en-eo.t1x.bin", dir+"en-eo.autobil.bin");
+      t = new Transfer();
+      t.read(transferClass, tdir+"en-ca.t1x.bin", tdir+"en-eo.autobil.bin");
+      report("transfer");
+      t = new Transfer();
+      t.read(transferClass, tdir+"en-ca.t1x.bin", tdir+"en-eo.autobil.bin");
+      report("transfer");
+      t = new Transfer();
+      t.read(transferClass, tdir+"en-ca.t1x.bin", tdir+"en-eo.autobil.bin");
+      report("transfer");
+      t = new Transfer();
+      t.read(transferClass, tdir+"en-ca.t1x.bin", tdir+"en-eo.autobil.bin");
+      report("transfer");
+/*
       Reader input = new FileReader(dir+"transferinput-en-eo.t1x-malgranda.txt");
       String outFile = "/tmp/transfer-output-malgranda.txt";
       Writer output = new FileWriter(outFile);
       t.transfer( input, output);
       output.close();
-
+*/
       report("transfer");
   }
 

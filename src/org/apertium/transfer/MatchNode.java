@@ -55,7 +55,5 @@ public class MatchNode {
     if (n!=null) {
       System.err.println("HMM!!! n = " + n);
     }
-
   }
-
 }
