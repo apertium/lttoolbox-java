@@ -63,14 +63,17 @@ static String[] transferFileList = {
 
       // Average speedup: 1.168421052631579 - individual: [0.28, 0.63, 0.65, 1.07, 1.13, 1.01, 1.28, 1.24, 1.1, 1.33, 1.36, 1.0, 0.91, 0.94, 1.37, 1.47, 0.54, 1.69, 1.42, 1.37, 1.47, 1.51, 1.61, 1.6, 1.48, 1.35, 0.36, 1.63, 1.57, 1.46, 1.47, 1.22, 1.31, 0.31, 1.45, 1.52, 1.23, 0.34, 1.21, 1.64, 0.28, 1.49, 1.76, 1.4, 1.72, 0.43, 1.5, 0.65, 1.12, 1.27, 0.42, 1.45, 1.4, 1.05, 1.58, 1.1, 0.45]
       // Average speedup: 1.2274137931034483 - individual: [0.21, 0.73, 0.7, 1.76, 1.91, 1.06, 1.18, 0.89, 1.12, 1.25, 1.77, 1.84, 0.79, 1.45, 1.25, 1.5, 1.48, 0.46, 1.75, 1.17, 1.22, 1.3, 1.38, 1.68, 1.85, 1.36, 1.54, 0.29, 1.53, 1.61, 1.26, 1.43, 0.83, 1.5, 0.31, 1.94, 1.28, 1.34, 0.28, 1.28, 1.17, 0.29, 1.67, 1.52, 1.12, 1.5, 0.35, 1.68, 1.23, 1.53, 1.3, 0.42, 1.72, 1.42, 1.62, 0.94, 1.6, 0.63]
+      // After 7th of may optimization 
+      // Average speedup: 1.7729824561403507 - individual: [0.29, 0.82, 0.52, 0.75, 0.98, 1.18, 1.12, 0.47, 1.59, 1.44, 1.26, 1.37, 2.04, 1.91, 1.71, 1.13, 1.11, 3.28, 1.6, 1.82, 1.09, 1.99, 1.51, 1.53, 1.76, 1.2, 4.48, 1.66, 1.41, 1.77, 1.5, 1.73, 1.36, 3.9, 1.13, 1.78, 1.74, 4.69, 1.93, 1.92, 4.54, 0.77, 1.52, 1.33, 1.74, 5.13, 1.97, 1.7, 1.71, 2.08, 1.61, 1.4, 1.61, 1.54, 1.55, 1.79, 2.6]
+
       //inputFile = testdir+ "transferinput-en-eo.t1x-malgranda.txt";
 
       String[] transferFiles = transferFileList;
-      //transferFiles = findAlllTransferFilesOnDisk();
+      transferFiles = findAlllTransferFilesOnDisk();
 
 
       //redoInterpretedTransfer = false;
-      //redoBytecodeCompilation = false;
+      redoBytecodeCompilation = false;
       //printFilesAsJavaArray(transferFiles);
 
       ArrayList<String> doesentValidate = new ArrayList<String>();

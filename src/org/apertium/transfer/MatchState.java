@@ -25,24 +25,32 @@ package org.apertium.transfer;
  */
 
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MatchState {
 
-  MatchNode[] state;
+  private int[] state;
 
-  int first = 0;
+  private int first = 0;
 
-  int last = 0;
+  private int last = 0;
 
-  static int BUF_LIMIT = 1024;
+  private static int BUF_LIMIT = 1024;
 
-  MatchState() {
+  /** Copy of node list from MatchExe.
+   * @see MatchExe
+   */
+  int[][] node_list;
+
+
+  MatchState(MatchExe me) {
+    node_list = me.node_list;
     first = last = 0;
-    state = new MatchNode[BUF_LIMIT];
+    state = new int[BUF_LIMIT];
   }
 
-  MatchState(MatchState s) {
+  private MatchState(MatchState s) {
     copy(s);
   }
 
@@ -50,8 +58,9 @@ public class MatchState {
     first = last = 0;
   }
 
-  void copy(MatchState s) {
+  private void copy(MatchState s) {
     System.arraycopy(s.state, 0, state, 0, BUF_LIMIT);
+    node_list = s.node_list;
     first = s.first;
     last = s.last;
   }
@@ -60,17 +69,22 @@ public class MatchState {
     return last >= first ? last - first : last + BUF_LIMIT - first;
   }
 
-  void init(MatchNode initial) {
+  void init(int initial) {
     first = 0;
     last = 1;
     state[0] = initial;
   }
 
-  void applySymbol(MatchNode pnode, int symbol) {
-    MatchNode aux = pnode.transitions_get(symbol);
-    if (aux != null) {
-      state[last] = aux;
-      last = (last + 1) % BUF_LIMIT;
+  private void applySymbol(int pnode, int symbol) {
+    int[] node = node_list[pnode];
+
+    for (int i=0; i<node.length-1; i+=2) { // TODO binary seach - No: only ca. 1%  cpu is used here anyway
+      if (node[i]==symbol) {
+        int aux = node[i+1];
+        state[last] = aux;
+        last = (last + 1) % BUF_LIMIT;
+        // break; // TODO indsæt igen
+      }
     }
   }
 
@@ -91,16 +105,23 @@ public class MatchState {
     first = mylast;
   }
 
-  int classifyFinals(Map<MatchNode, Integer> final_class) {
+  int classifyFinals() {
     int result = Integer.MAX_VALUE;
     for (int i = first; i != last; i = (i + 1) % BUF_LIMIT) {
-      final Integer it2 = final_class.get(state[i]);
-      if (it2 != null) {
-        if (it2 < result) {
-          result = it2;
-        }
+      int[] node = node_list[state[i]];
+
+      //System.err.println("2node["+i+"] state = " + state[i]);
+      if (node.length % 2 == 1) {
+        result = Math.min(result, node[node.length-1]); // last elem is the value
       }
     }
-    return (result < Integer.MAX_VALUE) ? result : (-1);
+    result = (result < Integer.MAX_VALUE) ? result : (-1);
+
+    //System.err.println("2result = " + result);
+    return result;
+  }
+
+  public String toString() {
+    return "ms["+first +";"+last+"]=" + Arrays.toString(Arrays.copyOfRange(state, first, last));
   }
 }

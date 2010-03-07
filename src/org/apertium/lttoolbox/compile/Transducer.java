@@ -17,7 +17,7 @@ package org.apertium.lttoolbox.compile;
  * 02111-1307, USA.
  */
 
-import org.apertium.lttoolbox.IntSet;
+import org.apertium.lttoolbox.collections.IntSet;
 import org.apertium.lttoolbox.*;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -31,6 +31,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import org.apertium.lttoolbox.collections.AbundantIntSet;
+import org.apertium.lttoolbox.collections.SlowIntegerHashSet;
+import org.apertium.lttoolbox.collections.SlowIntegerTreeSet;
 
 /**
  * Class to represent a letter transducer during the dictionary compilation
@@ -41,7 +44,7 @@ public class Transducer {
     /**
      * Initial state
      */
-    Integer initial;
+    public Integer initial; // TODO remove public
     
     /**
      * tag for epsilon transitions
@@ -51,13 +54,13 @@ public class Transducer {
     /**
      * Final state set
      */
-    IntSet finals = new IntSet();
+    AbundantIntSet finals = new AbundantIntSet();
 
     /**
      * Transitions of the transducer.
      * Before we used a map here, but as the keys are 1, 2, 3, 4, 5, ...up to the number of states its been changed to an arralist
      */
-    public ArrayList<Map<Integer, Set<Integer>>> transitions = new ArrayList<Map<Integer, Set<Integer>>>();
+    public ArrayList<Map<Integer, IntSet>> transitions = new ArrayList<Map<Integer, IntSet>>();
     //public Map<Integer, Map<Integer, Set<Integer>>> transitions = new HashMap<Integer, Map<Integer, Set<Integer>>>();
 
     public static boolean DEBUG=false;
@@ -139,10 +142,10 @@ public class Transducer {
     public void linkStates(Integer source, Integer destination, Integer label) {
 
         if (transitions.size() > source && transitions.size() > destination) {
-            Map<Integer, Set<Integer>> place = transitions.get(source);
-            Set<Integer> set = place.get(label);
+            Map<Integer, IntSet> place = transitions.get(source);
+            IntSet set = place.get(label);
             if (set == null) {
-                set = new HashSet<Integer>();
+                set = new SlowIntegerHashSet();
                 place.put(label, set);
             }
             set.add(destination);
@@ -158,14 +161,14 @@ public class Transducer {
     Integer newState() {
         Integer nstate = new Integer(transitions.size());
         //transitions.put(nstate, new HashMap<Integer, Set<Integer>>());
-        transitions.add(new HashMap<Integer, Set<Integer>>());
+        transitions.add(new HashMap<Integer, IntSet>());
         return nstate;
     }
 
     /**
      * Constructor
      */
-    Transducer() {
+    public Transducer() {
         initial = newState();
     }
 
@@ -179,11 +182,11 @@ public class Transducer {
     public Integer insertSingleTransduction(Integer tag, Integer source) {
       //while (transitions.size()<=source) transitions.add(new TreeMap<Integer, Set<Integer>>());
 
-      Map<Integer, Set<Integer>> place = transitions.get(source);
-        Set<Integer> set = place.get(tag);
+      Map<Integer, IntSet> place = transitions.get(source);
+        IntSet set = place.get(tag);
 
         if (set == null) {
-            set = new HashSet<Integer>();
+            set = new SlowIntegerHashSet();
             place.put(tag, set);
         } else {
             return set.iterator().next();
@@ -208,19 +211,19 @@ public class Transducer {
           transitions.put(source, place);
         }
         */
-        Map<Integer, Set<Integer>> place;
+        Map<Integer, IntSet> place;
         if (transitions.size()<=source) {
-          place = new HashMap<Integer, Set<Integer>>();
+          place = new HashMap<Integer, IntSet>();
           transitions.add(place);
         } else {
           place = transitions.get(source);
         }
 
       if (DEBUG) System.err.println(transitions +"  place = " + place);
-        Set<Integer> set = place.get(tag);
+        IntSet set = place.get(tag);
 
         if (set == null) {
-            set = new HashSet<Integer>();
+            set = new SlowIntegerHashSet();
             place.put(tag, set);
         }
         Integer state = newState();
@@ -244,7 +247,7 @@ public class Transducer {
         for (int i = 0; i < t.transitions.size(); i++) {
             Integer local_source = newState();
             for (Integer tag : t.transitions.get(i).keySet()) {
-                Set<Integer> destset = new HashSet<Integer>();
+                IntSet destset = new SlowIntegerHashSet();
                 for (Integer destination : t.transitions.get(i).get(tag)) {
                     destset.add(destination + first_state);
                 }
@@ -268,7 +271,7 @@ public class Transducer {
     int numberOfTransitions() {
         int counter = 0;
         for (int i=0; i<transitions.size(); i++) {
-            for (Set<Integer> destinations : transitions.get(i).values()) {
+            for (IntSet destinations : transitions.get(i).values()) {
                 counter += destinations.size();
             }
         }
@@ -301,13 +304,13 @@ public class Transducer {
         optional();
     }
 
-  private Map<Integer, Set<Integer>> getCreatePlace(int state) {
+  public Map<Integer, IntSet> getCreatePlace(int state) { // TODO remove public
     // new_t.transitions[state].clear(); // force create
 
    // System.err.println("transitions.size() = " + transitions.size()+ "   " +state);
-    Map<Integer, Set<Integer>> place;
+    Map<Integer, IntSet> place;
     if (transitions.size()<=state) {
-      place = new TreeMap<Integer, Set<Integer>>();
+      place = new TreeMap<Integer, IntSet>();
       transitions.add(place);
     } else {
       place=transitions.get(state);
@@ -318,7 +321,7 @@ public class Transducer {
 
   private void ensureCreatedPlace(int state) {
     if (transitions.size()<=state) {
-      transitions.add(new TreeMap<Integer, Set<Integer>>());
+      transitions.add(new TreeMap<Integer, IntSet>());
     }
   }
 
@@ -360,14 +363,14 @@ public class Transducer {
     private void determinize() {
         List<Set<Integer>> R = new ArrayList<Set<Integer>>(2);
         // MUST be TreeSet to retain binary compatibility:
-        R.add(new TreeSet<Integer>());
-        R.add(new TreeSet<Integer>());
+        R.add(new TreeSet<Integer>()); // new SlowIntegerTreeSet() giver problemer. Hvorfor???
+        R.add(new TreeSet<Integer>()); // new SlowIntegerTreeSet() giver problemer. Hvorfor???
 
         Map<Integer, Set<Integer>> Q_prima = new HashMap<Integer, Set<Integer>>();
         Map<Set<Integer>, Integer> Q_prima_inv = new HashMap<Set<Integer>, Integer>(); // setComparator
 
         // MUST be ordered to retain binary compatibility:
-        ArrayList<Map<Integer, Set<Integer>>> transitions_prima = new ArrayList<Map<Integer, Set<Integer>>>();
+        ArrayList<Map<Integer,IntSet>> transitions_prima = new ArrayList<Map<Integer, IntSet>>();
 
         int talla_Q_prima = 0;
 
@@ -377,7 +380,7 @@ public class Transducer {
         R.get(0).add(0);
 
         int initial_prima = 0;
-        IntSet finals_prima = new IntSet();
+        AbundantIntSet finals_prima = new AbundantIntSet();
 
         if (finals.contains(initial)) {
             finals_prima.add(0);
@@ -398,7 +401,7 @@ public class Transducer {
 
                 for (Integer it2 : Q_prima.get(it)) {
                     if (it2 < transitions.size()) {
-                        Map<Integer, Set<Integer>> xxx = transitions.get(it2);
+                        Map<Integer, IntSet> xxx = transitions.get(it2);
                         for (Integer it3 : xxx.keySet()) {
                             if (!it3.equals(epsilon_tag)) {
                                 for (Integer it3p : xxx.get(it3)) {
@@ -422,15 +425,15 @@ public class Transducer {
                         Q_prima_inv.put(it2.getValue(), etiq);
                         R.get((t + 1) % 2).add(Q_prima_inv.get(it2.getValue()));
                         //transitions_prima.add(new TreeMap<Integer, Set<Integer>>());
-                         while (transitions_prima.size()<=etiq) transitions_prima.add(new TreeMap<Integer, Set<Integer>>());
-                        transitions_prima.set(etiq, new TreeMap<Integer, Set<Integer>>());
+                         while (transitions_prima.size()<=etiq) transitions_prima.add(new TreeMap<Integer, IntSet>());
+                        transitions_prima.set(etiq, new TreeMap<Integer, IntSet>());
 
                     }
 
                     while (transitions_prima.size() <= it) {
-                        transitions_prima.add(new TreeMap<Integer, Set<Integer>>());
+                        transitions_prima.add(new TreeMap<Integer, IntSet>());
                     }
-                    transitions_prima.get(it).put(it2.getKey(), new TreeSet<Integer>());
+                    transitions_prima.get(it).put(it2.getKey(), new SlowIntegerTreeSet());
                     transitions_prima.get(it).get(it2.getKey()).add(Q_prima_inv.get(it2.getValue()));
                 }
             }
@@ -511,31 +514,31 @@ public class Transducer {
     private void reverse() {
         joinFinals();
         
-        ArrayList<Map<Integer, Set<Integer>>> result = new ArrayList<Map<Integer, Set<Integer>>>();
+        ArrayList<Map<Integer, IntSet>> result = new ArrayList<Map<Integer, IntSet>>();
 
 //        for (Map.Entry<Integer, Map<Integer, Set<Integer>>> it : transitions.entrySet()) {
 //            Integer dest = it.getKey();
         for (int i=0; i< transitions.size(); i++) {
             Integer dest = i;
-            for (Map.Entry<Integer, Set<Integer>> it2 : transitions.get(i).entrySet()) {
+            for (Map.Entry<Integer, IntSet> it2 : transitions.get(i).entrySet()) {
                 Integer tag = it2.getKey();
                 for (Integer origin : it2.getValue()) {
                     boolean added = result.size()<=origin;
-                    while (result.size()<=origin) result.add(new TreeMap<Integer, Set<Integer>>());
-                    Map<Integer, Set<Integer>> res_origin = result.get(origin);
+                    while (result.size()<=origin) result.add(new TreeMap<Integer, IntSet>());
+                    Map<Integer, IntSet> res_origin = result.get(origin);
                     if (added) {
-                        res_origin.put(tag, new TreeSet<Integer>());
+                        res_origin.put(tag, new SlowIntegerTreeSet());
 
-                        Set<Integer> aux = new TreeSet<Integer>();
+                        IntSet aux = new SlowIntegerTreeSet();
                         aux.add(dest);
 
-                        Map<Integer, Set<Integer>> aux2 = new TreeMap<Integer, Set<Integer>>();
+                        Map<Integer, IntSet> aux2 = new TreeMap<Integer, IntSet>();
                         aux2.put(tag, aux);
                         result.set(origin, aux2);
                     } else {
-                       Set<Integer> res_origin_tag = res_origin.get(tag);
+                       IntSet res_origin_tag = res_origin.get(tag);
                         if (res_origin_tag==null) {
-                          res_origin_tag = new TreeSet<Integer>();
+                          res_origin_tag = new SlowIntegerTreeSet();
                           res_origin.put(tag, res_origin_tag);
                         }
                         res_origin_tag.add(dest);
@@ -571,8 +574,8 @@ public class Transducer {
         while (nonvisited.size() > 0) {
             Integer auxest = nonvisited.iterator().next();
             if (auxest< transitions.size()) {
-              Map<Integer, Set<Integer>> place = transitions.get(auxest);
-              Set<Integer> set = place.get(epsilon_tag);
+              Map<Integer, IntSet> place = transitions.get(auxest);
+              IntSet set = place.get(epsilon_tag);
                 if (set !=null) {
                     for (Integer i : set) {
                         if (!result.contains(i)) {
@@ -594,9 +597,9 @@ public class Transducer {
      * @param label the tag
      * @param destination the target state
      */
-    private void addTransition(int current_state, int tagbase, int state) {
-        Map<Integer, Set<Integer>> place=getCreatePlace(current_state);
-        addTransition(place, tagbase, state);
+    private void addTransition(int current_state, int symbol, int state) {
+        Map<Integer, IntSet> place=getCreatePlace(current_state);
+        addTransition(place, symbol, state);
     }
 
     /**
@@ -605,7 +608,7 @@ public class Transducer {
      * @param label the tag
      * @param destination the target state
      */
-    private void addTransition(Map<Integer, Set<Integer>> place, int tagbase, int state) {
+    public void addTransition(Map<Integer, IntSet> place, int symbol, int state) { // TODO remove public
        // unneccesary according to test , but needed according to C++ code:
        // new_t.transitions[state].clear(); // force create
        ensureCreatedPlace(state);
@@ -619,8 +622,8 @@ public class Transducer {
         }
          */
         // new faster code assumes no set it already present - might be wrong for new uses
-        Set<Integer> set = new TreeSet<Integer>();
-        place.put(tagbase, set);
+        IntSet set = new SlowIntegerTreeSet();
+        place.put(symbol, set);
         set.add(state);
     }
 
@@ -742,7 +745,7 @@ public class Transducer {
             int number_of_local_transitions = Compression.multibyte_read(input);
             if (number_of_local_transitions>0) {
               int tagbase = 0;
-              Map<Integer, Set<Integer>> place=t.getCreatePlace(current_state);
+              Map<Integer, IntSet> place=t.getCreatePlace(current_state);
 
               for (int j = number_of_local_transitions; j > 0; j--) {
                   tagbase += Compression.multibyte_read(input)- decalage;
@@ -782,7 +785,7 @@ public class Transducer {
         Compression.multibyte_write(base, output);
         for(int itFirst=0; itFirst<transitions.size(); itFirst++) {
             int size = 0;
-            Map<Integer, Set<Integer>> place = transitions.get(itFirst);
+            Map<Integer, IntSet> place = transitions.get(itFirst);
             for (Integer it2First : place.keySet()) {
                 size+=place.get(it2First).size();
             }

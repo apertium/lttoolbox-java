@@ -33,7 +33,7 @@ tsx_reader.h:  PatternList *plist;
 
  */
 
-public class PatternList {
+class PatternList {
 
   Alphabet alphabet;
 
@@ -314,6 +314,7 @@ public class PatternList {
     }
   }
 
+  @SuppressWarnings("deprecation")
   MatchExe newMatchExe() {
     return new MatchExe(transducer, final_type);
   }

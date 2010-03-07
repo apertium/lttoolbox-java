@@ -33,29 +33,29 @@ import org.apertium.transfer.generated.GeneratedTransferBase;
 public class Transfer {
 
   public Alphabet alphabet=new Alphabet();
-  String TRXReader__ANY_CHAR="<ANY_CHAR>";
-  String TRXReader__ANY_TAG="<ANY_TAG>";
+  private String TRXReader__ANY_CHAR="<ANY_CHAR>";
+  private String TRXReader__ANY_TAG="<ANY_TAG>";
   private MatchExe me;
-  MatchState ms=new MatchState();
-  LinkedHashMap<String, ApertiumRE> attr_items = new LinkedHashMap<String, ApertiumRE>(); //   map<string, ApertiumRE, Ltstr> attr_items;
-  LinkedHashMap<String, String> variables = new LinkedHashMap<String, String>(); // map<string, string, Ltstr> variables;  
-  LinkedHashMap<String, Integer> macros= new LinkedHashMap<String, Integer>(); // map<string, int, Ltstr> macros;
+  private MatchState ms;
+  //private LinkedHashMap<String, ApertiumRE> attr_items = new LinkedHashMap<String, ApertiumRE>(); //   map<string, ApertiumRE, Ltstr> attr_items;
+  //private LinkedHashMap<String, String> variables = new LinkedHashMap<String, String>(); // map<string, string, Ltstr> variables;
+  //private LinkedHashMap<String, Integer> macros= new LinkedHashMap<String, Integer>(); // map<string, int, Ltstr> macros;
   
 
-  Method[] rule_map=null;// vector<xmlNode *> rule_map;
-  int lword, lblank;
-  BufferT<TransferToken> input_buffer=new BufferT<TransferToken>();
-  ArrayList<String> tmpword=new ArrayList<String>();
-  ArrayList<String> tmpblank=new ArrayList<String>();
-  ArrayList<String> tmpword2=new ArrayList<String>();
-  ArrayList<String> tmpblank2=new ArrayList<String>();
-  FSTProcessor fstp =new FSTProcessor();
-  FSTProcessor extended;
-  boolean isExtended;
+  private Method[] rule_map=null;// vector<xmlNode *> rule_map;
+  private int lword, lblank;
+  private BufferT<TransferToken> input_buffer=new BufferT<TransferToken>();
+  private ArrayList<String> tmpword=new ArrayList<String>();
+  private ArrayList<String> tmpblank=new ArrayList<String>();
+  private ArrayList<String> tmpword2=new ArrayList<String>();
+  private ArrayList<String> tmpblank2=new ArrayList<String>();
+  private FSTProcessor fstp =new FSTProcessor();
+  private FSTProcessor extended;
+  private boolean isExtended;
   private int any_char;
   private int any_tag;
-  Method lastrule; //xmlNode *lastrule;
-  int nwords;
+  private Method lastrule; //xmlNode *lastrule;
+  private int nwords;
   public GeneratedTransferBase transferObject;
 
   public static boolean DEBUG = false;
@@ -66,8 +66,8 @@ public class Transfer {
   /**
    * if true, flush the output when the null character is found
    */
-  boolean null_flush;
-  boolean internal_null_flush;
+  private boolean null_flush;
+  private boolean internal_null_flush;
 
   public void readData(InputStream in) throws IOException {
 
@@ -76,7 +76,6 @@ public class Transfer {
     any_char=alphabet.cast(TRXReader__ANY_CHAR);
     any_tag=alphabet.cast(TRXReader__ANY_TAG);
 
-    Transducer t=Transducer.read(in, alphabet.size());
     //System.err.println("  timing = " + timing.toString());
 
     /* old code
@@ -92,10 +91,12 @@ public class Transfer {
      */
 
     // faster - let it read itselv, thus no need to make a big hashmap
-    me=new MatchExe(t, in);
-
-
+    me=new MatchExe(in, alphabet.size());
+    ms =new MatchState(me);
   //System.err.println("me = " + me);
+
+    
+/*  Rest of data file is not used
 
   // attr_items
   for(int i = 0, limit = Compression.multibyte_read(in); i != limit; i++)
@@ -128,8 +129,8 @@ public class Transfer {
     macros.put(cad_k, Compression.multibyte_read(in));
   }
     if (DEBUG) System.err.println("macros = " + macros);
-/*
-  // lists
+
+   // lists
   for(int i = 0, limit = Compression.multibyte_read(in); i != limit; i++)
   {
   string const cad_k = Compression.wstring_read_toUtf8(in);
@@ -345,7 +346,7 @@ public class Transfer {
         }
       }
       if (DO_TIMING) timing.log("transfer");
-      int val=ms.classifyFinals(me.getFinals());
+      int val=ms.classifyFinals();
       if (DO_TIMING) timing.log("transfer/ms.classifyFinals");
       if (val!=-1) {
 
