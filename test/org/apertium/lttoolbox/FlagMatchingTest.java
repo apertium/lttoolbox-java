@@ -58,7 +58,7 @@ public class FlagMatchingTest extends TestCase {
   public void testFlagMatch_analysis_Persian2() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
       fstp.load(new BufferedInputStream(new FileInputStream("testdata/flag_matching/persian-automorf2.bin")));
-      fstp.DEBUG = State.DEBUG = true;
+      fstp.DEBUG = State.DEBUG = false;
       fstp.alphabet.debug_remember_removed_symbols();
       fstp.initAnalysis();
       fstp.initFlagMatch(true);
@@ -78,7 +78,7 @@ public class FlagMatchingTest extends TestCase {
   public void testFlagMatch_generation_Persian2() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
       fstp.load(new BufferedInputStream(new FileInputStream("testdata/flag_matching/persian-autogen2.bin")));
-      fstp.DEBUG = State.DEBUG = true;
+      fstp.DEBUG = State.DEBUG = false;
       fstp.alphabet.debug_remember_removed_symbols();
       fstp.initGeneration();
       fstp.initFlagMatch(true);
@@ -98,7 +98,7 @@ public class FlagMatchingTest extends TestCase {
   public void testFlagMatch_analysis_Persian() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
       fstp.load(new BufferedInputStream(new FileInputStream("testdata/flag_matching/persian-automorf.bin")));
-      fstp.DEBUG = true;
+      fstp.DEBUG = false;
       fstp.alphabet.debug_remember_removed_symbols();
       fstp.initAnalysis();
       fstp.initFlagMatch(true);
