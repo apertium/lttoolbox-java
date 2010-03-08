@@ -67,7 +67,8 @@ public class LTProc {
             "  -p:   post-generation\n" +
             "  -s:   SAO annotation system input processing\n" +
             "  -t:   apply transliteration dictionary\n" +
-            "  -z:   flush output on the null character \n" +
+            "  -z:   flush output on the null character\n" +
+            "  -w:   use dictionary case instead of surface case\n" +
             "  -v:   version\n" +
             "  -D:   debug; print diagnostics to stderr\n" +
             "  -h:   show this help\n");
@@ -93,7 +94,7 @@ public class LTProc {
         int cmd = 0;
         FSTProcessor fstp = new FSTProcessor();
 
-        MyGetOpt getopt = new MyGetOpt(argv, "Dacdefgndpstzvh");
+        MyGetOpt getopt = new MyGetOpt(argv, "Dacdefgndpstwzvh");
 
         int optind = -1;
         int counter = 0;
@@ -134,6 +135,10 @@ public class LTProc {
                         } else {
                             endProgram("LTProc");
                         }
+                        break;
+
+                    case 'w':
+                        fstp.setDictionaryCase(true);
                         break;
 
                     case 'z':

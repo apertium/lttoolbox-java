@@ -104,6 +104,13 @@ public class FSTProcessor {
     }
   }
 
+  /**
+   * @param dictionaryCase the dictionaryCase to set
+   */
+  public void setDictionaryCase(boolean dictionaryCase) {
+    this.dictionaryCase=dictionaryCase;
+  }
+
 
 
     public enum GenerationMode {
@@ -178,6 +185,12 @@ public class FSTProcessor {
      * characters
      */
     private boolean caseSensitive = false;
+    /**
+     * if true, makes always difference between uppercase and lowercase
+     * characters
+     */
+    private boolean dictionaryCase = false;
+
     /**
      * if true, flush the output when the null character is found
      */
@@ -809,32 +822,32 @@ public class FSTProcessor {
         while ((val = readAnalysis(input)) != (char)0) {
             if (current_state.isFinal(all_finals)) {
                 if (current_state.isFinal(inconditional)) {
-                    boolean firstupper = Character.isUpperCase(sf.charAt(0));
-                    boolean uppercase = firstupper && Character.isUpperCase(sf.charAt(sf.length() - 1));
+                    boolean firstupper = !dictionaryCase && Character.isUpperCase(sf.charAt(0));
+                    boolean uppercase = !dictionaryCase && firstupper && Character.isUpperCase(sf.charAt(sf.length() - 1));
                     if (compoundOnlyLSymbol!=0) current_state.pruneStatesWithForbiddenSymbol(compoundOnlyLSymbol);
                     if (do_flagMatch) deleteStatesWithConflictingFlags(current_state);
                     lf = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
                     last = input_buffer.getPos();
                     last_incond = true;
                 } else if (current_state.isFinal(postblank)) {
-                    boolean firstupper = Character.isUpperCase(sf.charAt(0));
-                    boolean uppercase = firstupper && Character.isUpperCase(sf.charAt(sf.length() - 1));
+                    boolean firstupper = !dictionaryCase && Character.isUpperCase(sf.charAt(0));
+                    boolean uppercase = !dictionaryCase && firstupper && Character.isUpperCase(sf.charAt(sf.length() - 1));
                     if (compoundOnlyLSymbol!=0) current_state.pruneStatesWithForbiddenSymbol(compoundOnlyLSymbol);
                     if (do_flagMatch) deleteStatesWithConflictingFlags(current_state);
                     lf = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
                     last = input_buffer.getPos();
                     last_postblank = true;
                 } else if (current_state.isFinal(preblank)) {
-                    boolean firstupper = Character.isUpperCase(sf.charAt(0));
-                    boolean uppercase = firstupper && Character.isUpperCase(sf.charAt(sf.length() - 1));
+                    boolean firstupper = !dictionaryCase && Character.isUpperCase(sf.charAt(0));
+                    boolean uppercase = !dictionaryCase && firstupper && Character.isUpperCase(sf.charAt(sf.length() - 1));
                     if (compoundOnlyLSymbol!=0) current_state.pruneStatesWithForbiddenSymbol(compoundOnlyLSymbol);
                     if (do_flagMatch) deleteStatesWithConflictingFlags(current_state);
                     lf = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
                     last = input_buffer.getPos();
                     last_preblank = true;
                 } else if (!isAlphabetic(val)) {
-                    boolean firstupper = Character.isUpperCase(sf.charAt(0));
-                    boolean uppercase = firstupper && Character.isUpperCase(sf.charAt(sf.length() - 1));
+                    boolean firstupper = !dictionaryCase && Character.isUpperCase(sf.charAt(0));
+                    boolean uppercase = !dictionaryCase && firstupper && Character.isUpperCase(sf.charAt(sf.length() - 1));
                     if (compoundOnlyLSymbol!=0)  current_state.pruneStatesWithForbiddenSymbol(compoundOnlyLSymbol);
                     if (do_flagMatch) deleteStatesWithConflictingFlags(current_state);
                     lf = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
