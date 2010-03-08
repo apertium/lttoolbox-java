@@ -45,7 +45,7 @@ public class AbundantIntSet implements IntSet { //extends TreeSet<Integer> {
     return bs.get(state);
   }
 
-  public int first() {
+  public int firstInt() {
     return bs.nextSetBit(0);
   }
 

@@ -1,4 +1,5 @@
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.Reader;
@@ -30,8 +31,8 @@ public class Profiling {
       
         System.gc();
         p.testTransfer();
-        /*
         System.gc();
+/*
         p.testjavaAnalysis();
         System.gc();
         p.testjavaGeneration();
@@ -97,17 +98,17 @@ public class Profiling {
       //Class transferClass =org.apertium.transfer.generated.apertium_eo_en_en_eo_t1x.class;
       Class transferClass =org.apertium.transfer.generated.apertium_en_ca_en_ca_t1x.class;
 
-//      t.read(transferClass, dir+"en-eo.t1x.bin", dir+"en-eo.autobil.bin");
-      report("start");
+      report("start "+ new File(".").getAbsolutePath());
       t = new Transfer();
+//      t.read(transferClass, tdir+"en-eo.t1x.bin", tdir+"en-eo.autobil.bin");
       t.read(transferClass, tdir+"en-ca.t1x.bin", tdir+"en-eo.autobil.bin");
-      report("transfer-init");
+      report("transfer-init "+transferClass.getSimpleName());
       Reader input = new FileReader(tdir+"transferinput-en-eo.t1x-malgranda.txt");
       String outFile = "/tmp/transfer-output-malgranda.txt";
       Writer output = new FileWriter(outFile);
       t.transfer( input, output);
       output.close();
-      report("transfer");
+      report("transfer" );
   }
 
 
@@ -287,4 +288,38 @@ main@standard 62442 96775
 lt-comp   took sec 8136 msec
 BUILD SUCCESSFUL (total time: 12 seconds)
 
+ *
+ Profiling Sun Mar 07 17:46:47 NPT 2010
+start /home/j/esperanto/a/lttoolbox-java/. took sec 39 msec
+transfer-init apertium_en_ca_en_ca_t1x took sec 417 msec
+transfer took sec 923 msec
+analysis -a   took sec 851 msec
+generation -g took sec 526 msec
+generation -d took sec 402 msec
+generation -n took sec 402 msec
+generation -p took sec 168 msec
+analysis -a   took sec 490 msec
+final@inconditional 61 858
+main@standard 62442 96775
+lt-comp took sec 8011 msec
+BUILD SUCCESSFUL (total time: 12 seconds)
+ *
+ *
+ *
+Alfabet cacher mest brugte bogstaver
+Profiling Sun Mar 07 18:20:41 NPT 2010
+start /home/j/esperanto/a/lttoolbox-java/. took sec 41 msec
+transfer-init apertium_en_ca_en_ca_t1x took sec 464 msec
+transfer took sec 751 msec
+analysis -a   took sec 849 msec
+generation -g took sec 776 msec
+generation -d took sec 386 msec
+generation -n took sec 372 msec
+generation -p took sec 110 msec
+analysis -a   took sec 447 msec
+final@inconditional 61 858
+main@standard 62442 96775
+lt-comp took sec 7820 msec
+BUILD SUCCESSFUL (total time: 12 seconds)
+*
  */

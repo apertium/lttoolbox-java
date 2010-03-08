@@ -79,27 +79,7 @@ public class MatchExe {
 
     // memory allocation
     node_list = new int[number_of_states][];
-
-    int current_state = 0;
-    for (int i = number_of_states; i > 0; i--) {
-        int number_of_local_transitions = Compression.multibyte_read(in);
-        if (number_of_local_transitions>0) {
-          int[] mynode = node_list[current_state] = new int[number_of_local_transitions*2];
-
-          int symbol = 0;
-          int n=0;
-          for (int j = number_of_local_transitions; j > 0; j--) {
-              symbol += Compression.multibyte_read(in)- decalage;
-              int target_state = (current_state + Compression.multibyte_read(in)) % number_of_states;
-              mynode[n++] = symbol;
-              mynode[n++] = target_state;
-//              System.err.println(current_state+ "( "+symbol+" "+(char)symbol+")  -> "+target_state);
-          }
-        } else {
-          // then it must be a final state - we handle that below
-        }
-        current_state++;
-    }
+    _readAndAllocateTransitions(number_of_states, in, decalage);
 
 
     // set up finals
@@ -107,33 +87,64 @@ public class MatchExe {
    // ... 420739=211, 420741=213, 420743=215, 420745=215, 420747=215, 420749=216}
    // noOfFinals == number of rules
 
-    //int[][] singleFinalNodeCache = new int[number_of_finals][]; // TODO share instances
 
+    _readAndAddFinals(in, number_of_finals);
+  }
 
-    int noOfFinals2 = Compression.multibyte_read(in);
-    if (noOfFinals2 != number_of_finals) {
-      System.err.println("INCONSISTENCY WARNING");
-      System.err.println("1st number_of_finals = " + number_of_finals);
-      System.err.println("2nd number_of_finals = " + noOfFinals2);
+  private void _readAndAllocateTransitions(int number_of_states, InputStream in, int decalage) throws IOException {
+    int current_state=0;
+    for (int i=number_of_states; i>0; i--) {
+      int number_of_local_transitions=Compression.multibyte_read(in);
+      if (number_of_local_transitions>0) {
+        int[] mynode=node_list[current_state]=new int[number_of_local_transitions*2];
+        int symbol=0;
+        int n=0;
+        for (int j=number_of_local_transitions; j>0; j--) {
+          symbol+=Compression.multibyte_read(in)-decalage;
+          int target_state=(current_state+Compression.multibyte_read(in))%number_of_states;
+          mynode[n++]=symbol;
+          mynode[n++]=target_state;
+          //              System.err.println(current_state+ "( "+symbol+" "+(char)symbol+")  -> "+target_state);
+        }
+      } else {
+        // then it must be a final state - we handle that below
+      }
+      current_state++;
     }
+  }
 
+  private void _readAndAddFinals(InputStream in, int number_of_finals) throws IllegalStateException, IOException {
+    int[][] singleFinalNodeCache = new int[number_of_finals][]; // TODO share instances
+
+    int noOfFinals2=Compression.multibyte_read(in);
+    if (noOfFinals2!=number_of_finals) {
+      System.err.println("INCONSISTENCY WARNING");
+      System.err.println("1st number_of_finals = "+number_of_finals);
+      System.err.println("2nd number_of_finals = "+noOfFinals2);
+      throw new IllegalStateException("INCONSISTENCY on number_of_finals");
+    }
     for (int i=0; i!=number_of_finals; i++) {
       int key=Compression.multibyte_read(in);
-      int value = Compression.multibyte_read(in);  // value == rule number (method nomber)
-      int[] node = node_list[key];
-      if (node!=null) {
+      int value=Compression.multibyte_read(in); // value == rule number (method nomber)
+      int[] node=node_list[key];
+      if (node==null) {
         // final states have an uneven number of ints (mostly 1)
-        // make an array 1 longer
-        int[] mynode = new int[node.length+1];
-        System.arraycopy(node, 0, mynode, 0, node.length);
-        mynode[mynode.length-1] = value;
-        node_list[key] = mynode;
+        int[] mynode=singleFinalNodeCache[value];
+        if (mynode==null) {
+          mynode=singleFinalNodeCache[value]=new int[1];
+          mynode[0]=value;
+        }
+        node_list[key]=mynode;
+        ;
       } else {
         // final states have an uneven number of ints (mostly 1)
-        int[] mynode = new int[1];
-        mynode[0] = value;
-        node_list[key] = mynode;;
+        // make an array 1 longer
+        int[] mynode=new int[node.length+1];
+        System.arraycopy(node, 0, mynode, 0, node.length);
+        mynode[mynode.length-1]=value;
+        node_list[key]=mynode;
       }
+      //System.err.println("node_list["+key+"] = " + Arrays.toString(node_list[key]));
       //System.err.println("node_list["+key+"] = " + Arrays.toString(node_list[key]));
     }
   }

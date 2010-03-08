@@ -81,7 +81,7 @@ public class testTransducer {
                 number_of_local_transitions--;
                 tagbase += Compression.multibyte_read(input);
                 int state = (current_state + Compression.multibyte_read(input)) % base;
-                //int i_symbol = alphabet.decode(tagbase).first;
+                //int i_symbol = alphabet.decode(tagbase).firstInt;
                 //int o_symbol = alphabet.decode(tagbase).second;
                 //System.out.println("i : "+i_symbol+", o : "+o_symbol);
                 

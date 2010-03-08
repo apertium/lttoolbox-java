@@ -30,7 +30,7 @@ public class SlowIntegerHashSet extends HashSet<Integer> implements IntSet {
   }
 
   @Override
-  public int first() {
+  public int firstInt() {
     return super.iterator().next();
   }
 

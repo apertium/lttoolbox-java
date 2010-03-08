@@ -13,7 +13,7 @@ import java.util.TreeSet;
  *
  * @author Jacob Nordfalk
  */
-public class SlowIntegerTreeSet extends TreeSet<Integer> implements IntSet {// TODO Var HashSet og det var OK?!? Thek
+public class SlowIntegerTreeSet extends TreeSet<Integer> implements IntSet {// TODO Var HashSet og det var OK?!? The TreeSet
 
   @Override
   public void add(int i) {
@@ -31,7 +31,7 @@ public class SlowIntegerTreeSet extends TreeSet<Integer> implements IntSet {// T
   }
 
   @Override
-  public int first() {
+  public int firstInt() {
     return super.iterator().next();
   }
 

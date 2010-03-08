@@ -83,7 +83,7 @@ public class MatchState {
         int aux = node[i+1];
         state[last] = aux;
         last = (last + 1) % BUF_LIMIT;
-        // break; // TODO indsæt igen
+        break; 
       }
     }
   }

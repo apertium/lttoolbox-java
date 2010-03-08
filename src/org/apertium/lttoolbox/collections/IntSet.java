@@ -17,7 +17,7 @@ public interface IntSet extends Iterable<Integer> {
   public void add(int i);
   public void remove(int i);
   public boolean contains(int i);
-  public int first();
+  public int firstInt();
 
   public boolean addAll(Collection<? extends Integer> c);
   public boolean addAll(IntSet c); 

@@ -390,6 +390,20 @@ public static class IntegerPair {
         return getSymbol(symbol, false);
     }
 
+
+    private static final int MAX_CHARCACHE = 200;
+    private static final String[] CHARCACHE = new String[MAX_CHARCACHE];
+    private static final String[] UPCHARCACHE = new String[MAX_CHARCACHE];
+    static {
+      char[] ca = new char[MAX_CHARCACHE];
+      for (char i=0; i<MAX_CHARCACHE; i++) ca[i] = i;
+      String str = new String(ca);
+      for (int i=1; i<MAX_CHARCACHE; i++) CHARCACHE[i] = str.substring(i, i+1);
+      String upstr = str.toUpperCase();
+      for (int i=1; i<MAX_CHARCACHE; i++) UPCHARCACHE[i] = upstr.substring(i, i+1);
+      CHARCACHE[0] = UPCHARCACHE[0] = "";
+    }
+
     /**
      * Find a symbol symbol
      * @param symbol the symbol to be added
@@ -397,6 +411,8 @@ public static class IntegerPair {
      * @return the symbol as a string
      */
     public String getSymbol(int symbol, boolean uppercase) {
+
+      //System.err.println("symbol = " + symbol);
         if (symbol == 0) {
             return "";
         }
@@ -404,11 +420,17 @@ public static class IntegerPair {
         if (symbol < 0) {
             return slexicinv.get(-symbol - 1);
         }
-        
-        if (!uppercase) {
-          return ""+ (char)symbol; // @TODO re-use strings
+
+        // re-use strings
+        if (symbol < MAX_CHARCACHE) {
+            return uppercase? UPCHARCACHE[symbol] : CHARCACHE[symbol];
+        }
+
+
+      if (!uppercase) {
+          return String.valueOf((char)symbol);
         } else {
-            return ""+ Character.toUpperCase((char)symbol); // @TODO re-use strings
+            return String.valueOf(Character.toUpperCase((char)symbol));
         }
     }
 

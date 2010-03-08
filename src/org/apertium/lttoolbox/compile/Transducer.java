@@ -44,7 +44,7 @@ public class Transducer {
     /**
      * Initial state
      */
-    public Integer initial; // TODO remove public
+    Integer initial;
     
     /**
      * tag for epsilon transitions
@@ -260,7 +260,7 @@ public class Transducer {
         this.linkStates(source, first_state + t.initial, epsilon_tag);
 
         // return the unique final state of the inserted transducer
-        int untranslated_final = t.finals.first();
+        int untranslated_final = t.finals.firstInt();
         return first_state + untranslated_final;
     }
     
@@ -304,7 +304,7 @@ public class Transducer {
         optional();
     }
 
-  public Map<Integer, IntSet> getCreatePlace(int state) { // TODO remove public
+  Map<Integer, IntSet> getCreatePlace(int state) {
     // new_t.transitions[state].clear(); // force create
 
    // System.err.println("transitions.size() = " + transitions.size()+ "   " +state);
@@ -328,7 +328,7 @@ public class Transducer {
 
     /**
      * Computes whether two sets have elements in common
-     * @param s1 the first set
+     * @param s1 the firstInt set
      * @param s2 the second set
      * @return true if the sets don't intersect
      */
@@ -343,7 +343,7 @@ public class Transducer {
 
     /**
      * Computes whether two sets have elements in common
-     * @param s1 the first set
+     * @param s1 the firstInt set
      * @param s2 the second set
      * @return true if the sets don't intersect
      */
@@ -485,7 +485,7 @@ public class Transducer {
         initial = state;
 
         state = newState();
-        linkStates((Integer) finals.first(), state, epsilon_tag);
+        linkStates((Integer) finals.firstInt(), state, epsilon_tag);
         finals.clear();
         finals.add(state);
         linkStates(state, initial, epsilon_tag);
@@ -502,7 +502,7 @@ public class Transducer {
         initial = state;
 
         state = newState();
-        linkStates((Integer) finals.first(), state, epsilon_tag);
+        linkStates((Integer) finals.firstInt(), state, epsilon_tag);
         finals.clear();
         finals.add(state);
         linkStates(initial, state, epsilon_tag);
@@ -546,7 +546,7 @@ public class Transducer {
                 }
             }
         }
-        Integer newInitial = finals.first();
+        Integer newInitial = finals.firstInt();
         finals.clear();
         finals.add(initial);
         initial = newInitial;
@@ -608,7 +608,7 @@ public class Transducer {
      * @param label the tag
      * @param destination the target state
      */
-    public void addTransition(Map<Integer, IntSet> place, int symbol, int state) { // TODO remove public
+    void addTransition(Map<Integer, IntSet> place, int symbol, int state) {
        // unneccesary according to test , but needed according to C++ code:
        // new_t.transitions[state].clear(); // force create
        ensureCreatedPlace(state);
@@ -654,7 +654,7 @@ public class Transducer {
         /*
         for (Integer i : finals) {
             if (!other.finals.contains(i)) {
-                System.out.println("the state " + i + " is a final state in the first transducer but not in the second one");
+                System.out.println("the state " + i + " is a final state in the firstInt transducer but not in the second one");
                 sameFinals = false;
             return false;
             }
