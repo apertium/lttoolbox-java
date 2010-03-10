@@ -19,6 +19,12 @@
 
 package org.apertium.tagger;
 import java.util.HashMap;
+import java.util.Map;
+import org.apertium.lttoolbox.Compression;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.IOException;
+
 
 /**
  *
@@ -37,5 +43,23 @@ public class ConstantManager {
 
     public int getConstant(String constant) {
         return constants.get(constant);
+    }
+
+    public void write(OutputStream output) throws IOException {
+        Compression.multibyte_write(constants.size(), output);
+        for (Map.Entry<String, Integer> e : constants.entrySet()) {
+            Compression.String_write(e.getKey(), output);
+            Compression.multibyte_write(e.getValue(), output);
+        }
+    }
+
+    public void read(InputStream input) throws IOException {
+        constants.clear();
+        int size = Compression.multibyte_read(input);
+        for (int i=0; i!=size; i++) {
+            String str = Compression.String_read(input);
+            int constant = Compression.multibyte_read(input);
+            constants.put(str, constant);
+        }
     }
 }
