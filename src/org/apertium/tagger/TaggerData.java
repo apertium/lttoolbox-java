@@ -35,6 +35,7 @@ public class TaggerData {
     private ArrayList<TEnforceAfterRule> enforce_rules;
     private ArrayList<String> prefer_rules;
     private ConstantManager constants;
+    private PatternList plist;
     private int N;
     private int M;
 /*
@@ -42,6 +43,5 @@ public class TaggerData {
   Collection output;
   double **a;
   double **b;
-  PatternList plist;
 */
 }

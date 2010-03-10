@@ -1,4 +1,4 @@
-package org.apertium.transfer.unused;
+package org.apertium.tagger;
 
 //import org.apache.commons.collections15.multimap.MultiHashMap;
 
