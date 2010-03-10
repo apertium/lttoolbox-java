@@ -18,6 +18,7 @@
  */
 
 package org.apertium.tagger;
+import java.util.ArrayList;
 
 /**
  *
@@ -25,5 +26,9 @@ package org.apertium.tagger;
  */
 public class TEnforceAfterRule {
     int tagi;
-    int tagj;
+    ArrayList<Integer> tagsj;
+
+    public void TEnforceAfterRule() {
+        tagsj = new ArrayList<Integer>();
+    }
 }

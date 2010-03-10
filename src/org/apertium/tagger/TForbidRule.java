@@ -18,7 +18,6 @@
  */
 
 package org.apertium.tagger;
-import java.util.ArrayList;
 
 /**
  *
@@ -26,9 +25,10 @@ import java.util.ArrayList;
  */
 public class TForbidRule {
     int tagi;
-    ArrayList<Integer> tagsj;
-
-    public void TForbidRule() {
-        tagsj = new ArrayList<Integer>();
+    int tagj;
+    
+    public void TForbidRule () {
+        tagi = 0;
+        tagj = 0;
     }
 }
