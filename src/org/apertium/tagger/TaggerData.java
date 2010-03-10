@@ -34,11 +34,11 @@ public class TaggerData {
     private ArrayList<String> array_tags;
     private ArrayList<TEnforceAfterRule> enforce_rules;
     private ArrayList<String> prefer_rules;
+    private ConstantManager constants;
     private int N;
     private int M;
 /*
   vector<wstring> prefer_rules;
-  ConstantManager constants;
   Collection output;
   double **a;
   double **b;
