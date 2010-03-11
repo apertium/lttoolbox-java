@@ -34,7 +34,7 @@ public class TaggerData {
     // FIXME: IntSet?
     private Set<Integer> open_class;
     private ArrayList<TForbidRule> forbid_rules;
-    //  map<wstring, TTag, Ltstr> tag_index;
+    Map<String, Integer> tag_index;
     private ArrayList<String> array_tags;
     private ArrayList<TEnforceAfterRule> enforce_rules;
     private ArrayList<String> prefer_rules;
@@ -81,8 +81,8 @@ public class TaggerData {
       // tag_index
       for (int i = Compression.multibyte_read(in); i != 0; i--) {
           String tmp = Compression.String_read(in);
-          // FIXME
-          // tag_index[tmp] = Compression.multibyte_read(in);
+          int t = Compression.multibyte_read(in);
+          tag_index.put(tmp, t);
       }
   
       // enforce_rules
@@ -138,7 +138,7 @@ public class TaggerData {
       for (; nval != 0; nval--) {
           int i = Compression.multibyte_read(in);
           int j = Compression.multibyte_read(in);
-          //b[i][j] = EndianDoubleUtil.read(in);
+          b[i][j] = EndianDoubleUtil.read(in);
       }
 
       // read pattern list
