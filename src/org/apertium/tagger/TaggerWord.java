@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Jimmy O'Regan
+ * Copyright (C) 2005 Universitat d'Alacant / Universidad de Alicante
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -20,8 +20,9 @@
 package org.apertium.tagger;
 import java.util.Set;
 import java.util.Map;
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.ArrayList;
+import org.apertium.transfer.ApertiumRE;
 
 /**
  *
@@ -36,6 +37,7 @@ public class TaggerWord {
     private boolean previous_plus_cut;
     private boolean show_sf;
     //  static map<wstring, ApertiumRE, Ltstr> patterns;
+    private Map<String, ApertiumRE> patterns;
     public boolean generate_marks = false;
     public ArrayList<String> array_tags;
     public boolean show_ignored_string = true;
@@ -50,11 +52,108 @@ public class TaggerWord {
         this(false);
     }
 
-    void set_show_sf (boolean sf) {
-        show_sf = sf;
+    public void set_show_sf (boolean sf) {
+        this.show_sf = sf;
     }
 
-    boolean get_show_sf () {
-        return show_sf;
+    public boolean get_show_sf () {
+        return this.show_sf;
+    }
+
+    public void set_superficial_form (String sf) {
+        this.superficial_form = sf;
+    }
+
+    public String get_superficial_form () {
+        return this.superficial_form;
+    }
+
+    public boolean match (String s, String pattern) {
+        //Map<String, ApertiumRE>.Iterator it = patterns.find(pattern);
+        
+        return false;
+    }
+
+    public void add_tag (int t, String lf, ArrayList<String> prefer_rules) {
+        if (!tags.contains(t)) {
+            tags.add(t);
+            lexical_forms.put(t, lf);
+        } else {
+            for (int i=0; i < prefer_rules.size(); i++) {
+                if (match(lf, prefer_rules.get(i))) {
+                    lexical_forms.put(t, lf);
+                    break;
+                }
+            }
+        }
+    }
+
+    public Set<Integer> get_tags () {
+        return tags;
+    }
+
+    public boolean isAmbiguous () {
+        return tags.size() > 1;
+    }
+
+    public String get_string_tags () {
+        String st="{";
+
+        // FIXME - is this doing the same thing? I need more coffee...
+        for (int i=0;i<tags.size();i++) {
+            if (i != 0) {
+                st +=",";
+            }
+            st += array_tags.get(i);
+        }
+        st += "}";
+
+        return st;
+    }
+
+    public String get_lexical_form (int t, int TAG_kEOF) {
+        String ret = "";
+
+        if (this.show_ignored_string) {
+            ret += ignored_string;
+        }
+
+        if (t==TAG_kEOF) {
+            return ret;
+        }
+
+        if (!this.previous_plus_cut) {
+            if (generate_marks && isAmbiguous()) {
+                ret += "^=";
+            } else {
+                ret += "^";
+            }
+
+            if (get_show_sf()) {
+                ret += superficial_form;
+                ret += '/';
+            }
+        }
+
+        if (lexical_forms.size()==0) {
+            ret += '*';
+            ret += superficial_form;
+        } else if (lexical_forms.get(0).startsWith("*")) {
+            ret += '*';
+            ret += superficial_form;
+        } else if (lexical_forms.size()>1){
+            ret += lexical_forms.get(t);
+        } else {
+            ret += lexical_forms.get(t);
+        }
+
+        if (!ret.equals(ignored_string)) {
+            if (this.plus_cut) {
+                ret += '+';
+            } else {
+                ret += '$';
+            }
+        }
+        return ret;
     }
 }
