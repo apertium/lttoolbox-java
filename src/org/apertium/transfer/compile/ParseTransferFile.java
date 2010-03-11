@@ -41,6 +41,10 @@ public class ParseTransferFile {
 
   public String className;
 
+  private int mode = 1; // Java by default
+  private int JAVA = 1;
+  private int JAVASCRIPT = 2;
+
   /** For checking macro names and numbers of parameters */
   private HashMap<String, Integer> macroList = new HashMap<String, Integer>();
 
@@ -140,7 +144,10 @@ public class ParseTransferFile {
     } else {
       // Perhaps empty expression. Do a temp string and evaluate runtime
       println("{");
-      println("String myword = ");
+      if (mode == JAVASCRIPT)
+          println("var myword = ");
+      else
+          println("String myword = ");
       for (int i=0; i<luelems.size(); i++) {
         String s = luelems.get(i);
         println((i==0?"         ":"         +")+s);
@@ -305,7 +312,10 @@ public class ParseTransferFile {
     // iterate alphabetivally (thru TreeSet)
     for (String clipReadExpr : new TreeSet<String>(clipExprCacheVars_decided.keySet())) {
       String var = clipExprCacheVars_decided.get(clipReadExpr);
-      println("String "+var+" = "+clipReadExpr+";");
+      if (mode == JAVASCRIPT)
+          println("var "+var+" = "+clipReadExpr+";");
+      else
+          println("String "+var+" = "+clipReadExpr+";");
       clipExprCacheVars.put(clipReadExpr, var);
     }
     
@@ -988,7 +998,10 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
           // String var_nombre = "&lt;sg&gt;";
           String v = c0.getAttribute("v").replace("&lt;", "<").replace("&gt;", ">");
           printComments();
-          println("String var_"+javaIdentifier(n)+" = \""+v+"\";");
+          if (mode == JAVASCRIPT)
+              println("var var_"+javaIdentifier(n)+" = \""+v+"\";");
+          else
+              println("String var_"+javaIdentifier(n)+" = \""+v+"\";");
         }
 
         for (Element c0 : getChildsChildrenElements(root, "section-def-lists")) {
@@ -1048,7 +1061,10 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
           printComments();
           String comment = c0.getAttribute("comment");
           if (!comment.isEmpty()) println("// "+comment);
-          println("public void "+methodName+"(Writer out"+methodArguments+") throws IOException");
+          if (mode == JAVASCRIPT)
+              println("function "+methodName+"(Writer out"+methodArguments+") ");
+          else
+              println("public void "+methodName+"(Writer out"+methodArguments+") throws IOException");
           println("{");
           println("if (debug) { logCall(\""+methodName+"\""+logCallParameters+"); } "); // TODO Check performance impact
 
@@ -1065,7 +1081,10 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
         }
 
         if (error_UNKNOWN_VAR) {
-          println("String error_UNKNOWN_VAR = \"\";");
+            if (mode == JAVASCRIPT)
+                println("var error_UNKNOWN_VAR = \"\";");
+            else
+                println("String error_UNKNOWN_VAR = \"\";");
         }
 
         if (error_UNKNOWN_LIST) {
