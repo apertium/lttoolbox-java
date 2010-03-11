@@ -20,7 +20,9 @@
 package org.apertium.tagger;
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.HashMap;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
@@ -49,12 +51,59 @@ public class TaggerData {
 
     private double ZERO = 1e-10;
 
-    public ArrayList<TForbidRule> getForbidRules() {
+    public TaggerData () {
+        a = null;
+        b = null;
+        N = 0;
+        M = 0;
+        // I'm just gonna go nuts with initialisations, k?
+        discard = new ArrayList<String>();
+        enforce_rules = new ArrayList<TEnforceAfterRule>();
+        prefer_rules = new ArrayList<String>();
+        array_tags = new ArrayList<String>();
+        open_class = new HashSet<Integer>();
+        forbid_rules = new ArrayList<TForbidRule>();
+        tag_index = new HashMap<String, Integer>();
+    }
+
+    Set<Integer> getOpenClass () {
+        return open_class;
+    }
+
+    void setOpenClass (Set<Integer> oc) {
+        open_class = oc;
+    }
+
+    ArrayList<TForbidRule> getForbidRules() {
         return forbid_rules;
     }
 
-    public void setForbidRules(ArrayList<TForbidRule> rules) {
+    void setForbidRules(ArrayList<TForbidRule> rules) {
         this.forbid_rules = rules;
+    }
+
+    Map<String, Integer> getTagIndex () {
+        return tag_index;
+    }
+
+    void setTagIndex (Map<String, Integer> ti) {
+        tag_index = ti;
+    }
+
+    ArrayList<String> getArrayTags() {
+        return array_tags;
+    }
+
+    void setArrayTags(ArrayList<String> at) {
+        this.array_tags = at;
+    }
+
+    ArrayList<TEnforceAfterRule> getEnforceRules() {
+        return enforce_rules;
+    }
+
+    void setEnforceRules(ArrayList<TEnforceAfterRule> ea) {
+        this.enforce_rules = ea;
     }
 
     public void read (InputStream in) throws IOException {
@@ -173,14 +222,6 @@ public class TaggerData {
 
     void setConstants (ConstantManager c) {
         constants = c;
-    }
-
-    Map<String, Integer> getTagIndex () {
-        return tag_index;
-    }
-
-    void setTagIndex (Map<String, Integer> ti) {
-        tag_index = ti;
     }
 
     ArrayList<String> getDiscardRules () {
