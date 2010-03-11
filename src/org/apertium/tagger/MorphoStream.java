@@ -19,6 +19,8 @@
 
 package org.apertium.tagger;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 import org.apertium.lttoolbox.Alphabet;
 import org.apertium.transfer.MatchExe;
 import org.apertium.transfer.MatchState;
@@ -72,6 +74,35 @@ public class MorphoStream {
         this.input = ftxt;
         this.td = t;
         this.me = this.td.getPatternList().newMatchExe();
+        
         ConstantManager constants = td.getConstants();
+        ca_kignorar = constants.getConstant("kIGNORAR");
+        ca_kbarra = constants.getConstant("kBARRA");
+        ca_kdollar = constants.getConstant("kDOLLAR");
+        ca_kbegin = constants.getConstant("kBEGIN");
+        ca_kmot = constants.getConstant("kMOT");
+        ca_kmas = constants.getConstant("kMAS");
+        ca_kunknown = constants.getConstant("kUNKNOWN");
+
+        Map<String, Integer> tag_index = td.getTagIndex();
+        ca_tag_keof = tag_index.get("TAG_kEOF");
+        ca_tag_kundef = tag_index.get("TAG_kUNDEF");
+    }
+
+    TaggerWord get_next_word () {
+        if (vwords.size() != 0) {
+            TaggerWord word = vwords.get(0);
+            vwords.remove(0);
+
+            if (word.isAmbiguous()) {
+                ArrayList<String> ref = td.getDiscardRules();
+                for (int i=0; i < ref.size(); i++) {
+                    word.discardOnAmbiguity(ref.get(i));
+                }
+            }
+            return word;
+        } else {
+            return null;
+        }
     }
 }

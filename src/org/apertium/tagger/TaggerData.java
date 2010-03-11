@@ -159,19 +159,35 @@ public class TaggerData {
 
     }
 
-    public PatternList getPatternList () {
+    PatternList getPatternList () {
         return plist;
     }
 
-    public void setPatternList (PatternList pl) {
+    void setPatternList (PatternList pl) {
         plist = pl;
     }
 
-    public ConstantManager getConstants () {
+    ConstantManager getConstants () {
         return constants;
     }
 
-    public void setConstants (ConstantManager c) {
+    void setConstants (ConstantManager c) {
         constants = c;
+    }
+
+    Map<String, Integer> getTagIndex () {
+        return tag_index;
+    }
+
+    void setTagIndex (Map<String, Integer> ti) {
+        tag_index = ti;
+    }
+
+    ArrayList<String> getDiscardRules () {
+        return discard;
+    }
+
+    void setDiscardRules (ArrayList<String> v) {
+        discard = v;
     }
 }
