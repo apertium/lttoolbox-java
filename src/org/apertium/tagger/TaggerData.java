@@ -38,6 +38,7 @@ public class TaggerData {
     private ArrayList<String> array_tags;
     private ArrayList<TEnforceAfterRule> enforce_rules;
     private ArrayList<String> prefer_rules;
+    private ArrayList<String> discard;
     private ConstantManager constants;
     private PatternList plist;
     private int N;
@@ -144,7 +145,7 @@ public class TaggerData {
       plist.read(in);
     
       // read discards on ambiguity
-      //discard.clear();
+      discard.clear();
 
       int limit = Compression.multibyte_read(in);
 //      if (feof(in)) {
@@ -152,7 +153,7 @@ public class TaggerData {
 //      }
   
       for (int i = 0; i < limit; i++) {
-          //discard.add(Compression.String_read(in));
+          discard.add(Compression.String_read(in));
       }
 
 
