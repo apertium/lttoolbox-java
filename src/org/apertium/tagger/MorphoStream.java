@@ -22,12 +22,17 @@ import java.util.ArrayList;
 import org.apertium.lttoolbox.Alphabet;
 import org.apertium.transfer.MatchExe;
 import org.apertium.transfer.MatchState;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.IOException;
 
 /**
  *
  * @author jimregan
  */
 public class MorphoStream {
+    private boolean foundEOF;
+    private boolean debug = false;
     private String last_string_tag;
     private int ca_any_char;
     private int ca_any_tag;
@@ -42,10 +47,29 @@ public class MorphoStream {
     private int ca_tag_kundef;
 
     private ArrayList<TaggerWord> vwords;
+    private InputStream input;
 
     private MatchExe me;
     private TaggerData td;
     private Alphabet alphabet;
     private MatchState ms;
 
+    private boolean end_of_file;
+    private boolean null_flush;
+
+    MorphoStream () {
+        foundEOF = false;
+        alphabet = new Alphabet();
+        ca_any_char = alphabet.cast(PatternList.ANY_CHAR);
+        ca_any_tag = alphabet.cast(PatternList.ANY_TAG);
+
+        null_flush = false;
+        end_of_file = false;
+    }
+
+    MorphoStream (InputStream ftxt, boolean d, TaggerData t) {
+        this.input = ftxt;
+        this.td = t;
+        this.me = this.td.getPatternList().newMatchExe();
+    }
 }

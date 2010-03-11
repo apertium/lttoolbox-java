@@ -23,6 +23,8 @@ import java.util.Map;
 import java.util.Iterator;
 import java.util.ArrayList;
 import org.apertium.transfer.ApertiumRE;
+import java.io.OutputStream;
+import java.io.IOException;
 
 /**
  *
@@ -155,5 +157,49 @@ public class TaggerWord {
             }
         }
         return ret;
+    }
+
+    public String get_all_chosen_tag_first () {
+        String ret = "";
+        return ret;
+    }
+
+    public void add_ignored_string (String s) {
+        ignored_string += s;
+    }
+
+    public void set_plus_cut(boolean c) {
+        plus_cut=c;
+    }
+
+    public boolean get_plus_cut() {
+        return plus_cut;
+    }
+
+    public void setArrayTags(ArrayList<String> at) {
+        array_tags = at;
+    }
+
+    public void print () {
+        System.out.print("[#" + superficial_form + "# ");
+        Iterator<Integer> it = tags.iterator();
+        while (it.hasNext()) {
+            int f = it.next();
+            System.out.print("(" + f + " " + lexical_forms.get(f) + ") ");
+        }
+        System.out.print("\b]\n");
+    }
+
+    public void outputOriginal (OutputStream o) throws IOException {
+        String s=this.superficial_form;
+        //TODO
+        //Iterator<Integer, String> it = lexical_forms.entrySet().iterator();
+
+    }
+
+    public void discardOnAmbiguity (String tags) {
+        if (isAmbiguous()) {
+            // TODO
+        }
     }
 }

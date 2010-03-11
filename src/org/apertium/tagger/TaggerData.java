@@ -158,4 +158,12 @@ public class TaggerData {
 
 
     }
+
+    public PatternList getPatternList () {
+        return plist;
+    }
+
+    public void setPatternList (PatternList pl) {
+        plist = pl;
+    }
 }
