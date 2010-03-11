@@ -47,7 +47,7 @@ public class TaggerData {
     private int M;
     private double[][] a;
     private double[][] b;
-    //   Collection output;
+    private Collection output;
 
     private double ZERO = 1e-10;
 
@@ -106,6 +106,14 @@ public class TaggerData {
         this.enforce_rules = ea;
     }
 
+    Collection getOutput () {
+        return output;
+    }
+
+    void setOutput (Collection c) {
+        output = c;
+    }
+
     public void read (InputStream in) throws IOException {
       // open class
       int val = 0;
@@ -153,8 +161,7 @@ public class TaggerData {
       constants.read(in);
 
       // output
-      // FIXME
-      //output.read(in);
+      output.read(in);
 
       // dimensions
       N = Compression.multibyte_read(in);
@@ -174,7 +181,7 @@ public class TaggerData {
           }
       }
 
-      // initializing b matix
+      // initializing b matrix
       for (int i = 0 ; i != N; i++) {
           for (int j = 0; j != M; j++) {
               b[i][j] = ZERO;
