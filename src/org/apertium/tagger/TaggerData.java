@@ -166,4 +166,12 @@ public class TaggerData {
     public void setPatternList (PatternList pl) {
         plist = pl;
     }
+
+    public ConstantManager getConstants () {
+        return constants;
+    }
+
+    public void setConstants (ConstantManager c) {
+        constants = c;
+    }
 }

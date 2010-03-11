@@ -68,8 +68,10 @@ public class MorphoStream {
     }
 
     MorphoStream (InputStream ftxt, boolean d, TaggerData t) {
+        this();
         this.input = ftxt;
         this.td = t;
         this.me = this.td.getPatternList().newMatchExe();
+        ConstantManager constants = td.getConstants();
     }
 }
