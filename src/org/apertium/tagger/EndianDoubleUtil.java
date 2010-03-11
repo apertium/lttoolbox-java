@@ -28,7 +28,7 @@ import java.nio.ByteBuffer;
  * @author jimregan
  */
 public class EndianDoubleUtil {
-    public double read (InputStream in) throws IOException {
+    public static double read (InputStream in) throws IOException {
         byte[] b = new byte[8];
         in.read(b);
         ByteBuffer bb = ByteBuffer.wrap(b);

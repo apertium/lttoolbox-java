@@ -42,12 +42,11 @@ public class TaggerData {
     private PatternList plist;
     private int N;
     private int M;
-/*
-  Collection output;
-  double **a;
-  double **b;
-*/
+    private double[][] a;
+    private double[][] b;
+    //   Collection output;
 
+    private double ZERO = 1e-10;
 
     public ArrayList<TForbidRule> getForbidRules() {
         return forbid_rules;
@@ -111,33 +110,26 @@ public class TaggerData {
       N = Compression.multibyte_read(in);
       M = Compression.multibyte_read(in);
 
-/*
-  a = new double * [N];
-  b = new double * [N];
-  for(int i = 0; i != N; i++)
-  {
-    a[i] = new double[N];
-    b[i] = new double[M];
-  }
+      a = new double[N][];
+      b = new double[N][];
+      for (int i = 0; i != N; i++) {
+          a[i] = new double[N];
+          b[i] = new double[M];
+      }
    
-  // read a
-  for(int i = 0; i != N; i++)
-  {
-    for(int j = 0; j != N; j++)
-    {
-      a[i][j] = EndianDoubleUtil::read(in);
-    }
-  }
+      // read a
+      for (int i = 0; i != N; i++) {
+          for (int j = 0; j != N; j++) {
+              a[i][j] = EndianDoubleUtil.read(in);
+          }
+      }
 
-  // initializing b matix
-  for(int i = 0 ; i != N; i++)
-  {
-    for(int j = 0; j != M; j++)
-    {
-      b[i][j] = ZERO;
-    }
-  }
-*/
+      // initializing b matix
+      for (int i = 0 ; i != N; i++) {
+          for (int j = 0; j != M; j++) {
+              b[i][j] = ZERO;
+          }
+      }
 
       // read nonZERO values of b
       int nval = Compression.multibyte_read(in);
