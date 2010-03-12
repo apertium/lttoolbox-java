@@ -217,9 +217,7 @@ public class TaggerData {
     void write (OutputStream out) throws IOException {
         Compression.multibyte_write(open_class.size(), out);
         int val = 0;
-        Iterator<Integer> it = open_class.iterator();
-        while (it.hasNext()) {
-            int i = it.next();
+        for (int i : open_class) {
             Compression.multibyte_write(i-val, out);
             val = i;
         }
