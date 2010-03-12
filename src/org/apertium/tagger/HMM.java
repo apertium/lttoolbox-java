@@ -19,6 +19,7 @@
 
 package org.apertium.tagger;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.IOException;
 import org.apertium.lttoolbox.Compression;
 import java.util.Set;
@@ -68,5 +69,42 @@ public class HMM {
             }
         }
         td.setProbabilities(td.getTagIndex().size(), td.getOutput().size());
+    }
+
+    void write_ambiguity_classes (OutputStream o) throws IOException {
+        for (int i=0; i!=td.getOutput().size(); i++) {
+            Set<Integer> ac = td.getOutput().get(i);
+            Compression.multibyte_write(ac.size(), o);
+            for (int it : ac) {
+                Compression.multibyte_write(it, o);
+            }
+        }
+    }
+
+    void read_probabilities (InputStream in) throws IOException {
+        td.read(in);
+    }
+
+    void write_probabilities (OutputStream out) throws IOException {
+        td.write(out);
+    }
+
+    void init_probabilities_kupiec (InputStream in) throws IOException {
+        int N = td.getN();
+        int M = td.getM();
+        /**
+         * M = Number of ambiguity classes
+         */
+        double[] classes_occurrences = new double[M];
+        double[][] classes_pair_occurrences = new double[M][M];
+        /**
+         * N = Number of tags (states)
+         */
+        double[] tags_estimate = new double[N];
+        double[][] tags_pair_estimate = new double[N][N];
+
+        Collection output = td.getOutput();
+
+        //MorphoStream lexmorfo (is, true, td);
     }
 }
