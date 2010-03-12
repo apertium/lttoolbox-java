@@ -264,6 +264,37 @@ public class TaggerData {
                 EndianDoubleUtil.write(out, a[i][j]);
             }
         }
+
+        int nval = 0;
+        for (int i=0; i!=N; i++) {
+            for (int j=0; j!=M; j++) {
+                if (!output.get(j).contains(i)) {
+                    nval++;
+                }
+            }
+        }
+
+        Compression.multibyte_write(nval, out);
+        for (int i=0; i!=N; i++) {
+            for (int j=0; j!=N; j++) {
+                Compression.multibyte_write(i, out);
+                Compression.multibyte_write(j, out);
+                EndianDoubleUtil.write(out, b[i][j]);
+            }
+        }
+
+        plist.write(out);
+
+        if (discard.size()!=0) {
+            Compression.multibyte_write(discard.size(), out);
+            for (int i=0; i!=discard.size();i++) {
+                Compression.String_write(discard.get(i), out);
+            }
+        }
+    }
+
+    void addDiscard (String tags) {
+        discard.add(tags);
     }
 
     PatternList getPatternList () {
