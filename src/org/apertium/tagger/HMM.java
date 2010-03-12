@@ -67,5 +67,6 @@ public class HMM {
                 td.getOutput().add(ambiguity_class);
             }
         }
+        td.setProbabilities(td.getTagIndex().size(), td.getOutput().size());
     }
 }

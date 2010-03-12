@@ -204,9 +204,9 @@ public class TaggerData {
       discard.clear();
 
       int limit = Compression.multibyte_read(in);
-//      if (feof(in)) {
-//          return;
-//      }
+      if (limit == -1) {
+          return;
+      }
   
       for (int i = 0; i < limit; i++) {
           discard.add(Compression.String_read(in));
@@ -237,5 +237,41 @@ public class TaggerData {
 
     void setDiscardRules (ArrayList<String> v) {
         discard = v;
+    }
+
+    void setProbabilities (int MyN, int MyM, double[][] myA, double[][] myB) {
+        N = MyN;
+        M = MyM;
+
+        if (N != 0 && M != 0) {
+            a = new double[N][];
+            for (int i=0; i != N; i++) {
+                a[i] = new double[N];
+                if (myA != null) {
+                    for (int j=0; j!=N;j++) {
+                        a[i][j] = myA[i][j];
+                    }
+                }
+            }
+
+            b = new double[N][];
+            for (int i=0; i != N; i++) {
+                b[i] = new double[M];
+                if (myB != null) {
+                    for (int j=0; j!=M;j++) {
+                        b[i][j] = myB[i][j];
+                    }
+                }
+            }
+
+        }
+        else {
+            a = null;
+            b = null;
+        }
+    }
+
+    void setProbabilities (int MyN, int MyM) {
+        this.setProbabilities(MyN, MyM, null, null);
     }
 }
