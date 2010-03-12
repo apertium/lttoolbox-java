@@ -233,11 +233,37 @@ public class TaggerData {
             Compression.String_write(array_tags.get(i), out);
         }
 
+        Compression.multibyte_write(tag_index.size(), out);
         for (Map.Entry<String, Integer> entry : tag_index.entrySet()) {
             Compression.String_write(entry.getKey(), out);
             Compression.multibyte_write(entry.getValue(), out);
         }
 
+        Compression.multibyte_write(enforce_rules.size(), out);
+        for (int i=0; i!=enforce_rules.size();i++) {
+            Compression.multibyte_write(enforce_rules.get(i).tagi, out);
+            Compression.multibyte_write(enforce_rules.get(i).tagsj.size(), out);
+            for (int j=0;j!=enforce_rules.get(i).tagsj.size();j++) {
+                Compression.multibyte_write(enforce_rules.get(i).tagsj.get(j), out);
+            }
+        }
+
+        Compression.multibyte_write(prefer_rules.size(), out);
+        for (int i=0; i!=prefer_rules.size(); i++) {
+            Compression.String_write(prefer_rules.get(i), out);
+        }
+
+        constants.write(out);
+
+        //output.write(out);
+
+        Compression.multibyte_write(N, out);
+        Compression.multibyte_write(M, out);
+        for (int i=0; i!=N; i++) {
+            for (int j=0; j!=N; j++) {
+                EndianDoubleUtil.write(out, a[i][j]);
+            }
+        }
     }
 
     PatternList getPatternList () {

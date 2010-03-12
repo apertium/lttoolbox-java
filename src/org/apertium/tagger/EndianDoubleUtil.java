@@ -20,6 +20,7 @@
 package org.apertium.tagger;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
@@ -29,9 +30,16 @@ import java.nio.ByteBuffer;
  */
 public class EndianDoubleUtil {
     public static double read (InputStream in) throws IOException {
+        // TODO - check for compatibility
         byte[] b = new byte[8];
         in.read(b);
         ByteBuffer bb = ByteBuffer.wrap(b);
         return bb.getDouble();
+    }
+
+    public static void write (OutputStream out, Double d) throws IOException {
+        // TODO - check for compatibility
+        DataOutputStream data = new DataOutputStream(out);
+        data.writeDouble(d);
     }
 }
