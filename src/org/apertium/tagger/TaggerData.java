@@ -235,6 +235,13 @@ public class TaggerData {
             Compression.String_write(array_tags.get(i), out);
         }
 
+        Iterator<Map.Entry<String, Integer>> mit = tag_index.entrySet().iterator();
+        while (mit.hasNext()) {
+            Map.Entry<String, Integer> e = mit.next();
+            Compression.String_write(e.getKey(), out);
+            Compression.multibyte_write(e.getValue(), out);
+        }
+
     }
 
     PatternList getPatternList () {
