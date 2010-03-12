@@ -274,4 +274,21 @@ public class TaggerData {
     void setProbabilities (int MyN, int MyM) {
         this.setProbabilities(MyN, MyM, null, null);
     }
+
+    double[][] getA () {
+        return a;
+    }
+
+    double[][] getB () {
+        return b;
+    }
+
+    int getN () {
+        return N;
+    }
+
+    int getM () {
+        return M;
+    }
+
 }
