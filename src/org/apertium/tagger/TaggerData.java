@@ -23,6 +23,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
@@ -211,7 +212,28 @@ public class TaggerData {
       for (int i = 0; i < limit; i++) {
           discard.add(Compression.String_read(in));
       }
+    }
 
+    void write (OutputStream out) throws IOException {
+        Compression.multibyte_write(open_class.size(), out);
+        int val = 0;
+        Iterator<Integer> it = open_class.iterator();
+        while (it.hasNext()) {
+            int i = it.next();
+            Compression.multibyte_write(i-val, out);
+            val = i;
+        }
+
+        Compression.multibyte_write(forbid_rules.size(), out);
+        for (int i=0; i != forbid_rules.size(); i++) {
+            Compression.multibyte_write(forbid_rules.get(i).tagi, out);
+            Compression.multibyte_write(forbid_rules.get(i).tagj, out);
+        }
+
+        Compression.multibyte_write(array_tags.size(), out);
+        for (int i=0; i != array_tags.size(); i++) {
+            Compression.String_write(array_tags.get(i), out);
+        }
 
     }
 
