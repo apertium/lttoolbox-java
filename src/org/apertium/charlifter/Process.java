@@ -28,13 +28,17 @@ public class Process {
     private String diacritics;
     private String ints;
     private String extrabd;
-    private int okina; // boolean?
+    private static boolean okina;
+
+    public static boolean isOkina () {
+        return okina;
+    }
 
     void init () {
         this.diacritics = "\\p{M}|[\\x{A8}\\x{B4}\\x{B8}\\x{02B9}-\\x{02DD}]";
         this.ints = "´'’-";
         this.extrabd = "a";
-        this.okina = 0;
+        this.okina = false;
     }
     
     void init (String lang) {
@@ -42,7 +46,7 @@ public class Process {
             this.diacritics = "\\p{M}|[\\x{A8}\\x{B4}\\x{B8}\\x{02B9}-\\x{02DD}]";
             this.ints = "-";
             this.extrabd = "'’‘";
-            this.okina = 1;
+            this.okina = true;
         } else {
             init();
         }

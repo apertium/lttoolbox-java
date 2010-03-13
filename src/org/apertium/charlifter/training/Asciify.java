@@ -17,7 +17,7 @@
  * 02111-1307, USA.
  */
 
-package org.apertium.charlifter;
+package org.apertium.charlifter.training;
 
 /**
  * This class should be replaced, using the same mechanism as ACX

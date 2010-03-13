@@ -19,7 +19,7 @@
 
 package org.apertium.charlifter.training;
 import org.apertium.charlifter.Data;
-import org.apertium.charlifter.Asciify;
+import org.apertium.charlifter.Process;
 
 /**
  *
@@ -32,6 +32,10 @@ public class TextDict {
             words = Wordlist.read(file);
             for (String word : words) {
                 String asc = Asciify.toascii(word.toLowerCase());
+                if (Process.isOkina() && asc.contains("'")) {
+                    String stripped = asc;
+                    stripped.replaceAll("'", "");
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
