@@ -57,7 +57,10 @@ public class ParseTransferFile {
   /** For checking lists */
   private LinkedHashSet<String> listList = new LinkedHashSet<String>();
 
-
+  public void setMode(int m) {
+      if (m == JAVASCRIPT)
+          this.mode = 2;
+  }
 
   /**
    * The number of parameters in the rule/macro/method currently being defined
