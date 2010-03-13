@@ -31,7 +31,8 @@ public class TextDict {
         try {
             words = Wordlist.read(file);
             for (String word : words) {
-                String asc = Asciify.toascii(word.toLowerCase());
+                String lwr = word.toLowerCase();
+                String asc = Asciify.toascii(lwr);
                 if (Process.isOkina() && asc.contains("'")) {
                     String stripped = asc;
                     stripped.replaceAll("'", "");

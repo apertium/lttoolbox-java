@@ -24,13 +24,13 @@ import java.util.HashMap;
  * @author jimregan
  */
 public class Data {
-    HashMap<Character, Integer> CharRef;
-    HashMap<Character, HashMap<Character, Integer>> CharsRef;
-    HashMap<String, Integer> WordRef;
-    HashMap<String, HashMap<String, Integer>> WordsRef;
-    HashMap<Character, Double> CharProbsRef;
-    HashMap<String, Double> FeaturesRef;
-    HashMap<String, Double> ContextRef;
+    public HashMap<Character, Integer> CharRef;
+    public HashMap<Character, HashMap<Character, Integer>> CharsRef;
+    public HashMap<String, Integer> WordRef;
+    public HashMap<String, HashMap<String, Integer>> WordsRef;
+    public HashMap<Character, Double> CharProbsRef;
+    public HashMap<String, Double> FeaturesRef;
+    public HashMap<String, Double> ContextRef;
 
     public void Data () {
         CharRef = new HashMap<Character, Integer>();
