@@ -65,23 +65,27 @@ public class TextDict {
                         int num = clean.get(stripped) + 1;
                         clean.put(stripped, num);
                     }
-                    HashMap<String, Integer> e = new HashMap<String, Integer>();
-                    if (td.tableref.containsKey(stripped)) {
-                        e = td.tableref.get(stripped);
-                        if (e.containsKey(lwr)) {
-                            int i = e.get(lwr) + 1;
-                            e.put(lwr, i);
-                        } else {
-                            e.put(lwr, 1);
-                        }
-                    } else {
-                        e.put(lwr, 1);
-                    }
-                    td.tableref.put(stripped, e);
+                    tableref_increment(stripped, lwr);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void tableref_increment(String stripped, String lwr) {
+        HashMap<String, Integer> e = new HashMap<String, Integer>();
+        if (td.tableref.containsKey(stripped)) {
+            e = td.tableref.get(stripped);
+            if (e.containsKey(lwr)) {
+                int i = e.get(lwr) + 1;
+                e.put(lwr, i);
+            } else {
+                e.put(lwr, 1);
+            }
+        } else {
+            e.put(lwr, 1);
+        }
+        td.tableref.put(stripped, e);
     }
 }
