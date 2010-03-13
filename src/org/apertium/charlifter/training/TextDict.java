@@ -20,13 +20,36 @@
 package org.apertium.charlifter.training;
 import org.apertium.charlifter.Data;
 import org.apertium.charlifter.Process;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  *
  * @author jimregan
  */
 public class TextDict {
-    Data read_clean_dict (String file, Data data) {
+
+    /**
+     * hash of asciifications of xx-clean.txt words. Not saved for -r or -e;
+     * just used to avoid keeping "prettyclean" or corpus words for dictionary
+     * lookup if their asciification coincides with asciification of a truly
+     * clean word, e.g. ac\'u, etc.
+     */
+    HashMap <String, Integer> clean;
+    /**
+     * redundant info, used for faster lookup (no toascii req)
+     */
+    HashMap<String, Integer> ambigchars;
+
+    TrainData td;
+
+    void TextDict () {
+        clean = new HashMap<String, Integer>();
+        ambigchars = new HashMap<String, Integer>();
+        td = new TrainData ();
+    }
+
+    void read_clean_dict (String file) {
         String[] words;
         try {
             words = Wordlist.read(file);
@@ -36,11 +59,29 @@ public class TextDict {
                 if (Process.isOkina() && asc.contains("'")) {
                     String stripped = asc;
                     stripped.replaceAll("'", "");
+                    if (!clean.containsKey(stripped)) {
+                        clean.put(stripped, 1);
+                    } else {
+                        int num = clean.get(stripped) + 1;
+                        clean.put(stripped, num);
+                    }
+                    HashMap<String, Integer> e = new HashMap<String, Integer>();
+                    if (td.tableref.containsKey(stripped)) {
+                        e = td.tableref.get(stripped);
+                        if (e.containsKey(lwr)) {
+                            int i = e.get(lwr) + 1;
+                            e.put(lwr, i);
+                        } else {
+                            e.put(lwr, 1);
+                        }
+                    } else {
+                        e.put(lwr, 1);
+                    }
+                    td.tableref.put(stripped, e);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return data;
     }
 }

@@ -66,4 +66,14 @@ public class TrainData {
      */
     HashMap<String, Integer> contextcount;
     HashMap<String, Double> contextref;
+
+    TrainData () {
+        charsref = new HashMap<Character, Integer>();
+        tableref = new HashMap<String, HashMap <String, Integer>>();
+        charcount = new HashMap<Character, Integer>();
+        charprobsref = new HashMap<Character, Double>();
+        featuresref = new HashMap<String, Integer>();
+        contextcount = new HashMap<String, Integer>();
+        contextref = new HashMap<String, Double>();
+    }
 }
