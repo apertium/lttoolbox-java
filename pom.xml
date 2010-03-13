@@ -99,7 +99,7 @@
 						</manifest>
 						<manifestEntries>
 							<mode>development</mode>
-							<url>${pom.url}</url>
+							<url>${project.url}</url>
 						</manifestEntries>
 						<manifestFile>manifest.mf</manifestFile>
 					</archive>
@@ -115,7 +115,6 @@
 		</plugins>
 	</build>
 
-<!--
 	<profiles>
 		<profile>
 			<id>default-tools.jar</id>
@@ -129,14 +128,14 @@
 				<dependency>
 					<groupId>com.sun</groupId>
 					<artifactId>tools</artifactId>
-					<version>1.4.2</version>
+					<version>1.6.0</version>
 					<scope>system</scope>
 					<systemPath>${java.home}/../lib/tools.jar</systemPath>
 				</dependency>
 			</dependencies>
 		</profile>
 	</profiles>
--->	
+
 	<dependencies>
 		<dependency>
 			<groupId>trove4j</groupId>
