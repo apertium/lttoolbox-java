@@ -31,7 +31,7 @@ public class Asciify {
      * @param s UTF-8 string
      * @return ASCII-fied version
      */
-    public String toascii (String s) {
+    public static String toascii (String s) {
 	// first batch are characters to delete - these need to get
 	// added to charlifter script too...
 	s.replaceAll("[\\x{A8}\\x{B4}\\x{B8}]", "");  // wipe out latin-1 diacriticals
