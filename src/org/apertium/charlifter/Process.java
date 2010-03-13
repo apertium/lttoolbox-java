@@ -25,7 +25,7 @@ package org.apertium.charlifter;
 public class Process {
     private double[][] features;
 
-    private String diacritics;
+    public static String diacritics = "\\p{M}|[\\x{A8}\\x{B4}\\x{B8}\\x{02B9}-\\x{02DD}]";
     private String ints;
     private String extrabd;
     private static boolean okina;
@@ -35,7 +35,6 @@ public class Process {
     }
 
     void init () {
-        this.diacritics = "\\p{M}|[\\x{A8}\\x{B4}\\x{B8}\\x{02B9}-\\x{02DD}]";
         this.ints = "´'’-";
         this.extrabd = "a";
         this.okina = false;
@@ -43,7 +42,6 @@ public class Process {
     
     void init (String lang) {
         if (lang.equals("sm") || lang.equals("haw")) {
-            this.diacritics = "\\p{M}|[\\x{A8}\\x{B4}\\x{B8}\\x{02B9}-\\x{02DD}]";
             this.ints = "-";
             this.extrabd = "'’‘";
             this.okina = true;

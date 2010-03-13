@@ -22,6 +22,8 @@ import org.apertium.charlifter.Data;
 import org.apertium.charlifter.Process;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 /**
  *
@@ -65,6 +67,12 @@ public class TextDict {
                 clean_increment(asc);
                 tableref_increment(asc, lwr);
             }
+            //while ($lwr =~ /(.($diacritics)*)/g) { //eh?
+            Pattern p = Pattern.compile("(.(" + Process.diacritics + ")*)");
+            while (true) {
+                
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
