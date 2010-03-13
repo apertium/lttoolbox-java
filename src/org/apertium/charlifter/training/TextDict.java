@@ -59,17 +59,23 @@ public class TextDict {
                 if (Process.isOkina() && asc.contains("'")) {
                     String stripped = asc;
                     stripped.replaceAll("'", "");
-                    if (!clean.containsKey(stripped)) {
-                        clean.put(stripped, 1);
-                    } else {
-                        int num = clean.get(stripped) + 1;
-                        clean.put(stripped, num);
-                    }
+                    clean_increment(stripped);
                     tableref_increment(stripped, lwr);
                 }
+                clean_increment(asc);
+                tableref_increment(asc, lwr);
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void clean_increment(String stripped) {
+        if (!clean.containsKey(stripped)) {
+            clean.put(stripped, 1);
+        } else {
+            int num = clean.get(stripped) + 1;
+            clean.put(stripped, num);
         }
     }
 
