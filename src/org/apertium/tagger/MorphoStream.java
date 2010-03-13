@@ -89,7 +89,7 @@ public class MorphoStream {
         ca_tag_kundef = tag_index.get("TAG_kUNDEF");
     }
 
-    TaggerWord get_next_word () {
+    TaggerWord get_next_word () throws IOException {
         if (vwords.size() != 0) {
             TaggerWord word = vwords.get(0);
             vwords.remove(0);
@@ -101,8 +101,27 @@ public class MorphoStream {
                 }
             }
             return word;
-        } else {
-            return null;
         }
+
+        // FIXME!
+        //if(feof(input))
+        //{
+        //    return NULL;
+        //}
+
+        int ivwords = 0;
+        vwords.add(new TaggerWord());
+
+        while (true) {
+            int symbol = input.read();
+            if (symbol == -1 || (null_flush && symbol == '\0')) {
+                this.end_of_file = true;
+                // vwords[ivwords]->add_tag(ca_tag_keof, L"", td->getPreferRules());
+                return get_next_word ();
+            }
+        }
+
     }
+
+
 }
