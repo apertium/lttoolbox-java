@@ -24,6 +24,9 @@ import java.io.*;
 import java.lang.reflect.Method;
 import org.apertium.lttoolbox.process.State;
 import org.apertium.transfer.compile.ParseTransferFile;
+
+import com.sun.tools.javac.Main;
+
 import static org.apertium.lttoolbox.LTProc.*;
 
 /**
@@ -95,15 +98,22 @@ public class ApertiumTransferCompile {
         if (cps==null) {
             System.err.println("Please specify location of lttoolbox.jar, for example writing java -Dlttoolbox.jar="+cp.getPath());
         }
+        
+        //String exec = "javac -cp "+cp.getPath()+" "+javaDest;
+        String[] options = new String[] {
+        		"-classpath", cp.getPath(), javaDest.toString()
+        };
+        
+        System.err.println("Compiling: "+options);
 
-        String exec = "javac -cp "+cp.getPath()+" "+javaDest;
-        System.err.println("Compiling: "+exec);
         if (!cp.exists()) {
           System.err.println("Error: "+cp.getPath()+" is missing.");
           System.err.println("Please rebuild lttoolbox-java to make it appear.");
           throw new FileNotFoundException(cp.getPath()+" is needed to be able to compile transfer files.");
         }
-        exec(exec);
+        //exec(exec);
+        
+        com.sun.tools.javac.Main.compile(options);
       }
 
 
