@@ -158,12 +158,27 @@ public class MorphoStream {
                 end_of_file = true;
                 if (str.length() > 0) {
                     //vwords[ivwords]->add_ignored_string(str);
+                    TaggerWord tmp = new TaggerWord ();
+                    tmp = vwords.get(ivwords);
+                    tmp.add_ignored_string(str);
+                    vwords.set(ivwords, tmp);
+
                     System.err.println ("Warning (internal): kIGNORE was returned while reading a word");
                     System.err.println ("Word being read: " + vwords.get(ivwords).get_superficial_form());
                     System.err.println ("Debug: " + str);
                 }
                 //vwords[ivwords]->add_tag(ca_tag_keof, L"", td->getPreferRules());
+                TaggerWord tmp = new TaggerWord ();
+                tmp = vwords.get(ivwords);
+                tmp.add_tag(ca_tag_keof, "", td.getPreferRules());
+                vwords.set(ivwords, tmp);
                 return;
+            } else if (symbol == (int) '\\') {
+                symbol = input.read();
+                str += '\\';
+                str += (char) symbol;
+            } else if (symbol == (int) '/') {
+                
             }
         }
 
