@@ -115,6 +115,7 @@
 		</plugins>
 	</build>
 
+<!--
 	<profiles>
 		<profile>
 			<id>default-tools.jar</id>
@@ -135,6 +136,7 @@
 			</dependencies>
 		</profile>
 	</profiles>
+-->
 
 	<dependencies>
 		<dependency>
