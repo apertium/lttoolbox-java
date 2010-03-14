@@ -116,7 +116,9 @@ public class MorphoStream {
             int symbol = input.read();
             if (symbol == -1 || (null_flush && symbol == '\0')) {
                 this.end_of_file = true;
-                // vwords[ivwords]->add_tag(ca_tag_keof, L"", td->getPreferRules());
+                // vwords[ivwords]->add_tag(ca_tag_keof, "", td->getPreferRules());
+                TaggerWord tmp = vwords.get(ivwords);
+                tmp.add_tag(ca_tag_keof, "", td.getPreferRules());
                 return get_next_word ();
             }
         }

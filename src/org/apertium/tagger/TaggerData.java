@@ -115,6 +115,15 @@ public class TaggerData {
         output = c;
     }
 
+
+    ArrayList<String> getPreferRules () {
+        return prefer_rules;
+    }
+
+    void setPreferRules (ArrayList<String> a) {
+        prefer_rules = a;
+    }
+    
     public void read (InputStream in) throws IOException {
       // open class
       int val = 0;
