@@ -179,7 +179,16 @@ public class MorphoStream {
         }
 
         while (true) {
-            
+            int symbol = input.read();
+            if (symbol == -1 || (null_flush && symbol == '\0')) {
+                end_of_file = true;
+                if (str.length() > 0) {
+                    this.vwords_add_ignored(ivwords, str);
+                    System.err.println ("Warning (internal): kIGNORE was returned while reading a word");
+                    System.err.println ("Word being read: " + vwords.get(ivwords).get_superficial_form());
+                    System.err.println ("Debug: " + str);
+                }
+            }
         }
     }
 
