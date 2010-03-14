@@ -150,5 +150,24 @@ public class MorphoStream {
 
     }
 
+    void readRestOfWord (int ivwords) throws IOException {
+        String str = "";
+        while (true) {
+            int symbol = input.read();
+            if (symbol == -1 || (null_flush && symbol == (int) '\0')) {
+                end_of_file = true;
+                if (str.length() > 0) {
+                    //vwords[ivwords]->add_ignored_string(str);
+                    System.err.println ("Warning (internal): kIGNORE was returned while reading a word");
+                    System.err.println ("Word being read: " + vwords.get(ivwords).get_superficial_form());
+                    System.err.println ("Debug: " + str);
+                }
+                //vwords[ivwords]->add_tag(ca_tag_keof, L"", td->getPreferRules());
+                return;
+            }
+        }
+
+    }
+
 
 }
