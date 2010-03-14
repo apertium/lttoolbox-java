@@ -122,6 +122,30 @@ public class MorphoStream {
                 vwords.set(ivwords, tmp);
                 return get_next_word ();
             }
+            if (symbol == (int) '^') {
+                readRestOfWord (ivwords);
+                return get_next_word();
+            } else {
+                String str = "";
+                if (symbol == (int) '\\') {
+                    symbol = input.read();
+                    str += '\\';
+                    str += (char) symbol;
+                    symbol = (int) '\\';
+                } else {
+                    str += (char) symbol;
+                }
+                while (symbol != (int) '^') {
+                    symbol = input.read();
+                    if (symbol == -1 || (null_flush && symbol == '\0')) {
+                        end_of_file = true;
+                        //FIXME
+                        //vwords[ivwords]->add_ignored_string(str);
+                        //vwords[ivwords]->add_tag(ca_tag_keof, L"", td->getPreferRules());
+                        return get_next_word();
+                    }
+                }
+            }
         }
 
     }
