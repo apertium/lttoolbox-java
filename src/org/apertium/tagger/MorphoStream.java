@@ -119,6 +119,7 @@ public class MorphoStream {
                 // vwords[ivwords]->add_tag(ca_tag_keof, "", td->getPreferRules());
                 TaggerWord tmp = vwords.get(ivwords);
                 tmp.add_tag(ca_tag_keof, "", td.getPreferRules());
+                vwords.set(ivwords, tmp);
                 return get_next_word ();
             }
         }
