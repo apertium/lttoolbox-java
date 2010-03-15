@@ -47,6 +47,11 @@ public class MatchNode {
     transitions.putAll(n.transitions);
   }
 
+  public MatchNode(Integer[] n) {
+    //TODO
+  }
+
+
   /*
    * Hmm ..... se: ../../lttoolbox/lttoolbox/sorted_vector.*
    */

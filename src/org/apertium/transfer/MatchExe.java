@@ -22,8 +22,10 @@ package org.apertium.transfer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
+import java.util.HashMap;
 import org.apertium.lttoolbox.Compression;
 import org.apertium.lttoolbox.compile.Transducer;
+import org.apertium.lttoolbox.collections.IntSet;
 
 public class MatchExe {
 
@@ -47,10 +49,13 @@ public class MatchExe {
    * SO: Set of final nodes is those which 2nd index of node_list is uneven
    */
   int[][] node_list;
+
+  Map<MatchNode, Integer> finals;
   
 
   public MatchExe(MatchExe te) {
     copy(te);
+    finals = new HashMap<MatchNode, Integer>();
   }
 
 
@@ -67,9 +72,9 @@ public class MatchExe {
       for (int i = number_of_finals; i > 0; i--) {
           int read = Compression.multibyte_read(in);
           // its not needed to keep track of them, just skip them
-          // base += read;
-          // t.finals.add(base);
-          // System.err.println("t_finals.add( base = " + base);
+          //base += read;
+          //t.finals.add(base);
+          //System.err.println("t_finals.add( base = " + base);
       }
     }
 
@@ -155,34 +160,33 @@ public class MatchExe {
   @Deprecated
   public MatchExe(Transducer t, Map<Integer, Integer> final_type) {
     // System.err.println("final_type = " + new TreeMap<Integer, Integer>(final_type));
-    // approx evry 7th value is set. For en-ca (big pair)
+    // approx every 7th value is set. For en-ca (big pair)
     // final_type = {14=1, 41=2, 48=2, 55=2, 62=2, 69=2, 76=2, 83=2, 90=2, 97=2, 103=90, 106=90, 109=90,
     // ...
     // 420739=211, 420741=213, 420743=215, 420745=215, 420747=215, 420749=216}
 
-/* OLD CODE
     // set up initial node
     initial_id = t.getInitial();
 
     int limit=t.transitions.size();
 
     // memory allocation
-    node_list = new MatchNode[limit];
+    MatchNode[] my_node_list = new MatchNode[limit];
 
     for (int no =0; no<limit; no++) {
       //final Map<Integer, Set<Integer>> second = t.transitions.get(first);
       //node_list[first] = new MatchNode(second.size());
-      node_list[no] = new MatchNode();
+      my_node_list[no] = new MatchNode();
     }
 
     // set up the transitions
     for (int no =0; no<limit; no++) {
-      MatchNode mynode=node_list[no];
+      MatchNode mynode=my_node_list[no];
       final Map<Integer, IntSet> second=t.transitions.get(no);
       for (Integer it2First : second.keySet()) {
         IntSet it2Second=second.get(it2First);
         for (Integer integer : it2Second) {
-          mynode.addTransition(it2First, node_list[integer]);
+          //mynode.addTransition(it2First, my_node_list[integer]);
         }
       }
     }
@@ -190,9 +194,8 @@ public class MatchExe {
     // set up finals
     for (Integer first : final_type.keySet()) {
       final Integer second = final_type.get(first);
-      finals.put(node_list[first], second);
+      finals.put(my_node_list[first], second);
     }
- */
   }
 
   
