@@ -44,7 +44,7 @@ public class MatchState {
   int[][] node_list;
 
 
-  MatchState(MatchExe me) {
+  public MatchState(MatchExe me) {
     node_list = me.node_list;
     first = last = 0;
     state = new int[BUF_LIMIT];
@@ -69,7 +69,7 @@ public class MatchState {
     return last >= first ? last - first : last + BUF_LIMIT - first;
   }
 
-  void init(int initial) {
+  public void init(int initial) {
     first = 0;
     last = 1;
     state[0] = initial;
