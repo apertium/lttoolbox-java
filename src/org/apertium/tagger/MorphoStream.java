@@ -188,8 +188,45 @@ public class MorphoStream {
                     System.err.println ("Word being read: " + vwords.get(ivwords).get_superficial_form());
                     System.err.println ("Debug: " + str);
                 }
+                vwords_add_tag(ivwords);
+                return;
+            } else if (symbol == (int) '\\') {
+                symbol = input.read();
+                str += '\\';
+                str += (char) symbol;
+                symbol = '\\';
+            } else if (symbol == (int) '/') {
+                lrlmClassify (str, ivwords);
+                str = "";
+                ivwords = 0;
+                continue;
+            } else if (symbol == (int) '$') {
+                if (str.charAt(0) != '*') {
+                    lrlmClassify(str, ivwords);
+                }
+                return;
+            } else {
+                str += (char) symbol;
+            }
+
+        }
+    }
+
+    void lrlmClassify (String str, int ivwords) {
+        int floor = 0;
+        int last_type = -1;
+        int last_pos = 0;
+
+        // FIXME - Jacob?
+        //ms = new MatchState(me.getInitial());
+        for (int i=0; i!=str.length();i++) {
+            if (str.charAt(i) != '<') {
+                if (str.charAt(i) == '+') {
+                    // int val = ms.classifyFinals(me->getFinals());
+                }
             }
         }
+        
     }
 
     private void vwords_add_ignored(int ivwords, String str) {
