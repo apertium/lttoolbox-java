@@ -212,6 +212,9 @@ public class MorphoStream {
         }
     }
 
+    /*
+     * BROKEN!!!
+     */
     void lrlmClassify (String str, int ivwords) {
         int floor = 0;
         int last_type = -1;
@@ -224,7 +227,30 @@ public class MorphoStream {
                 if (str.charAt(i) == '+') {
                     // Yay. Jacob only half converted MatchExe FIXME
                     //int val = ms.classifyFinals(me.getFinals());
+                    //if (val != -1) {
+                    //    last_pos = i-1;
+                    //    last_type = val;
+                    //}
                 }
+                //ms.step(str.toLowerCase().charAt(i), ca_any_char);
+            } else {
+                String tag = "";
+                for (int j=i+1;j!=str.length();j++) {
+                    if (str.charAt(j) == '\\') {
+                        j++;
+                    } else if (str.charAt(j) == '>') {
+                        tag = str.substring(i, j-i+1);
+                        i = j;
+                        break;
+                    }
+                }
+
+                //int symbol = alphabet(tag);
+                //if (symbol) {
+                //    ms.step (symbol, ca_any_tag);
+                //} else {
+                //    ms.step (ca_any_tag);
+                //}
             }
         }
         
