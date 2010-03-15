@@ -222,7 +222,8 @@ public class MorphoStream {
         for (int i=0; i!=str.length();i++) {
             if (str.charAt(i) != '<') {
                 if (str.charAt(i) == '+') {
-                    int val = ms.classifyFinals(me.getFinals());
+                    // Yay. Jacob only half converted MatchExe FIXME
+                    //int val = ms.classifyFinals(me.getFinals());
                 }
             }
         }
