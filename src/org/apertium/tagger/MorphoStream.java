@@ -217,12 +217,12 @@ public class MorphoStream {
         int last_type = -1;
         int last_pos = 0;
 
-        // FIXME - Jacob?
-        //ms = new MatchState(me.getInitial());
+        this.ms = new MatchState(this.me);
+        ms.init(me.getInitial());
         for (int i=0; i!=str.length();i++) {
             if (str.charAt(i) != '<') {
                 if (str.charAt(i) == '+') {
-                    // int val = ms.classifyFinals(me->getFinals());
+                    int val = ms.classifyFinals(me.getFinals());
                 }
             }
         }
