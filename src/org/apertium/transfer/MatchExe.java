@@ -51,7 +51,10 @@ public class MatchExe {
   int[][] node_list;
 
   Map<MatchNode, Integer> finals;
-  
+
+  public Map<MatchNode, Integer> getFinals () {
+      return finals;
+  }
 
   public MatchExe(MatchExe te) {
     copy(te);
