@@ -252,6 +252,11 @@ public class MorphoStream {
                 //    ms.step (ca_any_tag);
                 //}
             }
+            //if (ms.size() == 0) {
+            //    if (last_pos != floor) {
+            //
+            //    }
+            //}
         }
         
     }
