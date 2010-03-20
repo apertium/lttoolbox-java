@@ -27,6 +27,10 @@ import org.apertium.lttoolbox.Compression;
 import org.apertium.lttoolbox.compile.Transducer;
 import org.apertium.lttoolbox.collections.IntSet;
 
+/**
+ * The container object that contains all states (and transitions betweem them)
+ * @author Jacob Nordfalk
+ */
 public class MatchExe {
 
   /**

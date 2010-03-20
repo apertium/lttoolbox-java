@@ -20,11 +20,9 @@
 package org.apertium.transfer;
 
 /**
- *
+ * A list of nodes currently matched.
  * @author Jacob Nordfalk
  */
-
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
