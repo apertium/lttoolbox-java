@@ -41,13 +41,13 @@ public class TextDict {
     /**
      * redundant info, used for faster lookup (no toascii req)
      */
-    HashMap<String, Integer> ambigchars;
+    HashMap<Character, Integer> ambigchars;
 
     TrainData td;
 
     void TextDict () {
         clean = new HashMap<String, Integer>();
-        ambigchars = new HashMap<String, Integer>();
+        ambigchars = new HashMap<Character, Integer>();
         td = new TrainData ();
     }
 
@@ -80,6 +80,8 @@ public class TextDict {
                     if (!cur.matches("^[A-Za-z]$") && !cur.equals(Asciify.toascii(cur))) {
                         String asc = Asciify.toascii(cur);
                         charsref_increment(cur, asc);
+                        ambigref_increment(cur);
+                        ambigref_increment(asc);
                     }
                 }
             }
@@ -137,4 +139,15 @@ public class TextDict {
         }
         td.charsref.put(asc, e);
     }
+
+    private void ambigref_increment(String character) {
+        Character c = character.charAt(0);
+        if (!ambigchars.containsKey(c)) {
+            ambigchars.put(c, 1);
+        } else {
+            int num = ambigchars.get(c) + 1;
+            ambigchars.put(c, num);
+        }
+    }
+
 }
