@@ -212,9 +212,6 @@ public class MorphoStream {
         }
     }
 
-    /*
-     * BROKEN!!!
-     */
     void lrlmClassify (String str, int ivwords) {
         int floor = 0;
         int last_type = -1;
@@ -225,7 +222,6 @@ public class MorphoStream {
         for (int i=0, limit=str.length(); i!=limit;i++) {
             if (str.charAt(i) != '<') {
                 if (str.charAt(i) == '+') {
-                    // Yay. Jacob only half converted MatchExe FIXME
                     //int val = ms.classifyFinals(me.getFinals());
                     int val = ms.classifyFinals();
                     if (val != -1) {
