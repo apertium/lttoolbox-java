@@ -104,10 +104,10 @@ public class MorphoStream {
         }
 
         // FIXME!
-        //if(feof(input))
-        //{
-        //    return NULL;
-        //}
+        if(end_of_file)
+        {
+            return null;
+        }
 
         int ivwords = 0;
         vwords.add(new TaggerWord());
