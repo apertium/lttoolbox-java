@@ -246,12 +246,14 @@ public class MorphoStream {
                     }
                 }
 
+                // Check
                 //int symbol = alphabet(tag);
-                //if (symbol) {
-                //    ms.step (symbol, ca_any_tag);
-                //} else {
-                //    ms.step (ca_any_tag);
-                //}
+                int symbol = alphabet.cast(tag);
+                if (symbol != 0) {
+                    ms.step (symbol, ca_any_tag);
+                } else {
+                    ms.step (ca_any_tag);
+                }
             }
             if (ms.size() == 0) {
                 if (last_pos != floor) {
