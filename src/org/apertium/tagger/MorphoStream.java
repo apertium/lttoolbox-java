@@ -233,7 +233,7 @@ public class MorphoStream {
                         last_type = val;
                     }
                 }
-                //ms.step(str.toLowerCase().charAt(i), ca_any_char);
+                ms.step(str.toLowerCase().charAt(i), ca_any_char);
             } else {
                 String tag = "";
                 for (int j=i+1;j!=str.length();j++) {
@@ -253,11 +253,11 @@ public class MorphoStream {
                 //    ms.step (ca_any_tag);
                 //}
             }
-            //if (ms.size() == 0) {
-            //    if (last_pos != floor) {
-            //
-            //    }
-            //}
+            if (ms.size() == 0) {
+                if (last_pos != floor) {
+            
+                }
+            }
         }
         
     }
