@@ -162,7 +162,16 @@ public class HMM {
                 tags_pair_estimate[i][j] = 0;
 
         Set<Integer> tags1, tags2;
-        
+        for (k1=0; k1<M; k1++) {
+            tags1=output.get(k1);
+            for (k2=0; k2<M; k2++) {
+                tags2 = output.get(k2);
+                double noccurrences = classes_pair_occurrences[k1][k2]/(double) (tags1.size()*tags2.size());
+                for (Integer itag1 : tags1.toArray(new Integer[tags1.size()]))
+                    for (Integer itag2 : tags2.toArray(new Integer[tags2.size()]))
+                        tags_pair_estimate[itag1][itag2]+=noccurrences;
+            }
+        }
     }
 
     private void fatal_error (String err) {
