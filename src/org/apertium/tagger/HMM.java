@@ -118,6 +118,55 @@ public class HMM {
         Set<Integer> tags = new HashSet<Integer>();
         tags.add(eos);
         k1=output.get(tags);
+        classes_occurrences[k]++;
 
+        word = lexmorfo.get_next_word();
+        while (word!=null) {
+            if (++nw%10000==0)
+                System.err.println('.');
+
+            tags = word.get_tags();
+
+            if (tags.size()==0) {
+                tags = td.getOpenClass();
+            } else if (output.has_not(tags)) {
+                String errors;
+                errors = "A new ambiguity class was found. I cannot continue.\n";
+                errors+= "Word '"+word.get_superficial_form()+"' not found in the dictionary.\n";
+                errors+= "New ambiguity class: "+word.get_string_tags()+"\n";
+                errors+= "Take a look at the dictionary and at the training corpus. Then, retrain.";
+                fatal_error(errors);
+            }
+
+            k2=output.get(tags);
+
+            classes_occurrences[k1]++;
+            classes_pair_occurrences[k1][k2]++;
+            word=lexmorfo.get_next_word();
+            k1=k2;
+        }
+
+        // Estimation of the number of time each tags occurs in the training text
+        for (i=0; i<N; i++) {
+            tags_estimate[i] = 0;
+            for (k=0; k<M; k++) {
+                if (output.get(k).contains(i)) {
+                    tags_estimate[i] += classes_occurrences[k]/output.get(k).size();
+                }
+            }
+        }
+
+        //Estimation of the number of times each tag pair occurs
+        for (i=0; i<N; i++)
+            for (j=0; j<N; j++)
+                tags_pair_estimate[i][j] = 0;
+
+        Set<Integer> tags1, tags2;
+        
+    }
+
+    private void fatal_error (String err) {
+        System.err.println(err);
+        System.exit(1);
     }
 }
