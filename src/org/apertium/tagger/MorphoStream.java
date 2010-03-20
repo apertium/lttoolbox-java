@@ -266,10 +266,40 @@ public class MorphoStream {
                     if (str.charAt(last_pos+1) == '+' && last_pos+1 < limit) {
                         floor = last_pos + 1;
                         last_pos = floor;
-                        
+                        TaggerWord tw = new TaggerWord();
+                        tw = vwords.get(ivwords);
+                        tw.set_plus_cut(true);
+                        vwords.set(ivwords, tw);
+                        if (vwords.size()<=(ivwords+1))
+                            vwords.add(new TaggerWord(true));
+                        ivwords++;
+                        ms.init(me.getInitial());
+                    } else {
+                        if (debug) {
+                            System.err.println("Warning: There is no coarse tag for the fine tag '" + str.substring(floor) +"'");
+                            System.err.println("         This is because of an incomplete tagset definition or a dictionary error");
+                        }
+                        TaggerWord tw = new TaggerWord();
+                        tw = vwords.get(ivwords);
+                        tw.add_tag(ca_tag_kundef, str.substring(floor), td.getPreferRules());
+                        vwords.set(ivwords, tw);
+                        return;
                     }
                 }
             }
+        }
+
+        int val = ms.classifyFinals();
+        if (val == -1) {
+            val = ca_tag_kundef;
+            if (debug) {
+                System.err.println("Warning: There is no coarse tag for the fine tag '" + str.substring(floor) +"'");
+                System.err.println("         This is because of an incomplete tagset definition or a dictionary error");
+            }
+            TaggerWord tw = new TaggerWord();
+            tw = vwords.get(ivwords);
+            tw.add_tag(val, str.substring(floor), td.getPreferRules());
+            vwords.set(ivwords, tw);
         }
         
     }
