@@ -370,8 +370,16 @@ public class TaggerData {
         return a;
     }
 
+    void setA(double[][] myA) {
+        a = myA;
+    }
+
     double[][] getB () {
         return b;
+    }
+
+    void setB(double[][] myB) {
+        b = myB;
     }
 
     int getN () {

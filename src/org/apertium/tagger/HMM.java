@@ -172,6 +172,38 @@ public class HMM {
                         tags_pair_estimate[itag1][itag2]+=noccurrences;
             }
         }
+
+        //a[i][j] estimation
+        double sum;
+        double[][] tmpA = td.getA();
+        for (i=0; i<N; i++) {
+            sum=0;
+            for (j=0; j<N; j++)
+                sum+=tags_pair_estimate[i][j];
+
+            for (j=0; j<N; j++) {
+                if (sum>0) {
+                    tmpA[i][j] = tags_pair_estimate[i][j]/sum;
+                } else {
+                    tmpA[i][j] = 0;
+                }
+            }
+        }
+        td.setA(tmpA);
+
+        //b[i][k] estimation
+        double[][] tmpB = td.getB();
+        for (i=0; i<N; i++) {
+            for (k=0; k<M; k++) {
+                if (output.get(k).contains(i)) {
+                    if (tags_estimate[i]>0)
+                        tmpB[i][k] = (classes_occurrences[k]/output.get(k).size())/tags_estimate[i];
+                    else
+                        tmpB[i][k] = 0;
+                }
+            }
+        }
+        td.setB(tmpB);
     }
 
     private void fatal_error (String err) {
