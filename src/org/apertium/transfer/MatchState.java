@@ -63,7 +63,7 @@ public class MatchState {
     last = s.last;
   }
 
-  int size() {
+  public int size() {
     return last >= first ? last - first : last + BUF_LIMIT - first;
   }
 
@@ -86,7 +86,7 @@ public class MatchState {
     }
   }
 
-  void step(int input) {
+  public void step(int input) {
     int mylast = last;
     for (int i = first; i != mylast; i = (i + 1) % BUF_LIMIT) {
       applySymbol(state[i], input);
@@ -94,7 +94,7 @@ public class MatchState {
     first = mylast;
   }
 
-  void step(int input, int alt) {
+  public void step(int input, int alt) {
     int mylast = last;
     for (int i = first; i != mylast; i = (i + 1) % BUF_LIMIT) {
       applySymbol(state[i], input);
