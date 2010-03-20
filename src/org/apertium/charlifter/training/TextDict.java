@@ -53,10 +53,11 @@ public class TextDict {
 
     void read_clean_dict (String file) {
         String[] words;
+        String lwr = "";
         try {
             words = Wordlist.read(file);
             for (String word : words) {
-                String lwr = word.toLowerCase();
+                lwr = word.toLowerCase();
                 String asc = Asciify.toascii(lwr);
                 if (Process.isOkina() && asc.contains("'")) {
                     String stripped = asc;
@@ -67,10 +68,20 @@ public class TextDict {
                 clean_increment(asc);
                 tableref_increment(asc, lwr);
             }
-            //while ($lwr =~ /(.($diacritics)*)/g) { //eh?
-            Pattern p = Pattern.compile("(.(" + Process.diacritics + ")*)");
-            while (true) {
-                
+            //while ($lwr =~ /(.($diacritics)*)/g) 
+            //Pattern p = Pattern.compile("(.(" + Process.diacritics + ")*)");
+            //Matcher m = p.matcher(lwr);
+            for (int i=0; i<lwr.length()-1;i++) {
+                String next = "";
+                next += lwr.charAt(i+1);
+                if (next.matches("[" + Process.diacritics + "]")) {
+                    String cur = "";
+                    cur += lwr.charAt(i);
+                    if (!cur.matches("^[A-Za-z]$") && !cur.equals(Asciify.toascii(cur))) {
+                        String asc = Asciify.toascii(cur);
+                        charsref_increment(cur, asc);
+                    }
+                }
             }
 
         } catch (Exception e) {
@@ -101,5 +112,29 @@ public class TextDict {
             e.put(lwr, 1);
         }
         td.tableref.put(stripped, e);
+    }
+
+    private void charsref_increment(String character, String ascii) {
+        Character chr = character.charAt(0);
+        Character asc = ascii.charAt(0);
+        HashMap<Character, Integer> e = new HashMap<Character, Integer>();
+        if (td.charsref.containsKey(asc)) {
+            e = td.charsref.get(asc);
+            if (e.containsKey(chr)) {
+                int i = e.get(chr) + 1;
+                e.put(chr, i);
+            } else {
+                e.put(chr, 1);
+            }
+            if (e.containsKey(asc)) {
+                int i = e.get(asc) + 1;
+                e.put(asc, i);
+            } else {
+                e.put(asc, 1);
+            }
+        } else {
+            e.put(chr, 1);
+        }
+        td.charsref.put(asc, e);
     }
 }

@@ -34,7 +34,7 @@ public class TrainData {
      * word list!!  The counts themselves are not used anywhere!!  All 
      * character stats are in charprobspref.
      */
-    HashMap<Character, Integer> charsref;
+    HashMap<Character, HashMap <Character, Integer>> charsref;
     /**
      * keys are asciified known-good words; vals are hashrefs with all
      * known-good words in the corpus with the given asciification as keys,
@@ -68,7 +68,7 @@ public class TrainData {
     HashMap<String, Double> contextref;
 
     TrainData () {
-        charsref = new HashMap<Character, Integer>();
+        charsref = new HashMap<Character, HashMap <Character, Integer>>();
         tableref = new HashMap<String, HashMap <String, Integer>>();
         charcount = new HashMap<Character, Integer>();
         charprobsref = new HashMap<Character, Double>();
