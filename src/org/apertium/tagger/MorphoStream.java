@@ -222,7 +222,7 @@ public class MorphoStream {
 
         this.ms = new MatchState(this.me);
         ms.init(me.getInitial());
-        for (int i=0; i!=str.length();i++) {
+        for (int i=0, limit=str.length(); i!=limit;i++) {
             if (str.charAt(i) != '<') {
                 if (str.charAt(i) == '+') {
                     // Yay. Jacob only half converted MatchExe FIXME
@@ -236,7 +236,7 @@ public class MorphoStream {
                 ms.step(str.toLowerCase().charAt(i), ca_any_char);
             } else {
                 String tag = "";
-                for (int j=i+1;j!=str.length();j++) {
+                for (int j=i+1;j!=limit;j++) {
                     if (str.charAt(j) == '\\') {
                         j++;
                     } else if (str.charAt(j) == '>') {
@@ -257,7 +257,17 @@ public class MorphoStream {
             }
             if (ms.size() == 0) {
                 if (last_pos != floor) {
-            
+                    TaggerWord tmp = new TaggerWord();
+                    tmp = vwords.get(ivwords);
+                    tmp.add_tag(last_type,
+                                str.substring(floor, last_pos - floor + 1),
+                                td.getPreferRules());
+                    vwords.set(ivwords, tmp);
+                    if (str.charAt(last_pos+1) == '+' && last_pos+1 < limit) {
+                        floor = last_pos + 1;
+                        last_pos = floor;
+                        
+                    }
                 }
             }
         }
