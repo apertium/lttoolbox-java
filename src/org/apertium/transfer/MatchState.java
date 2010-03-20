@@ -103,7 +103,7 @@ public class MatchState {
     first = mylast;
   }
 
-  int classifyFinals() {
+  public int classifyFinals() {
     int result = Integer.MAX_VALUE;
     for (int i = first; i != last; i = (i + 1) % BUF_LIMIT) {
       int[] node = node_list[state[i]];

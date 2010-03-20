@@ -227,10 +227,11 @@ public class MorphoStream {
                 if (str.charAt(i) == '+') {
                     // Yay. Jacob only half converted MatchExe FIXME
                     //int val = ms.classifyFinals(me.getFinals());
-                    //if (val != -1) {
-                    //    last_pos = i-1;
-                    //    last_type = val;
-                    //}
+                    int val = ms.classifyFinals();
+                    if (val != -1) {
+                        last_pos = i-1;
+                        last_type = val;
+                    }
                 }
                 //ms.step(str.toLowerCase().charAt(i), ca_any_char);
             } else {
