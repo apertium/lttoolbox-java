@@ -119,25 +119,12 @@ public class TextDict {
     private void charsref_increment(String character, String ascii) {
         Character chr = character.charAt(0);
         Character asc = ascii.charAt(0);
-        HashMap<Character, Integer> e = new HashMap<Character, Integer>();
-        if (td.charsref.containsKey(asc)) {
-            e = td.charsref.get(asc);
-            if (e.containsKey(chr)) {
-                int i = e.get(chr) + 1;
-                e.put(chr, i);
-            } else {
-                e.put(chr, 1);
-            }
-            if (e.containsKey(asc)) {
-                int i = e.get(asc) + 1;
-                e.put(asc, i);
-            } else {
-                e.put(asc, 1);
-            }
-        } else {
-            e.put(chr, 1);
-        }
-        td.charsref.put(asc, e);
+        HashMap<Character, Integer> e = td.charsref.get(asc);
+        if (e==null) td.charsref.put(asc, e = new HashMap<Character, Integer>());
+        Integer i1 = e.get(chr);
+        e.put(chr, i1==null? 1 : i1+1);
+        Integer i2 = e.get(asc);
+        e.put(asc, i2==null? 1 : i2+1);
     }
 
     private void ambigref_increment(String character) {
