@@ -68,9 +68,6 @@ public class TextDict {
                 clean_increment(asc);
                 tableref_increment(asc, lwr);
             }
-            //while ($lwr =~ /(.($diacritics)*)/g) 
-            //Pattern p = Pattern.compile("(.(" + Process.diacritics + ")*)");
-            //Matcher m = p.matcher(lwr);
             for (int i=0; i<lwr.length()-1;i++) {
                 String next = "";
                 next += lwr.charAt(i+1);
