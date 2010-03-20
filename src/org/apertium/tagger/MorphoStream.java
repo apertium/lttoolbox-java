@@ -300,6 +300,18 @@ public class MorphoStream {
         
     }
 
+    void setNullFlush (boolean nf) {
+        null_flush = nf;
+    }
+
+    boolean getEndOfFile () {
+        return end_of_file;
+    }
+
+    void setEndOfFile (boolean eof) {
+        end_of_file = eof;
+    }
+
     private void vwords_add_ignored(int ivwords, String str) {
         //vwords[ivwords]->add_ignored_string(str);
         TaggerWord tmp = new TaggerWord();
