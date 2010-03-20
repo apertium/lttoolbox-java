@@ -53,6 +53,14 @@ public class Collection {
         return element.get(n);
     }
 
+    int get (Set<Integer> t) {
+        if (has_not(t)) {
+            index.put(t, index.size() - 1);
+            element.add(t);
+        }
+        return index.get(t);
+    }
+
     int add (Set<Integer> t) {
         index.put(t, index.size() - 1);
         element.add(t);

@@ -89,9 +89,10 @@ public class HMM {
         td.write(out);
     }
 
-    void init_probabilities_kupiec (InputStream in) throws IOException {
+    void init_probabilities_kupiec (InputStream is) throws IOException {
         int N = td.getN();
         int M = td.getM();
+        int i, j, k, k1, k2, nw=0;
         /**
          * M = Number of ambiguity classes
          */
@@ -105,6 +106,18 @@ public class HMM {
 
         Collection output = td.getOutput();
 
-        //MorphoStream lexmorfo (is, true, td);
+        MorphoStream lexmorfo = new MorphoStream (is, true, td);
+        TaggerWord word = new TaggerWord();
+
+        for (k=0; k<M; k++) {
+            classes_occurrences[k] = 1;
+            for (k2=0; k2<M; k2++)
+                classes_pair_occurrences[k][k2] = 1;
+        }
+
+        Set<Integer> tags = new HashSet<Integer>();
+        tags.add(eos);
+        k1=output.get(tags);
+
     }
 }
