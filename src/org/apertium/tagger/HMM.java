@@ -241,38 +241,68 @@ public class HMM {
         while (word_tagged != null) {
             System.err.print(word_tagged);
             System.err.println(" -- " + word_untagged);
+
+            if (!word_untagged.get_superficial_form().equals(word_tagged.get_superficial_form())) {
+                System.err.println();
+                System.err.println("Tagged text (.tagged) and analyzed text (.untagged) streams are not aligned.");
+                System.err.println("Take a look at tagged text (.tagged).");
+                System.err.println("Perhaps this is caused by a multiword unit that is not a multiword unit in one of the two files.");
+                System.err.println(word_tagged + " -- " + word_untagged);
+                System.exit(1);
+            }
+
+            if (++nw%100==0) {
+                System.err.print(".");
+                System.err.flush();
+            }
+
+            tag2 = tag1;
+
+            if (word_untagged==null) {
+                System.err.println("word_untagged==NULL");
+                System.exit(1);
+            }
+
+            if (word_tagged.get_tags().size()==0) // Unknown word
+                tag1 = -1;
+            else if (word_tagged.get_tags().size()>1) // Ambiguous word
+                System.err.println("Error in tagged text. An ambiguous word was found: " + word_tagged.get_superficial_form());
+            else
+                tag1 = word_tagged.get_tags().toArray(new Integer[word_tagged.get_tags().size()])[0]; //FIXME! rubbish
+
+            if ((tag1>=0) && (tag2>=0))
+                tags_pair[tag2][tag1]++;
+
+            if (word_untagged.get_tags().size()==0)
+                tags = td.getOpenClass();
+            else if (output.has_not(word_untagged.get_tags())) {
+                String errors;
+                errors = "A new ambiguity class was found. I cannot continue.\n";
+                errors+= "Word '"+word_untagged.get_superficial_form()+"' not found in the dictionary.\n";
+                errors+= "New ambiguity class: "+word_untagged.get_string_tags()+"\n";
+                errors+= "Take a look at the dictionary, then retrain.";
+                fatal_error(errors);
+            } else {
+                tags = word_untagged.get_tags();
+            }
+
+            k = output.get(tags);
+            if (tag1>=0)
+                emission[tag1][k]++;
+
+            word_tagged=stream_tagged.get_next_word();
+            word_untagged=stream_untagged.get_next_word();
         }
 
-        if (!word_untagged.get_superficial_form().equals(word_tagged.get_superficial_form())) {
-            System.err.println();
-            System.err.println("Tagged text (.tagged) and analyzed text (.untagged) streams are not aligned.");
-            System.err.println("Take a look at tagged text (.tagged).");
-            System.err.println("Perhaps this is caused by a multiword unit that is not a multiword unit in one of the two files.");
-            System.err.println(word_tagged + " -- " + word_untagged);
-            System.exit(1);
+        //Estimate of a[i][j]
+        for (i=0; i<N; i++) {
+            double sum=0;
+            for(j=0; j<N; j++)
+                sum += tags_pair[i][j]+1.0;
+            for(j=0; j<N; j++) {
+                //(td->getA())[i][j] = (tags_pair[i][j]+1.0)/sum;
+            }
         }
-
-        if (++nw%100==0) {
-            System.err.print(".");
-            System.err.flush();
-        }
-
-        tag2 = tag1;
-
-        if (word_untagged==null) {
-            System.err.println("word_untagged==NULL");
-            System.exit(1);
-        }
-
-        if (word_tagged.get_tags().size()==0) // Unknown word
-            tag1 = -1;
-        else if (word_tagged.get_tags().size()>1) // Ambiguous word
-            System.err.println("Error in tagged text. An ambiguous word was found: " + word_tagged.get_superficial_form());
-        else
-            tag1 = word_tagged.get_tags().toArray(new Integer[word_tagged.get_tags().size()])[0]; //FIXME! rubbish
-
-        if ((tag1>=0) && (tag2>=0))
-            tags_pair[tag2][tag1]++;
     }
 
     private void fatal_error (String err) {
