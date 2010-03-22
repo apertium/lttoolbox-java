@@ -24,6 +24,7 @@ import java.io.IOException;
 import org.apertium.lttoolbox.Compression;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.ArrayList;
 
 /**
  *
@@ -321,6 +322,45 @@ public class HMM {
         }
 
         System.err.println();
+    }
+
+    void apply_rules () {
+        ArrayList<TForbidRule> forbid_rules = td.getForbidRules();
+        ArrayList<TEnforceAfterRule> enforce_rules = td.getEnforceRules();
+        int N = td.getN();
+        int i, j, j2;
+        boolean found;
+
+        for (i=0; i < forbid_rules.size(); i++) {
+            td.setAElement(forbid_rules.get(i).tagi, forbid_rules.get(i).tagj, ZERO);
+        }
+
+        for (i=0; i < enforce_rules.size(); i++) {
+            for (j=0; j<N; j++) {
+                found = false;
+                for (j2=0; j2 < enforce_rules.get(i).tagsj.size(); j2++) {
+                    if (enforce_rules.get(i).tagsj.get(j2)==j) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found)
+                    td.setAElement(enforce_rules.get(i).tagi, j, ZERO);
+            }
+        }
+
+        // Normalize probabilities
+        for(i=0; i<N; i++) {
+            double sum=0;
+            for(j=0; j<N; j++)
+                sum += td.getA()[i][j];
+            for(j=0; j<N; j++) {
+                if (sum>0)
+                    td.setAElement(i, j, td.getA()[i][j]/sum);
+                else
+                    td.setAElement(i, j, 0);
+            }
+        }
     }
 
     private void fatal_error (String err) {
