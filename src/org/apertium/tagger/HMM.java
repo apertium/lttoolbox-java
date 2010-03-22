@@ -243,7 +243,7 @@ public class HMM {
             System.err.println(" -- " + word_untagged);
         }
 
-        if (word_tagged.get_superficial_form()!=word_untagged.get_superficial_form()) {
+        if (!word_untagged.get_superficial_form().equals(word_tagged.get_superficial_form())) {
             System.err.println();
             System.err.println("Tagged text (.tagged) and analyzed text (.untagged) streams are not aligned.");
             System.err.println("Take a look at tagged text (.tagged).");
@@ -264,7 +264,15 @@ public class HMM {
             System.exit(1);
         }
 
-        
+        if (word_tagged.get_tags().size()==0) // Unknown word
+            tag1 = -1;
+        else if (word_tagged.get_tags().size()>1) // Ambiguous word
+            System.err.println("Error in tagged text. An ambiguous word was found: " + word_tagged.get_superficial_form());
+        else
+            tag1 = word_tagged.get_tags().toArray(new Integer[word_tagged.get_tags().size()])[0]; //FIXME! rubbish
+
+        if ((tag1>=0) && (tag2>=0))
+            tags_pair[tag2][tag1]++;
     }
 
     private void fatal_error (String err) {
