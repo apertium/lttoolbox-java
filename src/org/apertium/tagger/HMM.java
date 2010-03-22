@@ -268,7 +268,7 @@ public class HMM {
             else if (word_tagged.get_tags().size()>1) // Ambiguous word
                 System.err.println("Error in tagged text. An ambiguous word was found: " + word_tagged.get_superficial_form());
             else
-                tag1 = word_tagged.get_tags().toArray(new Integer[word_tagged.get_tags().size()])[0]; //FIXME! rubbish
+                tag1 = word_tagged.get_tags().iterator().next();
 
             if ((tag1>=0) && (tag2>=0))
                 tags_pair[tag2][tag1]++;
