@@ -204,6 +204,67 @@ public class HMM {
             }
         }
         td.setB(tmpB);
+
+        System.err.println();
+    }
+
+    void init_probabilities_from_tagged_text (InputStream ftagged, InputStream funtagged) throws IOException {
+        int i, j, k, nw = 0;
+        int N = td.getN();
+        int M = td.getM();
+        double tags_pair[][] = new double[N][N];
+        double emission[][] = new double[N][M];
+
+        MorphoStream stream_tagged = new MorphoStream(ftagged, true, td);
+        MorphoStream stream_untagged = new MorphoStream(funtagged, true, td);
+
+        TaggerWord word_tagged = new TaggerWord();
+        TaggerWord word_untagged = new TaggerWord();
+        Collection output = td.getOutput();
+
+        Set<Integer> tags = new HashSet<Integer>();
+
+        for (i=0; i<N; i++)
+            for (j=0; j<N; j++)
+                tags_pair[i][j] = 0;
+        for (k=0; k<M; k++)
+            for (i=0; i<N; k++)
+                if (output.get(k).contains(i))
+                    emission[i][k] = 0;
+
+        Integer tag1, tag2;
+        tag1 = eos;
+
+        // FIXME check get_next_word()
+        word_tagged = stream_tagged.get_next_word();
+        word_untagged = stream_untagged.get_next_word();
+        while (word_tagged != null) {
+            System.err.print(word_tagged);
+            System.err.println(" -- " + word_untagged);
+        }
+
+        if (word_tagged.get_superficial_form()!=word_untagged.get_superficial_form()) {
+            System.err.println();
+            System.err.println("Tagged text (.tagged) and analyzed text (.untagged) streams are not aligned.");
+            System.err.println("Take a look at tagged text (.tagged).");
+            System.err.println("Perhaps this is caused by a multiword unit that is not a multiword unit in one of the two files.");
+            System.err.println(word_tagged + " -- " + word_untagged);
+            System.exit(1);
+        }
+
+        if (++nw%100==0) {
+            System.err.print(".");
+            System.err.flush();
+        }
+
+        tag2 = tag1;
+
+        if (word_untagged==null) {
+            System.err.println("word_untagged==NULL");
+            System.exit(1);
+        }
+
+        
     }
 
     private void fatal_error (String err) {
