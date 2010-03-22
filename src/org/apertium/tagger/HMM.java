@@ -363,6 +363,52 @@ public class HMM {
         }
     }
 
+    void read_dictionary (InputStream fdic) throws IOException {
+        int i, k, nw=0;
+        TaggerWord word = new TaggerWord();
+        Set<Integer> tags = new HashSet<Integer>();
+        Collection output = td.getOutput();
+
+        MorphoStream morpho_stream = new MorphoStream(fdic, true, td);
+
+        word = morpho_stream.get_next_word();
+
+        while (word != null) {
+            if (++nw%10000==0) {
+                System.err.println(".");
+                System.err.flush();
+            }
+
+            tags = word.get_tags();
+
+            if (tags.size()>0)
+                k = output.get(tags);
+
+            word = morpho_stream.get_next_word();
+        }
+        System.err.println();
+
+        // OPEN AMBIGUITY CLASS
+        // It contains all tags that are not closed.
+        // Unknown words are assigned the open ambiguity class
+        k=output.get(td.getOpenClass());
+
+        int N = td.getTagIndex().size();
+
+        // Create ambiguity class holding one single tag for each tag.
+        // If not created yet
+        for(i = 0; i != N; i++) {
+            Set<Integer> amb_class = new HashSet<Integer>();
+            amb_class.add(i);
+            k = output.get(amb_class);
+        }
+
+        int M = output.size();
+
+        System.err.println(N + " states and " + M + " ambiguity classes");
+        td.setProbabilities(N, M);
+    }
+
     private void fatal_error (String err) {
         System.err.println(err);
         System.exit(1);
