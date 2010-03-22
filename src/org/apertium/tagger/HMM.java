@@ -300,10 +300,27 @@ public class HMM {
             for(j=0; j<N; j++)
                 sum += tags_pair[i][j]+1.0;
             for(j=0; j<N; j++) {
-                //(td->getA())[i][j]
                 td.setAElement(i, j, (tags_pair[i][j]+1.0)/sum);
             }
         }
+
+        //Estimate of b[i][k]
+        for(i=0; i<N; i++) {
+        int nclasses_appear=0;
+        double times_appear=0.0;
+        for(k=0; k<M; k++)  {
+            if (output.get(k).contains(i))  {
+                nclasses_appear++;
+                times_appear+=emission[i][k];
+            }
+        }	
+        for(k=0; k<M; k++)  {
+            if (output.get(k).contains(i))
+                td.setBElement(i, k, (emission[i][k]+(1.0/nclasses_appear))/(times_appear+1.0));
+            }
+        }
+
+        System.err.println();
     }
 
     private void fatal_error (String err) {
