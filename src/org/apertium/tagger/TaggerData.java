@@ -378,6 +378,14 @@ public class TaggerData {
         return b;
     }
 
+    void setAElement (int i, int j, double d) {
+        a[i][j] = d;
+    }
+
+    void setBElement (int i, int j, double d) {
+        b[i][j] = d;
+    }
+
     void setB(double[][] myB) {
         b = myB;
     }

@@ -300,7 +300,8 @@ public class HMM {
             for(j=0; j<N; j++)
                 sum += tags_pair[i][j]+1.0;
             for(j=0; j<N; j++) {
-                //(td->getA())[i][j] = (tags_pair[i][j]+1.0)/sum;
+                //(td->getA())[i][j]
+                td.setAElement(i, j, (tags_pair[i][j]+1.0)/sum);
             }
         }
     }
