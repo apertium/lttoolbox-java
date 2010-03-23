@@ -409,6 +409,67 @@ public class HMM {
         td.setProbabilities(N, M);
     }
 
+    void filter_ambiguity_classes (InputStream in, OutputStream out) throws IOException {
+        Set<Set<Integer>> ambiguity_classes = new HashSet<Set<Integer>>();
+        MorphoStream morpho_stream = new MorphoStream (in, true, td);
+
+        TaggerWord word = morpho_stream.get_next_word();
+
+        while (word != null) {
+            Set<Integer> tags = word.get_tags();
+
+            if (tags.size()>0) {
+                if (!ambiguity_classes.contains(tags)) {
+                    ambiguity_classes.add(tags);
+                    word.outputOriginal(out);
+                }
+            }
+            word = morpho_stream.get_next_word();
+        }
+    }
+
+    void print_ambiguity_classes () {
+        Set<Integer> ambiguity_class = new HashSet<Integer>();
+        System.out.println("AMBIGUITY CLASSES");
+        System.out.println("-------------------------------");
+        for (int i=0; i != td.getM(); i++) {
+            ambiguity_class = td.getOutput().get(i);
+            System.out.print(i + ": ");
+            for (Integer it : ambiguity_class) {
+                System.out.print(it + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    Set<Integer> find_similar_ambiguity_class(Set<Integer> c) {
+        int size_ret = -1;
+        Set<Integer> ret = td.getOpenClass();
+        boolean skip_class;
+        Collection output = td.getOutput();
+
+        for (int k=0; k<td.getM(); k++) {
+            if ((output.get(k).size()>size_ret) && (output.get(k).size()<c.size())) {
+                skip_class = false;
+                for (Integer it : output.get(k)) {
+                    if (c.contains(it)) {
+                        skip_class = true;
+                        break;
+                    }
+                }
+                if (!skip_class) {
+                    size_ret = output.get(k).size();
+                    ret = output.get(k);
+                }
+            }
+        }
+        return ret;
+    }
+
+    void setNullFlush (boolean nf) {
+        null_flush = nf;
+    }
+
     private void fatal_error (String err) {
         System.err.println(err);
         System.exit(1);
