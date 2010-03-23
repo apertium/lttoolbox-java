@@ -62,7 +62,7 @@ public class HMM {
 
    /**
     * Reads the ambiguity classes from the stream received as input
-    * @param is the input stream
+    * @param in the input stream
     */
     void read_ambiguity_classes (InputStream in) throws IOException {
         boolean eof = false;
@@ -89,7 +89,7 @@ public class HMM {
    /**
     * Writes the ambiguity classes to the stream received as
     * a parameter
-    * @param iosthe output stream
+    * @param o the output stream
     */
     void write_ambiguity_classes (OutputStream o) throws IOException {
         for (int i=0; i!=td.getOutput().size(); i++) {
@@ -104,7 +104,7 @@ public class HMM {
    /**
     * Reads the probabilities (matrices a and b) from the stream
     * received as a parameter
-    * @param is the input stream
+    * @param in the input stream
     */
     void read_probabilities (InputStream in) throws IOException {
         td.read(in);
@@ -113,7 +113,7 @@ public class HMM {
    /**
     * Writes the probabilities (matrices a and b) to the stream
     * received as a parameter
-    * @param os the output stream
+    * @param out the output stream
     */
     void write_probabilities (OutputStream out) throws IOException {
         td.write(out);
@@ -412,7 +412,7 @@ public class HMM {
    /**
     * Reads the expanded dictionary received as a parameter and calculates
     * the set of ambiguity classes that the tagger will manage.
-    * @param is the input stream with the expanded dictionary to read
+    * @param fdic the input stream with the expanded dictionary to read
     */
     void read_dictionary (InputStream fdic) throws IOException {
         int i, k, nw=0;
