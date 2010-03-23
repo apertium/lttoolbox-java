@@ -38,18 +38,32 @@ public class HMM {
     private boolean show_sf;
     private boolean null_flush;
 
+   /**
+    * Used to set the end-of-sentence tag
+    * @param t the end-of-sentence tag
+    */
     void set_eos(int t) {
         eos = t;
     }
 
+   /**
+    * Used to set the debug flag
+    */
     void set_debug (boolean d) {
         debug = d;
     }
 
+   /**
+    * Used to set the show superficial forms flag 
+    */
     void set_show_sf (boolean sf) {
         show_sf = sf;
     }
 
+   /**
+    * Reads the ambiguity classes from the stream received as input
+    * @param is the input stream
+    */
     void read_ambiguity_classes (InputStream in) throws IOException {
         boolean eof = false;
         while (!eof) {
@@ -72,6 +86,11 @@ public class HMM {
         td.setProbabilities(td.getTagIndex().size(), td.getOutput().size());
     }
 
+   /**
+    * Writes the ambiguity classes to the stream received as
+    * a parameter
+    * @param iosthe output stream
+    */
     void write_ambiguity_classes (OutputStream o) throws IOException {
         for (int i=0; i!=td.getOutput().size(); i++) {
             Set<Integer> ac = td.getOutput().get(i);
@@ -83,7 +102,7 @@ public class HMM {
     }
 
    /**
-    * It reads the probabilities (matrices a and b) from the stream
+    * Reads the probabilities (matrices a and b) from the stream
     * received as a parameter
     * @param is the input stream
     */
@@ -92,7 +111,7 @@ public class HMM {
     }
 
    /**
-    * It writes the probabilities (matrices a and b) to the stream
+    * Writes the probabilities (matrices a and b) to the stream
     * received as a parameter
     * @param os the output stream
     */
@@ -225,7 +244,7 @@ public class HMM {
     }
 
    /**
-    * It initializes the transtion (a) and emission (b) probabilities
+    * Initializes the transtion (a) and emission (b) probabilities
     * from a tagged input text by means of the expected-likelihood
     * estimate (ELE) method
     * @param ftagged the input stream with the tagged corpus to process
@@ -346,6 +365,11 @@ public class HMM {
         System.err.println();
     }
 
+   /**
+    * Applies the forbid and enforce rules found in tagger specification.
+    * To do so the transition matrix is modified by introducing null probabilities
+    * in the involved transitions.
+    */
     void apply_rules () {
         ArrayList<TForbidRule> forbid_rules = td.getForbidRules();
         ArrayList<TEnforceAfterRule> enforce_rules = td.getEnforceRules();
@@ -385,6 +409,11 @@ public class HMM {
         }
     }
 
+   /**
+    * Reads the expanded dictionary received as a parameter and calculates
+    * the set of ambiguity classes that the tagger will manage.
+    * @param is the input stream with the expanded dictionary to read
+    */
     void read_dictionary (InputStream fdic) throws IOException {
         int i, k, nw=0;
         TaggerWord word = new TaggerWord();
@@ -431,6 +460,12 @@ public class HMM {
         td.setProbabilities(N, M);
     }
 
+    /**
+     * Filters ambiguity classes
+     * @param in Stream to filter
+     * @param out Output
+     * @throws IOException
+     */
     void filter_ambiguity_classes (InputStream in, OutputStream out) throws IOException {
         Set<Set<Integer>> ambiguity_classes = new HashSet<Set<Integer>>();
         MorphoStream morpho_stream = new MorphoStream (in, true, td);
@@ -450,6 +485,9 @@ public class HMM {
         }
     }
 
+   /**
+    * Prints the ambiguity classes.
+    */
     void print_ambiguity_classes () {
         Set<Integer> ambiguity_class = new HashSet<Integer>();
         System.out.println("AMBIGUITY CLASSES");
@@ -496,10 +534,17 @@ public class HMM {
         return ret;
     }
 
+   /**
+    * Used to set the null_flush flag
+    */
     void setNullFlush (boolean nf) {
         null_flush = nf;
     }
 
+   /**
+    * Helper method - prints an error message and exits
+    * @param err The string to print
+    */
     private void fatal_error (String err) {
         System.err.println(err);
         System.exit(1);
