@@ -17,6 +17,8 @@
  */
 
 package org.apertium.charlifter;
+import java.util.List;
+import java.util.LinkedList;
 
 /**
  *
@@ -50,5 +52,20 @@ public class Process {
         }
     }
 
+    void process_char (String c, List<String> context) {
+        if (c.matches("[\\x{200C}\\x{200D}]|\\p{L}|\\p{M}|[" + ints + "]|[" + extrabd +"]")) {
+            String tmp = context.get(3) + c;
+            context.set(3, tmp);
+        } else {
+            if (!"".equals(context.get(3))) {
 
+            }
+        }
+    }
+
+    String dictionary_lookup (String prev, String cur, String next, boolean context_ok) {
+        String ret = "";
+
+        return ret;
+    }
 }
