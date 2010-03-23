@@ -82,14 +82,29 @@ public class HMM {
         }
     }
 
+   /**
+    * It reads the probabilities (matrices a and b) from the stream
+    * received as a parameter
+    * @param is the input stream
+    */
     void read_probabilities (InputStream in) throws IOException {
         td.read(in);
     }
 
+   /**
+    * It writes the probabilities (matrices a and b) to the stream
+    * received as a parameter
+    * @param os the output stream
+    */
     void write_probabilities (OutputStream out) throws IOException {
         td.write(out);
     }
 
+   /**
+    * Initializes the transtion (a) and emission (b) probabilities
+    * from an untagged input text by means of Kupiec's method
+    * @param is the input stream with the untagged corpus to process
+    */
     void init_probabilities_kupiec (InputStream is) throws IOException {
         int N = td.getN();
         int M = td.getM();
@@ -209,6 +224,13 @@ public class HMM {
         System.err.println();
     }
 
+   /**
+    * It initializes the transtion (a) and emission (b) probabilities
+    * from a tagged input text by means of the expected-likelihood
+    * estimate (ELE) method
+    * @param ftagged the input stream with the tagged corpus to process
+    * @param funtagged the same corpus to process but untagged
+    */
     void init_probabilities_from_tagged_text (InputStream ftagged, InputStream funtagged) throws IOException {
         int i, j, k, nw = 0;
         int N = td.getN();
@@ -442,6 +464,14 @@ public class HMM {
         }
     }
 
+   /**
+    * This method returns a known ambiguity class that is a subset of
+    * the one received as a parameter. This is useful when a new
+    * ambiguity class is found because of changes in the morphological
+    * dictionary used by the MT system.
+    * @param c set of tags (ambiguity class)
+    * @return a known ambiguity class
+    */
     Set<Integer> find_similar_ambiguity_class(Set<Integer> c) {
         int size_ret = -1;
         Set<Integer> ret = td.getOpenClass();
