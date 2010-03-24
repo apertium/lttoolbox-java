@@ -21,6 +21,10 @@ package org.apertium.tagger;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -33,6 +37,17 @@ import static org.junit.Assert.*;
  * @author jimregan
  */
 public class EndianDoubleUtilTest {
+
+    /**
+     * $ hexdump double-test
+     * 0000000 fe3f 7066 c1e2 d82a
+     * 
+     * ...but I'm on a little endian machine
+     */
+    byte[] doublebytes = new byte[] {(byte) 0x3f, (byte) 0xfe, (byte) 0x66, (byte) 0x70,
+                                     (byte) 0xe2, (byte) 0xc1, (byte) 0x2a, (byte) 0xd8};
+
+    double dtest=1.90001;
 
     public EndianDoubleUtilTest() {
     }
@@ -56,18 +71,17 @@ public class EndianDoubleUtilTest {
     /**
      * Test of read method, of class EndianDoubleUtil.
      *
-     * $ hexdump double-test
-     * 0000000 fe3f 7066 c1e2 d82a
      */
     @Test
     public void testRead() throws Exception {
         System.out.println("read");
-        InputStream in = null;
-        double expResult = 0.0;
+        FileOutputStream outtest = new FileOutputStream ("readtest");
+        DataOutputStream outbytes = new DataOutputStream (outtest);
+        for (byte b : this.doublebytes)
+            outbytes.writeByte(b);
+        InputStream in = new FileInputStream("readtest");
         double result = EndianDoubleUtil.read(in);
-        assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
+        assertEquals(this.dtest, result, 1.90001);
     }
 
     /**
@@ -76,11 +90,16 @@ public class EndianDoubleUtilTest {
     @Test
     public void testWrite() throws Exception {
         System.out.println("write");
-        OutputStream out = null;
-        Double d = null;
+        OutputStream out = new FileOutputStream("writetest");
+        Double d = 1.90001;
         EndianDoubleUtil.write(out, d);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
+        FileInputStream reread = new FileInputStream ("writetest");
+        DataInputStream bytesin = new DataInputStream (reread);
+        byte test;
+        for (int i=0; i<8; i++) {
+            test = bytesin.readByte();
+            assertEquals(this.doublebytes[i], test);
+        }
     }
 
 }
