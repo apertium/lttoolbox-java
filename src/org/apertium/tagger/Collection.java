@@ -32,6 +32,12 @@ import org.apertium.lttoolbox.Compression;
  * 
  * @author jimregan
  */
+
+
+/**
+ * Collection
+ * Is an indexed set.
+ */
 public class Collection {
     Map<Set<Integer>, Integer> index;
     ArrayList<Set<Integer>> element;
@@ -45,14 +51,28 @@ public class Collection {
         return element.size();
     }
 
+  /**
+   * Checks whether or not the collection has the element received as
+   * a parameter.
+   * @param t element @return true if t is not in the
+   * collection
+   */
     boolean has_not (Set<Integer> t) {
         return !index.containsKey(t);
     }
 
+  /**
+   * @param n position in the collection
+   * @return the element at the n-th position
+   */
     Set<Integer> get (int n) {
         return element.get(n);
     }
 
+  /**
+   * @param t the element to find in the collection
+   * @return position in the collection
+   */
     int get (Set<Integer> t) {
         if (has_not(t)) {
             index.put(t, index.size() - 1);
@@ -61,12 +81,20 @@ public class Collection {
         return index.get(t);
     }
 
+  /**
+   * Adds an element to the collection
+   * @param t the element to be added
+   */
     int add (Set<Integer> t) {
         index.put(t, index.size() - 1);
         element.add(t);
         return index.get(t);
     }
 
+  /**
+   * Reads the collection contents from an input stream
+   * @param input the input stream
+   */
     void read (InputStream input) throws IOException {
         int size = Compression.multibyte_read(input);
 
@@ -77,6 +105,21 @@ public class Collection {
                 myset.add(Compression.multibyte_read(input));
             }
             add (myset);
+        }
+    }
+
+  /**
+   *  Write the collection contents to an output stream
+   *  @param output the output stream
+   */
+    void write (OutputStream output) throws IOException {
+        Compression.multibyte_write(element.size(), output);
+
+        for (int i=0; i != element.size(); i++) {
+            Compression.multibyte_write(element.get(i).size(), output);
+            for (Integer it : element.toArray(new Integer[element.size()])) {
+                Compression.multibyte_write(it, output);
+            }
         }
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Jimmy O'Regan
+ * Copyright (C) 2005 Universitat d'Alacant / Universidad de Alicante
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -31,6 +31,12 @@ import java.io.IOException;
 /**
  *
  * @author jimregan
+ */
+
+
+/** Class MorphoStream.
+ *  This class processes the FST, and
+ *  builds the TaggerWord objects managed by the tagger
  */
 public class MorphoStream {
     private boolean foundEOF;
@@ -69,6 +75,10 @@ public class MorphoStream {
         end_of_file = false;
     }
 
+   /**
+    * Constructor
+    * @param ftxt the input stream.
+    */
     MorphoStream (InputStream ftxt, boolean d, TaggerData t) {
         this();
         this.input = ftxt;
@@ -89,6 +99,10 @@ public class MorphoStream {
         ca_tag_kundef = tag_index.get("TAG_kUNDEF");
     }
 
+   /**
+    * Get next word in the input stream
+    * @return The next word in the input stream
+    */
     TaggerWord get_next_word () throws IOException {
         if (vwords.size() != 0) {
             TaggerWord word = vwords.get(0);
@@ -300,14 +314,27 @@ public class MorphoStream {
         
     }
 
+   /**
+    * Set up the flag to detect '\0' characters
+    * @param nf the null_flush value
+    */
     void setNullFlush (boolean nf) {
         null_flush = nf;
     }
 
+   /**
+    * Return true if the last reading is end of file of '\0' when null_flush
+    * is true
+    * @returns the value of end_of_file
+    */
     boolean getEndOfFile () {
         return end_of_file;
     }
 
+   /**
+    * Sets a new value for the end_of_file_flag
+    * @param eof the new value for end_of_file
+    */
     void setEndOfFile (boolean eof) {
         end_of_file = eof;
     }
