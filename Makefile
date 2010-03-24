@@ -31,6 +31,7 @@ install: dist/lttoolbox.jar
 		echo "/usr/local" > prefix; \
 	fi
 	@echo installing into `cat prefix`;
+	mkdir -p `cat prefix`/share/apertium/;
 	cp dist/lttoolbox.jar `cat prefix`/share/apertium/;
 #	cp -a lt-proc-j lt-expand-j lt-comp-j lt-validate-j `cat prefix`/bin/;
 	cp -a apertium-transfer-j apertium-preprocess-transfer-bytecode-j lt-proc-j lt-expand-j lt-comp-j lt-validate-j `cat prefix`/bin/;
