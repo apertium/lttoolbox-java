@@ -485,6 +485,28 @@ public class HMM {
         }
     }
 
+    void print_A() {
+        int i, j;
+        System.out.println("TRANSITION MATRIX (A)");
+        System.out.println("-------------------------------");
+        for (i=0; i!=td.getN();i++)
+            for (j=0; j!=td.getN(); j++) {
+                System.out.print("A[" + i + "][" + j + "] = " + td.getA()[i][j]);
+            }
+    }
+
+    void print_B() {
+        int i, k;
+        System.out.println("EMISSION MATRIX (B)");
+        System.out.println("-------------------------------");
+        for (i=0; i!=td.getN();i++)
+            for (k=0; k!=td.getM(); k++) {
+                Collection output = td.getOutput();
+                if (output.get(k).contains(i))
+                    System.out.print("B[" + i + "][" + k + "] = " + td.getB()[i][k]);
+            }
+    }
+
    /**
     * Prints the ambiguity classes.
     */
