@@ -54,8 +54,8 @@ public class Collection {
   /**
    * Checks whether or not the collection has the element received as
    * a parameter.
-   * @param t element @return true if t is not in the
-   * collection
+   * @param t element 
+   * @return true if t is not in the collection
    */
     boolean has_not (Set<Integer> t) {
         return !index.containsKey(t);
