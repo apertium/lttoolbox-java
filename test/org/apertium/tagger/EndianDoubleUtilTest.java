@@ -42,7 +42,7 @@ public class EndianDoubleUtilTest {
      * $ hexdump double-test
      * 0000000 fe3f 7066 c1e2 d82a
      * 
-     * ...but I'm on a little endian machine
+     * ...but I'm on a little endian machine - khexedit gives me this
      */
     byte[] doublebytes = new byte[] {(byte) 0x3f, (byte) 0xfe, (byte) 0x66, (byte) 0x70,
                                      (byte) 0xe2, (byte) 0xc1, (byte) 0x2a, (byte) 0xd8};
