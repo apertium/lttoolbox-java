@@ -24,6 +24,8 @@ import java.io.IOException;
 import org.apertium.lttoolbox.Compression;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.ArrayList;
 
 /**
@@ -483,6 +485,43 @@ public class HMM {
             }
             word = morpho_stream.get_next_word();
         }
+    }
+
+    void train (InputStream ftxt) throws IOException {
+          int i, j, k, t, len, nw = 0;
+          TaggerWord word = new TaggerWord();
+          Integer tag;
+          Set<Integer> tags = new HashSet<Integer>();
+          Set<Integer> pretags = new HashSet<Integer>();
+          Map<Integer, Double> gamma = new HashMap<Integer, Double>();
+          Map<Integer, Map<Integer, Double>> alpha = new HashMap<Integer, Map<Integer, Double>>();
+          Map<Integer, Map<Integer, Double>> beta = new HashMap<Integer, Map<Integer, Double>>();
+          Map<Integer, Map<Integer, Double>> xsi = new HashMap<Integer, Map<Integer, Double>>();
+          Map<Integer, Map<Integer, Double>> phi = new HashMap<Integer, Map<Integer, Double>>();
+          double prob, loli;
+          ArrayList<Set<Integer>> pending = new ArrayList<Set<Integer>>();
+          Collection output = td.getOutput();
+
+          int desconocidas = 0;
+
+          MorphoStream morpho_stream = new MorphoStream (ftxt, true, td);
+
+          loli = 0;
+          tag = eos;
+          tags.add(tag);
+          pending.add(tags);
+
+          // alpha[0].clear();
+          // alpha[0][tag] = 1;
+          alpha.put(0, new HashMap<Integer, Double>(tag, 1));
+
+          word = morpho_stream.get_next_word();
+
+          while (word != null) {
+              if (++nw%10000==0)
+                  System.err.println(".");
+              
+          }
     }
 
     void print_A() {
