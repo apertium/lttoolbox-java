@@ -21,43 +21,18 @@ package org.apertium.charlifter.training;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.HashMap;
+import org.apertium.charlifter.Data;
 
 /**
  *
  * @author jimregan
  */
-public class TrainData {
-    /**
-     * same as "tableref" below, but for chars not words!  
-     * In resolution, look to see if char is ambiguous and if so consider 
-     * each possible resolution - determined entirely by chars in xx-clean.txt 
-     * word list!!  The counts themselves are not used anywhere!!  All 
-     * character stats are in charprobspref.
-     */
-    HashMap<Character, HashMap <Character, Integer>> charsref;
-    /**
-     * keys are asciified known-good words; vals are hashrefs with all
-     * known-good words in the corpus with the given asciification as keys,
-     * counts as values; stores more than clean since words are added to this
-     * from prettyclean and corpus.  Used only for dictionary lookup in
-     * restoration phase; if context is being used, these counts are used
-     * to compute the necessary probabilities, and without context the choice
-     * with the highest count is selected
-     */
-    HashMap<String, HashMap <String, Integer>> tableref;
+public class TrainData extends Data {
     /**
      * keys are chars with diacritics, val is initially count, then turned
      * into a log prob
      */
     HashMap<Character, Integer> charcount;
-    HashMap<Character, Double> charprobsref;
-    /**
-     * hash counts the number of times each feature is seen in the training
-     * corpus. keys are strings of the form "CXXX/N", char C with full
-     * diacritics, XXX is the ngram feature, N is the start index of the ngram
-     * relative to C.  Value is the count of this feature.
-     */
-    HashMap<String, Integer> featuresref;
     /**
      * keys are strings that look like "ár|+|bpost" or "ar|-|me" and values
      * are at first counts, then turned into a log prob - first example is
@@ -65,15 +40,10 @@ public class TrainData {
      * (+) the word "ár".
      */
     HashMap<String, Integer> contextcount;
-    HashMap<String, Double> contextref;
 
     TrainData () {
-        charsref = new HashMap<Character, HashMap <Character, Integer>>();
-        tableref = new HashMap<String, HashMap <String, Integer>>();
+        super();
         charcount = new HashMap<Character, Integer>();
-        charprobsref = new HashMap<Character, Double>();
-        featuresref = new HashMap<String, Integer>();
         contextcount = new HashMap<String, Integer>();
-        contextref = new HashMap<String, Double>();
     }
 }

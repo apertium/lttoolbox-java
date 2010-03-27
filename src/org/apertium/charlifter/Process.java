@@ -63,6 +63,12 @@ public class Process {
         }
     }
 
+    double consider_candidate (String todo, String pos, String cand) {
+        double foo = 0.0;
+        
+        return foo;
+    }
+
     String dictionary_lookup (String prev, String cur, String next, boolean context_ok) {
         String ret = "";
 
