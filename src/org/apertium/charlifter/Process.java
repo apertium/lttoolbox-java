@@ -36,17 +36,21 @@ public class Process {
         return okina;
     }
 
+    public static void setOkina (boolean b) {
+        okina = true;
+    }
+
     void init () {
         this.ints = "´'’-";
         this.extrabd = "a";
-        this.okina = false;
+        setOkina(false);
     }
     
     void init (String lang) {
         if (lang.equals("sm") || lang.equals("haw")) {
             this.ints = "-";
             this.extrabd = "'’‘";
-            this.okina = true;
+            setOkina(true);
         } else {
             init();
         }
