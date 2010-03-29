@@ -612,7 +612,7 @@ public class HMM {
             k = output.get(tags);  //Ambiguity class the word belongs to
 
             clear_array_double(alpha[nwpend%2], N);
-            //clear_array_vector(best[nwpend%2], N);
+            clear_array_vector(best[nwpend%2], N);
 
             //Induction
             for (Integer itag : tags) {
@@ -660,8 +660,17 @@ public class HMM {
                 if (null_flush) {
                     out.write(0x00);
                 }
+                out.flush();
+                morpho_stream.setEndOfFile(false);
             }
+            word = morpho_stream.get_next_word();
+        }
 
+        if (tags.size()>1 && debug) {
+            String errors;
+            errors = "The text to disambiguate has finished, but there are ambiguous words that have not been disambiguated.\n";
+            errors = "This message should never appear. If you are reading this ..... this is very bad news.\n";
+            System.err.print("Error: "+errors);
         }
     }
 
@@ -762,4 +771,8 @@ public class HMM {
             a[i]=0.0;
     }
 
+    void clear_array_vector(IntVector a[], int l) {
+        for(int i=0; i<l; i++)
+            a[i]=null;
+    }
 }
