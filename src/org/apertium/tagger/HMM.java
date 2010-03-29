@@ -569,17 +569,17 @@ public class HMM {
                   i = itag;
                   for (Integer jtag : pretags) {
                       j = jtag;
+                      // FIXME
                       //alpha[len][i] += alpha[len-1][j]*(td->getA())[j][i]*(td->getB())[i][k];
+                      Double ret = alpha.get(len).get(i) + alpha.get(len-1).get(j) * (td.getA()[j][i]) * (td.getB()[i][k]);
 
                   }
                   if (alpha.get(len).get(i)==0) {
                       // FIXME
                       //alpha[len][i]=DBL_MIN;
-                      Integer in = i;
-                      Double d = DBL_MIN;
                       alpha.get(len).clear();
                       HashMap<Integer, Double> tmp = new HashMap<Integer, Double>();
-                      tmp.put(in, d);
+                      tmp.put(new Integer(i), new Double(DBL_MIN));
                       alpha.put(len, tmp);
                   }
 
