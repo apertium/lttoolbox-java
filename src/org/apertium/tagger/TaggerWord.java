@@ -75,10 +75,17 @@ public class TaggerWord {
         return this.show_sf;
     }
 
+   /**
+    * Set the superficial form of the word.
+    * @param s the superficial form
+    */
     public void set_superficial_form (String sf) {
         this.superficial_form = sf;
     }
 
+   /**
+    * Get the superficial form of the word
+    */
     public String get_superficial_form () {
         return this.superficial_form;
     }
@@ -89,6 +96,11 @@ public class TaggerWord {
         return false;
     }
 
+   /**
+    * Add a new tag to the set of all possible tags of the word.
+    * @param t the coarse tag
+    * @param lf the lexical form (fine tag)
+    */
     public void add_tag (int t, String lf, ArrayList<String> prefer_rules) {
         if (!tags.contains(t)) {
             tags.add(t);
@@ -103,6 +115,10 @@ public class TaggerWord {
         }
     }
 
+   /**
+    * Get the set of tags of this word.
+    * @return  set of tags.
+    */
     public Set<Integer> get_tags () {
         return tags;
     }
@@ -111,6 +127,9 @@ public class TaggerWord {
         return tags.size() > 1;
     }
 
+   /**
+    * Get a wstring with the set of tags
+    */
     public String get_string_tags () {
         String st="{";
 
@@ -126,6 +145,11 @@ public class TaggerWord {
         return st;
     }
 
+  /**
+   * Get the lexical form (fine tag) for a given tag (coarse one)
+   * @param  t the tag
+   * @return the lexical form of tag t
+   */
     public String get_lexical_form (int t, int TAG_kEOF) {
         String ret = "";
 
@@ -172,13 +196,13 @@ public class TaggerWord {
         return ret;
     }
 
-    public String get_all_chosen_tag_first () {
+    public String get_all_chosen_tag_first (Integer t, int TAG_kEOF) {
         String ret = "";
         if (show_ignored_string)
             ret += ignored_string;
 
-        //if(t==TAG_kEOF)
-        //    return ret;
+        if(t==TAG_kEOF)
+            return ret;
 
         if (!previous_plus_cut) {
             if (generate_marks && isAmbiguous()) {
@@ -194,7 +218,7 @@ public class TaggerWord {
                 ret += superficial_form;
             } else {
                 ret += "/";
-                //ret += lexical_forms.get(t);
+                ret += lexical_forms.get(t);
             }
         }
         return ret;
