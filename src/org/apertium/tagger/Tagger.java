@@ -43,23 +43,23 @@ class MyGetOpt extends Getopt {
  */
 public class Tagger {
 
-    boolean showSF;
-    boolean null_flush;
+    static boolean showSF;
+    static boolean null_flush;
 
-    private final int UNKNOWN_MODE=0;
-    private final int TRAIN_MODE=1;
-    private final int TAGGER_MODE=2;
-    private final int RETRAIN_MODE=3;
-    private final int TAGGER_SUPERVISED_MODE=4;
-    private final int TRAIN_SUPERVISED_MODE=5;
-    private final int RETRAIN_SUPERVISED_MODE=6;
-    private final int TAGGER_EVAL_MODE=7;
-    private final int TAGGER_FIRST_MODE=8;
+    private static final int UNKNOWN_MODE=0;
+    private static final int TRAIN_MODE=1;
+    private static final int TAGGER_MODE=2;
+    private static final int RETRAIN_MODE=3;
+    private static final int TAGGER_SUPERVISED_MODE=4;
+    private static final int TRAIN_SUPERVISED_MODE=5;
+    private static final int RETRAIN_SUPERVISED_MODE=6;
+    private static final int TAGGER_EVAL_MODE=7;
+    private static final int TAGGER_FIRST_MODE=8;
 
-    boolean generate_marks;
-    boolean debug;
+    static boolean generate_marks;
+    static boolean debug;
 
-    List<String> filenames;
+    static List<String> filenames;
 
     Tagger () {
         debug = false;
@@ -68,7 +68,7 @@ public class Tagger {
         filenames = new ArrayList<String>();
     }
 
-    void setShowSF (boolean val) {
+    static void setShowSF (boolean val) {
         showSF = val;
     }
 
@@ -76,7 +76,7 @@ public class Tagger {
         return showSF;
     }
 
-    int getMode (String[] argv) {
+    static int getMode (String[] argv) {
         int mode = UNKNOWN_MODE;
 
         int option_index = 0;
@@ -200,11 +200,11 @@ public class Tagger {
         return mode;
     }
 
-    void help() {
+    static void help() {
         // FIXME
     }
 
-    public void main (String[] argv) {
+    public static void main (String[] argv) {
         int mode = getMode(argv);
 
         switch (mode) {
@@ -243,8 +243,7 @@ public class Tagger {
         }
     }
 
-    void tagger (boolean mode_first) throws IOException {
-        final Reader input;
+    static void tagger (boolean mode_first) throws IOException {
         InputStream ftdata = fopen(filenames.get(0));
 
         TaggerData td = new TaggerData();
@@ -273,7 +272,7 @@ public class Tagger {
 
     }
 
-    void tagger () throws IOException {
+    static void tagger () throws IOException {
         tagger(false);
     }
 
