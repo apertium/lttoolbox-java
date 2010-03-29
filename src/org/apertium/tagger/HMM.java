@@ -27,12 +27,21 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  *
  * @author jimregan
  */
 public class HMM {
+    class IntVector {
+        List<Integer> nodes;
+        IntVector () {
+            nodes = new ArrayList<Integer>();
+        }
+    }
+
     private double ZERO = 1e-10;
     private TaggerData td;
     private int eos;
@@ -502,7 +511,7 @@ public class HMM {
           ArrayList<Set<Integer>> pending = new ArrayList<Set<Integer>>();
           Collection output = td.getOutput();
 
-          int desconocidas = 0;
+          int ndesconocidas = 0;
 
           MorphoStream morpho_stream = new MorphoStream (ftxt, true, td);
 
@@ -520,8 +529,128 @@ public class HMM {
           while (word != null) {
               if (++nw%10000==0)
                   System.err.println(".");
+
+              pretags = pending.get(pending.size()-1);
+
+              tags = word.get_tags();
+
+              if (tags.size()==0) {
+                  tags = td.getOpenClass();
+                  ndesconocidas++;
+              }
+
+              if (output.has_not(tags)) {
+                  String errors;
+                  errors = "A new ambiguity class was found. I cannot continue.\n";
+                  errors+= "Word '"+word.get_superficial_form()+"' not found in the dictionary.\n";
+                  errors+= "New ambiguity class: "+word.get_string_tags()+"\n";
+                  errors+= "Take a look at the dictionary, then retrain.";
+                  fatal_error(errors);
+              }
+
+              k = output.get(tags);
+              len = pending.size();
               
           }
+    }
+
+    void tagger (InputStream in, OutputStream out, boolean show_all_good_first) throws IOException {
+        int i, j, k, nw;
+        TaggerWord word = new TaggerWord();
+        Integer tag;
+
+        Set<Integer> tags = new HashSet<Integer>();
+        Set<Integer> pretags = new HashSet<Integer>();
+
+        double prob, loli, x;
+
+        int N = td.getN();
+        double[][] alpha = new double[2][N];
+        // FIXME: vector of integers
+        Integer[][] xbest = new Integer[2][N];
+        IntVector[][] best = new IntVector[2][N];
+
+        ArrayList<TaggerWord> wpend = new ArrayList<TaggerWord>();
+        int nwpend;
+
+        MorphoStream morpho_stream = new MorphoStream(in, debug, td);
+        morpho_stream.setNullFlush(null_flush);
+
+        Collection output = td.getOutput();
+
+        loli = nw = 0;
+
+        //Initialization
+        tags.add(eos);
+        alpha[0][eos] = 1;
+
+        word = morpho_stream.get_next_word();
+
+        while (word != null) {
+            wpend.add(word);
+            nwpend = wpend.size();
+
+            pretags = tags; // Tags from the previous word
+
+            tags = word.get_tags();
+
+            if (tags.size()==0) // This is an unknown word
+                tags = td.getOpenClass();
+
+            if (output.has_not(tags)) {
+                if (debug) {
+                    String errors;
+                    	errors = "A new ambiguity class was found. \n";
+                        errors+= "Retraining the tagger is neccessary to take it into account.\n";
+                        errors+= "Word '"+word.get_superficial_form()+"'.\n";
+                        errors+= "New ambiguity class: "+word.get_string_tags()+"\n";
+                        System.err.print(errors);
+                }
+                tags = find_similar_ambiguity_class(tags);
+            }
+
+            k = output.get(tags);  //Ambiguity class the word belongs to
+
+            clear_array_double(alpha[nwpend%2], N);
+            //clear_array_vector(best[nwpend%2], N);
+
+            //Induction
+            for (Integer itag : tags) {
+                i = itag;
+                for (Integer jtag : pretags) {
+                    j=jtag;
+                    x = alpha[1-nwpend%2][j]*td.getA()[j][i]*td.getB()[i][k];
+                    if (alpha[nwpend%2][i]<=x) {
+                        if (nwpend>1) {
+                            best[nwpend%2][i] = best[1-nwpend%2][j];
+                        }
+                        // FIXME
+                        best[nwpend%2][i].nodes.add(i);
+                        alpha[nwpend%2][i] = x;
+                    }
+                }
+            }
+
+            //Backtracking
+            if (tags.size()==1) {
+                tag = tags.iterator().next();
+
+                prob = alpha[nwpend%2][tag];
+
+                if (prob>0)
+                    loli -= Math.log(prob);
+                else {
+                    if (debug)
+                        System.err.println("Problem with word '"+word.get_superficial_form()+"' "+word.get_string_tags());
+                }
+            for (int t=0; t<best[nwpend%2][tag].nodes.size(); t++) {
+                if (show_all_good_first) {
+                    String micad = wpend.get(t).get_all_chosen_tag_first(best[nwpend%2][tag].nodes.get(t), td.getTagIndex().get("TAG_kEOF"));
+                }
+            }
+            }
+
+        }
     }
 
     void print_A() {
@@ -610,4 +739,15 @@ public class HMM {
         System.err.println(err);
         System.exit(1);
     }
+
+    /**
+     * Make all array positions equal to zero
+     * @param a the array
+     * @param l length of the array a
+     */
+    void clear_array_double(double a[], int l) {
+        for(int i=0; i<l; i++)
+            a[i]=0.0;
+    }
+
 }
