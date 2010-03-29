@@ -49,6 +49,15 @@ public class HMM {
     private boolean show_sf;
     private boolean null_flush;
 
+    HMM(TaggerData tdata) {
+        this.td = tdata;
+
+        this.debug = false;
+        this.show_sf = false;
+        this.null_flush = false;
+        this.eos = td.getTagIndex().get("TAG_SENT");
+    }
+
    /**
     * Used to set the end-of-sentence tag
     * @param t the end-of-sentence tag

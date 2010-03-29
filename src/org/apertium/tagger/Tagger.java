@@ -249,6 +249,16 @@ public class Tagger {
 
         TaggerData td = new TaggerData();
 
+        td.read(ftdata);
+        ftdata.close();
+
+        HMM hmm = new HMM(td);
+
+        hmm.set_show_sf(showSF);
+        hmm.setNullFlush(null_flush);
+
+        
+
     }
 
     void tagger () throws IOException {
