@@ -566,8 +566,6 @@ public class HMM {
 
         int N = td.getN();
         double[][] alpha = new double[2][N];
-        // FIXME: vector of integers
-        Integer[][] xbest = new Integer[2][N];
         IntVector[][] best = new IntVector[2][N];
 
         ArrayList<TaggerWord> wpend = new ArrayList<TaggerWord>();
@@ -624,7 +622,6 @@ public class HMM {
                         if (nwpend>1) {
                             best[nwpend%2][i] = best[1-nwpend%2][j];
                         }
-                        // FIXME
                         best[nwpend%2][i].nodes.add(i);
                         alpha[nwpend%2][i] = x;
                     }
