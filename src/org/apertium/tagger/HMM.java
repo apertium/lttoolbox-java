@@ -20,6 +20,7 @@
 package org.apertium.tagger;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import org.apertium.lttoolbox.Compression;
 import java.util.Set;
@@ -554,7 +555,7 @@ public class HMM {
           }
     }
 
-    void tagger (InputStream in, OutputStream out, boolean show_all_good_first) throws IOException {
+    void tagger (InputStream in, FileOutputStream out, boolean show_all_good_first) throws IOException {
         int i, j, k, nw;
         TaggerWord word = new TaggerWord();
         Integer tag;
@@ -643,11 +644,26 @@ public class HMM {
                     if (debug)
                         System.err.println("Problem with word '"+word.get_superficial_form()+"' "+word.get_string_tags());
                 }
-            for (int t=0; t<best[nwpend%2][tag].nodes.size(); t++) {
-                if (show_all_good_first) {
-                    String micad = wpend.get(t).get_all_chosen_tag_first(best[nwpend%2][tag].nodes.get(t), td.getTagIndex().get("TAG_kEOF"));
+                for (int t=0; t<best[nwpend%2][tag].nodes.size(); t++) {
+                    if (show_all_good_first) {
+                        String micad = wpend.get(t).get_all_chosen_tag_first(best[nwpend%2][tag].nodes.get(t), td.getTagIndex().get("TAG_kEOF"));
+                        // FIXME should go to OutputStream
+                        System.out.print(micad);
+                    } else {
+                        String micad = wpend.get(t).get_lexical_form(best[nwpend%2][tag].nodes.get(t), td.getTagIndex().get("TAG_kEOF"));
+                        // FIXME should go to OutputStream
+                        
+                        System.out.print(micad);
+                    }
                 }
+
+                alpha[0][tag] = 1;
             }
+
+            if (morpho_stream.getEndOfFile()) {
+                if (null_flush) {
+                    
+                }
             }
 
         }
