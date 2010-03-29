@@ -26,10 +26,11 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import java.io.*;
 
 /**
  *
- * @author jim
+ * @author jimregan
  */
 public class TaggerTest {
 
@@ -52,10 +53,30 @@ public class TaggerTest {
      * Test of main method, of class Tagger.
      */
     @Test
-    public void testMain() {
+    public void testMain() throws IOException {
         System.out.println("main");
-        String[] argv = {"-g", "/home/jim/Devel/apertium-en-es/en-es.prob"};
+
+        String prob = "/home/jim/Devel/apertium-en-es/en-es.prob";
+        String testin = "^this/this<det><dem><sg>/this<prn><tn><mf><sg>$ ^is/be<vbser><pri><p3><sg>$ ^a/a<det><ind><sg>$ ^test/test<n><sg>/test<vblex><inf>/test<vblex><pres>$^./.<sent>$";
+        String testout = "^this<prn><tn><mf><sg>$ ^be<vbser><pri><p3><sg>$ ^a<det><ind><sg>$ ^test<n><sg>$^.<sent>$";
+        String[] argv = {"-g", prob, "taggerin", "taggerout"};
+
+        FileOutputStream f = new FileOutputStream("taggerin");
+        f.write(testin.getBytes("UTF-8"));
+        f.close();
+   
+        FileOutputStream fout = new FileOutputStream("taggerout");
+        fout.close();
+
         Tagger.main(argv);
+
+        FileInputStream fin = new FileInputStream("taggerout");
+        DataInputStream data = new DataInputStream(fin);
+
+        String testproc = data.readUTF();
+        fin.close();
+
+        assertEquals(testproc, testout);
     }
 
 
