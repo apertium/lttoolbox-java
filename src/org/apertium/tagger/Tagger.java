@@ -257,7 +257,19 @@ public class Tagger {
         hmm.set_show_sf(showSF);
         hmm.setNullFlush(null_flush);
 
-        
+        if (filenames.size()==1) {
+            hmm.tagger(System.in, System.out, mode_first);
+        } else {
+            InputStream finput = fopen(filenames.get(1));
+            if (filenames.size()==2) {
+                hmm.tagger(finput, System.out, mode_first);
+            } else {
+                OutputStream foutput = foutopen(filenames.get(2));
+                hmm.tagger(finput, foutput, mode_first);
+                foutput.close();
+            }
+            finput.close();
+        }
 
     }
 
@@ -273,4 +285,11 @@ public class Tagger {
         return new BufferedInputStream(new FileInputStream(filename));
     }
 
+    public static OutputStream foutopen(String filename) throws FileNotFoundException {
+        String encoding = "UTF-8";
+        if (System.getProperties().containsKey("file.encoding")) {
+            encoding = System.getProperty("file.encoding");
+        }
+        return new BufferedOutputStream(new FileOutputStream(filename));
+    }
 }
