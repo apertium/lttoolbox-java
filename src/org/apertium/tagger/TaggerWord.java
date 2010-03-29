@@ -35,8 +35,21 @@ public class TaggerWord {
     private Set<Integer> tags;
     private Map<Integer, String> lexical_forms;
     private String ignored_string;
+    /**
+     * Flag to distinguish the way in which the word was ended.
+     * If it was done by '$' its value should be false
+     * If it was done by '+' its value should be true
+     */
     private boolean plus_cut;
+    /**
+     * Flag to distinguish the way in which the
+     * previous word was ended. It has the same
+     * plus_cut meaning
+     */
     private boolean previous_plus_cut;
+    /**
+     * Show the superficial form in the output
+     */
     private boolean show_sf;
     //  static map<wstring, ApertiumRE, Ltstr> patterns;
     private Map<String, ApertiumRE> patterns;
@@ -161,6 +174,29 @@ public class TaggerWord {
 
     public String get_all_chosen_tag_first () {
         String ret = "";
+        if (show_ignored_string)
+            ret += ignored_string;
+
+        //if(t==TAG_kEOF)
+        //    return ret;
+
+        if (!previous_plus_cut) {
+            if (generate_marks && isAmbiguous()) {
+                ret += "^=";
+            } else {
+                ret += "^";
+            }
+
+            ret += superficial_form;
+
+            if (lexical_forms.size()==0) { // This is an UNKNOWN WORD
+                ret += "/*";
+                ret += superficial_form;
+            } else {
+                ret += "/";
+                //ret += lexical_forms.get(t);
+            }
+        }
         return ret;
     }
 
