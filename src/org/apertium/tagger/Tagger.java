@@ -18,6 +18,8 @@
  */
 
 package org.apertium.tagger;
+import java.util.List;
+import java.util.ArrayList;
 import org.apertium.lttoolbox.Getopt;
 
 // Use GNU Getopt
@@ -56,10 +58,13 @@ public class Tagger {
     boolean generate_marks;
     boolean debug;
 
+    List<String> filenames;
+
     Tagger () {
         debug = false;
         showSF = false;
         null_flush = false;
+        filenames = new ArrayList<String>();
     }
 
     void setShowSF (boolean val) {
@@ -149,6 +154,41 @@ public class Tagger {
                 if (mode==UNKNOWN_MODE) {
                     System.err.println("Error: Arguments missing");
                     help();
+                }
+
+                switch (argv.length-getopt.getOptind()) {
+                    case 6:
+                        if (mode != TRAIN_SUPERVISED_MODE)
+                            help();
+                        break;
+
+                    case 4:
+                        if (mode != TRAIN_MODE)
+                            help();
+                        break;
+
+                    case 3:
+                        if ((mode != TAGGER_MODE) && (mode != TAGGER_FIRST_MODE))
+                            help();
+                        break;
+
+                    case 2:
+                        if ((mode != RETRAIN_MODE) && (mode != TAGGER_MODE))
+                            help();
+                        break;
+
+                    case 1:
+                        if ((mode != TAGGER_MODE) && (mode != TAGGER_FIRST_MODE))
+                            help();
+                        break;
+
+                    default:
+                        help();
+                        break;
+                }
+
+                for (int i=getopt.getOptind(); i!=argv.length; i++) {
+                    filenames.add(argv[i]);
                 }
 
                 return mode;
