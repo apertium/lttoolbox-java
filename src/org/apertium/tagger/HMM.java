@@ -573,10 +573,14 @@ public class HMM {
 
                   }
                   if (alpha.get(len).get(i)==0) {
+                      // FIXME
                       //alpha[len][i]=DBL_MIN;
                       Integer in = i;
                       Double d = DBL_MIN;
-                      alpha.put(len, new HashMap<Integer, Double>(in, d));
+                      alpha.get(len).clear();
+                      HashMap<Integer, Double> tmp = new HashMap<Integer, Double>();
+                      tmp.put(in, d);
+                      alpha.put(len, tmp);
                   }
 
               }
