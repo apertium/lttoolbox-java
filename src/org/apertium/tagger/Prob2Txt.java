@@ -20,6 +20,20 @@
  */
 
 package org.apertium.tagger;
+import java.util.Set;
+import org.apertium.lttoolbox.Getopt;
+
+
+class MyGetOpt extends Getopt {
+
+  public MyGetOpt(String[] argv, String string) {
+    super("prob2txt", argv, string);
+  }
+
+  int getNextOption() {
+    return getopt();
+  }
+}
 
 /**
  *
@@ -50,10 +64,74 @@ public class Prob2Txt {
         for (int i=0; i<td.getN();i++)
             for (int j=0; j<td.getN();j++) {
                 if (human_readable) {
-                    System.out.println("A["+td.getArrayTags().get(i)+"]["+td.getArrayTags().get(j)+"] = ");
+                    System.out.print("A["+td.getArrayTags().get(i)+"]["+td.getArrayTags().get(j)+"] = ");
                 } else {
-                    
+                    System.out.print("A["+i+"]["+j+"] = ");
                 }
+                System.out.print(td.getA()[i][j]+"\n");
             }
     }
+
+    void print_B(boolean human_readable) {
+        System.out.println("EMISSION MATRIX (B)");
+        System.out.println("------------------------------");
+        for (int i=0; i<td.getN();i++) {
+            for (int k=0; k<td.getM();k++) {
+                if (td.getOutput().get(k).contains(i)) {
+                    if (human_readable) {
+                        Set<Integer> tags = td.getOutput().get(k);
+                        String str = "";
+
+                        for (Integer it : tags) {
+                            if (str.length()>0) {
+                                str += ", ";
+                            }
+                            str += td.getArrayTags().get(i);
+                        }
+                        System.out.print("B["+td.getArrayTags().get(i)+"][");
+                        System.out.print(str+"] = ");
+                    } else {
+                        System.out.print("B["+i+"]["+k+"] = ");
+                    }
+                    System.out.println(td.getB()[i][k]);
+                }
+            }
+        }
+    }
+
+    public static void main (String[] argv) {
+        String file="";
+        int optind=0;
+        boolean human_readable=false;
+
+        System.err.print("Command line: ");
+        for(int i=0; i<argv.length; i++)
+            System.err.print(argv[i]+" ");
+        System.err.println();
+
+        MyGetOpt getopt = new MyGetOpt(argv, "fu");
+        int c = getopt.getNextOption();
+
+        while (true) {
+            switch (c) {
+                case 'f':
+                    file=argv[c];
+                    break;
+
+                case 'u':
+                    human_readable=true;
+                    break;
+
+                default:
+                    System.exit(1);
+                    break;
+            }
+        }
+
+        if ("".equals(file)) {
+            System.err.println("Error: You did not provide a file (.prob). Use --file to do that");
+            System.exit(1);
+        }
+    }
+
 }
