@@ -219,15 +219,36 @@ public class TaggerWord {
             } else {
                 ret += "/";
                 ret += lexical_forms.get(t);
+                if (lexical_forms.size()>1) {
+                    for (Integer it : tags) {
+                        ret += "/";
+                        ret += lexical_forms.get(it);
+                    }
+                }
             }
         }
+
+        if (!ignored_string.equals(ret)) {
+            if (plus_cut)
+                ret += "+";
+            else
+                ret += "$";
+        }
+        
         return ret;
     }
 
+  /**
+   * Add text to the ignored string
+   */
     public void add_ignored_string (String s) {
         ignored_string += s;
     }
 
+  /**
+   * Set the flag plus_cut to a certain value. If this flag is set to true means
+   * that there were a '+' between this word and the next one
+   */
     public void set_plus_cut(boolean c) {
         plus_cut=c;
     }

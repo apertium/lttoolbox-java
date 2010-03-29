@@ -264,7 +264,7 @@ public class TaggerData {
 
         constants.write(out);
 
-        //output.write(out);
+        output.write(out);
 
         Compression.multibyte_write(N, out);
         Compression.multibyte_write(M, out);
