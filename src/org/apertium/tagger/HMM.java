@@ -572,15 +572,13 @@ public class HMM {
                       // FIXME
                       //alpha[len][i] += alpha[len-1][j]*(td->getA())[j][i]*(td->getB())[i][k];
                       Double ret = alpha.get(len).get(i) + alpha.get(len-1).get(j) * (td.getA()[j][i]) * (td.getB()[i][k]);
+                      alpha.get(len).put(i, ret);
 
                   }
                   if (alpha.get(len).get(i)==0) {
                       // FIXME
                       //alpha[len][i]=DBL_MIN;
-                      alpha.get(len).clear();
-                      HashMap<Integer, Double> tmp = new HashMap<Integer, Double>();
-                      tmp.put(new Integer(i), new Double(DBL_MIN));
-                      alpha.put(len, tmp);
+                      alpha.get(len).put(new Integer(i), new Double(DBL_MIN));
                   }
 
               }
