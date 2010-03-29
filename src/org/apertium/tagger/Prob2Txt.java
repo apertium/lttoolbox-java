@@ -22,11 +22,12 @@
 package org.apertium.tagger;
 import java.util.Set;
 import org.apertium.lttoolbox.Getopt;
+import java.io.*;
 
 
-class MyGetOpt extends Getopt {
+class LocalGetOpt extends Getopt {
 
-  public MyGetOpt(String[] argv, String string) {
+  public LocalGetOpt(String[] argv, String string) {
     super("prob2txt", argv, string);
   }
 
@@ -40,7 +41,7 @@ class MyGetOpt extends Getopt {
  * @author jimregan
  */
 public class Prob2Txt {
-    TaggerData td;
+    static TaggerData td;
     Integer eos;
 
     private static String program = "prob2txt";
@@ -49,7 +50,7 @@ public class Prob2Txt {
         td = new TaggerData();
     }
 
-    void help () {
+    static void help () {
         System.err.println("HMM parameters are writen in text format");
         System.err.println();
         System.err.println("Usage: ");
@@ -58,7 +59,7 @@ public class Prob2Txt {
         System.err.println("-f: To specify the file with the HMM parameter to process");
     }
 
-    void print_A(boolean human_readable) {
+    static void print_A(boolean human_readable) {
         System.out.println("TRANSITION MATRIX (A)");
         System.out.println("------------------------------");
         for (int i=0; i<td.getN();i++)
@@ -72,7 +73,7 @@ public class Prob2Txt {
             }
     }
 
-    void print_B(boolean human_readable) {
+    static void print_B(boolean human_readable) {
         System.out.println("EMISSION MATRIX (B)");
         System.out.println("------------------------------");
         for (int i=0; i<td.getN();i++) {
@@ -99,7 +100,7 @@ public class Prob2Txt {
         }
     }
 
-    public static void main (String[] argv) {
+    public static void main (String[] argv) throws IOException {
         String file="";
         int optind=0;
         boolean human_readable=false;
@@ -112,10 +113,12 @@ public class Prob2Txt {
         MyGetOpt getopt = new MyGetOpt(argv, "fu");
         int c = getopt.getNextOption();
 
-        while (true) {
+        boolean cont=true;
+        while (cont) {
             switch (c) {
                 case 'f':
-                    file=argv[c];
+                    file=argv[getopt.getOptind()];
+                    cont=false;
                     break;
 
                 case 'u':
@@ -123,6 +126,8 @@ public class Prob2Txt {
                     break;
 
                 default:
+                    help();
+                    cont=false;
                     System.exit(1);
                     break;
             }
@@ -130,8 +135,19 @@ public class Prob2Txt {
 
         if ("".equals(file)) {
             System.err.println("Error: You did not provide a file (.prob). Use --file to do that");
+            help();
             System.exit(1);
         }
+
+        System.err.println("File: "+file);
+        InputStream fin = new FileInputStream(file);
+        BufferedInputStream buf = new BufferedInputStream(fin);
+
+        td.read(buf);
+        buf.close();
+
+        print_A(human_readable);
+        print_B(human_readable);
     }
 
 }
