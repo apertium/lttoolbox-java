@@ -49,6 +49,8 @@ public class HMM {
     private boolean show_sf;
     private boolean null_flush;
 
+    static final double	DBL_MIN = 2.2250738585072014E-308;
+
     HMM(TaggerData tdata) {
         this.td = tdata;
 
@@ -559,7 +561,25 @@ public class HMM {
 
               k = output.get(tags);
               len = pending.size();
-              
+              // ?
+              alpha.get(len).clear();
+
+              //Forward probabilities
+              for (Integer itag : tags) {
+                  i = itag;
+                  for (Integer jtag : pretags) {
+                      j = jtag;
+                      //alpha[len][i] += alpha[len-1][j]*(td->getA())[j][i]*(td->getB())[i][k];
+
+                  }
+                  if (alpha.get(len).get(i)==0) {
+                      //alpha[len][i]=DBL_MIN;
+                      Integer in = i;
+                      Double d = DBL_MIN;
+                      alpha.put(len, new HashMap<Integer, Double>(in, d));
+                  }
+
+              }
           }
     }
 
