@@ -53,6 +53,15 @@ public class Tagger {
     private int TAGGER_EVAL_MODE=7;
     private int TAGGER_FIRST_MODE=8;
 
+    boolean generate_marks;
+    boolean debug;
+
+    Tagger () {
+        debug = false;
+        showSF = false;
+        null_flush = false;
+    }
+
     void setShowSF (boolean val) {
         showSF = val;
     }
@@ -61,5 +70,96 @@ public class Tagger {
         return showSF;
     }
 
-    
+    int getMode (String[] argv) {
+        int mode = UNKNOWN_MODE;
+
+        int option_index = 0;
+        MyGetOpt getopt = new MyGetOpt(argv, "mdtsrgpefhz");
+
+        while (true) {
+            try {
+                int c = getopt.getNextOption();
+                if (c == -1) {
+                    break;
+                }
+
+                switch (c) {
+                    case 'm':
+                        generate_marks = true;
+                        break;
+
+                    case 'd':
+                        debug=true;
+                        break;
+
+                    case 't':
+                        System.err.println("Training not supported");
+                        System.exit(0);
+                        break;
+
+                    case 's':
+                        System.err.println("Training not supported");
+                        System.exit(0);
+                        break;
+
+                    case 'p':
+                        setShowSF(true);
+                        break;
+
+                    case 'r':
+                        System.err.println("Training not supported");
+                        System.exit(0);
+                        break;
+
+                    case 'g':
+                        mode = TAGGER_MODE;
+                        break;
+
+                    case 'e':
+                        if (mode==TAGGER_MODE) {
+                            mode=TAGGER_EVAL_MODE;
+                        } else {
+                            System.err.println("Error: -e optional argument should only appear after -t argument");
+                            help();
+                        }
+                        break;
+
+                    case 'f':
+                        if (mode==TAGGER_MODE) {
+                            mode=TAGGER_FIRST_MODE;
+                        } else {
+                            System.err.println("Error: -f optional argument should only appear after -t argument");
+                            help();
+                        }
+                        break;
+
+                    case 'z':
+                        null_flush = true;
+                        break;
+
+                    case 'h':
+                        help();
+                        break;
+
+                    default:
+                        help();
+                        break;
+                }
+
+                if (mode==UNKNOWN_MODE) {
+                    System.err.println("Error: Arguments missing");
+                    help();
+                }
+
+                return mode;
+            } catch (Exception e) {
+                // FIXME
+            }
+        }
+        return mode;
+    }
+
+    void help() {
+        // FIXME
+    }
 }
