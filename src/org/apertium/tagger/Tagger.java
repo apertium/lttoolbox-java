@@ -20,6 +20,7 @@
 package org.apertium.tagger;
 import java.util.List;
 import java.util.ArrayList;
+import java.io.*;
 import org.apertium.lttoolbox.Getopt;
 
 // Use GNU Getopt
@@ -45,15 +46,15 @@ public class Tagger {
     boolean showSF;
     boolean null_flush;
 
-    private int UNKNOWN_MODE=0;
-    private int TRAIN_MODE=1;
-    private int TAGGER_MODE=2;
-    private int RETRAIN_MODE=3;
-    private int TAGGER_SUPERVISED_MODE=4;
-    private int TRAIN_SUPERVISED_MODE=5;
-    private int RETRAIN_SUPERVISED_MODE=6;
-    private int TAGGER_EVAL_MODE=7;
-    private int TAGGER_FIRST_MODE=8;
+    private final int UNKNOWN_MODE=0;
+    private final int TRAIN_MODE=1;
+    private final int TAGGER_MODE=2;
+    private final int RETRAIN_MODE=3;
+    private final int TAGGER_SUPERVISED_MODE=4;
+    private final int TRAIN_SUPERVISED_MODE=5;
+    private final int RETRAIN_SUPERVISED_MODE=6;
+    private final int TAGGER_EVAL_MODE=7;
+    private final int TAGGER_FIRST_MODE=8;
 
     boolean generate_marks;
     boolean debug;
@@ -202,4 +203,64 @@ public class Tagger {
     void help() {
         // FIXME
     }
+
+    public void main (String[] argv) {
+        int mode = getMode(argv);
+
+        switch (mode) {
+            case TRAIN_MODE:
+                //train();
+                break;
+
+            case TRAIN_SUPERVISED_MODE:
+                //trainSupervised();
+                break;
+
+            case RETRAIN_MODE:
+                //retrain();
+                break;
+
+            case TAGGER_MODE:
+                try {
+                    tagger();
+                } catch (Exception e) {
+                    // Foo
+                }
+                break;
+
+            case TAGGER_FIRST_MODE:
+                try {
+                    tagger(true);
+                } catch (Exception e) {
+                    // Foo
+                }
+                break;
+
+            default:
+                System.err.println("Error: unknown mode");
+                help();
+                break;
+        }
+    }
+
+    void tagger (boolean mode_first) throws IOException {
+        final Reader input;
+        InputStream ftdata = fopen(filenames.get(0));
+
+        TaggerData td = new TaggerData();
+
+    }
+
+    void tagger () throws IOException {
+        tagger(false);
+    }
+
+    public static InputStream fopen(String filename) throws FileNotFoundException {
+        String encoding = "UTF-8";
+        if (System.getProperties().containsKey("file.encoding")) {
+            encoding = System.getProperty("file.encoding");
+        }
+        return new BufferedInputStream(new FileInputStream(filename));
+    }
+
 }
