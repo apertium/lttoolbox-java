@@ -39,6 +39,9 @@ public class ConstantManager {
 
     public void setConstant (String constant, int value) {
         try {
+            if (constants==null) {
+                constants = new HashMap<String, Integer>();
+            }
             constants.put(constant, new Integer(value));
         } catch (NullPointerException npe) {
             if (constants==null) System.err.println("constants is null!");
