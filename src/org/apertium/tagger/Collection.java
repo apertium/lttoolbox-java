@@ -86,6 +86,13 @@ public class Collection {
    * @param t the element to be added
    */
     int add (Set<Integer> t) {
+        if (index==null) {
+            index = new HashMap<Set<Integer>, Integer>();
+        }
+        if (element==null) {
+            element = new ArrayList<Set<Integer>>();
+        }
+
         index.put(t, index.size() - 1);
         element.add(t);
         return index.get(t);
