@@ -33,6 +33,8 @@ import java.io.*;
  */
 public class TaggerTest {
 
+    String dir = "testdata/";
+
     public TaggerTest() {
     }
 
@@ -55,8 +57,7 @@ public class TaggerTest {
     public void testMain() throws IOException {
         System.out.println("main");
 
-        String prob = "/home/mhc/apertium/apertium-sv-da/sv-da.prob";
-        // String prob = "/home/jim/Devel/apertium-en-es/en-es.prob";
+        String prob = dir + "en-es.prob";
         String testin = "^this/this<det><dem><sg>/this<prn><tn><mf><sg>$ ^is/be<vbser><pri><p3><sg>$ ^a/a<det><ind><sg>$ ^test/test<n><sg>/test<vblex><inf>/test<vblex><pres>$^./.<sent>$";
         String testout = "^this<prn><tn><mf><sg>$ ^be<vbser><pri><p3><sg>$ ^a<det><ind><sg>$ ^test<n><sg>$^.<sent>$";
         String[] argv = {"-g", prob, "/tmp/taggerin", "/tmp/taggerout"};
@@ -66,7 +67,6 @@ public class TaggerTest {
         f.close();
 
         Tagger.main(argv);
-        System.out.println(" Test svn chy :");
 
     }
 }
