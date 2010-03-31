@@ -224,7 +224,7 @@ public class Tagger {
                 try {
                     tagger();
                 } catch (Exception e) {
-                    // Foo
+                    e.printStackTrace();
                 }
                 break;
 
@@ -232,7 +232,7 @@ public class Tagger {
                 try {
                     tagger(true);
                 } catch (Exception e) {
-                    // Foo
+                    e.printStackTrace();
                 }
                 break;
 
