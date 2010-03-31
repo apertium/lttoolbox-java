@@ -54,12 +54,14 @@ public class ConstantManager {
     }
 
     public void read(InputStream input) throws IOException {
-        constants.clear();
+        if (constants != null && constants.size()!=0) {
+            constants.clear();
+        }
         int size = Compression.multibyte_read(input);
         for (int i=0; i!=size; i++) {
             String str = Compression.String_read(input);
             int constant = Compression.multibyte_read(input);
-            constants.put(str, constant);
+            setConstant(str, constant);
         }
     }
 }
