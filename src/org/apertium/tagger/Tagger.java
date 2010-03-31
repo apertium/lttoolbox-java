@@ -43,8 +43,8 @@ class MyGetOpt extends Getopt {
  */
 public class Tagger {
 
-    static boolean showSF;
-    static boolean null_flush;
+    boolean showSF;
+    boolean null_flush;
 
     private static final int UNKNOWN_MODE=0;
     private static final int TRAIN_MODE=1;
@@ -59,7 +59,7 @@ public class Tagger {
     static boolean generate_marks;
     static boolean debug;
 
-    static List<String> filenames;
+    List<String> filenames;
 
     Tagger () {
         debug = false;
@@ -68,7 +68,7 @@ public class Tagger {
         filenames = new ArrayList<String>();
     }
 
-    static void setShowSF (boolean val) {
+    void setShowSF (boolean val) {
         showSF = val;
     }
 
@@ -76,7 +76,7 @@ public class Tagger {
         return showSF;
     }
 
-    static int getMode (String[] argv) {
+    int getMode (String[] argv) {
         int mode = UNKNOWN_MODE;
 
         int option_index = 0;
@@ -205,7 +205,8 @@ public class Tagger {
     }
 
     public static void main (String[] argv) {
-        int mode = getMode(argv);
+        Tagger t = new Tagger();
+        int mode = t.getMode(argv);
 
         switch (mode) {
             case TRAIN_MODE:
@@ -222,7 +223,7 @@ public class Tagger {
 
             case TAGGER_MODE:
                 try {
-                    tagger();
+                    t.tagger();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -230,7 +231,7 @@ public class Tagger {
 
             case TAGGER_FIRST_MODE:
                 try {
-                    tagger(true);
+                    t.tagger(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -243,8 +244,8 @@ public class Tagger {
         }
     }
 
-    static void tagger (boolean mode_first) throws IOException {
-        InputStream ftdata = fopen(filenames.get(0));
+    void tagger (boolean mode_first) throws IOException {
+        InputStream ftdata = fopen(this.filenames.get(0));
 
         TaggerData td = new TaggerData();
 
@@ -272,7 +273,7 @@ public class Tagger {
 
     }
 
-    static void tagger () throws IOException {
+    void tagger () throws IOException {
         tagger(false);
     }
 
