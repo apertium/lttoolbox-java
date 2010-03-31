@@ -38,7 +38,11 @@ public class ConstantManager {
     }
 
     public void setConstant (String constant, int value) {
-        constants.put(constant, new Integer(value));
+        try {
+            constants.put(constant, new Integer(value));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public int getConstant(String constant) {
