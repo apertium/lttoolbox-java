@@ -9,6 +9,7 @@ import java.io.Writer;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.Vector;
 import org.apertium.lttoolbox.Alphabet;
 import org.apertium.lttoolbox.compile.Transducer;
@@ -299,7 +300,12 @@ class PatternList {
 
   void read(InputStream input) throws IOException {
     sequence = false;
-    final_type.clear();
+    if (final_type==null) {
+        final_type = new HashMap<Integer, Integer>();
+    }
+    if (final_type.size()!=0) {
+        final_type.clear();
+    }
 
     alphabet.read(input);
     if (input.read() == 1) {

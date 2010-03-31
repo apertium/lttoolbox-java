@@ -67,6 +67,7 @@ public class TaggerData {
         tag_index = new HashMap<String, Integer>();
         constants = new ConstantManager();
         plist = new PatternList();
+        output = new Collection();
     }
 
     Set<Integer> getOpenClass () {
