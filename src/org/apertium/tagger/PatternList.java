@@ -310,9 +310,12 @@ class PatternList {
               final_type.clear();
           }
 
+          alphabet = new Alphabet();
           alphabet.read(input);
+          System.err.println("Alphabet: "+alphabet.size());
+
+          if (input.read() == 1) {
 /*
-    if (input.read() == 1) {
       int mystr = input.read();
       Transducer.read(input);
 
@@ -323,8 +326,9 @@ class PatternList {
       }
     }
  */
-          me = new MatchExe(input, alphabet.size());
-          ms = new MatchState(me);
+            me = new MatchExe(input, alphabet.size());
+            ms = new MatchState(me);
+          }
       } catch (Exception e) {
           e.printStackTrace();
       }
