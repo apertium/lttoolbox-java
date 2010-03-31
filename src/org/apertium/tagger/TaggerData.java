@@ -65,6 +65,8 @@ public class TaggerData {
         open_class = new HashSet<Integer>();
         forbid_rules = new ArrayList<TForbidRule>();
         tag_index = new HashMap<String, Integer>();
+        constants = new ConstantManager();
+        plist = new PatternList();
     }
 
     Set<Integer> getOpenClass () {

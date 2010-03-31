@@ -143,9 +143,11 @@ public class Prob2Txt {
         InputStream fin = new FileInputStream(file);
         BufferedInputStream buf = new BufferedInputStream(fin);
 
+        System.err.println("Reading data");
         td.read(buf);
         buf.close();
 
+        System.err.println("Print A");
         print_A(human_readable);
         print_B(human_readable);
     }
