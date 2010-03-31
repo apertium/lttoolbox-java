@@ -16,7 +16,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
  */
-
 package org.apertium.tagger;
 
 import java.io.InputStream;
@@ -56,7 +55,8 @@ public class TaggerTest {
     public void testMain() throws IOException {
         System.out.println("main");
 
-        String prob = "/home/jim/Devel/apertium-en-es/en-es.prob";
+        String prob = "/home/mhc/apertium/apertium-sv-da/sv-da.prob";
+        // String prob = "/home/jim/Devel/apertium-en-es/en-es.prob";
         String testin = "^this/this<det><dem><sg>/this<prn><tn><mf><sg>$ ^is/be<vbser><pri><p3><sg>$ ^a/a<det><ind><sg>$ ^test/test<n><sg>/test<vblex><inf>/test<vblex><pres>$^./.<sent>$";
         String testout = "^this<prn><tn><mf><sg>$ ^be<vbser><pri><p3><sg>$ ^a<det><ind><sg>$ ^test<n><sg>$^.<sent>$";
         String[] argv = {"-g", prob, "/tmp/taggerin", "/tmp/taggerout"};
@@ -64,10 +64,9 @@ public class TaggerTest {
         FileOutputStream f = new FileOutputStream("/tmp/taggerin");
         f.write(testin.getBytes("UTF-8"));
         f.close();
-   
+
         Tagger.main(argv);
+        System.out.println(" Test svn chy :");
 
     }
-
-
 }
