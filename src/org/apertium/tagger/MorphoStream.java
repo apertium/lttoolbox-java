@@ -234,8 +234,8 @@ public class MorphoStream {
         int last_type = -1;
         int last_pos = 0;
 
-        this.ms = new MatchState(this.me);
-        ms.init(me.getInitial());
+        this.ms = new MatchState(this.td.getPatternList().me);
+        ms.init(this.td.getPatternList().me.getInitial());
         for (int i=0, limit=str.length(); i!=limit;i++) {
             if (str.charAt(i) != '<') {
                 if (str.charAt(i) == '+') {
