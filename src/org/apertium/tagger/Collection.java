@@ -86,15 +86,19 @@ public class Collection {
    * @param t the element to be added
    */
     int add (Set<Integer> t) {
-        if (index==null) {
-            index = new HashMap<Set<Integer>, Integer>();
-        }
-        if (element==null) {
-            element = new ArrayList<Set<Integer>>();
-        }
+        try {
+            if (index==null) {
+                index = new HashMap<Set<Integer>, Integer>();
+            }
+            if (element==null) {
+                element = new ArrayList<Set<Integer>>();
+            }
 
-        index.put(t, index.size() - 1);
-        element.add(t);
+            index.put(t, index.size() - 1);
+            element.add(t);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return index.get(t);
     }
 
@@ -112,7 +116,7 @@ public class Collection {
                 for(; set_size != 0; set_size--) {
                     myset.add(Compression.multibyte_read(input));
                 }
-                add (myset);
+                this.add (myset);
             }
         } catch (Exception e) {
             e.printStackTrace();
