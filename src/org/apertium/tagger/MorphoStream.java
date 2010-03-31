@@ -104,6 +104,9 @@ public class MorphoStream {
     * @return The next word in the input stream
     */
     TaggerWord get_next_word () throws IOException {
+        if (vwords==null) {
+            this.vwords = new ArrayList<TaggerWord>();
+        }
         if (vwords.size() != 0) {
             TaggerWord word = vwords.get(0);
             vwords.remove(0);
