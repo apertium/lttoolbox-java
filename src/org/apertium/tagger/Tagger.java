@@ -194,7 +194,7 @@ public class Tagger {
 
                 return mode;
             } catch (Exception e) {
-                // FIXME
+                e.printStackTrace();
             }
         }
         return mode;
