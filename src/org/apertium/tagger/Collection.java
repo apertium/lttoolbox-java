@@ -96,15 +96,19 @@ public class Collection {
    * @param input the input stream
    */
     void read (InputStream input) throws IOException {
-        int size = Compression.multibyte_read(input);
+        try {
+            int size = Compression.multibyte_read(input);
 
-        for(; size != 0; size--) {
-            Set<Integer> myset = new HashSet<Integer>();
-            int set_size = Compression.multibyte_read(input);
-            for(; set_size != 0; set_size--) {
-                myset.add(Compression.multibyte_read(input));
+            for(; size != 0; size--) {
+                Set<Integer> myset = new HashSet<Integer>();
+                int set_size = Compression.multibyte_read(input);
+                for(; set_size != 0; set_size--) {
+                    myset.add(Compression.multibyte_read(input));
+                }
+                add (myset);
             }
-            add (myset);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
