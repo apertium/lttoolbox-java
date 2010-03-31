@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Vector;
 import org.apertium.lttoolbox.Alphabet;
 import org.apertium.lttoolbox.compile.Transducer;
+import org.apertium.lttoolbox.Compression;
 
 /**
  * Created by Nic Cottrell, Jan 27, 2009 5:00:21 PM
@@ -315,10 +316,10 @@ class PatternList {
           System.err.println("Alphabet: "+alphabet.size());
 
           if (input.read() == 1) {
-/*
-      int mystr = input.read();
-      Transducer.read(input);
+      String mystr = Compression.String_read(input);
+      //Transducer.read(input);
 
+/*
       int finalsize = input.read();
       for (; finalsize != 0; finalsize--) {
         int key = input.read();
