@@ -47,6 +47,8 @@ class PatternList {
   Transducer transducer;
 
   Map<Integer, Integer> final_type;
+  MatchExe me;
+  MatchState ms;
 
   int sequence_id;
 
@@ -299,15 +301,17 @@ class PatternList {
   }
 
   void read(InputStream input) throws IOException {
-    sequence = false;
-    if (final_type==null) {
-        final_type = new HashMap<Integer, Integer>();
-    }
-    if (final_type.size()!=0) {
-        final_type.clear();
-    }
+      try {
+          sequence = false;
+          if (final_type==null) {
+              final_type = new HashMap<Integer, Integer>();
+          }
+          if (final_type.size()!=0) {
+              final_type.clear();
+          }
 
-    alphabet.read(input);
+          alphabet.read(input);
+/*
     if (input.read() == 1) {
       int mystr = input.read();
       Transducer.read(input);
@@ -318,11 +322,18 @@ class PatternList {
         final_type.put(key, input.read());
       }
     }
+ */
+          me = new MatchExe(input, alphabet.size());
+          ms = new MatchState(me);
+      } catch (Exception e) {
+          e.printStackTrace();
+      }
   }
 
-  @SuppressWarnings("deprecation")
+  //@SuppressWarnings("deprecation")
   MatchExe newMatchExe() {
-    return new MatchExe(transducer, final_type);
+    //return new MatchExe(transducer, final_type);
+      return this.me;
   }
 
   Alphabet getAlphabet() {

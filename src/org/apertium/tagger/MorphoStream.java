@@ -83,7 +83,7 @@ public class MorphoStream {
         this();
         this.input = ftxt;
         this.td = t;
-        this.me = this.td.getPatternList().newMatchExe();
+//        this.me = this.td.getPatternList().newMatchExe();
         
         ConstantManager constants = td.getConstants();
         ca_kignorar = constants.getConstant("kIGNORAR");
