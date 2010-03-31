@@ -176,41 +176,45 @@ public class MatchExe {
     // 420739=211, 420741=213, 420743=215, 420745=215, 420747=215, 420749=216}
 
     // set up initial node
-    initial_id = t.getInitial();
+    try {
+        initial_id = t.getInitial();
 
-    int limit=t.transitions.size();
+        int limit=t.transitions.size();
 
-    finals = new HashMap<MatchNode, Integer>();
+        finals = new HashMap<MatchNode, Integer>();
 
-    // memory allocation
-    MatchNode[] my_node_list = new MatchNode[limit];
+        // memory allocation
+        MatchNode[] my_node_list = new MatchNode[limit];
 
-    for (int no =0; no<limit; no++) {
-      //final Map<Integer, Set<Integer>> second = t.transitions.get(first);
-      //node_list[first] = new MatchNode(second.size());
-      my_node_list[no] = new MatchNode();
-    }
-
-    // set up the transitions
-    for (int no =0; no<limit; no++) {
-      MatchNode mynode=my_node_list[no];
-      final Map<Integer, IntSet> second=t.transitions.get(no);
-      for (Integer it2First : second.keySet()) {
-        IntSet it2Second=second.get(it2First);
-        for (Integer integer : it2Second) {
-          //mynode.addTransition(it2First, my_node_list[integer]);
+        for (int no =0; no<limit; no++) {
+            //final Map<Integer, Set<Integer>> second = t.transitions.get(first);
+            //node_list[first] = new MatchNode(second.size());
+            my_node_list[no] = new MatchNode();
         }
-      }
+
+        // set up the transitions
+        for (int no =0; no<limit; no++) {
+            MatchNode mynode=my_node_list[no];
+            final Map<Integer, IntSet> second=t.transitions.get(no);
+            for (Integer it2First : second.keySet()) {
+                IntSet it2Second=second.get(it2First);
+                for (Integer integer : it2Second) {
+                //mynode.addTransition(it2First, my_node_list[integer]);
+                }
+            }
+        }
+
+        // set up finals
+        for (Integer first : final_type.keySet()) {
+            final Integer second = final_type.get(first);
+            finals.put(my_node_list[first], second);
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
     }
 
-    // set up finals
-    for (Integer first : final_type.keySet()) {
-      final Integer second = final_type.get(first);
-      finals.put(my_node_list[first], second);
-    }
   }
-
-  
 
   public void copy(MatchExe te) {
     initial_id = te.initial_id;
