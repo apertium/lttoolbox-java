@@ -34,7 +34,7 @@ public class ConstantManager {
     private HashMap<String, Integer> constants;
 
     public void ConstantManager() {
-        constants = new HashMap<String, Integer>();
+        this.constants = new HashMap<String, Integer>();
     }
 
     public void setConstant (String constant, int value) {
