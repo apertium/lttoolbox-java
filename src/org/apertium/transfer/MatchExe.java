@@ -57,6 +57,9 @@ public class MatchExe {
   Map<MatchNode, Integer> finals;
 
   public Map<MatchNode, Integer> getFinals () {
+      if (finals==null) {
+          finals = new HashMap<MatchNode, Integer>();
+      }
       return finals;
   }
 
@@ -176,6 +179,8 @@ public class MatchExe {
     initial_id = t.getInitial();
 
     int limit=t.transitions.size();
+
+    finals = new HashMap<MatchNode, Integer>();
 
     // memory allocation
     MatchNode[] my_node_list = new MatchNode[limit];
