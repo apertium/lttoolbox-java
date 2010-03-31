@@ -38,7 +38,7 @@ public class ConstantManager {
     }
 
     public void setConstant (String constant, int value) {
-        constants.put(constant, value);
+        constants.put(constant, new Integer(value));
     }
 
     public int getConstant(String constant) {
@@ -54,14 +54,18 @@ public class ConstantManager {
     }
 
     public void read(InputStream input) throws IOException {
-        if (constants != null && constants.size()!=0) {
-            constants.clear();
-        }
-        int size = Compression.multibyte_read(input);
-        for (int i=0; i!=size; i++) {
-            String str = Compression.String_read(input);
-            int constant = Compression.multibyte_read(input);
-            setConstant(str, constant);
+        try {
+            if (constants != null && constants.size()!=0) {
+                constants.clear();
+            }
+            int size = Compression.multibyte_read(input);
+            for (int i=0; i!=size; i++) {
+                String str = Compression.String_read(input);
+                int constant = Compression.multibyte_read(input);
+                setConstant(str, constant);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
