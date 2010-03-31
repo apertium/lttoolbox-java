@@ -41,14 +41,11 @@ class LocalGetOpt extends Getopt {
  * @author jimregan
  */
 public class Prob2Txt {
-    static TaggerData td;
+    static TaggerData td= new TaggerData();
     Integer eos;
 
     private static String program = "prob2txt";
 
-    Prob2Txt () {
-        td = new TaggerData();
-    }
 
     static void help () {
         System.err.println("HMM parameters are writen in text format");
@@ -101,6 +98,7 @@ public class Prob2Txt {
     }
 
     public static void main (String[] argv) throws IOException {
+      //argv = new String[] { "-f", "../apertium-en-es/en-es.prob"};
         String file="";
         int optind=0;
         boolean human_readable=false;
