@@ -44,7 +44,6 @@ public class ConstantManager {
             }
             constants.put(constant, new Integer(value));
         } catch (NullPointerException npe) {
-            if (constants==null) System.err.println("constants is null!");
             System.err.println("Null pointer: " + constant + " " + value);
             npe.printStackTrace();
         } catch (Exception e) {

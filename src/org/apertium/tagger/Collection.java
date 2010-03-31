@@ -48,7 +48,10 @@ public class Collection {
     }
 
     int size () {
-        return element.size();
+        if (element != null)
+            return element.size();
+        else
+            return 0;
     }
 
   /**
@@ -93,8 +96,9 @@ public class Collection {
             if (element==null) {
                 element = new ArrayList<Set<Integer>>();
             }
-
-            index.put(t, index.size() - 1);
+            
+            Integer where = new Integer((index.size() > 0) ? index.size()-1 : 0);
+            index.put(t, where);
             element.add(t);
         } catch (Exception e) {
             e.printStackTrace();
