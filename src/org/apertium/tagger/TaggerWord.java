@@ -19,7 +19,9 @@
 
 package org.apertium.tagger;
 import java.util.Set;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Iterator;
 import java.util.ArrayList;
@@ -61,6 +63,8 @@ public class TaggerWord {
         ignored_string = "";
         plus_cut = false;
         previous_plus_cut = prev_plus_cut;
+        tags = new HashSet<Integer>();
+        lexical_forms = new HashMap<Integer, String>();
     }
 
     public TaggerWord () {
@@ -106,6 +110,10 @@ public class TaggerWord {
     public List<String> add_tag (int t, String lf, List<String> prefer_rules) {
         List<String> tmp = prefer_rules;
         try {
+            if (tags==null)
+                tags = new HashSet<Integer>();
+            if (lexical_forms==null)
+                lexical_forms = new HashMap<Integer, String>();
             if (!tags.contains(t)) {
                 tags.add(t);
                 lexical_forms.put(t, lf);

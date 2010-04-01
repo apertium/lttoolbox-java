@@ -653,6 +653,8 @@ public class HMM {
                         if (nwpend>1) {
                             best[nwpend%2][i] = best[1-nwpend%2][j];
                         }
+                        if (best[nwpend%2][i].nodes==null)
+                            best[nwpend%2][i].nodes = new ArrayList<Integer>();
                         best[nwpend%2][i].nodes.add(i);
                         alpha[nwpend%2][i] = x;
                     }
