@@ -271,13 +271,9 @@ public class MorphoStream {
             }
             if (ms.size() == 0) {
                 if (last_pos != floor) {
-                    TaggerWord tmp = new TaggerWord();
-                    tmp = vwords.get(ivwords);
-                    List<String> tags = tmp.add_tag(last_type,
+                    td.setPreferRules(vwords.get(ivwords).add_tag(last_type,
                                                    str.substring(floor, last_pos),
-                                                   td.getPreferRules());
-                    td.setPreferRules(tags);
-                    vwords.set(ivwords, tmp);
+                                                   td.getPreferRules()));
                     if (str.charAt(last_pos+1) == '+' && last_pos+1 < limit) {
                         floor = last_pos + 1;
                         last_pos = floor;
