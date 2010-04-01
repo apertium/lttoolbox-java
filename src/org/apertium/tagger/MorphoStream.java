@@ -134,7 +134,7 @@ public class MorphoStream {
             int symbol = input.read();
             if (symbol == -1 || (null_flush && symbol == '\0')) {
                 this.end_of_file = true;
-                vwords_add_tag(ivwords);
+                vwords.get(ivwords).add_tag(ca_tag_keof, "", td.getPreferRules());
                 return get_next_word ();
             }
             if (symbol == (int) '^') {
@@ -154,8 +154,8 @@ public class MorphoStream {
                     symbol = input.read();
                     if (symbol == -1 || (null_flush && symbol == '\0')) {
                         end_of_file = true;
-                        vwords_add_ignored(ivwords, str);
-                        vwords_add_tag(ivwords);
+                        vwords.get(ivwords).add_ignored_string(str);
+                        vwords.get(ivwords).add_tag(ca_tag_keof, "", td.getPreferRules());
                         return get_next_word();
                     }
                 }
@@ -177,19 +177,19 @@ public class MorphoStream {
                     System.err.println ("Word being read: " + vwords.get(ivwords).get_superficial_form());
                     System.err.println ("Debug: " + str);
                 }
-                vwords_add_tag(ivwords);
+                vwords.get(ivwords).add_tag(ca_tag_keof, "", td.getPreferRules());
                 return;
             } else if (symbol == (int) '\\') {
                 symbol = input.read();
                 str += '\\';
                 str += (char) symbol;
             } else if (symbol == (int) '/') {
-                vwords_set_superficial(ivwords, str);
+                vwords.get(ivwords).set_superficial_form(str);
                 str = "";
                 break;
             } else if (symbol == (int) '$') {
-                vwords_set_superficial(ivwords, str);
-                vwords_add_ignored(ivwords, "$");
+                vwords.get(ivwords).set_superficial_form(str);
+                vwords.get(ivwords).add_ignored_string("$");
                 break;
             } else {
                 str += (char) symbol;
@@ -359,14 +359,5 @@ public class MorphoStream {
         tmp.add_tag(ca_tag_keof, "", td.getPreferRules());
         vwords.set(ivwords, tmp);
     }
-
-    private void vwords_set_superficial(int ivwords, String str) {
-        //vwords[ivwords]->add_ignored_string(str);
-        TaggerWord tmp = new TaggerWord();
-        tmp = vwords.get(ivwords);
-        tmp.set_superficial_form(str);
-        vwords.set(ivwords, tmp);
-    }
-
 
 }
