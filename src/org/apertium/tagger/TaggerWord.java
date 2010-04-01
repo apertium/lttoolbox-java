@@ -93,6 +93,7 @@ public class TaggerWord {
     public boolean match (String s, String pattern) {
         //Map<String, ApertiumRE>.Iterator it = patterns.find(pattern);
         // FIXME
+
         
         return false;
     }
@@ -280,8 +281,20 @@ public class TaggerWord {
 
     public void outputOriginal (OutputStream o) throws IOException {
         String s=this.superficial_form;
-        //TODO
-        //Iterator<Integer, String> it = lexical_forms.entrySet().iterator();
+
+        for (String form : lexical_forms.values()) {
+            if (form.length()>0) {
+                s+="/";
+                s+=form;
+            }
+        }
+
+        String out="";
+        if (s.length()>0) {
+            out="^"+s+"$\n";
+        }
+
+        o.write(out.getBytes("UTF-8"));
 
     }
 
