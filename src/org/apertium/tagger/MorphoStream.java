@@ -253,7 +253,7 @@ public class MorphoStream {
                     if (str.charAt(j) == '\\') {
                         j++;
                     } else if (str.charAt(j) == '>') {
-                        tag = str.substring(i, j-i+1);
+                        tag = str.substring(i, j);
                         i = j;
                         break;
                     }
