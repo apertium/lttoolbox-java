@@ -102,16 +102,20 @@ public class TaggerWord {
     * @param lf the lexical form (fine tag)
     */
     public void add_tag (int t, String lf, ArrayList<String> prefer_rules) {
-        if (!tags.contains(t)) {
-            tags.add(t);
-            lexical_forms.put(t, lf);
-        } else {
-            for (int i=0; i < prefer_rules.size(); i++) {
-                if (match(lf, prefer_rules.get(i))) {
-                    lexical_forms.put(t, lf);
-                    break;
+        try {
+            if (!tags.contains(t)) {
+                tags.add(t);
+                lexical_forms.put(t, lf);
+            } else {
+                for (int i=0; i < prefer_rules.size(); i++) {
+                    if (match(lf, prefer_rules.get(i))) {
+                        lexical_forms.put(t, lf);
+                        break;
+                    }
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
