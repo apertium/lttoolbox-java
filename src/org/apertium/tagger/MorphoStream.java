@@ -360,6 +360,7 @@ public class MorphoStream {
         vwords.set(ivwords, tmp);
     }
 
+    @ThisWouldBeOneLineIn(language="C++", toWit="vwords[ivwords]->add_ignored_string(str);")
     private void vwords_set_superficial(int ivwords, String str) {
         //vwords[ivwords]->add_ignored_string(str);
         TaggerWord tmp = new TaggerWord();
