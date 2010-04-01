@@ -19,6 +19,7 @@
 
 package org.apertium.tagger;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import org.apertium.lttoolbox.Alphabet;
@@ -272,9 +273,10 @@ public class MorphoStream {
                 if (last_pos != floor) {
                     TaggerWord tmp = new TaggerWord();
                     tmp = vwords.get(ivwords);
-                    tmp.add_tag(last_type,
-                                str.substring(floor, last_pos),
-                                td.getPreferRules());
+                    List<String> tags = tmp.add_tag(last_type,
+                                                   str.substring(floor, last_pos),
+                                                   td.getPreferRules());
+                    td.setPreferRules(tags);
                     vwords.set(ivwords, tmp);
                     if (str.charAt(last_pos+1) == '+' && last_pos+1 < limit) {
                         floor = last_pos + 1;

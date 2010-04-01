@@ -20,6 +20,7 @@
 package org.apertium.tagger;
 import java.util.Set;
 import java.util.Map;
+import java.util.List;
 import java.util.Iterator;
 import java.util.ArrayList;
 import org.apertium.transfer.ApertiumRE;
@@ -101,7 +102,8 @@ public class TaggerWord {
     * @param t the coarse tag
     * @param lf the lexical form (fine tag)
     */
-    public void add_tag (int t, String lf, ArrayList<String> prefer_rules) {
+    public List<String> add_tag (int t, String lf, List<String> prefer_rules) {
+        List<String> tmp = prefer_rules;
         try {
             if (!tags.contains(t)) {
                 tags.add(t);
@@ -117,6 +119,7 @@ public class TaggerWord {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return tmp;
     }
 
    /**

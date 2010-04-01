@@ -393,8 +393,8 @@ public class HMM {
     * in the involved transitions.
     */
     void apply_rules () {
-        ArrayList<TForbidRule> forbid_rules = td.getForbidRules();
-        ArrayList<TEnforceAfterRule> enforce_rules = td.getEnforceRules();
+        List<TForbidRule> forbid_rules = td.getForbidRules();
+        List<TEnforceAfterRule> enforce_rules = td.getEnforceRules();
         int N = td.getN();
         int i, j, j2;
         boolean found;

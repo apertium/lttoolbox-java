@@ -19,6 +19,7 @@
 
 package org.apertium.tagger;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Map;
@@ -36,12 +37,12 @@ import org.apertium.lttoolbox.Compression;
 public class TaggerData {
     // FIXME: IntSet?
     private Set<Integer> open_class;
-    private ArrayList<TForbidRule> forbid_rules;
+    private List<TForbidRule> forbid_rules;
     Map<String, Integer> tag_index;
-    private ArrayList<String> array_tags;
-    private ArrayList<TEnforceAfterRule> enforce_rules;
-    private ArrayList<String> prefer_rules;
-    private ArrayList<String> discard;
+    private List<String> array_tags;
+    private List<TEnforceAfterRule> enforce_rules;
+    private List<String> prefer_rules;
+    private List<String> discard;
     private ConstantManager constants;
     private PatternList plist;
     private int N;
@@ -78,7 +79,7 @@ public class TaggerData {
         open_class = oc;
     }
 
-    ArrayList<TForbidRule> getForbidRules() {
+    List<TForbidRule> getForbidRules() {
         return forbid_rules;
     }
 
@@ -94,19 +95,19 @@ public class TaggerData {
         tag_index = ti;
     }
 
-    ArrayList<String> getArrayTags() {
+    List<String> getArrayTags() {
         return array_tags;
     }
 
-    void setArrayTags(ArrayList<String> at) {
+    void setArrayTags(List<String> at) {
         this.array_tags = at;
     }
 
-    ArrayList<TEnforceAfterRule> getEnforceRules() {
+    List<TEnforceAfterRule> getEnforceRules() {
         return enforce_rules;
     }
 
-    void setEnforceRules(ArrayList<TEnforceAfterRule> ea) {
+    void setEnforceRules(List<TEnforceAfterRule> ea) {
         this.enforce_rules = ea;
     }
 
@@ -119,11 +120,11 @@ public class TaggerData {
     }
 
 
-    ArrayList<String> getPreferRules () {
+    List<String> getPreferRules () {
         return prefer_rules;
     }
 
-    void setPreferRules (ArrayList<String> a) {
+    void setPreferRules (List<String> a) {
         prefer_rules = a;
     }
     
@@ -328,7 +329,7 @@ public class TaggerData {
         constants = c;
     }
 
-    ArrayList<String> getDiscardRules () {
+    List<String> getDiscardRules () {
         return discard;
     }
 
