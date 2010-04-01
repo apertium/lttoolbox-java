@@ -281,10 +281,7 @@ public class MorphoStream {
                     if (str.charAt(last_pos+1) == '+' && last_pos+1 < limit) {
                         floor = last_pos + 1;
                         last_pos = floor;
-                        TaggerWord tw = new TaggerWord();
-                        tw = vwords.get(ivwords);
-                        tw.set_plus_cut(true);
-                        vwords.set(ivwords, tw);
+                        vwords.get(ivwords).set_plus_cut(true);
                         if (vwords.size()<=(ivwords+1))
                             vwords.add(new TaggerWord(true));
                         ivwords++;
