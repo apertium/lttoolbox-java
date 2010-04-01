@@ -674,10 +674,10 @@ public class HMM {
                 for (int t=0; t<best[nwpend%2][tag].nodes.size(); t++) {
                     if (show_all_good_first) {
                         String micad = wpend.get(t).get_all_chosen_tag_first(best[nwpend%2][tag].nodes.get(t), td.getTagIndex().get("TAG_kEOF"));
-                        out.write(micad.getBytes());
+                        out.write(micad.getBytes("UTF-8"));
                     } else {
                         String micad = wpend.get(t).get_lexical_form(best[nwpend%2][tag].nodes.get(t), td.getTagIndex().get("TAG_kEOF"));
-                        out.write(micad.getBytes());
+                        out.write(micad.getBytes("UTF-8"));
                     }
                 }
 
