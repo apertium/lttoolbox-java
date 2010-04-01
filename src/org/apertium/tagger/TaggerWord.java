@@ -52,7 +52,6 @@ public class TaggerWord {
      * Show the superficial form in the output
      */
     private boolean show_sf;
-    //  static map<wstring, ApertiumRE, Ltstr> patterns;
     private Map<String, ApertiumRE> patterns;
     public boolean generate_marks = false;
     public ArrayList<String> array_tags;
@@ -93,6 +92,7 @@ public class TaggerWord {
 
     public boolean match (String s, String pattern) {
         //Map<String, ApertiumRE>.Iterator it = patterns.find(pattern);
+        // FIXME
         
         return false;
     }
