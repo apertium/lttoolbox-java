@@ -316,7 +316,7 @@ class PatternList {
           System.err.println("Alphabet: "+alphabet.size());
 
           if (input.read() == 1) {
-      String mystr = Compression.String_read(input);
+              String mystr = Compression.String_read(input);
       //Transducer.read(input);
 
 /*

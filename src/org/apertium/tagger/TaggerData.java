@@ -214,10 +214,13 @@ public class TaggerData {
       plist.read(in);
     
       // read discards on ambiguity
-      discard.clear();
+      if (discard!=null)
+          discard = new ArrayList<String>();
+      else
+          discard.clear();
 
       int limit = Compression.multibyte_read(in);
-      if (limit == -1) {
+      if (limit < 1) {
           return;
       }
   
