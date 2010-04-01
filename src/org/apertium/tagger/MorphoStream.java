@@ -171,7 +171,7 @@ public class MorphoStream {
             if (symbol == -1 || (null_flush && symbol == (int) '\0')) {
                 end_of_file = true;
                 if (str.length() > 0) {
-                    vwords_add_ignored(ivwords, str);
+                    vwords.get(ivwords).add_ignored_string(str);
 
                     System.err.println ("Warning (internal): kIGNORE was returned while reading a word");
                     System.err.println ("Word being read: " + vwords.get(ivwords).get_superficial_form());
@@ -201,12 +201,12 @@ public class MorphoStream {
             if (symbol == -1 || (null_flush && symbol == '\0')) {
                 end_of_file = true;
                 if (str.length() > 0) {
-                    this.vwords_add_ignored(ivwords, str);
+                    vwords.get(ivwords).add_ignored_string(str);
                     System.err.println ("Warning (internal): kIGNORE was returned while reading a word");
                     System.err.println ("Word being read: " + vwords.get(ivwords).get_superficial_form());
                     System.err.println ("Debug: " + str);
                 }
-                vwords_add_tag(ivwords);
+                vwords.get(ivwords).add_tag(ca_tag_keof, "", td.getPreferRules());
                 return;
             } else if (symbol == (int) '\\') {
                 symbol = input.read();
@@ -343,21 +343,6 @@ public class MorphoStream {
     */
     void setEndOfFile (boolean eof) {
         end_of_file = eof;
-    }
-
-    private void vwords_add_ignored(int ivwords, String str) {
-        //vwords[ivwords]->add_ignored_string(str);
-        TaggerWord tmp = new TaggerWord();
-        tmp = vwords.get(ivwords);
-        tmp.add_ignored_string(str);
-        vwords.set(ivwords, tmp);
-    }
-
-    private void vwords_add_tag(int ivwords) {
-        TaggerWord tmp = new TaggerWord();
-        tmp = vwords.get(ivwords);
-        tmp.add_tag(ca_tag_keof, "", td.getPreferRules());
-        vwords.set(ivwords, tmp);
     }
 
 }
