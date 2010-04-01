@@ -113,7 +113,7 @@ public class MorphoStream {
             vwords.remove(0);
 
             if (word.isAmbiguous()) {
-                ArrayList<String> ref = td.getDiscardRules();
+                List<String> ref = td.getDiscardRules();
                 for (int i=0; i < ref.size(); i++) {
                     word.discardOnAmbiguity(ref.get(i));
                 }
@@ -313,7 +313,8 @@ public class MorphoStream {
             }
             TaggerWord tw = new TaggerWord();
             tw = vwords.get(ivwords);
-            tw.add_tag(val, str.substring(floor), td.getPreferRules());
+            List<String> tmp = tw.add_tag(val, str.substring(floor), td.getPreferRules());
+            td.setPreferRules(tmp);
             vwords.set(ivwords, tw);
         }
         
