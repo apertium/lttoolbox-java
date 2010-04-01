@@ -215,7 +215,7 @@ class PatternList {
         end = i;
       }
       if (count == index + 1) {
-        return tags.substring(start, end - start);
+        return tags.substring(start, end);
       }
     }
 

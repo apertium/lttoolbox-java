@@ -273,7 +273,7 @@ public class MorphoStream {
                     TaggerWord tmp = new TaggerWord();
                     tmp = vwords.get(ivwords);
                     tmp.add_tag(last_type,
-                                str.substring(floor, last_pos - floor + 1),
+                                str.substring(floor, last_pos),
                                 td.getPreferRules());
                     vwords.set(ivwords, tmp);
                     if (str.charAt(last_pos+1) == '+' && last_pos+1 < limit) {
