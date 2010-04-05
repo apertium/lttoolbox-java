@@ -99,6 +99,20 @@ public class TaggerWord {
         if (patterns.containsKey(pattern)) {
             String regexp = "";
             // FIXME
+            /*
+    while(true)
+    {
+      size_t pos = utfpattern.find("<*>");
+      if(pos == string::npos)
+      {
+        break;
+      }
+      utfpattern.replace(pos, 3, "(<[^>]+>)+");
+    }
+    patterns[pattern].compile(utfpattern);
+    return patterns[pattern].match(utfs) != "";
+
+             */
         } else {
             return pattern.matches(s);
         }
