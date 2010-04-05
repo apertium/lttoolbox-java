@@ -96,7 +96,12 @@ public class TaggerWord {
 
     public boolean match (String s, String pattern) {
         //Map<String, ApertiumRE>.Iterator it = patterns.find(pattern);
-        // FIXME
+        if (patterns.containsKey(pattern)) {
+            String regexp = "";
+            // FIXME
+        } else {
+            return pattern.matches(s);
+        }
 
         
         return false;
