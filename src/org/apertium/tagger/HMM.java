@@ -656,21 +656,16 @@ public class HMM {
                     x = alpha[1-nwpend%2][j]*td.getA()[j][i]*td.getB()[i][k];
                     if (alpha[nwpend%2][i]<=x) {
                         if (nwpend>1) {
-                            if (best[nwpend%2][i]!=null
-                             && best[nwpend%2][j]!=null
-                             && best[nwpend%2][j].nodes!=null
-                             && best[nwpend%2][j].nodes!=null) {
-                                best[nwpend%2][i].nodes.addAll(best[1-nwpend%2][j].nodes);
-                            } else {
-                                if (best[nwpend%2][i]==null)
-                                    best[nwpend%2][i] = new IntVector();
-                                if (best[nwpend%2][i].nodes==null)
-                                    best[nwpend%2][i].nodes = new ArrayList<Integer>();
-                                if (best[nwpend%2][j]==null)
-                                    best[nwpend%2][j] = new IntVector();
-                                if (best[nwpend%2][j].nodes==null)
-                                    best[nwpend%2][j].nodes = new ArrayList<Integer>();
-                            }
+                            if (best[nwpend%2][i]==null)
+                                best[nwpend%2][i] = new IntVector();
+                            if (best[nwpend%2][i].nodes==null)
+                                best[nwpend%2][i].nodes = new ArrayList<Integer>();
+                            if (best[nwpend%2][j]==null)
+                                best[nwpend%2][j] = new IntVector();
+                            if (best[nwpend%2][j].nodes==null)
+                                best[nwpend%2][j].nodes = new ArrayList<Integer>();
+
+                            best[nwpend%2][i].nodes.addAll(best[1-nwpend%2][j].nodes);
                         }
                         System.err.println("best: "+(nwpend%2)+" "+i);
                         if (best[nwpend%2][i]==null)
