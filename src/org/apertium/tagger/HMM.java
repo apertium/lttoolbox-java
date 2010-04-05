@@ -598,6 +598,11 @@ public class HMM {
         int N = td.getN();
         double[][] alpha = new double[2][N];
         IntVector[][] best = new IntVector[2][N];
+        for (int myi=0; myi!=2; myi++) {
+            for (int myj=0; myj!=N; myj++) {
+                best[myi][myj] = new IntVector();
+            }
+        }
 
         ArrayList<TaggerWord> wpend = new ArrayList<TaggerWord>();
         int nwpend;
@@ -653,6 +658,7 @@ public class HMM {
                         if (nwpend>1) {
                             best[nwpend%2][i] = best[1-nwpend%2][j];
                         }
+                        System.err.println("best: "+(nwpend%2)+" "+i);
                         if (best[nwpend%2][i].nodes==null)
                             best[nwpend%2][i].nodes = new ArrayList<Integer>();
                         best[nwpend%2][i].nodes.add(i);
