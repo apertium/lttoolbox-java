@@ -659,6 +659,8 @@ public class HMM {
                             best[nwpend%2][i].nodes.addAll(best[1-nwpend%2][j].nodes);
                         }
                         System.err.println("best: "+(nwpend%2)+" "+i);
+                        if (best[nwpend%2][i]==null)
+                            best[nwpend%2][i] = new IntVector();
                         if (best[nwpend%2][i].nodes==null)
                             best[nwpend%2][i].nodes = new ArrayList<Integer>();
                         best[nwpend%2][i].nodes.add(i);
