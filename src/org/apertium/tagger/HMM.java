@@ -649,9 +649,11 @@ public class HMM {
             clear_array_vector(best[nwpend%2], N);
 
             //Induction
-            for (Integer itag : tags) {
+            for (Integer itag : tags.toArray(new Integer[tags.size()])) {
+                System.err.println("i: "+" "+itag);
                 i = itag;
-                for (Integer jtag : pretags) {
+                for (Integer jtag : pretags.toArray(new Integer[pretags.size()])) {
+                    System.err.println("j: "+" "+jtag);
                     j=jtag;
                     x = alpha[1-nwpend%2][j]*td.getA()[j][i]*td.getB()[i][k];
                     if (alpha[nwpend%2][i]<=x) {
