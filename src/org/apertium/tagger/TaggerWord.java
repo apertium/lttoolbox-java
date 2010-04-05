@@ -193,7 +193,7 @@ public class TaggerWord {
         if (lexical_forms.size()==0) {
             ret += '*';
             ret += superficial_form;
-        } else if (lexical_forms.get(0).startsWith("*")) {
+        } else if (lexical_forms.get(0)!=null&&lexical_forms.get(0).startsWith("*")) {
             ret += '*';
             ret += superficial_form;
         } else if (lexical_forms.size()>1){
