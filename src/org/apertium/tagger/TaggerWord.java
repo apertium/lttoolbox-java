@@ -65,6 +65,7 @@ public class TaggerWord {
         previous_plus_cut = prev_plus_cut;
         tags = new HashSet<Integer>();
         lexical_forms = new HashMap<Integer, String>();
+        patterns = new HashMap<String, ApertiumRE>();  
     }
 
     public TaggerWord () {
