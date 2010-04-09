@@ -52,7 +52,7 @@ public class Prob2TxtTest {
     @Test
     public void testMain() throws Exception {
         System.out.println("main");
-        String[] argv = {"-f", "/home/jim/Devel/apertium-en-es/en-es.prob"};
+        String[] argv = {"-f", "testdata/tagger/en-es.prob"};
         Prob2Txt.main(argv);
     }
 

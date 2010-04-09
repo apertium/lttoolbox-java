@@ -33,7 +33,7 @@ import java.io.*;
  */
 public class TaggerTest {
 
-    String dir = "testdata/";
+    String dir = "testdata/tagger/";
 
     public TaggerTest() {
     }
