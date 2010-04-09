@@ -77,12 +77,12 @@ public class Compression {
      * @throws java.io.IOException
      */
     public static int multibyte_read(InputStream input) throws IOException {
-        char up;
-        long result = 0;
+        int up;
+        long result;
 
-        up = (char) input.read();
+        up = input.read();
         if (up < 0x40) {
-            result = (int) up;
+            return up;
         } else if (up < 0x80) {
             up &= 0x3f;
             int aux = (int) up;

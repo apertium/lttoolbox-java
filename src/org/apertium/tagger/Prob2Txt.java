@@ -99,7 +99,7 @@ public class Prob2Txt {
 
     public static void main (String[] argv) throws IOException {
       if (argv.length==0) { // for easier testing
-        argv = new String[] { "-f", "../apertium-en-es/en-es.prob"};
+        argv = new String[] { "-f", "testdata/tagger/en-es.prob"};
       }
         String file="";
         int optind=0;
