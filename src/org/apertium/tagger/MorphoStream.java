@@ -105,9 +105,12 @@ public class MorphoStream {
     * @return The next word in the input stream
     */
     TaggerWord get_next_word () throws IOException {
+        // TODO: Remove Jimmy's ugly fix:
         if (vwords==null) {
             this.vwords = new ArrayList<TaggerWord>();
         }
+
+        // If we have a word in the buffer, return it
         if (vwords.size() != 0) {
             TaggerWord word = vwords.get(0);
             vwords.remove(0);
@@ -127,6 +130,8 @@ public class MorphoStream {
             return null;
         }
 
+
+        // no word in the buffer, so read from input
         int ivwords = 0;
         vwords.add(new TaggerWord());
 
@@ -135,10 +140,12 @@ public class MorphoStream {
             if (symbol == -1 || (null_flush && symbol == '\0')) {
                 this.end_of_file = true;
                 td.setPreferRules(vwords.get(ivwords).add_tag(ca_tag_keof, "", td.getPreferRules()));
+                // word read, use above code to return it
                 return get_next_word ();
             }
             if (symbol == (int) '^') {
                 readRestOfWord (ivwords);
+                // word read, use above code to return it
                 return get_next_word();
             } else {
                 String str = "";
@@ -156,6 +163,7 @@ public class MorphoStream {
                         end_of_file = true;
                         vwords.get(ivwords).add_ignored_string(str);
                         td.setPreferRules(vwords.get(ivwords).add_tag(ca_tag_keof, "", td.getPreferRules()));
+                        // word read, use above code to return it
                         return get_next_word();
                     }
                 }
