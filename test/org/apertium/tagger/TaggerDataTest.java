@@ -47,6 +47,7 @@ public class TaggerDataTest {
      */
     @Test
     public void testRead() throws Exception {
+        fail("This test is not ready yet. Uncomment this line to try it out, on your own risk");
         System.out.println("read");
         String file = "/home/jim/Devel/apertium-en-es/es-en.prob";
         InputStream fin = new FileInputStream(file);
@@ -54,7 +55,7 @@ public class TaggerDataTest {
         TaggerData instance = new TaggerData();
         instance.read(fin);
         // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
+
     }
 
 }

@@ -55,6 +55,7 @@ public class TaggerTest {
      */
     @Test
     public void testMain() throws IOException {
+        fail("This test is not ready yet. Uncomment this line to try it out, on your own risk");
         System.out.println("main");
 
         String prob = dir + "en-es.prob";

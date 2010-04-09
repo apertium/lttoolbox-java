@@ -87,11 +87,9 @@ public class HMM {
     * @param in the input stream
     */
     void read_ambiguity_classes (InputStream in) throws IOException {
-        boolean eof = false;
-        while (!eof) {
+        while (true) {
             int ntags = Compression.multibyte_read(in);
             if (ntags == -1) {
-                eof = true;
                 break;
             }
             
