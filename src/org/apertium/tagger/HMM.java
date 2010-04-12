@@ -16,8 +16,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
  */
-
 package org.apertium.tagger;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
@@ -29,27 +29,27 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  *
  * @author jimregan
  */
 public class HMM {
+
     class IntVector {
+
         List<Integer> nodes;
-        IntVector () {
+
+        IntVector() {
             nodes = new ArrayList<Integer>();
         }
     }
-
     private double ZERO = 1e-10;
     private TaggerData td;
     private int eos;
     private boolean debug;
     private boolean show_sf;
     private boolean null_flush;
-
-    static final double	DBL_MIN = 2.2250738585072014E-308;
+    static final double DBL_MIN = 2.2250738585072014E-308;
 
     HMM(TaggerData tdata) {
         this.td = tdata;
@@ -60,39 +60,39 @@ public class HMM {
         this.eos = td.getTagIndex().get("TAG_SENT");
     }
 
-   /**
-    * Used to set the end-of-sentence tag
-    * @param t the end-of-sentence tag
-    */
+    /**
+     * Used to set the end-of-sentence tag
+     * @param t the end-of-sentence tag
+     */
     void set_eos(int t) {
         eos = t;
     }
 
-   /**
-    * Used to set the debug flag
-    */
-    void set_debug (boolean d) {
+    /**
+     * Used to set the debug flag
+     */
+    void set_debug(boolean d) {
         debug = d;
     }
 
-   /**
-    * Used to set the show superficial forms flag 
-    */
-    void set_show_sf (boolean sf) {
+    /**
+     * Used to set the show superficial forms flag
+     */
+    void set_show_sf(boolean sf) {
         show_sf = sf;
     }
 
-   /**
-    * Reads the ambiguity classes from the stream received as input
-    * @param in the input stream
-    */
-    void read_ambiguity_classes (InputStream in) throws IOException {
+    /**
+     * Reads the ambiguity classes from the stream received as input
+     * @param in the input stream
+     */
+    void read_ambiguity_classes(InputStream in) throws IOException {
         while (true) {
             int ntags = Compression.multibyte_read(in);
             if (ntags == -1) {
                 break;
             }
-            
+
             Set<Integer> ambiguity_class = new HashSet<Integer>();
 
             for (; ntags != 0; ntags--) {
@@ -106,13 +106,13 @@ public class HMM {
         td.setProbabilities(td.getTagIndex().size(), td.getOutput().size());
     }
 
-   /**
-    * Writes the ambiguity classes to the stream received as
-    * a parameter
-    * @param o the output stream
-    */
-    void write_ambiguity_classes (OutputStream o) throws IOException {
-        for (int i=0; i!=td.getOutput().size(); i++) {
+    /**
+     * Writes the ambiguity classes to the stream received as
+     * a parameter
+     * @param o the output stream
+     */
+    void write_ambiguity_classes(OutputStream o) throws IOException {
+        for (int i = 0; i != td.getOutput().size(); i++) {
             Set<Integer> ac = td.getOutput().get(i);
             Compression.multibyte_write(ac.size(), o);
             for (int it : ac) {
@@ -121,33 +121,33 @@ public class HMM {
         }
     }
 
-   /**
-    * Reads the probabilities (matrices a and b) from the stream
-    * received as a parameter
-    * @param in the input stream
-    */
-    void read_probabilities (InputStream in) throws IOException {
+    /**
+     * Reads the probabilities (matrices a and b) from the stream
+     * received as a parameter
+     * @param in the input stream
+     */
+    void read_probabilities(InputStream in) throws IOException {
         td.read(in);
     }
 
-   /**
-    * Writes the probabilities (matrices a and b) to the stream
-    * received as a parameter
-    * @param out the output stream
-    */
-    void write_probabilities (OutputStream out) throws IOException {
+    /**
+     * Writes the probabilities (matrices a and b) to the stream
+     * received as a parameter
+     * @param out the output stream
+     */
+    void write_probabilities(OutputStream out) throws IOException {
         td.write(out);
     }
 
-   /**
-    * Initializes the transtion (a) and emission (b) probabilities
-    * from an untagged input text by means of Kupiec's method
-    * @param is the input stream with the untagged corpus to process
-    */
-    void init_probabilities_kupiec (InputStream is) throws IOException {
+    /**
+     * Initializes the transtion (a) and emission (b) probabilities
+     * from an untagged input text by means of Kupiec's method
+     * @param is the input stream with the untagged corpus to process
+     */
+    void init_probabilities_kupiec(InputStream is) throws IOException {
         int N = td.getN();
         int M = td.getM();
-        int i, j, k, k1, k2, nw=0;
+        int i, j, k, k1, k2, nw = 0;
         /**
          * M = Number of ambiguity classes
          */
@@ -161,84 +161,91 @@ public class HMM {
 
         Collection output = td.getOutput();
 
-        MorphoStream lexmorfo = new MorphoStream (is, true, td);
+        MorphoStream lexmorfo = new MorphoStream(is, true, td);
         TaggerWord word = new TaggerWord();
 
-        for (k=0; k<M; k++) {
+        for (k = 0; k < M; k++) {
             classes_occurrences[k] = 1;
-            for (k2=0; k2<M; k2++)
+            for (k2 = 0; k2 < M; k2++) {
                 classes_pair_occurrences[k][k2] = 1;
+            }
         }
 
         Set<Integer> tags = new HashSet<Integer>();
         tags.add(eos);
-        k1=output.get(tags);
+        k1 = output.get(tags);
         classes_occurrences[k]++;
 
         word = lexmorfo.get_next_word();
-        while (word!=null) {
-            if (++nw%10000==0)
+        while (word != null) {
+            if (++nw % 10000 == 0) {
                 System.err.println('.');
+            }
 
             tags = word.get_tags();
 
-            if (tags.size()==0) {
+            if (tags.size() == 0) {
                 tags = td.getOpenClass();
             } else if (output.has_not(tags)) {
                 String errors;
                 errors = "A new ambiguity class was found. I cannot continue.\n";
-                errors+= "Word '"+word.get_superficial_form()+"' not found in the dictionary.\n";
-                errors+= "New ambiguity class: "+word.get_string_tags()+"\n";
-                errors+= "Take a look at the dictionary and at the training corpus. Then, retrain.";
+                errors += "Word '" + word.get_superficial_form() + "' not found in the dictionary.\n";
+                errors += "New ambiguity class: " + word.get_string_tags() + "\n";
+                errors += "Take a look at the dictionary and at the training corpus. Then, retrain.";
                 fatal_error(errors);
             }
 
-            k2=output.get(tags);
+            k2 = output.get(tags);
 
             classes_occurrences[k1]++;
             classes_pair_occurrences[k1][k2]++;
-            word=lexmorfo.get_next_word();
-            k1=k2;
+            word = lexmorfo.get_next_word();
+            k1 = k2;
         }
 
         // Estimation of the number of time each tags occurs in the training text
-        for (i=0; i<N; i++) {
+        for (i = 0; i < N; i++) {
             tags_estimate[i] = 0;
-            for (k=0; k<M; k++) {
+            for (k = 0; k < M; k++) {
                 if (output.get(k).contains(i)) {
-                    tags_estimate[i] += classes_occurrences[k]/output.get(k).size();
+                    tags_estimate[i] += classes_occurrences[k] / output.get(k).size();
                 }
             }
         }
 
         //Estimation of the number of times each tag pair occurs
-        for (i=0; i<N; i++)
-            for (j=0; j<N; j++)
+        for (i = 0; i < N; i++) {
+            for (j = 0; j < N; j++) {
                 tags_pair_estimate[i][j] = 0;
+            }
+        }
 
         Set<Integer> tags1, tags2;
-        for (k1=0; k1<M; k1++) {
-            tags1=output.get(k1);
-            for (k2=0; k2<M; k2++) {
+        for (k1 = 0; k1 < M; k1++) {
+            tags1 = output.get(k1);
+            for (k2 = 0; k2 < M; k2++) {
                 tags2 = output.get(k2);
-                double noccurrences = classes_pair_occurrences[k1][k2]/(double) (tags1.size()*tags2.size());
-                for (Integer itag1 : tags1.toArray(new Integer[tags1.size()]))
-                    for (Integer itag2 : tags2.toArray(new Integer[tags2.size()]))
-                        tags_pair_estimate[itag1][itag2]+=noccurrences;
+                double noccurrences = classes_pair_occurrences[k1][k2] / (double) (tags1.size() * tags2.size());
+                for (Integer itag1 : tags1.toArray(new Integer[tags1.size()])) {
+                    for (Integer itag2 : tags2.toArray(new Integer[tags2.size()])) {
+                        tags_pair_estimate[itag1][itag2] += noccurrences;
+                    }
+                }
             }
         }
 
         //a[i][j] estimation
         double sum;
         double[][] tmpA = td.getA();
-        for (i=0; i<N; i++) {
-            sum=0;
-            for (j=0; j<N; j++)
-                sum+=tags_pair_estimate[i][j];
+        for (i = 0; i < N; i++) {
+            sum = 0;
+            for (j = 0; j < N; j++) {
+                sum += tags_pair_estimate[i][j];
+            }
 
-            for (j=0; j<N; j++) {
-                if (sum>0) {
-                    tmpA[i][j] = tags_pair_estimate[i][j]/sum;
+            for (j = 0; j < N; j++) {
+                if (sum > 0) {
+                    tmpA[i][j] = tags_pair_estimate[i][j] / sum;
                 } else {
                     tmpA[i][j] = 0;
                 }
@@ -248,13 +255,14 @@ public class HMM {
 
         //b[i][k] estimation
         double[][] tmpB = td.getB();
-        for (i=0; i<N; i++) {
-            for (k=0; k<M; k++) {
+        for (i = 0; i < N; i++) {
+            for (k = 0; k < M; k++) {
                 if (output.get(k).contains(i)) {
-                    if (tags_estimate[i]>0)
-                        tmpB[i][k] = (classes_occurrences[k]/output.get(k).size())/tags_estimate[i];
-                    else
+                    if (tags_estimate[i] > 0) {
+                        tmpB[i][k] = (classes_occurrences[k] / output.get(k).size()) / tags_estimate[i];
+                    } else {
                         tmpB[i][k] = 0;
+                    }
                 }
             }
         }
@@ -263,14 +271,14 @@ public class HMM {
         System.err.println();
     }
 
-   /**
-    * Initializes the transtion (a) and emission (b) probabilities
-    * from a tagged input text by means of the expected-likelihood
-    * estimate (ELE) method
-    * @param ftagged the input stream with the tagged corpus to process
-    * @param funtagged the same corpus to process but untagged
-    */
-    void init_probabilities_from_tagged_text (InputStream ftagged, InputStream funtagged) throws IOException {
+    /**
+     * Initializes the transtion (a) and emission (b) probabilities
+     * from a tagged input text by means of the expected-likelihood
+     * estimate (ELE) method
+     * @param ftagged the input stream with the tagged corpus to process
+     * @param funtagged the same corpus to process but untagged
+     */
+    void init_probabilities_from_tagged_text(InputStream ftagged, InputStream funtagged) throws IOException {
         int i, j, k, nw = 0;
         int N = td.getN();
         int M = td.getM();
@@ -286,13 +294,18 @@ public class HMM {
 
         Set<Integer> tags = new HashSet<Integer>();
 
-        for (i=0; i<N; i++)
-            for (j=0; j<N; j++)
+        for (i = 0; i < N; i++) {
+            for (j = 0; j < N; j++) {
                 tags_pair[i][j] = 0;
-        for (k=0; k<M; k++)
-            for (i=0; i<N; k++)
-                if (output.get(k).contains(i))
+            }
+        }
+        for (k = 0; k < M; k++) {
+            for (i = 0; i < N; k++) {
+                if (output.get(k).contains(i)) {
                     emission[i][k] = 0;
+                }
+            }
+        }
 
         Integer tag1, tag2;
         tag1 = eos;
@@ -313,129 +326,139 @@ public class HMM {
                 System.exit(1);
             }
 
-            if (++nw%100==0) {
+            if (++nw % 100 == 0) {
                 System.err.print(".");
                 System.err.flush();
             }
 
             tag2 = tag1;
 
-            if (word_untagged==null) {
+            if (word_untagged == null) {
                 System.err.println("word_untagged==NULL");
                 System.exit(1);
             }
 
-            if (word_tagged.get_tags().size()==0) // Unknown word
+            if (word_tagged.get_tags().size() == 0) // Unknown word
+            {
                 tag1 = -1;
-            else if (word_tagged.get_tags().size()>1) // Ambiguous word
+            } else if (word_tagged.get_tags().size() > 1) // Ambiguous word
+            {
                 System.err.println("Error in tagged text. An ambiguous word was found: " + word_tagged.get_superficial_form());
-            else
+            } else {
                 tag1 = word_tagged.get_tags().iterator().next();
+            }
 
-            if ((tag1>=0) && (tag2>=0))
+            if ((tag1 >= 0) && (tag2 >= 0)) {
                 tags_pair[tag2][tag1]++;
+            }
 
-            if (word_untagged.get_tags().size()==0)
+            if (word_untagged.get_tags().size() == 0) {
                 tags = td.getOpenClass();
-            else if (output.has_not(word_untagged.get_tags())) {
+            } else if (output.has_not(word_untagged.get_tags())) {
                 String errors;
                 errors = "A new ambiguity class was found. I cannot continue.\n";
-                errors+= "Word '"+word_untagged.get_superficial_form()+"' not found in the dictionary.\n";
-                errors+= "New ambiguity class: "+word_untagged.get_string_tags()+"\n";
-                errors+= "Take a look at the dictionary, then retrain.";
+                errors += "Word '" + word_untagged.get_superficial_form() + "' not found in the dictionary.\n";
+                errors += "New ambiguity class: " + word_untagged.get_string_tags() + "\n";
+                errors += "Take a look at the dictionary, then retrain.";
                 fatal_error(errors);
             } else {
                 tags = word_untagged.get_tags();
             }
 
             k = output.get(tags);
-            if (tag1>=0)
+            if (tag1 >= 0) {
                 emission[tag1][k]++;
+            }
 
-            word_tagged=stream_tagged.get_next_word();
-            word_untagged=stream_untagged.get_next_word();
+            word_tagged = stream_tagged.get_next_word();
+            word_untagged = stream_untagged.get_next_word();
         }
 
         //Estimate of a[i][j]
-        for (i=0; i<N; i++) {
-            double sum=0;
-            for(j=0; j<N; j++)
-                sum += tags_pair[i][j]+1.0;
-            for(j=0; j<N; j++) {
-                td.setAElement(i, j, (tags_pair[i][j]+1.0)/sum);
+        for (i = 0; i < N; i++) {
+            double sum = 0;
+            for (j = 0; j < N; j++) {
+                sum += tags_pair[i][j] + 1.0;
+            }
+            for (j = 0; j < N; j++) {
+                td.setAElement(i, j, (tags_pair[i][j] + 1.0) / sum);
             }
         }
 
         //Estimate of b[i][k]
-        for(i=0; i<N; i++) {
-        int nclasses_appear=0;
-        double times_appear=0.0;
-        for(k=0; k<M; k++)  {
-            if (output.get(k).contains(i))  {
-                nclasses_appear++;
-                times_appear+=emission[i][k];
+        for (i = 0; i < N; i++) {
+            int nclasses_appear = 0;
+            double times_appear = 0.0;
+            for (k = 0; k < M; k++) {
+                if (output.get(k).contains(i)) {
+                    nclasses_appear++;
+                    times_appear += emission[i][k];
+                }
             }
-        }	
-        for(k=0; k<M; k++)  {
-            if (output.get(k).contains(i))
-                td.setBElement(i, k, (emission[i][k]+(1.0/nclasses_appear))/(times_appear+1.0));
+            for (k = 0; k < M; k++) {
+                if (output.get(k).contains(i)) {
+                    td.setBElement(i, k, (emission[i][k] + (1.0 / nclasses_appear)) / (times_appear + 1.0));
+                }
             }
         }
 
         System.err.println();
     }
 
-   /**
-    * Applies the forbid and enforce rules found in tagger specification.
-    * To do so the transition matrix is modified by introducing null probabilities
-    * in the involved transitions.
-    */
-    void apply_rules () {
+    /**
+     * Applies the forbid and enforce rules found in tagger specification.
+     * To do so the transition matrix is modified by introducing null probabilities
+     * in the involved transitions.
+     */
+    void apply_rules() {
         List<TForbidRule> forbid_rules = td.getForbidRules();
         List<TEnforceAfterRule> enforce_rules = td.getEnforceRules();
         int N = td.getN();
         int i, j, j2;
         boolean found;
 
-        for (i=0; i < forbid_rules.size(); i++) {
+        for (i = 0; i < forbid_rules.size(); i++) {
             td.setAElement(forbid_rules.get(i).tagi, forbid_rules.get(i).tagj, ZERO);
         }
 
-        for (i=0; i < enforce_rules.size(); i++) {
-            for (j=0; j<N; j++) {
+        for (i = 0; i < enforce_rules.size(); i++) {
+            for (j = 0; j < N; j++) {
                 found = false;
-                for (j2=0; j2 < enforce_rules.get(i).tagsj.size(); j2++) {
-                    if (enforce_rules.get(i).tagsj.get(j2)==j) {
+                for (j2 = 0; j2 < enforce_rules.get(i).tagsj.size(); j2++) {
+                    if (enforce_rules.get(i).tagsj.get(j2) == j) {
                         found = true;
                         break;
                     }
                 }
-                if (!found)
+                if (!found) {
                     td.setAElement(enforce_rules.get(i).tagi, j, ZERO);
+                }
             }
         }
 
         // Normalize probabilities
-        for(i=0; i<N; i++) {
-            double sum=0;
-            for(j=0; j<N; j++)
+        for (i = 0; i < N; i++) {
+            double sum = 0;
+            for (j = 0; j < N; j++) {
                 sum += td.getA()[i][j];
-            for(j=0; j<N; j++) {
-                if (sum>0)
-                    td.setAElement(i, j, td.getA()[i][j]/sum);
-                else
+            }
+            for (j = 0; j < N; j++) {
+                if (sum > 0) {
+                    td.setAElement(i, j, td.getA()[i][j] / sum);
+                } else {
                     td.setAElement(i, j, 0);
+                }
             }
         }
     }
 
-   /**
-    * Reads the expanded dictionary received as a parameter and calculates
-    * the set of ambiguity classes that the tagger will manage.
-    * @param fdic the input stream with the expanded dictionary to read
-    */
-    void read_dictionary (InputStream fdic) throws IOException {
-        int i, k, nw=0;
+    /**
+     * Reads the expanded dictionary received as a parameter and calculates
+     * the set of ambiguity classes that the tagger will manage.
+     * @param fdic the input stream with the expanded dictionary to read
+     */
+    void read_dictionary(InputStream fdic) throws IOException {
+        int i, k, nw = 0;
         TaggerWord word = new TaggerWord();
         Set<Integer> tags = new HashSet<Integer>();
         Collection output = td.getOutput();
@@ -445,15 +468,16 @@ public class HMM {
         word = morpho_stream.get_next_word();
 
         while (word != null) {
-            if (++nw%10000==0) {
+            if (++nw % 10000 == 0) {
                 System.err.println(".");
                 System.err.flush();
             }
 
             tags = word.get_tags();
 
-            if (tags.size()>0)
+            if (tags.size() > 0) {
                 k = output.get(tags);
+            }
 
             word = morpho_stream.get_next_word();
         }
@@ -462,13 +486,13 @@ public class HMM {
         // OPEN AMBIGUITY CLASS
         // It contains all tags that are not closed.
         // Unknown words are assigned the open ambiguity class
-        k=output.get(td.getOpenClass());
+        k = output.get(td.getOpenClass());
 
         int N = td.getTagIndex().size();
 
         // Create ambiguity class holding one single tag for each tag.
         // If not created yet
-        for(i = 0; i != N; i++) {
+        for (i = 0; i != N; i++) {
             Set<Integer> amb_class = new HashSet<Integer>();
             amb_class.add(i);
             k = output.get(amb_class);
@@ -486,16 +510,16 @@ public class HMM {
      * @param out Output
      * @throws IOException
      */
-    void filter_ambiguity_classes (InputStream in, OutputStream out) throws IOException {
+    void filter_ambiguity_classes(InputStream in, OutputStream out) throws IOException {
         Set<Set<Integer>> ambiguity_classes = new HashSet<Set<Integer>>();
-        MorphoStream morpho_stream = new MorphoStream (in, true, td);
+        MorphoStream morpho_stream = new MorphoStream(in, true, td);
 
         TaggerWord word = morpho_stream.get_next_word();
 
         while (word != null) {
             Set<Integer> tags = word.get_tags();
 
-            if (tags.size()>0) {
+            if (tags.size() > 0) {
                 if (!ambiguity_classes.contains(tags)) {
                     ambiguity_classes.add(tags);
                     word.outputOriginal(out);
@@ -505,87 +529,88 @@ public class HMM {
         }
     }
 
-    void train (InputStream ftxt) throws IOException {
-          int i, j, k, t, len, nw = 0;
-          TaggerWord word = new TaggerWord();
-          Integer tag;
-          Set<Integer> tags = new HashSet<Integer>();
-          Set<Integer> pretags = new HashSet<Integer>();
-          Map<Integer, Double> gamma = new HashMap<Integer, Double>();
-          Map<Integer, Map<Integer, Double>> alpha = new HashMap<Integer, Map<Integer, Double>>();
-          Map<Integer, Map<Integer, Double>> beta = new HashMap<Integer, Map<Integer, Double>>();
-          Map<Integer, Map<Integer, Double>> xsi = new HashMap<Integer, Map<Integer, Double>>();
-          Map<Integer, Map<Integer, Double>> phi = new HashMap<Integer, Map<Integer, Double>>();
-          double prob, loli;
-          ArrayList<Set<Integer>> pending = new ArrayList<Set<Integer>>();
-          Collection output = td.getOutput();
+    void train(InputStream ftxt) throws IOException {
+        int i, j, k, t, len, nw = 0;
+        TaggerWord word = new TaggerWord();
+        Integer tag;
+        Set<Integer> tags = new HashSet<Integer>();
+        Set<Integer> pretags = new HashSet<Integer>();
+        Map<Integer, Double> gamma = new HashMap<Integer, Double>();
+        Map<Integer, Map<Integer, Double>> alpha = new HashMap<Integer, Map<Integer, Double>>();
+        Map<Integer, Map<Integer, Double>> beta = new HashMap<Integer, Map<Integer, Double>>();
+        Map<Integer, Map<Integer, Double>> xsi = new HashMap<Integer, Map<Integer, Double>>();
+        Map<Integer, Map<Integer, Double>> phi = new HashMap<Integer, Map<Integer, Double>>();
+        double prob, loli;
+        ArrayList<Set<Integer>> pending = new ArrayList<Set<Integer>>();
+        Collection output = td.getOutput();
 
-          int ndesconocidas = 0;
+        int ndesconocidas = 0;
 
-          MorphoStream morpho_stream = new MorphoStream (ftxt, true, td);
+        MorphoStream morpho_stream = new MorphoStream(ftxt, true, td);
 
-          loli = 0;
-          tag = eos;
-          tags.add(tag);
-          pending.add(tags);
+        loli = 0;
+        tag = eos;
+        tags.add(tag);
+        pending.add(tags);
 
-          // alpha[0].clear();
-          // alpha[0][tag] = 1;
-          alpha.put(0, new HashMap<Integer, Double>(tag, 1));
+        // alpha[0].clear();
+        // alpha[0][tag] = 1;
+        alpha.put(0, new HashMap<Integer, Double>(tag, 1));
 
-          word = morpho_stream.get_next_word();
+        word = morpho_stream.get_next_word();
 
-          while (word != null) {
-              if (++nw%10000==0)
-                  System.err.println(".");
+        while (word != null) {
+            if (++nw % 10000 == 0) {
+                System.err.println(".");
+            }
 
-              pretags = pending.get(pending.size()-1);
+            pretags = pending.get(pending.size() - 1);
 
-              tags = word.get_tags();
+            tags = word.get_tags();
 
-              if (tags.size()==0) {
-                  tags = td.getOpenClass();
-                  ndesconocidas++;
-              }
+            if (tags.size() == 0) {
+                tags = td.getOpenClass();
+                ndesconocidas++;
+            }
 
-              if (output.has_not(tags)) {
-                  String errors;
-                  errors = "A new ambiguity class was found. I cannot continue.\n";
-                  errors+= "Word '"+word.get_superficial_form()+"' not found in the dictionary.\n";
-                  errors+= "New ambiguity class: "+word.get_string_tags()+"\n";
-                  errors+= "Take a look at the dictionary, then retrain.";
-                  fatal_error(errors);
-              }
+            if (output.has_not(tags)) {
+                String errors;
+                errors = "A new ambiguity class was found. I cannot continue.\n";
+                errors += "Word '" + word.get_superficial_form() + "' not found in the dictionary.\n";
+                errors += "New ambiguity class: " + word.get_string_tags() + "\n";
+                errors += "Take a look at the dictionary, then retrain.";
+                fatal_error(errors);
+            }
 
-              k = output.get(tags);
-              len = pending.size();
-              // ?
-              alpha.get(len).clear();
+            k = output.get(tags);
+            len = pending.size();
+            // ?
+            alpha.get(len).clear();
 
-              //Forward probabilities
-              for (Integer itag : tags) {
-                  i = itag;
-                  for (Integer jtag : pretags) {
-                      j = jtag;
-                      // FIXME
-                      //alpha[len][i] += alpha[len-1][j]*(td->getA())[j][i]*(td->getB())[i][k];
-                      Double ret = alpha.get(len).get(i) + alpha.get(len-1).get(j) * (td.getA()[j][i]) * (td.getB()[i][k]);
-                      alpha.get(len).put(i, ret);
+            //Forward probabilities
+            for (Integer itag : tags) {
+                i = itag;
+                for (Integer jtag : pretags) {
+                    j = jtag;
+                    // FIXME
+                    //alpha[len][i] += alpha[len-1][j]*(td->getA())[j][i]*(td->getB())[i][k];
+                    Double ret = alpha.get(len).get(i) + alpha.get(len - 1).get(j) * (td.getA()[j][i]) * (td.getB()[i][k]);
+                    alpha.get(len).put(i, ret);
 
-                  }
-                  if (alpha.get(len).get(i)==0) {
-                      // FIXME
-                      //alpha[len][i]=DBL_MIN;
-                      alpha.get(len).put(new Integer(i), new Double(DBL_MIN));
-                  }
+                }
+                if (alpha.get(len).get(i) == 0) {
+                    // FIXME
+                    //alpha[len][i]=DBL_MIN;
+                    alpha.get(len).put(new Integer(i), new Double(DBL_MIN));
+                }
 
-              }
-          }
+            }
+        }
     }
 
-    void tagger (InputStream in, OutputStream out, boolean show_all_good_first) throws IOException {
+    void tagger(InputStream in, OutputStream out, boolean show_all_good_first) throws IOException {
         int i, j, k, nw;
-        TaggerWord word = new TaggerWord();
+        TaggerWord word = null;// new TaggerWord();  // word =null;
         Integer tag;
 
         Set<Integer> tags = new HashSet<Integer>();
@@ -596,8 +621,8 @@ public class HMM {
         int N = td.getN();
         double[][] alpha = new double[2][N];
         IntVector[][] best = new IntVector[2][N];
-        for (int myi=0; myi!=2; myi++) {
-            for (int myj=0; myj!=N; myj++) {
+        for (int myi = 0; myi != 2; myi++) {
+            for (int myj = 0; myj != N; myj++) {
                 best[myi][myj] = new IntVector();
             }
         }
@@ -617,7 +642,6 @@ public class HMM {
         alpha[0][eos] = 1;
 
         word = morpho_stream.get_next_word();
-
         // the main loop reading words until EOF
         while (word != null) {
             wpend.add(word);
@@ -627,80 +651,89 @@ public class HMM {
 
             tags = word.get_tags();
 
-            if (tags.size()==0) // This is an unknown word
+            if (tags.size() == 0) // This is an unknown word
+            {
                 tags = td.getOpenClass();
+            }
 
             if (output.has_not(tags)) {
                 if (debug) {
                     String errors;
-                    	errors = "A new ambiguity class was found. \n";
-                        errors+= "Retraining the tagger is neccessary to take it into account.\n";
-                        errors+= "Word '"+word.get_superficial_form()+"'.\n";
-                        errors+= "New ambiguity class: "+word.get_string_tags()+"\n";
-                        System.err.print(errors);
+                    errors = "A new ambiguity class was found. \n";
+                    errors += "Retraining the tagger is neccessary to take it into account.\n";
+                    errors += "Word '" + word.get_superficial_form() + "'.\n";
+                    errors += "New ambiguity class: " + word.get_string_tags() + "\n";
+                    System.err.print(errors);
                 }
                 tags = find_similar_ambiguity_class(tags);
             }
 
             k = output.get(tags);  //Ambiguity class the word belongs to
 
-            clear_array_double(alpha[nwpend%2], N);
-            clear_array_vector(best[nwpend%2], N);
+            clear_array_double(alpha[nwpend % 2], N);
+            clear_array_vector(best[nwpend % 2], N);
 
             //Induction
             for (Integer itag : tags) {
-                System.err.println("i: "+" "+itag);
+                System.err.println("i: " + " " + itag);
                 i = itag;
                 for (Integer jtag : pretags) {
-                    System.err.println("j: "+" "+jtag);
-                    j=jtag;
-                    x = alpha[1-nwpend%2][j]*td.getA()[j][i]*td.getB()[i][k];
-                    if (alpha[nwpend%2][i]<=x) {
-                        if (nwpend>1) {
-                            if (best[nwpend%2][i]==null)
-                                best[nwpend%2][i] = new IntVector();
-                            if (best[nwpend%2][i].nodes==null)
-                                best[nwpend%2][i].nodes = new ArrayList<Integer>();
-                            if (best[nwpend%2][j]==null)
-                                best[nwpend%2][j] = new IntVector();
-                            if (best[nwpend%2][j].nodes==null)
-                                best[nwpend%2][j].nodes = new ArrayList<Integer>();
+                    System.err.println("j: " + " " + jtag);
+                    j = jtag;
+                    x = alpha[1 - nwpend % 2][j] * td.getA()[j][i] * td.getB()[i][k];
+                    if (alpha[nwpend % 2][i] <= x) {
+                        if (nwpend > 1) {
+                            if (best[nwpend % 2][i] == null) {
+                                best[nwpend % 2][i] = new IntVector();
+                            }
+                            if (best[nwpend % 2][i].nodes == null) {
+                                best[nwpend % 2][i].nodes = new ArrayList<Integer>();
+                            }
+                            if (best[nwpend % 2][j] == null) {
+                                best[nwpend % 2][j] = new IntVector();
+                            }
+                            if (best[nwpend % 2][j].nodes == null) {
+                                best[nwpend % 2][j].nodes = new ArrayList<Integer>();
+                            }
 
-                            best[nwpend%2][i].nodes.addAll(best[1-nwpend%2][j].nodes);
+                            best[nwpend % 2][i].nodes.addAll(best[1 - nwpend % 2][j].nodes);
                         }
-                        System.err.println("best: "+(nwpend%2)+" "+i);
-                        if (best[nwpend%2][i]==null)
-                            best[nwpend%2][i] = new IntVector();
-                        if (best[nwpend%2][i].nodes==null)
-                            best[nwpend%2][i].nodes = new ArrayList<Integer>();
-                        best[nwpend%2][i].nodes.add(i);
-                        alpha[nwpend%2][i] = x;
+                        System.err.println("best: " + (nwpend % 2) + " " + i);
+                        if (best[nwpend % 2][i] == null) {
+                            best[nwpend % 2][i] = new IntVector();
+                        }
+                        if (best[nwpend % 2][i].nodes == null) {
+                            best[nwpend % 2][i].nodes = new ArrayList<Integer>();
+                        }
+                        best[nwpend % 2][i].nodes.add(i);
+                        alpha[nwpend % 2][i] = x;
                     }
                 }
             }
 
             //Backtracking
-            if (tags.size()==1) {
+            if (tags.size() == 1) {
                 tag = tags.iterator().next();
 
-                prob = alpha[nwpend%2][tag];
+                prob = alpha[nwpend % 2][tag];
 
-                if (prob>0)
+                if (prob > 0) {
                     loli -= Math.log(prob);
-                else {
-                    if (debug)
-                        System.err.println("Problem with word '"+word.get_superficial_form()+"' "+word.get_string_tags());
+                } else {
+                    if (debug) {
+                        System.err.println("Problem with word '" + word.get_superficial_form() + "' " + word.get_string_tags());
+                    }
                 }
-                for (int t=0; t<best[nwpend%2][tag].nodes.size(); t++) {
+                for (int t = 0; t < best[nwpend % 2][tag].nodes.size(); t++) {
                     if (show_all_good_first) {
-                        String micad = wpend.get(t).get_all_chosen_tag_first(best[nwpend%2][tag].nodes.get(t), td.getTagIndex().get("TAG_kEOF"));
+                        String micad = wpend.get(t).get_all_chosen_tag_first(best[nwpend % 2][tag].nodes.get(t), td.getTagIndex().get("TAG_kEOF"));
                         out.write(micad.getBytes("UTF-8"));
                     } else {
-                        String micad = wpend.get(t).get_lexical_form(best[nwpend%2][tag].nodes.get(t), td.getTagIndex().get("TAG_kEOF"));
+                        String micad = wpend.get(t).get_lexical_form(best[nwpend % 2][tag].nodes.get(t), td.getTagIndex().get("TAG_kEOF"));
                         out.write(micad.getBytes("UTF-8"));
                     }
                 }
-
+                wpend.clear();
                 alpha[0][tag] = 1;
             }
 
@@ -708,50 +741,56 @@ public class HMM {
                 if (null_flush) {
                     out.write(0x00);
                 }
+
                 out.flush();
                 morpho_stream.setEndOfFile(false);
             }
             word = morpho_stream.get_next_word();
+
         }
 
-        if (tags.size()>1 && debug) {
+        if (tags.size() > 1 && debug) {
             String errors;
             errors = "The text to disambiguate has finished, but there are ambiguous words that have not been disambiguated.\n";
             errors = "This message should never appear. If you are reading this ..... this is very bad news.\n";
-            System.err.print("Error: "+errors);
+            System.err.print("Error: " + errors);
         }
+
     }
 
     void print_A() {
         int i, j;
         System.out.println("TRANSITION MATRIX (A)");
         System.out.println("-------------------------------");
-        for (i=0; i!=td.getN();i++)
-            for (j=0; j!=td.getN(); j++) {
+        for (i = 0; i != td.getN(); i++) {
+            for (j = 0; j != td.getN(); j++) {
                 System.out.print("A[" + i + "][" + j + "] = " + td.getA()[i][j]);
             }
+        }
     }
 
     void print_B() {
         int i, k;
         System.out.println("EMISSION MATRIX (B)");
         System.out.println("-------------------------------");
-        for (i=0; i!=td.getN();i++)
-            for (k=0; k!=td.getM(); k++) {
+        for (i = 0; i != td.getN(); i++) {
+            for (k = 0; k != td.getM(); k++) {
                 Collection output = td.getOutput();
-                if (output.get(k).contains(i))
+                if (output.get(k).contains(i)) {
                     System.out.print("B[" + i + "][" + k + "] = " + td.getB()[i][k]);
+                }
             }
+        }
     }
 
-   /**
-    * Prints the ambiguity classes.
-    */
-    void print_ambiguity_classes () {
+    /**
+     * Prints the ambiguity classes.
+     */
+    void print_ambiguity_classes() {
         Set<Integer> ambiguity_class = new HashSet<Integer>();
         System.out.println("AMBIGUITY CLASSES");
         System.out.println("-------------------------------");
-        for (int i=0; i != td.getM(); i++) {
+        for (int i = 0; i != td.getM(); i++) {
             ambiguity_class = td.getOutput().get(i);
             System.out.print(i + ": ");
             for (Integer it : ambiguity_class) {
@@ -761,22 +800,22 @@ public class HMM {
         }
     }
 
-   /**
-    * This method returns a known ambiguity class that is a subset of
-    * the one received as a parameter. This is useful when a new
-    * ambiguity class is found because of changes in the morphological
-    * dictionary used by the MT system.
-    * @param c set of tags (ambiguity class)
-    * @return a known ambiguity class
-    */
+    /**
+     * This method returns a known ambiguity class that is a subset of
+     * the one received as a parameter. This is useful when a new
+     * ambiguity class is found because of changes in the morphological
+     * dictionary used by the MT system.
+     * @param c set of tags (ambiguity class)
+     * @return a known ambiguity class
+     */
     Set<Integer> find_similar_ambiguity_class(Set<Integer> c) {
         int size_ret = -1;
         Set<Integer> ret = td.getOpenClass();
         boolean skip_class;
         Collection output = td.getOutput();
 
-        for (int k=0; k<td.getM(); k++) {
-            if ((output.get(k).size()>size_ret) && (output.get(k).size()<c.size())) {
+        for (int k = 0; k < td.getM(); k++) {
+            if ((output.get(k).size() > size_ret) && (output.get(k).size() < c.size())) {
                 skip_class = false;
                 for (Integer it : output.get(k)) {
                     if (c.contains(it)) {
@@ -793,18 +832,18 @@ public class HMM {
         return ret;
     }
 
-   /**
-    * Used to set the null_flush flag
-    */
-    void setNullFlush (boolean nf) {
-        null_flush = nf;
+    /**
+     * Used to set the null_flush flag
+     */
+    void setNullFlush(boolean nf) {
+        this.null_flush = nf;
     }
 
-   /**
-    * Helper method - prints an error message and exits
-    * @param err The string to print
-    */
-    private void fatal_error (String err) {
+    /**
+     * Helper method - prints an error message and exits
+     * @param err The string to print
+     */
+    private void fatal_error(String err) {
         System.err.println(err);
         System.exit(1);
     }
@@ -815,12 +854,14 @@ public class HMM {
      * @param l length of the array a
      */
     void clear_array_double(double a[], int l) {
-        for(int i=0; i<l; i++)
-            a[i]=0.0;
+        for (int i = 0; i < l; i++) {
+            a[i] = 0.0;
+        }
     }
 
     void clear_array_vector(IntVector a[], int l) {
-        for(int i=0; i<l; i++)
-            a[i]=null;
+        for (int i = 0; i < l; i++) {
+            a[i] = null;
+        }
     }
 }
