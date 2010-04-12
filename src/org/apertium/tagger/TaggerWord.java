@@ -318,7 +318,31 @@ public class TaggerWord {
 
     public void discardOnAmbiguity (String tags) {
         if (isAmbiguous()) {
-            // TODO
+            Iterator<Map.Entry<Integer, String>> it = lexical_forms.entrySet().iterator();
+
+            Set<Integer> newsettag = new HashSet<Integer>();
+            while (it.hasNext()) {
+                Map.Entry<Integer, String> cur = it.next();
+
+                if (match(cur.getValue(),tags)) {
+                    lexical_forms.remove(cur.getKey());
+                    // FIXME
+                    continue;
+                } else {
+                    newsettag.add(cur.getKey());
+                }
+
+                if (lexical_forms.size()==1) {
+                    // FIXME
+                    //newsettag.insert(lexical_forms.begin()->first);
+                    break;
+                }
+                //it++;
+            }
+
+            if (tags.length() != newsettag.size()) {
+                this.tags = newsettag;
+            }
         }
     }
 }
