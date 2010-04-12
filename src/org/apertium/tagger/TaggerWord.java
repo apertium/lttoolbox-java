@@ -105,7 +105,7 @@ public class TaggerWord {
             }
 
             patterns.put(pattern, new ApertiumRE(regexp));
-            return patterns.get(pattern).match(s) != "";
+            return "".equals(patterns.get(pattern).match(s));
 
         } else {
             return pattern.matches(s);
