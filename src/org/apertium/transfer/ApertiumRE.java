@@ -30,7 +30,7 @@ public class ApertiumRE {
    }
 
 
-  String match(String source) {
+    public String match(String source) {
     Matcher m = re.matcher(source);
     if (!m.find()) return "";
 

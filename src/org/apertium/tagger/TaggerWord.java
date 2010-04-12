@@ -97,37 +97,19 @@ public class TaggerWord {
 
     public boolean match (String s, String pattern) {
         //Map<String, ApertiumRE>.Iterator it = patterns.find(pattern);
-        if (patterns.containsKey(pattern)) {
-            String regexp = "";
-            // FIXME
-            /*
-    while(true)
-    {
-      size_t pos = utfpattern.find("<*>");
-      if(pos == string::npos)
-      {
-        break;
-      }
-*/
-            // The above is the same as...
-            if(!pattern.contains("<*>") {
-                break;
+        if (!patterns.containsKey(pattern)) {
+            String regexp = pattern;
+
+            if(regexp.contains("<*>")) {
+                regexp.replaceAll("<*>", "(<[^>]+>)+");
             }
 
-            // This is the part to fix: how to escape the regex?
-            /*
-      utfpattern.replace(pos, 3, "(<[^>]+>)+");
-    }
-    patterns[pattern].compile(utfpattern);
-    return patterns[pattern].match(utfs) != "";
+            patterns.put(pattern, new ApertiumRE(regexp));
+            return patterns.get(pattern).match(s) != "";
 
-             */
         } else {
             return pattern.matches(s);
         }
-
-        
-        return false;
     }
 
    /**
