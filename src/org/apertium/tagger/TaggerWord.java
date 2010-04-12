@@ -108,6 +108,14 @@ public class TaggerWord {
       {
         break;
       }
+*/
+            // The above is the same as...
+            if(!pattern.contains("<*>") {
+                break;
+            }
+
+            // This is the part to fix: how to escape the regex?
+            /*
       utfpattern.replace(pos, 3, "(<[^>]+>)+");
     }
     patterns[pattern].compile(utfpattern);
