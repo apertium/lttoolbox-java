@@ -89,7 +89,7 @@ public class HMM {
     void read_ambiguity_classes(InputStream in) throws IOException {
         while (true) {
             int ntags = Compression.multibyte_read(in);
-            if (ntags == -1) {
+            if (ntags == -1) { // EOF
                 break;
             }
 
