@@ -67,13 +67,11 @@ add after last compound word: @assert:right==yes@
  * 02111-1307, USA.
  */
 
-import java.io.StringWriter;
 import org.apertium.lttoolbox.*;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.IOException;
 import java.io.Writer;
-import java.text.Collator;
 import java.util.ArrayDeque;
 import java.util.HashSet;
 import java.util.Map;
@@ -81,26 +79,36 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 public class FSTProcessor {
 
 
-    private boolean isLastBlankTM;
+  private boolean isLastBlankTM;
 
-  public void initDecompositionSymbols(boolean removeSymbolsFromOutput) {
-    if (alphabet.isSymbolDefined("<compound-only-L>")) {
-      compoundOnlyLSymbol=alphabet.cast("<compound-only-L>");
-    if (removeSymbolsFromOutput)
-      alphabet.setSymbol(compoundOnlyLSymbol, "");
+  private boolean showControlSymbols = false;
+
+  private void initDecompositionSymbols() {
+    if ((compoundOnlyLSymbol=alphabet.cast("<:co:only-L>")) == 0)
+    if ((compoundOnlyLSymbol=alphabet.cast("<:compound:only-L>")) == 0)
+    if ((compoundOnlyLSymbol=alphabet.cast("<@co:only-L>")) == 0)
+    if ((compoundOnlyLSymbol=alphabet.cast("<@compound:only-L>")) == 0)
+    if ((compoundOnlyLSymbol=alphabet.cast("<compound-only-L>")) == 0) {
+      System.err.println("Warning: Decomposition symbol <:compound:only-L> not found");
+    } else {
+      if (!showControlSymbols)
+        alphabet.setSymbol(compoundOnlyLSymbol, "");
     }
 
-    if (alphabet.isSymbolDefined("<compound-R>")) {
-      compoundRSymbol=alphabet.cast("<compound-R>");
-      if (removeSymbolsFromOutput) {
+    if ((compoundRSymbol=alphabet.cast("<:co:R>")) == 0)
+    if ((compoundRSymbol=alphabet.cast("<:compound:R>")) == 0)
+    if ((compoundRSymbol=alphabet.cast("<@co:R>")) == 0)
+    if ((compoundRSymbol=alphabet.cast("<@compound:R>")) == 0)
+    if ((compoundRSymbol=alphabet.cast("<compound-R>")) == 0) {
+      System.err.println("Warning: Decomposition symbol <:compound:R> not found");
+    } else {
+      if (!showControlSymbols)
         alphabet.setSymbol(compoundRSymbol, "");
-      }
     }
   }
 
@@ -109,6 +117,13 @@ public class FSTProcessor {
    */
   public void setDictionaryCase(boolean dictionaryCase) {
     this.dictionaryCase=dictionaryCase;
+  }
+
+  /**
+   * @param showControlSymbols the showHiddenSymbols to set
+   */
+  public void setShowControlSymbols(boolean showControlSymbols) {
+    this.showControlSymbols=showControlSymbols;
   }
 
 
@@ -507,7 +522,7 @@ public class FSTProcessor {
         root.initTransitions(transducers.size());
         for (String name : transducers.keySet()) {
             // exclude compounding secitons from normal processing
-            if (name.contains("@compound")) continue;
+            //if (name.contains("@compound")) continue;
             root.addTransition(0, 0, transducers.get(name).getInitial());
         }
         //System.out.println("plp");
@@ -645,11 +660,9 @@ public class FSTProcessor {
         all_finals.addAll(inconditional);
         all_finals.addAll(postblank);
         all_finals.addAll(preblank);
-        if (do_flagMatch) initFlagMatch(true);
+        if (do_flagMatch) initFlagMatch();
 
-        if (!do_decomposition) {
-          // Ugly hack: Remove decomp symbols from output
-        }
+        if (!showControlSymbols) hideControlSymbols();
     }
 
 
@@ -657,10 +670,10 @@ public class FSTProcessor {
     int compoundOnlyLSymbol = 0;
     int compoundRSymbol = 0;
 
-    public void initDecomposition(boolean removeSymbolsFromOutput) {
+    public void initDecomposition() {
         do_decomposition = true;
         initAnalysis();
-        initDecompositionSymbols(removeSymbolsFromOutput);
+        initDecompositionSymbols();
 
         /*
         Node root = new Node();
@@ -679,13 +692,29 @@ public class FSTProcessor {
 
          */
         //System.err.println("initial_compounding_state = " + initial_compounding_state.toString());
+        if (!showControlSymbols) hideControlSymbols();
     }
+
+
+    private void hideControlSymbols() {
+        for (String symbol : alphabet.getFlagMatchSymbols()) {
+          // Find symbols starting with "<@"
+          char start = symbol.charAt(1);
+          if (start == '@' || start == ':') {
+            int symboli = alphabet.cast(symbol);
+            alphabet.setSymbol(symboli, "");
+            //System.err.println("Skjuler symbol = " + symbol);
+          }
+        }
+    }
+
+
 
     private boolean do_flagMatch = false;
     int[] flagMatch_symbolToVarVal;
     int flagMatch_no_of_flags = -1;
 
-    public void initFlagMatch(boolean removeSymbolsFromOutput) {
+    private void initFlagMatch() {
         do_flagMatch = true;
         if (flagMatch_symbolToVarVal!=null) {
           return; // already initialized
@@ -710,7 +739,7 @@ public class FSTProcessor {
             continue;
           }
           int symboli = alphabet.cast(symbol);
-          if (removeSymbolsFromOutput) alphabet.setSymbol(symboli, "");
+          if (!showControlSymbols) alphabet.setSymbol(symboli, "");
 
           // Instead of remembering strings
           int flagIndex = flagList.indexOf(varval[0]);
@@ -778,6 +807,7 @@ public class FSTProcessor {
         for (TransExe t : transducers.values()) {
             all_finals.addAll(t.getFinals());
         }
+        if (!showControlSymbols) hideControlSymbols();
     }
 
     public void initGeneration() {
@@ -786,7 +816,8 @@ public class FSTProcessor {
         for (String first : transducers.keySet()) {
             all_finals.addAll(transducers.get(first).getFinals());
         }
-        if (do_flagMatch) initFlagMatch(true);
+        if (do_flagMatch) initFlagMatch();
+        if (!showControlSymbols) hideControlSymbols();
     }
 
     public void initPostgeneration() {

@@ -71,7 +71,10 @@ public class LTProc {
             "  -w:   use dictionary case instead of surface case\n" +
             "  -v:   version\n" +
             "  -D:   debug; print diagnostics to stderr\n" +
+            "  -S:   show hidden control symbols (for flagmatch and compounding)\n" +
             "  -h:   show this help\n");
+
+        //new Exception().printStackTrace();
         System.exit(-1);
 
     }
@@ -94,7 +97,7 @@ public class LTProc {
         int cmd = 0;
         FSTProcessor fstp = new FSTProcessor();
 
-        MyGetOpt getopt = new MyGetOpt(argv, "Dacdefgndpstwzvh");
+        MyGetOpt getopt = new MyGetOpt(argv, "DSacdefgndpstwzvh");
 
         int optind = -1;
         int counter = 0;
@@ -113,6 +116,10 @@ public class LTProc {
 
                     case 'f':
                         fstp.setFlagMatchMode(true);
+                        break;
+
+                    case 'S':
+                        fstp.setShowControlSymbols(true);
                         break;
 
                     case 'D':
@@ -151,6 +158,7 @@ public class LTProc {
 
                     case 'h':
                     default:
+                        System.err.println("Unregognized parameter: " + c);
                         endProgram("LTProc");
                         break;
                 }
@@ -257,7 +265,7 @@ public class LTProc {
                     break;
 
                 case 'e':
-                    fstp.initDecomposition(true);
+                    fstp.initDecomposition();
                     checkValidity(fstp);
                     fstp.analysis(input, output);
                     break;
@@ -265,7 +273,6 @@ public class LTProc {
                 case 'a':
                 default:
                     fstp.initAnalysis();
-                    fstp.initDecompositionSymbols(true); // needed to hide them from output
                     checkValidity(fstp);
                     fstp.analysis(input, output);
                     break;
@@ -294,11 +301,17 @@ public class LTProc {
     }
 
     public static InputStream fopen(String filename) throws FileNotFoundException {
-        String encoding = "UTF-8";
-        if (System.getProperties().containsKey("file.encoding")) {
-            encoding = System.getProperty("file.encoding");
-        }
-        return new BufferedInputStream(new FileInputStream(filename));
+      File f = new File(filename);
+      if (!f.canRead()) {
+        System.err.println("Could not open file for reading: " + filename);
+        return null;
+      }
+      /*
+      String encoding = "UTF-8";
+      if (System.getProperties().containsKey("file.encoding")) {
+          encoding = System.getProperty("file.encoding");
+      }*/
+      return new BufferedInputStream(new FileInputStream(f));
     }
 
     public static Reader openReader(String filename) throws FileNotFoundException {

@@ -14,12 +14,37 @@ import junit.framework.TestCase;
 import org.apertium.lttoolbox.process.FSTProcessor;
 import org.apertium.lttoolbox.process.State;
 import static org.junit.Assert.*;
+import static org.apertium.lttoolbox.TestTools.*;
 
 /**
  *
  * @author Jacob Nordfalk
  */
 public class CompoundingTest extends TestCase {
+
+
+  public void testCLIJava() throws Exception {
+    String outFile = "/tmp/testCLIJava-eo-output.txt.txt";
+    LTProc.main(new String[] { "-e", "testdata/compounding/eo-en.automorf.bin", "testdata/compounding/eo-input.txt", outFile});
+    assertEquals("Difference", "", exec("diff testdata/compounding/eo-output.txt "+outFile));
+    rm(outFile);
+  }
+
+  public void testCLIJava_show_symbols() throws Exception {
+    String outFile = "/tmp/testCLIJava-eo-output-show-symbols.txt";
+    LTProc.main(new String[] { "-eS", "testdata/compounding/eo-en.automorf.bin", "testdata/compounding/eo-input.txt", outFile});
+    assertEquals("Difference", "", exec("diff testdata/compounding/eo-output-show-symbols.txt "+outFile));
+    rm(outFile);
+  }
+
+/*
+  public void testLTCompCpp() throws Exception {
+    Runtime.getRuntime().exec("lt-proc lr testdata/test.dix tmp/testC++.bin").waitFor();
+    int compareExitValue = Runtime.getRuntime().exec("cmp tmp/testC++.bin testdata/correct-test.bin").waitFor();
+    assertEquals("files must be binary equal", 0, compareExitValue);
+  }
+*/
+
 
 /*
   public void testCompound2_Nnnb() throws IOException {
@@ -44,7 +69,7 @@ public class CompoundingTest extends TestCase {
   public void testCompound2_Esperanto() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
       fstp.load(new BufferedInputStream(new FileInputStream("testdata/compounding/eo-en.automorf.bin")));
-      fstp.initDecomposition(true);
+      fstp.initDecomposition();
 
       //State.DEBUG = true;
   // lt-comp lr apertium-eo-en.eo.dix eo-en.automorf.bin
@@ -75,8 +100,8 @@ public class CompoundingTest extends TestCase {
       FSTProcessor fstp = new FSTProcessor();
       fstp.load(new BufferedInputStream(new FileInputStream("testdata/compounding/eo-en.automorf.bin")));
       fstp.initAnalysis();
-      fstp.alphabet.setSymbol(fstp.alphabet.cast("<compound-only-L>"), "");
-      fstp.alphabet.setSymbol(fstp.alphabet.cast("<compound-R>"), "");
+      fstp.alphabet.setSymbol(fstp.alphabet.cast("<:compound:only-L>"), "");
+      fstp.alphabet.setSymbol(fstp.alphabet.cast("<:compound:R>"), "");
 
       String res = fstp.compoundAnalysisOld("domodefendo");
       System.err.println("res = " + res.replaceAll("/", "\n/"));
