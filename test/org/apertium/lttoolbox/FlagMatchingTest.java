@@ -60,8 +60,8 @@ public class FlagMatchingTest extends TestCase {
       fstp.load(new BufferedInputStream(new FileInputStream("testdata/flag_matching/persian-automorf2.bin")));
       fstp.DEBUG = State.DEBUG = false;
       fstp.alphabet.debug_remember_removed_symbols();
+      fstp.setFlagMatchMode(true);
       fstp.initAnalysis();
-      fstp.initFlagMatch(true);
 
       for (String s : correctPairs) {
         String[] p = s.split(":");
@@ -80,8 +80,8 @@ public class FlagMatchingTest extends TestCase {
       fstp.load(new BufferedInputStream(new FileInputStream("testdata/flag_matching/persian-autogen2.bin")));
       fstp.DEBUG = State.DEBUG = false;
       fstp.alphabet.debug_remember_removed_symbols();
+      fstp.setFlagMatchMode(true);
       fstp.initGeneration();
-      fstp.initFlagMatch(true);
 
       for (String s : correctPairs) {
         String[] p = s.split(":");
@@ -100,8 +100,8 @@ public class FlagMatchingTest extends TestCase {
       fstp.load(new BufferedInputStream(new FileInputStream("testdata/flag_matching/persian-automorf.bin")));
       fstp.DEBUG = false;
       fstp.alphabet.debug_remember_removed_symbols();
+      fstp.setFlagMatchMode(true);
       fstp.initAnalysis();
-      fstp.initFlagMatch(true);
 
       String result = checkAnalysis(fstp, "\nbikhodam bikhodaš mikhoda khodan\n");
       fstp.DEBUG = State.DEBUG =false;

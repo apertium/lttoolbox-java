@@ -466,7 +466,7 @@ public class State {
 
       Integer forbiddenSymbolInteger = forbiddenSymbol;
 
-      // remove states with more than minimum number of compounds
+      // remove states containing a forbidden symbol
       for (int i = state.size()-1; i>=0; i--) {
         List<Integer> seq = state.get(i).sequence;
         // TODO optimize: search from end,
@@ -477,8 +477,8 @@ public class State {
     }
 
 
-    void pruneCompounds(int requiredSymbol, int separationSymbol) {
-      int minNoOfCompoundElements = Integer.MAX_VALUE-1;
+    void pruneCompounds(int requiredSymbol, int separationSymbol, int compound_max_elements) {
+      int minNoOfCompoundElements = compound_max_elements; //Integer.MAX_VALUE-1;
       int[] noOfCompoundElements = new int[state.size()];
       for (int i = 0;  i<state.size(); i++) {
           List<Integer> seq = state.get(i).sequence;

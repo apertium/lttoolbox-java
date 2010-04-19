@@ -669,6 +669,7 @@ public class FSTProcessor {
     private boolean do_decomposition = false;
     int compoundOnlyLSymbol = 0;
     int compoundRSymbol = 0;
+    int compound_max_elements = 4; //Integer.MAX_VALUE-1;// hard coded for now, but there might come a switch one day
 
     public void initDecomposition() {
         do_decomposition = true;
@@ -714,7 +715,7 @@ public class FSTProcessor {
     int[] flagMatch_symbolToVarVal;
     int flagMatch_no_of_flags = -1;
 
-    private void initFlagMatch() {
+    public void initFlagMatch() {
         do_flagMatch = true;
         if (flagMatch_symbolToVarVal!=null) {
           return; // already initialized
@@ -1125,7 +1126,7 @@ public class FSTProcessor {
                 return null;
             }
         }
-        current_state.pruneCompounds(compoundRSymbol, '+');
+        current_state.pruneCompounds(compoundRSymbol, '+', compound_max_elements);
 
         String result=current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
         if (DEBUG) System.err.println("rrresult = "+result.replaceAll("/", "/\n"));
