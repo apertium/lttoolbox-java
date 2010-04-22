@@ -21,98 +21,34 @@ package org.apertium.lttoolbox.process;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Pool of T objects
- * Created by Nic Cottrell, Jan 27, 2009 5:19:23 PM
+ * Re-written by Jacob Nordfalk Apr 19 2010
  */
 public class Pool<T> {
+
+  public interface ObjectFactory<E> {
+    E next();
+    void reset(E e);
+ }
 
     /**
      * Free pointers to objects
      */
-    List<T> free;
-    
-    /**
-     * Currently created objects
-     */
-    List<T> created;
+    ArrayList<T> free  = new ArrayList<T>(200);    
 
-    /**
-     * copy method
-     * @param p other pool object
-     */
-    void copy(Pool p) {
-        created = p.created;
-        for (T t : created) {
-            free.add(t);
-        }
-    }
+    ObjectFactory<T> objectfactory;
 
-    /**
-     * destroy method
-     */
-    void destroy() {
-    // do nothing
-    }
-
-    /**
-     * Allocate a pool of nelems size
-     * @param nelems initial size of the pool
-     */
-    void init(int nelems) {
-        created = new ArrayList<T>();
-        free = new ArrayList<T>();
-        // T tmp;
-        for (int i = 0; i != nelems; i++) {
-            created.add(0, null);
-            free.add(0, ((created.get(0))));
-        }
-    }
-
-    /**
-     * Allocate a pool of nelems size with objects equal to 'object'
-     * @param nelems initial size of the pool
-     * @param object initial value of the objects in the pool
-     */
-    void init(int nelems, T object) {
-        created.clear();
-        free.clear();
-        for (int i = 0; i != nelems; i++) {
-            created.add(0, object);
-            free.add(0, ((created.get(0))));
-        }
-    }
-
-    /**
-     * Constructor
-     */
-    Pool() {
-        init(1);
-    }
 
     /**
      * Parametrized constructor
      * @param nelems initial size of the pool
-     * @param object initial value of the objects in the pool
+     * @param objectfactory factory for creating additional objects in the pool
      */
-    Pool(int nelems, T object) {
-        init(nelems, object);
-    }
-
-    /**
-     * Parametrized constructor
-     * @param nelems initial size of the pool
-     */
-    Pool(int nelems) {
-        init(nelems);
-    }
-
-    /**
-     * Copy constructor
-     */
-    Pool(Pool p) {
-        copy(p);
+    Pool(ObjectFactory<T> objectfactory) {
+        this.objectfactory = objectfactory;
     }
 
     /**
@@ -120,15 +56,24 @@ public class Pool<T> {
      * @return pointer to the object
      */
     T get() {
-        if (free.size() != 0) {
-            T result = (free.get(0));
-            free.remove(free.get(0));
-            return result;
+      /*
+      free.clear();
+      T tmp = objectfactory.next();
+      return tmp;*/
+
+      int size = free.size();
+        if (size != 0) {
+            T item = free.remove(size-1);
+
+            //System.err.println("item = " + item);
+            objectfactory.reset(item);
+
+            //System.err.println("item2 = " + item);
+            return item;
         } else {
-            T tmp; // = new T();
-            created.add(0, null);
-            return created.get(0);
-        }
+            T tmp = objectfactory.next();
+            return tmp;
+        }/**/
     }
 
     /**
@@ -136,6 +81,7 @@ public class Pool<T> {
      * @param item the no more needed instance of the object
      */
     void release(T item) {
-        free.add(0, item);
+        free.add(item);
+        objectfactory.reset(item);
     }
 }

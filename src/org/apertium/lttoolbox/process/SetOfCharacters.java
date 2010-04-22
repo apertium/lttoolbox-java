@@ -19,10 +19,10 @@ public final class SetOfCharacters {
   HashSet<Character> otherChars = new HashSet<Character>();
 
   // Probe
-  public static int max_encountered = 0;
+  //public static int max_encountered = 0;
 
   final void add(char c) {
-    max_encountered = Math.max(max_encountered, c);
+    //max_encountered = Math.max(max_encountered, c);
     if (c<LIMIT) set[c]=true;
     else otherChars.add(c);
   }
@@ -35,7 +35,7 @@ public final class SetOfCharacters {
   final boolean contains(char c) {
     if (c== ((char)-1)) return false; // EOF
     if (c<LIMIT) return set[c];
-    if (c>max_encountered) return false;
+    //if (c>max_encountered) return false;
     return otherChars.contains(c);
   }
 }

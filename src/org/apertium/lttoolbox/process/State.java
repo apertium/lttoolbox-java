@@ -22,7 +22,6 @@ import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Set;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 
 /**
@@ -35,27 +34,36 @@ class TNodeState {
     Node where;
 
     /** The list of output symbols we produced while getting to this node */
-    List<Integer> sequence;
+    ArrayList<Integer> sequence;
 
 
     /** caseWasChanged means input was lowercased - thus we should consider uppercasing the output symbols  before outputting */
     boolean caseWasChanged;
 
-    public TNodeState(Node where, List<Integer> sequence, boolean caseWasChanged) {
+
+    public TNodeState(Node where, ArrayList<Integer> sequence, boolean caseWasChanged) {
         this.where = where;
         this.sequence = sequence;
         this.caseWasChanged = caseWasChanged;
     }
 
+    public TNodeState() {
+    }
+
+
     @Override
     public String toString() {
        if (Alphabet.debuggingInstance==null) return "Alphabet.debuggingInstance==null";
-        StringBuilder sb = new StringBuilder(sequence.size()*2);
+
+        StringBuilder sb = new StringBuilder(sequence==null?20 : 20+sequence.size()*2);
         if (caseWasChanged) sb.append("caseWasChanged;");
-        for (int i : sequence) sb.append(Alphabet.debuggingInstance.getSymbol(i, caseWasChanged));
+        if (sequence!=null) for (int i : sequence) sb.append(Alphabet.debuggingInstance.getSymbol(i, caseWasChanged));
         sb.append('→');
-        for (int i : where.transitions.keySet()) sb.append(Alphabet.debuggingInstance.getSymbol(i));
-        return sb.toString()+"@"+Integer.toString(where.hashCode(), Character.MAX_RADIX);
+        if (where!=null) {
+          for (int i : where.transitions.keySet()) sb.append(Alphabet.debuggingInstance.getSymbol(i));
+          return sb.toString()+"@"+Integer.toString(where.hashCode(), Character.MAX_RADIX);
+        }
+        return sb.toString()+"@null";
     }
 }
 
@@ -65,19 +73,73 @@ class TNodeState {
  */
 public class State {
 
+  /*
+  static int oprettet=0;
+  static int genbrugt=0;
+  public static void printStatistik() {
+    System.err.println("\ni nodeStatePool = " + nodeStatePool.size());
+    System.err.println("oprettet = " + oprettet);
+    System.err.println("genbrugt = " + genbrugt);
+  }*/
 
-    ArrayList<TNodeState> state = new ArrayList<TNodeState>();
+
+    ArrayList<TNodeState> state = new ArrayList<TNodeState>(50);
     
     /**
-     * Pool of characters ArrayLists, for efficiency (static class)
+     * Pool of TNodeState (with their sequence list), for efficiency
      */
-    //JACOBstatic Pool<List<Integer>> pool;
+    private static ArrayList<TNodeState> nodeStatePool = new ArrayList<TNodeState>(50);
+    private TNodeState nodeStatePool_get() {
+      int size = nodeStatePool.size();
+      if (size != 0) {
+        TNodeState tn = nodeStatePool.remove(size-1);
+        tn.sequence.clear();
+        //genbrugt++;
+        return tn;
+      } else {
+        TNodeState tn = new TNodeState();
+        //oprettet++;
+        tn.sequence = new ArrayList<Integer>(50);
+        return tn;
+      }
+    }
+
+    private void nodeStatePool_release(TNodeState state_i) {
+      nodeStatePool.add(state_i);
+    }
+    /*
+    Pool<TNodeState> nodeStatePool = new Pool<TNodeState>(new ObjectFactory<TNodeState>() {
+      @Override public TNodeState next() {
+        TNodeState tn = new TNodeState();
+        tn.sequence = new ArrayList<Integer>(50);
+        return tn;
+      }
+      @Override public void reset(TNodeState e) {
+        e.sequence.clear();
+        e.caseWasChanged = false;
+        e.where=null; }
+    });
+    */
 
      public static boolean DEBUG=false;
 
       State copy(State other_state) {
-        this.state.clear();
-        this.state.addAll(other_state.state);
+
+        //System.err.println("this.state = " + this.state);
+        for (int i = state.size(); i > 0; ) {
+          nodeStatePool_release(state.get(--i));
+        }
+        state.clear();
+
+        ArrayList<TNodeState> other_states = other_state.state;
+        for (int i = 0,  limit = other_states.size(); i != limit; i++) {
+          TNodeState tn = other_states.get(i);
+          TNodeState copy = nodeStatePool_get();
+          copy.caseWasChanged = tn.caseWasChanged;
+          copy.sequence.addAll(tn.sequence);
+          copy.where = tn.where;
+          this.state.add(copy);
+        }
         return this;
       }
 
@@ -85,47 +147,6 @@ public class State {
         return new State().copy(this);
       }
 
-/*
-  public void makeInputSymbolsEpsilonsymbols(final Integer[] symbolList) {
-      final HashSet<Node> visited = new HashSet<Node>();
-
-      final class recur {
-        public final void rec(TNodeState state_i) {
-          for (Integer input : symbolList) {
-                {
-                    Transition eps = state_i.where.transitions.get(0);
-                    Transition it = state_i.where.transitions.get(input);
-                    if (it != null) {
-                      if (DEBUG) System.err.println("makeEpsilon state_i = " + state_i + "   "+Alphabet.debuggingInstance.getSymbol(input));
-                      it.next = eps;
-                      state_i.where.transitions.put(input, null);
-                      state_i.where.transitions.put(0, it);
-                    }
-                }
-                for (Transition it : state_i.where.transitions.values())
-                while (it != null) {
-                  boolean recurse = visited.add(it.dest);
-                  if (recurse) {
-                    rec(new TNodeState(it.dest, state_i.sequence, false));
-                  }
-                  it = it.next;
-                }
-            }
-        }
-      }
-
-      State statex = this.copy();
-      for (TNodeState state_i : statex.state)
-        new recur().rec(state_i);
-  }
-*/
-
-    /**
-     * Initialisation method for the static attribute
-     */
-    void poolInit() {
-        //JACOB pool = new Pool<List<Integer>>();
-    }
 
     /**
      * Number of alive transductions
@@ -141,9 +162,10 @@ public class State {
      */
     public void init(Node initial) {
         state.clear();
-        TNodeState tn = new TNodeState(initial, new ArrayList<Integer>(), false);
-        state.add(tn); // JACOBpool.get()
-        tn.sequence = new ArrayList<Integer>();
+        TNodeState tn = nodeStatePool_get();
+        tn.where = initial;
+        tn.caseWasChanged = false;
+        state.add(tn); 
         epsilonClosure();
     }
 
@@ -152,13 +174,21 @@ public class State {
   }
 
     /**
+     * Reference to last discarded list of nodestates
+     */
+    private ArrayList<TNodeState> reusable_state =  new ArrayList<TNodeState>(50);
+
+
+    /**
      * Make a transition, version for lowercase letters and symbols
      * @param input the input symbol
      */
     private void apply(int input) {
-        ArrayList<TNodeState> new_state = new ArrayList<TNodeState>();
+        ArrayList<TNodeState> new_state =  reusable_state;
+        new_state.clear();
 
         if (input==0) { // in transfer it happens an unknown symbol is translated to 0. Avoid interpreting that as an epsilon.
+          reusable_state = state;
           state = new_state;
           return;
         }
@@ -167,48 +197,59 @@ public class State {
             TNodeState state_i = state.get(i);
             Transition it = state_i.where.transitions.get(input);
             while (it != null) {
-              ArrayList<Integer> new_sequence = new ArrayList<Integer>(state_i.sequence.size()+1); //XXX no pool for now: new_v = pool.get();
-              new_sequence.addAll(state_i.sequence);
-              new_sequence.add(it.output_symbol);
-              new_state.add(new TNodeState(it.dest, new_sequence, state_i.caseWasChanged));
+              TNodeState tn = nodeStatePool_get();
+              tn.where = it.dest;
+              tn.caseWasChanged = state_i.caseWasChanged;
+              tn.sequence.addAll(state_i.sequence);
+              tn.sequence.add(it.output_symbol);
+              new_state.add(tn);
               it = it.next;
-            } //XXX no pool now: pool.release(state.get(i).sequence);
+            }
+            nodeStatePool_release(state_i);
         }
+        reusable_state = state;
         state = new_state;
     }
 
     /**
      * Make a transition, version for lowercase and uppercase letters
      * @param input the input symbol (which is actually always uppercase)
-     * @param lowerCasedInput the alternative input symbol (actually its always Character.toLowerCase(input))
+     * @param lowerCasedInput the alternative input symbol (actually its always Alphabet.toLowerCase(input))
      */
     private void apply(int input, int lowerCasedInput) {
 
-        ArrayList<TNodeState> new_state = new ArrayList<TNodeState>();
+        ArrayList<TNodeState> new_state =  reusable_state;
+        new_state.clear();
 
         for (int i = 0,  limit = state.size(); i != limit; i++) {
             TNodeState state_i = state.get(i);
             Transition it = state_i.where.transitions.get(input);
             while (it != null) {
-              ArrayList<Integer> new_sequence = new ArrayList<Integer>(state_i.sequence.size()+1); //XXX no pool for now: new_v = pool.get();
-              new_sequence.addAll(state_i.sequence);
-              new_sequence.add(it.output_symbol);
-              new_state.add(new TNodeState(it.dest, new_sequence, state_i.caseWasChanged));
+              TNodeState tn = nodeStatePool_get();
+              tn.where = it.dest;
+              tn.caseWasChanged = state_i.caseWasChanged;
+              tn.sequence.addAll(state_i.sequence);
+              tn.sequence.add(it.output_symbol);
+              new_state.add(tn);
               it = it.next;
             } //XXX no pool now: pool.release(state.get(i).sequence);
 
             // try also apply lowerCasedInput
             it = state_i.where.transitions.get(lowerCasedInput);
             while (it != null) {
-              ArrayList<Integer> new_sequence = new ArrayList<Integer>(state_i.sequence.size()+1); //XXX no pool for now: new_v = pool.get();
-              new_sequence.addAll(state_i.sequence);
-              new_sequence.add(it.output_symbol);
-              new_state.add(new TNodeState(it.dest, new_sequence, true)); // caseWasChanged=true - lowercased version of input
+              TNodeState tn = nodeStatePool_get();
+              tn.where = it.dest;
+              tn.caseWasChanged = true; // lowercased version of input
+              tn.sequence.addAll(state_i.sequence);
+              tn.sequence.add(it.output_symbol);
+              new_state.add(tn);
               it = it.next;
             }
             //JACOBpool.release(state.get(i).sequence);
+            nodeStatePool_release(state_i);
         }
 
+        reusable_state = state;
         state = new_state;
     }
 
@@ -222,12 +263,14 @@ public class State {
             // get the transitions consuming θ (the empty input symbol)
             Transition epsilonTransition = state_i.where.transitions.get(0);
             while (epsilonTransition != null) {
-                List<Integer> tmp; // JACOB = pool.get();
-                tmp = new ArrayList<Integer>(state_i.sequence);
+                TNodeState tn = nodeStatePool_get();
+                tn.where = epsilonTransition.dest;
+                tn.caseWasChanged = state_i.caseWasChanged;
+                tn.sequence.addAll(state_i.sequence);
                 if (epsilonTransition.output_symbol != 0) {
-                    tmp.add(epsilonTransition.output_symbol);
+                    tn.sequence.add(epsilonTransition.output_symbol);
                 }
-                state.add(new TNodeState(epsilonTransition.dest, tmp, state_i.caseWasChanged));
+                state.add(tn);
                 epsilonTransition = epsilonTransition.next;
             }
         }
@@ -278,14 +321,14 @@ public class State {
      * @param input the input symbol
      */
     public void step(int input) {
-        if (DEBUG) System.err.println();
-        if (DEBUG) System.err.println("state f = " + state  +"     - apply (" + (char) input);
-        if (DEBUG) tjekDubletter();
+//        if (DEBUG) System.err.println();
+//        if (DEBUG) System.err.println("state f = " + state  +"     - apply (" + (char) input);
+//        if (DEBUG) tjekDubletter();
         apply(input);
-        if (DEBUG) tjekDubletter();
-        if (DEBUG) System.err.println("state e1= " + state);
+//        if (DEBUG) tjekDubletter();
+//        if (DEBUG) System.err.println("state e1= " + state);
         epsilonClosure();
-        if (DEBUG) System.err.println("state e2= " + state);
+//        if (DEBUG) System.err.println("state e2= " + state);
     }
 
     /**
@@ -299,13 +342,13 @@ public class State {
     }
 /*
     public void step_case(char val, boolean caseSensitive, Integer[] flagMatch_symbolList) {
-        if (!Character.isUpperCase(val) || caseSensitive) {
+        if (!Alphabet.isUpperCase(val) || caseSensitive) {
             apply(val);
             if (DEBUG) System.err.println("state e1= " + state);
             flagClosure(flagMatch_symbolList);
             epsilonClosure();
         } else {
-            apply(val, Character.toLowerCase(val));
+            apply(val, Alphabet.toLowerCase(val));
             flagClosure(flagMatch_symbolList);
             epsilonClosure();
         }
@@ -313,18 +356,18 @@ public class State {
 */
 
     public void step_case(char val, boolean caseSensitive) {
-        if (!Character.isUpperCase(val) || caseSensitive) {
+        if (!Alphabet.isUpperCase(val) || caseSensitive) {
             step(val);
         } else {
-            step(val, Character.toLowerCase(val));
+            step(val, Alphabet.toLowerCase(val));
         }
     }
 
     public void step_case(int val, boolean caseSensitive) {
-        if (Alphabet.isTag(val) || !Character.isUpperCase(val) || caseSensitive) {
+        if (Alphabet.isTag(val) || !Alphabet.isUpperCase(val) || caseSensitive) {
             step(val);
         } else {
-            step(val, Character.toLowerCase(val));
+            step(val, Alphabet.toLowerCase(val));
         }
     }
       /**
@@ -343,11 +386,18 @@ public class State {
         return false;
     }
 
+    /** Slower version of the StringBuilder filterFinals() */
+    String filterFinals(Set<Node> finals, Alphabet alphabet, SetOfCharacters escaped_chars, boolean uppercase, boolean firstupper) {
+      return filterFinals(new StringBuilder(), finals, alphabet, escaped_chars, uppercase, firstupper).toString();
+    }
+
+
     /**
      * Print all outputs of current parsing, preceeded by a bar '/', from the final nodes of the state. Examples:
      * /le<prn><pro><p3><nt>/le<det><def><m><sg>/le<prn><pro><p3><m><sg>
      * /domaine<n><m><sg>
      * /,<cm>
+     * @param result append to this buffer
      * @param finals the set of final nodes
      * @param alphabet the alphabet to decode strings
      * @param escaped_chars the set of chars to be preceeded with one backslash
@@ -355,9 +405,7 @@ public class State {
      * @param firstupper true if the first letter of a word is uppercase
      * @return the result of the transduction
      */
-    String filterFinals(Set<Node> finals, Alphabet alphabet, SetOfCharacters escaped_chars, boolean uppercase, boolean firstupper) {
-
-        StringBuilder result = new StringBuilder();
+    StringBuilder filterFinals(StringBuilder result, Set<Node> finals, Alphabet alphabet, SetOfCharacters escaped_chars, boolean uppercase, boolean firstupper) {
 
         for (int i = 0,  limit = state.size(); i != limit; i++) {
             TNodeState state_i = state.get(i);
@@ -380,15 +428,15 @@ public class State {
                 if (firstupper && state_i.caseWasChanged ) {
                     if (result.charAt(first_char) == '~') {
                         // skip post-generation mark
-                        result.setCharAt(first_char + 1, Character.toUpperCase(result.charAt(first_char + 1)));
+                        result.setCharAt(first_char + 1, Alphabet.toUpperCase(result.charAt(first_char + 1)));
                     } else {
-                        result.setCharAt(first_char, Character.toUpperCase(result.charAt(first_char)));
+                        result.setCharAt(first_char, Alphabet.toUpperCase(result.charAt(first_char)));
                     }
                 }
             }
         }
       //System.err.println("filterFinals RET ( " + result);
-        return result.toString();
+        return result;
     }
 
             /*
@@ -418,10 +466,12 @@ public class State {
               if (restart_state!=null) {
                 if (DEBUG) System.err.println("restart state "+i+"= " + state_i);
                 for (TNodeState initst : restart_state.state) {
-                  ArrayList<Integer> new_sequence = new ArrayList<Integer>(state_i.sequence.size()+1); //XXX no pool for now: new_v = pool.get();
-                  new_sequence.addAll(state_i.sequence);
-                  new_sequence.add(separationSymbol);
-                  added_states.add(new TNodeState(initst.where, new_sequence, state_i.caseWasChanged));
+                  TNodeState tn = nodeStatePool_get();
+                  tn.where = initst.where;
+                  tn.caseWasChanged = state_i.caseWasChanged;
+                  tn.sequence.addAll(state_i.sequence);
+                  tn.sequence.add(separationSymbol);
+                  added_states.add(tn);
                 }
               }
             }
@@ -468,10 +518,11 @@ public class State {
 
       // remove states containing a forbidden symbol
       for (int i = state.size()-1; i>=0; i--) {
-        List<Integer> seq = state.get(i).sequence;
+        TNodeState state_i = state.get(i);
         // TODO optimize: search from end,
-        if (seq.contains(forbiddenSymbolInteger)) {
+        if (state_i.sequence.contains(forbiddenSymbolInteger)) {
           state.remove(i);
+          nodeStatePool_release(state_i);
         }
       }
     }
@@ -496,7 +547,7 @@ public class State {
       // remove states with more than minimum number of compounds
       for (int i = state.size()-1; i>=0; i--) {
         if (noOfCompoundElements[i]>minNoOfCompoundElements) {
-          state.remove(i);
+          nodeStatePool_release(state.remove(i));
         }
       }
     }
@@ -538,9 +589,9 @@ public class State {
                 if (firstupper) {
                     if (result.charAt(first_char) == '~') {
                         // skip post-generation mark
-                        result.setCharAt(first_char + 1, Character.toUpperCase(result.charAt(first_char + 1)));
+                        result.setCharAt(first_char + 1, Alphabet.toUpperCase(result.charAt(first_char + 1)));
                     } else {
-                        result.setCharAt(first_char, Character.toUpperCase(result.charAt(first_char)));
+                        result.setCharAt(first_char, Alphabet.toUpperCase(result.charAt(first_char)));
                     }
                 }
             }

@@ -404,6 +404,37 @@ public static class IntegerPair {
       CHARCACHE[0] = UPCHARCACHE[0] = "";
     }
 
+
+  public static boolean isUpperCase(int val) {
+    return Character.isUpperCase(val);
+  }
+
+  public static boolean isSpaceChar(char val) {
+    return Character.isSpaceChar(val);
+  }
+
+  public static boolean isWhitespace(char val) {
+    return Character.isWhitespace(val);
+  }
+
+  public static boolean isLetter(char charAt) {
+    return Character.isLetter(charAt);
+  }
+
+  public static char toLowerCase(char charAt) {
+    return Character.toLowerCase(charAt);
+  }
+
+  public static int toLowerCase(int val) {
+    return Character.toLowerCase(val);
+  }
+
+  public static char toUpperCase(char charAt) {
+    return Character.toUpperCase(charAt);
+  }
+
+
+
     /**
      * Find a symbol symbol
      * @param symbol the symbol to be added

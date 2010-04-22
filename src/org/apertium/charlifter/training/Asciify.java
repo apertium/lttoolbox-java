@@ -24,7 +24,7 @@ package org.apertium.charlifter.training;
  * Starting with it, for simplicity's sake
  * @author jimregan
  */
-@Deprecated
+//@Deprecated  // remove deprecation warning until someone cares to look at it. Jacob
 public class Asciify {
     /**
      * # data taken from the table in transtab package:

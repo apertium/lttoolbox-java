@@ -28,11 +28,10 @@ public class Profiling {
         Profiling p = new Profiling();
         //System.out.println(System.getProperties() );
         System.out.println("Profiling "+new java.util.Date() );
-      
+        /*
         System.gc();
         p.testTransfer();
         System.gc();
-/*
         p.testjavaAnalysis();
         System.gc();
         p.testjavaGeneration();
@@ -42,8 +41,9 @@ public class Profiling {
         p.testjavaNGeneration();
         System.gc();
         p.testjavaPostgeneration();
-        System.gc();
+        System.gc();*/
         p.testjavaAnalysis();
+/*
         System.gc();
     LTComp.main(new String[] { "rl", "testdata/apertium-fr-es.fr.dix", "tmp/testJava.bin"});
     report("lt-comp");
@@ -321,5 +321,23 @@ final@inconditional 61 858
 main@standard 62442 96775
 lt-comp took sec 7820 msec
 BUILD SUCCESSFUL (total time: 12 seconds)
-*
+
+
+Har optimeret State og bruger objektpulje
+Profiling Tue Apr 20 21:40:32 CEST 2010
+start /home/j/esperanto/a/lttoolbox-java/. took sec 28 msec
+transfer-init apertium_en_ca_en_ca_t1x took sec 388 msec
+transfer took sec 738 msec
+analysis -a   took sec 782 msec
+generation -g took sec 586 msec
+generation -d took sec 312 msec
+generation -n took sec 372 msec
+generation -p took sec 192 msec
+analysis -a   took sec 349 msec
+final@inconditional 61 858
+main@standard 62442 96775
+lt-comp took sec 6053 msec
+BUILD SUCCESSFUL (total time: 10 seconds)
+ 
+ *
  */

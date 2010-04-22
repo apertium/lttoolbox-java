@@ -282,7 +282,7 @@ public class FSTProcessor {
         char val = (char) input.read();
         if (val == EOF) return (char) 0;
 
-    
+
         if (escaped_chars.contains(val)) {
             switch (val) {
                 case '<':
@@ -417,11 +417,10 @@ public class FSTProcessor {
     private void skipUntil(Reader input, Writer output, char character) throws IOException {
         while (true) {
             char val = (char) input.read();
-            if (val == EOF) {
-                return;
-            }
 
-            if (val == '\\') {
+            if (val == character) {
+                return;
+            } else if (val == '\\') {
                 val = (char) input.read();
                 if (val == EOF) {
                     return;
@@ -429,7 +428,7 @@ public class FSTProcessor {
 
                 output.write('\\');
                 output.write(val);
-            } else if (val == character) {
+            } else if (val == EOF) {
                 return;
             } else {
                 output.write(val);
@@ -557,7 +556,7 @@ public class FSTProcessor {
         }
     }
 
-    private void writeEscaped(String str, Writer output) throws IOException {
+    private void writeEscaped(CharSequence str, Writer output) throws IOException {
       //int len = str.length();
       //System.err.println("writeEscaped( str.length() = " + str.length());
         for (int i = 0,  limit = str.length(); i < limit; i++) {
@@ -585,7 +584,7 @@ public class FSTProcessor {
         output.write('$');
     }
 
-    private int lastBlank(String str) {
+    private int lastBlank(CharSequence str) {
         for (int i = str.length() - 1; i >= 0; i--) {
             if (!alphabetic_chars.contains(str.charAt(i))) {
                 return (i);
@@ -699,7 +698,7 @@ public class FSTProcessor {
 
     private void hideControlSymbols() {
         for (String symbol : alphabet.getFlagMatchSymbols()) {
-          // Find symbols starting with "<@"
+          // Find symbols starting with "<@" (or "<:")
           char start = symbol.charAt(1);
           if (start == '@' || start == ':') {
             int symboli = alphabet.cast(symbol);
@@ -846,52 +845,64 @@ public class FSTProcessor {
         boolean last_postblank = false;
         boolean last_preblank = false;
         State current_state = initial_state.copy();
-        String lf = ""; // lexical form
-        String sf = ""; // surface form
+        StringBuilder lf = new StringBuilder(200); // lexical form
+        StringBuilder sf = new StringBuilder(200); // surface form
         int last = 0;
-
+/*
+        System.err.println("\nall_finals = " + all_finals);
+        System.err.println("\ninconditional = " + inconditional);
+        System.err.println("\npostblank = " + postblank);
+        System.err.println("\npreblank = " + preblank);
+*/
         char val;
         while ((val = readAnalysis(input)) != (char)0) {
             if (current_state.isFinal(all_finals)) {
                 if (current_state.isFinal(inconditional)) {
-                    boolean firstupper = !dictionaryCase && Character.isUpperCase(sf.charAt(0));
-                    boolean uppercase = !dictionaryCase && firstupper && Character.isUpperCase(sf.charAt(sf.length() - 1));
+                    boolean firstupper = !dictionaryCase && Alphabet.isUpperCase(sf.charAt(0));
+                    boolean uppercase = !dictionaryCase && firstupper && Alphabet.isUpperCase(sf.charAt(sf.length() - 1));
                     if (compoundOnlyLSymbol!=0) current_state.pruneStatesWithForbiddenSymbol(compoundOnlyLSymbol);
                     if (do_flagMatch) deleteStatesWithConflictingFlags(current_state);
-                    lf = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
+                    lf.setLength(0);
+                    current_state.filterFinals(lf, all_finals, alphabet, escaped_chars, uppercase, firstupper);
                     last = input_buffer.getPos();
                     last_incond = true;
                 } else if (current_state.isFinal(postblank)) {
-                    boolean firstupper = !dictionaryCase && Character.isUpperCase(sf.charAt(0));
-                    boolean uppercase = !dictionaryCase && firstupper && Character.isUpperCase(sf.charAt(sf.length() - 1));
+                    boolean firstupper = !dictionaryCase && Alphabet.isUpperCase(sf.charAt(0));
+                    boolean uppercase = !dictionaryCase && firstupper && Alphabet.isUpperCase(sf.charAt(sf.length() - 1));
                     if (compoundOnlyLSymbol!=0) current_state.pruneStatesWithForbiddenSymbol(compoundOnlyLSymbol);
                     if (do_flagMatch) deleteStatesWithConflictingFlags(current_state);
-                    lf = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
+                    lf.setLength(0);
+                    current_state.filterFinals(lf, all_finals, alphabet, escaped_chars, uppercase, firstupper);
                     last = input_buffer.getPos();
                     last_postblank = true;
                 } else if (current_state.isFinal(preblank)) {
-                    boolean firstupper = !dictionaryCase && Character.isUpperCase(sf.charAt(0));
-                    boolean uppercase = !dictionaryCase && firstupper && Character.isUpperCase(sf.charAt(sf.length() - 1));
+                    boolean firstupper = !dictionaryCase && Alphabet.isUpperCase(sf.charAt(0));
+                    boolean uppercase = !dictionaryCase && firstupper && Alphabet.isUpperCase(sf.charAt(sf.length() - 1));
                     if (compoundOnlyLSymbol!=0) current_state.pruneStatesWithForbiddenSymbol(compoundOnlyLSymbol);
                     if (do_flagMatch) deleteStatesWithConflictingFlags(current_state);
-                    lf = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
+                    lf.setLength(0);
+                    current_state.filterFinals(lf, all_finals, alphabet, escaped_chars, uppercase, firstupper);
                     last = input_buffer.getPos();
                     last_preblank = true;
-                } else if (!isAlphabetic(val)) {
-                    boolean firstupper = !dictionaryCase && Character.isUpperCase(sf.charAt(0));
-                    boolean uppercase = !dictionaryCase && firstupper && Character.isUpperCase(sf.charAt(sf.length() - 1));
-                    if (compoundOnlyLSymbol!=0)  current_state.pruneStatesWithForbiddenSymbol(compoundOnlyLSymbol);
-                    if (do_flagMatch) deleteStatesWithConflictingFlags(current_state);
-                    lf = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
-                    last = input_buffer.getPos();
-                    last_postblank = last_preblank = last_incond = false;
                 } else {
-                    ; // Hum? In which cases do we get here?
-                    if (DEBUG) System.err.println("Hum? In which cases do we get here? val = " + val);
+                    // then current_state.isFinal(standard) must be true
+                    // if (!current_state.isFinal(standard)) throw new IllegalStateException("expected current_state.isFinal(standard) here");
+                    if (!isAlphabetic(val))
+                    {
+                      boolean firstupper = !dictionaryCase && Alphabet.isUpperCase(sf.charAt(0));
+                      boolean uppercase = !dictionaryCase && firstupper && Alphabet.isUpperCase(sf.charAt(sf.length() - 1));
+                      if (compoundOnlyLSymbol!=0)  current_state.pruneStatesWithForbiddenSymbol(compoundOnlyLSymbol);
+                      if (do_flagMatch) deleteStatesWithConflictingFlags(current_state);
+                      lf.setLength(0);
+                      current_state.filterFinals(lf, all_finals, alphabet, escaped_chars, uppercase, firstupper);
+                      last = input_buffer.getPos();
+                      last_postblank = last_preblank = last_incond = false;
+                   }
                 }
-            } else if (sf.equals("") && Character.isSpaceChar(val)) {
-                lf = "/*";
-                lf+=sf;
+            } else if ((sf.length()==0) && Alphabet.isSpaceChar(val)) {
+                lf.setLength(0); // TODO fjern?
+                lf.append("/*");
+                lf.append(sf);
                 last_postblank = last_preblank = last_incond = false;
                 last = input_buffer.getPos();
             }
@@ -900,11 +911,11 @@ public class FSTProcessor {
 
             if (current_state.size() != 0) {
 
-                sf=sf+alphabet.getSymbol(val);
+                sf.append(alphabet.getSymbol(val));
 
             } else {
-                if (!isAlphabetic(val) && sf.equals("")) {
-                    if (Character.isSpaceChar(val)) {
+                if (!isAlphabetic(val) && sf.length()==0) {
+                    if (Alphabet.isSpaceChar(val)) {
                         printSpace(val, output);
                     } else {
                         if (isEscaped(val)) {
@@ -913,22 +924,22 @@ public class FSTProcessor {
                         output.write(val);
                     }
                 } else if (last_postblank) {
-                    printWord(sf.substring(0, sf.length() - input_buffer.diffPrevPos(last)), lf, output);
+                    printWord(sf.substring(0, sf.length() - input_buffer.diffPrevPos(last)), lf.toString(), output);
                     output.write(' ');
                     input_buffer.setPos(last);
                     input_buffer.back(1);
                 } else if (last_preblank) {
                     output.write(' ');
-                    printWord(sf.substring(0, sf.length() - input_buffer.diffPrevPos(last)), lf, output);
+                    printWord(sf.substring(0, sf.length() - input_buffer.diffPrevPos(last)), lf.toString(), output);
                     input_buffer.setPos(last);
                     input_buffer.back(1);
                 } else if (last_incond) {
-                    printWord(sf.substring(0, sf.length() - input_buffer.diffPrevPos(last)), lf, output);
+                    printWord(sf.substring(0, sf.length() - input_buffer.diffPrevPos(last)), lf.toString(), output);
                     input_buffer.setPos(last);
                     input_buffer.back(1);
-                } else if (isAlphabetic(val) && ((sf.length() - input_buffer.diffPrevPos(last)) > lastBlank(sf) || lf.equals(""))) {
+                } else if (isAlphabetic(val) && ((sf.length() - input_buffer.diffPrevPos(last)) > lastBlank(sf) || lf.length()==0)) {
                     do {
-                        sf=sf+alphabet.getSymbol(val);
+                        sf.append(alphabet.getSymbol(val));
                     } while (((val = readAnalysis(input)) != (char)0 )&& isAlphabetic(val));
 
                     int limit = firstNotAlpha(sf);
@@ -951,7 +962,7 @@ public class FSTProcessor {
                           printUnknownWord(unknownWord, output);
                         }
                     }
-                } else if (lf.equals("")) {
+                } else if (lf.length()==0) {
                     int limit = firstNotAlpha(sf);
                     int size = sf.length();
                     limit = (limit == Integer.MAX_VALUE ? size : limit);
@@ -974,13 +985,14 @@ public class FSTProcessor {
                         }
                     }
                 } else {
-                    printWord(sf.substring(0, sf.length() - input_buffer.diffPrevPos(last)), lf, output);
+                    printWord(sf.substring(0, sf.length() - input_buffer.diffPrevPos(last)), lf.toString(), output);
                     input_buffer.setPos(last);
                     input_buffer.back(1);
                 }
 
                 current_state.copy(initial_state);
-                lf = sf = "";
+                lf.setLength(0);
+                sf.setLength(0);
                 last_incond = last_postblank = last_preblank = false;
             }
         }
@@ -1003,8 +1015,8 @@ public class FSTProcessor {
         // List compound elements. Each element can have multiple alternatives
         ArrayList<String[]> compoundElements = new ArrayList<String[]>();
 
-        boolean firstupper = Character.isUpperCase(input_word.charAt(0));
-        boolean uppercase = firstupper && Character.isUpperCase(input_word.charAt(1));
+        boolean firstupper = Alphabet.isUpperCase(input_word.charAt(0));
+        boolean uppercase = firstupper && Alphabet.isUpperCase(input_word.charAt(1));
 
         for (int i = 0; i<=input_word.length(); i++) {
           boolean endOfWord=(i==input_word.length());
@@ -1095,8 +1107,8 @@ public class FSTProcessor {
 
         State current_state = initial_state.copy();
 
-        boolean firstupper = Character.isUpperCase(input_word.charAt(0));
-        boolean uppercase = firstupper && input_word.length()>1 && Character.isUpperCase(input_word.charAt(1));
+        boolean firstupper = Alphabet.isUpperCase(input_word.charAt(0));
+        boolean uppercase = firstupper && input_word.length()>1 && Alphabet.isUpperCase(input_word.charAt(1));
 
         for (int i = 0; i<input_word.length(); i++) {
             char val=input_word.charAt(i);
@@ -1210,7 +1222,7 @@ public class FSTProcessor {
                     last = input_buffer.getPos();
                     tmNumbers.clear();
                 }
-            } else if (sf.equals("") && Character.isSpaceChar(val)) {
+            } else if (sf.equals("") && Alphabet.isSpaceChar(val)) {
                 lf += sf;
                 last = input_buffer.getPos();
             }
@@ -1226,8 +1238,8 @@ public class FSTProcessor {
                     sf = sf+alphabet.getSymbol(val);
                 }
             } else {
-                if ((Character.isWhitespace(val) || iswpunct(val)) && sf.equals("")) {
-                    if (Character.isWhitespace(val)) {
+                if ((Alphabet.isWhitespace(val) || iswpunct(val)) && sf.equals("")) {
+                    if (Alphabet.isWhitespace(val)) {
                         printSpace(val, output);
                     } else {
                         if (isEscaped(val)) {
@@ -1235,7 +1247,7 @@ public class FSTProcessor {
                         }
                         output.write(val);
                     }
-                } else if (!Character.isWhitespace(val) && !iswpunct(val) &&
+                } else if (!Alphabet.isWhitespace(val) && !iswpunct(val) &&
                     ((sf.length() - input_buffer.diffPrevPos(last)) > lastBlank(sf) ||
                     lf.equals(""))) {
 
@@ -1247,7 +1259,7 @@ public class FSTProcessor {
                         } else {
                             sf += alphabet.getSymbol(val);
                         }
-                    } while (((val = readTMAnalysis(input)) != (char) 0) && !Character.isWhitespace(val) && !iswpunct(val));
+                    } while (((val = readTMAnalysis(input)) != (char) 0) && !Alphabet.isWhitespace(val) && !iswpunct(val));
 
                     if (val == 0) {
                         output.write(sf);
@@ -1296,25 +1308,26 @@ public class FSTProcessor {
         }
 
         State current_state = initial_state.copy();
-        String sf = "";
+        StringBuilder sf = new StringBuilder();
 
         outOfWord = false;
 
         skipUntil(input, output, '^');
         int val;
         while ((val = readGeneration(input, output)) != 0x7fffffff) {
-            if (sf.equals("") && val == '=') {
+            if (sf.length()==0 && val == '=') {
                 output.write('=');
                 val = readGeneration(input, output);
             }
             if (val == '$' && outOfWord) {
-                if (sf.charAt(0) == '*' || sf.charAt(0) == '%') {
+                char ch0 = sf.charAt(0);
+                if (ch0 == '*' || ch0 == '%') {
                     if (mode != GenerationMode.gm_clean) {
                         writeEscaped(sf, output);
                     } else {
                         writeEscaped(sf.substring(1), output);
                     }
-                } else if (sf.charAt(0) == '@') {
+                } else if (ch0 == '@') {
                     if (mode == GenerationMode.gm_all) {
                         writeEscaped(sf, output);
                     } else if (mode == GenerationMode.gm_clean) {
@@ -1323,8 +1336,8 @@ public class FSTProcessor {
                         writeEscaped(removeTags(sf), output);
                     }
                 } else if (current_state.isFinal(all_finals)) {
-                    boolean uppercase = sf.length() > 1 && Character.isUpperCase(sf.charAt(1));
-                    boolean firstupper = Character.isUpperCase(sf.charAt(0));
+                    boolean uppercase = sf.length() > 1 && Alphabet.isUpperCase(sf.charAt(1));
+                    boolean firstupper = Alphabet.isUpperCase(ch0);
                     if (mode == GenerationMode.gm_tagged) {
                       output.write('^');
                     }
@@ -1333,7 +1346,7 @@ public class FSTProcessor {
                             escaped_chars, uppercase, firstupper).substring(1));
                     if (mode == GenerationMode.gm_tagged) {
                       output.write('/');
-                      output.write(sf);
+                      output.append(sf);
                       output.write('$');
                     }
 
@@ -1350,13 +1363,13 @@ public class FSTProcessor {
                 }
 
                 current_state.copy(initial_state);
-                sf = "";
-            } else if (Character.isSpaceChar((char) val) && sf.length() == 0) {
+                sf.setLength(0);
+            } else if (Alphabet.isSpaceChar((char) val) && sf.length() == 0) {
             // do nothing
             } else if (sf.length() > 0 && (sf.charAt(0) == '*' || sf.charAt(0) == '%')) {
-                sf+=alphabet.getSymbol(val);
+                sf.append(alphabet.getSymbol(val));
             } else {
-                sf+=alphabet.getSymbol(val);
+                sf.append(alphabet.getSymbol(val));
                 current_state.step_case(val, caseSensitive);
             }
         }
@@ -1382,7 +1395,7 @@ public class FSTProcessor {
             }
 
             if (skip_mode) {
-                if (Character.isSpaceChar(val)) {
+                if (Alphabet.isSpaceChar(val)) {
                     printSpace(val, output);
                 } else {
                     if (isEscaped(val)) {
@@ -1393,15 +1406,15 @@ public class FSTProcessor {
             } else {
                 // test for final states
                 if (current_state.isFinal(all_finals)) {
-                    boolean firstupper = Character.isUpperCase(sf.charAt(1));
-                    boolean uppercase = sf.length() > 1 && firstupper && Character.isUpperCase(sf.charAt(2));
+                    boolean firstupper = Alphabet.isUpperCase(sf.charAt(1));
+                    boolean uppercase = sf.length() > 1 && firstupper && Alphabet.isUpperCase(sf.charAt(2));
                     lf = new StringBuilder(current_state.filterFinals(all_finals, alphabet, empty_escaped_chars, uppercase, firstupper));
 
                     // case of the beggining of the next word
 
                     String mybuf = "";
                     for (int i = sf.length() - 1; i >= 0; i--) {
-                        if (!Character.isLetter(sf.charAt(i))) {
+                        if (!Alphabet.isLetter(sf.charAt(i))) {
                             break;
                         } else {
                             mybuf = sf.charAt(i) + mybuf;
@@ -1409,22 +1422,22 @@ public class FSTProcessor {
                     }
 
                     if (mybuf.length() > 0) {
-                        boolean myfirstupper = Character.isUpperCase(mybuf.charAt(0));
-                        boolean myuppercase = mybuf.length() > 1 && Character.isUpperCase(mybuf.charAt(1));
+                        boolean myfirstupper = Alphabet.isUpperCase(mybuf.charAt(0));
+                        boolean myuppercase = mybuf.length() > 1 && Alphabet.isUpperCase(mybuf.charAt(1));
 
                         for (int i = lf.length() - 1; i >= 0; i--) {
-                            if (!Character.isLetter(lf.charAt(i))) {
+                            if (!Alphabet.isLetter(lf.charAt(i))) {
                                 if (myfirstupper && i != lf.length() - 1) {
-                                    lf.setCharAt(i + 1, Character.toUpperCase(lf.charAt(i + 1)));
+                                    lf.setCharAt(i + 1, Alphabet.toUpperCase(lf.charAt(i + 1)));
                                 } else {
-                                    lf.setCharAt(i + 1, Character.toLowerCase(lf.charAt(i + 1)));
+                                    lf.setCharAt(i + 1, Alphabet.toLowerCase(lf.charAt(i + 1)));
                                 }
                                 break;
                             } else {
                                 if (myuppercase) {
-                                    lf.setCharAt(i, Character.toUpperCase(lf.charAt(i)));
+                                    lf.setCharAt(i, Alphabet.toUpperCase(lf.charAt(i)));
                                 } else {
-                                    lf.setCharAt(i, Character.toLowerCase(lf.charAt(i)));
+                                    lf.setCharAt(i, Alphabet.toLowerCase(lf.charAt(i)));
                                 }
                             }
                         }
@@ -1457,7 +1470,7 @@ public class FSTProcessor {
                         input_buffer.setPos(last);
                         input_buffer.back(2);
                         val = lf.charAt(lf.length() - 2);
-                        if (Character.isSpaceChar(val)) {
+                        if (Alphabet.isSpaceChar(val)) {
                             printSpace(val, output);
                         } else {
                             if (isEscaped(val)) {
@@ -1491,12 +1504,12 @@ public class FSTProcessor {
 
         char val;
         while ((val = readPostgeneration(input)) != (char)0) {
-            if (iswpunct(val) || Character.isSpaceChar(val)) {
+            if (iswpunct(val) || Alphabet.isSpaceChar(val)) {
                 boolean firstupper = false;
                 boolean uppercase = false;
                 if (!sf.isEmpty()) {
-                    firstupper = Character.isUpperCase(sf.charAt(1));
-                    uppercase = sf.length() > 1 && firstupper && Character.isUpperCase(sf.charAt(2));
+                    firstupper = Alphabet.isUpperCase(sf.charAt(1));
+                    uppercase = sf.length() > 1 && firstupper && Alphabet.isUpperCase(sf.charAt(2));
                 }
                 lf = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
                 if (lf.length() > 0) {
@@ -1505,7 +1518,7 @@ public class FSTProcessor {
                     lf = "";
                     sf = "";
                 }
-                if (Character.isSpaceChar(val)) {
+                if (Alphabet.isSpaceChar(val)) {
                     printSpace(val, output);
                 } else {
                     if (isEscaped(val)) {
@@ -1515,8 +1528,8 @@ public class FSTProcessor {
                 }
             } else {
                 if (current_state.isFinal(all_finals)) {
-                    boolean firstupper = Character.isUpperCase(sf.charAt(1));
-                    boolean uppercase = sf.length() > 1 && firstupper && Character.isUpperCase(sf.charAt(2));
+                    boolean firstupper = Alphabet.isUpperCase(sf.charAt(1));
+                    boolean uppercase = sf.length() > 1 && firstupper && Alphabet.isUpperCase(sf.charAt(2));
                     lf = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
                     last = input_buffer.getPos();
                 }
@@ -1531,7 +1544,7 @@ public class FSTProcessor {
                         input_buffer.back(1);
                         val = lf.charAt(lf.length() - 1);
                     } else {
-                        if (Character.isSpaceChar(val)) {
+                        if (Alphabet.isSpaceChar(val)) {
                             printSpace(val, output);
                         } else {
                             if (isEscaped(val)) {
@@ -1573,8 +1586,8 @@ public class FSTProcessor {
             start_point++;
             mark = true;
         }
-        boolean firstupper = Character.isUpperCase(input_word.charAt(start_point));
-        boolean uppercase = firstupper && Character.isUpperCase(input_word.charAt(start_point + 1));
+        boolean firstupper = Alphabet.isUpperCase(input_word.charAt(start_point));
+        boolean uppercase = firstupper && Alphabet.isUpperCase(input_word.charAt(start_point + 1));
 
         for (int i = start_point; i <= end_point; i++) {
             int val;
@@ -1669,8 +1682,8 @@ public class FSTProcessor {
 
     public Pair<String, Integer> biltransWithQueue(String input_word, boolean with_delim) {
         State current_state = initial_state.copy();
-        StringBuilder result = new StringBuilder("");
-        StringBuilder queue = new StringBuilder("");
+        StringBuilder result = new StringBuilder();
+        StringBuilder queue = new StringBuilder();
         boolean mark=false;
 
         int start_point, end_point;
@@ -1694,8 +1707,8 @@ public class FSTProcessor {
             mark = true;
         }
 
-        boolean firstupper = Character.isUpperCase(ch);
-        boolean uppercase = firstupper && Character.isUpperCase(input_word.charAt(start_point + 1));
+        boolean firstupper = Alphabet.isUpperCase(ch);
+        boolean uppercase = firstupper && Alphabet.isUpperCase(input_word.charAt(start_point + 1));
 
         for (int i = start_point; i <= end_point; i++) {
             int val = 0;
@@ -1705,15 +1718,17 @@ public class FSTProcessor {
                 i++;
                 val = input_word.charAt(i);
             } else if (ch == '<') {
-                symbol = "<";
-                for (int j = i + 1; j <= end_point; j++) {
+                //symbol = "<";
+                int j = i + 1;
+                for (; j <= end_point; j++) {
                     char ch_j = input_word.charAt(j);
-                    symbol += ch_j;
+                    //symbol += ch_j;
                     if (ch_j == '>') {
-                        i = j;
                         break;
                     }
                 }
+                symbol = input_word.substring(i, j+1);
+                i = j;
                 val = alphabet.cast(symbol);
             } else {
                 val = ch;
@@ -1725,7 +1740,8 @@ public class FSTProcessor {
                 String res0 = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
                 if (with_delim) {
                     if (mark) {
-                        result = new StringBuilder("^=" + res0.substring(1));
+                        result = new StringBuilder("^=");
+                        result.append(res0.substring(1));
                     } else {
                         result = new StringBuilder(res0);
                         result.setCharAt(0, '^');
@@ -1813,8 +1829,8 @@ public class FSTProcessor {
             mark = true;
         }
 
-        boolean firstupper = Character.isUpperCase(input_word.charAt(start_point));
-        boolean uppercase = firstupper && Character.isUpperCase(input_word.charAt(start_point + 1));
+        boolean firstupper = Alphabet.isUpperCase(input_word.charAt(start_point));
+        boolean uppercase = firstupper && Alphabet.isUpperCase(input_word.charAt(start_point + 1));
 
         for (int i = start_point; i <= end_point; i++) {
             int val;
@@ -1960,24 +1976,24 @@ public class FSTProcessor {
             // test for final states
             if (current_state.isFinal(all_finals)) {
                 if (current_state.isFinal(inconditional)) {
-                    boolean firstupper = Character.isUpperCase(sf.charAt(0));
-                    boolean uppercase = firstupper && Character.isUpperCase(sf.charAt(sf.length() - 1));
+                    boolean firstupper = Alphabet.isUpperCase(sf.charAt(0));
+                    boolean uppercase = firstupper && Alphabet.isUpperCase(sf.charAt(sf.length() - 1));
 
                     lf = current_state.filterFinalsSAO(all_finals, alphabet, escaped_chars, uppercase, firstupper, 0);
 
                     last_incond = true;
                     last = input_buffer.getPos();
                 } else if (current_state.isFinal(postblank)) {
-                    boolean firstupper = Character.isUpperCase(sf.charAt(0));
-                    boolean uppercase = firstupper && Character.isUpperCase(sf.charAt(sf.length() - 1));
+                    boolean firstupper = Alphabet.isUpperCase(sf.charAt(0));
+                    boolean uppercase = firstupper && Alphabet.isUpperCase(sf.charAt(sf.length() - 1));
 
                     lf = current_state.filterFinalsSAO(all_finals, alphabet, escaped_chars, uppercase, firstupper, 0);
 
                     last_postblank = true;
                     last = input_buffer.getPos();
                 } else if (!isAlphabetic(val)) {
-                    boolean firstupper = Character.isUpperCase(sf.charAt(0));
-                    boolean uppercase = firstupper && Character.isUpperCase(sf.charAt(sf.length() - 1));
+                    boolean firstupper = Alphabet.isUpperCase(sf.charAt(0));
+                    boolean uppercase = firstupper && Alphabet.isUpperCase(sf.charAt(sf.length() - 1));
 
                     lf = current_state.filterFinalsSAO(all_finals, alphabet, escaped_chars, uppercase, firstupper, 0);
 
@@ -1985,7 +2001,7 @@ public class FSTProcessor {
                     last_incond = false;
                     last = input_buffer.getPos();
                 }
-            } else if (sf.equals("") && Character.isSpaceChar(val)) {
+            } else if (sf.equals("") && Alphabet.isSpaceChar(val)) {
                 lf = "/*" + sf;
                 last_postblank = false;
                 last_incond = false;
@@ -1998,7 +2014,7 @@ public class FSTProcessor {
                 sf+=alphabet.getSymbol(val);
             } else {
                 if (!isAlphabetic(val) && sf.equals("")) {
-                    if (Character.isSpaceChar(val)) {
+                    if (Alphabet.isSpaceChar(val)) {
                         printSpace(val, output);
                     } else {
                         if (isEscaped(val)) {
@@ -2051,11 +2067,15 @@ public class FSTProcessor {
         flushBlanks(output);
     }
 
-    String removeTags(String str) {
+    CharSequence removeTags(CharSequence str) {
+        char chlast = 0;
         for (int i = 0; i < str.length(); i++) {
-            if (str.charAt(i) == '<' && i >= 1 && str.charAt(i - 1) != '\\') {
-                return str.substring(0, i);
+          char ch = str.charAt(i);
+            //if (ch == '<' && i >= 1 && str.charAt(i - 1) != '\\') {
+            if (ch == '<' && chlast != '\\') {
+                return str.subSequence(0, i);
             }
+          chlast = ch;
         }
 
         return str;
@@ -2064,7 +2084,7 @@ public class FSTProcessor {
     public void setCaseSensitiveMode(boolean value) {
         caseSensitive = value;
     }
-    
+
     public void setFlagMatchMode(boolean b) {
       do_flagMatch = b;
     }
@@ -2077,7 +2097,7 @@ public class FSTProcessor {
         return nullFlush;
     }
 
-    int firstNotAlpha(String sf) {
+    int firstNotAlpha(CharSequence sf) {
         for (int i = 0,  limit = sf.length(); i < limit; i++) {
             if (!isAlphabetic(sf.charAt(i))) {
                 return i;
