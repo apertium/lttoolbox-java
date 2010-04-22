@@ -2,7 +2,8 @@
 
 if [ "x$JAVA" == "x" ]
 then
-	JAVA=java
+	#JAVA='/usr/bin/java -client'
+	JAVA='java -client'
 fi
 
 #LTProcJ="time -f %Usec $JAVA -jar ../../dist/lttoolbox.jar lt-proc"
@@ -24,6 +25,7 @@ function fail() {
 	fi
 }
 
+$JAVA -version
 
 rm -f $F
 echo -n "C analysis is... " 
