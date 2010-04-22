@@ -28,5 +28,6 @@ then
 fi
 
 # echo java -Dlttoolbox.jar=${library} -Dfile.encoding=UTF-8 -Xms${defaultMinMem}m -Xmx${defaultMaxMem}m -jar ${library} $0 $*
-java -Dlttoolbox.jar=${library} -Dfile.encoding=UTF-8 -Xms${defaultMinMem}m -Xmx${defaultMaxMem}m -jar ${library} $0 $*
+# use -client to avoid server optimizations which take much more resources and optimize in the wrong places anyway
+java -Dlttoolbox.jar=${library} -client -Dfile.encoding=UTF-8 -Xms${defaultMinMem}m -Xmx${defaultMaxMem}m -jar ${library} $0 $*
 
