@@ -50,6 +50,15 @@ class TNodeState {
     public TNodeState() {
     }
 
+    /** special constructor to signal that the sequence list must be initialized */
+  TNodeState(boolean b) {
+    sequence = new ArrayList<Integer>();
+  }
+
+  TNodeState(int sequence_size) {
+    sequence = new ArrayList<Integer>(sequence_size);
+  }
+
 
     @Override
     public String toString() {
@@ -72,7 +81,20 @@ class TNodeState {
  * @author Raah
  */
 public class State {
+  /**
+   * Whether object pooling should be done.
+   * Object allocation (of small objects) on modern JVMs is even so fast that making a copy of immutable 
+   * objects sometimes outperforms modification of mutable (and often old) objects.
+   * See also "Object pooling is now a serious performance loss": http://www.theserverside.com/news/thread.tss?thread_id=37146
+   * 
+   * Pooling seems to do no difference on JDK 1.6, but it might make a big difference for smaller VMs,
+   * like Androids or J2ME JVMs in phones, so we turn it on for now
+   */
+  public static final boolean REUSE_OBJECTS=true;
 
+  /** Pre-allocate for this amount of elements in a sequence */
+  public static final int INITAL_SEQUENCE_ALLOCATION = 50;
+  
   /*
   static int oprettet=0;
   static int genbrugt=0;
@@ -88,7 +110,7 @@ public class State {
     /**
      * Pool of TNodeState (with their sequence list), for efficiency
      */
-    private static ArrayList<TNodeState> nodeStatePool = new ArrayList<TNodeState>(50);
+    private static ArrayList<TNodeState> nodeStatePool = REUSE_OBJECTS?new ArrayList<TNodeState>(50):null;
     private TNodeState nodeStatePool_get() {
       int size = nodeStatePool.size();
       if (size != 0) {
@@ -99,7 +121,7 @@ public class State {
       } else {
         TNodeState tn = new TNodeState();
         //oprettet++;
-        tn.sequence = new ArrayList<Integer>(50);
+        tn.sequence = new ArrayList<Integer>(INITAL_SEQUENCE_ALLOCATION);
         return tn;
       }
     }
@@ -111,7 +133,7 @@ public class State {
     Pool<TNodeState> nodeStatePool = new Pool<TNodeState>(new ObjectFactory<TNodeState>() {
       @Override public TNodeState next() {
         TNodeState tn = new TNodeState();
-        tn.sequence = new ArrayList<Integer>(50);
+        tn.sequence = new ArrayList<Integer>(INITAL_SEQUENCE_ALLOCATION);
         return tn;
       }
       @Override public void reset(TNodeState e) {
@@ -123,10 +145,11 @@ public class State {
 
      public static boolean DEBUG=false;
 
+
       State copy(State other_state) {
 
         //System.err.println("this.state = " + this.state);
-        for (int i = state.size(); i > 0; ) {
+        if (REUSE_OBJECTS) for (int i = state.size(); i > 0; ) {
           nodeStatePool_release(state.get(--i));
         }
         state.clear();
@@ -134,11 +157,15 @@ public class State {
         ArrayList<TNodeState> other_states = other_state.state;
         for (int i = 0,  limit = other_states.size(); i != limit; i++) {
           TNodeState tn = other_states.get(i);
-          TNodeState copy = nodeStatePool_get();
-          copy.caseWasChanged = tn.caseWasChanged;
-          copy.sequence.addAll(tn.sequence);
-          copy.where = tn.where;
-          this.state.add(copy);
+          if (REUSE_OBJECTS) {
+            TNodeState copy = nodeStatePool_get();
+            copy.caseWasChanged = tn.caseWasChanged;
+            copy.sequence.addAll(tn.sequence);
+            copy.where = tn.where;
+            this.state.add(copy);
+          } else {
+            this.state.add(new TNodeState(tn.where, new ArrayList(tn.sequence), tn.caseWasChanged));
+          }
         }
         return this;
       }
@@ -162,7 +189,7 @@ public class State {
      */
     public void init(Node initial) {
         state.clear();
-        TNodeState tn = nodeStatePool_get();
+        TNodeState tn = REUSE_OBJECTS?nodeStatePool_get():new TNodeState(true);
         tn.where = initial;
         tn.caseWasChanged = false;
         state.add(tn); 
@@ -176,7 +203,7 @@ public class State {
     /**
      * Reference to last discarded list of nodestates
      */
-    private ArrayList<TNodeState> reusable_state =  new ArrayList<TNodeState>(50);
+    private ArrayList<TNodeState> reusable_state =  REUSE_OBJECTS ? new ArrayList<TNodeState>(50):null;
 
 
     /**
@@ -184,11 +211,17 @@ public class State {
      * @param input the input symbol
      */
     private void apply(int input) {
-        ArrayList<TNodeState> new_state =  reusable_state;
-        new_state.clear();
+        ArrayList<TNodeState> new_state;
+        if (REUSE_OBJECTS) {
+          reusable_state.clear();
+          new_state =  reusable_state;
+        } else {
+          new_state = new ArrayList(state.size()*2);
+        }
+
 
         if (input==0) { // in transfer it happens an unknown symbol is translated to 0. Avoid interpreting that as an epsilon.
-          reusable_state = state;
+          if (REUSE_OBJECTS) reusable_state = state;
           state = new_state;
           return;
         }
@@ -197,7 +230,7 @@ public class State {
             TNodeState state_i = state.get(i);
             Transition it = state_i.where.transitions.get(input);
             while (it != null) {
-              TNodeState tn = nodeStatePool_get();
+              TNodeState tn = REUSE_OBJECTS?nodeStatePool_get(): new TNodeState(state_i.sequence.size()+1);
               tn.where = it.dest;
               tn.caseWasChanged = state_i.caseWasChanged;
               tn.sequence.addAll(state_i.sequence);
@@ -205,9 +238,9 @@ public class State {
               new_state.add(tn);
               it = it.next;
             }
-            nodeStatePool_release(state_i);
+            if (REUSE_OBJECTS) nodeStatePool_release(state_i);
         }
-        reusable_state = state;
+        if (REUSE_OBJECTS) reusable_state = state;
         state = new_state;
     }
 
@@ -217,15 +250,19 @@ public class State {
      * @param lowerCasedInput the alternative input symbol (actually its always Alphabet.toLowerCase(input))
      */
     private void apply(int input, int lowerCasedInput) {
-
-        ArrayList<TNodeState> new_state =  reusable_state;
-        new_state.clear();
+        ArrayList<TNodeState> new_state;
+        if (REUSE_OBJECTS) {
+          reusable_state.clear();
+          new_state =  reusable_state;
+        } else {
+          new_state = new ArrayList(state.size()*2);
+        }
 
         for (int i = 0,  limit = state.size(); i != limit; i++) {
             TNodeState state_i = state.get(i);
             Transition it = state_i.where.transitions.get(input);
             while (it != null) {
-              TNodeState tn = nodeStatePool_get();
+              TNodeState tn = REUSE_OBJECTS?nodeStatePool_get(): new TNodeState(state_i.sequence.size()+1);
               tn.where = it.dest;
               tn.caseWasChanged = state_i.caseWasChanged;
               tn.sequence.addAll(state_i.sequence);
@@ -237,7 +274,7 @@ public class State {
             // try also apply lowerCasedInput
             it = state_i.where.transitions.get(lowerCasedInput);
             while (it != null) {
-              TNodeState tn = nodeStatePool_get();
+              TNodeState tn = REUSE_OBJECTS?nodeStatePool_get(): new TNodeState(state_i.sequence.size()+1);
               tn.where = it.dest;
               tn.caseWasChanged = true; // lowercased version of input
               tn.sequence.addAll(state_i.sequence);
@@ -245,11 +282,10 @@ public class State {
               new_state.add(tn);
               it = it.next;
             }
-            //JACOBpool.release(state.get(i).sequence);
-            nodeStatePool_release(state_i);
+            if (REUSE_OBJECTS) nodeStatePool_release(state_i);
         }
 
-        reusable_state = state;
+        if (REUSE_OBJECTS) reusable_state = state;
         state = new_state;
     }
 
@@ -263,7 +299,7 @@ public class State {
             // get the transitions consuming θ (the empty input symbol)
             Transition epsilonTransition = state_i.where.transitions.get(0);
             while (epsilonTransition != null) {
-                TNodeState tn = nodeStatePool_get();
+              TNodeState tn = REUSE_OBJECTS?nodeStatePool_get(): new TNodeState(state_i.sequence.size()+1);
                 tn.where = epsilonTransition.dest;
                 tn.caseWasChanged = state_i.caseWasChanged;
                 tn.sequence.addAll(state_i.sequence);
@@ -466,7 +502,7 @@ public class State {
               if (restart_state!=null) {
                 if (DEBUG) System.err.println("restart state "+i+"= " + state_i);
                 for (TNodeState initst : restart_state.state) {
-                  TNodeState tn = nodeStatePool_get();
+                  TNodeState tn = REUSE_OBJECTS?nodeStatePool_get(): new TNodeState(state_i.sequence.size()+1);
                   tn.where = initst.where;
                   tn.caseWasChanged = state_i.caseWasChanged;
                   tn.sequence.addAll(state_i.sequence);
@@ -522,7 +558,7 @@ public class State {
         // TODO optimize: search from end,
         if (state_i.sequence.contains(forbiddenSymbolInteger)) {
           state.remove(i);
-          nodeStatePool_release(state_i);
+          if (REUSE_OBJECTS) nodeStatePool_release(state_i);
         }
       }
     }
@@ -547,7 +583,8 @@ public class State {
       // remove states with more than minimum number of compounds
       for (int i = state.size()-1; i>=0; i--) {
         if (noOfCompoundElements[i]>minNoOfCompoundElements) {
-          nodeStatePool_release(state.remove(i));
+          if (REUSE_OBJECTS) nodeStatePool_release(state.remove(i));
+          else state.remove(i);
         }
       }
     }
