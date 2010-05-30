@@ -84,8 +84,9 @@ public class LTProcTest extends TestCase {
     Process p = Runtime.getRuntime().exec("lt-proc testdata/correct-test.bin");
     p.getOutputStream().write("a\n".getBytes());
     p.getOutputStream().close();
-    String res = new BufferedReader(new InputStreamReader(p.getInputStream())).readLine();
-
+    BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+    String res = br.readLine();
+    br.close();
     assertEquals("^a/avoir<vbhaver><pri><p3><sg>$" , res);
   }
 
