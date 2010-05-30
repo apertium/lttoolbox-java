@@ -559,6 +559,7 @@ public class HMM {
 
         word = morpho_stream.get_next_word();
 
+        // XXX: word is never set in this cycle; this probably leads to an infinite loop
         while (word != null) {
             if (++nw % 10000 == 0) {
                 System.err.println(".");
