@@ -293,6 +293,7 @@ class PatternList {
     //output.write(tagger_name);
     transducer.write(output, alphabet.size());
 
+    // XXX: this is probably going to generate a null pointer exception
     output.write(final_type.size());
 
     for (Map.Entry<Integer, Integer> it : final_type.entrySet()) {
