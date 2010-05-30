@@ -97,8 +97,7 @@ public class Collection {
                 element = new ArrayList<Set<Integer>>();
             }
             
-            Integer where = new Integer((index.size() > 0) ? index.size()-1 : 0);
-            index.put(t, where);
+            index.put(t, Integer.valueOf((index.size() > 0) ? index.size()-1 : 0));
             element.add(t);
         } catch (Exception e) {
             e.printStackTrace();
