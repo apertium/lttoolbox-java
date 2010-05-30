@@ -33,10 +33,12 @@ public class Wordlist {
     static String[] read (String filename) throws IOException {
         ArrayList<String> a = new ArrayList<String>();
         
+        BufferedReader br = null;
+        
         try {
             FileInputStream fstream = new FileInputStream(filename);
             DataInputStream in = new DataInputStream(fstream);
-            BufferedReader br = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+            br = new BufferedReader(new InputStreamReader(in, "UTF-8"));
             String strLine = "";
 
             while ((strLine = br.readLine()) != null) {
@@ -49,7 +51,10 @@ public class Wordlist {
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
             e.printStackTrace();
-        }  
+        } finally {
+        	if (br != null)
+        		br.close();
+        }
 
         return a.toArray(new String[a.size()]);
     }
