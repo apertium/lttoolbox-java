@@ -300,7 +300,7 @@ public class HMM {
             }
         }
         for (k = 0; k < M; k++) {
-            for (i = 0; i < N; k++) {
+            for (i = 0; i < N; i++) {
                 if (output.get(k).contains(i)) {
                     emission[i][k] = 0;
                 }
