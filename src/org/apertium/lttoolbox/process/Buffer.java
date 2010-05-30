@@ -187,11 +187,12 @@ public class Buffer {
      */
     @Override
     public String toString() {
-        String res = "content : ";
+        StringBuffer sb = new StringBuffer();
+    	sb.append("content : ");
         for (int i = 0; i < buf.length; i++) {
-            res += buf[i];
+            sb.append(buf[i]);
         }
-        res += ", lastpos : " + lastpos + ", currentpos : " + currentpos;
-        return res;
+        sb.append(", lastpos : " + lastpos + ", currentpos : " + currentpos);
+        return sb.toString();
     }
 }
