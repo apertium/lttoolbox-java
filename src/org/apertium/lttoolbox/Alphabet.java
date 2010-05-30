@@ -76,7 +76,7 @@ public static class IntegerPair {
 
     @Override
     public String toString() {
-        return new String("<" + (first>0?(char)first:"") + first + "," + (second>0?(char)second:"") + second + ">");
+        return ("<" + (first>0?(char)first:"") + first + "," + (second>0?(char)second:"") + second + ">");
     }
 }
 
