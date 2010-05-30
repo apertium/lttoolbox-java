@@ -48,6 +48,6 @@ public class Pair<P, Q>{
 
     @Override
     public String toString() {
-        return new String("<" + first.toString() + "," + second.toString() + ">");
+        return "<" + first.toString() + "," + second.toString() + ">";
     }
 }
