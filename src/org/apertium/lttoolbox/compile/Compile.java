@@ -483,17 +483,17 @@ public class Compile {
     EntryToken procRegexp() throws XMLStreamException {
 
         reader.next();
-        String re = "";
+        StringBuffer re = new StringBuffer();
         int start = reader.getTextStart();
         int length = reader.getTextLength();
         while (reader.isCharacters()) {
             start = reader.getTextStart();
             length = reader.getTextLength();
-            re += new String(reader.getTextCharacters(), start, length);
+            re.append(reader.getTextCharacters(), start, length);
             reader.next();
         }
         EntryToken et = new EntryToken();
-        et.setRegexp(re);
+        et.setRegexp(re.toString());
         return et;
     }
 
