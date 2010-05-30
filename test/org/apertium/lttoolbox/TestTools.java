@@ -36,7 +36,14 @@ public abstract class TestTools {
     BufferedReader br=new BufferedReader(new InputStreamReader(p.getInputStream()));
     while ((s=br.readLine())!=null)  output=output+s+"\n";
     br=new BufferedReader(new InputStreamReader(p.getErrorStream()));
-    while ((s=br.readLine())!=null)  output=output+s+"\n";
+    StringBuffer sb = new StringBuffer();
+    while ((s=br.readLine())!=null) {
+    	sb.append(s);
+    	sb.append("\n");
+    }
+    output = sb.toString();
+    br.close();
+    
     //p.waitFor();
     //if (p.exitValue()!=0) Assert.fail(cmd+" reported an error");
 
