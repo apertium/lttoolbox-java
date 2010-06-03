@@ -33,7 +33,7 @@ import java.io.IOException;
 public class ConstantManager {
     private HashMap<String, Integer> constants;
 
-    public void ConstantManager() {
+    public ConstantManager() {
         this.constants = new HashMap<String, Integer>();
     }
 
