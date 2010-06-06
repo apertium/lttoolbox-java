@@ -164,7 +164,7 @@ public class State {
             copy.where = tn.where;
             this.state.add(copy);
           } else {
-            this.state.add(new TNodeState(tn.where, new ArrayList(tn.sequence), tn.caseWasChanged));
+            this.state.add(new TNodeState(tn.where, new ArrayList<Integer>(tn.sequence), tn.caseWasChanged));
           }
         }
         return this;
@@ -216,7 +216,7 @@ public class State {
           reusable_state.clear();
           new_state =  reusable_state;
         } else {
-          new_state = new ArrayList(state.size()*2);
+          new_state = new ArrayList<TNodeState>(state.size()*2);
         }
 
 
@@ -255,7 +255,7 @@ public class State {
           reusable_state.clear();
           new_state =  reusable_state;
         } else {
-          new_state = new ArrayList(state.size()*2);
+          new_state = new ArrayList<TNodeState>(state.size()*2);
         }
 
         for (int i = 0,  limit = state.size(); i != limit; i++) {

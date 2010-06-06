@@ -52,10 +52,14 @@ public class BufferT<E> {
      * Copy the buffer
      * @param b the buffer to copy
      */
-    void copy(BufferT b) {
+    @SuppressWarnings("unchecked")
+	void copy(BufferT<E> b) {
         currentpos = b.currentpos;
         lastpos = b.lastpos;
         size = b.size;
+        /* Can't create an array of the generic type E directly.
+         * So that's why there's the unchecked cast.
+         */
         buf = (E[]) new Object[size];
         System.arraycopy(buf, 0, b.buf, 0, size);
     }
@@ -64,10 +68,14 @@ public class BufferT<E> {
      * Constructor
      * @param buf_size buffer size
      */
-    BufferT(int buf_size) {
+    @SuppressWarnings("unchecked")
+	BufferT(int buf_size) {
         if (buf_size == 0) {
             throw new RuntimeException("Error: Cannot create empty buffer.");
         }
+        /*
+         * Unchecked cast because E[] can't be created directly.
+         */
         buf = (E[]) new Object[buf_size];
         size = buf_size;
         currentpos = 0;
@@ -77,7 +85,7 @@ public class BufferT<E> {
     /**
      * Copy constructor.
      */
-    BufferT(BufferT b) {
+    BufferT(BufferT<E> b) {
         copy(b);
     }
 
