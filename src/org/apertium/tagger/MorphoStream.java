@@ -117,20 +117,36 @@ public class MorphoStream {
             return word;
         }
 
-        // FIXME!
-        input.mark(0);  // Mark the current possition of this input stream so we can go back to that possition
+        int symbol = input.read();
+        /* The mark() function takes an int argument that is the number of bytes 
+         * that can be read before the mark is invalidated. Supplying an argument of 0 
+         * is pretty much useless, in other words. ^^; That really should be 1, because 
+         * we're only going to try and read one byte before calling reset().
+         * 
+         * However, that's a moot point though, because of a line in the documentation 
+         * for reset(): "The method reset for class InputStream  does nothing except throw 
+         * an IOException." In other words, expecting the reset() method to work on a 
+         * generic InputStream object is not type-safe, and will likely fail. Even though 
+         * there's a "markSupported()" method, the program logic at that point depends on 
+         * being able to mark and reset the pointer like that.
+         * 
+         * Thus the while() loop below was slightly changed to remove the need to reset
+         * the read pointer.
+         */
+        //input.mark(0);  // Mark the current possition of this input stream so we can go back to that possition
         // bcoz testing input.read()==-1 will advance the pointer/cursor! it will not read
-        if (end_of_file || input.read() == -1) {
+        /*(if (end_of_file || input.read() == -1) {*/
+        if(end_of_file || symbol == -1) {
             return null;
         }
-        input.reset();
+        //input.reset();
         // no word in the buffer, so read from input
         int ivwords = 0;
         vwords.add(new TaggerWord());
 
         while (true) {
 
-            int symbol = input.read();
+            //int symbol = input.read();
             if (symbol == -1 || (null_flush && symbol == '\0')) {
                 this.end_of_file = true;
                 td.setPreferRules(vwords.get(ivwords).add_tag(ca_tag_keof, "", td.getPreferRules()));
@@ -164,6 +180,11 @@ public class MorphoStream {
                 }
 
             }
+            /* Moved this down to here, to allow for read before initial run of loop.
+             * Will effectively still be run in the same order as before, just won't be 
+             * called at the beginning of the first iteration of the loop. 
+             */
+            symbol = input.read();
         }
 
     }
