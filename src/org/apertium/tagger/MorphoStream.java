@@ -149,6 +149,9 @@ public class MorphoStream {
             //int symbol = input.read();
             if (symbol == -1 || (null_flush && symbol == '\0')) {
                 this.end_of_file = true;
+                /* XXX Why is setPreferRules being called here?
+                 * The C++ version doesn't call it here.
+                 */
                 td.setPreferRules(vwords.get(ivwords).add_tag(ca_tag_keof, "", td.getPreferRules()));
                 // word read, use above code to return it
                 return get_next_word();
@@ -173,9 +176,36 @@ public class MorphoStream {
                     if (symbol == -1 || (null_flush && symbol == '\0')) {
                         end_of_file = true;
                         vwords.get(ivwords).add_ignored_string(str);
+                        /* XXX Same here, why the call to setPreferRules?
+                         * Again, the C++ version doesn't call that here.
+                         */
                         td.setPreferRules(vwords.get(ivwords).add_tag(ca_tag_keof, "", td.getPreferRules()));
                         // word read, use above code to return it
                         return get_next_word();
+                    } else if (symbol == (int) '\\') {
+                    	str += '\\';
+                    	symbol = input.read();
+                        if (symbol == -1 || (null_flush && symbol == '\0')) {
+                            end_of_file = true;
+                            vwords.get(ivwords).add_ignored_string(str);
+                            /* XXX Again, why the call to setPreferRules?
+                             * I just copied the line above when writing this section,
+                             * but I'm still questioning why that call.
+                             */
+                            td.setPreferRules(vwords.get(ivwords).add_tag(ca_tag_keof, "", td.getPreferRules()));
+                            // word read, use above code to return it
+                            return get_next_word();
+                        }
+                        str += (char) symbol;
+                        symbol = (int) '\\';
+                    } else if (symbol == (int) '^') {
+                    	if (str.length() > 0) {
+                    		vwords.get(ivwords).add_ignored_string(str);
+                    	}
+                    	readRestOfWord(ivwords);
+                    	return get_next_word();
+                    } else {
+                    	str += (char) symbol;
                     }
                 }
 
