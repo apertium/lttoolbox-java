@@ -117,8 +117,7 @@ public class TaggerWord {
     * @param t the coarse tag
     * @param lf the lexical form (fine tag)
     */
-    public List<String> add_tag (int t, String lf, List<String> prefer_rules) {
-        List<String> tmp = prefer_rules;
+    public void add_tag (int t, String lf, List<String> prefer_rules) {
         try {
             if (tags==null)
                 tags = new HashSet<Integer>();
@@ -138,7 +137,6 @@ public class TaggerWord {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return tmp;
     }
 
    /**
