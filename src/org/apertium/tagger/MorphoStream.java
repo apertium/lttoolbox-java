@@ -308,6 +308,9 @@ public class MorphoStream {
 
                 // Check
                 //int symbol = alphabet(tag);
+                /* The C++ version has the () operator overloaded for Alphabet, when
+                 * passing in a single string argument. Java version doesn't.
+                 */
                 int symbol = alphabet.cast(tag);
                 if (symbol != 0) {
                     ms.step(symbol, ca_any_tag);
@@ -341,6 +344,32 @@ public class MorphoStream {
                         return;
                     }
                 }
+            } else if (i == (limit - 1)) {
+            	if (ms.classifyFinals() == -1) {
+            		if (last_pos != floor) {
+            			vwords.get(ivwords).add_tag(last_type, 
+            					str.substring(floor, last_pos), td.getPreferRules());
+            			if(str.charAt(last_pos + 1) == '+' && last_pos + 1 < limit) {
+            				floor = last_pos + 1;
+            				last_pos = floor;
+            				vwords.get(ivwords).set_plus_cut(true);
+            				if(vwords.size() <= (ivwords +1)) {
+            					vwords.add(new TaggerWord(true));
+            				}
+            				ivwords++;
+            				ms.init(me.getInitial());
+            			}
+            			i = floor++;
+            		} else {
+            			if(debug) {
+            				System.err.println("Warning: There is no coarse tag for the fine tag '" + str.substring(floor) + "'");
+            				System.err.println("         This is because of an incomplete tageset definition or a dictionary error");
+            			}
+            			vwords.get(ivwords).add_tag(ca_tag_kundef, 
+            					str.substring(floor), td.getPreferRules());
+            			return;
+            		}
+            	}
             }
         }
 
