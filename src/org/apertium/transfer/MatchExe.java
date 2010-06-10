@@ -77,10 +77,20 @@ public class MatchExe {
     //reading the list of final states - not used
     int number_of_finals = Compression.multibyte_read(in);
 
+    /* Not sure why the following section is enclosed in this headless block.
+     */
     {
-      int base = 0;
+      //int base = 0; //unused variable
+      /* The purpose of this section seems to be just to read and discard the bytes
+       * for the list of final states, since this implementation doesn't actually
+       * use that list. The point being to advance the read pointer past the finals
+       * list.
+       */
       for (int i = number_of_finals; i > 0; i--) {
-          int read = Compression.multibyte_read(in);
+          //int read = Compression.multibyte_read(in);
+    	  /* No need for an assignment as we're discarding the data anyway.
+    	   */
+    	  Compression.multibyte_read(in);
           // its not needed to keep track of them, just skip them
           //base += read;
           //t.finals.add(base);
