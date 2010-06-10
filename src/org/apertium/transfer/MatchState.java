@@ -103,6 +103,10 @@ public class MatchState {
     first = mylast;
   }
 
+	/**
+	 * Gets the output symbol if there is a final
+	 * @return the output symbol (In transfer this is a rule number). Returns -1 if there isnt a final state.
+	 */
   public int classifyFinals() {
     int result = Integer.MAX_VALUE;
     for (int i = first; i != last; i = (i + 1) % BUF_LIMIT) {

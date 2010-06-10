@@ -99,7 +99,8 @@ public class MorphoStream {
     }
 
     /**
-     * Get next word in the input stream
+     * Get next word in the input stream.
+		 * Expected is an input word, like ^can/can<n><sg>/can<vaux><pres>$
      * @return The next word in the input stream
      */
     TaggerWord get_next_word() throws IOException {
@@ -209,6 +210,10 @@ public class MorphoStream {
 
     }
 
+		/**
+		 * Reads rest of an input word, like ^can/can<n><sg>/can<vaux><pres>$.
+		 * The first ^ has been processed, so  something like can/can<n><sg>/can<vaux><pres>$. is expected now.
+		 */
     void readRestOfWord(int ivwords) throws IOException {
         String str = "";
         while (true) {
@@ -275,9 +280,15 @@ public class MorphoStream {
         }
     }
 
+		/**
+		 *  lrlm = left-right longest match (parse from left to right, matching the longest you can, like "greedy" matching)
+		 *  We need to find the coarse tag categories
+		 * @param str An input word, somethink like "can<n><sg>"  (Jacob thinks)
+		 * @param ivwords
+		 */
     void lrlmClassify(String str, int ivwords) {
         int floor = 0;
-        int last_type = -1;
+        int last_type = -1; // coarse tag ID.
         int last_pos = 0;
         TaggerWord tw;
 
