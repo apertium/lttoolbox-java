@@ -58,7 +58,7 @@ public class Transducer {
 
     /**
      * Transitions of the transducer.
-     * Before we used a map here, but as the keys are 1, 2, 3, 4, 5, ...up to the number of states its been changed to an arralist
+     * Before we used a Map here, but as the keys are 1, 2, 3, 4, 5, ...up to the number of states its been changed to an ArrayList
      */
     public ArrayList<Map<Integer, IntSet>> transitions = new ArrayList<Map<Integer, IntSet>>();
     //public Map<Integer, Map<Integer, Set<Integer>>> transitions = new HashMap<Integer, Map<Integer, Set<Integer>>>();
@@ -71,7 +71,7 @@ public class Transducer {
      * String conversion method to be able to display a transducer
      * @return a string description of the transducer
      */
-  @Override
+    @Override
     public String toString() {
         String res = "";
         res+="initial :"+initial+" - ";
@@ -170,6 +170,24 @@ public class Transducer {
      */
     public Transducer() {
         initial = newState();
+    }
+    
+    /**
+     * Creates a new Transducer object by copying the one passed in.
+     * @param t - The Transducer object to copy.
+     */
+    public Transducer(Transducer t) {
+    	copy(t);
+    }
+    
+    /**
+     * Copies the passed-in Transducer object to this one.
+     * @param t - The Transducer object to copy.
+     */
+    private void copy(Transducer t) {
+    	initial = new Integer(t.initial);
+    	finals = new AbundantIntSet(t.finals);
+    	transitions = new ArrayList<Map<Integer, IntSet>>(t.transitions);
     }
 
     /**

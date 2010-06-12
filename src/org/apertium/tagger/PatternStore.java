@@ -2,19 +2,33 @@ package org.apertium.tagger;
 
 //import org.apache.commons.collections15.multimap.MultiHashMap;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+//import java.util.List; //Unused, swapped to ArrayList
 
 /**
  * Created by Nic Cottrell, Jan 27, 2009 5:02:30 PM
  */
 
-public class PatternStore {//extends MultiHashMap<Integer, List<Integer>> {
+//TODO This class needs implementation.
+public class PatternStore {//extends MultiHashMap<Integer, ArrayList<Integer>> {
 
-  Collection<List<Integer>> get(int otherid) {
+  PatternStore() {
+	  //placeholder
+  }
+  
+  PatternStore(PatternStore o) {
+	  copy(o);
+  }
+  
+  void copy(PatternStore o) {
+	  //does nothing currently.
+  }
+
+  Collection<ArrayList<Integer>> get(int otherid) {
     throw new UnsupportedOperationException("Not yet implemented");
   }
-  void put(int sequence_id, List<Integer> it) {
+  void put(int sequence_id, ArrayList<Integer> it) {
     throw new UnsupportedOperationException("Not yet implemented");
   }
 

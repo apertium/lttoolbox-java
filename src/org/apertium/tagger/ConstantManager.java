@@ -36,6 +36,18 @@ public class ConstantManager {
     public ConstantManager() {
         this.constants = new HashMap<String, Integer>();
     }
+    
+    public ConstantManager(ConstantManager o) {
+    	copy(o);
+    }
+
+    /**
+     * Copies the passed-in ConstantManager object to this one.
+     * @param o - The ConstantManager object to copy.
+     */
+    private void copy(ConstantManager o) {
+    	this.constants = new HashMap<String, Integer>(o.constants);
+    }
 
     public void setConstant (String constant, int value) {
         try {

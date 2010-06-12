@@ -7,9 +7,9 @@ package org.apertium.lttoolbox.collections;
 
 import java.util.BitSet;
 import java.util.Collection;
-import java.util.HashSet;
+//import java.util.HashSet; //Unused
 import java.util.Iterator;
-import java.util.TreeSet;
+//import java.util.TreeSet; //Unused
 
 /**
  * A set where perhaps 10-20% of the integers from 0 to a given max is present.
@@ -17,10 +17,21 @@ import java.util.TreeSet;
  * @author Jacob Nordfalk
  */
 public class AbundantIntSet implements IntSet { //extends TreeSet<Integer> {
-  private BitSet bs = new BitSet(4096);
-  private int size = 0;
+  private BitSet bs;
+  private int size;
 
   public AbundantIntSet() {
+	  bs = new BitSet(4096);
+	  size = 0;
+  }
+  
+  /**
+   * Constructor that creates a new AbundantBitSet based on the one passed in.
+   * @param o - The AbundantBitSet object to copy.
+   */
+  public AbundantIntSet(AbundantIntSet o) {
+	  bs = (BitSet)o.bs.clone();
+	  size = o.size;
   }
 
   public void clear() {
@@ -54,6 +65,7 @@ public class AbundantIntSet implements IntSet { //extends TreeSet<Integer> {
   }
 
   /** Iterators work thru Integer objects, therefore its not recommended to use them */
+  @SuppressWarnings("unchecked")
   @Deprecated
   @Override
   public Iterator<Integer> iterator() {

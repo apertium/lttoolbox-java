@@ -25,13 +25,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Comparator;
+//import java.util.Comparator; //Unused
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+//import java.util.List; //Unused
+//import java.util.Map; //Unused
+//import java.util.TreeMap; //Unused
 import java.util.ArrayList;
-import java.util.HashSet;
+//import java.util.HashSet; //Unused
 import java.util.Set;
 
 
@@ -83,18 +83,18 @@ public static class IntegerPair {
     /**
      * Symbol-identifier relationship.
      */
-    private final HashMap<String, Integer> slexic = new HashMap<String, Integer>();
+    private final HashMap<String, Integer> slexic;
     
     /**
      * Identifier-symbol relationship.
      */
-    private final ArrayList<String> slexicinv = new ArrayList<String>();
+    private final ArrayList<String> slexicinv;
 
 
-    private final HashMap<IntegerPair, Integer> spair= new HashMap<IntegerPair, Integer>();
+    private final HashMap<IntegerPair, Integer> spair;
 
     
-    private final ArrayList<IntegerPair> spairinv = new ArrayList<IntegerPair>();
+    private final ArrayList<IntegerPair> spairinv;
 
 
     /** For debugging purposes ONLY */
@@ -109,13 +109,31 @@ public static class IntegerPair {
      * The constructor
      */
     public Alphabet() {
+    	slexic = new HashMap<String, Integer>();
+    	slexicinv = new ArrayList<String>();
+    	spair = new HashMap<IntegerPair, Integer>();
+    	spairinv = new ArrayList<IntegerPair>();
+    	
+        Alphabet.debuggingInstance = this;
+    }
+    
+    /**
+     * Copy constructor, creates a new copy of Alphabet based on the passed-in
+     * Alphabet object.
+     * @param o - The Alphabet object to copy.
+     */
+    public Alphabet(Alphabet o) {
+        slexic = new HashMap<String, Integer>(o.slexic);
+        slexicinv = new ArrayList<String>(o.slexicinv);
+        spair = new HashMap<IntegerPair, Integer>(o.spair);
+        spairinv = new ArrayList<IntegerPair>(o.spairinv);
+    	
         Alphabet.debuggingInstance = this;
     }
 
-
-  public Set<String> getFlagMatchSymbols() {
-    return slexic.keySet();
-  }
+    public Set<String> getFlagMatchSymbols() {
+    	return slexic.keySet();
+    }
 
     /**
      * Include a symbol into the alphabet.

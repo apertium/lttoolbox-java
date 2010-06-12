@@ -6,11 +6,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+//import java.util.List; //Unused - All instances of "List" changed to "ArrayList"
 import java.util.Map;
 import java.util.HashMap;
-import java.util.Vector;
+//import java.util.Vector; //Unused - ArrayList is faster and should be used instead.
 import org.apertium.lttoolbox.Alphabet;
 import org.apertium.lttoolbox.compile.Transducer;
 import org.apertium.lttoolbox.Compression;
@@ -43,7 +44,7 @@ class PatternList {
 
   boolean sequence;
 
-  List<List<Integer>> sequence_data;
+  ArrayList<ArrayList<Integer>> sequence_data;
 
   Transducer transducer;
 
@@ -74,7 +75,26 @@ class PatternList {
   PatternList() {
   }
 
+  /**
+   * Constructor that creates a new PatternList object by copying the passed-in one.
+   * @param p - The PatternList object to copy.
+   */
+  PatternList(PatternList p) {
+	  copy(p);
+  }
 
+  /**
+   * Copies the passed-in PatternList object to this one.
+   * @param p - The PatternList object to copy.
+   */
+  private void copy(PatternList p) {
+	  sequence = p.sequence;
+	  sequence_data = new ArrayList<ArrayList<Integer>>(p.sequence_data);
+	  patterns = new PatternStore(p.patterns);
+	  alphabet = new Alphabet(p.alphabet);
+	  transducer = new Transducer(p.transducer);
+  }
+  
   void
   beginSequence() {
     if (sequence) {
@@ -91,7 +111,7 @@ class PatternList {
     }
     sequence = false;
 
-    for (List<Integer> it : sequence_data) {
+    for (ArrayList<Integer> it : sequence_data) {
 
       it.add(alphabet.cast(QUEUE));
       patterns.put(sequence_id, it);
@@ -100,7 +120,7 @@ class PatternList {
 
   void
   insertOutOfSequence(String lemma, String tags,
-                      List<Integer> result) {
+                      ArrayList<Integer> result) {
     if (lemma.equals("")) {
       result.add(alphabet.cast(ANY_CHAR));
     } else {
@@ -134,11 +154,11 @@ class PatternList {
     sequence_id = id;
 
     if (sequence_data.size() == 0) {
-      List<Integer> new_vector = new Vector<Integer>();
+      ArrayList<Integer> new_vector = new ArrayList<Integer>();
       insertOutOfSequence(lemma, tags, new_vector);
       sequence_data.add(new_vector);
     } else {
-      for (List<Integer> it : sequence_data) {
+      for (ArrayList<Integer> it : sequence_data) {
         it.add((int) '+');
         insertOutOfSequence(lemma, tags, it);
       }
@@ -147,7 +167,7 @@ class PatternList {
 
   void insert(int id, String lemma, String tags) {
     if (!sequence) {
-      List<Integer> local = new Vector<Integer>();
+      ArrayList<Integer> local = new ArrayList<Integer>();
       insertOutOfSequence(lemma, tags, local);
       local.add(alphabet.cast(QUEUE));
       patterns.put(id, local);
@@ -165,16 +185,17 @@ class PatternList {
     sequence_id = id;
 
     if (sequence_data.size() == 0) {
-      final Collection<List<Integer>> p2 = patterns.get(otherid);
-      for (List<Integer> pSecond : p2) {
+      final Collection<ArrayList<Integer>> p2 = patterns.get(otherid);
+      for (ArrayList<Integer> pSecond : p2) {
         sequence_data.add(pSecond);
       }
     } else {
-      List<List<Integer>> new_sequence_data = new Vector<List<Integer>>();
+      ArrayList<ArrayList<Integer>> new_sequence_data = 
+    	  new ArrayList<ArrayList<Integer>>();
 
-      for (List<Integer> it : sequence_data) {
-        for (List<Integer> p : patterns.get(otherid)) {
-          List<Integer> temp = new Vector<Integer>(it);
+      for (ArrayList<Integer> it : sequence_data) {
+        for (ArrayList<Integer> p : patterns.get(otherid)) {
+          ArrayList<Integer> temp = new ArrayList<Integer>(it);
           temp.add((int) '+');
           temp.addAll(p);
           new_sequence_data.add(temp);
@@ -236,7 +257,7 @@ class PatternList {
   void buildTransducer() {
 
     for (int itFirst = 0; itFirst < sequence_data.size(); itFirst++) {
-      List<Integer> itSecond = sequence_data.get(itFirst);
+      ArrayList<Integer> itSecond = sequence_data.get(itFirst);
 
       int state = transducer.getInitial();
       int prevstate = -1;

@@ -24,7 +24,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.Iterator;
+//import java.util.Iterator; //Unused
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
@@ -71,6 +71,25 @@ public class TaggerData {
         output = new Collection();
     }
 
+    public TaggerData(TaggerData o) {
+    	copy(o);
+    }
+
+    /**
+     * Copies the passed-in TaggerData object to this one.
+     * @param o - The TaggerData object to copy.
+     */
+    private void copy(TaggerData o) {
+    	open_class = new HashSet<Integer>(o.open_class);
+    	forbid_rules = new ArrayList<TForbidRule>(o.forbid_rules);
+    	tag_index = new HashMap<String, Integer>(o.tag_index);
+    	array_tags = new ArrayList<String>(o.array_tags);
+    	enforce_rules = new ArrayList<TEnforceAfterRule>(o.enforce_rules);
+    	prefer_rules = new ArrayList<String>(o.prefer_rules);
+    	constants =  new ConstantManager(o.constants);
+    	plist = new PatternList(o.plist);
+    }
+    
     Set<Integer> getOpenClass () {
         return open_class;
     }
@@ -152,8 +171,7 @@ public class TaggerData {
       // tag_index
       for (int i = Compression.multibyte_read(in); i != 0; i--) {
           String tmp = Compression.String_read(in);
-          int t = Compression.multibyte_read(in);
-          tag_index.put(tmp, t);
+          tag_index.put(tmp, Compression.multibyte_read(in));
       }
   
       // enforce_rules
@@ -337,11 +355,12 @@ public class TaggerData {
         discard = v;
     }
 
-    void setProbabilities (int MyN, int MyM, double[][] myA, double[][] myB) {
-        N = MyN;
-        M = MyM;
+    void setProbabilities (int myN, int myM, double[][] myA, double[][] myB) {
+        N = myN;
+        M = myM;
 
         if (N != 0 && M != 0) {
+        	//NxN Matrix
             a = new double[N][];
             for (int i=0; i != N; i++) {
                 a[i] = new double[N];
@@ -352,6 +371,7 @@ public class TaggerData {
                 }
             }
 
+            //NxM matrix
             b = new double[N][];
             for (int i=0; i != N; i++) {
                 b[i] = new double[M];
@@ -369,8 +389,8 @@ public class TaggerData {
         }
     }
 
-    void setProbabilities (int MyN, int MyM) {
-        this.setProbabilities(MyN, MyM, null, null);
+    void setProbabilities (int myN, int myM) {
+        this.setProbabilities(myN, myM, null, null);
     }
 
     double[][] getA () {
