@@ -113,6 +113,7 @@ public static class IntegerPair {
     	slexicinv = new ArrayList<String>();
     	spair = new HashMap<IntegerPair, Integer>();
     	spairinv = new ArrayList<IntegerPair>();
+    	  cast00 = cast(0, 0);
     	
         Alphabet.debuggingInstance = this;
     }
@@ -127,7 +128,7 @@ public static class IntegerPair {
         slexicinv = new ArrayList<String>(o.slexicinv);
         spair = new HashMap<IntegerPair, Integer>(o.spair);
         spairinv = new ArrayList<IntegerPair>(o.spairinv);
-    	
+    	  cast00 = cast(0, 0);
         Alphabet.debuggingInstance = this;
     }
 
@@ -153,7 +154,7 @@ public static class IntegerPair {
     IntegerPair tmp = new IntegerPair(0,0);
 
     /** this lookup is needed very often and thus cached */
-    public final int cast00 =cast(0, 0);
+    public final int cast00;
 
     /**
      * Get an unique code for a pair of characters
