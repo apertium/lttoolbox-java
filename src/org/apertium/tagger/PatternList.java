@@ -40,7 +40,14 @@ class PatternList {
 
   Alphabet alphabet;
 
-  PatternStore patterns;
+  //PatternStore patterns;
+  /* PatternStore is just a typedef in the C++ version for a multimap<int, vector<int>>.
+   * The Java standard library doesn't have a multimap, so I'm making a map with Integer
+   * keys, and then each entry is an ArrayList of ArrayLists of Integers.
+   * This approach was chosen over writing a full PatternStore class, as then I would
+   * have had to implement iterators in the PatternStore. This is much simpler.
+   */
+  Map<Integer, ArrayList<ArrayList<Integer>>> patterns;
 
   boolean sequence;
 
@@ -57,22 +64,29 @@ class PatternList {
   /**
    * This symbol stands for any char
    */
-  static String ANY_CHAR;
+  static final String ANY_CHAR = "<ANY_CHAR>";
 
   /**
    * This symbol stands for any tag
    */
-  static String ANY_TAG;
+  static final String ANY_TAG = "<ANY_TAG>";
 
   /**
    * This symbol marks a word queue
    */
-  static String QUEUE;
+  static final String QUEUE = "<QUEUE>";
 
   /**
    * Constructor
    */
   PatternList() {
+	  sequence = false;
+	  alphabet = new Alphabet();
+	  alphabet.includeSymbol(ANY_TAG);
+	  alphabet.includeSymbol(ANY_CHAR);
+	  alphabet.includeSymbol(QUEUE);
+	  
+	  final_type = new HashMap<Integer, Integer>();
   }
 
   /**
@@ -80,46 +94,58 @@ class PatternList {
    * @param p - The PatternList object to copy.
    */
   PatternList(PatternList p) {
-	  copy(p);
+	  _copy(p);
   }
 
   /**
    * Copies the passed-in PatternList object to this one.
    * @param p - The PatternList object to copy.
    */
-  private void copy(PatternList p) {
+  private void _copy(PatternList p) {
 	  sequence = p.sequence;
 	  sequence_data = new ArrayList<ArrayList<Integer>>(p.sequence_data);
-	  patterns = new PatternStore(p.patterns);
+	  //patterns = new PatternStore(p.patterns);
+	  patterns = new HashMap<Integer, ArrayList<ArrayList<Integer>>>(p.patterns);
 	  alphabet = new Alphabet(p.alphabet);
 	  transducer = new Transducer(p.transducer);
   }
+
+  /**
+   * Private function to handle adding sequences to the patterns list.
+   * @param seqId - The key to store this entry under.
+   * @param seqData - The actual sequence data to store.
+   */
+  private void _addPattern(Integer seqId, ArrayList<Integer> seqData) {
+    ArrayList<ArrayList<Integer>> patternEntry = patterns.get(seqId);
+    if (patternEntry == null) { //Nothing stored under that key yet.
+      patternEntry = new ArrayList<ArrayList<Integer>>();
+      patterns.put(seqId, patternEntry);
+    }
+    patternEntry.add(seqData);
+  }
   
-  void
-  beginSequence() {
+  void beginSequence() throws RuntimeException {
     if (sequence) {
       throw new RuntimeException("Error: opening an unended sequence");
-
     }
     sequence = true;
     sequence_data.clear();
   }
 
-  void endSequence() {
+  void endSequence() throws RuntimeException {
     if (!sequence) {
       throw new RuntimeException("Error: ending an unopened sequence");
     }
     sequence = false;
 
     for (ArrayList<Integer> it : sequence_data) {
-
       it.add(alphabet.cast(QUEUE));
-      patterns.put(sequence_id, it);
+      //patterns.put(sequence_id, it);
+      _addPattern(sequence_id, it);
     }
   }
 
-  void
-  insertOutOfSequence(String lemma, String tags,
+  void insertOutOfSequence(String lemma, String tags,
                       ArrayList<Integer> result) {
     if (lemma.equals("")) {
       result.add(alphabet.cast(ANY_CHAR));
@@ -148,8 +174,7 @@ class PatternList {
     }
   }
 
-  void
-  insertIntoSequence(int id, String lemma,
+  void insertIntoSequence(int id, String lemma,
                      String tags) {
     sequence_id = id;
 
@@ -170,16 +195,20 @@ class PatternList {
       ArrayList<Integer> local = new ArrayList<Integer>();
       insertOutOfSequence(lemma, tags, local);
       local.add(alphabet.cast(QUEUE));
-      patterns.put(id, local);
+      //patterns.put(id, local);
+      _addPattern(id, local);
     } else {
       insertIntoSequence(id, lemma, tags);
     }
   }
 
   void insert(int id, int otherid) {
+    /* TODO Come back and double-check this either after PatternStore has been
+     * implemented, or during implementation (probably the latter), as this code
+     * is going to be heavily dependent on that.
+     */
     if (!sequence) {
       throw new RuntimeException("Error: using labels outside of a sequence");
-
     }
 
     sequence_id = id;
@@ -250,7 +279,8 @@ class PatternList {
     }
   }
 
-  PatternStore getPatterns() {
+  //PatternStore getPatterns() {
+  Map<Integer, ArrayList<ArrayList<Integer>>> getPatterns() {
     return patterns;
   }
 
@@ -306,16 +336,13 @@ class PatternList {
 
   void write(OutputStream output) throws IOException {
     alphabet.write(output);
-    String tagger_name = "tagger";
+    final String tagger_name = "tagger";
 
-
-    if (output!=null) throw new IllegalStateException("code commented out below");
-    //output.write(1);
-    //output.write(tagger_name);
+    Compression.multibyte_write(1, output);
+    Compression.String_write(tagger_name, output);
     transducer.write(output, alphabet.size());
-
-    // XXX: this is probably going to generate a null pointer exception
-    output.write(final_type.size());
+    
+    Compression.multibyte_write(final_type.size(), output);
 
     for (Map.Entry<Integer, Integer> it : final_type.entrySet()) {
       output.write(it.getKey());
@@ -324,44 +351,47 @@ class PatternList {
   }
 
   void read(InputStream input) throws IOException {
-      try {
-          sequence = false;
-          if (final_type==null) {
-              final_type = new HashMap<Integer, Integer>();
-          }
-          if (final_type.size()!=0) {
-              final_type.clear();
-          }
+    
+    sequence = false;
+    final_type.clear();
+    
+    alphabet = Alphabet.read(input);
+    if (Compression.multibyte_read(input) == 1) {
+      /* Okay, what's the purpose of this string?
+       * The variable 'myStr' isn't actually read anywhere.
+       * I copied this straight over from the C++ version, and it's not used there either.
+       */
+      String myStr = Compression.String_read(input);
+      transducer = Transducer.read(input, alphabet.size());
 
-          alphabet = new Alphabet();
-          alphabet.read(input);
-          System.err.println("Alphabet: "+alphabet.size());
-
-          if (input.read() == 1) {
-              String mystr = Compression.String_read(input);
-      //Transducer.read(input);
-
-/*
-      int finalsize = input.read();
-      for (; finalsize != 0; finalsize--) {
-        int key = input.read();
-        final_type.put(key, input.read());
+      int finalSize = Compression.multibyte_read(input);
+      for(; finalSize !=0; finalSize--) {
+        int key = Compression.multibyte_read(input);
+        final_type.put(key, Compression.multibyte_read(input));
       }
     }
- */
-            me = new MatchExe(input, alphabet.size());
-            ms = new MatchState(me);
-          }
-      } catch (Exception e) {
-          e.printStackTrace();
-      }
+    
+    /* Not sure why these were here, they're not in the C++ version. 
+     * Commenting them out for now.
+     */
+    //me = new MatchExe(input, alphabet.size());
+    //ms = new MatchState(me);
   }
 
+  /* This function isn't called by anything in either the existing Java code or the 
+   * C++ code (as far as I can tell). Since its unused and because of the uncertainty
+   * noted below, this function has been commented out. 
+   */
   //@SuppressWarnings("deprecation")
-  MatchExe newMatchExe() {
+  //MatchExe newMatchExe() {
     //return new MatchExe(transducer, final_type);
-      return this.me;
-  }
+    /* I don't know why the above line was commented out, and why it was
+     * returning this object's MatchExe object when the name of the function
+     * is <em>new</em> MatchExe. Also dunno why that method is deprecated on MatchExe.
+     * Changed it back to match the C++ version for now.
+     */
+    //return this.me;
+  //}
 
   Alphabet getAlphabet() {
     return alphabet;

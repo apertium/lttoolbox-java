@@ -1023,6 +1023,7 @@ public class Compile {
      * @param name the element 
      */
     private void requireEmptyError(String name) {
+        //FIXME
         //System.out.println("I dont't know how to check for an \"empty event\" " +
         //    "without reading what is after");
         if (false) {
@@ -1084,8 +1085,9 @@ public class Compile {
         Compile c = new Compile();
         
         //reading of letters 
-        c.letters=Compression.String_read(input);
-        c.alphabet=Alphabet.read(input);
+    	//TODO Check if there's supposed to be a new Alphabet instance here
+        c.letters = Compression.String_read(input);
+        c.alphabet = Alphabet.read(input);
         
         //reading of sections
         int number_of_sections = Compression.multibyte_read(input);

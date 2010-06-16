@@ -64,8 +64,11 @@ public class MatchExe {
   }
 
   public MatchExe(MatchExe te) {
-    copy(te);
-    finals = new HashMap<MatchNode, Integer>();
+    _copy(te);
+    /* Dunno why this line was here. When we're making a copy, why would we want a new
+     * finals object instead of copying the one from the original?
+     */
+    //finals = new HashMap<MatchNode, Integer>();
   }
 
 
@@ -226,7 +229,7 @@ public class MatchExe {
 
   }
 
-  public void copy(MatchExe te) {
+  private void _copy(MatchExe te) {
     initial_id = te.initial_id;
     node_list = te.node_list;
   }

@@ -48,15 +48,15 @@ public class MatchState {
     state = new int[BUF_LIMIT];
   }
 
-  private MatchState(MatchState s) {
-    copy(s);
+  public MatchState(MatchState s) {
+    _copy(s);
   }
 
   void clear() {
     first = last = 0;
   }
 
-  private void copy(MatchState s) {
+  private void _copy(MatchState s) {
     System.arraycopy(s.state, 0, state, 0, BUF_LIMIT);
     node_list = s.node_list;
     first = s.first;
