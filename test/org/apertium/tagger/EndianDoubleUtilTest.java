@@ -56,11 +56,11 @@ public class EndianDoubleUtilTest {
     @Test
     public void testRead() throws Exception {
         System.out.println("read");
-        FileOutputStream outtest = new FileOutputStream ("/tmp/readtest");
+        FileOutputStream outtest = new FileOutputStream ("./tmp/readtest");
         DataOutputStream outbytes = new DataOutputStream (outtest);
         for (byte b : this.doublebytes)
             outbytes.writeByte(b);
-        InputStream in = new FileInputStream("/tmp/readtest");
+        InputStream in = new FileInputStream("./tmp/readtest");
         double result = EndianDoubleUtil.read(in);
         outbytes.close();
         assertEquals(this.dtest, result, 1.90001);
@@ -72,10 +72,10 @@ public class EndianDoubleUtilTest {
     @Test
     public void testWrite() throws Exception {
         System.out.println("write");
-        OutputStream out = new FileOutputStream("/tmp/writetest");
+        OutputStream out = new FileOutputStream("./tmp/writetest");
         Double d = 1.90001;
         EndianDoubleUtil.write(out, d);
-        FileInputStream reread = new FileInputStream ("/tmp/writetest");
+        FileInputStream reread = new FileInputStream ("./tmp/writetest");
         DataInputStream bytesin = new DataInputStream (reread);
         for (int i=0; i<8; i++) {
             byte test = bytesin.readByte();

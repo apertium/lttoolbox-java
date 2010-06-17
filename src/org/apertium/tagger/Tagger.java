@@ -326,24 +326,10 @@ public class Tagger {
     }
 
     public static InputStream fopen(String filename) throws FileNotFoundException {
-    	/* XXX Per IRC discussion, this apparently was for some kind of saner encoding
-    	 * functionality which isn't in use right now, so it's commented out.
-    	 */
-        /*String encoding = "UTF-8";
-        if (System.getProperties().containsKey("file.encoding")) {
-            encoding = System.getProperty("file.encoding");
-        }*/
         return new BufferedInputStream(new FileInputStream(filename));
     }
 
     public static OutputStream foutopen(String filename) throws FileNotFoundException {
-    	/* XXX Same as above in Input Stream.
-    	 * Commented out as this code currently does nothing.
-    	 */
-        /*String encoding = "UTF-8";
-        if (System.getProperties().containsKey("file.encoding")) {
-            encoding = System.getProperty("file.encoding");
-        }*/
         return new BufferedOutputStream(new FileOutputStream(filename));
     }
 }

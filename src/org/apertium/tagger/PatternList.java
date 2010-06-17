@@ -40,7 +40,6 @@ class PatternList {
 
   Alphabet alphabet;
 
-  //PatternStore patterns;
   /* PatternStore is just a typedef in the C++ version for a multimap<int, vector<int>>.
    * The Java standard library doesn't have a multimap, so I'm making a map with Integer
    * keys, and then each entry is an ArrayList of ArrayLists of Integers.
@@ -104,7 +103,6 @@ class PatternList {
   private void _copy(PatternList p) {
 	  sequence = p.sequence;
 	  sequence_data = new ArrayList<ArrayList<Integer>>(p.sequence_data);
-	  //patterns = new PatternStore(p.patterns);
 	  patterns = new HashMap<Integer, ArrayList<ArrayList<Integer>>>(p.patterns);
 	  alphabet = new Alphabet(p.alphabet);
 	  transducer = new Transducer(p.transducer);
@@ -140,7 +138,6 @@ class PatternList {
 
     for (ArrayList<Integer> it : sequence_data) {
       it.add(alphabet.cast(QUEUE));
-      //patterns.put(sequence_id, it);
       _addPattern(sequence_id, it);
     }
   }
@@ -195,7 +192,6 @@ class PatternList {
       ArrayList<Integer> local = new ArrayList<Integer>();
       insertOutOfSequence(lemma, tags, local);
       local.add(alphabet.cast(QUEUE));
-      //patterns.put(id, local);
       _addPattern(id, local);
     } else {
       insertIntoSequence(id, lemma, tags);
@@ -203,10 +199,6 @@ class PatternList {
   }
 
   void insert(int id, int otherid) {
-    /* TODO Come back and double-check this either after PatternStore has been
-     * implemented, or during implementation (probably the latter), as this code
-     * is going to be heavily dependent on that.
-     */
     if (!sequence) {
       throw new RuntimeException("Error: using labels outside of a sequence");
     }
@@ -279,7 +271,6 @@ class PatternList {
     }
   }
 
-  //PatternStore getPatterns() {
   Map<Integer, ArrayList<ArrayList<Integer>>> getPatterns() {
     return patterns;
   }
@@ -370,28 +361,13 @@ class PatternList {
         final_type.put(key, Compression.multibyte_read(input));
       }
     }
-    
-    /* Not sure why these were here, they're not in the C++ version. 
-     * Commenting them out for now.
-     */
-    //me = new MatchExe(input, alphabet.size());
-    //ms = new MatchState(me);
   }
 
-  /* This function isn't called by anything in either the existing Java code or the 
-   * C++ code (as far as I can tell). Since its unused and because of the uncertainty
-   * noted below, this function has been commented out. 
+  /* Note: The function newMatchExe was removed.
+   * This function isn't called by anything in either the existing Java code or the 
+   * C++ code (as far as I can tell). Since its unused and because the existing version
+   * of it didn't make sense (and didn't match the C++ version) it was removed.
    */
-  //@SuppressWarnings("deprecation")
-  //MatchExe newMatchExe() {
-    //return new MatchExe(transducer, final_type);
-    /* I don't know why the above line was commented out, and why it was
-     * returning this object's MatchExe object when the name of the function
-     * is <em>new</em> MatchExe. Also dunno why that method is deprecated on MatchExe.
-     * Changed it back to match the C++ version for now.
-     */
-    //return this.me;
-  //}
 
   Alphabet getAlphabet() {
     return alphabet;

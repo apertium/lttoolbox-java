@@ -297,7 +297,6 @@ public class MorphoStream {
         for (int i = 0, limit = str.length(); i != limit; i++) {
             if (str.charAt(i) != '<') {
                 if (str.charAt(i) == '+') {
-                    //int val = ms.classifyFinals(me.getFinals());
                     int val = ms.classifyFinals();
                     if (val != -1) {
                         last_pos = i - 1;
@@ -317,8 +316,6 @@ public class MorphoStream {
                     }
                 }
 
-                // Check
-                //int symbol = alphabet(tag);
                 /* The C++ version has the () operator overloaded for Alphabet, when
                  * passing in a single string argument. Java version doesn't.
                  */
@@ -348,7 +345,6 @@ public class MorphoStream {
                             System.err.println("Warning: There is no coarse tag for the fine tag '" + str.substring(floor) + "'");
                             System.err.println("         This is because of an incomplete tagset definition or a dictionary error");
                         }
-                        //TaggerWord tw = new TaggerWord();
                         tw = vwords.get(ivwords);
                         tw.add_tag(ca_tag_kundef, str.substring(floor), td.getPreferRules());
                         vwords.set(ivwords, tw);
@@ -391,7 +387,6 @@ public class MorphoStream {
                 System.err.println("Warning: There is no coarse tag for the fine tag '" + str.substring(floor) + "'");
                 System.err.println("         This is because of an incomplete tagset definition or a dictionary error");
             }
-            //TaggerWord tw = new TaggerWord();
             tw = vwords.get(ivwords);
             tw.add_tag(val, str.substring(floor), td.getPreferRules());
             vwords.set(ivwords, tw);

@@ -25,7 +25,7 @@ public class RegressionTest extends TestCase {
 */
 
   public void testjavaAnalysis() throws Exception {
-    String outFile = "/tmp/lt-proc-output1a.txt";
+    String outFile = "./tmp/lt-proc-output1a.txt";
     org.apertium.lttoolbox.LTProc.main(new String[] {"-a",dir+"fr-es.automorf.bin", dir+"analysis_input", outFile});
     assertEquals("Difference", "", exec("diff "+dir+"analysis_output "+outFile));
     rm(outFile);
@@ -33,7 +33,7 @@ public class RegressionTest extends TestCase {
 
 
   public void testjavaGeneration() throws Exception {
-    String outFile = "/tmp/lt-proc-output1b.txt";
+    String outFile = "./tmp/lt-proc-output1b.txt";
     org.apertium.lttoolbox.LTProc.main(new String[] {"-g",dir+"fr-es.autogen.bin",dir+"generator_input", outFile});
     assertEquals("Difference", "", exec("diff "+dir+"generator_g_output "+outFile));
     rm(outFile);
@@ -41,7 +41,7 @@ public class RegressionTest extends TestCase {
 
 
   public void testjavaDGeneration() throws Exception {
-    String outFile = "/tmp/lt-proc-output3g.txt";
+    String outFile = "./tmp/lt-proc-output3g.txt";
     org.apertium.lttoolbox.LTProc.main(new String[] {"-d",dir+"fr-es.autogen.bin",dir+"generator_input", outFile});
     assertEquals("Difference", "", exec("diff "+dir+"generator_d_output "+outFile));
     rm(outFile);
@@ -49,7 +49,7 @@ public class RegressionTest extends TestCase {
 
 
   public void testjavaNGeneration() throws Exception {
-    String outFile = "/tmp/lt-proc-output4.txt";
+    String outFile = "./tmp/lt-proc-output4.txt";
     org.apertium.lttoolbox.LTProc.main(new String[] {"-n",dir+"fr-es.autogen.bin",dir+"generator_input", outFile});
     assertEquals("Difference", "", exec("diff "+dir+"generator_n_output "+outFile));
     rm(outFile);
@@ -58,7 +58,7 @@ public class RegressionTest extends TestCase {
 
 
   public void testjavaPostgeneration() throws Exception {
-    String outFile = "/tmp/lt-proc-output5.txt";
+    String outFile = "./tmp/lt-proc-output5.txt";
     org.apertium.lttoolbox.LTProc.main(new String[] {"-p",dir+"fr-es.autopgen.bin",dir+"postgenerator_input", outFile});
     assertEquals("Difference", "", exec("diff "+dir+"postgenerator_output "+outFile));
     rm(outFile);
