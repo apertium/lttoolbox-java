@@ -55,9 +55,9 @@ public class TaggerWord {
      */
     private boolean show_sf;
     private Map<String, ApertiumRE> patterns;
-    public boolean generate_marks = false;
-    public ArrayList<String> array_tags;
-    public boolean show_ignored_string = true;
+    public static boolean generate_marks = false;
+    public static ArrayList<String> array_tags;
+    public static boolean show_ignored_string = true;
 
     public TaggerWord (boolean prev_plus_cut) {
         ignored_string = "";
@@ -157,11 +157,11 @@ public class TaggerWord {
     public String get_string_tags () {
         String st="{";
 
-        // FIXME - is this doing the same thing? I need more coffee...
-        for (int i=0;i<tags.size();i++) {
-            if (i != 0) {
-                st +=",";
-            }
+        if(tags.size() > 0) {
+            st += array_tags.get(0);
+        }
+        for (int i=1; i < tags.size(); i++) {
+            st +=",";
             st += array_tags.get(i);
         }
         st += "}";
@@ -177,7 +177,7 @@ public class TaggerWord {
     public String get_lexical_form (int t, int TAG_kEOF) {
         String ret = "";
 
-        if (this.show_ignored_string) {
+        if (show_ignored_string) {
             ret += ignored_string;
         }
 
@@ -245,8 +245,12 @@ public class TaggerWord {
                 ret += lexical_forms.get(t);
                 if (lexical_forms.size()>1) {
                     for (Integer it : tags) {
-                        ret += "/";
-                        ret += lexical_forms.get(it);
+                        /* Make sure we're not adding the tag at 't' twice(?)
+                         */
+                        if(it != t) {
+                            ret += "/";
+                            ret += lexical_forms.get(it);
+                        }
                     }
                 }
             }
@@ -287,9 +291,7 @@ public class TaggerWord {
 
     public void print () {
         System.out.print("[#" + superficial_form + "# ");
-        Iterator<Integer> it = tags.iterator();
-        while (it.hasNext()) {
-            int f = it.next();
+        for(Integer f : tags) {
             System.out.print("(" + f + " " + lexical_forms.get(f) + ") ");
         }
         System.out.print("\b]\n");
@@ -310,6 +312,7 @@ public class TaggerWord {
             out="^"+s+"$\n";
         }
 
+        //Make sure string is UTF-8 encoded before writing it out
         o.write(out.getBytes("UTF-8"));
 
     }
@@ -323,19 +326,22 @@ public class TaggerWord {
                 Map.Entry<Integer, String> cur = it.next();
 
                 if (match(cur.getValue(),tags)) {
-                    lexical_forms.remove(cur.getKey());
-                    // FIXME
+                    /* The following call is the only safe way to remove an item
+                     * from a collection while an iteration is in progress.
+                     */
+                    it.remove();
                     continue;
                 } else {
                     newsettag.add(cur.getKey());
                 }
 
                 if (lexical_forms.size()==1) {
-                    // FIXME
-                    //newsettag.insert(lexical_forms.begin()->first);
+                    /* Insert the key of that singular remaining form into
+                     * newsettag.
+                     */
+                    newsettag.add(lexical_forms.keySet().iterator().next());
                     break;
                 }
-                //it++;
             }
 
             if (tags.length() != newsettag.size()) {
