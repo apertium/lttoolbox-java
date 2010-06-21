@@ -140,7 +140,7 @@ public class HMM {
     }
 
     /**
-     * Initializes the transtion (a) and emission (b) probabilities
+     * Initializes the transition (a) and emission (b) probabilities
      * from an untagged input text by means of Kupiec's method
      * @param is the input stream with the untagged corpus to process
      */
@@ -179,7 +179,8 @@ public class HMM {
         word = lexmorfo.get_next_word();
         while (word != null) {
             if (++nw % 10000 == 0) {
-                System.err.println('.');
+                System.err.print('.');
+                System.err.flush();
             }
 
             tags = word.get_tags();
@@ -338,11 +339,9 @@ public class HMM {
                 System.exit(1);
             }
 
-            if (word_tagged.get_tags().size() == 0) // Unknown word
-            {
+            if (word_tagged.get_tags().size() == 0) { // Unknown word
                 tag1 = -1;
-            } else if (word_tagged.get_tags().size() > 1) // Ambiguous word
-            {
+            } else if (word_tagged.get_tags().size() > 1) { // Ambiguous word
                 System.err.println("Error in tagged text. An ambiguous word was found: " + word_tagged.get_superficial_form());
             } else {
                 tag1 = word_tagged.get_tags().iterator().next();
@@ -529,8 +528,12 @@ public class HMM {
         }
     }
 
-    void train(InputStream ftxt) throws IOException {
-        int i, j, k, t, len, nw = 0;
+    void train(InputStream ftxt) throws IOException, UnsupportedOperationException {
+        if(true) {
+            throw new UnsupportedOperationException("HMM training doesn't work, " +
+                  "it hasn't been fully ported, yet!");
+        }
+        int k, t, len, nw = 0;
         TaggerWord word = new TaggerWord();
         Integer tag;
         Set<Integer> tags = new HashSet<Integer>();
@@ -545,6 +548,8 @@ public class HMM {
         Collection output = td.getOutput();
 
         int ndesconocidas = 0;
+        // alpha => forward probabilities
+        // beta => backward probabilities
 
         MorphoStream morpho_stream = new MorphoStream(ftxt, true, td);
 
@@ -555,14 +560,24 @@ public class HMM {
 
         // alpha[0].clear();
         // alpha[0][tag] = 1;
-        alpha.put(0, new HashMap<Integer, Double>(tag, 1));
+        HashMap<Integer, Double> tempNewMap = new HashMap<Integer, Double>();
+        tempNewMap.put(tag, 1.0);
+        alpha.put(0, tempNewMap);
+        /* tempNewMap is just a temporary scratch variable used to store a reference
+         * to the new map so that value can be added to it, and then the new map
+         * stored in alpha. It will be used again below. Set it to null to prevent
+         * re-using it w/o setting it again. This should actually cause a null pointer
+         * exception if tempNewMap is re-used incorrectly, which is the desired behavior.
+         */
+        tempNewMap = null;
 
         word = morpho_stream.get_next_word();
 
         // XXX: word is never set in this cycle; this probably leads to an infinite loop
         while (word != null) {
             if (++nw % 10000 == 0) {
-                System.err.println(".");
+                System.err.print(".");
+                System.err.flush();
             }
 
             pretags = pending.get(pending.size() - 1);
@@ -585,14 +600,12 @@ public class HMM {
 
             k = output.get(tags);
             len = pending.size();
-            // ?
-            alpha.get(len).clear();
+            // alpha[len].clear()
+            alpha.put(len, new HashMap<Integer, Double>());
 
             //Forward probabilities
-            for (Integer itag : tags) {
-                i = itag;
-                for (Integer jtag : pretags) {
-                    j = jtag;
+            for (Integer i : tags) {
+                for (Integer j : pretags) {
                     // FIXME
                     //alpha[len][i] += alpha[len-1][j]*(td->getA())[j][i]*(td->getB())[i][k];
                     Double ret = alpha.get(len).get(i) + alpha.get(len - 1).get(j) * (td.getA()[j][i]) * (td.getB()[i][k]);
@@ -606,7 +619,150 @@ public class HMM {
                 }
 
             }
+            
+            if (tags.size() > 1) {
+                pending.add(tags);
+            } else { //word is unambiguous
+                tag = tags.iterator().next();
+                tempNewMap = new HashMap<Integer, Double>();
+                tempNewMap.put(tag, 1.0);
+                beta.put(0, tempNewMap);
+                //clear temp variable for next use
+                tempNewMap = null;
+
+                prob = alpha.get(len).get(tag);
+
+                loli -= Math.log(prob);
+                
+                for (t = 0; t < len; t++) {
+                    Integer pendingSize = pending.size();
+                    pretags = pending.get(pendingSize - 1); //Get the last element
+                    pending.remove(pendingSize - 1); //Remove the last element
+                    k = output.get(tags);
+                    //beta[1 - t % 2].clear()
+                    beta.put(1 - t % 2, new HashMap<Integer, Double>());
+                    for (Integer i : tags) {
+                        Double tmpDbl;
+                        for (Integer j : pretags) {
+                            tmpDbl = beta.get(1 - t % 2).get(j) + td.getA()[j][i]
+                                    * td.getB()[i][k] * beta.get(t % 2).get(i);
+                            beta.get(1 - t %2).put(j, tmpDbl);
+                            if(xsi.get(j) == null) {
+                                xsi.put(j, new HashMap<Integer, Double>());
+                            }
+                            tmpDbl = xsi.get(j).get(i) + alpha.get(len - t - 1).get(j)
+                                    * td.getA()[j][i] * td.getB()[i][k] 
+                                    * beta.get(t % 2).get(i) / prob;
+                            xsi.get(j).put(i, tmpDbl);
+                        }
+                        double previous_value = gamma.get(i);
+                        
+                        tmpDbl = gamma.get(i) + alpha.get(len - t).get(i)
+                                * beta.get(t % 2).get(i) / prob;
+                        gamma.put(i, tmpDbl);
+                        /* tmp is used here in place of multiple, repeated calls to
+                         * gamma.get(i), since the value in tmp is the value that was
+                         * just stored at i in gamma.
+                         */
+                        if (Double.isNaN(tmpDbl)) {
+                            String outString = "NAN(3) gamma[" + i + "] = " + tmpDbl +
+                                    " alpha[" + (len - t) + "][" + i + "]= " + 
+                                    alpha.get(len - t).get(i) + " beta[" + (t %2) + "][" +
+                                    i + "] = " + beta.get(t % 2).get(i) + " prob = " +
+                                    prob + " previous gamma = " + previous_value;
+                            System.err.println(outString);
+                            System.exit(1);
+                        }
+                        if (Double.isInfinite(tmpDbl)) {
+                            String outString = "INF(3) gamma[" + i + "] = " + tmpDbl +
+                                    " alpha[" + (len - t) + "][" + i + "]= " + 
+                                    alpha.get(len - t).get(i) + " beta[" + (t %2) + "][" +
+                                    i + "] = " + beta.get(t % 2).get(i) + " prob = " +
+                                    prob + " previous gamma = " + previous_value;
+                            System.err.println(outString);
+                            System.exit(1);
+                        }
+                        if(tmpDbl == 0) {
+                            gamma.put(i, DBL_MIN);
+                        }
+                        if (phi.get(i) == null) {
+                            phi.put(i, new HashMap<Integer, Double>());
+                        }
+                        Double tmpPhiDbl = phi.get(i).get(i) + alpha.get(len - t).get(i)
+                                * beta.get(t % 2).get(i) / prob;
+                        phi.get(i).put(k, tmpPhiDbl);
+                    }
+                    tags = pretags;
+                }
+                tags.clear();
+                tags.add(tag);
+                pending.add(tags); //Adds to the end of the list
+                tempNewMap = new HashMap<Integer, Double>();
+                tempNewMap.put(tag, 1.0);
+                alpha.put(0, tempNewMap);
+                tempNewMap = null;
+            }
+            
+            word = morpho_stream.get_next_word();
         }
+        if ((pending.size() > 1) || ((tag != eos) && (tag != td.getTagIndex().get("TAG_kEOF")))) {
+          System.err.println("Warning: The last tag is not the end-of-sentence tag.");
+        }
+        
+        int N = td.getN();
+        int M = td.getM();
+
+        //Clean previous values
+        double[][] tmpA = td.getA();
+        double[][] tmpB = td.getB();
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                tmpA[i][j] = ZERO;
+            }
+            for (k = 0; k < M; k++) {
+                tmpB[i][k] = ZERO;
+            }
+        }
+        
+        //new parameters
+        for(Integer i : xsi.keySet()) {
+            for(Integer j : xsi.get(i).keySet()) {
+                if(xsi.get(i).get(j) > 0) {
+                    if (gamma.get(i) == 0) {
+                        System.err.println("Warning: gamma[" + i + "]=0");
+                        gamma.put(i, DBL_MIN);
+                    }
+                    
+                    //Reuse td.A reference grabbed before previous loop
+                    tmpA[i][j] = xsi.get(i).get(j) / gamma.get(i);
+                    
+                    if(Double.isNaN(tmpA[i][j])) {
+                        System.err.println("NAN");
+                        String outString = "Error: BW - NAN(1) a[" + i + "][" + j
+                            + "]=" + tmpA[i][j] + "\txsi[" + i + "][" + j + "]="
+                            + xsi.get(i).get(j) + "\tgamma[" + i + "]=" + gamma.get(i);
+                        System.err.println(outString);
+                        System.exit(1);
+                    }
+                    if(Double.isInfinite(tmpA[i][j])) {
+                        System.err.println("INF");
+                        String outString = "Error: BW - INF(1) a[" + i + "][" + j
+                            + "]=" + tmpA[i][j] + "\txsi[" + i + "][" + j + "]="
+                            + xsi.get(i).get(j) + "\tgamma[" + i + "]=" + gamma.get(i);
+                        System.err.println(outString);
+                        System.exit(1);
+                    }
+                    if(tmpA[i][j] == 0) {
+                        /* Do nothing for now, the code in the C++ version for this
+                         * conditional is all commented out. 
+                         */
+                    }
+                }
+            }
+        }
+        /* TODO This should be finished sometime if we decide we actually need the training
+         * functionality for the HMM tagger.
+         */
     }
 
     void tagger(InputStream in, OutputStream out, boolean show_all_good_first) throws IOException {

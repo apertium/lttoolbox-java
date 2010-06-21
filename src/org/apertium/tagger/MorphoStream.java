@@ -73,6 +73,7 @@ public class MorphoStream {
     MorphoStream(InputStream ftxt, boolean d, TaggerData t) {
         // this();
         foundEOF = false;
+        debug = d;
         alphabet = new Alphabet();
         ca_any_char = alphabet.cast(PatternList.ANY_CHAR);
         ca_any_tag = alphabet.cast(PatternList.ANY_TAG);
