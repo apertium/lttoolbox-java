@@ -921,7 +921,7 @@ public class HMM {
         System.out.println("-------------------------------");
         for (i = 0; i != td.getN(); i++) {
             for (j = 0; j != td.getN(); j++) {
-                System.out.print("A[" + i + "][" + j + "] = " + td.getA()[i][j]);
+                System.out.println("A[" + i + "][" + j + "] = " + td.getA()[i][j]);
             }
         }
     }
@@ -934,7 +934,7 @@ public class HMM {
             for (k = 0; k != td.getM(); k++) {
                 Collection output = td.getOutput();
                 if (output.get(k).contains(i)) {
-                    System.out.print("B[" + i + "][" + k + "] = " + td.getB()[i][k]);
+                    System.out.println("B[" + i + "][" + k + "] = " + td.getB()[i][k]);
                 }
             }
         }
