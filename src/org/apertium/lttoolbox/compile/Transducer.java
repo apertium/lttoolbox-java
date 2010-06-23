@@ -49,7 +49,7 @@ public class Transducer {
     /**
      * tag for epsilon transitions
      */
-    Integer epsilon_tag  = new Integer(0);
+    Integer epsilon_tag  = 0;
         
     /**
      * Final state set
@@ -159,7 +159,7 @@ public class Transducer {
      * @return the new state number
      */
     Integer newState() {
-        Integer nstate = new Integer(transitions.size());
+        Integer nstate = transitions.size();
         //transitions.put(nstate, new HashMap<Integer, Set<Integer>>());
         transitions.add(new HashMap<Integer, IntSet>());
         return nstate;
@@ -185,7 +185,7 @@ public class Transducer {
      * @param t - The Transducer object to copy.
      */
     private void copy(Transducer t) {
-    	initial = new Integer(t.initial);
+    	initial = t.initial;
     	finals = new AbundantIntSet(t.finals);
     	transitions = new ArrayList<Map<Integer, IntSet>>(t.transitions);
     }

@@ -54,7 +54,7 @@ public class ConstantManager {
             if (constants==null) {
                 constants = new HashMap<String, Integer>();
             }
-            constants.put(constant, new Integer(value));
+            constants.put(constant, value);
         } catch (NullPointerException npe) {
             System.err.println("Null pointer: " + constant + " " + value);
             npe.printStackTrace();

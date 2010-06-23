@@ -62,17 +62,19 @@ public static class IntegerPair {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this) {
-            return true;
-        }
-        /*
-        if (! (o instanceof IntegerPair)) {
-            return false;
-        }*/
-        IntegerPair p = (IntegerPair)o;
-        return ((first == p.first)&& (second == p.second));
-    }
+	public boolean equals(Object o) {
+		if (o == this) {
+			return true;
+		}
+		/*
+		 * if (! (o instanceof IntegerPair)) { return false; }
+		 */
+		if (o instanceof IntegerPair) {
+			IntegerPair p = (IntegerPair) o;
+			return ((first == p.first) && (second == p.second));
+		} else
+			return false;
+	}
 
     @Override
     public String toString() {

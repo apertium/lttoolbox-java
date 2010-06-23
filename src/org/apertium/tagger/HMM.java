@@ -333,7 +333,10 @@ public class HMM {
             }
 
             tag2 = tag1;
-
+            
+            //XXX: maybe you should throw an exception form here, instead of printing 
+            // on stderr and invoking System.exit() -- think, for example, if this is
+            // used inside a service
             if (word_untagged == null) {
                 System.err.println("word_untagged==NULL");
                 System.exit(1);
@@ -1000,6 +1003,9 @@ public class HMM {
      * Helper method - prints an error message and exits
      * @param err The string to print
      */
+    //XXX: maybe you should throw an exception form here, instead of printing 
+    // on stderr and invoking System.exit() -- think, for example, if this is
+    // used inside a service
     private void fatal_error(String err) {
         System.err.println(err);
         System.exit(1);

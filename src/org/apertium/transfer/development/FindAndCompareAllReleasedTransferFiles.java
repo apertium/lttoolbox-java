@@ -43,7 +43,7 @@ static String[] transferFileList = {
       if (t1xFile.startsWith("./")) t1xFile = t1xFile.substring(2); // strip ./
       transerFiles.add(t1xFile);
     }
-
+    br.close();
     return transerFiles.toArray(new String[transerFiles.size()]);
   }
 
@@ -201,6 +201,7 @@ static String[] transferFileList = {
     Process p = Runtime.getRuntime().exec(cmd);
     BufferedReader br=new BufferedReader(new InputStreamReader(p.getInputStream()));
     String s=br.readLine();
+    br.close();
     if (s!=null) {
       System.err.println(s);
       p.destroy();
@@ -208,6 +209,7 @@ static String[] transferFileList = {
     }
     br=new BufferedReader(new InputStreamReader(p.getErrorStream()));
     s=br.readLine();
+    br.close();
     if (s!=null) {
       System.err.println(s);
       p.destroy();

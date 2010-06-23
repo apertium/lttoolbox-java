@@ -31,17 +31,14 @@ public abstract class TestTools {
 
     System.err.println("exec: " + cmd);
     Process p=Runtime.getRuntime().exec(cmd);
-    String output="";
     String s;
     BufferedReader br=new BufferedReader(new InputStreamReader(p.getInputStream()));
-    while ((s=br.readLine())!=null)  output=output+s+"\n";
-    br=new BufferedReader(new InputStreamReader(p.getErrorStream()));
     StringBuffer sb = new StringBuffer();
-    while ((s=br.readLine())!=null) {
+    while ((s=br.readLine())!=null) { 
     	sb.append(s);
     	sb.append("\n");
     }
-    output = sb.toString();
+    String output = sb.toString();
     br.close();
     
     //p.waitFor();
