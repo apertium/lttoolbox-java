@@ -46,17 +46,17 @@ public class CompareAndDebugOneTestFile {
 
       //String inputFile = dir+"transferinput-en-eo.t1x.txt";
       FindAndCompareAllReleasedTransferFiles.exec("apertium-transfer", dir+t1xFile,  binFile, dir+"en-eo.autobil.bin",
-          inputFile, "/tmp/"+t1xFile+"-expected.txt");
+          inputFile, "./tmp/"+t1xFile+"-expected.txt");
 
       Reader input = new FileReader(inputFile);
       //StringReader input = new StringReader("^116<num>$^.<sent>$ ^And<cnjcoo>$ ^the<det><def><sp>$ ^dialogue<n><sg>$ ^that<rel><an><mf><sp>$ ^occur<vblex><pres><p3><sg>$ ^during<pr>$ ^that<det><dem><pl>$ ^professional<adj>$ ^development<n><sg>$\n");
-      String outFile = "/tmp/"+t1xFile+"-actual.txt";
+      String outFile = "./tmp/"+t1xFile+"-actual.txt";
       Writer output = new FileWriter(outFile);
       //Writer output = new OutputStreamWriter(System.out);
       t.transfer( input, output);
       output.close();
 
-      FindAndCompareAllReleasedTransferFiles.exec("diff","/tmp/"+t1xFile+"-expected.txt", outFile );
+      FindAndCompareAllReleasedTransferFiles.exec("diff","./tmp/"+t1xFile+"-expected.txt", outFile );
 
       //timing.read(args[0], args[1], args[2]);
       //timing.transfer(new InputStreamReader( System.in ),  new OutputStreamWriter(System.out));
@@ -68,7 +68,7 @@ public class CompareAndDebugOneTestFile {
 
       Writer output = new StringWriter(); //new PrintWriter(System.err); //
       //Writer output = new OutputStreamWriter(System.out);
-      //Writer output = new FileWriter("/tmp/transferoutput-en-eo.t1x.txt");
+      //Writer output = new FileWriter("./tmp/transferoutput-en-eo.t1x.txt");
       timing.transfer( input, output);
       output.flush();
       System.err.println("transfer output = " + output);

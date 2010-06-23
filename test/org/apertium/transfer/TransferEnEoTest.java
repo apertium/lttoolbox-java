@@ -45,7 +45,7 @@ public class TransferEnEoTest {
       Class transferClass = org.apertium.transfer.generated.apertium_eo_en_en_eo_t1x.class;
       t.read(transferClass, dir+"en-eo.t1x.bin", dir+"en-eo.autobil.bin");
       Reader input = new FileReader(dir+"transferinput-en-eo.t1x-malgranda.txt");
-      String outFile = "/tmp/transferoutput-en-eo.t1x-malgranda.txt";
+      String outFile = "./tmp/transferoutput-en-eo.t1x-malgranda.txt";
       Writer output = new FileWriter(outFile);
       t.transfer( input, output);
       output.close();
@@ -56,7 +56,7 @@ public class TransferEnEoTest {
 
   @Test
   public void testTransferAndCompilationMalgranda_en_eo() throws Exception {
-    String outFile = "/tmp/transferoutput-en-eo.t1x-malgranda.txt";
+    String outFile = "./tmp/transferoutput-en-eo.t1x-malgranda.txt";
     String t1xFile = dir+"apertium-eo-en.en-eo.t1x";
     String binFile = dir+"en-eo.t1x.bin";
 
@@ -65,10 +65,10 @@ public class TransferEnEoTest {
     // NOTE:  You *need* dist/lttoolbox.jar  , so do a full rebuiild if this test fails
     //
     ///////////////////////////
-    ApertiumTransferCompile.main(new String[]{t1xFile, "/tmp/t1x.bin.class"});
+    ApertiumTransferCompile.main(new String[]{t1xFile, "./tmp/t1x.bin.class"});
 
 
-    ApertiumTransfer.main(new String[]{"/tmp/t1x.bin.class", binFile, dir+"en-eo.autobil.bin", dir+"transferinput-en-eo.t1x-malgranda.txt", outFile});
+    ApertiumTransfer.main(new String[]{"./tmp/t1x.bin.class", binFile, dir+"en-eo.autobil.bin", dir+"transferinput-en-eo.t1x-malgranda.txt", outFile});
 
     assertEquals("Difference", "", exec("diff "+dir+"transferoutput-en-eo.t1x-malgranda.txt "+outFile));
     rm(outFile);
@@ -77,7 +77,7 @@ public class TransferEnEoTest {
 
   @Test
   public void testInterpretedTransferMalgranda_en_eo() throws Exception {
-    String outFile = "/tmp/transferoutput-en-eo.t1x-malgranda.txt";
+    String outFile = "./tmp/transferoutput-en-eo.t1x-malgranda.txt";
     String t1xFile = dir+"apertium-eo-en.en-eo.t1x";
     String binFile = dir+"en-eo.t1x.bin";
     FindAndCompareAllReleasedTransferFiles.exec("apertium-transfer", t1xFile, binFile, dir+"en-eo.autobil.bin", dir+"transferinput-en-eo.t1x-malgranda.txt", outFile);
@@ -99,7 +99,7 @@ public class TransferEnEoTest {
       timing.read(transferClass, dir+"en-eo.t1x.bin", dir+"en-eo.autobil.bin");
 
       Reader input = new FileReader(dir+"transferinput-en-eo.t1x.txt");
-      String outFile = "/tmp/transfer-output.txt";
+      String outFile = "./tmp/transfer-output.txt";
       Writer output = new FileWriter(outFile);
       timing.transfer( input, output);
       output.close();

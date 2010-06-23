@@ -37,10 +37,10 @@ public class TransferEoEnTest {
       Class transferClass = Class.forName("org.apertium.transfer.generated.apertium_"+tlx.replaceAll("[-\\.]", "_"));
       t.read(transferClass, folder+dir+".t1x.bin", folder+"en-eo.autobil.bin");
       Reader input = new FileReader(folder+"transferinput-en-eo.t1x-malgranda.txt");
-      Writer output = new FileWriter("/tmp/"+outFile);
+      Writer output = new FileWriter("./tmp/"+outFile);
       t.transfer( input, output);
       output.close();
-      assertEquals("Difference", "", exec("diff "+folder+outFile+" /tmp/"+outFile));
+      assertEquals("Difference", "", exec("diff "+folder+outFile+" ./tmp/"+outFile));
       rm(outFile);
   }
 
@@ -53,19 +53,19 @@ public class TransferEoEnTest {
     // NOTE:  You *need* dist/lttoolbox.jar  , so do a full rebuiild if this test fails
     //
     ///////////////////////////
-    ApertiumTransferCompile.main(new String[]{t1xFile, "/tmp/t1x.bin.class"});
+    ApertiumTransferCompile.main(new String[]{t1xFile, "./tmp/t1x.bin.class"});
 
-    ApertiumTransfer.main(new String[]{"/tmp/t1x.bin.class", binFile, folder+"en-eo.autobil.bin", folder+"transferinput-en-eo.t1x-malgranda.txt", "/tmp/"+outFile});
+    ApertiumTransfer.main(new String[]{"./tmp/t1x.bin.class", binFile, folder+"en-eo.autobil.bin", folder+"transferinput-en-eo.t1x-malgranda.txt", "./tmp/"+outFile});
 
-    assertEquals("Difference", "", exec("diff "+folder+outFile+" /tmp/"+outFile));
+    assertEquals("Difference", "", exec("diff "+folder+outFile+" ./tmp/"+outFile));
     rm(outFile);
   }
 
 
   @Test
   public void testInterpretedTransferMalgranda() throws Exception {
-    FindAndCompareAllReleasedTransferFiles.exec("apertium-transfer", t1xFile, binFile, folder+"en-eo.autobil.bin", folder+"transferinput-en-eo.t1x-malgranda.txt", "/tmp/"+outFile);
-    assertEquals("Difference", "", exec("diff "+folder+outFile+" /tmp/"+outFile));
+    FindAndCompareAllReleasedTransferFiles.exec("apertium-transfer", t1xFile, binFile, folder+"en-eo.autobil.bin", folder+"transferinput-en-eo.t1x-malgranda.txt", "./tmp/"+outFile);
+    assertEquals("Difference", "", exec("diff "+folder+outFile+" ./tmp/"+outFile));
     rm(outFile);
   }
 

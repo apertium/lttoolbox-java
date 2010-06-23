@@ -24,14 +24,14 @@ public class CompoundingTest extends TestCase {
 
 
   public void testCLIJava() throws Exception {
-    String outFile = "/tmp/testCLIJava-eo-output.txt.txt";
+    String outFile = "./tmp/testCLIJava-eo-output.txt.txt";
     LTProc.main(new String[] { "-e", "testdata/compounding/eo-en.automorf.bin", "testdata/compounding/eo-input.txt", outFile});
     assertEquals("Difference", "", exec("diff testdata/compounding/eo-output.txt "+outFile));
     rm(outFile);
   }
 
   public void testCLIJava_show_symbols() throws Exception {
-    String outFile = "/tmp/testCLIJava-eo-output-show-symbols.txt";
+    String outFile = "./tmp/testCLIJava-eo-output-show-symbols.txt";
     LTProc.main(new String[] { "-eS", "testdata/compounding/eo-en.automorf.bin", "testdata/compounding/eo-input.txt", outFile});
     assertEquals("Difference", "", exec("diff testdata/compounding/eo-output-show-symbols.txt "+outFile));
     rm(outFile);

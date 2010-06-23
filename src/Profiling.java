@@ -58,35 +58,35 @@ public class Profiling {
 
 
   public void testjavaAnalysis() throws Exception {
-    String outFile = "/tmp/lt-proc-output1a.txt";
+    String outFile = "./tmp/lt-proc-output1a.txt";
     org.apertium.lttoolbox.LTProc.main(new String[] {"-a",dir+"fr-es.automorf.bin", dir+"analysis_input", outFile});
     report("analysis -a  ");
   }
 
 
   public void testjavaGeneration() throws Exception {
-    String outFile = "/tmp/lt-proc-output1b.txt";
+    String outFile = "./tmp/lt-proc-output1b.txt";
     org.apertium.lttoolbox.LTProc.main(new String[] {"-g",dir+"fr-es.autogen.bin",dir+"generator_input", outFile});
     report("generation -g");
   }
 
 
   public void testjavaDGeneration() throws Exception {
-    String outFile = "/tmp/lt-proc-output3g.txt";
+    String outFile = "./tmp/lt-proc-output3g.txt";
     org.apertium.lttoolbox.LTProc.main(new String[] {"-d",dir+"fr-es.autogen.bin",dir+"generator_input", outFile});
     report("generation -d");
   }
 
 
   public void testjavaNGeneration() throws Exception {
-    String outFile = "/tmp/lt-proc-output4.txt";
+    String outFile = "./tmp/lt-proc-output4.txt";
     org.apertium.lttoolbox.LTProc.main(new String[] {"-n",dir+"fr-es.autogen.bin",dir+"generator_input", outFile});
     report("generation -n");
   }
 
 
   public void testjavaPostgeneration() throws Exception {
-    String outFile = "/tmp/lt-proc-output5.txt";
+    String outFile = "./tmp/lt-proc-output5.txt";
     org.apertium.lttoolbox.LTProc.main(new String[] {"-p",dir+"fr-es.autopgen.bin",dir+"postgenerator_input", outFile});
     report("generation -p");
   }
@@ -104,7 +104,7 @@ public class Profiling {
       t.read(transferClass, tdir+"en-ca.t1x.bin", tdir+"en-eo.autobil.bin");
       report("transfer-init "+transferClass.getSimpleName());
       Reader input = new FileReader(tdir+"transferinput-en-eo.t1x-malgranda.txt");
-      String outFile = "/tmp/transfer-output-malgranda.txt";
+      String outFile = "./tmp/transfer-output-malgranda.txt";
       Writer output = new FileWriter(outFile);
       t.transfer( input, output);
       output.close();

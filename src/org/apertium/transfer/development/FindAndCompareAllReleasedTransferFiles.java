@@ -52,7 +52,7 @@ static String[] transferFileList = {
 
     public static void main(String[] args) throws Exception {
       String testdir = "testdata/transfer/";
-      //String rootDirRoot = "/tmp/transfertest/";
+      //String rootDirRoot = "./tmp/transfertest/";
       String rootDirRoot = "transfertest/";
       boolean redoInterpretedTransfer = true;
       boolean redoBytecodeCompilation = false;
