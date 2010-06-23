@@ -19,6 +19,8 @@
 
 package org.apertium.tagger;
 
+import junit.framework.TestCase;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -29,7 +31,7 @@ import static org.junit.Assert.*;
  *
  * @author jim
  */
-public class Prob2TxtTest {
+public class Prob2TxtTest extends TestCase {
 
     public Prob2TxtTest() {
     }

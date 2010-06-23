@@ -20,6 +20,9 @@
 package org.apertium.tagger;
 
 import java.io.*;
+
+import junit.framework.TestCase;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -29,7 +32,7 @@ import static org.junit.Assert.*;
  *
  * @author jim
  */
-public class TaggerDataTest {
+public class TaggerDataTest extends TestCase {
 
     public TaggerDataTest() {
     }
@@ -47,9 +50,9 @@ public class TaggerDataTest {
      */
     @Test
     public void testRead() throws Exception {
-        fail("This test is not ready yet. Uncomment this line to try it out, on your own risk");
+        //fail("This test is not ready yet. Comment this line to try it out, at your own risk.");
         System.out.println("read");
-        String file = "/home/jim/Devel/apertium-en-es/es-en.prob";
+        String file = "testdata/tagger/en-es.prob";
         InputStream fin = new FileInputStream(file);
         BufferedInputStream buf = new BufferedInputStream(fin);
         TaggerData instance = new TaggerData();

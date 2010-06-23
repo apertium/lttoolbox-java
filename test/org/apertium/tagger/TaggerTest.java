@@ -55,15 +55,15 @@ public class TaggerTest {
      */
     @Test
     public void testMain() throws IOException {
-        fail("This test is not ready yet. Uncomment this line to try it out, on your own risk");
+        //fail("This test is not ready yet. Comment this line to try it out, at your own risk.");
         System.out.println("main");
 
         String prob = dir + "en-es.prob";
         String testin = "^this/this<det><dem><sg>/this<prn><tn><mf><sg>$ ^is/be<vbser><pri><p3><sg>$ ^a/a<det><ind><sg>$ ^test/test<n><sg>/test<vblex><inf>/test<vblex><pres>$^./.<sent>$";
         String testout = "^this<prn><tn><mf><sg>$ ^be<vbser><pri><p3><sg>$ ^a<det><ind><sg>$ ^test<n><sg>$^.<sent>$";
-        String[] argv = {"-g", prob, "/tmp/taggerin", "/tmp/taggerout"};
+        String[] argv = {"-g", prob, "./tmp/taggerin", "./tmp/taggerout"};
 
-        FileOutputStream f = new FileOutputStream("/tmp/taggerin");
+        FileOutputStream f = new FileOutputStream("./tmp/taggerin");
         f.write(testin.getBytes("UTF-8"));
         f.close();
 

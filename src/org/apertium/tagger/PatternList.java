@@ -55,8 +55,6 @@ class PatternList {
   Transducer transducer;
 
   Map<Integer, Integer> final_type;
-  MatchExe me;
-  MatchState ms;
 
   int sequence_id;
 
@@ -363,11 +361,13 @@ class PatternList {
     }
   }
 
-  /* Note: The function newMatchExe was removed.
-   * This function isn't called by anything in either the existing Java code or the 
-   * C++ code (as far as I can tell). Since its unused and because the existing version
-   * of it didn't make sense (and didn't match the C++ version) it was removed.
+  /* This function is calling a constructor that has been annotated as deprecated.
+   * This is intentional, as that's what the C++ version is using.
    */
+  @SuppressWarnings("deprecation")
+  MatchExe newMatchExe() {
+    return new MatchExe(transducer, final_type);
+  }
 
   Alphabet getAlphabet() {
     return alphabet;

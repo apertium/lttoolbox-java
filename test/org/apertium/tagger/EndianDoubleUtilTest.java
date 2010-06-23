@@ -25,6 +25,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+
+import junit.framework.TestCase;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -36,7 +39,7 @@ import static org.junit.Assert.*;
  *
  * @author jimregan
  */
-public class EndianDoubleUtilTest {
+public class EndianDoubleUtilTest extends TestCase {
 
     /**
      * $ hexdump double-test

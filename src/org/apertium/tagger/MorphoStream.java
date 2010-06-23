@@ -82,7 +82,8 @@ public class MorphoStream {
         this.input = ftxt;
         this.td = t;
         this.end_of_file = false;
-//        this.me = this.td.getPatternList().newMatchExe();
+        this.me = this.td.getPatternList().newMatchExe();
+        ms = new MatchState(me);
 
         this.constants = td.getConstants();
         this.ca_kignorar = constants.getConstant("kIGNORAR");
@@ -101,7 +102,7 @@ public class MorphoStream {
 
     /**
      * Get next word in the input stream.
-		 * Expected is an input word, like ^can/can<n><sg>/can<vaux><pres>$
+     * Expected is an input word, like ^can/can<n><sg>/can<vaux><pres>$
      * @return The next word in the input stream
      */
     TaggerWord get_next_word() throws IOException {
@@ -293,8 +294,7 @@ public class MorphoStream {
         int last_pos = 0;
         TaggerWord tw;
 
-        this.ms = new MatchState(this.td.getPatternList().me);
-        ms.init(this.td.getPatternList().me.getInitial());
+        ms.init(me.getInitial());
         for (int i = 0, limit = str.length(); i != limit; i++) {
             if (str.charAt(i) != '<') {
                 if (str.charAt(i) == '+') {
