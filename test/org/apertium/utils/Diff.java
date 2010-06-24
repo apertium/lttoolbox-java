@@ -1,8 +1,11 @@
 package org.apertium.utils;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class Diff {
-	public static String diff(String text1, String text2) {
-		StringBuffer ret = new StringBuffer();
+	public static List<String> diff(String text1, String text2) {
+		List<String> ret = new LinkedList<String>();
 		
 		String[] x = text1.split("\\n");
 		String[] y = text2.split("\\n");
@@ -27,18 +30,18 @@ public class Diff {
 				i++;
 				j++;
 			} else if (opt[i + 1][j] >= opt[i][j + 1])
-				ret.append("< " + x[i++]);
+				ret.add("< " + x[i++]);
 			else
-				ret.append("> " + y[j++]);
-		}
-
-		while (i < m || j < n) {
-			if (i == m)
-				ret.append("> " + y[j++]);
-			else if (j == n)
-				ret.append("< " + x[i++]);
+				ret.add("> " + y[j++]);
 		}
 		
-		return ret.toString();
+		while (i < m || j < n) {
+			if (i == m)
+				ret.add("> " + y[j++]);
+			else if (j == n)
+				ret.add("< " + x[i++]);
+		}
+		
+		return ret;
 	}
 }
