@@ -29,17 +29,19 @@ public class Diff {
 			if (x[i].equals(y[j])) {
 				i++;
 				j++;
-			} else if (opt[i + 1][j] >= opt[i][j + 1])
+			} else if (opt[i + 1][j] >= opt[i][j + 1]) {
 				ret.add("< " + x[i++]);
-			else
+			} else {
 				ret.add("> " + y[j++]);
+			}
 		}
 		
 		while (i < m || j < n) {
-			if (i == m)
+			if (i == m) {
 				ret.add("> " + y[j++]);
-			else if (j == n)
+			} else if (j == n) {
 				ret.add("< " + x[i++]);
+			}
 		}
 		
 		return ret;
