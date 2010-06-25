@@ -56,7 +56,7 @@ public class MatchNode {
    * Hmm ..... se: ../../lttoolbox/lttoolbox/sorted_vector.*
    */
 
-  void addTransition(int i, MatchNode d, int pos) {
+  void addTransition(int i, MatchNode d) {
       //System.err.println(this+".addTransition("+ i+", "+d+",  "+pos);
 
     //  transitions[i] = d;

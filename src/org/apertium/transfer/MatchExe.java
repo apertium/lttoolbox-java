@@ -21,6 +21,7 @@ package org.apertium.transfer;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import org.apertium.lttoolbox.Compression;
@@ -54,21 +55,8 @@ public class MatchExe {
    */
   int[][] node_list;
 
-  Map<MatchNode, Integer> finals;
-
-  public Map<MatchNode, Integer> getFinals () {
-      if (finals==null) {
-          finals = new HashMap<MatchNode, Integer>();
-      }
-      return finals;
-  }
-
   public MatchExe(MatchExe te) {
     _copy(te);
-    /* Dunno why this line was here. When we're making a copy, why would we want a new
-     * finals object instead of copying the one from the original?
-     */
-    //finals = new HashMap<MatchNode, Integer>();
   }
 
 
@@ -83,14 +71,12 @@ public class MatchExe {
     /* Not sure why the following section is enclosed in this headless block.
      */
     {
-      //int base = 0; //unused variable
       /* The purpose of this section seems to be just to read and discard the bytes
        * for the list of final states, since this implementation doesn't actually
        * use that list. The point being to advance the read pointer past the finals
        * list.
        */
       for (int i = number_of_finals; i > 0; i--) {
-          //int read = Compression.multibyte_read(in);
     	  /* No need for an assignment as we're discarding the data anyway.
     	   */
     	  Compression.multibyte_read(in);
@@ -194,33 +180,48 @@ public class MatchExe {
 
         int limit=t.transitions.size();
 
-        finals = new HashMap<MatchNode, Integer>();
-
         // memory allocation
-        MatchNode[] my_node_list = new MatchNode[limit];
-
-        for (int no =0; no<limit; no++) {
-            //final Map<Integer, Set<Integer>> second = t.transitions.get(first);
-            //node_list[first] = new MatchNode(second.size());
-            my_node_list[no] = new MatchNode();
-        }
+        node_list = new int[limit][];
 
         // set up the transitions
-        for (int no =0; no<limit; no++) {
-            MatchNode mynode=my_node_list[no];
-            final Map<Integer, IntSet> second=t.transitions.get(no);
-            for (Integer it2First : second.keySet()) {
+        for (int node_id = 0; node_id < limit; node_id++) { //Loop through node_id's
+            /* Each entry in the ArrayList Transducer.transitions, is a state.
+             * These states correspond to the node_id's which make up the first
+             * level of the node_list array.
+             * 
+             * Now, for the Maps that are the entries in the ArrayList.
+             * The key is the input symbol, and the value is a list of target node_id's.
+             * 
+             */
+            final Map<Integer, IntSet> second=t.transitions.get(node_id);
+
+            /* Using an ArrayList because we don't know how many elements we'll have
+             * up front, and it's not worth trying to calculate ahead of time.
+             */
+            ArrayList<Integer> currArray = new ArrayList<Integer>();
+            for (Integer it2First : second.keySet()) { //Loop through input symbols
                 IntSet it2Second=second.get(it2First);
-                for (Integer integer : it2Second) {
-                //mynode.addTransition(it2First, my_node_list[integer]);
+                for (Integer integer : it2Second) { //Loop through targets
+                    //mynode.addTransition(it2First, my_node_list[integer]);
+                    currArray.add(it2First);
+                    currArray.add(integer);
                 }
             }
-        }
-
-        // set up finals
-        for (Integer first : final_type.keySet()) {
-            final Integer second = final_type.get(first);
-            finals.put(my_node_list[first], second);
+            /* Check if there is a final for this node_id, if so, add it.
+             * Since we're iterating through all possible nodes, no need to worry 
+             * about missing any of the finals.
+             */
+            Integer final_symbol;
+            if((final_symbol = final_type.get(node_id)) != null) {
+                currArray.add(final_symbol);
+            }
+            //Add temporary array to node_list
+            int[] curr_node_list = node_list[node_id] = new int[currArray.size()];
+            Integer[] currArrayArray = currArray.toArray(new Integer[1]);
+            //Can't directly cast from Integer[] to int[]
+            for(int i = 0; i < currArray.size(); i++) {
+                curr_node_list[i] = currArrayArray[i];
+            }
         }
 
     } catch (Exception e) {

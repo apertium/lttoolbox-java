@@ -68,6 +68,45 @@ public class TaggerTest {
         f.close();
 
         Tagger.main(argv);
+        
+        FileInputStream fIn = new FileInputStream("./tmp/taggerout");
+        int numBytesRead;
+        int numBytesToRead = fIn.available();
+        byte[] byteArray = new byte[numBytesToRead];
+        numBytesRead = fIn.read(byteArray);
+        String testOutput = new String(byteArray, "UTF-8");
+        assertEquals("TaggerTest.testMain() failed: output does not match expected output.", testout, testOutput);
+    }
+    
+    /**
+     * Test of main method, using external text files.
+     */
+    @Test
+    public void testMainExternal() throws IOException {
+        System.out.println("main");
 
+        String prob = dir + "en-es.prob";
+        String inFile = dir + "en-tagger-input.txt";
+        String outputFile = "./tmp/taggerout";
+        String compareOutFile = dir + "en-tagger-output.txt";
+        String[] argv = {"-g", prob, inFile, outputFile};
+
+        Tagger.main(argv);
+        
+        //Read actual output into a string
+        FileInputStream fIn = new FileInputStream(outputFile);
+        int numBytesRead;
+        int numBytesToRead = fIn.available();
+        byte[] byteArray = new byte[numBytesToRead];
+        numBytesRead = fIn.read(byteArray);
+        String testOutput = new String(byteArray, "UTF-8");
+        
+        fIn = new FileInputStream(compareOutFile);
+        numBytesToRead = fIn.available();
+        byteArray = new byte[numBytesToRead];
+        numBytesRead = fIn.read(byteArray);
+        String expectedOutput = new String(byteArray, "UTF-8");
+        
+        assertEquals("TaggerTest.testMain() failed: output does not match expected output.", expectedOutput, testOutput);
     }
 }

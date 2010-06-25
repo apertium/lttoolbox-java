@@ -58,6 +58,7 @@ public class MatchState {
 
   private void _copy(MatchState s) {
     System.arraycopy(s.state, 0, state, 0, BUF_LIMIT);
+    //XXX - Does this need to be arraycopy'd as well?
     node_list = s.node_list;
     first = s.first;
     last = s.last;

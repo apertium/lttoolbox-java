@@ -830,15 +830,17 @@ public class HMM {
 
             k = output.get(tags);  //Ambiguity class the word belongs to
 
-            clear_array_double(alpha[nwpend % 2], N);
-            clear_array_vector(best[nwpend % 2], N);
+            clear_array_double(alpha[nwpend % 2]);
+            clear_array_vector(best[nwpend % 2]);
 
             //Induction
             for (Integer itag : tags) {
                 System.err.println("i: " + " " + itag);
+                System.err.flush();
                 i = itag;
                 for (Integer jtag : pretags) {
                     System.err.println("j: " + " " + jtag);
+                    System.err.flush();
                     j = jtag;
                     x = alpha[1 - nwpend % 2][j] * td.getA()[j][i] * td.getB()[i][k];
                     if (alpha[nwpend % 2][i] <= x) {
@@ -859,6 +861,7 @@ public class HMM {
                             best[nwpend % 2][i].nodes.addAll(best[1 - nwpend % 2][j].nodes);
                         }
                         System.err.println("best: " + (nwpend % 2) + " " + i);
+                        System.err.flush();
                         if (best[nwpend % 2][i] == null) {
                             best[nwpend % 2][i] = new IntVector();
                         }
@@ -884,12 +887,25 @@ public class HMM {
                         System.err.println("Problem with word '" + word.get_superficial_form() + "' " + word.get_string_tags());
                     }
                 }
+                
+                int DEBUG_pre_loop_limit = best[nwpend % 2][tag].nodes.size(); //For debugging
                 for (int t = 0; t < best[nwpend % 2][tag].nodes.size(); t++) {
+                    int DEBUG_loop_limit = best[nwpend % 2][tag].nodes.size(); //For debugging
                     if (show_all_good_first) {
                         String micad = wpend.get(t).get_all_chosen_tag_first(best[nwpend % 2][tag].nodes.get(t), td.getTagIndex().get("TAG_kEOF"));
                         out.write(micad.getBytes("UTF-8"));
                     } else {
-                        String micad = wpend.get(t).get_lexical_form(best[nwpend % 2][tag].nodes.get(t), td.getTagIndex().get("TAG_kEOF"));
+                        //Split out the following line for debugging.
+                        //String micad = wpend.get(t).get_lexical_form(best[nwpend % 2][tag].nodes.get(t), td.getTagIndex().get("TAG_kEOF"));
+                        int tagkeof = td.getTagIndex().get("TAG_kEOF");
+                        int tagT = best[nwpend % 2][tag].nodes.get(t);
+                        /* FIXME -- IndexOutOfBoundsException here on certain inputs.
+                         * best[nwpend % 2][tag].nodes.size() somehow gets larger than
+                         * wpend.size(). This causes t to increment past wpend.size(),
+                         * which triggers the IndexOutOfBoundsException.
+                         */
+                        TaggerWord tempWord = wpend.get(t);
+                        String micad = tempWord.get_lexical_form(tagT, tagkeof);
                         out.write(micad.getBytes("UTF-8"));
                     }
                 }
@@ -1014,16 +1030,15 @@ public class HMM {
     /**
      * Make all array positions equal to zero
      * @param a the array
-     * @param l length of the array a
      */
-    void clear_array_double(double a[], int l) {
-        for (int i = 0; i < l; i++) {
+    void clear_array_double(double a[]) {
+        for (int i = 0; i < a.length; i++) {
             a[i] = 0.0;
         }
     }
 
-    void clear_array_vector(IntVector a[], int l) {
-        for (int i = 0; i < l; i++) {
+    void clear_array_vector(IntVector a[]) {
+        for (int i = 0; i < a.length; i++) {
             a[i] = null;
         }
     }
