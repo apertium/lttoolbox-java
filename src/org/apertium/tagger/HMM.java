@@ -857,7 +857,8 @@ public class HMM {
                             if (best[nwpend % 2][j].nodes == null) {
                                 best[nwpend % 2][j].nodes = new ArrayList<Integer>();
                             }
-
+                            //This should be *replacing* nodes, not just adding them
+                            best[nwpend % 2][i].nodes.clear();
                             best[nwpend % 2][i].nodes.addAll(best[1 - nwpend % 2][j].nodes);
                         }
                         System.err.println("best: " + (nwpend % 2) + " " + i);
