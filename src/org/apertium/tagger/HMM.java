@@ -835,13 +835,13 @@ public class HMM {
 
             //Induction
             for (Integer itag : tags) {
+                i = itag;
                 System.err.println("i: " + " " + itag);
                 System.err.flush();
-                i = itag;
                 for (Integer jtag : pretags) {
+                    j = jtag;
                     System.err.println("j: " + " " + jtag);
                     System.err.flush();
-                    j = jtag;
                     x = alpha[1 - nwpend % 2][j] * td.getA()[j][i] * td.getB()[i][k];
                     if (alpha[nwpend % 2][i] <= x) {
                         if (nwpend > 1) {
@@ -857,9 +857,15 @@ public class HMM {
                             if (best[nwpend % 2][j].nodes == null) {
                                 best[nwpend % 2][j].nodes = new ArrayList<Integer>();
                             }
-                            //This should be *replacing* nodes, not just adding them
-                            best[nwpend % 2][i].nodes.clear();
-                            best[nwpend % 2][i].nodes.addAll(best[1 - nwpend % 2][j].nodes);
+                            /* This should be *replacing* nodes, not just adding them.
+                             * However, if we're replacing the nodes with themselves,
+                             * no need to do anything, and in fact the clear() call
+                             * would be detrimental.
+                             */
+                            if (((nwpend %2) != (1 - nwpend %2)) || (i != j)) {
+                                best[nwpend % 2][i].nodes.clear();
+                                best[nwpend % 2][i].nodes.addAll(best[1 - nwpend % 2][j].nodes);
+                            }
                         }
                         System.err.println("best: " + (nwpend % 2) + " " + i);
                         System.err.flush();
@@ -900,7 +906,8 @@ public class HMM {
                         //String micad = wpend.get(t).get_lexical_form(best[nwpend % 2][tag].nodes.get(t), td.getTagIndex().get("TAG_kEOF"));
                         int tagkeof = td.getTagIndex().get("TAG_kEOF");
                         int tagT = best[nwpend % 2][tag].nodes.get(t);
-                        /* FIXME -- IndexOutOfBoundsException here on certain inputs.
+                        /* XXX FIXED, I think.
+                         * IndexOutOfBoundsException here on certain inputs.
                          * best[nwpend % 2][tag].nodes.size() somehow gets larger than
                          * wpend.size(). This causes t to increment past wpend.size(),
                          * which triggers the IndexOutOfBoundsException.
