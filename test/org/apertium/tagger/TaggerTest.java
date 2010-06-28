@@ -50,17 +50,26 @@ public class TaggerTest {
     public void tearDown() {
     }
 
-    /**
+
+
+	public String readFile(String path) throws IOException {
+		File outFile=new File(path);
+		FileInputStream fis=new FileInputStream(outFile);
+		byte[] byteArray=new byte[(int) outFile.length()];
+		fis.read(byteArray);
+		fis.close();
+		String testOutput=new String(byteArray, "UTF-8");
+		return testOutput;
+	}
+
+	/**
      * Test of main method, of class Tagger.
      */
     @Test
-    public void testMain() throws IOException {
-        //fail("This test is not ready yet. Comment this line to try it out, at your own risk.");
-        System.out.println("main");
-
+    public void testMainThisIsATest() throws IOException {
         String prob = dir + "en-es.prob";
         String testin = "^this/this<det><dem><sg>/this<prn><tn><mf><sg>$ ^is/be<vbser><pri><p3><sg>$ ^a/a<det><ind><sg>$ ^test/test<n><sg>/test<vblex><inf>/test<vblex><pres>$^./.<sent>$";
-        String testout = "^this<prn><tn><mf><sg>$ ^be<vbser><pri><p3><sg>$ ^a<det><ind><sg>$ ^test<n><sg>$^.<sent>$";
+        String expTestout = "^this<prn><tn><mf><sg>$ ^be<vbser><pri><p3><sg>$ ^a<det><ind><sg>$ ^test<n><sg>$^.<sent>$";
         String[] argv = {"-g", prob, "./tmp/taggerin", "./tmp/taggerout"};
 
         FileOutputStream f = new FileOutputStream("./tmp/taggerin");
@@ -68,21 +77,15 @@ public class TaggerTest {
         f.close();
 
         Tagger.main(argv);
-        
-        FileInputStream fIn = new FileInputStream("./tmp/taggerout");
-        int numBytesRead;
-        int numBytesToRead = fIn.available();
-        byte[] byteArray = new byte[numBytesToRead];
-        numBytesRead = fIn.read(byteArray);
-        String testOutput = new String(byteArray, "UTF-8");
-        assertEquals("TaggerTest.testMain() failed: output does not match expected output.", testout, testOutput);
+        String testOutput = readFile("./tmp/taggerout");
+        assertEquals("TaggerTest.testMain() failed: output does not match expected output.", expTestout, testOutput);
     }
-    
+
     /**
      * Test of main method, using external text files.
      */
     @Test
-    public void testMainExternal() throws IOException {
+    public void testMain200Sentences() throws IOException {
         System.out.println("main");
 
         String prob = dir + "en-es.prob";
@@ -92,21 +95,12 @@ public class TaggerTest {
         String[] argv = {"-g", prob, inFile, outputFile};
 
         Tagger.main(argv);
-        
+
         //Read actual output into a string
-        FileInputStream fIn = new FileInputStream(outputFile);
-        int numBytesRead;
-        int numBytesToRead = fIn.available();
-        byte[] byteArray = new byte[numBytesToRead];
-        numBytesRead = fIn.read(byteArray);
-        String testOutput = new String(byteArray, "UTF-8");
-        
-        fIn = new FileInputStream(compareOutFile);
-        numBytesToRead = fIn.available();
-        byteArray = new byte[numBytesToRead];
-        numBytesRead = fIn.read(byteArray);
-        String expectedOutput = new String(byteArray, "UTF-8");
-        
+        String testOutput = readFile("./tmp/taggerout");
+        String expectedOutput = readFile(compareOutFile);
+
         assertEquals("TaggerTest.testMain() failed: output does not match expected output.", expectedOutput, testOutput);
     }
+
 }
