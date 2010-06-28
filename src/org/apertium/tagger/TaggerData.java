@@ -53,6 +53,8 @@ public class TaggerData {
 
     private double ZERO = 1e-10;
 
+		private boolean DEBUG = true;
+
     public TaggerData () {
         a = null;
         b = null;
@@ -154,6 +156,8 @@ public class TaggerData {
           val += Compression.multibyte_read(in);
           open_class.add(val);
       }
+
+			if (DEBUG) System.out.println("open_class = " + open_class);
    
       // forbid_rules
       for (int i = Compression.multibyte_read(in); i != 0; i--) {
@@ -163,11 +167,16 @@ public class TaggerData {
           forbid_rules.add(aux);
       }
 
+
+			if (DEBUG) System.out.println("forbid_rules = " + forbid_rules);
+
       // array_tags
       for (int i = Compression.multibyte_read(in); i != 0; i--) {
           array_tags.add(Compression.String_read(in));
       }
 
+
+			if (DEBUG) System.out.println("array_tags = " + array_tags);
       // tag_index
       for (int i = Compression.multibyte_read(in); i != 0; i--) {
           String tmp = Compression.String_read(in);
@@ -198,6 +207,10 @@ public class TaggerData {
       // dimensions
       N = Compression.multibyte_read(in);
       M = Compression.multibyte_read(in);
+
+
+			if (DEBUG) System.out.println("N = " + N);
+			if (DEBUG) System.out.println("M = " + M);
 
       a = new double[N][];
       b = new double[N][];
@@ -246,6 +259,9 @@ public class TaggerData {
       for (int i = 0; i < limit; i++) {
           discard.add(Compression.String_read(in));
       }
+
+
+			if (DEBUG) System.out.println("discard = " + discard);
     }
 
     void write (OutputStream out) throws IOException {
