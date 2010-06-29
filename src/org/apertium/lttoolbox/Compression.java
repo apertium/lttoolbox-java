@@ -74,6 +74,8 @@ public class Compression {
      * Read and decode an integer from the input stream.
      * @param input input stream.
      * @return the integer value readed.
+		 * If EOF is encountered as the first byte a -1 will be returned. If EOF is encountered in the middle of a multibyte read the result is undefined.
+		 * In these cases next calll to read will return a -1.
      * @throws java.io.IOException
      */
     public static int multibyte_read(InputStream input) throws IOException {

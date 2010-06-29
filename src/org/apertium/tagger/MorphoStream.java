@@ -64,6 +64,8 @@ public class MorphoStream {
     private Map<String, Integer> tag_index;
     private ConstantManager constants;
 
+		private boolean DEBUG = true;
+
 //    MorphoStream() {
 //    }
     /**
@@ -100,6 +102,7 @@ public class MorphoStream {
         this.vwords = new ArrayList<TaggerWord>();
     }
 
+
     /**
      * Get next word in the input stream.
      * Expected is an input word, like ^can/can<n><sg>/can<vaux><pres>$
@@ -117,6 +120,9 @@ public class MorphoStream {
                     word.discardOnAmbiguity(ref.get(i));
                 }
             }
+
+						//if (DEBUG) System.out.println("get_next_word " + word.get_superficial_form()+" "+ word.get_string_tags());
+						if (DEBUG) System.out.println("get_next_word " + word.get_superficial_form());
             return word;
         }
 
@@ -311,7 +317,9 @@ public class MorphoStream {
                     if (str.charAt(j) == '\\') {
                         j++;
                     } else if (str.charAt(j) == '>') {
-                        tag = str.substring(i, j);
+                        tag = str.substring(i, j+1);
+
+												System.out.println("tag = " + tag);
                         i = j;
                         break;
                     }

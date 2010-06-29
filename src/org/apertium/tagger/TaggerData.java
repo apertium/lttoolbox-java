@@ -157,7 +157,7 @@ public class TaggerData {
           open_class.add(val);
       }
 
-			if (DEBUG) System.out.println("open_class = " + open_class);
+			//if (DEBUG) System.out.println("open_class = " + open_class);
    
       // forbid_rules
       for (int i = Compression.multibyte_read(in); i != 0; i--) {
@@ -240,28 +240,29 @@ public class TaggerData {
           int i = Compression.multibyte_read(in);
           int j = Compression.multibyte_read(in);
           b[i][j] = EndianDoubleUtil.read(in);
-      }
+
+					if (DEBUG) System.out.println("b["+i+"]["+j+"] = " + b[i][j]);
+			}
 
       // read pattern list
       plist.read(in);
     
       // read discards on ambiguity
-      if (discard!=null)
-          discard = new ArrayList<String>();
-      else
-          discard.clear();
+			discard.clear();
 
       int limit = Compression.multibyte_read(in);
-      if (limit < 1) {
+
+			if (DEBUG) {
+				System.out.println("discard limit = " + limit);
+//				System.out.println("discard = " + discard);
+			}
+      if (limit < 0) {
           return;
       }
   
       for (int i = 0; i < limit; i++) {
           discard.add(Compression.String_read(in));
       }
-
-
-			if (DEBUG) System.out.println("discard = " + discard);
     }
 
     void write (OutputStream out) throws IOException {

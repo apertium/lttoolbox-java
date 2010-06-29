@@ -87,7 +87,10 @@ public class MatchState {
     }
   }
 
+	private boolean DEBUG = false;
+
   public void step(int input) {
+		if (DEBUG) System.out.println("step "+input);
     int mylast = last;
     for (int i = first; i != mylast; i = (i + 1) % BUF_LIMIT) {
       applySymbol(state[i], input);
@@ -96,6 +99,7 @@ public class MatchState {
   }
 
   public void step(int input, int alt) {
+		if (DEBUG) System.out.println("step "+input+" "+alt);
     int mylast = last;
     for (int i = first; i != mylast; i = (i + 1) % BUF_LIMIT) {
       applySymbol(state[i], input);
