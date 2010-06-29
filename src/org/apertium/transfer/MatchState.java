@@ -87,7 +87,7 @@ public class MatchState {
     }
   }
 
-	private boolean DEBUG = false;
+	private boolean DEBUG = true;
 
   public void step(int input) {
 		if (DEBUG) System.out.println("step "+input);

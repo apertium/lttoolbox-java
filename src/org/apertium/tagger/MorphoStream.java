@@ -79,6 +79,8 @@ public class MorphoStream {
         alphabet = new Alphabet();
         ca_any_char = alphabet.cast(PatternList.ANY_CHAR);
         ca_any_tag = alphabet.cast(PatternList.ANY_TAG);
+				System.out.println("ca_any_char = " + ca_any_char);
+				System.out.println("ca_any_tag = " + ca_any_tag);
 
         null_flush = false;
         this.input = ftxt;
