@@ -31,4 +31,9 @@ public class TForbidRule {
         tagi = 0;
         tagj = 0;
     }
+    
+    @Override
+    public String toString() {
+        return "{tagi: " + tagi + ", tagj: " + tagj + "}";
+    }
 }
