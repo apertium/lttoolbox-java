@@ -26,9 +26,8 @@ public class Profiling {
 
 
         Profiling p = new Profiling();
-        //System.out.println(System.getProperties() );
-        System.out.println("Profiling "+new java.util.Date() );
-        /*
+       // System.out.println(System.getProperties() );
+        System.out.println("Profiling "+new java.util.Date()+" "+System.getProperty("java.vm.name") + " "+System.getProperty("java.version") );
         System.gc();
         p.testTransfer();
         System.gc();
@@ -41,9 +40,9 @@ public class Profiling {
         p.testjavaNGeneration();
         System.gc();
         p.testjavaPostgeneration();
-        System.gc();*/
+        System.gc();
         p.testjavaAnalysis();
-/*
+
         System.gc();
     LTComp.main(new String[] { "rl", "testdata/apertium-fr-es.fr.dix", "tmp/testJava.bin"});
     report("lt-comp");
@@ -338,6 +337,20 @@ final@inconditional 61 858
 main@standard 62442 96775
 lt-comp took sec 6053 msec
 BUILD SUCCESSFUL (total time: 10 seconds)
- 
- *
+
+ Har skiftet til -client:
+ Profiling Fri Apr 23 09:47:09 CEST 2010 Java HotSpot(TM) Client VM 1.6.0_19
+start /home/j/esperanto/a/lttoolbox-java/. took sec 40 msec
+transfer-init apertium_en_ca_en_ca_t1x took sec 384 msec
+transfer took sec 363 msec
+analysis -a   took sec 539 msec
+generation -g took sec 473 msec
+generation -d took sec 459 msec
+generation -n took sec 436 msec
+generation -p took sec 320 msec
+analysis -a   took sec 496 msec
+final@inconditional 61 858
+main@standard 62442 96775
+lt-comp took sec 6807 msec
+BUILD SUCCESSFUL (total time: 10 seconds)
  */
