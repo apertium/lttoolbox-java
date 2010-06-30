@@ -805,6 +805,7 @@ public class HMM {
         word = morpho_stream.get_next_word();
         // the main loop reading words until EOF
         while (word != null) {
+            word.print();
             wpend.add(word);
             nwpend = wpend.size();
 

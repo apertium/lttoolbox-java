@@ -30,7 +30,10 @@ import java.io.OutputStream;
 import java.io.IOException;
 
 /**
- *
+ * Class TaggerWord.
+ *  It stores the superficial form and all possible tags that it can receive.
+ *  It has the fine tags delivered by the morphological analyzer and the coarse
+ *  ones used by the PoS tagger.
  * @author jimregan
  */
 public class TaggerWord {
@@ -54,10 +57,13 @@ public class TaggerWord {
      * Show the superficial form in the output
      */
     private boolean show_sf;
-    private Map<String, ApertiumRE> patterns;
+    
     public static boolean generate_marks = false;
     public static ArrayList<String> array_tags;
     public static boolean show_ignored_string = true;
+    
+    private static Map<String, ApertiumRE> patterns = new HashMap<String, ApertiumRE>();
+    private static boolean DEBUG = true;
 
     public TaggerWord (boolean prev_plus_cut) {
         ignored_string = "";
@@ -65,7 +71,6 @@ public class TaggerWord {
         previous_plus_cut = prev_plus_cut;
         tags = new HashSet<Integer>();
         lexical_forms = new HashMap<Integer, String>();
-        patterns = new HashMap<String, ApertiumRE>();  
     }
 
     public TaggerWord () {
@@ -95,7 +100,9 @@ public class TaggerWord {
         return this.superficial_form;
     }
 
-    public boolean match (String s, String pattern) {
+    private static boolean match (String s, String pattern) {
+
+        if (DEBUG) System.out.println("match("+s+", "+pattern);
         //Map<String, ApertiumRE>.Iterator it = patterns.find(pattern);
         if (!patterns.containsKey(pattern)) {
             String regexp = pattern;
@@ -118,6 +125,8 @@ public class TaggerWord {
     * @param lf the lexical form (fine tag)
     */
     public void add_tag (int t, String lf, List<String> prefer_rules) {
+  //Tag is added only is it is not present yet
+  //Sometime one word can have more than one lexical form assigned to the same tag
         try {
             if (tags==null)
                 tags = new HashSet<Integer>();
