@@ -76,7 +76,8 @@ public class MorphoStream {
         // this();
         foundEOF = false;
         debug = d;
-        alphabet = new Alphabet();
+        this.td = t;
+        alphabet = td.getPatternList().getAlphabet();
         ca_any_char = alphabet.cast(PatternList.ANY_CHAR);
         ca_any_tag = alphabet.cast(PatternList.ANY_TAG);
 				System.out.println("ca_any_char = " + ca_any_char);
@@ -84,7 +85,6 @@ public class MorphoStream {
 
         null_flush = false;
         this.input = ftxt;
-        this.td = t;
         this.end_of_file = false;
         this.me = this.td.getPatternList().newMatchExe();
         ms = new MatchState(me);
