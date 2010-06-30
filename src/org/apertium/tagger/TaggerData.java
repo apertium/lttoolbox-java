@@ -168,7 +168,7 @@ public class TaggerData {
       }
 
 
-			if (DEBUG) System.out.println("forbid_rules = " + forbid_rules);
+			//if (DEBUG) System.out.println("forbid_rules = " + forbid_rules);
 
       // array_tags
       for (int i = Compression.multibyte_read(in); i != 0; i--) {
@@ -176,7 +176,7 @@ public class TaggerData {
       }
 
 
-			if (DEBUG) System.out.println("array_tags = " + array_tags);
+			//if (DEBUG) System.out.println("array_tags = " + array_tags);
       // tag_index
       for (int i = Compression.multibyte_read(in); i != 0; i--) {
           String tmp = Compression.String_read(in);
@@ -241,7 +241,7 @@ public class TaggerData {
           int j = Compression.multibyte_read(in);
           b[i][j] = EndianDoubleUtil.read(in);
 
-					if (DEBUG) System.out.println("b["+i+"]["+j+"] = " + b[i][j]);
+					//if (DEBUG) System.out.println("b["+i+"]["+j+"] = " + b[i][j]);
 			}
 
       // read pattern list
@@ -252,10 +252,6 @@ public class TaggerData {
 
       int limit = Compression.multibyte_read(in);
 
-			if (DEBUG) {
-				System.out.println("discard limit = " + limit);
-//				System.out.println("discard = " + discard);
-			}
       if (limit < 0) {
           return;
       }
