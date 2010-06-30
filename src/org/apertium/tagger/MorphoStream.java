@@ -403,6 +403,10 @@ public class MorphoStream {
             vwords.set(ivwords, tw);
         }
 
+        // this line was missing
+        //   vwords[ivwords]->add_tag(val, str.substr(floor), td->getPreferRules());
+        tw = vwords.get(ivwords);
+        tw.add_tag(val, str.substring(floor), td.getPreferRules());
     }
 
     /**
