@@ -34,6 +34,7 @@ import java.util.List;
  * @author jimregan
  */
 public class HMM {
+	private boolean DEBUG = true;
 
     class IntVector {
 
@@ -836,12 +837,10 @@ public class HMM {
             //Induction
             for (Integer itag : tags) {
                 i = itag;
-                System.err.println("i: " + " " + itag);
-                System.err.flush();
+                if (DEBUG) System.out.println("i: " + itag);
                 for (Integer jtag : pretags) {
                     j = jtag;
-                    System.err.println("j: " + " " + jtag);
-                    System.err.flush();
+                    if (DEBUG) System.out.println("j: " + jtag);
                     x = alpha[1 - nwpend % 2][j] * td.getA()[j][i] * td.getB()[i][k];
                     if (alpha[nwpend % 2][i] <= x) {
                         if (nwpend > 1) {
@@ -867,8 +866,7 @@ public class HMM {
                                 best[nwpend % 2][i].nodes.addAll(best[1 - nwpend % 2][j].nodes);
                             }
                         }
-                        System.err.println("best: " + (nwpend % 2) + " " + i);
-                        System.err.flush();
+                        if (DEBUG) System.out.println("best: " + (nwpend % 2) + " " + i);
                         if (best[nwpend % 2][i] == null) {
                             best[nwpend % 2][i] = new IntVector();
                         }

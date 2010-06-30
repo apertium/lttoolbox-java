@@ -125,6 +125,7 @@ public class MatchState {
     result = (result < Integer.MAX_VALUE) ? result : (-1);
 
     //System.err.println("2result = " + result);
+		if (DEBUG) System.out.println("classifyFinals "+result);
     return result;
   }
 
