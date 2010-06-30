@@ -28,6 +28,9 @@ import java.util.ArrayList;
 import org.apertium.transfer.ApertiumRE;
 import java.io.OutputStream;
 import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.TreeSet;
 
 /**
  * Class TaggerWord.
@@ -69,8 +72,8 @@ public class TaggerWord {
         ignored_string = "";
         plus_cut = false;
         previous_plus_cut = prev_plus_cut;
-        tags = new HashSet<Integer>();
-        lexical_forms = new HashMap<Integer, String>();
+        tags = new LinkedHashSet<Integer>();
+        lexical_forms = new LinkedHashMap<Integer, String>();
     }
 
     public TaggerWord () {
@@ -124,14 +127,13 @@ public class TaggerWord {
     * @param t the coarse tag
     * @param lf the lexical form (fine tag)
     */
-    public void add_tag (int t, String lf, List<String> prefer_rules) {
+    public void add_tag(int t, String lf, List<String> prefer_rules) {
+
+      if (DEBUG) System.out.println("add_tag(" + t+ ", "+lf+", "+prefer_rules);
+
   //Tag is added only is it is not present yet
   //Sometime one word can have more than one lexical form assigned to the same tag
         try {
-            if (tags==null)
-                tags = new HashSet<Integer>();
-            if (lexical_forms==null)
-                lexical_forms = new HashMap<Integer, String>();
             if (!tags.contains(t)) {
                 tags.add(t);
                 lexical_forms.put(t, lf);
