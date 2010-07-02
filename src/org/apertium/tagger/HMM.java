@@ -842,7 +842,7 @@ public class HMM {
                 for (Integer jtag : pretags) {
                     j = jtag;
                     x = alpha[1 - nwpend % 2][j] * td.getA()[j][i] * td.getB()[i][k];
-                    if (DEBUG) System.out.println("j: " + jtag+" "+nwpend+" "+td.getA()[j][i] +" "+ td.getB()[i][k]+"  x: "+x);
+                    if (DEBUG) System.out.println("j: " + jtag+" nwpend: "+nwpend+" A[j][i]: "+td.getA()[j][i] +" B[i][k]: "+ td.getB()[i][k]+"  x: "+x);
                     if (alpha[nwpend % 2][i] <= x) {
                         if (nwpend > 1) {
                             if (best[nwpend % 2][i] == null) {
