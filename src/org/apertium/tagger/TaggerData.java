@@ -223,6 +223,10 @@ public class TaggerData {
       for (int i = 0; i != N; i++) {
           for (int j = 0; j != N; j++) {
               a[i][j] = EndianDoubleUtil.read(in);
+              /*if(DEBUG) { 
+                  System.out.println("a[" + i + "][" + j +"] = " + a[i][j]);
+                  System.out.flush();
+              }*/
           }
       }
 
@@ -240,9 +244,11 @@ public class TaggerData {
           int i = Compression.multibyte_read(in);
           int j = Compression.multibyte_read(in);
           b[i][j] = EndianDoubleUtil.read(in);
-
-					//if (DEBUG) System.out.println("b["+i+"]["+j+"] = " + b[i][j]);
-			}
+          /*if(DEBUG) { 
+              System.out.println("b[" + i + "][" + j +"] = " + b[i][j]);
+              System.out.flush();
+          }*/
+      }
 
       // read pattern list
       plist.read(in);

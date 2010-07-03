@@ -129,7 +129,7 @@ public class TaggerWord {
     */
     public void add_tag(int t, String lf, List<String> prefer_rules) {
 
-      if (DEBUG) System.out.println("add_tag(" + t+ ", "+lf+", "+prefer_rules);
+      if (DEBUG) System.out.println("add_tag(" + t + ", " + lf + ", " + prefer_rules + ")" );
 
   //Tag is added only is it is not present yet
   //Sometime one word can have more than one lexical form assigned to the same tag
@@ -301,11 +301,19 @@ public class TaggerWord {
     }
 
     public void print () {
-        System.out.print("[#" + superficial_form + "# ");
+        //This functionality was reworked into the toString() method
+        System.out.println(toString());
+    }
+    
+    @Override
+    public String toString() {
+        String tempString = new String();
+        tempString += "[#" + superficial_form + "# ";
         for(Integer f : tags) {
-            System.out.print("(" + f + " " + lexical_forms.get(f) + ") ");
+            tempString += "(" + f + " " + lexical_forms.get(f) + ") ";
         }
-        System.out.print("\b]\n");
+        tempString += "\b]";
+        return tempString;
     }
 
     public void outputOriginal (OutputStream o) throws IOException {

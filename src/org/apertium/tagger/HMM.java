@@ -55,7 +55,7 @@ public class HMM {
     HMM(TaggerData tdata) {
         this.td = tdata;
 
-        this.debug = false;
+        this.debug = true;
         this.show_sf = false;
         this.null_flush = false;
         this.eos = td.getTagIndex().get("TAG_SENT");
@@ -831,6 +831,7 @@ public class HMM {
             }
 
             k = output.get(tags);  //Ambiguity class the word belongs to
+            if (DEBUG) System.out.println("k: " + k);
 
             clear_array_double(alpha[nwpend % 2]);
             clear_array_vector(best[nwpend % 2]);
@@ -936,7 +937,7 @@ public class HMM {
             String errors;
             errors = "The text to disambiguate has finished, but there are ambiguous words that have not been disambiguated.\n";
             errors = "This message should never appear. If you are reading this ..... this is very bad news.\n";
-            System.err.print("Error: " + errors);
+            System.err.print("\nError: " + errors);
         }
 
     }

@@ -111,6 +111,9 @@ public class MorphoStream {
      * @return The next word in the input stream
      */
     TaggerWord get_next_word() throws IOException {
+        if(DEBUG) {
+            System.out.println("MorphoStream.getNextWord -- vwords: " + vwords);
+        }
 
         if (vwords.size() != 0) {
             TaggerWord word = vwords.get(0);
@@ -160,6 +163,9 @@ public class MorphoStream {
             //int symbol = input.read();
             if (symbol == -1 || (null_flush && symbol == '\0')) {
                 this.end_of_file = true;
+                if (DEBUG) {
+                    System.out.println("End of file add_tag in get_next_word()");
+                }
                 vwords.get(ivwords).add_tag(ca_tag_keof, "", td.getPreferRules());
                 // word read, use above code to return it
                 return get_next_word();
@@ -398,12 +404,9 @@ public class MorphoStream {
                 System.err.println("Warning: There is no coarse tag for the fine tag '" + str.substring(floor) + "'");
                 System.err.println("         This is because of an incomplete tagset definition or a dictionary error");
             }
-            tw = vwords.get(ivwords);
-            tw.add_tag(val, str.substring(floor), td.getPreferRules());
-            vwords.set(ivwords, tw);
         }
 
-        // this line was missing
+        // this line was missing -- no, it was just misplaced
         //   vwords[ivwords]->add_tag(val, str.substr(floor), td->getPreferRules());
         tw = vwords.get(ivwords);
         tw.add_tag(val, str.substring(floor), td.getPreferRules());
