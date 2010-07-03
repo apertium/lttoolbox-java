@@ -146,14 +146,30 @@ public class MorphoStream {
          * 
          * Thus the while() loop below was slightly changed to remove the need to reset
          * the read pointer.
+         * 
+         * However, the issue is with trying to duplicate the behavior of the code in
+         * the C++ version, which uses feof() to check for end of file.
+         * 
+         * The issue is that all it does is check to see if the eof flag has been set
+         * on the stream yet, which would only be set once a read call that reaches eof
+         * has been made. Which means that the next read call would set eof, but feof
+         * would still return false because that hasn't happened yet.
+         * 
+         * Testing for end_of_file && symbol == -1 does keep it from exiting prematurely,
+         * but sticks us in an infinit loop, so an additional test needs to be added. The
+         * member variable "foundEOF" wasn't actually being used for anything, so I
+         * co-opted it for this use. 
          */
-        //input.mark(0);  // Mark the current possition of this input stream so we can go back to that possition
-        // bcoz testing input.read()==-1 will advance the pointer/cursor! it will not read
-        /*(if (end_of_file || input.read() == -1) {*/
-        if(end_of_file || symbol == -1) {
+        if(end_of_file || (symbol == -1 && foundEOF)) {
+            if(DEBUG) System.out.println("MorphoStream.get_next_word: EOF reached, returning NULL.");
             return null;
         }
-        //input.reset();
+        
+        /* Set this after that test above so that it doesn't exit prematurely, but we
+         * aren't stuck in an infinite loop, either.
+         */
+        if(symbol == -1) { foundEOF = true; }
+
         // no word in the buffer, so read from input
         int ivwords = 0;
         vwords.add(new TaggerWord());
@@ -161,7 +177,7 @@ public class MorphoStream {
         while (true) {
 
             //int symbol = input.read();
-            if (symbol == -1 || (null_flush && symbol == '\0')) {
+            if (symbol == -1 || (null_flush && symbol == (int) '\0')) {
                 this.end_of_file = true;
                 if (DEBUG) {
                     System.out.println("End of file add_tag in get_next_word()");
