@@ -69,10 +69,10 @@ public class TaggerTest {
     public void testMainThisIsATest() throws IOException {
         String prob = dir + "en-es.prob";
 				// Use just one word for now, until that word works
-        //String testin = "^this/this<det><dem><sg>/this<prn><tn><mf><sg>$ ^is/be<vbser><pri><p3><sg>$ ^a/a<det><ind><sg>$ ^test/test<n><sg>/test<vblex><inf>/test<vblex><pres>$^./.<sent>$";
-        //String expTestout = "^this<prn><tn><mf><sg>$ ^be<vbser><pri><p3><sg>$ ^a<det><ind><sg>$ ^test<n><sg>$^.<sent>$";
-        String testin = "^test/test<n><sg>/test<vblex><inf>/test<vblex><pres>$";
-        String expTestout = "^test<n><sg>$";
+        String testin = "^this/this<det><dem><sg>/this<prn><tn><mf><sg>$ ^is/be<vbser><pri><p3><sg>$ ^a/a<det><ind><sg>$ ^test/test<n><sg>/test<vblex><inf>/test<vblex><pres>$^./.<sent>$";
+        String expTestout = "^this<prn><tn><mf><sg>$ ^be<vbser><pri><p3><sg>$ ^a<det><ind><sg>$ ^test<n><sg>$^.<sent>$";
+        //String testin = "^test/test<n><sg>/test<vblex><inf>/test<vblex><pres>$";
+        //String expTestout = "^test<n><sg>$";
         String[] argv = {"-g", prob, "./tmp/taggerin", "./tmp/taggerout"};
 
         FileOutputStream f = new FileOutputStream("./tmp/taggerin");
@@ -90,8 +90,8 @@ public class TaggerTest {
     /**
      * Test of main method, using external text files.
      */
-//    @Test
-// Commented out until testMainThisIsATest() works
+    @Test
+    //Commented out until testMainThisIsATest() works
     public void testMain200Sentences() throws IOException {
         System.out.println("main");
 

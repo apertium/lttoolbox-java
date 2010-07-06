@@ -97,7 +97,13 @@ public class Collection {
                 element = new ArrayList<Set<Integer>>();
             }
             
-            index.put(t, Integer.valueOf((index.size() > 0) ? index.size()-1 : 0));
+            /* So here's the original line:
+             * index.put(t, Integer.valueOf((index.size() > 0) ? index.size()-1 : 0));
+             * Even though the logic in the C++ code also said index.size() - 1,
+             * this caused the value stored in the map to be 1 less than it should be.
+             * Remove the -1, and it works properly now.
+             */
+            index.put(t, Integer.valueOf(index.size()));
             element.add(t);
         } catch (Exception e) {
             e.printStackTrace();
