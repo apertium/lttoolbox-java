@@ -319,6 +319,9 @@ public class MorphoStream {
 		 * @param ivwords
 		 */
     void lrlmClassify(String str, int ivwords) {
+        if(DEBUG) {
+            System.out.println("Starting lrlmClassify -- str: >>" + str + "<<");
+        }
         int floor = 0;
         int last_type = -1; // coarse tag ID.
         int last_pos = 0;
@@ -361,10 +364,21 @@ public class MorphoStream {
             }
             if (ms.size() == 0) {
                 if (last_pos != floor) {
+                    if(DEBUG) {
+                        System.out.println("MorphoStream.lrlmclassify -- floor: " + 
+                                floor);
+                        System.out.println("MorphoStream.lrlmclassify -- last_pos: " +
+                                last_pos);
+                    }
                     vwords.get(ivwords).add_tag(last_type,
-                            str.substring(floor, last_pos),
+                            str.substring(floor, last_pos + 1),
                             td.getPreferRules());
                     if (str.charAt(last_pos + 1) == '+' && last_pos + 1 < limit) {
+                        if(DEBUG) { 
+                            System.out.println(
+                                    "MorphoStream.lrlmClassify -- plus cut, word added: " + 
+                                    str.substring(floor, last_pos + 1));
+                        }
                         floor = last_pos + 1;
                         last_pos = floor;
                         vwords.get(ivwords).set_plus_cut(true);
@@ -373,16 +387,22 @@ public class MorphoStream {
                         }
                         ivwords++;
                         ms.init(me.getInitial());
-                    } else {
-                        if (debug) {
-                            System.err.println("Warning: There is no coarse tag for the fine tag '" + str.substring(floor) + "'");
-                            System.err.println("         This is because of an incomplete tagset definition or a dictionary error");
-                        }
-                        tw = vwords.get(ivwords);
-                        tw.add_tag(ca_tag_kundef, str.substring(floor), td.getPreferRules());
-                        vwords.set(ivwords, tw);
-                        return;
                     }
+                    i = floor++;
+                    if(DEBUG) {
+                        System.out.println(
+                                "MorphoStream.lrlmClassify -- floor post-increment assignment to i:");
+                        System.out.println("-- i: " + i + ", floor: " + floor);
+                    }
+                } else {
+                    if (debug) {
+                        System.err.println("Warning: There is no coarse tag for the fine tag '" + str.substring(floor) + "'");
+                        System.err.println("         This is because of an incomplete tagset definition or a dictionary error");
+                    }
+                    tw = vwords.get(ivwords);
+                    tw.add_tag(ca_tag_kundef, str.substring(floor), td.getPreferRules());
+                    vwords.set(ivwords, tw);
+                    return;
                 }
             } else if (i == (limit - 1)) {
             	if (ms.classifyFinals() == -1) {
@@ -425,6 +445,10 @@ public class MorphoStream {
         // this line was missing -- no, it was just misplaced
         //   vwords[ivwords]->add_tag(val, str.substr(floor), td->getPreferRules());
         tw = vwords.get(ivwords);
+        if(DEBUG) { 
+            System.out.println("add_tag called at the end of lrlmClassify.");
+            System.out.println("end of lrlmClassify -- floor: " + floor);
+        }
         tw.add_tag(val, str.substring(floor), td.getPreferRules());
     }
 

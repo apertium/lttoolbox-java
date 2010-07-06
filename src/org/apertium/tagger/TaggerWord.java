@@ -228,6 +228,9 @@ public class TaggerWord {
                 ret += '$';
             }
         }
+        if(DEBUG) { 
+            System.out.println("TaggerWord.get_lexical_form -- returning: " + ret); 
+        }
         return ret;
     }
 
