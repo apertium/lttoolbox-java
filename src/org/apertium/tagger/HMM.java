@@ -21,6 +21,8 @@ package org.apertium.tagger;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+
 import org.apertium.lttoolbox.Compression;
 import java.util.Set;
 import java.util.HashSet;
@@ -774,6 +776,11 @@ public class HMM {
         TaggerWord word = null;// new TaggerWord();  // word =null;
         Integer tag;
 
+        /* Changed all calls to out to use outWriter instead.
+         * This should help solve the encoding issues.
+         */
+        OutputStreamWriter outWriter = new OutputStreamWriter(out, "UTF-8");
+
         Set<Integer> tags = new HashSet<Integer>();
         Set<Integer> pretags = new HashSet<Integer>();
 
@@ -900,7 +907,7 @@ public class HMM {
                     int DEBUG_loop_limit = best[nwpend % 2][tag].nodes.size(); //For debugging
                     if (show_all_good_first) {
                         String micad = wpend.get(t).get_all_chosen_tag_first(best[nwpend % 2][tag].nodes.get(t), td.getTagIndex().get("TAG_kEOF"));
-                        out.write(micad.getBytes("UTF-8"));
+                        outWriter.write(micad);
                     } else {
                         //Split out the following line for debugging.
                         //String micad = wpend.get(t).get_lexical_form(best[nwpend % 2][tag].nodes.get(t), td.getTagIndex().get("TAG_kEOF"));
@@ -914,7 +921,7 @@ public class HMM {
                          */
                         TaggerWord tempWord = wpend.get(t);
                         String micad = tempWord.get_lexical_form(tagT, tagkeof);
-                        out.write(micad.getBytes("UTF-8"));
+                        outWriter.write(micad);
                     }
                 }
                 wpend.clear();
@@ -923,10 +930,10 @@ public class HMM {
 
             if (morpho_stream.getEndOfFile()) {
                 if (null_flush) {
-                    out.write(0x00);
+                    outWriter.write(0x00);
                 }
 
-                out.flush();
+                outWriter.flush();
                 morpho_stream.setEndOfFile(false);
             }
             word = morpho_stream.get_next_word();

@@ -103,9 +103,14 @@ public class TaggerWord {
         return this.superficial_form;
     }
 
+    /*
+     * TODO: When optimizing, take into account that Java strings have built-in
+     * regex support, while C++ strings do not. The list of patterns isn't even
+     * used.
+     */
     private static boolean match (String s, String pattern) {
 
-        if (DEBUG) System.out.println("match("+s+", "+pattern);
+        if (DEBUG) { System.out.println("TaggerWord.match("+s+", "+pattern+ ")"); }
         //Map<String, ApertiumRE>.Iterator it = patterns.find(pattern);
         if (!patterns.containsKey(pattern)) {
             String regexp = pattern;
@@ -115,7 +120,15 @@ public class TaggerWord {
             }
 
             patterns.put(pattern, new ApertiumRE(regexp));
-            return "".equals(patterns.get(pattern).match(s));
+            //return "".equals(patterns.get(pattern).match(s));
+            /* The line above makes no sense and produces different behavior
+             * depending on if the pattern existed or not, also this seems to be an artifact
+             * of porting from a language that doesn't have built-in regex support to one that
+             * does. Replaced it with the same line that's run if the pattern does exist.
+             * This fixed the issue of this method wrongly matching on input that didn't match.
+             * (Such as matching prefer tags when it shouldn't have.)
+             */
+            return pattern.matches(s);
 
         } else {
             return pattern.matches(s);
@@ -140,6 +153,9 @@ public class TaggerWord {
             } else {
                 for (int i=0; i < prefer_rules.size(); i++) {
                     if (match(lf, prefer_rules.get(i))) {
+                        if(DEBUG) {
+                            System.out.println("TaggerWord.add_tag -- prefer rules matched.");
+                        }
                         lexical_forms.put(t, lf);
                         break;
                     }

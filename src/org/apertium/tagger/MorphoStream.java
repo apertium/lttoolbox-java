@@ -26,8 +26,10 @@ import org.apertium.lttoolbox.Alphabet;
 import org.apertium.transfer.MatchExe;
 import org.apertium.transfer.MatchState;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 /**
  *
@@ -55,6 +57,12 @@ public class MorphoStream {
     private int ca_tag_kundef;
     private ArrayList<TaggerWord> vwords;
     private InputStream input;
+    /**
+     * This exists to fix the character encoding issues that crop up by reading
+     * directly byte-by-byte from the InputStream. ALL reading from the input stream
+     * should be done through this reader instead of the InputStream directly.
+     */
+    private InputStreamReader inputReader;
     private MatchExe me;
     private TaggerData td;
     private Alphabet alphabet;
@@ -72,7 +80,7 @@ public class MorphoStream {
      * Constructor
      * @param ftxt the input stream.
      */
-    MorphoStream(InputStream ftxt, boolean d, TaggerData t) {
+    MorphoStream(InputStream ftxt, boolean d, TaggerData t) throws UnsupportedEncodingException {
         // this();
         foundEOF = false;
         debug = d;
@@ -85,6 +93,7 @@ public class MorphoStream {
 
         null_flush = false;
         this.input = ftxt;
+        this.inputReader = new InputStreamReader(this.input, "UTF-8");
         this.end_of_file = false;
         this.me = this.td.getPatternList().newMatchExe();
         ms = new MatchState(me);
@@ -131,7 +140,7 @@ public class MorphoStream {
             return word;
         }
 
-        int symbol = input.read();
+        int symbol = inputReader.read();
         /* The mark() function takes an int argument that is the number of bytes 
          * that can be read before the mark is invalidated. Supplying an argument of 0 
          * is pretty much useless, in other words. ^^; That really should be 1, because 
@@ -193,7 +202,7 @@ public class MorphoStream {
             } else {
                 String str = "";
                 if (symbol == (int) '\\') {
-                    symbol = input.read();
+                    symbol = inputReader.read();
                     str += '\\';
                     str += (char) symbol;
                     symbol = (int) '\\';
@@ -202,7 +211,7 @@ public class MorphoStream {
 
                 }
                 while (symbol != (int) '^') {
-                    symbol = input.read();
+                    symbol = inputReader.read();
                     if (symbol == -1 || (null_flush && symbol == '\0')) {
                         end_of_file = true;
                         vwords.get(ivwords).add_ignored_string(str);
@@ -211,7 +220,7 @@ public class MorphoStream {
                         return get_next_word();
                     } else if (symbol == (int) '\\') {
                     	str += '\\';
-                    	symbol = input.read();
+                    	symbol = inputReader.read();
                         if (symbol == -1 || (null_flush && symbol == '\0')) {
                             end_of_file = true;
                             vwords.get(ivwords).add_ignored_string(str);
@@ -237,7 +246,7 @@ public class MorphoStream {
              * Will effectively still be run in the same order as before, just won't be 
              * called at the beginning of the first iteration of the loop. 
              */
-            symbol = input.read();
+            symbol = inputReader.read();
         }
 
     }
@@ -249,7 +258,7 @@ public class MorphoStream {
     void readRestOfWord(int ivwords) throws IOException {
         String str = "";
         while (true) {
-            int symbol = input.read();
+            int symbol = inputReader.read();
             if (symbol == -1 || (null_flush && symbol == (int) '\0')) {
                 end_of_file = true;
                 if (str.length() > 0) {
@@ -262,7 +271,7 @@ public class MorphoStream {
                 vwords.get(ivwords).add_tag(ca_tag_keof, "", td.getPreferRules());
                 return;
             } else if (symbol == (int) '\\') {
-                symbol = input.read();
+                symbol = inputReader.read();
                 str += '\\';
                 str += (char) symbol;
             } else if (symbol == (int) '/') {
@@ -279,7 +288,7 @@ public class MorphoStream {
         }
 
         while (true) {
-            int symbol = input.read();
+            int symbol = inputReader.read();
             if (symbol == -1 || (null_flush && symbol == '\0')) {
                 end_of_file = true;
                 if (str.length() > 0) {
@@ -291,7 +300,7 @@ public class MorphoStream {
                 vwords.get(ivwords).add_tag(ca_tag_keof, "", td.getPreferRules());
                 return;
             } else if (symbol == (int) '\\') {
-                symbol = input.read();
+                symbol = inputReader.read();
                 str += '\\';
                 str += (char) symbol;
                 symbol = '\\';
@@ -321,6 +330,7 @@ public class MorphoStream {
     void lrlmClassify(String str, int ivwords) {
         if(DEBUG) {
             System.out.println("Starting lrlmClassify -- str: >>" + str + "<<");
+            System.out.println("MorphoStream.lrlmClassify -- vwords: " + vwords);
         }
         int floor = 0;
         int last_type = -1; // coarse tag ID.
@@ -449,7 +459,13 @@ public class MorphoStream {
             System.out.println("add_tag called at the end of lrlmClassify.");
             System.out.println("end of lrlmClassify -- floor: " + floor);
         }
+        if(DEBUG) {
+            System.out.println("MorphoStream.lrlmClassify before last add_tag -- vwords: " + vwords);
+        }
         tw.add_tag(val, str.substring(floor), td.getPreferRules());
+        if(DEBUG) {
+            System.out.println("MorphoStream.lrlmClassify after last add_tag -- vwords: " + vwords);
+        }
     }
 
     /**

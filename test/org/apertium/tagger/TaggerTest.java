@@ -20,6 +20,8 @@ package org.apertium.tagger;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -50,16 +52,15 @@ public class TaggerTest {
     public void tearDown() {
     }
 
-
-
 	public String readFile(String path) throws IOException {
-		File outFile=new File(path);
-		FileInputStream fis=new FileInputStream(outFile);
-		byte[] byteArray=new byte[(int) outFile.length()];
-		fis.read(byteArray);
-		fis.close();
-		String testOutput=new String(byteArray, "UTF-8");
-		return testOutput;
+	    File outFile = new File(path);
+        FileInputStream fis = new FileInputStream(outFile);
+        InputStreamReader fisReader = new InputStreamReader(fis, "UTF-8");
+        char[] charArray = new char[(int) outFile.length()];
+        fisReader.read(charArray);
+        fisReader.close();
+        String testOutput = new String(charArray);
+        return testOutput;
 	}
 
 	/**
@@ -68,21 +69,14 @@ public class TaggerTest {
     @Test
     public void testMainThisIsATest() throws IOException {
         String prob = dir + "en-es.prob";
-				// Use just one word for now, until that word works
-        //String testin = "^this/this<det><dem><sg>/this<prn><tn><mf><sg>$ ^is/be<vbser><pri><p3><sg>$ ^a/a<det><ind><sg>$ ^test/test<n><sg>/test<vblex><inf>/test<vblex><pres>$^./.<sent>$";
-        //String expTestout = "^this<prn><tn><mf><sg>$ ^be<vbser><pri><p3><sg>$ ^a<det><ind><sg>$ ^test<n><sg>$^.<sent>$";
-        String testin = "^Most of/Most<prn><tn><mf><pl>+of<pr>$";
-        String expTestout = "^Most<prn><tn><mf><pl>+of<pr>$";
-        //String testin ="^Most of/Most<prn><tn><mf><pl>+of<pr>$ ^this/this<det><dem><sg>/this<prn><tn><mf><sg>$ ^growth/growth<n><sg>$ ^is/be<vbser><pri><p3><sg>$ ^due to/due to<pr>$ ^Alabama/Alabama<np><loc><sg>$ ^'s/'s<gen>/be<vbser><pri><p3><sg>$ ^rapidly/rapidly<adv>$ ^expanding/expand<vblex><ger>/expand<vblex><pprs>/expand<vblex><subs>$ ^automotive/*automotive$ ^manufacturing/manufacture<vblex><ger>/manufacture<vblex><pprs>/manufacture<vblex><subs>/manufacturing<n><sg>$ ^industry/industry<n><sg>$^./.<sent>$";
-        //String expTestout = "^Most<prn><tn><mf><pl>+of<pr>$ ^this<det><dem><sg>$ ^growth<n><sg>$ ^be<vbser><pri><p3><sg>$ ^due to<pr>$ ^Alabama<np><loc><sg>$ ^be<vbser><pri><p3><sg>$ ^rapidly<adv>$ ^expand<vblex><ger>$ ^*automotive$ ^manufacturing<n><sg>$ ^industry<n><sg>$^.<sent>$";
-        //String testin = "^test/test<n><sg>/test<vblex><inf>/test<vblex><pres>$";
-        //String expTestout = "^test<n><sg>$";
+        String testin = "^this/this<det><dem><sg>/this<prn><tn><mf><sg>$ ^is/be<vbser><pri><p3><sg>$ ^a/a<det><ind><sg>$ ^test/test<n><sg>/test<vblex><inf>/test<vblex><pres>$^./.<sent>$";
+        String expTestout = "^this<prn><tn><mf><sg>$ ^be<vbser><pri><p3><sg>$ ^a<det><ind><sg>$ ^test<n><sg>$^.<sent>$";
         String[] argv = {"-g", prob, "./tmp/taggerin", "./tmp/taggerout"};
 
-        FileOutputStream f = new FileOutputStream("./tmp/taggerin");
-        f.write(testin.getBytes("UTF-8"));
+        FileWriter f = new FileWriter("./tmp/taggerin");
+        f.append(testin);
         f.close();
-
+        
         Tagger.main(argv);
         String testOutput = readFile("./tmp/taggerout");
 
@@ -94,7 +88,7 @@ public class TaggerTest {
     /**
      * Test of main method, using external text files.
      */
-    //@Test
+    @Test
     //Commented out until testMainThisIsATest() works
     public void testMain200Sentences() throws IOException {
         System.out.println("main");
