@@ -89,7 +89,6 @@ public class TaggerTest {
      * Test of main method, using external text files.
      */
     @Test
-    //Commented out until testMainThisIsATest() works
     public void testMain200Sentences() throws IOException {
         System.out.println("main");
 
