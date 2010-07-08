@@ -29,6 +29,8 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import java.io.*;
 
+import static org.apertium.lttoolbox.TestTools.*;
+
 /**
  *
  * @author jimregan
@@ -80,10 +82,10 @@ public class TaggerTest {
         Tagger.main(argv);
         String testOutput = readFile("./tmp/taggerout");
 
-				System.err.println("output = " + testOutput);
-				System.err.println("expout = " + expTestout);
-				assertEquals("TaggerTest.testMain() failed: output does not match expected output.", expTestout, testOutput);
-		}
+		System.err.println("output = " + testOutput);
+		System.err.println("expout = " + expTestout);
+		assertEquals("TaggerTest.testMainThisIsATest() failed: output does not match expected output.", expTestout, testOutput);
+	}
 
     /**
      * Test of main method, using external text files.
@@ -104,7 +106,60 @@ public class TaggerTest {
         String testOutput = readFile("./tmp/taggerout");
         String expectedOutput = readFile(compareOutFile);
 
-        assertEquals("TaggerTest.testMain() failed: output does not match expected output.", expectedOutput, testOutput);
+        assertEquals("TaggerTest.testMain200Sentences() failed: output does not match expected output.", expectedOutput, testOutput);
     }
 
+    /**
+     * This test is for testing the "first" mode with a single test sentence.
+     * @throws IOException
+     */
+    @Test
+    public void testFirstModeThisIsATest() throws IOException {
+        String prob = dir + "en-es.prob";
+        String testin = "^this/this<det><dem><sg>/this<prn><tn><mf><sg>$ ^is/be<vbser><pri><p3><sg>$ ^a/a<det><ind><sg>$ ^test/test<n><sg>/test<vblex><inf>/test<vblex><pres>$^./.<sent>$";
+        String expTestout = "^this/this<prn><tn><mf><sg>/this<det><dem><sg>$ ^is/be<vbser><pri><p3><sg>$ ^a/a<det><ind><sg>$ ^test/test<n><sg>/test<vblex><inf>/test<vblex><pres>$^./.<sent>$";
+        String[] argv = {"-g", "-f", prob, "./tmp/taggerin", "./tmp/taggerout"};
+
+        FileWriter f = new FileWriter("./tmp/taggerin");
+        f.append(testin);
+        f.close();
+
+        Tagger.main(argv);
+        String testOutput = readFile("./tmp/taggerout");
+
+        System.err.println("output = " + testOutput);
+        System.err.println("expout = " + expTestout);
+        assertEquals("TaggerTest.testFirstModeThisIsATest() failed: output does not match expected output.", expTestout, testOutput);
+        
+    }
+
+    /*
+     * This next test currently only fails because the tags after the first tag are
+     * not always in the same order as the C++ version. The first tags are all correct,
+     * and all the tags are there, just the extra tags are sometimes in a different order
+     * than in the C++ version.
+     */
+    
+    /**
+     * This tests the "first" mode against 200 sentences.
+     * @throws IOException
+     */
+    //@Test
+    public void testFirstMode200Sentences() throws IOException {
+        System.out.println("main");
+
+        String prob = dir + "en-es.prob";
+        String inFile = dir + "en-tagger-input.txt";
+        String outputFile = "./tmp/taggerout";
+        String compareOutFile = dir + "en-tagger-output-first-mode.txt";
+        String[] argv = {"-g", "-f", prob, inFile, outputFile};
+
+        Tagger.main(argv);
+
+        //Read actual output into a string
+        String testOutput = readFile("./tmp/taggerout");
+        String expectedOutput = readFile(compareOutFile);
+
+        assertEquals("TaggerTest.testFirstMode200Sentences() failed: output does not match expected output.", expectedOutput, testOutput);
+    }
 }

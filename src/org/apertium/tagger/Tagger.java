@@ -189,15 +189,14 @@ public class Tagger {
                         break;
                 }
 
-                for (int i = getopt.getOptind(); i != argv.length; i++) {
-                    filenames.add(argv[i]);
-                }
-                return mode;
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+        for (int i = getopt.getOptind(); i != argv.length; i++) {
+            filenames.add(argv[i]);
+        }
+
         return mode;
     }
 

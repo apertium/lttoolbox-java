@@ -7,6 +7,7 @@ package org.apertium.lttoolbox;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -17,7 +18,7 @@ import java.io.InputStreamReader;
  */
 public abstract class TestTools {
 
-  public static String rm(String filename) {
+  public static String rm(String filename) throws FileNotFoundException {
     File f = new File(filename);
     if (f.isDirectory()) for (File f2 : f.listFiles()) rm(f2.getPath());
     f.delete();
