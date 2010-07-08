@@ -53,7 +53,7 @@ public class TaggerData {
 
     private double ZERO = 1e-10;
 
-		private boolean DEBUG = true;
+		private boolean DEBUG = false;
 
     public TaggerData () {
         a = null;

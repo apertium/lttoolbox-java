@@ -66,7 +66,7 @@ public class TaggerWord {
     public static boolean show_ignored_string = true;
     
     private static Map<String, ApertiumRE> patterns = new HashMap<String, ApertiumRE>();
-    private static boolean DEBUG = true;
+    private static boolean DEBUG = false;
 
     public TaggerWord (boolean prev_plus_cut) {
         ignored_string = "";

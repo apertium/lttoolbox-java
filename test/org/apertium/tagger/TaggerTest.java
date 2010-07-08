@@ -92,7 +92,7 @@ public class TaggerTest {
      */
     @Test
     public void testMain200Sentences() throws IOException {
-        System.out.println("main");
+        //System.out.println("main");
 
         String prob = dir + "en-es.prob";
         String inFile = dir + "en-tagger-input.txt";

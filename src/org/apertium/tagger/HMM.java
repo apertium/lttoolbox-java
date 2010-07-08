@@ -36,7 +36,7 @@ import java.util.List;
  * @author jimregan
  */
 public class HMM {
-	private boolean DEBUG = true;
+	private boolean DEBUG = false;
 
     class IntVector {
 
@@ -57,7 +57,7 @@ public class HMM {
     HMM(TaggerData tdata) {
         this.td = tdata;
 
-        this.debug = true;
+        this.debug = false;
         this.show_sf = false;
         this.null_flush = false;
         this.eos = td.getTagIndex().get("TAG_SENT");
@@ -812,7 +812,7 @@ public class HMM {
         word = morpho_stream.get_next_word();
         // the main loop reading words until EOF
         while (word != null) {
-            word.print();
+            if (DEBUG) { word.print(); }
             wpend.add(word);
             nwpend = wpend.size();
 

@@ -42,6 +42,7 @@ import java.io.UnsupportedEncodingException;
 public class MorphoStream {
 
     private boolean foundEOF;
+    //Normal debugging (-d parameter)
     private boolean debug = false;
     private String last_string_tag;
     private int ca_any_char;
@@ -72,7 +73,8 @@ public class MorphoStream {
     private Map<String, Integer> tag_index;
     private ConstantManager constants;
 
-		private boolean DEBUG = true;
+	//Deep-level dev debugging
+    private boolean DEBUG = false;
 
 //    MorphoStream() {
 //    }
@@ -88,8 +90,11 @@ public class MorphoStream {
         alphabet = td.getPatternList().getAlphabet();
         ca_any_char = alphabet.cast(PatternList.ANY_CHAR);
         ca_any_tag = alphabet.cast(PatternList.ANY_TAG);
-				System.out.println("ca_any_char = " + ca_any_char);
-				System.out.println("ca_any_tag = " + ca_any_tag);
+
+        if(DEBUG) {
+            System.out.println("ca_any_char = " + ca_any_char);
+            System.out.println("ca_any_tag = " + ca_any_tag);
+        }
 
         null_flush = false;
         this.input = ftxt;
@@ -356,7 +361,7 @@ public class MorphoStream {
                     } else if (str.charAt(j) == '>') {
                         tag = str.substring(i, j+1);
 
-												System.out.println("tag = " + tag);
+						if (DEBUG) { System.out.println("tag = " + tag); }
                         i = j;
                         break;
                     }

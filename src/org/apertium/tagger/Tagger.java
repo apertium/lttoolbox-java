@@ -57,6 +57,8 @@ public class Tagger {
     List<String> filenames;
     private static String name;
 
+    private static boolean DEBUG = false;
+    
     Tagger() {
         debug = false;
         showSF = false;
@@ -153,46 +155,53 @@ public class Tagger {
                     help();
                 }
 
-                switch (argv.length - getopt.getOptind()) {
-                    case 6:
-                        if (mode != TRAIN_SUPERVISED_MODE) {
-                            help();
-                        }
-                        break;
-
-                    case 4:
-                        if (mode != TRAIN_MODE) {
-                            help();
-                        }
-                        break;
-
-                    case 3:
-                        if ((mode != TAGGER_MODE) && (mode != TAGGER_FIRST_MODE)) {
-                            help();
-                        }
-                        break;
-
-                    case 2:
-                        if ((mode != RETRAIN_MODE) && (mode != TAGGER_MODE)) {
-                            help();
-                        }
-                        break;
-
-                    case 1:
-                        if ((mode != TAGGER_MODE) && (mode != TAGGER_FIRST_MODE)) {
-                            help();
-                        }
-                        break;
-
-                    default:
-                        help();
-                        break;
-                }
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+        
+        if(DEBUG) {
+            System.out.println("Tagger.getMode -- argv.length: " + argv.length +
+                    ", getopt.getOptind: " + getopt.getOptind() + 
+                    ", mode: " + mode);
+        }
+        switch (argv.length - getopt.getOptind()) {
+        case 6:
+            if (mode != TRAIN_SUPERVISED_MODE) {
+                help();
+            }
+            break;
+
+        case 4:
+            if (mode != TRAIN_MODE) {
+                help();
+            }
+            break;
+
+        case 3:
+            if ((mode != TAGGER_MODE) && (mode != TAGGER_FIRST_MODE)) {
+                help();
+            }
+            break;
+
+        case 2:
+            if ((mode != RETRAIN_MODE) && (mode != TAGGER_MODE)) {
+                help();
+            }
+            break;
+
+        case 1:
+            if ((mode != TAGGER_MODE) && (mode != TAGGER_FIRST_MODE)) {
+                help();
+            }
+            break;
+
+        default:
+            help();
+            break;
+        }
+
         for (int i = getopt.getOptind(); i != argv.length; i++) {
             filenames.add(argv[i]);
         }
