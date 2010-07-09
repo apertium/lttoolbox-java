@@ -146,13 +146,57 @@ public class TaggerTest {
      */
     //@Test
     public void testFirstMode200Sentences() throws IOException {
-        System.out.println("main");
 
         String prob = dir + "en-es.prob";
         String inFile = dir + "en-tagger-input.txt";
         String outputFile = "./tmp/taggerout";
         String compareOutFile = dir + "en-tagger-output-first-mode.txt";
         String[] argv = {"-g", "-f", prob, inFile, outputFile};
+
+        Tagger.main(argv);
+
+        //Read actual output into a string
+        String testOutput = readFile("./tmp/taggerout");
+        String expectedOutput = readFile(compareOutFile);
+
+        assertEquals("TaggerTest.testFirstMode200Sentences() failed: output does not match expected output.", expectedOutput, testOutput);
+    }
+    
+    /**
+     * This test is for testing the "mark" mode with a single test sentence.
+     * @throws IOException
+     */
+    @Test
+    public void testMarkModeThisIsATest() throws IOException {
+        String prob = dir + "en-es.prob";
+        String testin = "^this/this<det><dem><sg>/this<prn><tn><mf><sg>$ ^is/be<vbser><pri><p3><sg>$ ^a/a<det><ind><sg>$ ^test/test<n><sg>/test<vblex><inf>/test<vblex><pres>$^./.<sent>$";
+        String expTestout = "^=this<prn><tn><mf><sg>$ ^be<vbser><pri><p3><sg>$ ^a<det><ind><sg>$ ^=test<n><sg>$^.<sent>$";
+        String[] argv = {"-g", "-m", prob, "./tmp/taggerin", "./tmp/taggerout"};
+
+        FileWriter f = new FileWriter("./tmp/taggerin");
+        f.append(testin);
+        f.close();
+
+        Tagger.main(argv);
+        String testOutput = readFile("./tmp/taggerout");
+
+        System.err.println("output = " + testOutput);
+        System.err.println("expout = " + expTestout);
+        assertEquals("TaggerTest.testMarkModeThisIsATest() failed: output does not match expected output.", expTestout, testOutput);
+    }
+    
+    /**
+     * This tests the "first" mode against 200 sentences.
+     * @throws IOException
+     */
+    @Test
+    public void testMarkMode200Sentences() throws IOException {
+
+        String prob = dir + "en-es.prob";
+        String inFile = dir + "en-tagger-input.txt";
+        String outputFile = "./tmp/taggerout";
+        String compareOutFile = dir + "en-tagger-output-mark.txt";
+        String[] argv = {"-g", "-m", prob, inFile, outputFile};
 
         Tagger.main(argv);
 

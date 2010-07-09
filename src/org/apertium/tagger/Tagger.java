@@ -52,7 +52,6 @@ public class Tagger {
     private static final int RETRAIN_SUPERVISED_MODE = 6;
     private static final int TAGGER_EVAL_MODE = 7;
     private static final int TAGGER_FIRST_MODE = 8;
-    static boolean generate_marks;
     static boolean debug;
     List<String> filenames;
     private static String name;
@@ -89,7 +88,7 @@ public class Tagger {
 
                 switch (c) {
                     case 'm':
-                        generate_marks = true;
+                        TaggerWord.generate_marks = true;
                         break;
 
                     case 'd':
