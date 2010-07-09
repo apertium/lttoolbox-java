@@ -61,6 +61,10 @@ public class TaggerWord {
      */
     private boolean show_sf;
     
+    /**
+     * Will be set to true if the -m (mark disambiguated words) option was used
+     * on the command-line.
+     */
     private static boolean generate_marks = false;
     public static ArrayList<String> array_tags;
     public static boolean show_ignored_string = true;
@@ -80,10 +84,21 @@ public class TaggerWord {
         this(false);
     }
     
+    /**
+     * Sets the static generate_marks flag.
+     * Keep in mind when doing testing that the state of this flag may be retained
+     * across tests.
+     * @param genMarks
+     */
     public static void setGenerateMarks(boolean genMarks) {
         generate_marks = genMarks;
     }
 
+    /**
+     * Sets the flag that determines if superficial forms will be output
+     * along with the lexical forms.
+     * @param sf
+     */
     public void set_show_sf (boolean sf) {
         this.show_sf = sf;
     }
@@ -183,7 +198,7 @@ public class TaggerWord {
     }
 
    /**
-    * Get a wstring with the set of tags
+    * Get a string with the set of tags
     */
     public String get_string_tags () {
         String st="{";
@@ -323,6 +338,9 @@ public class TaggerWord {
         array_tags = at;
     }
 
+    /**
+     * Prints a string representation of this TaggerWord to stdout.
+     */
     public void print () {
         //This functionality was reworked into the toString() method
         System.out.println(toString());
