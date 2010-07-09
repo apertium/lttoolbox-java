@@ -902,9 +902,9 @@ public class HMM {
                     }
                 }
                 
-                int DEBUG_pre_loop_limit = best[nwpend % 2][tag].nodes.size(); //For debugging
+                //int DEBUG_pre_loop_limit = best[nwpend % 2][tag].nodes.size(); //For debugging
                 for (int t = 0; t < best[nwpend % 2][tag].nodes.size(); t++) {
-                    int DEBUG_loop_limit = best[nwpend % 2][tag].nodes.size(); //For debugging
+                    //int DEBUG_loop_limit = best[nwpend % 2][tag].nodes.size(); //For debugging
                     if (show_all_good_first) {
                         String micad = wpend.get(t).get_all_chosen_tag_first(best[nwpend % 2][tag].nodes.get(t), td.getTagIndex().get("TAG_kEOF"));
                         outWriter.write(micad);
@@ -920,6 +920,7 @@ public class HMM {
                          * which triggers the IndexOutOfBoundsException.
                          */
                         TaggerWord tempWord = wpend.get(t);
+                        tempWord.set_show_sf(show_sf); //Was missing, show superficial forms option won't work w/o this line
                         String micad = tempWord.get_lexical_form(tagT, tagkeof);
                         outWriter.write(micad);
                     }

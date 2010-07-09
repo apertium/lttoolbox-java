@@ -186,7 +186,7 @@ public class TaggerTest {
     }
     
     /**
-     * This tests the "first" mode against 200 sentences.
+     * This tests the "mark" mode against 200 sentences.
      * @throws IOException
      */
     @Test
@@ -204,6 +204,52 @@ public class TaggerTest {
         String testOutput = readFile("./tmp/taggerout");
         String expectedOutput = readFile(compareOutFile);
 
-        assertEquals("TaggerTest.testFirstMode200Sentences() failed: output does not match expected output.", expectedOutput, testOutput);
+        assertEquals("TaggerTest.testMarkMode200Sentences() failed: output does not match expected output.", expectedOutput, testOutput);
     }
+
+    /**
+     * This test is for testing the "show superficial" mode with a single test sentence.
+     * @throws IOException
+     */
+    @Test
+    public void testSuperModeThisIsATest() throws IOException {
+        String prob = dir + "en-es.prob";
+        String testin = "^this/this<det><dem><sg>/this<prn><tn><mf><sg>$ ^is/be<vbser><pri><p3><sg>$ ^a/a<det><ind><sg>$ ^test/test<n><sg>/test<vblex><inf>/test<vblex><pres>$^./.<sent>$";
+        String expTestout = "^this/this<prn><tn><mf><sg>$ ^is/be<vbser><pri><p3><sg>$ ^a/a<det><ind><sg>$ ^test/test<n><sg>$^./.<sent>$";
+        String[] argv = {"-g", "-p", prob, "./tmp/taggerin", "./tmp/taggerout"};
+
+        FileWriter f = new FileWriter("./tmp/taggerin");
+        f.append(testin);
+        f.close();
+
+        Tagger.main(argv);
+        String testOutput = readFile("./tmp/taggerout");
+
+        System.err.println("output = " + testOutput);
+        System.err.println("expout = " + expTestout);
+        assertEquals("TaggerTest.testSuperModeThisIsATest() failed: output does not match expected output.", expTestout, testOutput);
+    }
+
+    /**
+     * This tests the "show superficial forms" mode against 200 sentences.
+     * @throws IOException
+     */
+    @Test
+    public void testSuperMode200Sentences() throws IOException {
+
+        String prob = dir + "en-es.prob";
+        String inFile = dir + "en-tagger-input.txt";
+        String outputFile = "./tmp/taggerout";
+        String compareOutFile = dir + "en-tagger-output-super.txt";
+        String[] argv = {"-g", "-p", prob, inFile, outputFile};
+
+        Tagger.main(argv);
+
+        //Read actual output into a string
+        String testOutput = readFile("./tmp/taggerout");
+        String expectedOutput = readFile(compareOutFile);
+
+        assertEquals("TaggerTest.testSuperMode200Sentences() failed: output does not match expected output.", expectedOutput, testOutput);
+    }
+
 }

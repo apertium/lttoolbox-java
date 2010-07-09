@@ -56,6 +56,7 @@ public class Tagger {
     List<String> filenames;
     private static String name;
 
+    //Low-level dev debugging
     private static boolean DEBUG = false;
     
     Tagger() {
@@ -78,6 +79,12 @@ public class Tagger {
         int mode = UNKNOWN_MODE;
 
         MyGetOpt getopt = new MyGetOpt(argv, "mdtsrgpefhz");
+        
+        /* Reset TaggerWord.generate_marks to false in case a previous invocation set it to true.
+         * This usually only shows up when doing tests, as the static variables retain their states
+         * between tests.
+         */
+        TaggerWord.setGenerateMarks(false);
 
         while (true) {
             try {
@@ -87,35 +94,9 @@ public class Tagger {
                 }
 
                 switch (c) {
-                    case 'm':
-                        TaggerWord.generate_marks = true;
-                        break;
 
                     case 'd':
                         debug = true;
-                        break;
-
-                    case 't':
-                        System.err.println("Training not supported");
-                        System.exit(0);
-                        break;
-
-                    case 's':
-                        System.err.println("Training not supported");
-                        System.exit(0);
-                        break;
-
-                    case 'p':
-                        setShowSF(true);
-                        break;
-
-                    case 'r':
-                        System.err.println("Training not supported");
-                        System.exit(0);
-                        break;
-
-                    case 'g':
-                        mode = TAGGER_MODE;
                         break;
 
                     case 'e':
@@ -136,12 +117,39 @@ public class Tagger {
                         }
                         break;
 
-                    case 'z':
-                        null_flush = true;
+                    case 'g':
+                        mode = TAGGER_MODE;
                         break;
 
                     case 'h':
                         help();
+                        break;
+
+                    case 'm':
+                        TaggerWord.setGenerateMarks(true);
+                        break;
+
+                    case 'p':
+                        setShowSF(true);
+                        break;
+
+                    case 'r':
+                        System.err.println("Training not supported");
+                        System.exit(0);
+                        break;
+
+                    case 's':
+                        System.err.println("Training not supported");
+                        System.exit(0);
+                        break;
+
+                    case 't':
+                        System.err.println("Training not supported");
+                        System.exit(0);
+                        break;
+
+                    case 'z':
+                        null_flush = true;
                         break;
 
                     default:

@@ -61,7 +61,7 @@ public class TaggerWord {
      */
     private boolean show_sf;
     
-    public static boolean generate_marks = false;
+    private static boolean generate_marks = false;
     public static ArrayList<String> array_tags;
     public static boolean show_ignored_string = true;
     
@@ -78,6 +78,10 @@ public class TaggerWord {
 
     public TaggerWord () {
         this(false);
+    }
+    
+    public static void setGenerateMarks(boolean genMarks) {
+        generate_marks = genMarks;
     }
 
     public void set_show_sf (boolean sf) {
