@@ -106,29 +106,41 @@ public class TextFormatter extends GenericFormatter {
                          */
                         StringWriter spaceWrite = new StringWriter();
                         boolean writePeriod = false;
+                        boolean writeBrackets = false; //Whitespace is other than a single space
                         if((currentChar == '\n') && (previousChar != '.')) {
-                            //spaceWrite.write('.');
                             writePeriod = true;
                         }
-                        spaceWrite.write('[');
+                        if(currentChar != ' ') { //Whitespace char is other than space
+                            writeBrackets = true;
+                        }
                         spaceWrite.write(currentChar);
                         previousChar = currentChar;
                         while(Character.isWhitespace((currentChar = inRead.read()))) {
                             spaceWrite.write(currentChar);
                             previousChar = currentChar;
                         }
-                        spaceWrite.write(']');
                         if(currentChar != -1) {
-                            if(isApertiumSpecialCharacter(currentChar)) {
-                                spaceWrite.write('\\');
-                            }
-                            spaceWrite.write(currentChar);
                             writePeriod = false; //There's text after the newline, don't add a period
                         }
                         if(writePeriod) {
                             outWrite.write(".[]");
                         }
-                        outWrite.write(spaceWrite.toString());
+                        /* If this section of whitespace is more than one character long,
+                         * or if it has non-space whitespace, then we do a superblank.
+                         * If it's only a single space, no superblank.
+                         */
+                        if((spaceWrite.toString().length() > 1) || writeBrackets) {
+                            outWrite.write("[" + spaceWrite.toString() + "]");
+                        } else {
+                            outWrite.write(spaceWrite.toString());
+                        }
+                        if(currentChar != -1) {
+                            if(isApertiumSpecialCharacter(currentChar)) {
+                                outWrite.write('\\');
+                            }
+                            outWrite.write(currentChar);
+                            previousChar = currentChar;
+                        }
                     } else {
                         /* This character could be a special character that needs
                          * escaping. 
@@ -142,11 +154,11 @@ public class TextFormatter extends GenericFormatter {
                 }
             } while((currentChar = inRead.read()) != -1);
             /* Insert a period at the end if the last character of the stream isn't
-             * a period already or a newline. If it's a newline, the appropriate
-             * period was already added before the newline.
+             * a period already or whitespace.
              */
-            if((previousChar != '.') && (previousChar != '\n')) {
-                outWrite.write('.');
+            System.err.println("previousChar: " + previousChar);
+            if((previousChar != '.') && !Character.isWhitespace(previousChar)) {
+                outWrite.write(".[]");
             }
             /* Have to flush it, or you'll never get any output!
              * This is needed both with and without the BufferedWriter wrapped
