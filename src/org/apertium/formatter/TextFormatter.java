@@ -114,7 +114,19 @@ public class TextFormatter extends GenericFormatter {
                             previousChar = currentChar;
                         }
                         outWrite.write(']');
+                        if(currentChar != -1) {
+                            if(isApertiumSpecialCharacter(currentChar)) {
+                                outWrite.write('\\');
+                            }
+                            outWrite.write(currentChar);
+                        }
                     } else {
+                        /* This character could be a special character that needs
+                         * escaping. 
+                         */
+                        if(isApertiumSpecialCharacter(currentChar)) {
+                            outWrite.write('\\');
+                        }
                         outWrite.write(currentChar);
                         previousChar = currentChar;
                     }
