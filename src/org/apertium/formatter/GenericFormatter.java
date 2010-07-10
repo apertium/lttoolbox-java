@@ -41,6 +41,9 @@ public abstract class GenericFormatter {
     protected String _outputFile = null;
     protected String _commandLabel = null;
     
+    //Low-level dev debugging
+    protected boolean DEBUG = false;
+    
     /**
      * Gets the mode (either deformat or reformat) selected on the command line.
      * Also parses the input and output file parameters.
@@ -61,14 +64,14 @@ public abstract class GenericFormatter {
         do {
             switch(opt) {
                 case 'd':
-                    if(mode != FormatterMode.NOMODE) {
+                    if(mode == FormatterMode.NOMODE) {
                         mode = FormatterMode.DEFORMAT;
                     } else {
                         helpNeeded = true;
                     }
                     break;
                 case 'r':
-                    if(mode != FormatterMode.NOMODE) {
+                    if(mode == FormatterMode.NOMODE) {
                         mode = FormatterMode.REFORMAT;
                     } else {
                         helpNeeded = true;
@@ -160,6 +163,10 @@ public abstract class GenericFormatter {
         OutputStream out = null;
 
         FormatterMode mode = getModeAndFiles(args, _commandLabel);
+
+        if(DEBUG) {
+            System.err.println("mode: " + mode);
+        }
         
         if(_inputFile != null) {
             in =  openInFile(_inputFile, _commandLabel);
