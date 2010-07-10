@@ -50,14 +50,19 @@ public class TextFormatter extends GenericFormatter {
             case '{':
             case '}':
             case '\\':
-            case '*':
             case '@':
-            case '#':
-            case '+':
-            case '~':
             case '[':
             case ']':
                 return true;
+            case '*':
+            case '#':
+            case '+':
+            case '~':
+                /* If in C++ compatibility mode, return false, as these characters
+                 * aren't escaped in the C++ version, even though they probably
+                 * should be. If not in C++ compatibility mode, return true
+                 */
+                return !_cppCompat;
             default:
                 return false;
         }
@@ -157,7 +162,6 @@ public class TextFormatter extends GenericFormatter {
              * a period already or whitespace. Except in the case of C++ compat mode.
              * When in C++ compat mode, ignore if there was a period before or not.
              */
-            System.err.println("previousChar: " + previousChar);
             if(((previousChar != '.') || _cppCompat) && !Character.isWhitespace(previousChar)) {
                 outWrite.write(".[]");
             }
