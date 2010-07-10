@@ -136,6 +136,9 @@ public class TextFormatter extends GenericFormatter {
              * This is needed both with and without the BufferedWriter wrapped
              * around the OutputStreamWriter.
              */
+            if(previousChar != '.') {
+                outWrite.write('.');
+            }
             outWrite.flush();
         } catch (IOException e) {
             System.err.println("IOException occured in TextFormatter.deFormat()");

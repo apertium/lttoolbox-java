@@ -57,7 +57,7 @@ public class TestTextFormatter {
     public void testMainDeformat() throws IOException {
         String[] args = {"-d", "-i", "./tmp/txtfmtin", "-o", "./tmp/txtfmtout"};
         String testin = "$100 cash+\n@No refunds *\\ > ~ < \tfoo\tbar {} //// \t  #<blah>";
-        String expOut = "\\$100[ ]cash\\+.[\n]\\@No[ ]refunds[ ]\\*\\\\[ ]\\>[ ]\\~[ ]\\<[ \t]foo[\t]bar[ ]\\{\\}[ ]\\/\\/\\/\\/[ \t  ]\\#\\<blah\\>";
+        String expOut = "\\$100[ ]cash\\+.[\n]\\@No[ ]refunds[ ]\\*\\\\[ ]\\>[ ]\\~[ ]\\<[ \t]foo[\t]bar[ ]\\{\\}[ ]\\/\\/\\/\\/[ \t  ]\\#\\<blah\\>.";
 
         FileWriter f = new FileWriter("./tmp/txtfmtin");
         f.append(testin);
@@ -66,7 +66,7 @@ public class TestTextFormatter {
         TextFormatter.main(args);
         
         String testOutput = readFile("./tmp/txtfmtout");
-        assertEquals("TestTextFormatter.testMainDeforma() failed: output does not match expected output.", expOut, testOutput);
+        assertEquals("TestTextFormatter.testMainDeformat() failed: output does not match expected output.", expOut, testOutput);
     }
 
     /**
@@ -81,8 +81,8 @@ public class TestTextFormatter {
          * with one addition to the expected output, that of the period added by the
          * deformatter before the newline.
          */
-        String expOut = "$100 cash+.\n@No refunds *\\ > ~ < \tfoo\tbar {} //// \t  #<blah>";
-        String testin = "\\$100[ ]cash\\+.[\n]\\@No[ ]refunds[ ]\\*\\\\[ ]\\>[ ]\\~[ ]\\<[ \t]foo[\t]bar[ ]\\{\\}[ ]\\/\\/\\/\\/[ \t  ]\\#\\<blah\\>";
+        String expOut = "$100 cash+.\n@No refunds *\\ > ~ < \tfoo\tbar {} //// \t  #<blah>.";
+        String testin = "\\$100[ ]cash\\+.[\n]\\@No[ ]refunds[ ]\\*\\\\[ ]\\>[ ]\\~[ ]\\<[ \t]foo[\t]bar[ ]\\{\\}[ ]\\/\\/\\/\\/[ \t  ]\\#\\<blah\\>.";
 
         FileWriter f = new FileWriter("./tmp/txtfmtin");
         f.append(testin);
