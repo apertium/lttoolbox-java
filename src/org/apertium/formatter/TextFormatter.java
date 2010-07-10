@@ -107,7 +107,7 @@ public class TextFormatter extends GenericFormatter {
                         StringWriter spaceWrite = new StringWriter();
                         boolean writePeriod = false;
                         boolean writeBrackets = false; //Whitespace is other than a single space
-                        if((currentChar == '\n') && (previousChar != '.')) {
+                        if((currentChar == '\n') && ((previousChar != '.') || _cppCompat)) {
                             writePeriod = true;
                         }
                         if(currentChar != ' ') { //Whitespace char is other than space
@@ -154,10 +154,11 @@ public class TextFormatter extends GenericFormatter {
                 }
             } while((currentChar = inRead.read()) != -1);
             /* Insert a period at the end if the last character of the stream isn't
-             * a period already or whitespace.
+             * a period already or whitespace. Except in the case of C++ compat mode.
+             * When in C++ compat mode, ignore if there was a period before or not.
              */
             System.err.println("previousChar: " + previousChar);
-            if((previousChar != '.') && !Character.isWhitespace(previousChar)) {
+            if(((previousChar != '.') || _cppCompat) && !Character.isWhitespace(previousChar)) {
                 outWrite.write(".[]");
             }
             /* Have to flush it, or you'll never get any output!

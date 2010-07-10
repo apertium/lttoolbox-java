@@ -41,7 +41,15 @@ public abstract class GenericFormatter {
     protected String _outputFile = null;
     protected String _commandLabel = null;
 
-    protected static boolean _cppCompat = false;
+    /**
+     * This flag determines if the output precisely mimics the output of the C++ version,
+     * for compatibility, or if it is a bit smarter in its output.
+     * An example would be the propensity of the C++ code to output extra periods at the end
+     * of lines with just whitespace after them, even if there's already a period there.
+     * Another would be the C++ failing to escape some Apertium stream characters, even
+     * though it really should.
+     */
+    protected boolean _cppCompat = false;
     //Low-level dev debugging
     protected boolean DEBUG = false;
     
@@ -56,7 +64,7 @@ public abstract class GenericFormatter {
      * there was no mode selected or there otherwise was a bad command line.
      */
     protected FormatterMode getModeAndFiles(String[] argv, String commandLabel) {
-        Getopt getOpt = new Getopt(commandLabel,argv, "dri:o:");
+        Getopt getOpt = new Getopt(commandLabel,argv, "drci:o:");
         FormatterMode mode = FormatterMode.NOMODE;
         
         int opt = getOpt.getopt();
@@ -77,6 +85,9 @@ public abstract class GenericFormatter {
                     } else {
                         helpNeeded = true;
                     }
+                    break;
+                case 'c':
+                    _cppCompat = true;
                     break;
                 case 'i':
                     _inputFile = getOpt.getOptarg();
@@ -99,11 +110,12 @@ public abstract class GenericFormatter {
     
     protected void help(String commandLabel) {
         System.out.println(commandLabel + ": deformatter and reformatter");
-        System.out.println("USAGE: " + commandLabel + " -d [-i INPUT_FILE] [-o OUTPUT_FILE]");
-        System.out.println("       " + commandLabel + " -r [-i INPUT_FILE] [-o OUTPUT_FILE]");
+        System.out.println("USAGE: " + commandLabel + " -d [-c] [-i INPUT_FILE] [-o OUTPUT_FILE]");
+        System.out.println("       " + commandLabel + " -r [-c] [-i INPUT_FILE] [-o OUTPUT_FILE]");
         System.out.println("OPTIONS:");
         System.out.println(" -d: Deformat, escape special characters and whitespace.");
         System.out.println(" -r: Reformat, un-escape special characters and whitespace.");
+        System.out.println(" -c: C++ compatibility mode, emulate C++ output, including some sub-optimal behavior");
         System.out.println(" -i: Input file, uses the file INPUT_FILE as input.");
         System.out.println(" -o: Output file, uses the file OUTPUT_FILE as output");
         System.out.println("If the input and output files are not specified, then " +
