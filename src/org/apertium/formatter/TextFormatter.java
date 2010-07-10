@@ -132,13 +132,17 @@ public class TextFormatter extends GenericFormatter {
                     }
                 }
             } while((currentChar = inRead.read()) != -1);
+            /* Insert a period at the end if the last character of the stream isn't
+             * a period already or a newline. If it's a newline, the appropriate
+             * period was already added before the newline.
+             */
+            if((previousChar != '.') && (previousChar != '\n')) {
+                outWrite.write('.');
+            }
             /* Have to flush it, or you'll never get any output!
              * This is needed both with and without the BufferedWriter wrapped
              * around the OutputStreamWriter.
              */
-            if(previousChar != '.') {
-                outWrite.write('.');
-            }
             outWrite.flush();
         } catch (IOException e) {
             System.err.println("IOException occured in TextFormatter.deFormat()");
