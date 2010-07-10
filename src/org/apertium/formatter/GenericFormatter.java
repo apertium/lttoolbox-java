@@ -34,7 +34,7 @@ import org.apertium.lttoolbox.Getopt;
  */
 public abstract class GenericFormatter {
     protected enum FormatterMode {
-        DEFORMAT, REFORMAT
+        DEFORMAT, REFORMAT, NOMODE
     }
     
     protected String _inputFile = null;
@@ -53,7 +53,7 @@ public abstract class GenericFormatter {
      */
     protected FormatterMode getModeAndFiles(String[] argv, String commandLabel) {
         Getopt getOpt = new Getopt(commandLabel,argv, "dri:o:");
-        FormatterMode mode = null;
+        FormatterMode mode = FormatterMode.NOMODE;
         
         int opt = getOpt.getopt();
         boolean helpNeeded = false;
@@ -61,14 +61,14 @@ public abstract class GenericFormatter {
         do {
             switch(opt) {
                 case 'd':
-                    if(mode != null) {
+                    if(mode != FormatterMode.NOMODE) {
                         mode = FormatterMode.DEFORMAT;
                     } else {
                         helpNeeded = true;
                     }
                     break;
                 case 'r':
-                    if(mode != null) {
+                    if(mode != FormatterMode.NOMODE) {
                         mode = FormatterMode.REFORMAT;
                     } else {
                         helpNeeded = true;
@@ -84,19 +84,19 @@ public abstract class GenericFormatter {
                     helpNeeded = true;
             }
         } while((opt = getOpt.getopt()) != -1);
-        if(mode == null) { helpNeeded = true; }
+        if(mode == FormatterMode.NOMODE) { helpNeeded = true; }
         if(helpNeeded) { 
             help(commandLabel);
-            //Reset mode to null since we have an invalid command line
-            mode = null;
+            //Reset mode to NOMODE since we have an invalid command line
+            mode = FormatterMode.NOMODE;
         }
         return mode;
     }
     
     protected void help(String commandLabel) {
         System.out.println(commandLabel + ": deformatter and reformatter");
-        System.out.println("USAGE: " + commandLabel + "-d [-i INPUT_FILE] [-o OUTPUT_FILE]");
-        System.out.println("       " + commandLabel + "-r [-i INPUT_FILE] [-o OUTPUT_FILE]");
+        System.out.println("USAGE: " + commandLabel + " -d [-i INPUT_FILE] [-o OUTPUT_FILE]");
+        System.out.println("       " + commandLabel + " -r [-i INPUT_FILE] [-o OUTPUT_FILE]");
         System.out.println("OPTIONS:");
         System.out.println(" -d: Deformat, escape special characters and whitespace.");
         System.out.println(" -r: Reformat, un-escape special characters and whitespace.");
@@ -178,6 +178,9 @@ public abstract class GenericFormatter {
                 break;
             case REFORMAT:
                 reFormat(in, out);
+                break;
+            case NOMODE:
+                //do nothing, help text should have been printed out already.
                 break;
             default:
                 //We should never get here, if we do, something is broken.

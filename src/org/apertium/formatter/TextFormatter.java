@@ -36,6 +36,30 @@ import java.io.UnsupportedEncodingException;
  */
 public class TextFormatter extends GenericFormatter {
 
+    private boolean isApertiumSpecialCharacter(int charCode) {
+        switch(charCode) {
+            //Apertium stream format special characters
+            case '^':
+            case '$':
+            case '/':
+            case '<':
+            case '>':
+            case '{':
+            case '}':
+            case '\\':
+            case '*':
+            case '@':
+            case '#':
+            case '+':
+            case '~':
+            case '[':
+            case ']':
+                return true;
+            default:
+                return false;
+        }
+    }
+    
     @Override
     protected void deFormat(InputStream in, OutputStream out) {
         InputStreamReader inRead = null;
@@ -55,48 +79,32 @@ public class TextFormatter extends GenericFormatter {
              */
             int previousChar = -1;
             do {
-                switch(currentChar) {
-                    //Apertium stream format special characters
-                    case '^':
-                    case '$':
-                    case '/':
-                    case '<':
-                    case '>':
-                    case '{':
-                    case '}':
-                    case '\\':
-                    case '*':
-                    case '@':
-                    case '#':
-                    case '+':
-                    case '~':
-                    case '[':
-                    case ']':
-                        outWrite.write('\\');
+                if(isApertiumSpecialCharacter(currentChar)) {
+                    outWrite.write('\\');
+                    outWrite.write(currentChar);
+                    previousChar = currentChar;
+                } else {
+                    if(Character.isWhitespace(currentChar)) {
+                        /* Insert a period before a newline, to mimic the behavior
+                         * of the C++ deformatter. However, we don't have to completely
+                         * mimic the behavior of inserting an extra period when one
+                         * already exists.
+                         */
+                        if((currentChar == '\n') && (previousChar != '.')) {
+                            outWrite.write('.');
+                        }
+                        outWrite.write('[');
                         outWrite.write(currentChar);
                         previousChar = currentChar;
-                        break;
-                    default:
-                        /* Insert a period before a newline, to mimic the behavior
-                         * of the C++ deformatter.
-                         */
-                        if(Character.isWhitespace(currentChar)) {
-                            if(currentChar == '\n') {
-                                outWrite.write('.');
-                            }
-                            outWrite.write('[');
-                            outWrite.write(currentChar);
-                            previousChar = currentChar;
-                            while(Character.isWhitespace((currentChar = inRead.read()))) {
-                                outWrite.write(currentChar);
-                                previousChar = currentChar;
-                            }
-                            outWrite.write(']');
-                        } else {
+                        while(Character.isWhitespace((currentChar = inRead.read()))) {
                             outWrite.write(currentChar);
                             previousChar = currentChar;
                         }
-                        break;
+                        outWrite.write(']');
+                    } else {
+                        outWrite.write(currentChar);
+                        previousChar = currentChar;
+                    }
                 }
             } while((currentChar = inRead.read()) != -1);
         } catch (IOException e) {
@@ -107,8 +115,54 @@ public class TextFormatter extends GenericFormatter {
 
     @Override
     protected void reFormat(InputStream in, OutputStream out) {
-        // TODO Auto-generated method stub
-        
+        InputStreamReader inRead = null;
+        OutputStreamWriter outWrite = null;
+        try {
+            inRead = new InputStreamReader(in, "UTF-8");
+            outWrite = new OutputStreamWriter(out, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            System.err.println(_commandLabel + " -- This system apparently doesn't support UTF-8 encoding.");
+            System.err.println("Cannot continue. Find a system that does and try again.");
+            System.exit(1);
+        }
+
+        try {
+            int currentChar = inRead.read();
+            int previousChar = -1;
+            
+            do {
+                if(currentChar == '\\') { //Escaped character
+                    previousChar = currentChar;
+                    currentChar = inRead.read();
+                    if(currentChar == -1) {
+                        /* This should never happen, we shouldn't get a single backslash at the end of the file,
+                         * but we should expect the unexpected and deal with it anyway. Go ahead and output the
+                         * backslash.
+                         */
+                        outWrite.write(previousChar);
+                    } else {
+                        //Output the char that was escaped.
+                        outWrite.write(currentChar);
+                    }
+                } else if(currentChar == '[') { //Start of a superblank
+                    previousChar = currentChar;
+                    currentChar = inRead.read();
+                    while((currentChar != -1) && (currentChar != ']')) {
+                        /* Superblanks should have only whitespace characters in them
+                         * in the plain text format, so no need to check all the characters 
+                         * inside of them for escaped characters.
+                         */
+                        outWrite.write(currentChar);
+                        previousChar = currentChar;
+                        currentChar = inRead.read();
+                    }
+                }
+                previousChar = currentChar;
+            } while((currentChar = inRead.read()) != -1);
+        } catch (IOException e) {
+            System.err.println("IOException occured in TextFormatter.reFormat()");
+            e.printStackTrace();
+        }
     }
 
     TextFormatter(String commandLabel) {
