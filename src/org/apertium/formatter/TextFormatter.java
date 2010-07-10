@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
@@ -103,23 +104,31 @@ public class TextFormatter extends GenericFormatter {
                          * mimic the behavior of inserting an extra period when one
                          * already exists.
                          */
+                        StringWriter spaceWrite = new StringWriter();
+                        boolean writePeriod = false;
                         if((currentChar == '\n') && (previousChar != '.')) {
-                            outWrite.write('.');
+                            //spaceWrite.write('.');
+                            writePeriod = true;
                         }
-                        outWrite.write('[');
-                        outWrite.write(currentChar);
+                        spaceWrite.write('[');
+                        spaceWrite.write(currentChar);
                         previousChar = currentChar;
                         while(Character.isWhitespace((currentChar = inRead.read()))) {
-                            outWrite.write(currentChar);
+                            spaceWrite.write(currentChar);
                             previousChar = currentChar;
                         }
-                        outWrite.write(']');
+                        spaceWrite.write(']');
                         if(currentChar != -1) {
                             if(isApertiumSpecialCharacter(currentChar)) {
-                                outWrite.write('\\');
+                                spaceWrite.write('\\');
                             }
-                            outWrite.write(currentChar);
+                            spaceWrite.write(currentChar);
+                            writePeriod = false; //There's text after the newline, don't add a period
                         }
+                        if(writePeriod) {
+                            outWrite.write(".[]");
+                        }
+                        outWrite.write(spaceWrite.toString());
                     } else {
                         /* This character could be a special character that needs
                          * escaping. 

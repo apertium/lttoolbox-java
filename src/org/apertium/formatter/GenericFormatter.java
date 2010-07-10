@@ -40,7 +40,8 @@ public abstract class GenericFormatter {
     protected String _inputFile = null;
     protected String _outputFile = null;
     protected String _commandLabel = null;
-    
+
+    protected static boolean _cppCompat = false;
     //Low-level dev debugging
     protected boolean DEBUG = false;
     
