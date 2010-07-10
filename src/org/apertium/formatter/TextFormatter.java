@@ -146,10 +146,17 @@ public class TextFormatter extends GenericFormatter {
     @Override
     protected void reFormat(InputStream in, OutputStream out) {
         InputStreamReader inRead = null;
-        OutputStreamWriter outWrite = null;
+        Writer outWrite = null;
         try {
             inRead = new InputStreamReader(in, "UTF-8");
-            outWrite = new OutputStreamWriter(out, "UTF-8");
+            /* The OutputStreamWriter is wrapped in a BufferedWriter for
+             * performance reasons, per the Java API docs on OutputStreamWriter.
+             * "Each invocation of a write() method causes the encoding converter 
+             * to be invoked on the given character(s). [...]
+             * For top efficiency, consider wrapping an OutputStreamWriter within a 
+             * BufferedWriter so as to avoid frequent converter invocations."
+             */
+            outWrite = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             System.err.println(_commandLabel + " -- This system apparently doesn't support UTF-8 encoding.");
             System.err.println("Cannot continue. Find a system that does and try again.");
@@ -186,9 +193,16 @@ public class TextFormatter extends GenericFormatter {
                         previousChar = currentChar;
                         currentChar = inRead.read();
                     }
+                } else {
+                    outWrite.write(currentChar);
                 }
                 previousChar = currentChar;
             } while((currentChar = inRead.read()) != -1);
+            /* Have to flush it, or you'll never get any output!
+             * This is needed both with and without the BufferedWriter wrapped
+             * around the OutputStreamWriter.
+             */
+            outWrite.flush();
         } catch (IOException e) {
             System.err.println("IOException occured in TextFormatter.reFormat()");
             e.printStackTrace();

@@ -121,7 +121,7 @@ public abstract class GenericFormatter {
         return in;
     }
     
-    protected OutputStream openoutFile(String filename, String commandLabel) {
+    protected OutputStream openOutFile(String filename, String commandLabel) {
         OutputStream out = null;
         try {
             out = new FileOutputStream(filename);
@@ -174,7 +174,7 @@ public abstract class GenericFormatter {
             in = System.in;
         }
         if(_outputFile != null) {
-            out = openoutFile(_outputFile, _commandLabel);
+            out = openOutFile(_outputFile, _commandLabel);
         } else {
             out = System.out;
         }

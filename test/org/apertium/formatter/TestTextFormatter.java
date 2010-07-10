@@ -50,20 +50,48 @@ public class TestTextFormatter {
     
     /**
      * Test method for {@link org.apertium.formatter.TextFormatter#main(java.lang.String[])}.
-     * This passing currently means nothing as it doesn't actually test anything in the 
-     * jUnit sense, instead it's used for launching the TextFormatter with certain
-     * parameters easily in the IDE for testing and debugging purposes.
+     * Tests a nonsense sentence filled with random words, whitespace, and special characters.
+     * Tests for deformatting only. Reformatting is the next test.
      */
     @Test
-    public void testMain() throws IOException {
-        String[] args = {"-d", "-i", "./tmp/txtfmtin"};
+    public void testMainDeformat() throws IOException {
+        String[] args = {"-d", "-i", "./tmp/txtfmtin", "-o", "./tmp/txtfmtout"};
         String testin = "$100 cash+\n@No refunds *\\ > ~ < \tfoo\tbar {} //// \t  #<blah>";
+        String expOut = "\\$100[ ]cash\\+.[\n]\\@No[ ]refunds[ ]\\*\\\\[ ]\\>[ ]\\~[ ]\\<[ \t]foo[\t]bar[ ]\\{\\}[ ]\\/\\/\\/\\/[ \t  ]\\#\\<blah\\>";
 
         FileWriter f = new FileWriter("./tmp/txtfmtin");
         f.append(testin);
         f.close();
 
         TextFormatter.main(args);
+        
+        String testOutput = readFile("./tmp/txtfmtout");
+        assertEquals("TestTextFormatter.testMainDeforma() failed: output does not match expected output.", expOut, testOutput);
+    }
+
+    /**
+     * Test method for {@link org.apertium.formatter.TextFormatter#main(java.lang.String[])}.
+     * Tests a nonsense sentence filled with random words, whitespace, and special characters.
+     * Tests for reformatting only. Deformatting is the previous test.
+     */
+    @Test
+    public void testMainReformat() throws IOException {
+        String[] args = {"-r", "-i", "./tmp/txtfmtin", "-o", "./tmp/txtfmtout"};
+        /* The expected output and test input are reversed from the previous test,
+         * with one addition to the expected output, that of the period added by the
+         * deformatter before the newline.
+         */
+        String expOut = "$100 cash+.\n@No refunds *\\ > ~ < \tfoo\tbar {} //// \t  #<blah>";
+        String testin = "\\$100[ ]cash\\+.[\n]\\@No[ ]refunds[ ]\\*\\\\[ ]\\>[ ]\\~[ ]\\<[ \t]foo[\t]bar[ ]\\{\\}[ ]\\/\\/\\/\\/[ \t  ]\\#\\<blah\\>";
+
+        FileWriter f = new FileWriter("./tmp/txtfmtin");
+        f.append(testin);
+        f.close();
+
+        TextFormatter.main(args);
+        
+        String testOutput = readFile("./tmp/txtfmtout");
+        assertEquals("TestTextFormatter.testMainReformat() failed: output does not match expected output.", expOut, testOutput);
     }
 
 }
