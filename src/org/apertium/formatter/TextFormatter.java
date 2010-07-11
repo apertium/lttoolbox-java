@@ -212,12 +212,21 @@ public class TextFormatter extends GenericFormatter {
             
             do {
                 if(currentChar == '\\') { //Escaped character
+                    /* All backslashes in the incoming text are treated as escaping
+                     * the characters that follow them and are removed, regardless of
+                     * if the following character is an Apertium stream character or not
+                     * with the exception of a backslash that occurs at the very end
+                     * of the stream, which couldn't be escaping anything, so it is just
+                     * output normally. Note that this case of the single backslash at
+                     * the end of the input stream should never happen, but there is code
+                     * to deal with it anyway.
+                     */
                     previousChar = currentChar;
                     currentChar = inRead.read();
                     if(currentChar == -1) {
                         /* This should never happen, we shouldn't get a single backslash at the end of the file,
                          * but we should expect the unexpected and deal with it anyway. Go ahead and output the
-                         * backslash.
+                         * backslash. This is also how the C++ code handles this situation.
                          */
                         outWrite.write(previousChar);
                     } else {
@@ -227,6 +236,13 @@ public class TextFormatter extends GenericFormatter {
                 } else if(currentChar == '[') { //Start of a superblank
                     previousChar = currentChar;
                     currentChar = inRead.read();
+                    /* This writes the contents of the superblank to a separate
+                     * string buffer so that we can deal with it as a whole after the
+                     * entire thing has been read, as the logic dealing with the
+                     * empty superblanks ('.[]') which mark periods added by the 
+                     * deformatter requires us to have read the superblank
+                     * to decide if we should output the period or not.
+                     */
                     StringWriter spaceWrite = new StringWriter();
                     while((currentChar != -1) && (currentChar != ']')) {
                         /* Superblanks should have only whitespace characters in them
@@ -246,14 +262,25 @@ public class TextFormatter extends GenericFormatter {
                     if(spaceWrite.toString().length() > 0) {
                         if(foundPeriod) {
                             outWrite.write('.');
+                            //Set foundPeriod to false, since we just output it.
                             foundPeriod = false;
                         }
                         outWrite.write(spaceWrite.toString());
+                    } else { //Empty superblank, meaning we need to drop that period.
+                        //Set foundPeriod to false, since we're dropping it.
+                        foundPeriod = false;
                     }
                 } else if(currentChar == '.') {
+                    if(foundPeriod) { 
+                        //Multiple periods in a row, output the previous one.
+                        outWrite.write('.');
+                    }
                     foundPeriod = true;
                 } else {
-                    if(foundPeriod) { outWrite.write('.'); }
+                    if(foundPeriod) { 
+                        outWrite.write('.');
+                        foundPeriod = false;
+                    }
                     outWrite.write(currentChar);
                 }
                 previousChar = currentChar;
