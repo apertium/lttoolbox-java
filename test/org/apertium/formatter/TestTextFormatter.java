@@ -57,7 +57,7 @@ public class TestTextFormatter {
     public void testMainDeformat() throws IOException {
         String[] args = {"-d", "-i", "./tmp/txtfmtin", "-o", "./tmp/txtfmtout"};
         String testin = "$100 cash+\n@No refunds *\\ > ~ < \tfoo\tbar {} //// \t  #<blah>";
-        String expOut = "\\$100[ ]cash\\+.[\n]\\@No[ ]refunds[ ]\\*\\\\[ ]\\>[ ]\\~[ ]\\<[ \t]foo[\t]bar[ ]\\{\\}[ ]\\/\\/\\/\\/[ \t  ]\\#\\<blah\\>.";
+        String expOut = "\\$100 cash\\+[\n]\\@No refunds \\*\\\\ \\> \\~ \\<[ \t]foo[\t]bar \\{\\} \\/\\/\\/\\/[ \t  ]\\#\\<blah\\>.[]";
 
         FileWriter f = new FileWriter("./tmp/txtfmtin");
         f.append(testin);
@@ -77,12 +77,10 @@ public class TestTextFormatter {
     @Test
     public void testMainReformat() throws IOException {
         String[] args = {"-r", "-i", "./tmp/txtfmtin", "-o", "./tmp/txtfmtout"};
-        /* The expected output and test input are reversed from the previous test,
-         * with one addition to the expected output, that of the period added by the
-         * deformatter before the newline.
+        /* The expected output and test input are reversed from the previous test.
          */
-        String expOut = "$100 cash+.\n@No refunds *\\ > ~ < \tfoo\tbar {} //// \t  #<blah>.";
-        String testin = "\\$100[ ]cash\\+.[\n]\\@No[ ]refunds[ ]\\*\\\\[ ]\\>[ ]\\~[ ]\\<[ \t]foo[\t]bar[ ]\\{\\}[ ]\\/\\/\\/\\/[ \t  ]\\#\\<blah\\>.";
+        String expOut = "$100 cash+\n@No refunds *\\ > ~ < \tfoo\tbar {} //// \t  #<blah>";
+        String testin = "\\$100 cash\\+[\n]\\@No refunds \\*\\\\ \\> \\~ \\<[ \t]foo[\t]bar \\{\\} \\/\\/\\/\\/[ \t  ]\\#\\<blah\\>.[]";
 
         FileWriter f = new FileWriter("./tmp/txtfmtin");
         f.append(testin);
