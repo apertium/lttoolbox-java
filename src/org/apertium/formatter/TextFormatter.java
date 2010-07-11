@@ -199,6 +199,16 @@ public class TextFormatter extends GenericFormatter {
         try {
             int currentChar = inRead.read();
             int previousChar = -1;
+            /* This variable is used as a flag for if we're dealing with an extra
+             * period inserted by the deformatter or not. When a period is encountered,
+             * this flag is set and the period is skipped. If the next character is not
+             * a '[', indicating the beginning of a superblank, then it is output.
+             * If it *is* a '[', then the period is held until the superblank is resolved.
+             * If the superblank is empty, then it's marking an extra period that was
+             * added, and the period should be discarded. If it's not empty, then the
+             * period should be output. 
+             */
+            boolean foundPeriod = false;
             
             do {
                 if(currentChar == '\\') { //Escaped character
@@ -217,16 +227,33 @@ public class TextFormatter extends GenericFormatter {
                 } else if(currentChar == '[') { //Start of a superblank
                     previousChar = currentChar;
                     currentChar = inRead.read();
+                    StringWriter spaceWrite = new StringWriter();
                     while((currentChar != -1) && (currentChar != ']')) {
                         /* Superblanks should have only whitespace characters in them
                          * in the plain text format, so no need to check all the characters 
                          * inside of them for escaped characters.
                          */
-                        outWrite.write(currentChar);
+                        spaceWrite.write(currentChar);
                         previousChar = currentChar;
                         currentChar = inRead.read();
                     }
+                    /* spaceWrite should have all the characters inside the superblank
+                     * in it. If the length is greater than 0, then we need to check
+                     * foundPeriod to see if we need to output a period.
+                     * If it's 0, then it was an empty superblank marking an added period
+                     * and neither the period, nor the empty string should be output.
+                     */
+                    if(spaceWrite.toString().length() > 0) {
+                        if(foundPeriod) {
+                            outWrite.write('.');
+                            foundPeriod = false;
+                        }
+                        outWrite.write(spaceWrite.toString());
+                    }
+                } else if(currentChar == '.') {
+                    foundPeriod = true;
                 } else {
+                    if(foundPeriod) { outWrite.write('.'); }
                     outWrite.write(currentChar);
                 }
                 previousChar = currentChar;
