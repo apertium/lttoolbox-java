@@ -20,8 +20,6 @@
 package org.apertium.formatter;
 
 import java.io.BufferedWriter;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -84,13 +82,13 @@ public class TextFormatter extends GenericFormatter {
             outWrite = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             System.err.println(_commandLabel + " -- This system apparently doesn't support UTF-8 encoding.");
-            System.err.println("Cannot continue. Find a system that does and try again.");
+            System.err.println("Cannot continue. Find a system that does (or enable UTF-8 on this system) and try again.");
             System.exit(1);
         }
         try {
             int currentChar = inRead.read();
             /* Keep track of the previous char, intended for use if needing
-             * to backtrack one character for some reason.
+             * to backtrack one character for various reasons.
              */
             int previousChar = -1;
             do {
@@ -104,14 +102,24 @@ public class TextFormatter extends GenericFormatter {
                     previousChar = currentChar;
                 } else {
                     if(Character.isWhitespace(currentChar)) {
+                        StringWriter spaceWrite = new StringWriter();
+                        boolean writePeriod = false;
+                        /* Whitespace is other than a single space.
+                         * If the whitespace is just a single space, then we don't want to
+                         * output the superblank brackets around it. For multiple spaces,
+                         * or for whitespace characters other than a single space
+                         * (for example, '\t', '\n', etc.), we do want to output the 
+                         * superblank brackets around that whitespace.
+                         */
+                        boolean writeBrackets = false;
+
                         /* Insert a period before a newline, to mimic the behavior
                          * of the C++ deformatter. However, we don't have to completely
                          * mimic the behavior of inserting an extra period when one
-                         * already exists.
+                         * already exists, unless we are in C++ compatibility mode.
+                         * When in C++ compatibility mode, ignore the existence of any
+                         * existing periods when adding a period.
                          */
-                        StringWriter spaceWrite = new StringWriter();
-                        boolean writePeriod = false;
-                        boolean writeBrackets = false; //Whitespace is other than a single space
                         if((currentChar == '\n') && ((previousChar != '.') || _cppCompat)) {
                             writePeriod = true;
                         }
@@ -128,6 +136,10 @@ public class TextFormatter extends GenericFormatter {
                             writePeriod = false; //There's text after the newline, don't add a period
                         }
                         if(writePeriod) {
+                            /* Added periods always have an empty superblank ("[]") after
+                             * them, to denote that the period was added, so that it can
+                             * be removed by the reformatter.
+                             */
                             outWrite.write(".[]");
                         }
                         /* If this section of whitespace is more than one character long,
@@ -163,6 +175,9 @@ public class TextFormatter extends GenericFormatter {
              * When in C++ compat mode, ignore if there was a period before or not.
              */
             if(((previousChar != '.') || _cppCompat) && !Character.isWhitespace(previousChar)) {
+                /* Again, write an empty superblank ("[]") along with the period, to mark
+                 * it as added for the reformatter.
+                 */
                 outWrite.write(".[]");
             }
             /* Have to flush it, or you'll never get any output!
@@ -204,8 +219,8 @@ public class TextFormatter extends GenericFormatter {
              * this flag is set and the period is skipped. If the next character is not
              * a '[', indicating the beginning of a superblank, then it is output.
              * If it *is* a '[', then the period is held until the superblank is resolved.
-             * If the superblank is empty, then it's marking an extra period that was
-             * added, and the period should be discarded. If it's not empty, then the
+             * If the superblank is empty ("[]"), then it's marking an extra period that 
+             * was added, and the period should be discarded. If it's not empty, then the
              * period should be output. 
              */
             boolean foundPeriod = false;
@@ -224,9 +239,10 @@ public class TextFormatter extends GenericFormatter {
                     previousChar = currentChar;
                     currentChar = inRead.read();
                     if(currentChar == -1) {
-                        /* This should never happen, we shouldn't get a single backslash at the end of the file,
-                         * but we should expect the unexpected and deal with it anyway. Go ahead and output the
-                         * backslash. This is also how the C++ code handles this situation.
+                        /* This should never happen, we shouldn't get a single backslash 
+                         * at the end of the file, but we should expect the unexpected 
+                         * and deal with it anyway. Go ahead and output the backslash. 
+                         * This is also how the C++ code handles this situation.
                          */
                         outWrite.write(previousChar);
                     } else {
@@ -239,14 +255,14 @@ public class TextFormatter extends GenericFormatter {
                     /* This writes the contents of the superblank to a separate
                      * string buffer so that we can deal with it as a whole after the
                      * entire thing has been read, as the logic dealing with the
-                     * empty superblanks ('.[]') which mark periods added by the 
-                     * deformatter requires us to have read the superblank
+                     * empty superblanks (".[]"), which mark periods added by the 
+                     * deformatter, requires us to have read the superblank
                      * to decide if we should output the period or not.
                      */
                     StringWriter spaceWrite = new StringWriter();
                     while((currentChar != -1) && (currentChar != ']')) {
                         /* Superblanks should have only whitespace characters in them
-                         * in the plain text format, so no need to check all the characters 
+                         * in the plain text format, so no need to check all the characters
                          * inside of them for escaped characters.
                          */
                         spaceWrite.write(currentChar);
@@ -276,10 +292,10 @@ public class TextFormatter extends GenericFormatter {
                         outWrite.write('.');
                     }
                     foundPeriod = true;
-                } else {
-                    if(foundPeriod) { 
+                } else { //Not a backslash, period, or '['
+                    if(foundPeriod) { //No superblank after found period, output period
                         outWrite.write('.');
-                        foundPeriod = false;
+                        foundPeriod = false; //Period output, set to false.
                     }
                     outWrite.write(currentChar);
                 }

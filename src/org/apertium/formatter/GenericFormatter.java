@@ -22,23 +22,47 @@ package org.apertium.formatter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.apertium.lttoolbox.Getopt;
 
 /**
- * @author Stephen
+ * @author Stephen Tigner
  * Generic formatter, base class for other formatters.
  */
 public abstract class GenericFormatter {
+    /**
+     * Private enumeration for formatters.
+     * There's three values. DEFORMAT, REFORMAT, and NOMODE.
+     * These represent the modes for the formatter.
+     * DEFORMAT means the deformat method will be invoked to escape
+     * text, insert superblanks, etc.
+     * REFORMAT means the reformat method will be invoked to de-escape
+     * text, remove superblanks, etc. (Basically undo all the changes the
+     * deformatter made in the source text.)
+     * NOMODE means that a mode wasn't properly supplied or there was an
+     * issue parsing the command-line, such as missing or extra options.
+     * (For example, not having either -d or -r, or having both -d and -r.)
+     * @author Stephen Tigner
+     *
+     */
     protected enum FormatterMode {
         DEFORMAT, REFORMAT, NOMODE
     }
     
+    /**
+     * Input filename, if not defined on the command line, stdin will be used.
+     */
     protected String _inputFile = null;
+    /**
+     * Output filename, if not defined on the command line, stdout will be used.
+     */
     protected String _outputFile = null;
+    /**
+     * The command-line label used for this formatter. It is used in help() and
+     * error messages.
+     */
     protected String _commandLabel = null;
 
     /**
@@ -56,14 +80,22 @@ public abstract class GenericFormatter {
     /**
      * Gets the mode (either deformat or reformat) selected on the command line.
      * Also parses the input and output file parameters.
-     * If the command-line is invalid (missing or extra command-line options)
-     * then help text is printed out, and null is returned.
+     * If the command-line is invalid (missing or extraneous command-line options)
+     * then help text is printed out, and FormatterMode.NOMODE is returned.
      * @param argv
      * @param commandLabel
      * @return A FormatterMode object representing the mode selected, or null if
      * there was no mode selected or there otherwise was a bad command line.
      */
     protected FormatterMode getModeAndFiles(String[] argv, String commandLabel) {
+        /* The format for the string passed in as the third argument to the
+         * GetOpt constructor is a list of command-line options.
+         * The ones with colons after them have required arguments,
+         * and if these arguments are missing, the parsing will fail
+         * and return '?' instead of the option when calling the
+         * getopt() method. This will cause the switch to fall through
+         * to the default case and display the help(), and return FormatterMode.NOMODE.
+         */
         Getopt getOpt = new Getopt(commandLabel,argv, "drci:o:");
         FormatterMode mode = FormatterMode.NOMODE;
         
@@ -121,7 +153,17 @@ public abstract class GenericFormatter {
         System.out.println("If the input and output files are not specified, then " +
                            "stdin and stdout are used, respectively.");
     }
-    
+
+    /**
+     * Takes a filename string and a command-line label and attempts to open an input
+     * stream to the file given in the filename. If the file is not found (or otherwise 
+     * could not be opened), then prints an appropriate message using the commandLabel 
+     * passed in and then exits.
+     * @param filename - A string with the filename to open
+     * @param commandLabel - A label used at the beginning of the error message to
+     * identify the the program the error is coming from.
+     * @return An InputStream for reading from the file specified.
+     */
     protected InputStream openInFile(String filename, String commandLabel) {
         InputStream in = null;
         try {
@@ -134,6 +176,16 @@ public abstract class GenericFormatter {
         return in;
     }
     
+    /**
+     * Takes a filename string and a command-line label and attempts to open an output
+     * stream to the file given in the filename. If the file is not found (or otherwise 
+     * could not be opened), then prints an appropriate message using the commandLabel 
+     * passed in and then exits.
+     * @param filename - A string with the filename to open
+     * @param commandLabel - A label used at the beginning of the error message to
+     * identify the the program the error is coming from.
+     * @return An OutputStream for reading from the file specified.
+     */
     protected OutputStream openOutFile(String filename, String commandLabel) {
         OutputStream out = null;
         try {
