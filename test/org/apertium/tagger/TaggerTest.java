@@ -18,18 +18,12 @@
  */
 package org.apertium.tagger;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import java.io.*;
-
-import static org.apertium.lttoolbox.TestTools.*;
 
 /**
  *
@@ -138,6 +132,14 @@ public class TaggerTest {
      * not always in the same order as the C++ version. The first tags are all correct,
      * and all the tags are there, just the extra tags are sometimes in a different order
      * than in the C++ version.
+     * 
+     * Example:
+     * Input: ^have/have<vbhaver><inf>/have<vbhaver><pres>/have<vblex><inf>/have<vblex><pres>$
+     * C++ output: ^have/have<vbhaver><inf>/have<vblex><inf>/have<vblex><pres>/have<vbhaver><pres>$
+     * Java output: ^have/have<vbhaver><inf>/have<vbhaver><pres>/have<vblex><inf>/have<vblex><pres>$
+     * 
+     * Notice how both output the correct choice at the beginning, but the additional
+     * tags are in a different order in the C++ and Java versions.
      */
     
     /**
