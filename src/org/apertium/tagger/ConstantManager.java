@@ -18,7 +18,7 @@
  */
 
 package org.apertium.tagger;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import org.apertium.lttoolbox.Compression;
 import java.io.InputStream;
@@ -31,10 +31,10 @@ import java.io.IOException;
  * @author jimregan
  */
 public class ConstantManager {
-    private HashMap<String, Integer> constants;
+    private LinkedHashMap<String, Integer> constants;
 
     public ConstantManager() {
-        this.constants = new HashMap<String, Integer>();
+        this.constants = new LinkedHashMap<String, Integer>();
     }
     
     public ConstantManager(ConstantManager o) {
@@ -46,13 +46,13 @@ public class ConstantManager {
      * @param o - The ConstantManager object to copy.
      */
     private void copy(ConstantManager o) {
-    	this.constants = new HashMap<String, Integer>(o.constants);
+    	this.constants = new LinkedHashMap<String, Integer>(o.constants);
     }
 
     public void setConstant (String constant, int value) {
         try {
             if (constants==null) {
-                constants = new HashMap<String, Integer>();
+                constants = new LinkedHashMap<String, Integer>();
             }
             constants.put(constant, value);
         } catch (NullPointerException npe) {

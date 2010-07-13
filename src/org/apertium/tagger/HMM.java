@@ -24,10 +24,11 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 
 import org.apertium.lttoolbox.Compression;
+
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,7 +97,7 @@ public class HMM {
                 break;
             }
 
-            Set<Integer> ambiguity_class = new HashSet<Integer>();
+            Set<Integer> ambiguity_class = new LinkedHashSet<Integer>();
 
             for (; ntags != 0; ntags--) {
                 ambiguity_class.add(Compression.multibyte_read(in));
@@ -174,7 +175,7 @@ public class HMM {
             }
         }
 
-        Set<Integer> tags = new HashSet<Integer>();
+        Set<Integer> tags = new LinkedHashSet<Integer>();
         tags.add(eos);
         k1 = output.get(tags);
         classes_occurrences[k]++;
@@ -296,7 +297,7 @@ public class HMM {
         TaggerWord word_untagged = new TaggerWord();
         Collection output = td.getOutput();
 
-        Set<Integer> tags = new HashSet<Integer>();
+        Set<Integer> tags = new LinkedHashSet<Integer>();
 
         for (i = 0; i < N; i++) {
             for (j = 0; j < N; j++) {
@@ -465,7 +466,7 @@ public class HMM {
     void read_dictionary(InputStream fdic) throws IOException {
         int i, k, nw = 0;
         TaggerWord word = new TaggerWord();
-        Set<Integer> tags = new HashSet<Integer>();
+        Set<Integer> tags = new LinkedHashSet<Integer>();
         Collection output = td.getOutput();
 
         MorphoStream morpho_stream = new MorphoStream(fdic, true, td);
@@ -498,7 +499,7 @@ public class HMM {
         // Create ambiguity class holding one single tag for each tag.
         // If not created yet
         for (i = 0; i != N; i++) {
-            Set<Integer> amb_class = new HashSet<Integer>();
+            Set<Integer> amb_class = new LinkedHashSet<Integer>();
             amb_class.add(i);
             k = output.get(amb_class);
         }
@@ -516,7 +517,7 @@ public class HMM {
      * @throws IOException
      */
     void filter_ambiguity_classes(InputStream in, OutputStream out) throws IOException {
-        Set<Set<Integer>> ambiguity_classes = new HashSet<Set<Integer>>();
+        Set<Set<Integer>> ambiguity_classes = new LinkedHashSet<Set<Integer>>();
         MorphoStream morpho_stream = new MorphoStream(in, true, td);
 
         TaggerWord word = morpho_stream.get_next_word();
@@ -542,13 +543,13 @@ public class HMM {
         int k, t, len, nw = 0;
         TaggerWord word = new TaggerWord();
         Integer tag;
-        Set<Integer> tags = new HashSet<Integer>();
-        Set<Integer> pretags = new HashSet<Integer>();
-        Map<Integer, Double> gamma = new HashMap<Integer, Double>();
-        Map<Integer, Map<Integer, Double>> alpha = new HashMap<Integer, Map<Integer, Double>>();
-        Map<Integer, Map<Integer, Double>> beta = new HashMap<Integer, Map<Integer, Double>>();
-        Map<Integer, Map<Integer, Double>> xsi = new HashMap<Integer, Map<Integer, Double>>();
-        Map<Integer, Map<Integer, Double>> phi = new HashMap<Integer, Map<Integer, Double>>();
+        Set<Integer> tags = new LinkedHashSet<Integer>();
+        Set<Integer> pretags = new LinkedHashSet<Integer>();
+        Map<Integer, Double> gamma = new LinkedHashMap<Integer, Double>();
+        Map<Integer, Map<Integer, Double>> alpha = new LinkedHashMap<Integer, Map<Integer, Double>>();
+        Map<Integer, Map<Integer, Double>> beta = new LinkedHashMap<Integer, Map<Integer, Double>>();
+        Map<Integer, Map<Integer, Double>> xsi = new LinkedHashMap<Integer, Map<Integer, Double>>();
+        Map<Integer, Map<Integer, Double>> phi = new LinkedHashMap<Integer, Map<Integer, Double>>();
         double prob, loli;
         ArrayList<Set<Integer>> pending = new ArrayList<Set<Integer>>();
         Collection output = td.getOutput();
@@ -566,7 +567,7 @@ public class HMM {
 
         // alpha[0].clear();
         // alpha[0][tag] = 1;
-        HashMap<Integer, Double> tempNewMap = new HashMap<Integer, Double>();
+        Map<Integer, Double> tempNewMap = new LinkedHashMap<Integer, Double>();
         tempNewMap.put(tag, 1.0);
         alpha.put(0, tempNewMap);
         /* tempNewMap is just a temporary scratch variable used to store a reference
@@ -607,7 +608,7 @@ public class HMM {
             k = output.get(tags);
             len = pending.size();
             // alpha[len].clear()
-            alpha.put(len, new HashMap<Integer, Double>());
+            alpha.put(len, new LinkedHashMap<Integer, Double>());
 
             //Forward probabilities
             for (Integer i : tags) {
@@ -630,7 +631,7 @@ public class HMM {
                 pending.add(tags);
             } else { //word is unambiguous
                 tag = tags.iterator().next();
-                tempNewMap = new HashMap<Integer, Double>();
+                tempNewMap = new LinkedHashMap<Integer, Double>();
                 tempNewMap.put(tag, 1.0);
                 beta.put(0, tempNewMap);
                 //clear temp variable for next use
@@ -646,7 +647,7 @@ public class HMM {
                     pending.remove(pendingSize - 1); //Remove the last element
                     k = output.get(tags);
                     //beta[1 - t % 2].clear()
-                    beta.put(1 - t % 2, new HashMap<Integer, Double>());
+                    beta.put(1 - t % 2, new LinkedHashMap<Integer, Double>());
                     for (Integer i : tags) {
                         Double tmpDbl;
                         for (Integer j : pretags) {
@@ -654,7 +655,7 @@ public class HMM {
                                     * td.getB()[i][k] * beta.get(t % 2).get(i);
                             beta.get(1 - t %2).put(j, tmpDbl);
                             if(xsi.get(j) == null) {
-                                xsi.put(j, new HashMap<Integer, Double>());
+                                xsi.put(j, new LinkedHashMap<Integer, Double>());
                             }
                             tmpDbl = xsi.get(j).get(i) + alpha.get(len - t - 1).get(j)
                                     * td.getA()[j][i] * td.getB()[i][k] 
@@ -692,7 +693,7 @@ public class HMM {
                             gamma.put(i, DBL_MIN);
                         }
                         if (phi.get(i) == null) {
-                            phi.put(i, new HashMap<Integer, Double>());
+                            phi.put(i, new LinkedHashMap<Integer, Double>());
                         }
                         Double tmpPhiDbl = phi.get(i).get(i) + alpha.get(len - t).get(i)
                                 * beta.get(t % 2).get(i) / prob;
@@ -703,7 +704,7 @@ public class HMM {
                 tags.clear();
                 tags.add(tag);
                 pending.add(tags); //Adds to the end of the list
-                tempNewMap = new HashMap<Integer, Double>();
+                tempNewMap = new LinkedHashMap<Integer, Double>();
                 tempNewMap.put(tag, 1.0);
                 alpha.put(0, tempNewMap);
                 tempNewMap = null;
@@ -781,8 +782,8 @@ public class HMM {
          */
         OutputStreamWriter outWriter = new OutputStreamWriter(out, "UTF-8");
 
-        Set<Integer> tags = new HashSet<Integer>();
-        Set<Integer> pretags = new HashSet<Integer>();
+        Set<Integer> tags = new LinkedHashSet<Integer>();
+        Set<Integer> pretags = new LinkedHashSet<Integer>();
 
         double prob, loli, x;
 
@@ -971,7 +972,7 @@ public class HMM {
      * Prints the ambiguity classes.
      */
     void print_ambiguity_classes() {
-        Set<Integer> ambiguity_class = new HashSet<Integer>();
+        Set<Integer> ambiguity_class = new LinkedHashSet<Integer>();
         System.out.println("AMBIGUITY CLASSES");
         System.out.println("-------------------------------");
         for (int i = 0; i != td.getM(); i++) {

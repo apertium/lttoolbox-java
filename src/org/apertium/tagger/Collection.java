@@ -18,10 +18,10 @@
  */
 
 package org.apertium.tagger;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.Map;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.ArrayList;
 import java.io.InputStream;
 import java.io.IOException;
@@ -43,7 +43,7 @@ public class Collection {
     ArrayList<Set<Integer>> element;
 
     Collection () {
-        index = new HashMap<Set<Integer>, Integer>();
+        index = new LinkedHashMap<Set<Integer>, Integer>();
         element = new ArrayList<Set<Integer>>();
     }
 
@@ -91,7 +91,7 @@ public class Collection {
     int add (Set<Integer> t) {
         try {
             if (index==null) {
-                index = new HashMap<Set<Integer>, Integer>();
+                index = new LinkedHashMap<Set<Integer>, Integer>();
             }
             if (element==null) {
                 element = new ArrayList<Set<Integer>>();
@@ -120,7 +120,7 @@ public class Collection {
             int size = Compression.multibyte_read(input);
 
             for(; size != 0; size--) {
-                Set<Integer> myset = new HashSet<Integer>();
+                Set<Integer> myset = new LinkedHashSet<Integer>();
                 int set_size = Compression.multibyte_read(input);
                 for(; set_size != 0; set_size--) {
                     myset.add(Compression.multibyte_read(input));

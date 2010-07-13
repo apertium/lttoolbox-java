@@ -19,12 +19,11 @@
 
 package org.apertium.tagger;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.HashMap;
-//import java.util.Iterator; //Unused
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
@@ -65,9 +64,9 @@ public class TaggerData {
         enforce_rules = new ArrayList<TEnforceAfterRule>();
         prefer_rules = new ArrayList<String>();
         array_tags = new ArrayList<String>();
-        open_class = new HashSet<Integer>();
+        open_class = new LinkedHashSet<Integer>();
         forbid_rules = new ArrayList<TForbidRule>();
-        tag_index = new HashMap<String, Integer>();
+        tag_index = new LinkedHashMap<String, Integer>();
         constants = new ConstantManager();
         plist = new PatternList();
         output = new Collection();
@@ -82,9 +81,9 @@ public class TaggerData {
      * @param o - The TaggerData object to copy.
      */
     private void copy(TaggerData o) {
-    	open_class = new HashSet<Integer>(o.open_class);
+    	open_class = new LinkedHashSet<Integer>(o.open_class);
     	forbid_rules = new ArrayList<TForbidRule>(o.forbid_rules);
-    	tag_index = new HashMap<String, Integer>(o.tag_index);
+    	tag_index = new LinkedHashMap<String, Integer>(o.tag_index);
     	array_tags = new ArrayList<String>(o.array_tags);
     	enforce_rules = new ArrayList<TEnforceAfterRule>(o.enforce_rules);
     	prefer_rules = new ArrayList<String>(o.prefer_rules);

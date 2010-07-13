@@ -19,9 +19,7 @@
 
 package org.apertium.tagger;
 import java.util.Set;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Iterator;
 import java.util.ArrayList;
@@ -30,7 +28,6 @@ import java.io.OutputStream;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.TreeSet;
 
 /**
  * Class TaggerWord.
@@ -69,7 +66,7 @@ public class TaggerWord {
     public static ArrayList<String> array_tags;
     public static boolean show_ignored_string = true;
     
-    private static Map<String, ApertiumRE> patterns = new HashMap<String, ApertiumRE>();
+    private static Map<String, ApertiumRE> patterns = new LinkedHashMap<String, ApertiumRE>();
     private static boolean DEBUG = false;
 
     public TaggerWord (boolean prev_plus_cut) {
@@ -381,7 +378,7 @@ public class TaggerWord {
         if (isAmbiguous()) {
             Iterator<Map.Entry<Integer, String>> it = lexical_forms.entrySet().iterator();
 
-            Set<Integer> newsettag = new HashSet<Integer>();
+            Set<Integer> newsettag = new LinkedHashSet<Integer>();
             while (it.hasNext()) {
                 Map.Entry<Integer, String> cur = it.next();
 

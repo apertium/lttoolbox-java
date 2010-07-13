@@ -1,17 +1,13 @@
 package org.apertium.tagger;
 
 import org.apertium.transfer.*;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collection;
-//import java.util.List; //Unused - All instances of "List" changed to "ArrayList"
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.HashMap;
-//import java.util.Vector; //Unused - ArrayList is faster and should be used instead.
 import org.apertium.lttoolbox.Alphabet;
 import org.apertium.lttoolbox.compile.Transducer;
 import org.apertium.lttoolbox.Compression;
@@ -83,7 +79,7 @@ class PatternList {
 	  alphabet.includeSymbol(ANY_CHAR);
 	  alphabet.includeSymbol(QUEUE);
 	  
-	  final_type = new HashMap<Integer, Integer>();
+	  final_type = new LinkedHashMap<Integer, Integer>();
   }
 
   /**
@@ -101,7 +97,7 @@ class PatternList {
   private void _copy(PatternList p) {
 	  sequence = p.sequence;
 	  sequence_data = new ArrayList<ArrayList<Integer>>(p.sequence_data);
-	  patterns = new HashMap<Integer, ArrayList<ArrayList<Integer>>>(p.patterns);
+	  patterns = new LinkedHashMap<Integer, ArrayList<ArrayList<Integer>>>(p.patterns);
 	  alphabet = new Alphabet(p.alphabet);
 	  transducer = new Transducer(p.transducer);
   }
