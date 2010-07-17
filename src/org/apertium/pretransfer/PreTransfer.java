@@ -244,7 +244,7 @@ public class PreTransfer {
          * Number of non-option arguments on the command-line.
          * Reminder: Does not include the executable's name, like in C++.
          */
-        int numberOfArgs = args.length - getopt.getOptind() + 1;
+        int numberOfArgs = args.length - getopt.getOptind();
         
         if(numberOfArgs > 2) {
             usage();
@@ -325,6 +325,8 @@ public class PreTransfer {
         
         try {
             processStream(inputReader, outputWriter, null_flush);
+            //Have to flush or won't get any output.
+            outputWriter.flush();
         } catch (IOException e) {
             System.err.println("Pretransfer -- ERROR: IOException");
             e.printStackTrace();
