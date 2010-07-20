@@ -40,7 +40,7 @@ public class ApertiumRE {
     return m.group();
   }
 
-  String replace(String source, String value) {
+  public String replace(String source, String value) {
     Matcher m = re.matcher(source);
     if (!m.find()) return source;
     return source.substring(0, m.start()) + value + source.substring(m.end());
