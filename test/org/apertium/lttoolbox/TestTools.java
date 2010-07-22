@@ -42,20 +42,17 @@ public abstract class TestTools {
     String output = sb.toString();
     br.close();
 
-    // Checking exit value was disabled, probably becaurse its used for 'diff' command which doesent exist on Windows.
-    // Therefore we omit it in this case, but on UNIXes (notably Linux) the exit value must be checked, of course.
-    if (System.getProperty("os.name").startsWith("Windows")) return output;
+    // some might want to switch it off on Windows, as the 'diff' command is lacking there.
+    //if (System.getProperty("os.name").startsWith("Windows")) return output;
     
     p.waitFor();
     int retval = p.exitValue();
     if (p.exitValue()!=0) throw new RuntimeException(cmd+" reported error: "+retval);
 
-    /*
     if (output.length()>0) {
       System.err.println("exec: " + cmd);
       System.err.println("output: " + output);
-      return cmd+"\n"+output;
-    }*/
+    }
     return output;
   }
 
