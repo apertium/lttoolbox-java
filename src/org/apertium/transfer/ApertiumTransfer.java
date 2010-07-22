@@ -64,7 +64,7 @@ public class ApertiumTransfer {
 "  biltrans   bilingual letter transducer file\n" +
 "  input      input file, standard input by default\n" +
 "  output     output file, standard output by default\n" +
-//"  -n         don't use bilingual dictionary\n" +
+"  -n         don't use bilingual dictionary\n" +
 //"  -x bindix  extended mode with user dictionary\n" +
 //"  -c         case-sensitiveness while accessing bilingual dictionary\n" +
 "  -z         null-flushing output on '\n" +
@@ -82,7 +82,7 @@ public class ApertiumTransfer {
         }
 
         Transfer t = new Transfer();
-        MyGetOpt getopt = new MyGetOpt(argv, "cvzhD");
+        MyGetOpt getopt = new MyGetOpt(argv, "cvnzhD");
 
         int optind = -1;
         int counter = 0;
@@ -93,7 +93,6 @@ public class ApertiumTransfer {
                 if (c == -1) {
                     break;
                 }
-
                 switch (c) {
                     case 'c':
                         t.setCaseSensitiveMode(true);
@@ -107,6 +106,10 @@ public class ApertiumTransfer {
 
                     case 'z':
                         t.setNullFlush(true);
+                        break;
+
+                    case 'n':
+                        t.setUseBilingual(true);
                         break;
 
                     case 'v':
