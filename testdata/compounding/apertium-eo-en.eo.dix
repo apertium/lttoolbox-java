@@ -5,8 +5,8 @@ lt-comp lr apertium-eo-en.eo.dix eo-en.automorf.bin
 <dictionary>
 	<alphabet>·ÀÁÂÄÇÈÉÊËÌÍÎÏÑÒÓÔÖÙÛÜÚàáâäãçèéêëìíîïñòóôöõùúûüABCDEFGHIJKLMNOPQRSTUVWXYZĈĜĤĴŜŬabcdefghijklmnopqrstuvwxyzĉĝĥĵŝŭ</alphabet>
 	<sdefs>
-		<sdef n="compound-only-L" />
-		<sdef n="compound-R" />
+		<sdef n=":compound:only-L" />
+		<sdef n=":compound:R" />
 		<sdef n="m" /> 
 		<sdef n="mf" /> 
 		<sdef n="re" /> 
@@ -53,16 +53,16 @@ lt-comp lr apertium-eo-en.eo.dix eo-en.automorf.bin
 
 <!-- specialaj difinoj por kunmetitaj vortoj  -->
 <pardef n="radiko">
-  <e r="LR"><p><l></l>          <r><s n="compound-only-L"/></r></p></e>
+  <e r="LR"><p><l></l>          <r><s n=":compound:only-L"/></r></p></e>
 <!--  <e><p><l></l>          <r></r></p></e> -->
 </pardef>
 
 <pardef n="nur_radiko">
-  <e r="LR"><p><l></l>          <r><s n="compound-only-L"/></r></p></e>
+  <e r="LR"><p><l></l>          <r><s n=":compound:only-L"/></r></p></e>
 </pardef>
 
 <pardef n="vortfino">
-  <e r="LR"><p><l></l>          <r><s n="compound-R"/></r></p></e>
+  <e r="LR"><p><l></l>          <r><s n=":compound:R"/></r></p></e>
   <e r="RL"><p><l></l>          <r></r></p></e>
 </pardef>
 
@@ -142,14 +142,6 @@ lt-comp lr apertium-eo-en.eo.dix eo-en.automorf.bin
 <e><p><l>komerca<b/>konsilisto</l><r>komerca<b/>konsilisto<s n="n"/><s n="m"/><s n="sg"/><s n="nom"/></r></p></e>
 	</section>
 
-
-<!--
-<section id="compound-L" type="compound-L">
-</section>
-
-<section id="compound-R" type="standard">
-</section>
--->
 
        <section id="final" type="inconditional">
 <e>                           <p><l>-</l>                   <r>-<s n="guio"/></r></p></e>
