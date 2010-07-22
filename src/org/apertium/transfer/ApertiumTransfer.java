@@ -85,7 +85,6 @@ public class ApertiumTransfer {
         MyGetOpt getopt = new MyGetOpt(argv, "cvnzhD");
 
         int optind = -1;
-        int counter = 0;
         while (true) {
             try {
 
@@ -93,6 +92,7 @@ public class ApertiumTransfer {
                 if (c == -1) {
                     break;
                 }
+                optind ++;
                 switch (c) {
                     case 'c':
                         t.setCaseSensitiveMode(true);
@@ -109,7 +109,7 @@ public class ApertiumTransfer {
                         break;
 
                     case 'n':
-                        t.setUseBilingual(true);
+                        t.setUseBilingual(false);
                         break;
 
                     case 'v':
@@ -121,8 +121,6 @@ public class ApertiumTransfer {
                         endProgram(argv[0]);
                         break;
                 }
-                counter++;
-
             } catch (Exception e) {
                 e.printStackTrace();
                 endProgram();
