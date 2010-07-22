@@ -28,7 +28,7 @@ public abstract class TestTools {
 
 
 
-  public static String exec(String cmd) throws IOException, InterruptedException, IOException {
+  public static String exec(String cmd) throws IOException, InterruptedException {
 
     System.err.println("exec: " + cmd);
     Process p=Runtime.getRuntime().exec(cmd);
@@ -41,9 +41,14 @@ public abstract class TestTools {
     }
     String output = sb.toString();
     br.close();
+
+    // Checking exit value was disabled, probably becaurse its used for 'diff' command which doesent exist on Windows.
+    // Therefore we omit it in this case, but on UNIXes (notably Linux) the exit value must be checked, of course.
+    if (System.getProperty("os.name").startsWith("Windows")) return output;
     
-    //p.waitFor();
-    //if (p.exitValue()!=0) Assert.fail(cmd+" reported an error");
+    p.waitFor();
+    int retval = p.exitValue();
+    if (p.exitValue()!=0) throw new RuntimeException(cmd+" reported error: "+retval);
 
     /*
     if (output.length()>0) {
