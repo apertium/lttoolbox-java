@@ -52,11 +52,13 @@ public class PreTransferTest {
     /**
      * Test method for {@link org.apertium.pretransfer.PreTransfer#main(java.lang.String[])}.
      * pretransfer takes the output from the tagger as its input and outputs to transfer.
-     * This tests pretransfer with a single sample sentence.
+     * This tests pretransfer with a single constructed sample sentence: That
+     * ^this<prn><tn><mf><sg>+be<vbser><pri><p3><sg>$  will become
+     * ^this<prn><tn><mf><sg>$ ^be<vbser><pri><p3><sg>$
      */
     @Test
     public void testMainThisIsATest() throws IOException {
-        String testin = "^this<prn><tn><mf><sg>$ ^be<vbser><pri><p3><sg>$ ^a<det><ind><sg>$ ^test<n><sg>$^.<sent>$";
+        String testin = "^this<prn><tn><mf><sg>+be<vbser><pri><p3><sg>$ ^a<det><ind><sg>$ ^test<n><sg>$^.<sent>$";
         String expTestout = "^this<prn><tn><mf><sg>$ ^be<vbser><pri><p3><sg>$ ^a<det><ind><sg>$ ^test<n><sg>$^.<sent>$";
         String[] argv = {"./tmp/pretransferin", "./tmp/pretransferout"};
 

@@ -6,6 +6,8 @@
 package org.apertium.lttoolbox;
 
 import java.util.Arrays;
+import org.apertium.formatter.TextFormatter;
+import org.apertium.pretransfer.PreTransfer;
 import org.apertium.transfer.ApertiumTransfer;
 import org.apertium.transfer.ApertiumTransferCompile;
 
@@ -56,6 +58,21 @@ public class LTToolbox {
       String[] restOfArgs = Arrays.copyOfRange(argv, 1 , argv.length);
       if (task.startsWith("lt-proc")) LTProc.main(restOfArgs);
       else if (task.startsWith("apertium-transfer")) ApertiumTransfer.main(restOfArgs);
+      else if (task.startsWith("apertium-pretransfer")) PreTransfer.main(restOfArgs);
+      else if (task.startsWith("apertium-destxt")) {
+        // Hack: Here should be
+        // String[] restOfArgs = Arrays.copyOfRange(argv, 0 , argv.length);
+        // restOfArgs[0] = "-d";
+        // TextFormatter.main(restOfArgs);
+        // Hack: but in this case we can just reuse argv:
+        argv[0] = "-d";
+        TextFormatter.main(argv);
+      }
+      else if (task.startsWith("apertium-retxt")) {
+        //TextFormatter.main(restOfArgs);
+        argv[0] = "-r";
+        TextFormatter.main(argv);
+      }
       else if (task.startsWith("lt-expand")) LTExpand.main(restOfArgs);
       else if (task.startsWith("lt-comp")) LTComp.main(restOfArgs);
       else if (task.startsWith("lt-validate")) LTValidate.main(restOfArgs);
