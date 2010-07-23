@@ -28,7 +28,7 @@ import static org.apertium.lttoolbox.LTProc.*;
 
 /**
  * 
- * @author Raah
+ * @author Jacob Nordfalk
  */
 public class ApertiumTransferCompile {
 
