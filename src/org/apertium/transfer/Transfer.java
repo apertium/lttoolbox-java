@@ -14,20 +14,17 @@ import java.io.Writer;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import org.apertium.lttoolbox.Alphabet;
-import org.apertium.lttoolbox.Compression;
 import org.apertium.lttoolbox.Pair;
-import org.apertium.lttoolbox.compile.Transducer;
 import org.apertium.lttoolbox.process.FSTProcessor;
 import org.apertium.transfer.development.Timing;
 import org.apertium.transfer.generated.GeneratedTransferBase;
 
 
-// apertium-transfer apertium-eo-en.en-eo.t1x en-eo.t1x.bin en-eo.autobil.bin transferinput-en-eo.t1x-malgranda.txt  transferoutput-en-eo.t1x-malgranda.txt
 
 /**
- *
+ * Java port of transfer.
+ * The Java port differs from the C++
  * @author Jacob Nordfalk
  */
 public class Transfer {
