@@ -17,7 +17,11 @@ import org.apertium.transfer.compile.ParseTransferFile;
 public class ParseTestTransferFiles {
 
   public static String findFileNameOfBinFile(String t1xFile) {
-    String binFile=new File(new File(t1xFile).getParent(), t1xFile.split("\\.")[1]).getPath()+".t1x.bin";
+    String x = t1xFile.split("\\.")[1];
+    if (t1xFile.contains("genitive")) x = x+ ".genitive"; // ugly UGLY hack
+    String binFile=new File(new File(t1xFile).getParent(), x).getPath()+".t1x.bin";
+    
+    System.err.println(t1xFile +" ->  binFile = " + binFile);
     return binFile;
   }
 
@@ -48,13 +52,13 @@ public class ParseTestTransferFiles {
   private static void generateTestFiles(String t1xFile) throws Exception {
       String className = parseAndWriteToSrc(t1xFile);
       String binFile = findFileNameOfBinFile(t1xFile);
-      System.err.println("binFile = " + binFile);
       FindAndCompareAllReleasedTransferFiles.exec("apertium-preprocess-transfer "+t1xFile+" "+binFile);
   }
 
     public static String[] generatedTestTranfserFiles = {
       "apertium-nn-nb.nn-nb.t1x",
       "apertium-eo-en.en-eo.t1x",
+      "apertium-eo-en.en-eo.genitive.t1x",
       "apertium-eo-en.eo-en.t1x",
       "apertium-nn-nb.nb-nn.t1x",
       "apertium-cy-en.en-cy.t1x",
