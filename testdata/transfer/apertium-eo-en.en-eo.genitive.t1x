@@ -1,0 +1,233 @@
+<?xml version="1.0"?>
+<transfer>
+
+
+  <section-def-cats>
+    <def-cat n="apos">
+      <cat-item tags="apos"/>
+    </def-cat>
+
+    <def-cat n="aposgen">
+      <cat-item lemma="'" tags="gen"/>
+    </def-cat>
+
+
+    <def-cat n="apos_aposgen">
+      <cat-item tags="apos"/>
+      <cat-item lemma="'" tags="gen"/>
+    </def-cat>
+
+
+    <def-cat n="any">
+      <cat-item tags=""/>        <!-- unknown words -->
+      <cat-item tags="*"/>
+    </def-cat>
+
+  </section-def-cats>
+
+  <section-def-attrs>
+    <def-attr n="nbr">
+      <attr-item tags="sp"/>
+      <attr-item tags="sg"/>
+      <attr-item tags="pl"/>
+    </def-attr>
+  </section-def-attrs>
+
+  <section-def-vars>
+    <def-var n="aposv" v="[']"/>
+  </section-def-vars>
+
+  <section-def-macros>
+
+
+<!-- Por rigardi, ĉu la blanko havas aŭ ne havas formaton.
+     Tiu makroo estas necesa en la reguloj, en kiuj malaperas vorto por decidi,
+     ĉu la blanko de la vorto devas esti forigita aŭ konservita.
+     Se ĝi havas formaton, necesas konservi ĝin; se ne, indas viŝi,
+     por ke ne aperu du sinsekvaj blankoj.
+
+     Prenita de "f_bcond" apertium-en-es/apertium-en-es.es-en.t1x -->
+    <def-macro n="sendu_blankon_se_havas_formaton2" npar="2">
+      <choose>
+        <when>
+          <test>
+            <not><equal><b pos="1"/><lit v=" "/></equal></not>
+          </test>
+          <out>
+            <b pos="1"/>
+          </out>
+        </when>
+      </choose>
+    </def-macro>
+  </section-def-macros>
+
+
+
+
+
+  <section-rules>
+    <rule>
+      <pattern>
+        <pattern-item n="apos"/>
+        <pattern-item n="any"/>
+        <pattern-item n="apos_aposgen"/>
+      </pattern>
+      <action>
+      <out>
+        <var n="aposv"/>
+        <b pos="1"/>
+        <lu><clip pos="2" side="tl" part="whole"/></lu>
+      </out>
+      <call-macro n="sendu_blankon_se_havas_formaton2"><with-param pos="2"/><with-param pos="3"/></call-macro>
+      <out>
+        <var n="aposv"/>
+      </out>
+      </action>
+    </rule>
+
+    <rule>
+      <pattern>
+        <pattern-item n="apos"/>
+        <pattern-item n="any"/>
+        <pattern-item n="any"/>
+        <pattern-item n="apos_aposgen"/>
+      </pattern>
+      <action>
+      <out>
+        <var n="aposv"/>
+        <b pos="1"/>
+        <lu><clip pos="2" side="tl" part="whole"/></lu>
+        <b pos="2"/>
+        <lu><clip pos="3" side="tl" part="whole"/></lu>
+      </out>
+      <call-macro n="sendu_blankon_se_havas_formaton2"><with-param pos="3"/><with-param pos="4"/></call-macro>
+      <out>
+        <var n="aposv"/>
+      </out>
+      </action>
+    </rule>
+
+    <rule>
+      <pattern>
+        <pattern-item n="apos"/>
+        <pattern-item n="any"/>
+        <pattern-item n="any"/>
+        <pattern-item n="any"/>
+        <pattern-item n="apos_aposgen"/>
+      </pattern>
+      <action>
+      <out>
+        <var n="aposv"/>
+        <b pos="1"/>
+        <lu><clip pos="2" side="tl" part="whole"/></lu>
+        <b pos="2"/>
+        <lu><clip pos="3" side="tl" part="whole"/></lu>
+        <b pos="3"/>
+        <lu><clip pos="4" side="tl" part="whole"/></lu>
+      </out>
+      <call-macro n="sendu_blankon_se_havas_formaton2"><with-param pos="4"/><with-param pos="5"/></call-macro>
+      <out>
+        <var n="aposv"/>
+      </out>
+      </action>
+    </rule>
+
+    <rule>
+      <pattern>
+        <pattern-item n="apos"/>
+        <pattern-item n="any"/>
+        <pattern-item n="any"/>
+        <pattern-item n="any"/>
+        <pattern-item n="any"/>
+        <pattern-item n="apos_aposgen"/>
+      </pattern>
+      <action>
+      <out>
+        <var n="aposv"/>
+        <b pos="1"/>
+        <lu><clip pos="2" side="tl" part="whole"/></lu>
+        <b pos="2"/>
+        <lu><clip pos="3" side="tl" part="whole"/></lu>
+        <b pos="3"/>
+        <lu><clip pos="4" side="tl" part="whole"/></lu>
+        <b pos="4"/>
+        <lu><clip pos="5" side="tl" part="whole"/></lu>
+      </out>
+      <call-macro n="sendu_blankon_se_havas_formaton2"><with-param pos="5"/><with-param pos="6"/></call-macro>
+      <out>
+        <var n="aposv"/>
+      </out>
+      </action>
+    </rule>
+
+
+    <rule>
+      <pattern>
+        <pattern-item n="apos"/>
+        <pattern-item n="any"/>
+        <pattern-item n="any"/>
+        <pattern-item n="any"/>
+        <pattern-item n="any"/>
+        <pattern-item n="any"/>
+        <pattern-item n="apos_aposgen"/>
+      </pattern>
+      <action>
+      <out>
+        <var n="aposv"/>
+        <b pos="1"/>
+        <lu><clip pos="2" side="tl" part="whole"/></lu>
+        <b pos="2"/>
+        <lu><clip pos="3" side="tl" part="whole"/></lu>
+        <b pos="3"/>
+        <lu><clip pos="4" side="tl" part="whole"/></lu>
+        <b pos="4"/>
+        <lu><clip pos="5" side="tl" part="whole"/></lu>
+        <b pos="5"/>
+        <lu><clip pos="6" side="tl" part="whole"/></lu>
+      </out>
+      <call-macro n="sendu_blankon_se_havas_formaton2"><with-param pos="6"/><with-param pos="7"/></call-macro>
+      <out>
+        <var n="aposv"/>
+      </out>
+      </action>
+    </rule>
+
+
+
+    <rule>
+      <pattern>
+        <pattern-item n="apos"/>
+        <pattern-item n="any"/>
+        <pattern-item n="any"/>
+        <pattern-item n="any"/>
+        <pattern-item n="any"/>
+        <pattern-item n="any"/>
+        <pattern-item n="any"/>
+        <pattern-item n="apos_aposgen"/>
+      </pattern>
+      <action>
+      <out>
+        <var n="aposv"/>
+        <b pos="1"/>
+        <lu><clip pos="2" side="tl" part="whole"/></lu>
+        <b pos="2"/>
+        <lu><clip pos="3" side="tl" part="whole"/></lu>
+        <b pos="3"/>
+        <lu><clip pos="4" side="tl" part="whole"/></lu>
+        <b pos="4"/>
+        <lu><clip pos="5" side="tl" part="whole"/></lu>
+        <b pos="5"/>
+        <lu><clip pos="6" side="tl" part="whole"/></lu>
+        <b pos="6"/>
+        <lu><clip pos="7" side="tl" part="whole"/></lu>
+      </out>
+      <call-macro n="sendu_blankon_se_havas_formaton2"><with-param pos="7"/><with-param pos="8"/></call-macro>
+      <out>
+        <var n="aposv"/>
+      </out>
+      </action>
+    </rule>
+
+
+  </section-rules>
+</transfer>
