@@ -109,12 +109,12 @@ public class Interchunk {
      * @param fstfile
      * @throws Exception
      */
-    public void read(String classFile, String datafile, String fstfile) throws Exception {
+    public void read(String classFile, String datafile) throws Exception {
         if (!classFile.endsWith(".class")) {
           System.err.println("Warning: " + classFile+ " should be a Java .class file. You probably got it wrong");
         }
 
-        read(new MyClassLoader().loadClassFile(classFile), datafile, fstfile);
+        read(new MyClassLoader().loadClassFile(classFile), datafile);
       }
 
     /**
@@ -124,7 +124,7 @@ public class Interchunk {
      * @param fstfile
      * @throws Exception
      */
-    public void read(Class transferClass, String datafile, String fstfile) throws Exception {
+    public void read(Class transferClass, String datafile) throws Exception {
 
         InputStream is = new BufferedInputStream(new FileInputStream(datafile));
         readData(is);
@@ -149,9 +149,6 @@ public class Interchunk {
         transferObject.debug = DEBUG;
         transferObject.init();
 
-        if (fstfile!=null&&fstfile.length()>0) {
-          readBil(fstfile);
-        }
       }
 
 }

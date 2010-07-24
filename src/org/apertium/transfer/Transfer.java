@@ -24,7 +24,85 @@ import org.apertium.transfer.generated.GeneratedTransferBase;
 
 /**
  * Java port of transfer.
- * The Java port differs from the C++
+<pre>
+The Java port of transfer differs from the C++ version in some very important ways:
+
+I will take apertium-eo-en (which works as 'pure' C++ as well as 'Java verson') as example.
+
+And here you just *must* be able to debug the Java code step-by-step. Its mandatory to step-by-step the whole TransferEoEnTest.java test class.
+
+
+
+
+In transfer three things are happening.
+1) words are input in one language (English) and output in another (Esperanto)
+2) some rules are matched (for example adjective_noun)
+3) for each rule matched a transfer action is being done
+
+1) is called bilingual transfer. Here you have for each word a SL (source language - English) and a TL (target language - Esperanto) - see TransferWord. C++ and Java are same.
+
+2) the rule MATCHING, is done by the FSTProcessor. This is normally used to match letters in a word, but can also be used to match a sequence of words. C++ and Java are same.
+
+3) the rule EXECUTING is done completely different in C++ and Java! In C++ we interpret XML, in Java we execute bytecode.
+
+
+
+
+To Compile a transfer file, e.g. apertium-eo-en.en-eo.t1x, together with the bilingual dictionary, apertium-eo-en.eo-en.dix, type:
+
+First validate (optional steps):
+$ apertium-validate-dictionary apertium-eo-en.eo-en.dix
+$ apertium-validate-transfer apertium-eo-en.en-eo.t1x
+
+C++ and Java:
+$ lt-comp rl apertium-eo-en.eo-en.dix en-eo.autobil.bin
+(gives en-eo.autobil.bin - the bilingual dictionary, ie translating words from en to eo)
+$ apertium-preprocess-transfer apertium-eo-en.en-eo.t1x en-eo.t1x.bin
+(gives en-eo.t1x.bin - the transfer rule MATCHING/EXECUTING file)
+
+C++ only: Slow (interpreted) transfer
+Here is how to execute in C++ (for 'blue cats')
+$ echo "^blue<adj>$ ^cat<n><pl>$" | apertium-transfer apertium-eo-en.en-eo.t1x en-eo.t1x.bin en-eo.autobil.bin
+^preadv?_adj_nom<SN><pl><nom>{^blua<adj><2><3>$ ^kato<n><pl><3>$}$
+
+Here step 3 is done by INTERPRETING the XML in the first file (apertium-eo-en.en-eo.t1x)
+
+
+Only Java:
+$ apertium-preprocess-transfer-bytecode-j apertium-eo-en.en-eo.t1x en-eo.t1x.class
+(gives en-eo.t1x.class  - the rule EXECUTING file)
+
+Java only: Fast (bytecode) transfer
+$ echo "^blue<adj>$ ^cat<n><pl>$" | apertium-transfer-j en-eo.t1x.class apertium-eo-en.en-eo.t1x en-eo.t1x.bin en-eo.autobil.bin
+^preadv?_adj_nom<SN><pl><nom>{^blua<adj><2><3>$ ^kato<n><pl><3>$}$
+(must give same output, of course)
+
+Here step 3 is done by EXECUTING the bytecode in the first file (apertium-eo-en.en-eo.t1x)
+
+
+
+So, you see:  en-eo.t1x.bin is for rule matching (much like the other .bin files, they are just for matching words).
+In the end of en-eo.t1x.bin some stuff is added which makes the C++ version run faster (attr_items, variables, macros, lists). We ignore that as its compiled into the bytecode (see Transfer.java public void readData() line 96-141).
+
+In Transfer.java public void transfer() you see the main loop, collecting characters.  If you want to see how the rule match works, set debug breakpoints in ms.step() and look.  ms.classifyFinals() gives the rule index that was matched.
+
+
+And now we get to the essential step 3:
+
+In Java code, we use that to look up (in Method[] rule_map) some code to invoke.
+
+In C++ code there is a pure XML HELL, jumping around like something jumping very badly (and taking aaages of time).
+
+
+So, how do we set up the array of rule_map Method?
+
+Well, during compilation the ParseTransferFile.java takes the XML hell of for example apertium-eo-en.en-eo.t1x, and converts it into Java code like the apertium_eo_en_eo_en_t1x java class (in package org.apertium.transfer.generated), which is loaded during runtime.
+
+So the array of rule_map Method is taken by introspection, taking all methods beginning with rule<number>, like rule0__la__num_ord__de__monato, rule1__de_ekde__tempo etc etc and kicks them into the array.
+
+
+Now, the transfer code could need a big cleanup. This is the stuff I experimented most with. Rename stuff in the code, comment it as hell, etc. Please make sure more or less evrything I covered above (and what you self found out) gets in somewhere in the documentation.
+</pre>
  * @author Jacob Nordfalk
  */
 public class Transfer {
@@ -39,8 +117,14 @@ public class Transfer {
   //private LinkedHashMap<String, Integer> macros= new LinkedHashMap<String, Integer>(); // map<string, int, Ltstr> macros;
   
 
+  /**
+   *
+So, how do we set up the array of rule_map Method?
+Well, during compilation the ParseTransferFile.java takes the XML hell of for example apertium-eo-en.en-eo.t1x, and converts it into Java code like the apertium_eo_en_eo_en_t1x java class (in package org.apertium.transfer.generated), which is loaded during runtime.
+So the array of rule_map Method is taken by introspection, taking all methods beginning with rule<number>, like rule0__la__num_ord__de__monato, rule1__de_ekde__tempo etc etc and kicks them into the array.
+   */
   private Method[] rule_map=null;// vector<xmlNode *> rule_map;
-  private int lword, lblank;
+
   private BufferT<TransferToken> input_buffer=new BufferT<TransferToken>();
   private ArrayList<String> tmpword=new ArrayList<String>();
   private ArrayList<String> tmpblank=new ArrayList<String>();
@@ -52,7 +136,6 @@ public class Transfer {
   private int any_char;
   private int any_tag;
   private Method lastrule; //xmlNode *lastrule;
-  private int nwords;
   public GeneratedTransferBase transferObject;
 
   public static boolean DEBUG = false;
@@ -141,15 +224,23 @@ public class Transfer {
    */
   }
 
-  private void readBil(String fstfile) throws IOException {
-    InputStream is = new BufferedInputStream(new FileInputStream(fstfile));
+  /**
+   * Read bilingual dictionary
+   * @param bilFstFile file name
+   */
+  private void readBil(String bilFstFile) throws IOException {
+    InputStream is = new BufferedInputStream(new FileInputStream(bilFstFile));
     fstp.load(is);
     is.close();
     fstp.initBiltrans();
-  //String output = fstp.biltrans("house<n><sg>" , false);
-  //System.err.println("output = " + output);
   }
 
+  /**
+   * What is 'extended mode' ?? Hints:
+   *       apertium-transfer -x extended trules preproc biltrans [input [output]]
+   *  -x bindix  extended mode with user dictionary
+   * @param fstfile
+   */
   private void setExtendedDictionary(String fstfile) throws IOException {
     extended=new FSTProcessor();
     InputStream is = new BufferedInputStream(new FileInputStream(fstfile));
@@ -159,17 +250,24 @@ public class Transfer {
     isExtended = true;
   }
 
-  public void read(String classFile, String datafile, String fstfile) throws Exception {
+  /**
+   * Reads data
+   * @param classFile the file name of the java bytecode file containing the transfer instructions
+   *  so, preprocessed by, apertium-preprocess-transfer-bytecode-j  (.class)
+   * @param datafile same file, preprocessed by, apertium-preprocess-transfer  (.bin)
+   * @param bilFstFile bilingual FST file - might be null
+   */
+  public void read(String classFile, String datafile, String bilFstFile) throws Exception {
     if (!classFile.endsWith(".class")) {
       System.err.println("Warning: " + classFile+ " should be a Java .class file. You probably got it wrong");
     }
 
-    read(new MyClassLoader().loadClassFile(classFile), datafile, fstfile);
+    read(new MyClassLoader().loadClassFile(classFile), datafile, bilFstFile);
 //    read(apertium_nn_nb_nb_nn_t1x.class, "testdata/transfer/nb-nn.t1x.bin", fstfile);
   }
 
 
-  public void read(Class transferClass, String datafile, String fstfile) throws Exception {
+  public void read(Class transferClass, String datafile, String bilFstFile) throws Exception {
 
     InputStream is = new BufferedInputStream(new FileInputStream(datafile));
     readData(is);
@@ -178,15 +276,14 @@ public class Transfer {
     Method[] mets =  transferClass.getMethods();
     rule_map = new Method[mets.length];
 
+    // Find all methods starting with name 'rule'
+    // So the array of rule_map Method is taken by introspection, taking all methods beginning with rule<number>,
+    // like rule0__la__num_ord__de__monato, rule1__de_ekde__tempo etc etc and kicks them into the array.
     for (Method method : mets) {
       String name = method.getName();
-
-      //System.err.println("n = " + name);
       if (!name.startsWith("rule")) continue;
-
       int number = Integer.parseInt(name.substring(4, name.indexOf('_',5)));
       rule_map[number] = method;
-
       if (DEBUG) System.err.println(method.getName()+"  - #words=" +method.getParameterTypes().length/2 );
     }
 
@@ -194,8 +291,8 @@ public class Transfer {
     transferObject.debug = DEBUG;
     transferObject.init();
 
-    if (fstfile!=null&&fstfile.length()>0) {
-      readBil(fstfile);
+    if (bilFstFile!=null&&bilFstFile.length()>0) {
+      readBil(bilFstFile);
     }
   }
 
@@ -397,6 +494,7 @@ public class Transfer {
     }
   }
 
+  // Kanmuri: Cleanup needed. Pls do :-)
   private void applyRule(Writer output) throws Exception {
     if (DEBUG) System.err.println("tmpword = " + tmpword2+ "  tmpblank = " + tmpblank2);
     if (DO_TIMING) timing.log("other1");
@@ -408,23 +506,20 @@ public class Transfer {
     args[argn++] = output;
 
 
-  TransferWord[] word=null; // TransferWord **word;
-  String[] blank=null; // string **blank;
+    TransferWord[] word=null; // TransferWord **word;
+    String[] blank=null; // string **blank;
 
   for (int i=0; i!=limit; i++)
     {
       if (i==0)
       {
         word=new TransferWord[limit];
-        lword=limit;
         if (limit!=0)
         {
           blank=new String[limit-1];
-          lblank=limit-1;
         } else
         {
           blank=null;
-          lblank=0;
         }
       }
       else
