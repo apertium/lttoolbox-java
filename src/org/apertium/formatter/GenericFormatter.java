@@ -262,11 +262,11 @@ public abstract class GenericFormatter {
         }
     }
     
-    GenericFormatter(String commandLabel) {
+    public GenericFormatter(String commandLabel) {
         _commandLabel = commandLabel;
     }
     
-    GenericFormatter() {
+    public GenericFormatter() {
         _commandLabel = "ThisNeedsToBeSet";
     }
 }

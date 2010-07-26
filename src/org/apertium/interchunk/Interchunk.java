@@ -34,6 +34,7 @@ import java.util.Set;
 
 import org.apertium.lttoolbox.Alphabet;
 import org.apertium.transfer.ApertiumRE;
+import org.apertium.transfer.BufferT;
 import org.apertium.transfer.MatchExe;
 import org.apertium.transfer.MatchState;
 import org.apertium.transfer.TransferClassLoader;
@@ -73,7 +74,7 @@ public class Interchunk {
     private InterchunkWord[] word; // InterchunkWord **
     private String[] blank; // string **
     private int lword, lblank;
-    // Buffer<TransferToken> input_buffer;
+    private BufferT<TransferToken> input_buffer=new BufferT<TransferToken>(); // Buffer<TransferToken> input_buffer;
     ArrayList<String> tmpword; // vector<wstring *> tmpword;
     ArrayList<String> tmpblank; // vector<wstring *> tmpblank;
 

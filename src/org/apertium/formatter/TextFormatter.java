@@ -312,7 +312,7 @@ public class TextFormatter extends GenericFormatter {
         }
     }
 
-    TextFormatter(String commandLabel) {
+    public TextFormatter(String commandLabel) {
         super(commandLabel);
     }
     

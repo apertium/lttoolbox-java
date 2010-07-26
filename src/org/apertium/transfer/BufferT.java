@@ -44,7 +44,7 @@ public class BufferT<E> {
      */
     int lastpos;
 
-  BufferT() {
+  public BufferT() {
     this(64);
   }
 
@@ -53,7 +53,7 @@ public class BufferT<E> {
      * @param b the buffer to copy
      */
     @SuppressWarnings("unchecked")
-	void copy(BufferT<E> b) {
+	public void copy(BufferT<E> b) {
         currentpos = b.currentpos;
         lastpos = b.lastpos;
         size = b.size;
@@ -69,7 +69,7 @@ public class BufferT<E> {
      * @param buf_size buffer size
      */
     @SuppressWarnings("unchecked")
-	BufferT(int buf_size) {
+	public BufferT(int buf_size) {
         if (buf_size == 0) {
             throw new RuntimeException("Error: Cannot create empty buffer.");
         }
@@ -85,7 +85,7 @@ public class BufferT<E> {
     /**
      * Copy constructor.
      */
-    BufferT(BufferT<E> b) {
+    public BufferT(BufferT<E> b) {
         copy(b);
     }
 
@@ -93,7 +93,7 @@ public class BufferT<E> {
      * Add an element to the buffer.
      * @param value the value.
      */
-    E add(E value) {
+    public E add(E value) {
         if (lastpos == size) {
             lastpos = 0;
         }
@@ -106,7 +106,7 @@ public class BufferT<E> {
      * Consume the buffer's current value.
      * @return the current value.
      */
-    E next() {
+    public E next() {
         if (currentpos != lastpos) {
             if (currentpos == size) {
                 currentpos = 0;
@@ -121,7 +121,7 @@ public class BufferT<E> {
      * Get the last element of the buffer.
      * @return last element.
      */
-    E last() {
+    public E last() {
         if (lastpos != 0) {
             return buf[lastpos - 1];
         } else {
@@ -133,7 +133,7 @@ public class BufferT<E> {
      * Get the current buffer position.
      * @return the position.
      */
-    int getPos() {
+    public int getPos() {
         return currentpos;
     }
 
@@ -141,7 +141,7 @@ public class BufferT<E> {
      * Set the buffer to a new position.
      * @param newpos the new position.
      */
-    void setPos(int newpos) {
+    public void setPos(int newpos) {
         currentpos = newpos;
     }
 
@@ -151,7 +151,7 @@ public class BufferT<E> {
      * @param prevpos the given position.
      * @return the range size.
      */
-    int diffPrevPos(int prevpos) {
+    public int diffPrevPos(int prevpos) {
         if (prevpos <= currentpos) {
             return currentpos - prevpos;
         } else {
@@ -165,7 +165,7 @@ public class BufferT<E> {
      * @param postpos the given position.
      * @return the range size.
      */
-    int diffPostPos(int postpos) {
+    public int diffPostPos(int postpos) {
         if (postpos >= currentpos) {
             return postpos - currentpos;
         } else {
@@ -177,7 +177,7 @@ public class BufferT<E> {
      * Checks the buffer for emptyness.
      * @return true if the buffer is empty.
      */
-    boolean isEmpty() {
+    public boolean isEmpty() {
         return currentpos == lastpos;
     }
 
@@ -185,7 +185,7 @@ public class BufferT<E> {
      * Gets back 'posback' positions in the buffer.
      * @param posback the amount of position to get back.
      */
-    void back(int posback) {
+    public void back(int posback) {
         if (currentpos > posback) {
             currentpos -= posback;
         } else {
