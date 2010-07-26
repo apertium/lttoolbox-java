@@ -262,7 +262,7 @@ So the array of rule_map Method is taken by introspection, taking all methods be
       System.err.println("Warning: " + classFile+ " should be a Java .class file. You probably got it wrong");
     }
 
-    read(new MyClassLoader().loadClassFile(classFile), datafile, bilFstFile);
+    read(new TransferClassLoader().loadClassFile(classFile), datafile, bilFstFile);
 //    read(apertium_nn_nb_nb_nn_t1x.class, "testdata/transfer/nb-nn.t1x.bin", fstfile);
   }
 
@@ -617,31 +617,13 @@ So the array of rule_map Method is taken by introspection, taking all methods be
     this.useBilingual=useBilingual;
   }
 
-
+  //TODO: Cleanup -- unnecessary method
   private void fputwc_unlocked(char c, Writer output) throws IOException {
     output.append(c);
   }
 
+  //TODO: Cleanup -- unnecessary method
   private void fputws_unlocked(String first, Writer output) throws IOException {
     output.append(first);
   }
-}
-
-class MyClassLoader extends ClassLoader {
-
-
-    public MyClassLoader() {
-        super(MyClassLoader.class.getClassLoader());
-    }
-
-    
-    public Class loadClassFile(String filename) throws ClassNotFoundException, IOException {
-          //System.err.println("filename = " + filename);
-          File file = new File(filename);
-            InputStream input = new FileInputStream(file);
-            byte data[] = new byte[(int) file.length()];
-            input.read(data);
-            input.close();
-            return defineClass(null, data, 0, data.length);
-    }
 }

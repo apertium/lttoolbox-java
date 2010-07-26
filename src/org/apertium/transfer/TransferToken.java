@@ -9,7 +9,7 @@ package org.apertium.transfer;
  *
  * @author Jacob Nordfalk
  */
-class TransferToken {
+public class TransferToken {
 
   enum TransferTokenType
   {

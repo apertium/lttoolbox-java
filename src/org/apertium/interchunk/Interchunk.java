@@ -25,6 +25,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Map;
@@ -34,76 +36,88 @@ import org.apertium.lttoolbox.Alphabet;
 import org.apertium.transfer.ApertiumRE;
 import org.apertium.transfer.MatchExe;
 import org.apertium.transfer.MatchState;
+import org.apertium.transfer.TransferClassLoader;
+import org.apertium.transfer.TransferToken;
+import org.apertium.transfer.development.Timing;
 import org.apertium.transfer.generated.GeneratedTransferBase;
 
 /**
  * @author Stephen Tigner
- *
+ * 
  */
 public class Interchunk {
-    
-    /* This class is very similar to the Transfer class, so some code was just copied
-     * straight over, with alot of commented-out code removed.
+
+    /*
+     * This class is very similar to the Transfer class, so some code was just
+     * copied straight over, with alot of commented-out code removed.
      */
 
-    //Private members and methods
+    // Private members and methods
     private Alphabet alphabet;
-    private String TRXReader__ANY_CHAR="<ANY_CHAR>";
-    private String TRXReader__ANY_TAG="<ANY_TAG>";
-    
-    private MatchExe me; //Pointer in C++ version
+    private String TRXReader__ANY_CHAR = "<ANY_CHAR>";
+    private String TRXReader__ANY_TAG = "<ANY_TAG>";
+
+    private MatchExe me; // Pointer in C++ version
     private MatchState ms;
-    //private Map<String, ApertiumRE> attr_items;
-    //private Map<String, String> variables;
-    //private Map<String, Integer> macros;
-    //private Map<String, Set<String>> lists;
-    //private Map<String, Set<String>> listslow;
+    // private Map<String, ApertiumRE> attr_items;
+    // private Map<String, String> variables;
+    // private Map<String, Integer> macros;
+    // private Map<String, Set<String>> lists;
+    // private Map<String, Set<String>> listslow;
 
-    //vector<xmlNode *> macro_map; -- not in Transfer
-    private Method[] rule_map=null; //vector<xmlNode *> rule_map;
-    //xmlDoc *doc; -- not in Transfer
-    //xmlNode *root_element; -- not in Transfer
+    // vector<xmlNode *> macro_map; -- not in Transfer
+    private Method[] rule_map = null; // vector<xmlNode *> rule_map;
+    // xmlDoc *doc; -- not in Transfer
+    // xmlNode *root_element; -- not in Transfer
 
-    private InterchunkWord[] word; //InterchunkWord **
-    private String[] blank; //string **
+    private InterchunkWord[] word; // InterchunkWord **
+    private String[] blank; // string **
     private int lword, lblank;
-    //Buffer<TransferToken> input_buffer;
-    ArrayList<String> tmpword; //vector<wstring *> tmpword;
-    ArrayList<String> tmpblank; //vector<wstring *> tmpblank;
+    // Buffer<TransferToken> input_buffer;
+    ArrayList<String> tmpword; // vector<wstring *> tmpword;
+    ArrayList<String> tmpblank; // vector<wstring *> tmpblank;
 
     private OutputStreamWriter output;
     private int any_char;
     private int any_tag;
-    
-    //xmlNode *lastrule;
+
+    private Method lastrule; // xmlNode *lastrule;
     private int nwords;
     public GeneratedTransferBase transferObject;
-    
-    //map<xmlNode *, TransferInstr> evalStringCache;
+
+    // map<xmlNode *, TransferInstr> evalStringCache;
     private boolean inword;
     private boolean null_flush;
     private boolean internal_null_flush;
-    
+
     public static boolean DEBUG = false;
+
+    // Moved these up here, in contrast to Transfer, where they're stuck down
+    // between some functions.
+    public Timing timing;
+    public static final boolean DO_TIMING = false;
 
     /**
      * Copied from {@link org.apertium.transfer.Transfer#readData(InputStream)}
+     * 
      * @param in
      * @throws IOException
      */
     public void readData(InputStream in) throws IOException {
         // symbols
-        alphabet=Alphabet.read(in);
-        any_char=alphabet.cast(TRXReader__ANY_CHAR);
-        any_tag=alphabet.cast(TRXReader__ANY_TAG);
-    
+        alphabet = Alphabet.read(in);
+        any_char = alphabet.cast(TRXReader__ANY_CHAR);
+        any_tag = alphabet.cast(TRXReader__ANY_TAG);
+
         // faster - let it read itself, thus no need to make a big hashmap
         me = new MatchExe(in, alphabet.size());
         ms = new MatchState(me);
     }
 
     /**
-     * Copied from {@link org.apertium.transfer.Transfer#read(String, String, String)}
+     * Copied from
+     * {@link org.apertium.transfer.Transfer#read(String, String, String)}
+     * 
      * @param classFile
      * @param datafile
      * @param fstfile
@@ -111,14 +125,19 @@ public class Interchunk {
      */
     public void read(String classFile, String datafile) throws Exception {
         if (!classFile.endsWith(".class")) {
-          System.err.println("Warning: " + classFile+ " should be a Java .class file. You probably got it wrong");
+            System.err
+                    .println("Warning: "
+                            + classFile
+                            + " should be a Java .class file. You probably got it wrong");
         }
 
-        read(new MyClassLoader().loadClassFile(classFile), datafile);
-      }
+        read(new TransferClassLoader().loadClassFile(classFile), datafile);
+    }
 
     /**
-     * Copied from {@link org.apertium.transfer.Transfer#read(Class, String, String)}
+     * Copied from
+     * {@link org.apertium.transfer.Transfer#read(Class, String, String)}
+     * 
      * @param transferClass
      * @param datafile
      * @param fstfile
@@ -130,50 +149,170 @@ public class Interchunk {
         readData(is);
         is.close();
 
-        Method[] mets =  transferClass.getMethods();
+        Method[] mets = transferClass.getMethods();
         rule_map = new Method[mets.length];
 
         for (Method method : mets) {
-          String name = method.getName();
+            String name = method.getName();
 
-          //System.err.println("n = " + name);
-          if (!name.startsWith("rule")) continue;
+            // System.err.println("n = " + name);
+            if (!name.startsWith("rule"))
+                continue;
 
-          int number = Integer.parseInt(name.substring(4, name.indexOf('_',5)));
-          rule_map[number] = method;
+            int number = Integer.parseInt(name.substring(4, name
+                    .indexOf('_', 5)));
+            rule_map[number] = method;
 
-          if (DEBUG) System.err.println(method.getName()+"  - #words=" +method.getParameterTypes().length/2 );
+            if (DEBUG)
+                System.err.println(method.getName() + "  - #words="
+                        + method.getParameterTypes().length / 2);
         }
 
         transferObject = (GeneratedTransferBase) transferClass.newInstance();
         transferObject.debug = DEBUG;
         transferObject.init();
 
-      }
-
-}
-
-/**
- * Copied from {@link org.apertium.transfer.Transfer}
- * @author Jacob Nordfalk
- *
- */
-class MyClassLoader extends ClassLoader {
-
-
-    public MyClassLoader() {
-        super(MyClassLoader.class.getClassLoader());
     }
 
+    /**
+     * Copied from
+     * {@link org.apertium.transfer.Transfer#transfer_wrapper_null_flush(Reader, Writer)}, 
+     * then modified slightly, in-line with the changes between transfer.cc
+     * and interchunk.cc
+     * 
+     * @param input
+     * @param output
+     * @throws Exception
+     */
+    private void interchunk_wrapper_null_flush(Reader input, Writer output)
+            throws Exception {
+        null_flush = false;
+        internal_null_flush = true;
+        while (input.ready()) {
+            interchunk(input, output);
+            output.write('\0');
+            try {
+                output.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.err.println("Could not flush output");
+            }
+        }
+        internal_null_flush = false;
+        null_flush = true;
+    }
     
-    @SuppressWarnings("unchecked")
-    public Class loadClassFile(String filename) throws ClassNotFoundException, IOException {
-          //System.err.println("filename = " + filename);
-          File file = new File(filename);
-            InputStream input = new FileInputStream(file);
-            byte data[] = new byte[(int) file.length()];
-            input.read(data);
-            input.close();
-            return defineClass(null, data, 0, data.length);
+    boolean getNullFlush() {
+        return null_flush;
     }
+
+    void setNullFlush(boolean b) {
+        null_flush = b;
+    }
+
+    /**
+     * Much of this code originally copied from {@link org.apertium.transfer.Transfer#transfer(Reader, Writer)}.
+     * Modified to be in-line with the differences between transfer.cc and interchunk.cc
+     * @param in
+     * @param output
+     * @throws Exception
+     */
+    public void interchunk(Reader in, Writer output) throws Exception {
+        if (getNullFlush()) {
+            interchunk_wrapper_null_flush(in, output);
+        }
+
+        int last = 0;
+        ms.init(me.getInitial());
+        if (DO_TIMING)
+            timing = new Timing("Interchunk");
+        while (true) {
+            if (ms.size() == 0) {
+                if (lastrule != null) {
+                    applyRule(output);
+                    input_buffer.setPos(last);
+                } else {
+                    if (tmpword.size() != 0) {
+                        output.write('^');
+                        output.write(tmpword.get(0));
+                        output.write('$');
+                        tmpword.clear();
+                        input_buffer.setPos(last);
+                        input_buffer.next();
+                        last = input_buffer.getPos();
+                        ms.init(me.getInitial());
+                    } else if (tmpblank.size() != 0) {
+                        fputws_unlocked(tmpblank.get(0), output);
+                        tmpblank.clear();
+                        last = input_buffer.getPos();
+                        ms.init(me.getInitial());
+                    }
+                }
+            }
+            if (DO_TIMING)
+                timing.log("interchunk");
+            int val = ms.classifyFinals();
+            if (DO_TIMING)
+                timing.log("interchunk/ms.classifyFinals");
+            if (val != -1) {
+
+                lastrule = rule_map[(val - 1)];
+                // XXXXXXXX lastrule = rule_map.get(val-1);
+                last = input_buffer.getPos();
+
+                if (DEBUG)
+                    System.err.println("lastrule = " + (val - 1) + " "
+                            + lastrule.getName());
+                if (DEBUG)
+                    System.err.println("tmpword = " + tmpword.size()
+                            + "  tmpblank = " + tmpblank.size());
+                if (DEBUG)
+                    System.err.println("tmpword = " + tmpword + "  tmpblank = "
+                            + tmpblank);
+                tmpword2.clear();
+                tmpblank2.clear();
+                tmpword2.addAll(tmpword);
+                tmpblank2.addAll(tmpblank);
+            }
+
+            if (DO_TIMING)
+                timing.log("interchunk");
+            TransferToken current = readToken(in);
+            if (DO_TIMING)
+                timing.log("readToken");
+
+            switch (current.type) {
+                case tt_word:
+                    applyWord(current.content);
+                    tmpword.add(current.content);
+                    break;
+
+                case tt_blank:
+                    ms.step(' ');
+                    tmpblank.add(current.content);
+                    break;
+
+                case tt_eof:
+                    if (tmpword.size() != 0) {
+                        tmpblank.add(current.content);
+                        ms.clear();
+                    } else {
+                        fputws_unlocked(current.content, output);
+                        tmpblank.clear();
+                        if (DO_TIMING) {
+                            timing.log("interchunk");
+                            timing.report();
+                        }
+                        return;
+                    }
+                    break;
+    
+                default:
+
+                    System.err.println("Error: Unknown input token.");
+                    return;
+            }
+        }
+    }
+
 }
