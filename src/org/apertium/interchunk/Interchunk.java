@@ -20,28 +20,21 @@
 package org.apertium.interchunk;
 
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Map;
-import java.util.Set;
 
 import org.apertium.lttoolbox.Alphabet;
-import org.apertium.lttoolbox.Pair;
-import org.apertium.transfer.ApertiumRE;
 import org.apertium.transfer.BufferT;
 import org.apertium.transfer.MatchExe;
 import org.apertium.transfer.MatchState;
 import org.apertium.transfer.TransferClassLoader;
 import org.apertium.transfer.TransferToken;
-import org.apertium.transfer.TransferWord;
 import org.apertium.transfer.development.Timing;
 import org.apertium.transfer.generated.GeneratedTransferBase;
 
@@ -63,36 +56,21 @@ public class Interchunk {
 
     private MatchExe me; // Pointer in C++ version
     private MatchState ms;
-    // private Map<String, ApertiumRE> attr_items;
-    // private Map<String, String> variables;
-    // private Map<String, Integer> macros;
-    // private Map<String, Set<String>> lists;
-    // private Map<String, Set<String>> listslow;
 
-    // vector<xmlNode *> macro_map; -- not in Transfer
     private Method[] rule_map = null; // vector<xmlNode *> rule_map;
-    // xmlDoc *doc; -- not in Transfer
-    // xmlNode *root_element; -- not in Transfer
 
-    private InterchunkWord[] word; // InterchunkWord **
-    private String[] blank; // string **
-    private int lword, lblank;
     private BufferT<TransferToken> input_buffer=new BufferT<TransferToken>(); // Buffer<TransferToken> input_buffer;
     private ArrayList<String> tmpword; // vector<wstring *> tmpword;
     private ArrayList<String> tmpblank; // vector<wstring *> tmpblank;
     private ArrayList<String> tmpword2=new ArrayList<String>();
     private ArrayList<String> tmpblank2=new ArrayList<String>();
 
-    
-    private OutputStreamWriter output;
     private int any_char;
     private int any_tag;
 
     private Method lastrule; // xmlNode *lastrule;
-    private int nwords;
     public GeneratedTransferBase transferObject;
 
-    // map<xmlNode *, TransferInstr> evalStringCache;
     private boolean inword;
     private boolean null_flush;
     private boolean internal_null_flush;
@@ -104,6 +82,18 @@ public class Interchunk {
     public Timing timing;
     public static final boolean DO_TIMING = false;
 
+
+    /**
+     * Constructor
+     */
+    public Interchunk() {
+        me = null;
+        lastrule = null;
+        inword = false;
+        null_flush = false;
+        internal_null_flush = false;
+    }
+    
     /**
      * Copied from {@link org.apertium.transfer.Transfer#readData(InputStream)}
      * 
@@ -150,6 +140,7 @@ public class Interchunk {
      * @param fstfile
      * @throws Exception
      */
+    @SuppressWarnings("unchecked")
     public void read(Class transferClass, String datafile) throws Exception {
 
         InputStream is = new BufferedInputStream(new FileInputStream(datafile));
@@ -188,7 +179,7 @@ public class Interchunk {
      * @return
      * @throws IOException
      */
-    TransferToken readToken(Reader in) throws IOException {
+    private TransferToken readToken(Reader in) throws IOException {
         if (!input_buffer.isEmpty()) {
             return input_buffer.next();
         }
@@ -420,71 +411,77 @@ public class Interchunk {
      * @throws Exception
      */
     private void applyRule(Writer output) throws Exception {
-        if (DEBUG) System.err.println("tmpword = " + tmpword2+ "  tmpblank = " + tmpblank2);
-        if (DO_TIMING) timing.log("other1");
+        if (DEBUG)
+            System.err.println("tmpword = " + tmpword2 + "  tmpblank = "
+                    + tmpblank2);
+        if (DO_TIMING)
+            timing.log("other1");
 
-        int limit=tmpword2.size();
+        int limit = tmpword2.size();
 
-        Object[] args = new Object[1+limit + limit -1];
+        Object[] args = new Object[1 + limit + limit - 1];
         int argn = 0;
         args[argn++] = output;
 
+        InterchunkWord[] word = null; // TransferWord **word;
+        String[] blank = null; // string **blank;
 
-        InterchunkWord[] word=null; // TransferWord **word;
-        String[] blank=null; // string **blank;
-
-      for (int i=0; i!=limit; i++)
-        {
-          if (i==0)
-          {
-            word=new InterchunkWord[limit];
-            if (limit!=0)
-            {
-              blank=new String[limit-1];
-            } else
-            {
-              blank=null;
+        for (int i = 0; i != limit; i++) {
+            if (i == 0) {
+                word = new InterchunkWord[limit];
+                if (limit != 0) {
+                    blank = new String[limit - 1];
+                } else {
+                    blank = null;
+                }
+            } else {
+                blank[i - 1] = tmpblank2.get(i - 1);
+                args[argn++] = tmpblank2.get(i - 1);
             }
-          }
-          else
-          {
-            blank[i-1]=tmpblank2.get(i-1);
-            args[argn++] = tmpblank2.get(i-1);
-          }
 
-          args[argn++] = word[i]=new InterchunkWord(tmpword2.get(i));
+            args[argn++] = word[i] = new InterchunkWord(tmpword2.get(i));
         }
 
-        if (DEBUG) System.err.println("word = " + Arrays.toString(word));
+        if (DEBUG)
+            System.err.println("word = " + Arrays.toString(word));
 
-        if (DEBUG) System.err.println("#args = " + args.length);
-        if (DEBUG) System.err.println("processRule:"+lastrule.getName()+"("+Arrays.toString(args));
+        if (DEBUG)
+            System.err.println("#args = " + args.length);
+        if (DEBUG)
+            System.err.println("processRule:" + lastrule.getName() + "("
+                    + Arrays.toString(args));
         try {
-          if (DO_TIMING) timing.log("applyRule 1");
-          lastrule.invoke(transferObject, args);
-          if (DO_TIMING) timing.log("rule invoke");
+            if (DO_TIMING)
+                timing.log("applyRule 1");
+            lastrule.invoke(transferObject, args);
+            if (DO_TIMING)
+                timing.log("rule invoke");
         } catch (Exception e) {
-          System.err.println("Error during invokation of "+lastrule);
-          System.err.println("word = " + Arrays.toString(word));
-          System.err.println("#args = " + args.length);
-          System.err.println("processRule:"+lastrule.getName()+"("+Arrays.toString(args));
-          throw e;
+            System.err.println("Error during invokation of " + lastrule);
+            System.err.println("word = " + Arrays.toString(word));
+            System.err.println("#args = " + args.length);
+            System.err.println("processRule:" + lastrule.getName() + "("
+                    + Arrays.toString(args));
+            throw e;
         }
-        if (DEBUG) output.flush();
-        
-        //processRule(lastrule);
-        lastrule=null;
+        if (DEBUG)
+            output.flush();
 
-        word=null;
-        blank=null;
+        // processRule(lastrule);
+        lastrule = null;
+
+        word = null;
+        blank = null;
         tmpword.clear();
         tmpblank.clear();
         tmpword2.clear();
         tmpblank2.clear();
-        if (DO_TIMING) timing.log("applyRule 1");
+        if (DO_TIMING)
+            timing.log("applyRule 1");
         ms.init(me.getInitial());
-        if (DO_TIMING) timing.log("applyRule 2");
-      }
+        if (DO_TIMING)
+            timing.log("applyRule 2");
+    }
 
     /**
      * Much of this code originally copied from {@link org.apertium.transfer.Transfer#applyWord(string)}.
