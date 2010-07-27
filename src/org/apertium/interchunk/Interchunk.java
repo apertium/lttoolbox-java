@@ -29,16 +29,19 @@ import java.io.Reader;
 import java.io.Writer;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 
 import org.apertium.lttoolbox.Alphabet;
+import org.apertium.lttoolbox.Pair;
 import org.apertium.transfer.ApertiumRE;
 import org.apertium.transfer.BufferT;
 import org.apertium.transfer.MatchExe;
 import org.apertium.transfer.MatchState;
 import org.apertium.transfer.TransferClassLoader;
 import org.apertium.transfer.TransferToken;
+import org.apertium.transfer.TransferWord;
 import org.apertium.transfer.development.Timing;
 import org.apertium.transfer.generated.GeneratedTransferBase;
 
@@ -75,9 +78,12 @@ public class Interchunk {
     private String[] blank; // string **
     private int lword, lblank;
     private BufferT<TransferToken> input_buffer=new BufferT<TransferToken>(); // Buffer<TransferToken> input_buffer;
-    ArrayList<String> tmpword; // vector<wstring *> tmpword;
-    ArrayList<String> tmpblank; // vector<wstring *> tmpblank;
+    private ArrayList<String> tmpword; // vector<wstring *> tmpword;
+    private ArrayList<String> tmpblank; // vector<wstring *> tmpblank;
+    private ArrayList<String> tmpword2=new ArrayList<String>();
+    private ArrayList<String> tmpblank2=new ArrayList<String>();
 
+    
     private OutputStreamWriter output;
     private int any_char;
     private int any_tag;
@@ -203,11 +209,11 @@ public class Interchunk {
         null_flush = true;
     }
     
-    boolean getNullFlush() {
+    public boolean getNullFlush() {
         return null_flush;
     }
 
-    void setNullFlush(boolean b) {
+    public void setNullFlush(boolean b) {
         null_flush = b;
     }
 
@@ -243,7 +249,7 @@ public class Interchunk {
                         last = input_buffer.getPos();
                         ms.init(me.getInitial());
                     } else if (tmpblank.size() != 0) {
-                        fputws_unlocked(tmpblank.get(0), output);
+                        output.write(tmpblank.get(0));
                         tmpblank.clear();
                         last = input_buffer.getPos();
                         ms.init(me.getInitial());
@@ -298,7 +304,7 @@ public class Interchunk {
                         tmpblank.add(current.content);
                         ms.clear();
                     } else {
-                        fputws_unlocked(current.content, output);
+                        output.write(current.content);
                         tmpblank.clear();
                         if (DO_TIMING) {
                             timing.log("interchunk");
@@ -316,4 +322,122 @@ public class Interchunk {
         }
     }
 
+    /**
+     * Much of this code originally copied from {@link org.apertium.transfer.Transfer#applyRule(Writer)}.
+     * Modified to be in-line with the differences between transfer.cc and interchunk.cc
+     * @param output
+     * @throws Exception
+     */
+    private void applyRule(Writer output) throws Exception {
+        if (DEBUG) System.err.println("tmpword = " + tmpword2+ "  tmpblank = " + tmpblank2);
+        if (DO_TIMING) timing.log("other1");
+
+        int limit=tmpword2.size();
+
+        Object[] args = new Object[1+limit + limit -1];
+        int argn = 0;
+        args[argn++] = output;
+
+
+        InterchunkWord[] word=null; // TransferWord **word;
+        String[] blank=null; // string **blank;
+
+      for (int i=0; i!=limit; i++)
+        {
+          if (i==0)
+          {
+            word=new InterchunkWord[limit];
+            if (limit!=0)
+            {
+              blank=new String[limit-1];
+            } else
+            {
+              blank=null;
+            }
+          }
+          else
+          {
+            blank[i-1]=tmpblank2.get(i-1);
+            args[argn++] = tmpblank2.get(i-1);
+          }
+
+          args[argn++] = word[i]=new InterchunkWord(tmpword2.get(i));
+        }
+
+        if (DEBUG) System.err.println("word = " + Arrays.toString(word));
+
+        if (DEBUG) System.err.println("#args = " + args.length);
+        if (DEBUG) System.err.println("processRule:"+lastrule.getName()+"("+Arrays.toString(args));
+        try {
+          if (DO_TIMING) timing.log("applyRule 1");
+          lastrule.invoke(transferObject, args);
+          if (DO_TIMING) timing.log("rule invoke");
+        } catch (Exception e) {
+          System.err.println("Error during invokation of "+lastrule);
+          System.err.println("word = " + Arrays.toString(word));
+          System.err.println("#args = " + args.length);
+          System.err.println("processRule:"+lastrule.getName()+"("+Arrays.toString(args));
+          throw e;
+        }
+        if (DEBUG) output.flush();
+        
+        //processRule(lastrule);
+        lastrule=null;
+
+        word=null;
+        blank=null;
+        tmpword.clear();
+        tmpblank.clear();
+        tmpword2.clear();
+        tmpblank2.clear();
+        if (DO_TIMING) timing.log("applyRule 1");
+        ms.init(me.getInitial());
+        if (DO_TIMING) timing.log("applyRule 2");
+      }
+
+    /**
+     * Much of this code originally copied from {@link org.apertium.transfer.Transfer#applyWord(string)}.
+     * Modified to be in-line with the differences between transfer.cc and interchunk.cc 
+     * @param word_str
+     */
+    private void applyWord(String word_str) {
+        if (DO_TIMING)
+            timing.log("other");
+        ms.step('^');
+        for (int i = 0, limit = word_str.length(); i < limit; i++) {
+            switch (word_str.charAt(i)) {
+            case '\\':
+                i++;
+                ms.step(Character.toLowerCase(word_str.charAt(i)), any_char);
+                break;
+
+            case '<':
+                for (int j = i + 1; j != limit; j++) {
+                    if (word_str.charAt(j) == '>') {
+                        int symbol = alphabet
+                                .cast(word_str.substring(i, j + 1));
+                        if (symbol != 0) {
+                            ms.step(symbol, any_tag);
+                        } else {
+                            ms.step(any_tag);
+                        }
+                        i = j;
+                        break;
+                    }
+                }
+                break;
+
+            case '{': //ignore the unmodifiable part of the chunk
+                ms.step('$');
+                return;
+
+            default:
+                ms.step(Character.toLowerCase(word_str.charAt(i)), any_char);
+                break;
+            }
+        }
+        ms.step('$');
+        if (DO_TIMING)
+            timing.log("applyWord");
+    }
 }

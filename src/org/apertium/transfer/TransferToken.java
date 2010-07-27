@@ -11,15 +11,16 @@ package org.apertium.transfer;
  */
 public class TransferToken {
 
-  enum TransferTokenType
+  public enum TransferTokenType
   {
     tt_eof,
     tt_word,
     tt_blank
   };
 
-  TransferTokenType type;
-  String content;
+  //The way this is used in the existing code, these should be public.
+  public TransferTokenType type;
+  public String content;
 
   TransferToken(String content, TransferTokenType type) {
     this.content = content;

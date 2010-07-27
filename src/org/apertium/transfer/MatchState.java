@@ -52,7 +52,7 @@ public class MatchState {
     _copy(s);
   }
 
-  void clear() {
+  public void clear() {
     first = last = 0;
   }
 
