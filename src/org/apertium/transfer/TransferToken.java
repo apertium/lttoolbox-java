@@ -22,7 +22,7 @@ public class TransferToken {
   public TransferTokenType type;
   public String content;
 
-  TransferToken(String content, TransferTokenType type) {
+  public TransferToken(String content, TransferTokenType type) {
     this.content = content;
     this.type = type;
   }

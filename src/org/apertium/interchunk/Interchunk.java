@@ -182,6 +182,97 @@ public class Interchunk {
     }
 
     /**
+     * Much of this code originally copied from {@link org.apertium.transfer.Transfer#readToken(Reader)}.
+     * Modified to be in-line with the differences between transfer.cc and interchunk.cc
+     * @param in
+     * @return
+     * @throws IOException
+     */
+    TransferToken readToken(Reader in) throws IOException {
+        if (!input_buffer.isEmpty()) {
+            return input_buffer.next();
+        }
+
+        /* This is a flag that is used if we need to skip a read in the case of a
+         * single character look-ahead.
+         */
+        boolean skipRead = false;
+        String content = "";
+        while (true) {
+            int val = -1; //declare and initialize val outside of if statement.
+            if(skipRead) { //Already read ahead to the next character 
+                skipRead = false; //unset flag
+            } 
+            else {
+                val = in.read();
+            }
+            if (val == -1 || (val == 0 && internal_null_flush)) {
+                return input_buffer.add(new TransferToken(content,
+                        TransferToken.TransferTokenType.tt_eof));
+            }
+            if (val == '\\') {
+                content += '\\';
+                content += (char) in.read();
+            } else if (val == '[') {
+                content += '[';
+                while (true) {
+                    int val2 = in.read();
+                    if (val2 == '\\') {
+                        content += '\\';
+                        content += (char) in.read();
+                    } else if (val2 == ']') {
+                        content += ']';
+                        break;
+                    } else {
+                        content += (char) val2;
+                    }
+                }
+            } else if (inword && val == '{') {
+                content += '{';
+                while (true) {
+                    int val2 = -1; //declare and initialize val2 outside of if statement.
+                    if(skipRead) { //Already read ahead to the next character
+                        skipRead = false; //unset flag
+                    } else {
+                        val2 = in.read();
+                    }
+                    if (val2 == '\\') {
+                        content += '\\';
+                        content += (char) in.read();
+                    } else if (val2 == '}') {
+                        /*
+                         * Here's where we peek ahead to see if the next char is
+                         * a '$' If it's not, we want that character to still be
+                         * processed normally. Unfortunately, we can't "unget" a
+                         * character, but we can set a flag and test for it.
+                         * Instead of storing it in a new val3, we just read the
+                         * next character into val2.
+                         */
+                        content += '}';
+                        val2 = in.read();
+                        if(val2 == '$') {
+                            val = val2; //pass read-ahead char into val
+                            break; //exit inner while loop
+                        }
+                    } else {
+                        content += (char) val2;
+                    }
+                }
+            } else if (inword && val == '$') {
+                inword = false;
+                return input_buffer.add(new TransferToken(content,
+                        TransferToken.TransferTokenType.tt_word));
+            } else if (val == '^') {
+                inword = true;
+                return input_buffer.add(new TransferToken(content,
+                        TransferToken.TransferTokenType.tt_blank));
+            } else {
+                content += (char) val;
+            }
+        }
+    }
+
+    /**
      * Copied from
      * {@link org.apertium.transfer.Transfer#transfer_wrapper_null_flush(Reader, Writer)}, 
      * then modified slightly, in-line with the changes between transfer.cc

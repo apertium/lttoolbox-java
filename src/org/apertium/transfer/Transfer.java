@@ -267,6 +267,7 @@ So the array of rule_map Method is taken by introspection, taking all methods be
   }
 
 
+  @SuppressWarnings("unchecked")
   public void read(Class transferClass, String datafile, String bilFstFile) throws Exception {
 
     InputStream is = new BufferedInputStream(new FileInputStream(datafile));
