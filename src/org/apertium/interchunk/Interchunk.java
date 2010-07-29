@@ -21,6 +21,7 @@ package org.apertium.interchunk;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
@@ -141,7 +142,9 @@ public class Interchunk {
      * @throws Exception
      */
     @SuppressWarnings("unchecked")
-    public void read(Class transferClass, String datafile) throws Exception {
+    public void read(Class transferClass, String datafile) 
+            throws FileNotFoundException, IOException, IllegalAccessException,
+            InstantiationException {
 
         InputStream is = new BufferedInputStream(new FileInputStream(datafile));
         readData(is);
@@ -494,34 +497,34 @@ public class Interchunk {
         ms.step('^');
         for (int i = 0, limit = word_str.length(); i < limit; i++) {
             switch (word_str.charAt(i)) {
-            case '\\':
-                i++;
-                ms.step(Character.toLowerCase(word_str.charAt(i)), any_char);
-                break;
-
-            case '<':
-                for (int j = i + 1; j != limit; j++) {
-                    if (word_str.charAt(j) == '>') {
-                        int symbol = alphabet
-                                .cast(word_str.substring(i, j + 1));
-                        if (symbol != 0) {
-                            ms.step(symbol, any_tag);
-                        } else {
-                            ms.step(any_tag);
+                case '\\':
+                    i++;
+                    ms.step(Character.toLowerCase(word_str.charAt(i)), any_char);
+                    break;
+    
+                case '<':
+                    for (int j = i + 1; j != limit; j++) {
+                        if (word_str.charAt(j) == '>') {
+                            int symbol = alphabet
+                                    .cast(word_str.substring(i, j + 1));
+                            if (symbol != 0) {
+                                ms.step(symbol, any_tag);
+                            } else {
+                                ms.step(any_tag);
+                            }
+                            i = j;
+                            break;
                         }
-                        i = j;
-                        break;
                     }
-                }
-                break;
-
-            case '{': //ignore the unmodifiable part of the chunk
-                ms.step('$');
-                return;
-
-            default:
-                ms.step(Character.toLowerCase(word_str.charAt(i)), any_char);
-                break;
+                    break;
+    
+                case '{': //ignore the unmodifiable part of the chunk
+                    ms.step('$');
+                    return;
+    
+                default:
+                    ms.step(Character.toLowerCase(word_str.charAt(i)), any_char);
+                    break;
             }
         }
         ms.step('$');

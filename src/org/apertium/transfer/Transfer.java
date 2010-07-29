@@ -340,11 +340,11 @@ So the array of rule_map Method is taken by introspection, taking all methods be
     }
   }
 
-  boolean getNullFlush() {
+  public boolean getNullFlush() {
     return null_flush;
   }
 
-  void setNullFlush(boolean b) {
+  public void setNullFlush(boolean b) {
     null_flush=b;
   }
 

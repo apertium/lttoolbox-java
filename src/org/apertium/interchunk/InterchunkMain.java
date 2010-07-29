@@ -19,19 +19,32 @@
 
 package org.apertium.interchunk;
 
+import static org.apertium.lttoolbox.LTProc.fout;
+import static org.apertium.lttoolbox.LTProc.openReader;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintStream;
+import java.io.Reader;
+import java.io.Writer;
+
+import org.apertium.lttoolbox.Getopt;
+import org.apertium.lttoolbox.LTToolbox;
+import org.apertium.lttoolbox.process.FSTProcessor;
+import org.apertium.lttoolbox.process.State;
+import org.apertium.transfer.Transfer;
 
 /**
  * @author Stephen Tigner
  *
  */
 public class InterchunkMain {
-    
+
     private static void message() {
         PrintStream stderr = System.err; //Allows ouput lines to be shorter.
         stderr.println("USAGE: Interchunk  [-z] t2x preproc [input [output]]");
@@ -56,7 +69,7 @@ public class InterchunkMain {
      * @param filename - A string with the filename to open
      * @return An InputStream for reading from the file specified.
      */
-    protected InputStream openInput(String filename) {
+    protected static InputStream openInput(String filename) {
         InputStream in = null;
         try {
             in = new FileInputStream(filename);
@@ -75,7 +88,7 @@ public class InterchunkMain {
      * @param filename - A string with the filename to open
      * @return An OutputStream for reading from the file specified.
      */
-    protected OutputStream openOutput(String filename) {
+    protected static OutputStream openOutput(String filename) {
         OutputStream out = null;
         try {
             out = new FileOutputStream(filename);
@@ -91,8 +104,64 @@ public class InterchunkMain {
      * @param args
      */
     public static void main(String[] args) {
-        // TODO Auto-generated method stub
 
+        System.setProperty("file.encoding", "UTF-8");
+        if (args.length == 0) {
+            message();
+        }
+
+        Interchunk i = new Interchunk();
+        Getopt getopt = new Getopt("Interchunk", args, "zh");
+
+        while (true) {
+            int c = getopt.getopt();
+            if (c == -1) {
+                break;
+            }
+            switch (c) {
+                case 'z':
+                    i.setNullFlush(true);
+                    break;
+
+                case 'h':
+                default:
+                    message();
+                    break;
+            }
+        }
+
+        Reader input;
+        Writer output;
+        
+        String t2xFile = null;
+        String preprocFile = null; //formerly f1, f2, these are more descriptive names
+        
+        switch(args.length - getopt.getOptind()) { //number of non-option args
+            /* This avoids code duplication by allowing cases to "fall through."
+             * The higher cases just add extra lines to the top of the lower cases,
+             * so by allowing the code to fall through to the lower cases (instead of
+             * breaking), we don't need to duplicate the same code several times.
+             */
+            case 4:
+                output = new OutputStreamWriter(openOutput(args[args.length - 1]));
+            case 3:
+                input = new InputStreamReader(openInput(args[args.length - 2]));
+            case 2:
+                t2xFile = args[args.length - 4];
+                preprocFile = args[args.length - 3];
+                break;
+            default:
+                message();
+                break;
+        }
+        
+        try {
+            i.read(t2xFile, preprocFile);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
     }
 
 }
