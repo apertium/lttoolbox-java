@@ -17,6 +17,8 @@ package org.apertium.lttoolbox;
  * 02111-1307, USA.
  */
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
@@ -155,4 +157,21 @@ public class Compression {
     return String_read(in);
   }
 
+  /**
+   * From Jimmys EndianDoubleUtil
+   */
+  public static double readDouble(InputStream in) throws IOException {
+    // TODO - write better version
+      DataInputStream data = new DataInputStream(in);
+      return data.readDouble();
+  }
+
+  /**
+   * From Jimmys EndianDoubleUtil
+   */
+  public static void writeDouble(OutputStream out, Double d) throws IOException {
+    // TODO - write better version
+      DataOutputStream data = new DataOutputStream(out);
+      data.writeDouble(d);
+  }
 }

@@ -40,13 +40,9 @@ public class HMM {
 	private boolean DEBUG = false;
 
     class IntVector {
-
-        List<Integer> nodes;
-
-        IntVector() {
-            nodes = new ArrayList<Integer>();
-        }
+        ArrayList<Integer> nodes = new ArrayList<Integer>();
     }
+    
     private double ZERO = 1e-10;
     private TaggerData td;
     private int eos;
@@ -773,7 +769,7 @@ public class HMM {
     }
 
     void tagger(InputStream in, OutputStream out, boolean show_all_good_first) throws IOException {
-        int i, j, k, nw;
+        int i, j, k;
         TaggerWord word = null;// new TaggerWord();  // word =null;
         Integer tag;
 
@@ -785,7 +781,7 @@ public class HMM {
         Set<Integer> tags = new LinkedHashSet<Integer>();
         Set<Integer> pretags = new LinkedHashSet<Integer>();
 
-        double prob, loli, x;
+        double prob, x;
 
         int N = td.getN();
         double[][] alpha = new double[2][N];
@@ -797,14 +793,13 @@ public class HMM {
         }
 
         ArrayList<TaggerWord> wpend = new ArrayList<TaggerWord>();
-        int nwpend;
 
         MorphoStream morpho_stream = new MorphoStream(in, debug, td);
         morpho_stream.setNullFlush(null_flush);
 
         Collection output = td.getOutput();
 
-        loli = nw = 0;
+        double loli = 0;
 
         //Initialization
         tags.add(eos);
@@ -815,7 +810,8 @@ public class HMM {
         while (word != null) {
             if (DEBUG) { word.print(); }
             wpend.add(word);
-            nwpend = wpend.size();
+            final int nwpend = wpend.size();
+            final int nwpend2 = nwpend % 2;
 
             pretags = tags; // Tags from the previous word
 
@@ -841,8 +837,8 @@ public class HMM {
             k = output.get(tags);  //Ambiguity class the word belongs to
             if (DEBUG) System.out.println("k: " + k);
 
-            clear_array_double(alpha[nwpend % 2]);
-            clear_array_vector(best[nwpend % 2]);
+            clear_array_double(alpha[nwpend2]);
+            clear_array_vector(best[nwpend2]);
 
             //Induction
             for (Integer itag : tags) {
@@ -850,41 +846,23 @@ public class HMM {
                 if (DEBUG) System.out.println("i: " + itag);
                 for (Integer jtag : pretags) {
                     j = jtag;
-                    x = alpha[1 - nwpend % 2][j] * td.getA()[j][i] * td.getB()[i][k];
+                    x = alpha[1 - nwpend2][j] * td.getA()[j][i] * td.getB()[i][k];
                     if (DEBUG) System.out.println("j: " + jtag+" nwpend: "+nwpend+" A[j][i]: "+td.getA()[j][i] +" B[i][k]: "+ td.getB()[i][k]+"  x: "+x);
-                    if (alpha[nwpend % 2][i] <= x) {
+                    if (alpha[nwpend2][i] <= x) {
                         if (nwpend > 1) {
-                            if (best[nwpend % 2][i] == null) {
-                                best[nwpend % 2][i] = new IntVector();
-                            }
-                            if (best[nwpend % 2][i].nodes == null) {
-                                best[nwpend % 2][i].nodes = new ArrayList<Integer>();
-                            }
-                            if (best[nwpend % 2][j] == null) {
-                                best[nwpend % 2][j] = new IntVector();
-                            }
-                            if (best[nwpend % 2][j].nodes == null) {
-                                best[nwpend % 2][j].nodes = new ArrayList<Integer>();
-                            }
                             /* This should be *replacing* nodes, not just adding them.
                              * However, if we're replacing the nodes with themselves,
                              * no need to do anything, and in fact the clear() call
                              * would be detrimental.
                              */
-                            if (((nwpend %2) != (1 - nwpend %2)) || (i != j)) {
-                                best[nwpend % 2][i].nodes.clear();
-                                best[nwpend % 2][i].nodes.addAll(best[1 - nwpend % 2][j].nodes);
+                            if (((nwpend2) != (1 - nwpend2)) || (i != j)) {
+                                best[nwpend2][i].nodes.clear();
+                                best[nwpend2][i].nodes.addAll(best[1 - nwpend2][j].nodes);
                             }
                         }
-                        if (DEBUG) System.out.println("best: " + (nwpend % 2) + " " + i);
-                        if (best[nwpend % 2][i] == null) {
-                            best[nwpend % 2][i] = new IntVector();
-                        }
-                        if (best[nwpend % 2][i].nodes == null) {
-                            best[nwpend % 2][i].nodes = new ArrayList<Integer>();
-                        }
-                        best[nwpend % 2][i].nodes.add(i);
-                        alpha[nwpend % 2][i] = x;
+                        if (DEBUG) System.out.println("best: " + (nwpend2) + " " + i);
+                        best[nwpend2][i].nodes.add(i);
+                        alpha[nwpend2][i] = x;
                     }
                 }
             }
@@ -893,7 +871,7 @@ public class HMM {
             if (tags.size() == 1) {
                 tag = tags.iterator().next();
 
-                prob = alpha[nwpend % 2][tag];
+                prob = alpha[nwpend2][tag];
 
                 if (prob > 0) {
                     loli -= Math.log(prob);
@@ -903,15 +881,15 @@ public class HMM {
                     }
                 }
                 
-                for (int t = 0; t < best[nwpend % 2][tag].nodes.size(); t++) {
+                for (int t = 0; t < best[nwpend2][tag].nodes.size(); t++) {
                     if (show_all_good_first) {
-                        String micad = wpend.get(t).get_all_chosen_tag_first(best[nwpend % 2][tag].nodes.get(t), td.getTagIndex().get("TAG_kEOF"));
+                        String micad = wpend.get(t).get_all_chosen_tag_first(best[nwpend2][tag].nodes.get(t), td.getTagIndex().get("TAG_kEOF"));
                         outWriter.write(micad);
                     } else {
                         //Split out the following line for debugging.
-                        //String micad = wpend.get(t).get_lexical_form(best[nwpend % 2][tag].nodes.get(t), td.getTagIndex().get("TAG_kEOF"));
+                        //String micad = wpend.get(t).get_lexical_form(best[nwpend2][tag].nodes.get(t), td.getTagIndex().get("TAG_kEOF"));
                         int tagkeof = td.getTagIndex().get("TAG_kEOF");
-                        int tagT = best[nwpend % 2][tag].nodes.get(t);
+                        int tagT = best[nwpend2][tag].nodes.get(t);
                         TaggerWord tempWord = wpend.get(t);
                         tempWord.set_show_sf(show_sf); //Was missing, show superficial forms option won't work w/o this line
                         String micad = tempWord.get_lexical_form(tagT, tagkeof);
@@ -1048,7 +1026,7 @@ public class HMM {
 
     void clear_array_vector(IntVector a[]) {
         for (int i = 0; i < a.length; i++) {
-            a[i] = null;
+            a[i].nodes.clear();
         }
     }
 }

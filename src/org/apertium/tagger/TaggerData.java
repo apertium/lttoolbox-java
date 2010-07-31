@@ -12,7 +12,7 @@
  * General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
+ * along with this program; if not, writeDouble to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
  */
@@ -218,10 +218,10 @@ public class TaggerData {
           b[i] = new double[M];
       }
    
-      // read a
+      // readDouble a
       for (int i = 0; i != N; i++) {
           for (int j = 0; j != N; j++) {
-              a[i][j] = EndianDoubleUtil.read(in);
+              a[i][j] = Compression.readDouble(in);
               /*if(DEBUG) { 
                   System.out.println("a[" + i + "][" + j +"] = " + a[i][j]);
                   System.out.flush();
@@ -236,28 +236,28 @@ public class TaggerData {
           }
       }
 
-      // read nonZERO values of b
+      // readDouble nonZERO values of b
       int nval = Compression.multibyte_read(in);
 
       for (; nval != 0; nval--) {
           int i = Compression.multibyte_read(in);
           int j = Compression.multibyte_read(in);
-          b[i][j] = EndianDoubleUtil.read(in);
+          b[i][j] = Compression.readDouble(in);
           /*if(DEBUG) { 
               System.out.println("b[" + i + "][" + j +"] = " + b[i][j]);
               System.out.flush();
           }*/
       }
 
-      // read pattern list
+      // readDouble pattern list
       plist.read(in);
     
-      // read discards on ambiguity
+      // readDouble discards on ambiguity
 			discard.clear();
 
       int limit = Compression.multibyte_read(in);
 
-      if (limit < 0) {
+      if (limit < 0) { // EOF ?
           return;
       }
   
@@ -313,7 +313,7 @@ public class TaggerData {
         Compression.multibyte_write(M, out);
         for (int i=0; i!=N; i++) {
             for (int j=0; j!=N; j++) {
-                EndianDoubleUtil.write(out, a[i][j]);
+                Compression.writeDouble(out, a[i][j]);
             }
         }
 
@@ -331,7 +331,7 @@ public class TaggerData {
             for (int j=0; j!=N; j++) {
                 Compression.multibyte_write(i, out);
                 Compression.multibyte_write(j, out);
-                EndianDoubleUtil.write(out, b[i][j]);
+                Compression.writeDouble(out, b[i][j]);
             }
         }
 
