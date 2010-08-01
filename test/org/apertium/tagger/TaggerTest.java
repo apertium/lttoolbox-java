@@ -31,13 +31,14 @@ import java.io.*;
  */
 public class TaggerTest {
 
-    String dir = "testdata/tagger/";
+    static final String dir = "testdata/tagger/";
 
     public TaggerTest() {
     }
 
     @BeforeClass
     public static void setUpClass() throws Exception {
+      new File("tmp").mkdirs();
     }
 
     @AfterClass
@@ -48,7 +49,7 @@ public class TaggerTest {
     public void tearDown() {
     }
 
-	public String readFile(String path) throws IOException {
+	static String readFile(String path) throws IOException {
 	    File outFile = new File(path);
         FileInputStream fis = new FileInputStream(outFile);
         InputStreamReader fisReader = new InputStreamReader(fis, "UTF-8");
@@ -97,7 +98,7 @@ public class TaggerTest {
         Tagger.main(argv);
 
         //Read actual output into a string
-        String testOutput = readFile("./tmp/taggerout");
+        String testOutput = readFile(outputFile);
         String expectedOutput = readFile(compareOutFile);
 
         assertEquals("TaggerTest.testMain200Sentences() failed: output does not match expected output.", expectedOutput, testOutput);
@@ -158,7 +159,7 @@ public class TaggerTest {
         Tagger.main(argv);
 
         //Read actual output into a string
-        String testOutput = readFile("./tmp/taggerout");
+        String testOutput = readFile(outputFile);
         String expectedOutput = readFile(compareOutFile);
 
         assertEquals("TaggerTest.testFirstMode200Sentences() failed: output does not match expected output.", expectedOutput, testOutput);
@@ -203,7 +204,7 @@ public class TaggerTest {
         Tagger.main(argv);
 
         //Read actual output into a string
-        String testOutput = readFile("./tmp/taggerout");
+        String testOutput = readFile(outputFile);
         String expectedOutput = readFile(compareOutFile);
 
         assertEquals("TaggerTest.testMarkMode200Sentences() failed: output does not match expected output.", expectedOutput, testOutput);
@@ -248,10 +249,9 @@ public class TaggerTest {
         Tagger.main(argv);
 
         //Read actual output into a string
-        String testOutput = readFile("./tmp/taggerout");
+        String testOutput = readFile(outputFile);
         String expectedOutput = readFile(compareOutFile);
 
         assertEquals("TaggerTest.testSuperMode200Sentences() failed: output does not match expected output.", expectedOutput, testOutput);
     }
-
 }

@@ -973,16 +973,17 @@ public class HMM {
      */
     Set<Integer> find_similar_ambiguity_class(Set<Integer> c) {
         int size_ret = -1;
-        Set<Integer> ret = td.getOpenClass();
+        Set<Integer> ret = td.getOpenClass();//Se devolverá si no encontramos ninguna clase mejor
         boolean skip_class;
         Collection output = td.getOutput();
 
         for (int k = 0; k < td.getM(); k++) {
             if ((output.get(k).size() > size_ret) && (output.get(k).size() < c.size())) {
                 skip_class = false;
+                // Test if output[k] is a subset of class
                 for (Integer it : output.get(k)) {
-                    if (c.contains(it)) {
-                        skip_class = true;
+                    if (!c.contains(it)) {
+                        skip_class = true; //output[k] is not a subset of class
                         break;
                     }
                 }
