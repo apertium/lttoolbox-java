@@ -27,7 +27,7 @@ public class Profiling {
 
 
         Profiling p = new Profiling();
-       // System.out.println(System.getProperties() );
+       System.out.println(System.getProperties() );
         System.out.println("Profiling "+new java.util.Date()+" "+System.getProperty("java.vm.name") + " "+System.getProperty("java.version") );
       report("start "+ new File(".").getAbsolutePath());
         System.gc();
@@ -386,4 +386,24 @@ final@inconditional 61 858
 main@standard 62442 96775
 lt-comp took sec 6290 msec
 BUILD SUCCESSFUL (total time: 11 seconds)
+
+
+Client stats:
+
+Profiling Mon Aug 02 21:06:02 CEST 2010 Java HotSpot(TM) Client VM 1.6.0_20
+start /home/j/esperanto/a/lttoolbox-java/. took sec 48 msec
+transfer-init apertium_en_ca_en_ca_t1x took sec 364 msec
+transfer took sec 301 msec
+analysis -a   took sec 544 msec
+tagger took sec 182 msec
+generation -g took sec 486 msec
+generation -d took sec 478 msec
+generation -n took sec 450 msec
+generation -p took sec 116 msec
+analysis -a   took sec 473 msec
+final@inconditional 61 858
+main@standard 62442 96775
+lt-comp took sec 6572 msec
+BUILD SUCCESSFUL (total time: 10 seconds)
+
  */
