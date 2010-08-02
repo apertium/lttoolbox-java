@@ -45,6 +45,16 @@ public class ParseTransferFile {
   private int JAVA = 1;
   private int JAVASCRIPT = 2;
 
+  private enum ParseMode {
+    TRANSFER, INTERCHUNK, POSTCHUNK
+  }
+  
+  /* This is set to null initially to initialize it to something,
+   * but something that will raise flags/exceptions if it's not set
+   * properly further down the line.
+   */
+  ParseMode parseMode = null;
+  
   /** For checking macro names and numbers of parameters */
   private HashMap<String, Integer> macroList = new HashMap<String, Integer>();
 
@@ -329,6 +339,12 @@ public class ParseTransferFile {
    * @return java code
    */
   private String getReadClipExpr(Element e) {
+    /* TODO: Fix this for interchunk.
+     * Apparently it outputs garbage code when parsing interchunk files, as
+     * the "side" and "queue" attributes don't exist on the interchunk clip tags.
+     * So when it puts together this text, you end up stuff like:
+     * word1.(attr_nbr).equals("<sg>")
+     */
     currentNode = e;
     String side=e.getAttribute("side");
     String part=e.getAttribute("part");
@@ -460,6 +476,17 @@ public class ParseTransferFile {
 
 
   private void processChunk(Element e) {
+    /* If we are processing an interchunk file, chunk tags should be treated
+     * like lu tags.
+     */
+    if(parseMode == ParseMode.INTERCHUNK) {
+      /* Try just calling processLu() for now, if that doesn't work, will have
+       * to try something else. ;)
+       */
+      processLu(e);
+      return;
+    }
+    
     printComments();
     currentNode = e;
     String name = e.getAttribute("name");
@@ -936,8 +963,14 @@ public class ParseTransferFile {
         }
         println("}");
 
-        
-
+        String rootTagName = root.getTagName();
+        if(rootTagName.equals("transfer")) {
+          parseMode = ParseMode.TRANSFER;
+        } else if (rootTagName.equals("interchunk")) {
+          parseMode = ParseMode.INTERCHUNK;
+        } else if (rootTagName.equals("postchunk")) {
+          parseMode = ParseMode.POSTCHUNK;
+        }
 
         for (Element c0 : getChildsChildrenElements(root, "section-def-attrs")) {
           String n = c0.getAttribute("n");
