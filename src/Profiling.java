@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.Reader;
 import java.io.Writer;
 import org.apertium.lttoolbox.LTComp;
+import org.apertium.tagger.Tagger;
 import org.apertium.transfer.Transfer;
 
 
@@ -28,10 +29,13 @@ public class Profiling {
         Profiling p = new Profiling();
        // System.out.println(System.getProperties() );
         System.out.println("Profiling "+new java.util.Date()+" "+System.getProperty("java.vm.name") + " "+System.getProperty("java.version") );
+      report("start "+ new File(".").getAbsolutePath());
         System.gc();
         p.testTransfer();
         System.gc();
         p.testjavaAnalysis();
+        System.gc();
+        p.testTagger();
         System.gc();
         p.testjavaGeneration();
         System.gc();
@@ -97,7 +101,6 @@ public class Profiling {
       //Class transferClass =org.apertium.transfer.generated.apertium_eo_en_en_eo_t1x.class;
       Class transferClass =org.apertium.transfer.generated.apertium_en_ca_en_ca_t1x.class;
 
-      report("start "+ new File(".").getAbsolutePath());
       t = new Transfer();
 //      t.read(transferClass, tdir+"en-eo.t1x.bin", tdir+"en-eo.autobil.bin");
       t.read(transferClass, tdir+"en-ca.t1x.bin", tdir+"en-eo.autobil.bin");
@@ -110,6 +113,18 @@ public class Profiling {
       report("transfer" );
   }
 
+  private void testTagger() throws Exception {
+
+
+      String dir = "testdata/tagger/";
+        String prob = dir + "en-es.prob";
+        String inFile = dir + "en-tagger-input.txt";
+        String outputFile = "./tmp/taggerout";
+        String[] argv = {"-g", prob, inFile, outputFile};
+
+        Tagger.main(argv);
+      report("tagger" );
+  }
 
 }
 
@@ -353,4 +368,22 @@ final@inconditional 61 858
 main@standard 62442 96775
 lt-comp took sec 6807 msec
 BUILD SUCCESSFUL (total time: 10 seconds)
+
+
+
+Profiling Mon Aug 02 21:01:15 CEST 2010 Java HotSpot(TM) Server VM 1.6.0_20
+start /home/j/esperanto/a/lttoolbox-java/. took sec 95 msec
+transfer-init apertium_en_ca_en_ca_t1x took sec 401 msec
+transfer took sec 837 msec
+analysis -a   took sec 709 msec
+tagger took sec 431 msec
+generation -g took sec 548 msec
+generation -d took sec 331 msec
+generation -n took sec 370 msec
+generation -p took sec 182 msec
+analysis -a   took sec 358 msec
+final@inconditional 61 858
+main@standard 62442 96775
+lt-comp took sec 6290 msec
+BUILD SUCCESSFUL (total time: 11 seconds)
  */
