@@ -9,7 +9,7 @@ import java.util.Arrays;
 import org.apertium.formatter.TextFormatter;
 import org.apertium.pretransfer.PreTransfer;
 import org.apertium.transfer.ApertiumTransfer;
-import org.apertium.transfer.ApertiumTransferCompile;
+import org.apertium.transfer.compile.ApertiumTransferCompile;
 
 /**
  *

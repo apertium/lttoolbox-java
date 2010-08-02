@@ -11,7 +11,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import org.apertium.transfer.ApertiumTransfer;
-import org.apertium.transfer.ApertiumTransferCompile;
+import org.apertium.transfer.compile.ApertiumTransferCompile;
 
 /**
  * comparison of all language pairs of interpreded and compiled version of transfer.

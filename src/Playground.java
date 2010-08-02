@@ -6,7 +6,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import org.apertium.lttoolbox.process.FSTProcessor;
 import org.apertium.transfer.ApertiumTransfer;
-import org.apertium.transfer.ApertiumTransferCompile;
+import org.apertium.transfer.compile.ApertiumTransferCompile;
 
 /*
  * To change this template, choose Tools | Templates
