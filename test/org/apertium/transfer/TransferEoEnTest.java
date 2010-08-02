@@ -5,6 +5,7 @@
 
 package org.apertium.transfer;
 
+import org.apertium.transfer.compile.ApertiumTransferCompile;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.Reader;
