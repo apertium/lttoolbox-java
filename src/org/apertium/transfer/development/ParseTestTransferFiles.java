@@ -76,6 +76,8 @@ public class ParseTestTransferFiles {
       for (String t1x : generatedTestTranfserFiles) {
         generateTestFiles("testdata/transfer/"+t1x);
       }
+      generateTestFiles("testdata/interchunk/apertium-eo-en.en-eo.t2x");
+
 /*
       generateTestFiles("testdata/transfer/apertium-eo-en.en-eo.t1x");
       generateTestFiles("testdata/transfer/apertium-eo-en.eo-en.t1x");

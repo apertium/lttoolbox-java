@@ -347,6 +347,10 @@ public class ParseTransferFile {
      */
     currentNode = e;
     String side=e.getAttribute("side");
+    // the 'side' attribute only really makes sense when a bilingual dictionary is used to translate the words (i.e. english 'dog<n><sg>' is translated to for example esperanto 'hundo<n><pl>').
+    // If no bilingual dictionary is used (i.e. for apertium-transfer -n, for apertium-interchunk and for apertium-postchunk), then the sl and tl values will be the same
+    if (parseMode != ParseMode.TRANSFER) side = "tl";
+
     String part=e.getAttribute("part");
     String pos=e.getAttribute("pos");
     String queue = (e.getAttribute("queue").equals("no")?"NoQueue":"");
@@ -373,6 +377,9 @@ public class ParseTransferFile {
   private String getWriteClipExpr(Element e, String value) {
     currentNode = e;
     String side=e.getAttribute("side");
+    // the 'side' attribute only really makes sense when a bilingual dictionary is used to translate the words (i.e. english 'dog<n><sg>' is translated to for example esperanto 'hundo<n><pl>').
+    // If no bilingual dictionary is used (i.e. for apertium-transfer -n, for apertium-interchunk and for apertium-postchunk), then the sl and tl values will be the same
+    if (parseMode != ParseMode.TRANSFER) side = "tl";
     String part=e.getAttribute("part");
     String pos=e.getAttribute("pos");
     String queue = (e.getAttribute("queue").equals("no")?"NoQueue":"");

@@ -500,6 +500,8 @@ So the array of rule_map Method is taken by introspection, taking all methods be
     if (DEBUG) System.err.println("tmpword = " + tmpword2+ "  tmpblank = " + tmpblank2);
     if (DO_TIMING) timing.log("other1");
 
+    // TODO. Cleanup. Code is a mess! Jacob
+
     int limit=tmpword2.size();
 
     Object[] args = new Object[1+limit + limit -1];
@@ -538,6 +540,7 @@ So the array of rule_map Method is taken by introspection, taking all methods be
       } 
       else
       {
+        // If no bilingual dictionary is used (i.e. for apertium-transfer -n, for apertium-interchunk and for apertium-postchunk), then the sl and tl values will be the same.
         tr=new Pair<String, Integer>(tmpword2.get(i), 0);
       }
 
