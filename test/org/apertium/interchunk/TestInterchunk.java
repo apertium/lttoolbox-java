@@ -19,13 +19,19 @@
 
 package org.apertium.interchunk;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
 
 import org.apertium.pretransfer.PreTransfer;
 import org.apertium.transfer.compile.ApertiumTransferCompile;
@@ -71,22 +77,33 @@ public class TestInterchunk {
      * Interchunk takes the output from transfer as its input and outputs to postchunk.
      * This tests Interchunk with a single constructed sample sentence.
      */
+    @SuppressWarnings("unchecked")
     @Test
-    public void testMainThisIsATest() throws IOException {
+    public void testThisIsATest() throws IOException {
         String testin = "^Prn<SN><tn><m><sp>{^esto<prn><tn><3><4>$}$ ^be<Vcop><vbser><pri><p3><sg>{^ser<vbser><3><4><5>$}$ ^det_nom<SN><DET><f><sg>{^uno<det><ind><3><4>$ ^prueba<n><3><4>$}$^punt<sent>{^.<sent>$}$";
         String expTestout = "^Prn<SN><tn><m><sp>{^esto<prn><tn><3><4>$}$ ^be<Vcop><vbser><pri><p3><sg>{^ser<vbser><3><4><5>$}$ ^det_nom<SN><DET><f><sg>{^uno<det><ind><3><4>$ ^prueba<n><3><4>$}$^punt<sent>{^.<sent>$}$";
-        String inputFile = tempDir + "interchunkin";
-        String outputFile = tempDir + "interchunkout";
-        String t2xFile = testDataDir + "apertium_en_es_en_es_t2x.class";
+        Class transferClass = org.apertium.transfer.generated.apertium_en_es_en_es_t2x.class;
         String preprocFile = testDataDir + "en-es.t2x.bin";
-        String[] argv = {t2xFile, preprocFile, inputFile, outputFile};
 
-        FileWriter f = new FileWriter(inputFile);
-        f.append(testin);
-        f.close();
-        
-        ApertiumInterchunk.main(argv);
-        String testOutput = readFile(outputFile);
+        /* The logic in ApertiumInterchunk.main() is mostly for parsing the command-line,
+         * since we're calling it directly in Java, we can bypass it.
+         */
+        StringReader input = new StringReader(testin);
+        Writer output = new StringWriter();
+
+        Interchunk interchunk = new Interchunk();
+        Interchunk.DEBUG = true;
+        try {
+            interchunk.read(transferClass, preprocFile);
+            interchunk.transferObject.debug = true;
+            
+            interchunk.interchunk(input, output);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Exception occured during test.");
+        }
+
+        String testOutput = output.toString();
 
         System.err.println("output = " + testOutput);
         System.err.println("expout = " + expTestout);
@@ -96,19 +113,34 @@ public class TestInterchunk {
     /**
      * Test of main method, using external text files.
      */
+    @SuppressWarnings("unchecked")
     @Test
-    public void testMain200Sentences() throws IOException {
+    public void test200Sentences() throws IOException {
         String inFile = testDataDir + "en-interchunk-input.txt";
-        String outputFile = tempDir + "interchunkout";
-        String t2xFile = testDataDir + "apertium_en_es_en_es_t2x.class";
+        Class transferClass = org.apertium.transfer.generated.apertium_en_es_en_es_t2x.class;
         String preprocFile = testDataDir + "en-es.t2x.bin";
         String compareOutFile = testDataDir + "en-interchunk-output.txt";
-        String[] argv = {t2xFile, preprocFile, inFile, outputFile};
 
-        ApertiumInterchunk.main(argv);
+        /* The logic in ApertiumInterchunk.main() is mostly for parsing the command-line,
+         * since we're calling it directly in Java, we can bypass it.
+         */
+        Reader input = new FileReader(inFile);
+        Writer output = new StringWriter();
 
-        //Read actual output into a string
-        String testOutput = readFile(outputFile);
+        Interchunk interchunk = new Interchunk();
+        //Debug produces too much output and slows down execution too much.
+        //Interchunk.DEBUG = true;
+        try {
+            interchunk.read(transferClass, preprocFile);
+            //interchunk.transferObject.debug = true;
+            
+            interchunk.interchunk(input, output);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Exception occured during test.");
+        }
+
+        String testOutput = output.toString();
         String expectedOutput = readFile(compareOutFile);
 
         assertEquals("TestInterchunk.testMain200Sentences() failed: output does not match expected output.", expectedOutput, testOutput);
