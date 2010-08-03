@@ -225,8 +225,8 @@ public class Interchunk {
                 }
             } else if (inword && val == '{') {
                 content += '{';
+                int val2 = -1; //declare and initialize val2 outside of while statement.
                 while (true) {
-                    int val2 = -1; //declare and initialize val2 outside of if statement.
                     if(skipRead) { //Already read ahead to the next character
                         skipRead = false; //unset flag
                     } else {
