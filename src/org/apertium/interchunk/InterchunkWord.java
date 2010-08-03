@@ -20,6 +20,7 @@
 package org.apertium.interchunk;
 
 import org.apertium.transfer.ApertiumRE;
+import org.apertium.transfer.TransferWord;
 
 /**
  * @author Stephen Tigner
@@ -105,7 +106,21 @@ public class InterchunkWord {
         }
     }
     
-    public void setChunkApart(final ApertiumRE part, final String value) {
+    public void chunkApartSet(final ApertiumRE part, final String value) {
         part.replace(_chunk, value);
+    }
+
+
+    public void tlSet(final ApertiumRE part, final String value) {
+        chunkApartSet(part, value);
+    }
+    public void slSet(final ApertiumRE part, final String value) {
+        chunkApartSet(part, value);
+    }
+    public String tl(final ApertiumRE part) {
+      return chunkApart(part);
+    }
+    public String sl(final ApertiumRE part) {
+      return chunkApart(part);
     }
 }

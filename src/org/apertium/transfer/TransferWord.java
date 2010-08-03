@@ -29,6 +29,7 @@ public class TransferWord {
     return part.match(source);
   }
 
+  /** this is not used in any exitsting language pair (jan 2010) - might delete */
   public String slNoQueue(ApertiumRE part) {
     return part.match(source.substring(0, source.length() - queue_length));
   }
@@ -37,6 +38,7 @@ public class TransferWord {
     return part.match(target);
   }
 
+  /** this is not used in any exitsting language pair (jan 2010) - might delete */
   public String tlNoQueue(ApertiumRE part) {
     return part.match(target.substring(0, target.length() - queue_length));
   }
@@ -48,6 +50,7 @@ public class TransferWord {
   }
 
 
+  /** this is not used in any exitsting language pair (jan 2010) - might delete */
   public void slSetNoQueue(ApertiumRE part, String value)
   {
     String mystring = source.substring(0, source.length() - queue_length);
@@ -62,6 +65,7 @@ public class TransferWord {
   }
 
 
+  /** this is not used in any exitsting language pair (jan 2010) - might delete */
   public void tlSetNoQueue(ApertiumRE part, String value)
   {
     String mystring = target.substring(0, target.length() - queue_length);

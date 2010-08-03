@@ -661,7 +661,11 @@ public class ParseTransferFile {
       if (!par.isEmpty())  {
         par += ", "+str("");
       }
-      par += ", "+"new TransferWord(\"\", \"\", 0)";
+      if (this.parseMode == ParseMode.TRANSFER) {
+        par += ", "+"new TransferWord(\"\", \"\", 0)";
+      } else {
+        par += ", "+"new InterchunkWord(\"\")";
+      }
       npar++;
     }
 
@@ -915,9 +919,13 @@ public class ParseTransferFile {
     if (pos <= currentNumberOfWordInParameterList) {
       return "word"+pos;
     }
-    parseError("// WARNING clip pos="+pos+" is out of range. Replacing with an empty TransferWord.");
+    parseError("// WARNING clip pos="+pos+" is out of range. Replacing with an empty placeholder.");
+      if (this.parseMode == ParseMode.TRANSFER) {
+        return "new TransferWord(\"\", \"\", 0)";
+      } else {
+        return "new InterchunkWord(\"\")";
+      }
 
-    return "new TransferWord(\"\", \"\", 0)";
   }
 
   private String word(String pos) {
@@ -942,19 +950,28 @@ public class ParseTransferFile {
      */
     public void parse(String file) throws IOException, ParserConfigurationException, SAXException {
       className = javaIdentifier(new File(file).getName());
-      println("package org.apertium.transfer.generated;");
-      //println("import java.util.*;");
-      println("import java.io.*;");
-      //println("import org.apertium.lttoolbox.transfer.*;");
-      println("import org.apertium.transfer.*;");
-      println("public class "+className+" extends GeneratedTransferBase");
-      println("{");
       commentHandler = new StringWriter();
 
       try {
         Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(file));
         Element root = doc.getDocumentElement();
+        String rootTagName = root.getTagName();
+        if(rootTagName.equals("transfer")) {
+          parseMode = ParseMode.TRANSFER;
+        } else if (rootTagName.equals("interchunk")) {
+          parseMode = ParseMode.INTERCHUNK;
+        } else if (rootTagName.equals("postchunk")) {
+          parseMode = ParseMode.POSTCHUNK;
+        }
 
+        println("package org.apertium.transfer.generated;");
+        println("import java.io.*;");
+        println("import org.apertium.transfer.*;");
+        if (this.parseMode != ParseMode.TRANSFER) {
+          println("import org.apertium.interchunk.InterchunkWord;");
+        }
+        println("public class "+className+" extends GeneratedTransferBase");
+        println("{");
         println("public boolean isOutputChunked()");
         println("{");
         if (root.getAttribute("default").equals("chunk")) {
@@ -965,15 +982,6 @@ public class ParseTransferFile {
           println("return false;");
         }
         println("}");
-
-        String rootTagName = root.getTagName();
-        if(rootTagName.equals("transfer")) {
-          parseMode = ParseMode.TRANSFER;
-        } else if (rootTagName.equals("interchunk")) {
-          parseMode = ParseMode.INTERCHUNK;
-        } else if (rootTagName.equals("postchunk")) {
-          parseMode = ParseMode.POSTCHUNK;
-        }
 
         for (Element c0 : getChildsChildrenElements(root, "section-def-attrs")) {
           String n = c0.getAttribute("n");
@@ -1063,7 +1071,11 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
           currentNumberOfWordInParameterList = npar;
           macroList.put(name, npar);
           String methodArguments = "";
-          for (int i=1; i<=npar; i++) methodArguments += (i==1?", ":", String "+blank(i-1)+", ")+"TransferWord "+word(i);
+          if (this.parseMode == ParseMode.TRANSFER) {
+              for (int i=1; i<=npar; i++) methodArguments += (i==1?", ":", String "+blank(i-1)+", ")+"TransferWord "+word(i);
+          } else {
+              for (int i=1; i<=npar; i++) methodArguments += (i==1?", ":", String "+blank(i-1)+", ")+"InterchunkWord "+word(i);
+          }
           String logCallParameters = "";
           for (int i=1; i<=npar; i++) logCallParameters += (i==1?", ":", "+blank(i-1)+", ")+" "+word(i);
           println("");
@@ -1093,7 +1105,11 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
           }
           currentNumberOfWordInParameterList = patternItems.size();
           String methodArguments = "";
-          for (int i=1; i<=currentNumberOfWordInParameterList; i++) methodArguments += (i==1?", ":", String "+blank(i-1)+", ")+"TransferWord "+ word(i);
+          if (this.parseMode == ParseMode.TRANSFER) {
+              for (int i=1; i<=currentNumberOfWordInParameterList; i++) methodArguments += (i==1?", ":", String "+blank(i-1)+", ")+"TransferWord "+ word(i);
+          } else {
+              for (int i=1; i<=currentNumberOfWordInParameterList; i++) methodArguments += (i==1?", ":", String "+blank(i-1)+", ")+"InterchunkWord "+ word(i);
+          }
           String logCallParameters = "";
           for (int i=1; i<=currentNumberOfWordInParameterList; i++) logCallParameters += (i==1?", ":", "+blank(i-1)+", ")+" "+ word(i);
           println("");

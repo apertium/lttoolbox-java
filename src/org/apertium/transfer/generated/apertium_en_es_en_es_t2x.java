@@ -1,6 +1,7 @@
 package org.apertium.transfer.generated;
 import java.io.*;
 import org.apertium.transfer.*;
+import org.apertium.interchunk.InterchunkWord;
 public class apertium_en_es_en_es_t2x extends GeneratedTransferBase
 {
 	public boolean isOutputChunked()
@@ -29,7 +30,7 @@ public class apertium_en_es_en_es_t2x extends GeneratedTransferBase
 	String var_nombre = "<sg>";
 	String var_genere = "";
 	
-	private void macro_determina_nbr_gen_SN(Writer out, TransferWord word1) throws IOException
+	private void macro_determina_nbr_gen_SN(Writer out, InterchunkWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_determina_nbr_gen_SN",  word1); } 
 		/** To determine value of variables of gender and
@@ -63,7 +64,7 @@ public class apertium_en_es_en_es_t2x extends GeneratedTransferBase
 		}
 	}
 	
-	private void macro_f_bcond(Writer out, TransferWord word1) throws IOException
+	private void macro_f_bcond(Writer out, InterchunkWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_f_bcond",  word1); } 
 		/** Per mirar si el blanc conté o no format. Cal posar aquesta funció en les regles en què desaparegui alguna paraula, per tal de decidir si el blanc de la paraula eliminada s'ha d'eliminar o conservar. Si conté format cal conservar-la, si no en conté cal eliminar-la perquè no apareguin dos espais seguits.  */
@@ -75,7 +76,7 @@ public class apertium_en_es_en_es_t2x extends GeneratedTransferBase
 		}
 	}
 	
-	private void macro_concord_SN_SV(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	private void macro_concord_SN_SV(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2) throws IOException
 	{
 		if (debug) { logCall("macro_concord_SN_SV",  word1, blank1,  word2); } 
 		if ((word1.tl(attr_lem).equalsIgnoreCase("prnsubj")
@@ -171,7 +172,7 @@ public class apertium_en_es_en_es_t2x extends GeneratedTransferBase
 		}
 	}
 	
-	private void macro_concord_SNcoo_SV(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	private void macro_concord_SNcoo_SV(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3) throws IOException
 	{
 		if (debug) { logCall("macro_concord_SNcoo_SV",  word1, blank1,  word2, blank2,  word3); } 
 		/** per a 2 sintagmes nominals, coordinats entre sí. El nombre del SV serà sempre pl. 
@@ -269,7 +270,7 @@ Your mother and you will come - La vostra mare i tu vindran
 		}
 	}
 	
-	private void macro_posadet_SN(Writer out, TransferWord word1) throws IOException
+	private void macro_posadet_SN(Writer out, InterchunkWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_posadet_SN",  word1); } 
 		if ((word1.tl(attr_lem).equalsIgnoreCase("nom")
@@ -285,7 +286,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	
 	/** REGLES LÈXIQUES: definides en primer lloc perquè si no es posen per altres regles  */
 	// REGLA: SN like SN
-	public void rule0__SN__vblike__SNnorel(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule0__SN__vblike__SNnorel(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3) throws IOException
 	{
 		if (debug) { logCall("rule0__SN__vblike__SNnorel",  word1, blank1,  word2, blank2,  word3); } 
 		macro_posadet_SN(out, word3);
@@ -412,7 +413,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN adv like SN
-	public void rule1__SN__ADV__vblike__SNnorel(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
+	public void rule1__SN__ADV__vblike__SNnorel(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4) throws IOException
 	{
 		if (debug) { logCall("rule1__SN__ADV__vblike__SNnorel",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		macro_posadet_SN(out, word4);
@@ -564,7 +565,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN adv adv like SN (igual que l'anterior però amb dos adverbis, per a tractar: 'she really does not like potatoes'
-	public void rule2__SN__ADV__ADV__vblike__SNnorel(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5) throws IOException
+	public void rule2__SN__ADV__ADV__vblike__SNnorel(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4, String blank4, InterchunkWord word5) throws IOException
 	{
 		if (debug) { logCall("rule2__SN__ADV__ADV__vblike__SNnorel",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5); } 
 		macro_posadet_SN(out, word5);
@@ -741,7 +742,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN pro_vblike
-	public void rule3__SN__pro_vblike(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule3__SN__pro_vblike(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2) throws IOException
 	{
 		if (debug) { logCall("rule3__SN__pro_vblike",  word1, blank1,  word2); } 
 		/**  primer assignem els canvis que podem al verb */
@@ -865,7 +866,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN adv like-prn
-	public void rule4__SN__ADV__pro_vblike(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule4__SN__ADV__pro_vblike(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3) throws IOException
 	{
 		if (debug) { logCall("rule4__SN__ADV__pro_vblike",  word1, blank1,  word2, blank2,  word3); } 
 		/**  primer assignem els canvis possibles al verb */
@@ -1015,7 +1016,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN adv adv like-prn (igual que regla anterior però amb dos adverbis)
-	public void rule5__SN__ADV__ADV__pro_vblike(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
+	public void rule5__SN__ADV__ADV__pro_vblike(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4) throws IOException
 	{
 		if (debug) { logCall("rule5__SN__ADV__ADV__pro_vblike",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		/**  primer assignem els canvis possibles al verb */
@@ -1191,7 +1192,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN vblike
-	public void rule6__SN__vblike(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule6__SN__vblike(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2) throws IOException
 	{
 		if (debug) { logCall("rule6__SN__vblike",  word1, blank1,  word2); } 
 		/**  primer assignem els canvis que podem al verb */
@@ -1294,7 +1295,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN adv vblike
-	public void rule7__SN__ADV__vblike(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule7__SN__ADV__vblike(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3) throws IOException
 	{
 		if (debug) { logCall("rule7__SN__ADV__vblike",  word1, blank1,  word2, blank2,  word3); } 
 		/**  primer assignem els canvis que podem al verb */
@@ -1423,7 +1424,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN adv adv vblike
-	public void rule8__SN__ADV__ADV__vblike(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
+	public void rule8__SN__ADV__ADV__vblike(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4) throws IOException
 	{
 		if (debug) { logCall("rule8__SN__ADV__ADV__vblike",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		/**  primer assignem els canvis que podem al verb */
@@ -1579,7 +1580,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	
 	/** NOTA MG: la millor manera de fer el canvi de 'ser' per 'haver' hauria estat enllaçar la categoria del verb (vbser, vblex, vbhaver, vbmod) en les tags del chunk en el t1x, i aquí canviar l'etiqueta, de manera que el canvia hauria estat automàtic i no hauria fet falta fer operacions complicades en el t3x per a canviar les etiquetes segons el nom de chunk. Tanmateix, en el t1x hem posat la variable 'tipus_verb' com a etiqueta del chunk que pot contenir 'pron' i 'like' a part dels tipus de verb normals (vbser, vbhaver, vbmod, vblex), la qual cosa impossibilita fer l'enllaç correctament. Amb més temps caldria canviar la manera de passar la informació de 'pron' i 'like' en el segon transfer de manera que fos possible fer l'enllaç del tipus de verb.  */
 	// REGLA: there BE SN
-	public void rule9__there__thereis__SNnorel(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule9__there__thereis__SNnorel(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3) throws IOException
 	{
 		if (debug) { logCall("rule9__there__thereis__SNnorel",  word1, blank1,  word2, blank2,  word3); } 
 		/** NOTA MG: la millor manera de fer el canvi de 'ser' per 'haver' hauria estat enllaçar la categoria del verb (vbser, vblex, vbhaver, vbmod) en les tags del chunk en el t1x, i aquí canviar l'etiqueta, de manera que el canvia hauria estat automàtic i no hauria fet falta fer operacions complicades en el t3x per a canviar les etiquetes segons el nom de chunk. Tanmateix, en el t1x hem posat la variable 'tipus_verb' com a etiqueta del chunk que pot contenir 'pron' i 'like' a part dels tipus de verb normals (vbser, vbhaver, vbmod, vblex), la qual cosa impossibilita fer l'enllaç correctament. Amb més temps caldria canviar la manera de passar la informació de 'pron' i 'like' en el segon transfer de manera que fos possible fer l'enllaç del tipus de verb.  */
@@ -1658,7 +1659,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: there ADV BE SN (there can not be a cat)
-	public void rule10__there__ADV__thereis__SNnorel(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
+	public void rule10__there__ADV__thereis__SNnorel(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4) throws IOException
 	{
 		if (debug) { logCall("rule10__there__ADV__thereis__SNnorel",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		if (word3.tl(attr_temps).equals("<inf>"))
@@ -1737,7 +1738,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: there ADV ADV BE SN (there really can not be a cat)
-	public void rule11__there__ADV__ADV__thereis__SNnorel(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5) throws IOException
+	public void rule11__there__ADV__ADV__thereis__SNnorel(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4, String blank4, InterchunkWord word5) throws IOException
 	{
 		if (debug) { logCall("rule11__there__ADV__ADV__thereis__SNnorel",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5); } 
 		if (word4.tl(attr_temps).equals("<inf>"))
@@ -1828,7 +1829,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: there BE (sense SN clar a continuació)
-	public void rule12__there__thereis(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule12__there__thereis(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2) throws IOException
 	{
 		if (debug) { logCall("rule12__there__thereis",  word1, blank1,  word2); } 
 		if (word2.tl(attr_temps).equals("<inf>"))
@@ -1853,7 +1854,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: there ADV BE (sense SN clar a continuació)
-	public void rule13__there__ADV__thereis(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule13__there__ADV__thereis(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3) throws IOException
 	{
 		if (debug) { logCall("rule13__there__ADV__thereis",  word1, blank1,  word2, blank2,  word3); } 
 		if (word3.tl(attr_temps).equals("<inf>"))
@@ -1890,7 +1891,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: there ADV ADV BE (sense SN clar a continuació - There really can not be)
-	public void rule14__there__ADV__ADV__thereis(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
+	public void rule14__there__ADV__ADV__thereis(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4) throws IOException
 	{
 		if (debug) { logCall("rule14__there__ADV__ADV__thereis",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		if (word4.tl(attr_temps).equals("<inf>"))
@@ -1940,7 +1941,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	
 	/** REGLES GENERALS  */
 	// REGLA: SN SV
-	public void rule15__SN__SV(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule15__SN__SV(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2) throws IOException
 	{
 		if (debug) { logCall("rule15__SN__SV",  word1, blank1,  word2); } 
 		macro_concord_SN_SV(out, word1, blank1, word2);
@@ -1997,7 +1998,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN and SN SV (BCN)
-	public void rule16__SNnorel__and__SN__SV(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
+	public void rule16__SNnorel__and__SN__SV(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4) throws IOException
 	{
 		if (debug) { logCall("rule16__SNnorel__and__SN__SV",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		macro_concord_SNcoo_SV(out, word1, blank2, word3, blank3, word4);
@@ -2058,7 +2059,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN GEN SN SV (Europe's top 100 listed companies are...)
-	public void rule17__SNnorel__GEN__SNundet_num__SV(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
+	public void rule17__SNnorel__GEN__SNundet_num__SV(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4) throws IOException
 	{
 		if (debug) { logCall("rule17__SNnorel__GEN__SNundet_num__SV",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		macro_concord_SN_SV(out, word3, blank3, word4);
@@ -2124,7 +2125,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN ADV SV
-	public void rule18__SN__ADV__SV(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule18__SN__ADV__SV(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3) throws IOException
 	{
 		if (debug) { logCall("rule18__SN__ADV__SV",  word1, blank1,  word2, blank2,  word3); } 
 		macro_concord_SN_SV(out, word1, blank2, word3);
@@ -2205,7 +2206,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN ADV ADV SV (We really can not say)
-	public void rule19__SN__ADV__ADV__SV(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
+	public void rule19__SN__ADV__ADV__SV(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4) throws IOException
 	{
 		if (debug) { logCall("rule19__SN__ADV__ADV__SV",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		macro_concord_SN_SV(out, word1, blank3, word4);
@@ -2310,7 +2311,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN and SN ADV SV (BCN)
-	public void rule20__SNnorel__and__SN__ADV__SV(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5) throws IOException
+	public void rule20__SNnorel__and__SN__ADV__SV(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4, String blank4, InterchunkWord word5) throws IOException
 	{
 		if (debug) { logCall("rule20__SNnorel__and__SN__ADV__SV",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5); } 
 		macro_concord_SNcoo_SV(out, word1, blank2, word3, blank4, word5);
@@ -2383,7 +2384,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN and SN ADV ADV SV (com l'anterior però dos adv: 'You and your father really can not say')
-	public void rule21__SNnorel__and__SN__ADV__ADV__SV(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5, String blank5, TransferWord word6) throws IOException
+	public void rule21__SNnorel__and__SN__ADV__ADV__SV(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4, String blank4, InterchunkWord word5, String blank5, InterchunkWord word6) throws IOException
 	{
 		if (debug) { logCall("rule21__SNnorel__and__SN__ADV__ADV__SV",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5, blank5,  word6); } 
 		macro_concord_SNcoo_SV(out, word1, blank2, word3, blank5, word6);
@@ -2468,7 +2469,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN GEN SN ADV SV
-	public void rule22__SNnorel__GEN__SNundet_num__ADV__SV(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5) throws IOException
+	public void rule22__SNnorel__GEN__SNundet_num__ADV__SV(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4, String blank4, InterchunkWord word5) throws IOException
 	{
 		if (debug) { logCall("rule22__SNnorel__GEN__SNundet_num__ADV__SV",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5); } 
 		macro_concord_SN_SV(out, word3, blank4, word5);
@@ -2546,7 +2547,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN GEN SN ADV ADV SV (com l'anterior però dos adv)
-	public void rule23__SNnorel__GEN__SNundet_num__ADV__ADV__SV(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5, String blank5, TransferWord word6) throws IOException
+	public void rule23__SNnorel__GEN__SNundet_num__ADV__ADV__SV(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4, String blank4, InterchunkWord word5, String blank5, InterchunkWord word6) throws IOException
 	{
 		if (debug) { logCall("rule23__SNnorel__GEN__SNundet_num__ADV__ADV__SV",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5, blank5,  word6); } 
 		macro_concord_SN_SV(out, word3, blank5, word6);
@@ -2636,7 +2637,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN SV SA (they live/are happy - viuen feliços (BCN s'ha modificat)
-	public void rule24__SN__SV__SA(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule24__SN__SV__SA(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3) throws IOException
 	{
 		if (debug) { logCall("rule24__SN__SV__SA",  word1, blank1,  word2, blank2,  word3); } 
 		macro_concord_SN_SV(out, word1, blank1, word2);
@@ -2713,7 +2714,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN and SN SV SA (BCN)
-	public void rule25__SNnorel__and__SN__SV__SA(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5) throws IOException
+	public void rule25__SNnorel__and__SN__SV__SA(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4, String blank4, InterchunkWord word5) throws IOException
 	{
 		if (debug) { logCall("rule25__SNnorel__and__SN__SV__SA",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5); } 
 		macro_concord_SNcoo_SV(out, word1, blank2, word3, blank3, word4);
@@ -2806,7 +2807,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN SV SA and SA (BCN)
-	public void rule26__SN__SV__SA__cnjcoo__SA(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5) throws IOException
+	public void rule26__SN__SV__SA__cnjcoo__SA(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4, String blank4, InterchunkWord word5) throws IOException
 	{
 		if (debug) { logCall("rule26__SN__SV__SA__cnjcoo__SA",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5); } 
 		macro_concord_SN_SV(out, word1, blank1, word2);
@@ -2917,7 +2918,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN adv SV SA
-	public void rule27__SN__ADV__SV__SA(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
+	public void rule27__SN__ADV__SV__SA(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4) throws IOException
 	{
 		if (debug) { logCall("rule27__SN__ADV__SV__SA",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		macro_concord_SN_SV(out, word1, blank2, word3);
@@ -3020,7 +3021,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN adv adv SV SA (com l'anterior però amb dos adverbis)
-	public void rule28__SN__ADV__ADV__SV__SA(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5) throws IOException
+	public void rule28__SN__ADV__ADV__SV__SA(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4, String blank4, InterchunkWord word5) throws IOException
 	{
 		if (debug) { logCall("rule28__SN__ADV__ADV__SV__SA",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5); } 
 		macro_concord_SN_SV(out, word1, blank3, word4);
@@ -3147,7 +3148,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN and SN ADV SV SA (BCN)
-	public void rule29__SNnorel__and__SN__ADV__SV__SA(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5, String blank5, TransferWord word6) throws IOException
+	public void rule29__SNnorel__and__SN__ADV__SV__SA(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4, String blank4, InterchunkWord word5, String blank5, InterchunkWord word6) throws IOException
 	{
 		if (debug) { logCall("rule29__SNnorel__and__SN__ADV__SV__SA",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5, blank5,  word6); } 
 		macro_concord_SNcoo_SV(out, word1, blank2, word3, blank4, word5);
@@ -3252,7 +3253,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN and SN ADV ADV SV SA (com l'anterior però amb dos adv)
-	public void rule30__SNnorel__and__SN__ADV__ADV__SV__SA(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5, String blank5, TransferWord word6, String blank6, TransferWord word7) throws IOException
+	public void rule30__SNnorel__and__SN__ADV__ADV__SV__SA(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4, String blank4, InterchunkWord word5, String blank5, InterchunkWord word6, String blank6, InterchunkWord word7) throws IOException
 	{
 		if (debug) { logCall("rule30__SNnorel__and__SN__ADV__ADV__SV__SA",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5, blank5,  word6, blank6,  word7); } 
 		macro_concord_SNcoo_SV(out, word1, blank2, word3, blank5, word6);
@@ -3370,7 +3371,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	
 	/** regles amb verb copulatiu i sintagma nominal atribut (les regles amb SA com a atribut es tracten en les regles SN SV SA)  */
 	// REGLA: SN Vcop SN (my sister is teacher - la meva germa és mestra
-	public void rule31__SN__vbcopulatiu__SN(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule31__SN__vbcopulatiu__SN(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3) throws IOException
 	{
 		if (debug) { logCall("rule31__SN__vbcopulatiu__SN",  word1, blank1,  word2, blank2,  word3); } 
 		macro_concord_SN_SV(out, word1, blank1, word2);
@@ -3452,7 +3453,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN Vcop ADV SN (the man is almost 10 years old / my mother was always a teacher) 
-	public void rule32__SN__vbcopulatiu__ADV__SN(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
+	public void rule32__SN__vbcopulatiu__ADV__SN(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4) throws IOException
 	{
 		if (debug) { logCall("rule32__SN__vbcopulatiu__ADV__SN",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		macro_concord_SN_SV(out, word1, blank1, word2);
@@ -3558,7 +3559,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN SP Vcop SN (The International Council of Nurses is 10 years old)
-	public void rule33__SN__pr__SNnorel__vbcopulatiu__SN(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5) throws IOException
+	public void rule33__SN__pr__SNnorel__vbcopulatiu__SN(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4, String blank4, InterchunkWord word5) throws IOException
 	{
 		if (debug) { logCall("rule33__SN__pr__SNnorel__vbcopulatiu__SN",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5); } 
 		macro_concord_SN_SV(out, word1, blank3, word4);
@@ -3668,7 +3669,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN SP Vcop ADV SN (The International Council of Nurses is almost 10 years old)
-	public void rule34__SN__pr__SNnorel__vbcopulatiu__ADV__SN(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5, String blank5, TransferWord word6) throws IOException
+	public void rule34__SN__pr__SNnorel__vbcopulatiu__ADV__SN(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4, String blank4, InterchunkWord word5, String blank5, InterchunkWord word6) throws IOException
 	{
 		if (debug) { logCall("rule34__SN__pr__SNnorel__vbcopulatiu__ADV__SN",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5, blank5,  word6); } 
 		macro_concord_SN_SV(out, word1, blank3, word4);
@@ -3791,7 +3792,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	
 	/**  regles amb pronoms reflexius */
 	// REGLA: SN SV refl (I find myself - (jo) em trobo / I find yourself - et trobo)
-	public void rule35__SN__SV__prnref(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule35__SN__SV__prnref(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3) throws IOException
 	{
 		if (debug) { logCall("rule35__SN__SV__prnref",  word1, blank1,  word2, blank2,  word3); } 
 		macro_concord_SN_SV(out, word1, blank1, word2);
@@ -3884,7 +3885,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN ADV SV refl (I always find myself - (jo) sempre em trobo)
-	public void rule36__SN__ADV__SV__prnref(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
+	public void rule36__SN__ADV__SV__prnref(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4) throws IOException
 	{
 		if (debug) { logCall("rule36__SN__ADV__SV__prnref",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		macro_concord_SN_SV(out, word1, blank2, word3);
@@ -4001,7 +4002,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SV refl (xxxx finds itself) 
-	public void rule37__SV__prnref(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule37__SV__prnref(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2) throws IOException
 	{
 		if (debug) { logCall("rule37__SV__prnref",  word1, blank1,  word2); } 
 		if (!(word1.tl(attr_temps).equals("<inf>")
@@ -4056,7 +4057,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: reporting VERBS (BCN: per afegir QUE quan tenim un 'reporting' werb seguit d'una clàusula: she said they would go home -- va dir que anirien casa. Falta fer el mateix per quan tenim: SN Vcop SA; SN ADV SV; SN SV SA; a la segona part )
-	public void rule38__SN__vbreporting__SNnorel__SV(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
+	public void rule38__SN__vbreporting__SNnorel__SV(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4) throws IOException
 	{
 		if (debug) { logCall("rule38__SN__vbreporting__SNnorel__SV",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		macro_concord_SN_SV(out, word1, blank1, word2);
@@ -4174,7 +4175,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN SP SV (BCN, modificat per MG)
-	public void rule39__SN__pr__SNnorel__SV(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
+	public void rule39__SN__pr__SNnorel__SV(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4) throws IOException
 	{
 		if (debug) { logCall("rule39__SN__pr__SNnorel__SV",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		macro_concord_SN_SV(out, word1, blank3, word4);
@@ -4259,7 +4260,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN SP SV SA (BCN, modificat per MG)
-	public void rule40__SN__pr__SNnorel__SV__SA(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5) throws IOException
+	public void rule40__SN__pr__SNnorel__SV__SA(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4, String blank4, InterchunkWord word5) throws IOException
 	{
 		if (debug) { logCall("rule40__SN__pr__SNnorel__SV__SA",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5); } 
 		macro_concord_SN_SV(out, word1, blank3, word4);
@@ -4365,7 +4366,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN SP SV SA and SA (BCN, modificada per MG)
-	public void rule41__SN__pr__SNnorel__SV__SA__cnjcoo__SA(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5, String blank5, TransferWord word6, String blank6, TransferWord word7) throws IOException
+	public void rule41__SN__pr__SNnorel__SV__SA__cnjcoo__SA(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4, String blank4, InterchunkWord word5, String blank5, InterchunkWord word6, String blank6, InterchunkWord word7) throws IOException
 	{
 		if (debug) { logCall("rule41__SN__pr__SNnorel__SV__SA__cnjcoo__SA",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5, blank5,  word6, blank6,  word7); } 
 		macro_concord_SN_SV(out, word1, blank3, word4);
@@ -4503,7 +4504,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN SV SN.negacio (BCN I read no books -- NO llegeixo cap llibre
-	public void rule42__SN__SV__negacio(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule42__SN__SV__negacio(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3) throws IOException
 	{
 		if (debug) { logCall("rule42__SN__SV__negacio",  word1, blank1,  word2, blank2,  word3); } 
 		macro_concord_SN_SV(out, word1, blank1, word2);
@@ -4596,7 +4597,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN SVger (BCN the man working in the garage :: l'home que treballa ...)
-	public void rule43__SN_nopron__SVGER(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule43__SN_nopron__SVGER(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2) throws IOException
 	{
 		if (debug) { logCall("rule43__SN_nopron__SVGER",  word1, blank1,  word2); } 
 		macro_posadet_SN(out, word1);
@@ -4650,7 +4651,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN PP (patients treated -> pacients tractats)
-	public void rule44__SN_nopron__pp(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule44__SN_nopron__pp(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2) throws IOException
 	{
 		if (debug) { logCall("rule44__SN_nopron__pp",  word1, blank1,  word2); } 
 		macro_concord_SN_SV(out, word1, blank1, word2);
@@ -4682,7 +4683,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN ADV PP (representatives freely elected )
-	public void rule45__SN_nopron__ADV__pp(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule45__SN_nopron__ADV__pp(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3) throws IOException
 	{
 		if (debug) { logCall("rule45__SN_nopron__ADV__pp",  word1, blank1,  word2, blank2,  word3); } 
 		macro_concord_SN_SV(out, word1, blank2, word3);
@@ -4726,7 +4727,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: RELAN SV
-	public void rule46__RELAN__SV(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule46__RELAN__SV(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2) throws IOException
 	{
 		if (debug) { logCall("rule46__RELAN__SV",  word1, blank1,  word2); } 
 		if (word2.tl(attr_temps).equals("<inf>"))
@@ -4785,7 +4786,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: RELAN ADV SV
-	public void rule47__RELAN__ADV__SV(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule47__RELAN__ADV__SV(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3) throws IOException
 	{
 		if (debug) { logCall("rule47__RELAN__ADV__SV",  word1, blank1,  word2, blank2,  word3); } 
 		if (word3.tl(attr_temps).equals("<inf>"))
@@ -4856,7 +4857,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SA SN (London-based design company)
-	public void rule48__adj__SNundet(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule48__adj__SNundet(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2) throws IOException
 	{
 		if (debug) { logCall("rule48__adj__SNundet",  word1, blank1,  word2); } 
 		if (word2.tl(attr_gen).equals("<GD>"))
@@ -4920,7 +4921,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: DET SA SN (a London-based design company)
-	public void rule49__DET__adj__SNundet(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule49__DET__adj__SNundet(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3) throws IOException
 	{
 		if (debug) { logCall("rule49__DET__adj__SNundet",  word1, blank1,  word2, blank2,  word3); } 
 		if (word3.tl(attr_gen).equals("<GD>"))
@@ -5023,7 +5024,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN GEN SN (Europe's top 100 listed companies...)
-	public void rule50__SNnorel__GEN__SNundet_num(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule50__SNnorel__GEN__SNundet_num(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3) throws IOException
 	{
 		if (debug) { logCall("rule50__SNnorel__GEN__SNundet_num",  word1, blank1,  word2, blank2,  word3); } 
 		macro_posadet_SN(out, word1);
@@ -5082,7 +5083,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	
 	/** Regles per a sintagmes sols que han pogut quedarse amb GD, ND o PD  */
 	// REGLA: SA (per assignar gènere i nombre si hi ha GD i ND que no s'han pogut determinar)
-	public void rule51__SA(Writer out, TransferWord word1) throws IOException
+	public void rule51__SA(Writer out, InterchunkWord word1) throws IOException
 	{
 		if (debug) { logCall("rule51__SA",  word1); } 
 		if (word1.tl(attr_gen).equals("<GD>"))
@@ -5112,7 +5113,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SN (per assignar gènere i nombre si hi ha GD i ND que no s'han pogut determinar, com passa en alguns pronoms: both, etc.)
-	public void rule52__SN(Writer out, TransferWord word1) throws IOException
+	public void rule52__SN(Writer out, InterchunkWord word1) throws IOException
 	{
 		if (debug) { logCall("rule52__SN",  word1); } 
 		if (word1.tl(attr_gen).equals("<GD>"))
@@ -5138,7 +5139,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: DET (per assignar gènere i nombre si hi ha GD i ND que no s'han pogut determinar, com passa en alguns pronoms: both, etc.)
-	public void rule53__DET(Writer out, TransferWord word1) throws IOException
+	public void rule53__DET(Writer out, InterchunkWord word1) throws IOException
 	{
 		if (debug) { logCall("rule53__DET",  word1); } 
 		if (word1.tl(attr_gen).equals("<GD>"))
@@ -5163,7 +5164,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: SV (per assignar persona i nombre si hi ha PD i ND que no s'han pogut determinar, escepte per als infinitius i gerundis 
-	public void rule54__SV(Writer out, TransferWord word1) throws IOException
+	public void rule54__SV(Writer out, InterchunkWord word1) throws IOException
 	{
 		if (debug) { logCall("rule54__SV",  word1); } 
 		if (!(word1.tl(attr_temps).equals("<inf>")
@@ -5197,7 +5198,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: NUM (per assignar gènere si hi ha GD)
-	public void rule55__NUM(Writer out, TransferWord word1) throws IOException
+	public void rule55__NUM(Writer out, InterchunkWord word1) throws IOException
 	{
 		if (debug) { logCall("rule55__NUM",  word1); } 
 		if (word1.tl(attr_gen).equals("<GD>"))
@@ -5222,7 +5223,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	// REGLA: RELNN (per assignar gènere i nombre si hi ha GD i ND que no s'han pogut determinar (whom).)
-	public void rule56__RELNN(Writer out, TransferWord word1) throws IOException
+	public void rule56__RELNN(Writer out, InterchunkWord word1) throws IOException
 	{
 		if (debug) { logCall("rule56__RELNN",  word1); } 
 		if (word1.tl(attr_gen).equals("<GD>"))
@@ -5247,7 +5248,7 @@ Your mother and you will come - La vostra mare i tu vindran
 	}
 	
 	/**  REGLA: reset variables */
-	public void rule57__punt(Writer out, TransferWord word1) throws IOException
+	public void rule57__punt(Writer out, InterchunkWord word1) throws IOException
 	{
 		if (debug) { logCall("rule57__punt",  word1); } 
 		/**  REGLA: reset variables */
