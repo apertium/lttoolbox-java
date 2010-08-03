@@ -184,6 +184,7 @@ public class Interchunk {
      * @throws IOException
      */
     private TransferToken readToken(Reader in) throws IOException {
+        //TODO: Make sure this isn't broken XD The read-ahead might be a failure.
         if (!input_buffer.isEmpty()) {
             return input_buffer.next();
         }
@@ -533,8 +534,7 @@ public class Interchunk {
                 case '<':
                     for (int j = i + 1; j != limit; j++) {
                         if (word_str.charAt(j) == '>') {
-                            int symbol = alphabet
-                                    .cast(word_str.substring(i, j + 1));
+                            int symbol = alphabet.cast(word_str.substring(i, j + 1));
                             if (symbol != 0) {
                                 ms.step(symbol, any_tag);
                             } else {
