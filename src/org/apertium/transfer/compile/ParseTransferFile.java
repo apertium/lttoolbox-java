@@ -478,11 +478,13 @@ public class ParseTransferFile {
 
   private void processChunk(Element e) {
     /* If we are processing an interchunk file, chunk tags should be treated
-     * like lu tags.
+     * like lu tags?
      */
     if(parseMode == ParseMode.INTERCHUNK) {
       /* Try just calling processLu() for now, if that doesn't work, will have
        * to try something else. ;)
+       * Not sure if this is the right way to go, may be causing the issues with
+       * missing the ^ and $ on chunks in Interchunk.
        */
       processLu(e);
       return;

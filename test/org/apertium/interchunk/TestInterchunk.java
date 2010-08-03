@@ -93,4 +93,24 @@ public class TestInterchunk {
         assertEquals("TestInterchunk.testMainThisIsATest() failed: output does not match expected output.", expTestout, testOutput);
     }
 
+    /**
+     * Test of main method, using external text files.
+     */
+    @Test
+    public void testMain200Sentences() throws IOException {
+        String inFile = testDataDir + "en-interchunk-input.txt";
+        String outputFile = tempDir + "interchunkout";
+        String t2xFile = testDataDir + "apertium_en_es_en_es_t2x.class";
+        String preprocFile = testDataDir + "en-es.t2x.bin";
+        String compareOutFile = testDataDir + "en-interchunk-output.txt";
+        String[] argv = {t2xFile, preprocFile, inFile, outputFile};
+
+        ApertiumInterchunk.main(argv);
+
+        //Read actual output into a string
+        String testOutput = readFile(outputFile);
+        String expectedOutput = readFile(compareOutFile);
+
+        assertEquals("TestInterchunk.testMain200Sentences() failed: output does not match expected output.", expectedOutput, testOutput);
+    }
 }
