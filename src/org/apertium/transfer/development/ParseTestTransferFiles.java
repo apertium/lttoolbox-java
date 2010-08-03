@@ -19,7 +19,8 @@ public class ParseTestTransferFiles {
   public static String findFileNameOfBinFile(String t1xFile) {
     String x = t1xFile.split("\\.")[1];
     if (t1xFile.contains("genitive")) x = x+ ".genitive"; // ugly UGLY hack
-    String binFile=new File(new File(t1xFile).getParent(), x).getPath()+".t1x.bin";
+    String filetype = t1xFile.split("\\.")[2]; // t1x or t2x
+    String binFile=new File(new File(t1xFile).getParent(), x).getPath()+"."+filetype+".bin";
     
     System.err.println(t1xFile +" ->  binFile = " + binFile);
     return binFile;
