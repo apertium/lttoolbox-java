@@ -109,9 +109,9 @@ Si se quiere empezar a tratar las frase impersonales en el t2x, habría que hace
 
 **************************************************************************
  */
-	TransferWordList list_det_canviant = new TransferWordList(new String[] { "uno", "otro", "poco", "cuánto", "menos", "mucho", "tanto", "demasiado", });
-	TransferWordList list_preps_inf = new TransferWordList(new String[] { "so as to", "with a view to", "to", "in order to", });
-	TransferWordList list_en_majuscules = new TransferWordList(new String[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", });
+	WordList list_det_canviant = new WordList(new String[] { "uno", "otro", "poco", "cuánto", "menos", "mucho", "tanto", "demasiado", });
+	WordList list_preps_inf = new WordList(new String[] { "so as to", "with a view to", "to", "in order to", });
+	WordList list_en_majuscules = new WordList(new String[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", });
 	
 	/** 
 ****************************************************************************

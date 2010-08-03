@@ -39,7 +39,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	/**  feels like these should have their own
            sub-pos... «<det><dem> som kan ha <ind> etter seg på
            bokmål»  */
-	TransferWordList list_det_indef = new TransferWordList(new String[] { "denne", "disse", "dette", "den", "de", "DENNE", "DISSE", "DETTE", "DEN", "DE", "Denne", "Disse", "Dette", "Den", "De", });
+	WordList list_det_indef = new WordList(new String[] { "denne", "disse", "dette", "den", "de", "DENNE", "DISSE", "DETTE", "DEN", "DE", "Denne", "Disse", "Dette", "Den", "De", });
 	
 	private void macro_f_bcond(Writer out, TransferWord word1) throws IOException
 	{

@@ -71,15 +71,15 @@ public class apertium_en_es_en_es_t1x extends GeneratedTransferBase
 	/**  BCN */
 	String var_tipus_det = "";
 	/**  BCN verbs que poden no portar el THAT  */
-	TransferWordList list_reportingverb = new TransferWordList(new String[] { "say", "admit", "agree", "decide", "deny", "explain", "insist", "promise", "recommend", "suggest", "point", "think", "believe", "hope", "fear", "suppose", });
+	WordList list_reportingverb = new WordList(new String[] { "say", "admit", "agree", "decide", "deny", "explain", "insist", "promise", "recommend", "suggest", "point", "think", "believe", "hope", "fear", "suppose", });
 	/**  BCN  */
-	TransferWordList list_controlnouns = new TransferWordList(new String[] { "desire", "order", "need", "right", "duty", "failure", "power", "wish", "capacity", "ability", "hope", "chance", "honour", "compulsion", "responsibility", "opportunity", "idea", "record", "way", "attempt", "obligation", "impulse", "surprise", "will", "mean", });
+	WordList list_controlnouns = new WordList(new String[] { "desire", "order", "need", "right", "duty", "failure", "power", "wish", "capacity", "ability", "hope", "chance", "honour", "compulsion", "responsibility", "opportunity", "idea", "record", "way", "attempt", "obligation", "impulse", "surprise", "will", "mean", });
 	/** potser s'hauria de canviar categoria i posar com a determinants  */
-	TransferWordList list_tractaments = new TransferWordList(new String[] { "Mr.", "Mrs.", "Ms.", "Dr.", });
-	TransferWordList list_days = new TransferWordList(new String[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", });
-	TransferWordList list_adv_neg = new TransferWordList(new String[] { "not", "never", });
-	TransferWordList list_verbs_modals = new TransferWordList(new String[] { "can", "must", "should", "may", "might", });
-	TransferWordList list_numeros25 = new TransferWordList(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", });
+	WordList list_tractaments = new WordList(new String[] { "Mr.", "Mrs.", "Ms.", "Dr.", });
+	WordList list_days = new WordList(new String[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", });
+	WordList list_adv_neg = new WordList(new String[] { "not", "never", });
+	WordList list_verbs_modals = new WordList(new String[] { "can", "must", "should", "may", "might", });
+	WordList list_numeros25 = new WordList(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", });
 	
 	private void macro_elimina_GDND(Writer out, TransferWord word1) throws IOException
 	{

@@ -31,7 +31,7 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 	String var_caseFirstWord = "";
 	String var_EOS = "";
 	String var_adjectiu1 = "";
-	TransferWordList list_prepos_adjs = new TransferWordList(new String[] { "hen", "ambell", "pob", "prif", "holl", "cryn", });
+	WordList list_prepos_adjs = new WordList(new String[] { "hen", "ambell", "pob", "prif", "holl", "cryn", });
 	
 	private void macro_firstWord(Writer out, TransferWord word1) throws IOException
 	{

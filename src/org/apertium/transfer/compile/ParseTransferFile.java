@@ -1051,7 +1051,7 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
           }
           listList.add(n);
           printComments();
-          println("TransferWordList list_"+javaIdentifier(n)+" = new TransferWordList("+javaStringArray(items)+");");
+          println("WordList list_"+javaIdentifier(n)+" = new WordList("+javaStringArray(items)+");");
         }
 
 
@@ -1127,7 +1127,7 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
         }
 
         if (error_UNKNOWN_LIST) {
-          println("TransferWordList error_UNKNOWN_LIST = new TransferWordList(new String[0]);");
+          println("WordList error_UNKNOWN_LIST = new WordList(new String[0]);");
         }
 
         println("}");

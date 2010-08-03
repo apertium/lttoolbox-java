@@ -79,14 +79,14 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
   the second was a TV live action version.
 
   <list-item v="never"/>  */
-	TransferWordList list_adv_neg = new TransferWordList(new String[] { "not", });
+	WordList list_adv_neg = new WordList(new String[] { "not", });
 	/**  verboj ne postulantaj THAT  */
-	TransferWordList list_reportingverb = new TransferWordList(new String[] { "say", "admit", "agree", "decide", "deny", "explain", "insist", "promise", "recommend", "suggest", "point", "think", "believe", "hope", "fear", "suppose", });
+	WordList list_reportingverb = new WordList(new String[] { "say", "admit", "agree", "decide", "deny", "explain", "insist", "promise", "recommend", "suggest", "point", "think", "believe", "hope", "fear", "suppose", });
 	/**  ne-transitivaj verboj.   */
-	TransferWordList list_netransitivaj = new TransferWordList(new String[] { "be", "seem", "become", "appear", "there be", });
+	WordList list_netransitivaj = new WordList(new String[] { "be", "seem", "become", "appear", "there be", });
 	/**  help verboj kiuj malaperos en Esperantp */
-	TransferWordList list_willwouldshallhave = new TransferWordList(new String[] { "have", "will", "would", "shall", });
-	TransferWordList list_listo_and_or_but = new TransferWordList(new String[] { "and", "but", "or", });
+	WordList list_willwouldshallhave = new WordList(new String[] { "have", "will", "would", "shall", });
+	WordList list_listo_and_or_but = new WordList(new String[] { "and", "but", "or", });
 	
 	/**  TODO
  make a transfer rule saying  DET + ADJ  can be a SN:
