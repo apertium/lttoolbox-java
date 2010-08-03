@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.Writer;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,10 +62,10 @@ public class Interchunk {
     private Method[] rule_map = null; // vector<xmlNode *> rule_map;
 
     private BufferT<TransferToken> input_buffer=new BufferT<TransferToken>(); // Buffer<TransferToken> input_buffer;
-    private ArrayList<String> tmpword; // vector<wstring *> tmpword;
-    private ArrayList<String> tmpblank; // vector<wstring *> tmpblank;
-    private ArrayList<String> tmpword2=new ArrayList<String>();
-    private ArrayList<String> tmpblank2=new ArrayList<String>();
+    private ArrayList<String> tmpword = new ArrayList<String>(); // vector<wstring *> tmpword;
+    private ArrayList<String> tmpblank = new ArrayList<String>(); // vector<wstring *> tmpblank;
+    private ArrayList<String> tmpword2 = new ArrayList<String>();
+    private ArrayList<String> tmpblank2 = new ArrayList<String>();
 
     private int any_char;
     private int any_tag;
@@ -274,10 +275,14 @@ public class Interchunk {
      * 
      * @param input
      * @param output
+     * @throws InvocationTargetException 
+     * @throws IllegalAccessException 
+     * @throws IllegalArgumentException 
      * @throws Exception
      */
     private void interchunk_wrapper_null_flush(Reader input, Writer output)
-            throws Exception {
+            throws IOException, IllegalArgumentException, 
+            IllegalAccessException, InvocationTargetException {
         null_flush = false;
         internal_null_flush = true;
         while (input.ready()) {
@@ -307,9 +312,15 @@ public class Interchunk {
      * Modified to be in-line with the differences between transfer.cc and interchunk.cc
      * @param in
      * @param output
+     * @throws IOException
+     * @throws InvocationTargetException 
+     * @throws IllegalAccessException 
+     * @throws IllegalArgumentException 
      * @throws Exception
      */
-    public void interchunk(Reader in, Writer output) throws Exception {
+    public void interchunk(Reader in, Writer output) throws IOException, 
+            IllegalArgumentException, IllegalAccessException, 
+            InvocationTargetException {
         if (getNullFlush()) {
             interchunk_wrapper_null_flush(in, output);
         }
@@ -411,9 +422,13 @@ public class Interchunk {
      * Much of this code originally copied from {@link org.apertium.transfer.Transfer#applyRule(Writer)}.
      * Modified to be in-line with the differences between transfer.cc and interchunk.cc
      * @param output
-     * @throws Exception
+     * @throws IOException
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
+     * @throws InvocationTargetException
      */
-    private void applyRule(Writer output) throws Exception {
+    private void applyRule(Writer output) throws IOException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException {
         if (DEBUG)
             System.err.println("tmpword = " + tmpword2 + "  tmpblank = "
                     + tmpblank2);
@@ -459,12 +474,17 @@ public class Interchunk {
             lastrule.invoke(transferObject, args);
             if (DO_TIMING)
                 timing.log("rule invoke");
-        } catch (Exception e) {
-            System.err.println("Error during invokation of " + lastrule);
-            System.err.println("word = " + Arrays.toString(word));
-            System.err.println("#args = " + args.length);
-            System.err.println("processRule:" + lastrule.getName() + "("
-                    + Arrays.toString(args));
+        } catch (IllegalAccessException e) {
+            _outputInvokeErrorMsg(lastrule, Arrays.toString(word), args.length,
+                    lastrule.getName() + "(" + Arrays.toString(args) + ")");
+            throw e;
+        } catch (IllegalArgumentException e) {
+            _outputInvokeErrorMsg(lastrule, Arrays.toString(word), args.length,
+                    lastrule.getName() + "(" + Arrays.toString(args) + ")");
+            throw e;
+        } catch (InvocationTargetException e) {
+            _outputInvokeErrorMsg(lastrule, Arrays.toString(word), args.length,
+                    lastrule.getName() + "(" + Arrays.toString(args) + ")");
             throw e;
         }
         if (DEBUG)
@@ -484,6 +504,14 @@ public class Interchunk {
         ms.init(me.getInitial());
         if (DO_TIMING)
             timing.log("applyRule 2");
+    }
+    
+    private void _outputInvokeErrorMsg(Method rule, String word, 
+            int numArgs, String processRule) {
+        System.err.println("Error during invokation of " + rule);
+        System.err.println("word = " + word);
+        System.err.println("#args = " + numArgs);
+        System.err.println("processRule:" + processRule);
     }
 
     /**

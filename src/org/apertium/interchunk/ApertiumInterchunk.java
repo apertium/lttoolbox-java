@@ -43,7 +43,7 @@ import org.apertium.transfer.Transfer;
  * @author Stephen Tigner
  *
  */
-public class InterchunkMain {
+public class ApertiumInterchunk {
 
     private static void message() {
         PrintStream stderr = System.err; //Allows ouput lines to be shorter.
@@ -130,25 +130,26 @@ public class InterchunkMain {
             }
         }
 
-        Reader input;
-        Writer output;
-        
+        Reader input = null;
+        Writer output = null;
+
         String t2xFile = null;
         String preprocFile = null; //formerly f1, f2, these are more descriptive names
-        
-        switch(args.length - getopt.getOptind()) { //number of non-option args
+
+        int optIndex = getopt.getOptind();
+        switch(args.length - optIndex ) { //number of non-option args
             /* This avoids code duplication by allowing cases to "fall through."
              * The higher cases just add extra lines to the top of the lower cases,
              * so by allowing the code to fall through to the lower cases (instead of
              * breaking), we don't need to duplicate the same code several times.
              */
             case 4:
-                output = new OutputStreamWriter(openOutput(args[args.length - 1]));
+                output = new OutputStreamWriter(openOutput(args[optIndex + 3]));
             case 3:
-                input = new InputStreamReader(openInput(args[args.length - 2]));
+                input = new InputStreamReader(openInput(args[optIndex + 2]));
             case 2:
-                t2xFile = args[args.length - 4];
-                preprocFile = args[args.length - 3];
+                preprocFile = args[optIndex + 1];
+                t2xFile = args[optIndex];
                 break;
             default:
                 message();
@@ -157,11 +158,13 @@ public class InterchunkMain {
         
         try {
             i.read(t2xFile, preprocFile);
+            i.interchunk(input, output);
+            output.flush(); //Have to flush or there won't be any output.
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
+
     }
 
 }

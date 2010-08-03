@@ -339,12 +339,6 @@ public class ParseTransferFile {
    * @return java code
    */
   private String getReadClipExpr(Element e) {
-    /* TODO: Fix this for interchunk.
-     * Apparently it outputs garbage code when parsing interchunk files, as
-     * the "side" and "queue" attributes don't exist on the interchunk clip tags.
-     * So when it puts together this text, you end up stuff like:
-     * word1.(attr_nbr).equals("<sg>")
-     */
     currentNode = e;
     String side=e.getAttribute("side");
     // the 'side' attribute only really makes sense when a bilingual dictionary is used to translate the words (i.e. english 'dog<n><sg>' is translated to for example esperanto 'hundo<n><pl>').
