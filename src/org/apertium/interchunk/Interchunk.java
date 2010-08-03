@@ -157,7 +157,7 @@ public class Interchunk {
         for (Method method : mets) {
             String name = method.getName();
 
-            // System.err.println("n = " + name);
+            if (DEBUG) System.err.println("n = " + name);
             if (!name.startsWith("rule"))
                 continue;
 
@@ -201,6 +201,7 @@ public class Interchunk {
             } 
             else {
                 val = in.read();
+                if (DEBUG) System.err.println("val = " + (char) val);
             }
             if (val == -1 || (val == 0 && internal_null_flush)) {
                 return input_buffer.add(new TransferToken(content,
@@ -231,6 +232,7 @@ public class Interchunk {
                         skipRead = false; //unset flag
                     } else {
                         val2 = in.read();
+                        if (DEBUG) System.err.println("val2 = " + (char) val2);
                     }
                     if (val2 == '\\') {
                         content += '\\';
@@ -248,6 +250,7 @@ public class Interchunk {
                         val2 = in.read();
                         if(val2 == '$') {
                             val = val2; //pass read-ahead char into val
+                            skipRead = true; // skip next read
                             break; //exit inner while loop
                         }
                     } else {
