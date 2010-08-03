@@ -193,8 +193,8 @@ public class Interchunk {
          */
         boolean skipRead = false;
         String content = "";
+        int val = -1; //declare and initialize val outside of while statement.
         while (true) {
-            int val = -1; //declare and initialize val outside of if statement.
             if(skipRead) { //Already read ahead to the next character 
                 skipRead = false; //unset flag
             } 
