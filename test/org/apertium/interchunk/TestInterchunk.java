@@ -24,10 +24,12 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -167,8 +169,32 @@ public class TestInterchunk {
             fail("Exception occured during test.");
         }
 
-        String testOutput = output.toString();
+        String testOutput = output.toString().trim();
+
         String expectedOutput = readFile(compareOutFile);
+
+        // write to file in case of fail, so we can debug
+        if (!testOutput.equals(expectedOutput)) {
+          PrintWriter pw = new PrintWriter(new FileOutputStream(tempDir+"en-interchunk-output-actual.txt"));
+          pw.append(testOutput);
+          pw.close();
+
+          System.err.println("total   testOutput = " + testOutput.length());
+
+          System.err.println("total expectedOutput = " + expectedOutput.length());
+          for (int i=0; i<200; i++) if (testOutput.split("\n")[i].length() !=  expectedOutput.split("\n")[i].length()) {
+            System.err.println(i+"    testOutput = " + testOutput.split("\n")[i].length());
+            System.err.println(i+"expectedOutput = " + expectedOutput.split("\n")[i].length());
+            System.err.println(i+"    testOutput = " + testOutput.split("\n")[i]);
+            System.err.println(i+"expectedOutput = " + expectedOutput.split("\n")[i]);
+          }
+
+        
+          //System.err.println("\n\n\ntestOutput = \n" + testOutput);
+          
+          //System.err.println("\n\n\nexpectedOutput = \n" + expectedOutput);
+        }
+
 
         assertEquals("TestInterchunk.testMain200Sentences() failed: output does not match expected output.", expectedOutput, testOutput);
     }
