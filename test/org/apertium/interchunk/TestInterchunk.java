@@ -77,18 +77,43 @@ public class TestInterchunk {
      * Interchunk takes the output from transfer as its input and outputs to postchunk.
      * This tests Interchunk with a single constructed sample sentence.
      */
-    @SuppressWarnings("unchecked")
     @Test
     public void testThisIsATest() throws IOException {
-        String testin = "^Prn<SN><tn><m><sp>{^esto<prn><tn><3><4>$}$ ^be<Vcop><vbser><pri><p3><sg>{^ser<vbser><3><4><5>$}$ ^det_nom<SN><DET><f><sg>{^uno<det><ind><3><4>$ ^prueba<n><3><4>$}$^punt<sent>{^.<sent>$}$";
-        String expTestout = "^Prn<SN><tn><m><sp>{^esto<prn><tn><3><4>$}$ ^be<Vcop><vbser><pri><p3><sg>{^ser<vbser><3><4><5>$}$ ^det_nom<SN><DET><f><sg>{^uno<det><ind><3><4>$ ^prueba<n><3><4>$}$^punt<sent>{^.<sent>$}$";
+        String testIn = "^Prn<SN><tn><m><sp>{^esto<prn><tn><3><4>$}$ ^be<Vcop><vbser><pri><p3><sg>{^ser<vbser><3><4><5>$}$ ^det_nom<SN><DET><f><sg>{^uno<det><ind><3><4>$ ^prueba<n><3><4>$}$^punt<sent>{^.<sent>$}$";
+        String expTestOut = "^Prn<SN><tn><m><sp>{^esto<prn><tn><3><4>$}$ ^be<Vcop><vbser><pri><p3><sg>{^ser<vbser><3><4><5>$}$ ^det_nom<SN><DET><f><sg>{^uno<det><ind><3><4>$ ^prueba<n><3><4>$}$^punt<sent>{^.<sent>$}$";
+        
+        runSingleSentenceTest(testIn, expTestOut);
+    }
+    
+    /* Extra tests added to test some specific representative sentences from the
+     * 200 sentence test that are failing, while the above test still works.
+     */
+    
+    @Test
+    public void testSentenceNumber2() throws IOException {
+        String testIn = "     ^Num<NUM>{^2<num>$}$^punt<sent>{^.<sent>$}$ ^Nom<SN><UNDET><m><sg>{^anarquismo<n><3><4>$}$ ^adv<adv><NEG>{^no<adv>$}$ ^be<Vcop><vbser><pri><p3><sg>{^ser<vbser><3><4><5>$}$ ^det_nom<SN><DET><m><sg>{^el<det><def><3><4>$ ^reinado<n><3><4>$}$ ^pr<PREP>{^de<pr>$}$ ^nom<SN><UNDET><m><sg>{^amor<n><3><4>$}$^coma<cm>{^,<cm>$}$ ^cnj<cnjcoo>{^pero<cnjcoo>$}$ ^det_nom<SN><DET><m><sg>{^el<det><def><3><4>$ ^reinado<n><3><4>$}$ ^pr<PREP>{^de<pr>$}$ ^nom<SN><UNDET><f><sg>{^justicia<n><3><4>$}$^punt<sent>{^.<sent>$}$";
+        String expTestOut = "     ^Num<NUM>{^2<num>$}$^punt<sent>{^.<sent>$}$ ^Nom<SN><PDET><m><sg>{^anarquismo<n><3><4>$}$ ^adv<adv><NEG>{^no<adv>$}$ ^be<Vcop><vbser><pri><p3><sg>{^ser<vbser><3><4><5>$}$ ^det_nom<SN><DET><m><sg>{^el<det><def><3><4>$ ^reinado<n><3><4>$}$ ^pr<PREP>{^de<pr>$}$ ^nom<SN><UNDET><m><sg>{^amor<n><3><4>$}$^coma<cm>{^,<cm>$}$ ^cnj<cnjcoo>{^pero<cnjcoo>$}$ ^det_nom<SN><DET><m><sg>{^el<det><def><3><4>$ ^reinado<n><3><4>$}$ ^pr<PREP>{^de<pr>$}$ ^nom<SN><UNDET><f><sg>{^justicia<n><3><4>$}$^punt<sent>{^.<sent>$}$";
+
+        runSingleSentenceTest(testIn, expTestOut);
+    }
+    
+    @Test
+    public void testSentenceNumber7() throws IOException {
+        String testIn = "     ^Num<NUM>{^7<num>$}$^punt<sent>{^.<sent>$}$ ^Prnsubj<SN><tn><p3><m><pl>{^prpers<prn><2><p3><4><pl>$}$ ^adv<adv>{^en cambio<adv>$}$ ^inf<SV><vblex><inf><PD><ND>{^defender<vblex><3>$}$ ^det_nom<SN><DET><m><sg>{^el<det><def><3><4>$ ^proceso<n><3><4>$}$ ^pr<PREP>{^de<pr>$}$ ^unknown<unknown>{^*rewilding$}$ ^cnj<cnjcoo>{^o<cnjcoo>$}$ ^unknown<unknown>{^*reconnecting$}$ ^pr<PREP>{^con<pr>$}$ ^det_nom_adj<SN><DET><m><sg>{^el<det><def><3><4>$ ^entorno<n><3><4>$ ^natural<adj><mf><4>$}$^punt<sent>{^.<sent>$}$";
+        String expTestOut = "     ^Num<NUM>{^7<num>$}$^punt<sent>{^.<sent>$}$ ^Adv<adv>{^en cambio<adv>$}$ ^inf<SV><vblex><pri><p3><pl>{^defender<vblex><3>$}$ ^det_nom<SN><DET><m><sg>{^el<det><def><3><4>$ ^proceso<n><3><4>$}$ ^pr<PREP>{^de<pr>$}$ ^unknown<unknown>{^*rewilding$}$ ^cnj<cnjcoo>{^o<cnjcoo>$}$ ^unknown<unknown>{^*reconnecting$}$ ^pr<PREP>{^con<pr>$}$ ^det_nom_adj<SN><DET><m><sg>{^el<det><def><3><4>$ ^entorno<n><3><4>$ ^natural<adj><mf><4>$}$^punt<sent>{^.<sent>$}$";
+
+        runSingleSentenceTest(testIn, expTestOut);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void runSingleSentenceTest(String testIn, String expTestOut) throws IOException {
         Class transferClass = org.apertium.transfer.generated.apertium_en_es_en_es_t2x.class;
         String preprocFile = testDataDir + "en-es.t2x.bin";
 
         /* The logic in ApertiumInterchunk.main() is mostly for parsing the command-line,
          * since we're calling it directly in Java, we can bypass it.
          */
-        StringReader input = new StringReader(testin);
+        StringReader input = new StringReader(testIn);
         Writer output = new StringWriter();
 
         Interchunk interchunk = new Interchunk();
@@ -106,8 +131,8 @@ public class TestInterchunk {
         String testOutput = output.toString();
 
         System.err.println("output = " + testOutput);
-        System.err.println("expout = " + expTestout);
-        assertEquals("TestInterchunk.testMainThisIsATest() failed: output does not match expected output.", expTestout, testOutput);
+        System.err.println("expout = " + expTestOut);
+        assertEquals("TestInterchunk.testMainThisIsATest() failed: output does not match expected output.", expTestOut, testOutput);
     }
 
     /**
