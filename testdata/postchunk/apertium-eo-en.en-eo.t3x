@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- -*- nxml -*- -->
+<postchunk>
+
+  <section-def-cats>
+
+    <def-cat n="nomxxxxxxx">
+      <cat-item name="nomxxxxxxxxxxxxxxx"/>
+    </def-cat>
+
+    <def-cat n="nom">
+      <cat-item name="nom"/>
+    </def-cat>
+    <def-cat n="adj_nom">
+      <cat-item name="adj_nom"/>
+      <cat-item name="det_nom"/>
+      <cat-item name="nom_nom"/>
+    </def-cat>
+    <def-cat n="det_nom_nom">
+      <cat-item name="det_nom_nom"/>
+      <cat-item name="nom_guio_nom"/>
+      <cat-item name="det_adj_nom"/>
+      <cat-item name="preadv_adj_nom"/>
+      <cat-item name="nom_gen_nom"/>
+    </def-cat>
+    <def-cat n="det_preadv_adj_nom">
+      <cat-item name="det_nom_guio_nom"/>
+      <cat-item name="det_preadv_adj_nom"/>
+      <cat-item name="det_nom_gen_nom"/>
+      <cat-item name="nom_gen_det_nom"/>
+      <cat-item name="nom_gen_nom_nom"/>
+    </def-cat>
+    <def-cat n="det_nom_gen_det_nom">
+      <cat-item name="det_nom_gen_det_nom"/>
+    </def-cat>
+    <def-cat n="det_nom_gen_det_nom_nom">
+      <cat-item name="det_nom_gen_det_nom_nom"/>
+    </def-cat>
+
+  </section-def-cats>
+
+  <section-def-attrs>
+    <def-attr n="a_nom">
+      <attr-item tags="n"/>
+      <attr-item tags="np"/>
+    </def-attr>
+    <def-attr n="a_nbr">
+      <attr-item tags="sg"/>
+      <attr-item tags="pl"/>
+      <attr-item tags="sp"/>
+    </def-attr>
+    <def-attr n="a_gen">
+      <attr-item tags="f"/>
+      <attr-item tags="m"/>
+      <attr-item tags="mf"/>
+      <attr-item tags="nt"/>
+      <attr-item tags="GN"/>
+    </def-attr>
+  </section-def-attrs>
+
+  <section-def-vars>
+    <def-var n="paraula"/>
+  </section-def-vars>
+
+  <section-def-macros>
+    <def-macro n="drop_gender1" npar="1">
+        <choose>
+          <when>
+            <test>
+              <equal><clip pos="1" part="a_gen"/><lit-tag v="GN"/></equal>
+            </test>
+            <let><clip pos="1" part="a_gen"/><lit v=""/></let>
+           </when>
+         </choose>
+    </def-macro>
+  </section-def-macros>
+
+
+  <section-rules>
+
+
+
+    <rule comment="CHUNK: Ne-uzata regulo (nur cxar DEVAS esti unu cxi tie)">
+      <pattern>
+        <pattern-item n="nomxxxxxxx"/>
+      </pattern>
+      <action>
+        <!--<call-macro n="drop_gender1"><with-param pos="1"/></call-macro>-->
+        <out>
+          <lu>
+            <clip pos="1" part="whole"/>
+          </lu>
+        </out>
+      </action>
+    </rule>
+
+<!--
+    <rule comment="CHUNK: nom">
+      <pattern>
+        <pattern-item n="nom"/>
+      </pattern>
+      <action>
+        <out>
+          <lu>
+            <clip pos="1" part="whole"/>
+          </lu>
+        </out>
+      </action>
+    </rule>
+
+
+    <rule comment="CHUNK: adj_nom   - and others">
+      <pattern>
+        <pattern-item n="adj_nom"/>
+      </pattern>
+      <action>
+        <call-macro n="drop_gender1"><with-param pos="1"/></call-macro>
+        <call-macro n="drop_gender1"><with-param pos="2"/></call-macro>
+        <out>
+          <lu>
+            <clip pos="1" part="whole"/>
+          </lu>
+          <b pos="1"/>
+          <lu>
+            <clip pos="2" part="whole"/>
+          </lu>
+        </out>
+      </action>
+    </rule>
+
+
+
+    <rule comment="CHUNK: det_nom_nom and others">
+      <pattern>
+        <pattern-item n="det_nom_nom"/>
+      </pattern>
+      <action>
+        <call-macro n="drop_gender1"><with-param pos="1"/></call-macro>
+        <call-macro n="drop_gender1"><with-param pos="2"/></call-macro>
+        <call-macro n="drop_gender1"><with-param pos="3"/></call-macro>
+        <out>
+          <lu>
+            <clip pos="1" part="whole"/>
+          </lu>
+          <b pos="1"/>
+          <lu>
+            <clip pos="2" part="whole"/>
+          </lu>
+          <b pos="2"/>
+          <lu>
+            <clip pos="3" part="whole"/>
+          </lu>
+        </out>
+      </action>
+    </rule>
+
+
+
+    <rule comment="CHUNK: det_preadv_adj_nom and ...">
+      <pattern>
+        <pattern-item n="det_preadv_adj_nom"/>
+      </pattern>
+      <action>
+        <call-macro n="drop_gender1"><with-param pos="1"/></call-macro>
+        <call-macro n="drop_gender1"><with-param pos="2"/></call-macro>
+        <call-macro n="drop_gender1"><with-param pos="3"/></call-macro>
+        <call-macro n="drop_gender1"><with-param pos="4"/></call-macro>
+        <out>
+          <lu>
+            <clip pos="1" part="whole"/>
+          </lu>
+          <b pos="1"/>
+          <lu>
+            <clip pos="2" part="whole"/>
+          </lu>
+          <b pos="2"/>
+          <lu>
+            <clip pos="3" part="whole"/>
+          </lu>
+          <b pos="3"/>
+          <lu>
+            <clip pos="4" part="whole"/>
+          </lu>
+        </out>
+      </action>
+    </rule>
+
+
+
+    <rule comment="CHUNK: det_nom_gen_det_nom and ...">
+      <pattern>
+        <pattern-item n="det_nom_gen_det_nom"/>
+      </pattern>
+      <action>
+        <call-macro n="drop_gender1"><with-param pos="1"/></call-macro>
+        <call-macro n="drop_gender1"><with-param pos="2"/></call-macro>
+        <call-macro n="drop_gender1"><with-param pos="3"/></call-macro>
+        <call-macro n="drop_gender1"><with-param pos="4"/></call-macro>
+        <call-macro n="drop_gender1"><with-param pos="5"/></call-macro>
+        <out>
+          <lu>
+            <clip pos="1" part="whole"/>
+          </lu>
+          <b pos="1"/>
+          <lu>
+            <clip pos="2" part="whole"/>
+          </lu>
+          <b pos="2"/>
+          <lu>
+            <clip pos="3" part="whole"/>
+          </lu>
+          <b pos="3"/>
+          <lu>
+            <clip pos="4" part="whole"/>
+          </lu>
+          <b pos="4"/>
+          <lu>
+            <clip pos="5" part="whole"/>
+          </lu>
+        </out>
+      </action>
+    </rule>
+
+
+    <rule comment="CHUNK: det_nom_gen_det_nom_nom and ...">
+      <pattern>
+        <pattern-item n="det_nom_gen_det_nom_nom"/>
+      </pattern>
+      <action>
+        <call-macro n="drop_gender1"><with-param pos="1"/></call-macro>
+        <call-macro n="drop_gender1"><with-param pos="2"/></call-macro>
+        <call-macro n="drop_gender1"><with-param pos="3"/></call-macro>
+        <call-macro n="drop_gender1"><with-param pos="4"/></call-macro>
+        <call-macro n="drop_gender1"><with-param pos="5"/></call-macro>
+        <call-macro n="drop_gender1"><with-param pos="6"/></call-macro>
+        <out>
+          <lu>
+            <clip pos="1" part="whole"/>
+          </lu>
+          <b pos="1"/>
+          <lu>
+            <clip pos="2" part="whole"/>
+          </lu>
+          <b pos="2"/>
+          <lu>
+            <clip pos="3" part="whole"/>
+          </lu>
+          <b pos="3"/>
+          <lu>
+            <clip pos="4" part="whole"/>
+          </lu>
+          <b pos="4"/>
+          <lu>
+            <clip pos="5" part="whole"/>
+          </lu>
+          <b pos="5"/>
+          <lu>
+            <clip pos="6" part="whole"/>
+          </lu>
+        </out>
+      </action>
+    </rule>
+-->
+  </section-rules>
+</postchunk>
