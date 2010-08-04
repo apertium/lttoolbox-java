@@ -83,6 +83,9 @@ public class ParseTestTransferFiles {
       generateTestFiles("testdata/interchunk/apertium-eo-en.en-eo.t2x");
       generateTestFiles("testdata/interchunk/apertium-en-es.en-es.t2x");
 
+      generateTestFiles("testdata/postchunk/apertium-eo-en.en-eo.t3x");
+      generateTestFiles("testdata/postchunk/apertium-en-es.en-es.t3x");
+
 /*
       generateTestFiles("testdata/transfer/apertium-eo-en.en-eo.t1x");
       generateTestFiles("testdata/transfer/apertium-eo-en.eo-en.t1x");

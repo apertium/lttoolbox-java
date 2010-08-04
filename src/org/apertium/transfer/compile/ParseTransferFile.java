@@ -442,6 +442,9 @@ public class ParseTransferFile {
       }
       res += ")";
       return res;
+    } else if (n.equals("lu-count")) {
+      parseError("// TODO - lu-count is not implemented yet. Returning dummy value '42'");
+      return str("42");
     }
     throwParseError("// ERROR: unexpected rvalue expression "+e);
     return str("");// +"/* not supported yet: "+e + "*/";
@@ -916,6 +919,11 @@ public class ParseTransferFile {
 
 
   private String word(int pos) {
+    if (parseMode == ParseMode.POSTCHUNK) {
+      if (pos == 0) return "word1";
+      // TODO clip pos != 0 (i.e. inside chunk) not supported yet :-(.
+    }
+
     if (pos <= currentNumberOfWordInParameterList) {
       return "word"+pos;
     }
