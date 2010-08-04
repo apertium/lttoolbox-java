@@ -107,7 +107,7 @@ public class InterchunkWord {
     }
     
     public void chunkApartSet(final ApertiumRE part, final String value) {
-        part.replace(_chunk, value);
+        _chunk = part.replace(_chunk, value);
     }
 
 

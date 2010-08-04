@@ -201,7 +201,7 @@ public class Interchunk {
             } 
             else {
                 val = in.read();
-                if (DEBUG) System.err.println("val = " + (char) val);
+                //if (DEBUG) System.err.println("val = " + (char) val);
             }
             if (val == -1 || (val == 0 && internal_null_flush)) {
                 return input_buffer.add(new TransferToken(content,
@@ -232,7 +232,7 @@ public class Interchunk {
                         skipRead = false; //unset flag
                     } else {
                         val2 = in.read();
-                        if (DEBUG) System.err.println("val2 = " + (char) val2);
+                        //if (DEBUG) System.err.println("val2 = " + (char) val2);
                     }
                     if (val2 == '\\') {
                         content += '\\';
@@ -469,9 +469,9 @@ public class Interchunk {
 
         if (DEBUG)
             System.err.println("#args = " + args.length);
-        if (DEBUG)
-            System.err.println("processRule:" + lastrule.getName() + "("
-                    + Arrays.toString(args));
+//        if (DEBUG)
+//            System.err.println("processRule:" + lastrule.getName() + "("
+//                    + Arrays.toString(args));
         try {
             if (DO_TIMING)
                 timing.log("applyRule 1");

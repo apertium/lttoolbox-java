@@ -91,18 +91,20 @@ public class TestInterchunk {
     
     @Test
     public void testSentenceNumber2() throws IOException {
-        String testIn = "     ^Num<NUM>{^2<num>$}$^punt<sent>{^.<sent>$}$ ^Nom<SN><UNDET><m><sg>{^anarquismo<n><3><4>$}$ ^adv<adv><NEG>{^no<adv>$}$ ^be<Vcop><vbser><pri><p3><sg>{^ser<vbser><3><4><5>$}$ ^det_nom<SN><DET><m><sg>{^el<det><def><3><4>$ ^reinado<n><3><4>$}$ ^pr<PREP>{^de<pr>$}$ ^nom<SN><UNDET><m><sg>{^amor<n><3><4>$}$^coma<cm>{^,<cm>$}$ ^cnj<cnjcoo>{^pero<cnjcoo>$}$ ^det_nom<SN><DET><m><sg>{^el<det><def><3><4>$ ^reinado<n><3><4>$}$ ^pr<PREP>{^de<pr>$}$ ^nom<SN><UNDET><f><sg>{^justicia<n><3><4>$}$^punt<sent>{^.<sent>$}$";
-        String expTestOut = "     ^Num<NUM>{^2<num>$}$^punt<sent>{^.<sent>$}$ ^Nom<SN><PDET><m><sg>{^anarquismo<n><3><4>$}$ ^adv<adv><NEG>{^no<adv>$}$ ^be<Vcop><vbser><pri><p3><sg>{^ser<vbser><3><4><5>$}$ ^det_nom<SN><DET><m><sg>{^el<det><def><3><4>$ ^reinado<n><3><4>$}$ ^pr<PREP>{^de<pr>$}$ ^nom<SN><UNDET><m><sg>{^amor<n><3><4>$}$^coma<cm>{^,<cm>$}$ ^cnj<cnjcoo>{^pero<cnjcoo>$}$ ^det_nom<SN><DET><m><sg>{^el<det><def><3><4>$ ^reinado<n><3><4>$}$ ^pr<PREP>{^de<pr>$}$ ^nom<SN><UNDET><f><sg>{^justicia<n><3><4>$}$^punt<sent>{^.<sent>$}$";
+        String testInp = "     ^Num<NUM>{^2<num>$}$^punt<sent>{^.<sent>$}$ ^Nom<SN><UNDET><m><sg>{^anarquismo<n><3><4>$}$ ^adv<adv><NEG>{^no<adv>$}$ ^be<Vcop><vbser><pri><p3><sg>{^ser<vbser><3><4><5>$}$ ^det_nom<SN><DET><m><sg>{^el<det><def><3><4>$ ^reinado<n><3><4>$}$ ^pr<PREP>{^de<pr>$}$ ^nom<SN><UNDET><m><sg>{^amor<n><3><4>$}$^coma<cm>{^,<cm>$}$ ^cnj<cnjcoo>{^pero<cnjcoo>$}$ ^det_nom<SN><DET><m><sg>{^el<det><def><3><4>$ ^reinado<n><3><4>$}$ ^pr<PREP>{^de<pr>$}$ ^nom<SN><UNDET><f><sg>{^justicia<n><3><4>$}$^punt<sent>{^.<sent>$}$";
+        String testExp = "     ^Num<NUM>{^2<num>$}$^punt<sent>{^.<sent>$}$ ^Nom<SN><PDET><m><sg>{^anarquismo<n><3><4>$}$ ^adv<adv><NEG>{^no<adv>$}$ ^be<Vcop><vbser><pri><p3><sg>{^ser<vbser><3><4><5>$}$ ^det_nom<SN><DET><m><sg>{^el<det><def><3><4>$ ^reinado<n><3><4>$}$ ^pr<PREP>{^de<pr>$}$ ^nom<SN><UNDET><m><sg>{^amor<n><3><4>$}$^coma<cm>{^,<cm>$}$ ^cnj<cnjcoo>{^pero<cnjcoo>$}$ ^det_nom<SN><DET><m><sg>{^el<det><def><3><4>$ ^reinado<n><3><4>$}$ ^pr<PREP>{^de<pr>$}$ ^nom<SN><UNDET><f><sg>{^justicia<n><3><4>$}$^punt<sent>{^.<sent>$}$";
 
-        runSingleSentenceTest(testIn, expTestOut);
+        runSingleSentenceTest(testInp, testExp);
     }
+
     
     @Test
     public void testSentenceNumber7() throws IOException {
-        String testIn = "     ^Num<NUM>{^7<num>$}$^punt<sent>{^.<sent>$}$ ^Prnsubj<SN><tn><p3><m><pl>{^prpers<prn><2><p3><4><pl>$}$ ^adv<adv>{^en cambio<adv>$}$ ^inf<SV><vblex><inf><PD><ND>{^defender<vblex><3>$}$ ^det_nom<SN><DET><m><sg>{^el<det><def><3><4>$ ^proceso<n><3><4>$}$ ^pr<PREP>{^de<pr>$}$ ^unknown<unknown>{^*rewilding$}$ ^cnj<cnjcoo>{^o<cnjcoo>$}$ ^unknown<unknown>{^*reconnecting$}$ ^pr<PREP>{^con<pr>$}$ ^det_nom_adj<SN><DET><m><sg>{^el<det><def><3><4>$ ^entorno<n><3><4>$ ^natural<adj><mf><4>$}$^punt<sent>{^.<sent>$}$";
-        String expTestOut = "     ^Num<NUM>{^7<num>$}$^punt<sent>{^.<sent>$}$ ^Adv<adv>{^en cambio<adv>$}$ ^inf<SV><vblex><pri><p3><pl>{^defender<vblex><3>$}$ ^det_nom<SN><DET><m><sg>{^el<det><def><3><4>$ ^proceso<n><3><4>$}$ ^pr<PREP>{^de<pr>$}$ ^unknown<unknown>{^*rewilding$}$ ^cnj<cnjcoo>{^o<cnjcoo>$}$ ^unknown<unknown>{^*reconnecting$}$ ^pr<PREP>{^con<pr>$}$ ^det_nom_adj<SN><DET><m><sg>{^el<det><def><3><4>$ ^entorno<n><3><4>$ ^natural<adj><mf><4>$}$^punt<sent>{^.<sent>$}$";
-
-        runSingleSentenceTest(testIn, expTestOut);
+        String testInp = "     ^Num<NUM>{^7<num>$}$^punt<sent>{^.<sent>$}$ ^Prnsubj<SN><tn><p3><m><pl>{^prpers<prn><2><p3><4><pl>$}$ ^adv<adv>{^en cambio<adv>$}$ ^inf<SV><vblex><inf><PD><ND>{^defender<vblex><3>$}$ ^det_nom<SN><DET><m><sg>{^el<det><def><3><4>$ ^proceso<n><3><4>$}$ ^pr<PREP>{^de<pr>$}$ ^unknown<unknown>{^*rewilding$}$ ^cnj<cnjcoo>{^o<cnjcoo>$}$ ^unknown<unknown>{^*reconnecting$}$ ^pr<PREP>{^con<pr>$}$ ^det_nom_adj<SN><DET><m><sg>{^el<det><def><3><4>$ ^entorno<n><3><4>$ ^natural<adj><mf><4>$}$^punt<sent>{^.<sent>$}$";
+        String testExp = "     ^Num<NUM>{^7<num>$}$^punt<sent>{^.<sent>$}$ ^Adv<adv>{^en cambio<adv>$}$ ^inf<SV><vblex><pri><p3><pl>{^defender<vblex><3>$}$ ^det_nom<SN><DET><m><sg>{^el<det><def><3><4>$ ^proceso<n><3><4>$}$ ^pr<PREP>{^de<pr>$}$ ^unknown<unknown>{^*rewilding$}$ ^cnj<cnjcoo>{^o<cnjcoo>$}$ ^unknown<unknown>{^*reconnecting$}$ ^pr<PREP>{^con<pr>$}$ ^det_nom_adj<SN><DET><m><sg>{^el<det><def><3><4>$ ^entorno<n><3><4>$ ^natural<adj><mf><4>$}$^punt<sent>{^.<sent>$}$";
+        //String testInp = "^Prnsubj<SN><tn><p3><m><pl>{^prpers<prn><2><p3><4><pl>$}$ ^adv<adv>{^en cambio<adv>$}$ ^inf<SV><vblex><inf><PD><ND>{^defender<vblex><3>$}$";
+        //String testExp = "^Adv<adv>{^en cambio<adv>$}$ ^inf<SV><vblex><pri><p3><pl>{^defender<vblex><3>$}$";
+        runSingleSentenceTest(testInp, testExp);
     }
 
     @SuppressWarnings("unchecked")
