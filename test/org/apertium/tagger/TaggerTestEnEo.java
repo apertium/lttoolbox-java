@@ -18,8 +18,10 @@
  */
 package org.apertium.tagger;
 
-import org.junit.Test;
+import static org.apertium.utils.IOUtils.readFile;
 import static org.junit.Assert.*;
+
+import org.junit.Test;
 import java.io.*;
 
 /**
@@ -58,7 +60,7 @@ public class TaggerTestEnEo {
         f.close();
 
         Tagger.main(argv);
-        String testOutput = TaggerTest.readFile("./tmp/taggerout");
+        String testOutput = readFile("./tmp/taggerout");
 
         System.err.println("output = " + testOutput);
         System.err.println("expout = " + expTestout);
@@ -82,8 +84,8 @@ public class TaggerTestEnEo {
         Tagger.main(argv);
 
         //Read actual output into a string
-        String testOutput = TaggerTest.readFile(outputFile);
-        String expectedOutput = TaggerTest.readFile(compareOutFile);
+        String testOutput = readFile(outputFile);
+        String expectedOutput = readFile(compareOutFile);
 
         assertEquals("TaggerTestEnEo.testEnEo200Sentences() failed: output does not match expected output.", expectedOutput, testOutput);
     }

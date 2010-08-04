@@ -20,14 +20,11 @@
 package org.apertium.pretransfer;
 
 import static org.junit.Assert.*;
+import static org.apertium.utils.IOUtils.readFile;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
-import org.apertium.tagger.Tagger;
 import org.junit.Test;
 
 /**
@@ -38,17 +35,6 @@ public class PreTransferTest {
 
     String dir = "testdata/pretransfer/";
 
-    private String readFile(String path) throws IOException {
-        File outFile = new File(path);
-        FileInputStream fis = new FileInputStream(outFile);
-        InputStreamReader fisReader = new InputStreamReader(fis, "UTF-8");
-        char[] charArray = new char[(int) outFile.length()];
-        fisReader.read(charArray);
-        fisReader.close();
-        String testOutput = new String(charArray);
-        return testOutput;
-    }
-    
     /**
      * Test method for {@link org.apertium.pretransfer.PreTransfer#main(java.lang.String[])}.
      * pretransfer takes the output from the tagger as its input and outputs to transfer.

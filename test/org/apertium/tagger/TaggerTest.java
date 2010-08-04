@@ -18,11 +18,13 @@
  */
 package org.apertium.tagger;
 
+import static org.junit.Assert.*;
+import static org.apertium.utils.IOUtils.readFile;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import java.io.*;
 
 /**
@@ -48,17 +50,6 @@ public class TaggerTest {
     @After
     public void tearDown() {
     }
-
-	static String readFile(String path) throws IOException {
-	    File outFile = new File(path);
-        FileInputStream fis = new FileInputStream(outFile);
-        InputStreamReader fisReader = new InputStreamReader(fis, "UTF-8");
-        char[] charArray = new char[(int) outFile.length()];
-        fisReader.read(charArray);
-        fisReader.close();
-        String testOutput = new String(charArray);
-        return testOutput;
-	}
 
 	/**
      * Test of main method, of class Tagger.

@@ -19,23 +19,19 @@
 
 package org.apertium.interchunk;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 import static org.junit.Assert.assertEquals;
+import static org.apertium.utils.IOUtils.readFile;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 
-import org.apertium.pretransfer.PreTransfer;
 import org.apertium.transfer.compile.ApertiumTransferCompile;
 import org.junit.Test;
 
@@ -49,17 +45,6 @@ public class TestInterchunk {
     static String testDataDir = "testdata/interchunk/";
     static String tempDir = "./tmp/";
 
-    private String readFile(String path) throws IOException {
-        File outFile = new File(path);
-        FileInputStream fis = new FileInputStream(outFile);
-        InputStreamReader fisReader = new InputStreamReader(fis, "UTF-8");
-        char[] charArray = new char[(int) outFile.length()];
-        fisReader.read(charArray);
-        fisReader.close();
-        String testOutput = new String(charArray);
-        return testOutput;
-    }
-    
     //@Test
     public void testInterchunkCompile() throws Exception {
         /* This method was setup to be able to more easily debug the transfer compile.

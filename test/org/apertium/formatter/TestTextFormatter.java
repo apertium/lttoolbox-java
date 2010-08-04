@@ -20,12 +20,10 @@
 package org.apertium.formatter;
 
 import static org.junit.Assert.*;
+import static org.apertium.utils.IOUtils.readFile;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import org.junit.Test;
 
@@ -35,19 +33,6 @@ import org.junit.Test;
  */
 public class TestTextFormatter {
 
-    /* Copied from the test org.apertium.tagger.TaggerTest
-     */
-    public String readFile(String path) throws IOException {
-        File outFile = new File(path);
-        FileInputStream fis = new FileInputStream(outFile);
-        InputStreamReader fisReader = new InputStreamReader(fis, "UTF-8");
-        char[] charArray = new char[(int) outFile.length()];
-        fisReader.read(charArray);
-        fisReader.close();
-        String testOutput = new String(charArray);
-        return testOutput;
-    }
-    
     /**
      * Test method for {@link org.apertium.formatter.TextFormatter#main(java.lang.String[])}.
      * Tests a nonsense sentence filled with random words, whitespace, and special characters.
