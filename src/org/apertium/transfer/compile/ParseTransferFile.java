@@ -442,9 +442,10 @@ public class ParseTransferFile {
       }
       res += ")";
       return res;
-    } else if (n.equals("lu-count")) {
-      parseError("// TODO - lu-count is not implemented yet. Returning dummy value '42'");
-      return str("42");
+    } else if (n.equals("lu-count") && parseMode==parseMode.POSTCHUNK) {
+      // the number of lexical units inside the chunk is the length of the words array, but as we might be in a
+      // macro, where we dont have access to the array, we use a global variable
+      return "lu_count";
     }
     throwParseError("// ERROR: unexpected rvalue expression "+e);
     return str("");// +"/* not supported yet: "+e + "*/";
@@ -917,16 +918,25 @@ public class ParseTransferFile {
     return "error_UNKNOWN_LIST";
   }
 
+  /**
+    // in postchunk there is no certain fixed number of words when a rule is invoked
+    // therefore word and blank parameters are implemented as an array
+    // however, macros are the same, so we have to know if we are in a macro or not
+   */
+  private boolean inMacro = false;
 
   private String word(int pos) {
-    if (parseMode == ParseMode.POSTCHUNK) {
-      if (pos == 0) return "word1";
-      // TODO clip pos != 0 (i.e. inside chunk) not supported yet :-(.
+    if (parseMode == ParseMode.POSTCHUNK && !inMacro) {
+      // in postchunk there is no certain fixed number of words in the rules.
+      // therefore its implemented as an array
+      // word[0] refers to the chunk lemma and tags
+      return "words["+pos+"]";
     }
 
     if (pos <= currentNumberOfWordInParameterList) {
       return "word"+pos;
     }
+
     parseError("// WARNING clip pos="+pos+" is out of range. Replacing with an empty placeholder.");
       if (this.parseMode == ParseMode.TRANSFER) {
         return "new TransferWord(\"\", \"\", 0)";
@@ -941,6 +951,13 @@ public class ParseTransferFile {
   }
 
   private String blank(int pos) {
+    if (parseMode == ParseMode.POSTCHUNK && !inMacro) {
+      // in postchunk there is no certain fixed number of words in the rules.
+      // therefore its implemented as an array
+      // TODO: check if index should be shifted one time  (word[0] refers to the chunk lemma and tags)
+      return "blanks["+pos+"]";
+    }
+
     if (pos < currentNumberOfWordInParameterList) {
       return "blank"+pos;
     }
@@ -970,7 +987,7 @@ public class ParseTransferFile {
           parseMode = ParseMode.INTERCHUNK;
         } else if (rootTagName.equals("postchunk")) {
           parseMode = ParseMode.POSTCHUNK;
-        }
+        } else throw new IllegalArgumentException("illegal rootTagName: "+rootTagName);
 
         println("package org.apertium.transfer.generated;");
         println("import java.io.*;");
@@ -1059,6 +1076,10 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
               println("String var_"+javaIdentifier(n)+" = \""+v+"\";");
         }
 
+        if (parseMode == ParseMode.POSTCHUNK) {
+          println("String lu_count;");
+        }
+
         for (Element c0 : getChildsChildrenElements(root, "section-def-lists")) {
           String n = c0.getAttribute("n");
           ArrayList<String> items = new ArrayList<String>();
@@ -1071,6 +1092,7 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
         }
 
 
+        inMacro = true;
         for (Element c0 : getChildsChildrenElements(root, "section-def-macros")) {
           currentNode = c0;
           String name = c0.getAttribute("n");
@@ -1099,6 +1121,7 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
         }
 
 
+        inMacro = false;
         int ruleNo = 0;
         printComments();
         for (Element c0 : getChildsChildrenElements(root, "section-rules")) {
@@ -1115,9 +1138,16 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
           String methodArguments = "";
           if (this.parseMode == ParseMode.TRANSFER) {
               for (int i=1; i<=currentNumberOfWordInParameterList; i++) methodArguments += (i==1?", ":", String "+blank(i-1)+", ")+"TransferWord "+ word(i);
-          } else {
+          } else if (this.parseMode == ParseMode.INTERCHUNK) {
               for (int i=1; i<=currentNumberOfWordInParameterList; i++) methodArguments += (i==1?", ":", String "+blank(i-1)+", ")+"InterchunkWord "+ word(i);
+          } else { 
+            assert(parseMode == ParseMode.POSTCHUNK);
+            // in postchunk there is no certain fixed number of words when a rule is invoked
+            // therefore its implemented as an array
+            // words[0] refers to the chunk lemma (and tags)
+            methodArguments += ", InterchunkWord[] words, String[] blanks";
           }
+
           String logCallParameters = "";
           for (int i=1; i<=currentNumberOfWordInParameterList; i++) logCallParameters += (i==1?", ":", "+blank(i-1)+", ")+" "+ word(i);
           println("");
@@ -1131,6 +1161,9 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
           println("{");
           println("if (debug) { logCall(\""+methodName+"\""+logCallParameters+"); } "); // TODO Check performance impact
 
+          if (parseMode == ParseMode.POSTCHUNK) {
+            println("lu_count = Integer.toString(words.length-1);");
+          }
           //System.err.println("methodName = " + methodName);
 
           writeMethodBody((Element) getElement(c0, "action"));

@@ -20,6 +20,7 @@ public class apertium_eo_en_en_eo_t3x extends GeneratedTransferBase
 	ApertiumRE attr_chcontent = new ApertiumRE("(\\{.+)");
 	ApertiumRE attr_content = new ApertiumRE("(\\{.+)");
 	String var_paraula = "";
+	String lu_count;
 	
 	private void macro_drop_gender1(Writer out, InterchunkWord word1) throws IOException
 	{
@@ -31,13 +32,14 @@ public class apertium_eo_en_en_eo_t3x extends GeneratedTransferBase
 	}
 	
 	// CHUNK: Ne-uzata regulo (nur cxar DEVAS esti unu cxi tie)
-	public void rule0__nomxxxxxxx(Writer out, InterchunkWord word1) throws IOException
+	public void rule0__nomxxxxxxx(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
-		if (debug) { logCall("rule0__nomxxxxxxx",  word1); } 
+		if (debug) { logCall("rule0__nomxxxxxxx",  words[1]); } 
+		lu_count = Integer.toString(words.length-1);
 		/** <call-macro n="drop_gender1"><with-param pos="1"/></call-macro> */
 		{
 			String myword = 
-			         word1.tl(attr_whole)
+			         words[1].tl(attr_whole)
 			         ;
 			if (myword.length()>0)
 			{
