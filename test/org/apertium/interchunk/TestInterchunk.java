@@ -154,7 +154,12 @@ public class TestInterchunk {
             fail("Exception occured during test.");
         }
 
-        String testOutput = output.toString().trim();
+        /* Do not trim. Trimming the output will result in a failed test.
+         * Trim removes whitespace before and after the string, which will
+         * cause it to fail when testing against the C++ output which does
+         * not trim.
+         */
+        String testOutput = output.toString();
 
         String expectedOutput = readFile(compareOutFile);
 
