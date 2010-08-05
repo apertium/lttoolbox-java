@@ -137,7 +137,7 @@ public class Postchunk extends Interchunk {
     }
     
     private void unchunk(final String chunk, Writer output) throws IOException {
-        ArrayList vecTags = getVecTags(chunk);
+        ArrayList<String> vecTags = getVecTags(chunk);
         String caseInfo = TransferWord.caseOf(pseudolemma(chunk));
         
         boolean uppercaseAll = false;
@@ -167,12 +167,54 @@ public class Postchunk extends Interchunk {
                         output.write('\\');
                         output.write(chunk.charAt(++i));
                     } else if(chunk.charAt(i) == '<') {
-                        /* TODO: Still working on porting this method, is currently
-                         * incomplete.
-                         */
+                        if(Character.isDigit(chunk.charAt(i + 1))) {
+                            //replace tag
+                            /* Using int instead of long because thats what
+                             * ArrayList.get() expects.
+                             */
+                            int value = Integer.parseInt(chunk.substring(i + 1)) - 1;
+                            if(vecTags.size() > value) {
+                                output.write(vecTags.get(value));
+                            }
+                            //increment i until we hit the end of the tag
+                            while(chunk.charAt(i) != '>');
+                        } else {
+                            output.write('<');
+                            while(chunk.charAt(++i) != '>') { output.write(chunk.charAt(i)); }
+                            output.write('>');
+                        }
+                    } else {
+                        if(uppercaseAll) {
+                            output.write(Character.toUpperCase(chunk.charAt(i)));
+                        } else if(uppercaseFirst) {
+                            if(Character.isLetterOrDigit(chunk.charAt(i))) {
+                                output.write(Character.toUpperCase(chunk.charAt(i)));
+                                uppercaseFirst = false;
+                            } else {
+                                output.write(chunk.charAt(i));
+                            }
+                        } else {
+                            output.write(chunk.charAt(i));
+                        }
                     }
                 }
+                output.write('$');
+            } else if(chunk.charAt(i) == '[') {
+                output.write('[');
+                while(chunk.charAt(i) != ']') {
+                    if(chunk.charAt(i) == '\\') {
+                        output.write('\\');
+                        output.write(chunk.charAt(i));
+                    } else {
+                        output.write(chunk.charAt(i));
+                    }
+                }
+                output.write(']');
+            } else {
+                output.write(chunk.charAt(i));
             }
         }
     }
+    
+    
 }
