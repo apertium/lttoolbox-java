@@ -300,4 +300,15 @@ public class Postchunk extends Interchunk {
             }
         }
     }
+
+
+    /**
+     * Much of this code originally copied from {@link org.apertium.transfer.Transfer#applyRule(Writer)}.
+     * Modified to be in-line with the differences between transfer.cc and interchunk.cc
+     */
+    private void applyRule(Writer output) {
+      // signature a la public void rule0__nom(Writer out, InterchunkWord[] words, String[] blanks)
+        Object[] args = new Object[3];
+        // Jacob TODO
+    }
 }
