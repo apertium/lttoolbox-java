@@ -42,7 +42,7 @@ public class Postchunk extends Interchunk {
      * @param chunk -- The string chunk to process.
      * @return An ArrayList of tags in the beginning part of the chunk.
      */
-    private ArrayList<String> getVecTags(final String chunk) {
+    private static ArrayList<String> getVecTags(final String chunk) {
         ArrayList<String> vecTags = new ArrayList<String>();
         
         for(int i = 0, limit = chunk.length(); i != limit; i++) {
@@ -71,7 +71,7 @@ public class Postchunk extends Interchunk {
      * @return The length of the beginning part of the chunk, which may
      * be the entire chunk, if there is no end part.
      */
-    private int beginChunk(final String chunk) {
+    private static int beginChunk(final String chunk) {
         for(int i = 0, limit = chunk.length(); i != limit; i++) {
             if(chunk.charAt(i) == '\\') {
                 i++;
@@ -90,7 +90,7 @@ public class Postchunk extends Interchunk {
         return chunk.length();
     }
     
-    private int endChunk(final String chunk) {
+    private static int endChunk(final String chunk) {
         /* Returns the length of the chunk - 2,
          * If passing in an entire chunk, this would return
          * the length up to the final '}$'
@@ -122,7 +122,7 @@ public class Postchunk extends Interchunk {
         return "";
     }
     
-    private String pseudolemma(final String chunk) {
+    private static String pseudolemma(final String chunk) {
         for(int i = 0, limit = chunk.length(); i != limit; i++) {
             if(chunk.charAt(i) == '\\') {
                 i++;
@@ -216,7 +216,7 @@ public class Postchunk extends Interchunk {
         }
     }
     
-    private void splitWordsAndBlanks(final String chunk, ArrayList<String> words, ArrayList<String> blanks) {
+    private static void splitWordsAndBlanks(final String chunk, ArrayList<String> words, ArrayList<String> blanks) {
         ArrayList<String> vecTags = getVecTags(chunk);
         StringBuilder result = new StringBuilder();
         String caseInfo = TransferWord.caseOf(pseudolemma(chunk));
