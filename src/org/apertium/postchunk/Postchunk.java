@@ -143,9 +143,9 @@ public class Postchunk extends Interchunk {
         boolean uppercaseAll = false;
         boolean uppercaseFirst = false;
         
-        if(caseInfo == "AA") {
+        if(caseInfo.equals("AA")) {
             uppercaseAll = true;
-        } else if(caseInfo == "Aa") {
+        } else if(caseInfo.equals("Aa")) {
             uppercaseFirst = true;
         }
         
@@ -216,5 +216,88 @@ public class Postchunk extends Interchunk {
         }
     }
     
-    
+    private void splitWordsAndBlanks(final String chunk, ArrayList<String> words, ArrayList<String> blanks) {
+        ArrayList<String> vecTags = getVecTags(chunk);
+        StringBuilder result = new StringBuilder();
+        String caseInfo = TransferWord.caseOf(pseudolemma(chunk));
+        
+        boolean uppercaseAll = false;
+        boolean uppercaseFirst = false;
+        boolean lastBlank = true;
+        
+        if(caseInfo.equals("AA")) {
+            uppercaseAll = true;
+        } else if(caseInfo.equals("Aa")) {
+            uppercaseFirst = true;
+        }
+        
+        for(int i = beginChunk(chunk), limit = endChunk(chunk); i < limit; i++) {
+            if(chunk.charAt(i) == '\\') {
+                result.append('\\');
+                result.append(chunk.charAt(++i));
+            } else if(chunk.charAt(i) == '^') {
+                if(!lastBlank) {
+                    blanks.add(result.toString());
+                    result = new StringBuilder();
+                }
+                lastBlank = false;
+                /* No need for pointer and reference acrobatics in the Java version.
+                 * So will just be using myWord instead of "ref"
+                 */
+                StringBuilder myWord = new StringBuilder();
+                
+                while(chunk.charAt(++i) != '$') {
+                    if(chunk.charAt(i) == '\\') {
+                        myWord.append('\\');
+                        myWord.append(chunk.charAt(++i));
+                    } else if(chunk.charAt(i) == '<') {
+                        if(Character.isDigit(chunk.charAt(i + 1))) {
+                            //replace tag
+                            int value = Integer.parseInt(chunk.substring(i + 1));
+                            if(vecTags.size() > value) {
+                                myWord.append(vecTags.get(value));
+                            }
+                            while(chunk.charAt(++i) != '>');
+                        } else {
+                            myWord.append('<');
+                            while(chunk.charAt(++i) != '>') { myWord.append(chunk.charAt(i)); }
+                            myWord.append('>');
+                        }
+                    } else {
+                        if(uppercaseAll) {
+                            myWord.append(Character.toUpperCase(chunk.charAt(i)));
+                        } else if(uppercaseFirst) {
+                            if(Character.isLetterOrDigit(chunk.charAt(i))) {
+                                myWord.append(chunk.charAt(i));
+                                uppercaseFirst = false;
+                            } else {
+                                myWord.append(chunk.charAt(i));
+                            }
+                        } else {
+                            myWord.append(chunk.charAt(i));
+                        }
+                    }
+                }
+                words.add(myWord.toString());
+            } else if(chunk.charAt(i) == '[') {
+                //Again no need for "ref" in the Java code
+                StringBuilder myBlank = new StringBuilder();
+                myBlank.append('[');
+                while(chunk.charAt(++i) != ']') {
+                    if(chunk.charAt(i) == '\\') {
+                        myBlank.append('\\');
+                        myBlank.append(chunk.charAt(++i));
+                    } else {
+                        myBlank.append(chunk.charAt(i));
+                    }
+                }
+                myBlank.append(chunk.charAt(i));
+                blanks.add(myBlank.toString());
+                lastBlank = true;
+            } else if(chunk.charAt(i) == ' ') {
+                blanks.add(" ");
+                lastBlank = true;
+            }
+        }
+    }
 }
