@@ -22,6 +22,7 @@ package org.apertium.postchunk;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import org.apertium.interchunk.Interchunk;
@@ -35,14 +36,15 @@ import org.apertium.transfer.TransferWord;
  */
 public class Postchunk extends Interchunk {
     
-    /* This is a (non-exaustive) list of Methods that don't need to be 
-     * changed from the versions in Interchunk.
+    /* This is a list of Methods that don't need to be changed from the versions 
+     * in Interchunk, per diffing their C++ counterparts.
      * readData(InputStream), read(String, String), read(Class, String),
-     * getNullFlush(), setNullFlush().
+     * readToken(Reader), getNullFlush(), setNullFlush(), 
+     * interchunk_wrapper_null_flush(), interchunk(). The latter two because of a 
+     * few lines introduced in interchunk to keep from duplicating so much code.
      * applyWord() has a bunch of code commented out in Postchunk, but
      * is otherwise exactly the same, not sure why it's commented out.
      */
-    
     
     /**
      * This function parses a chunk and reads all the tags
@@ -150,7 +152,8 @@ public class Postchunk extends Interchunk {
         return "";
     }
     
-    private void unchunk(final String chunk, Writer output) throws IOException {
+    @Override
+    protected void unchunk(final String chunk, Writer output) throws IOException {
         ArrayList<String> vecTags = getVecTags(chunk);
         String caseInfo = TransferWord.caseOf(pseudolemma(chunk));
         
@@ -324,5 +327,19 @@ public class Postchunk extends Interchunk {
       // signature a la public void rule0__nom(Writer out, InterchunkWord[] words, String[] blanks)
         Object[] args = new Object[3];
         // Jacob TODO
+    }
+    
+    public Postchunk() {
+        super();
+        icMode = InterchunkMode.POSTCHUNK;
+    }
+    
+    /* This just calls the interchunk method. It's provided as a convenience because
+     * it's expected that postchunk will have a postchunk method, instead of an interchunk
+     * method.
+     */
+    public void postchunk(Reader in, Writer output) throws IllegalArgumentException,
+            IOException, IllegalAccessException, InvocationTargetException {
+        interchunk(in, output);
     }
 }

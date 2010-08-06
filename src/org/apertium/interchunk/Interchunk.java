@@ -45,6 +45,19 @@ import org.apertium.transfer.generated.GeneratedTransferBase;
  * 
  */
 public class Interchunk {
+    
+    /* Yes, this increases the linkage and entanglement of the classes, but
+     * but it's better than duplicating so much code just for a change of a
+     * couple of lines between Interchunk and Postchunk.
+     * Defines the mode certain parts of code operates in, either in
+     * Interchunk or Postchunk mode.
+     */
+    
+    protected enum InterchunkMode {
+        INTERCHUNK, POSTCHUNK
+    }
+    
+    protected InterchunkMode icMode;
 
     /*
      * This class is very similar to the Transfer class, so some code was just
@@ -94,6 +107,8 @@ public class Interchunk {
         inword = false;
         null_flush = false;
         internal_null_flush = false;
+
+        icMode = InterchunkMode.INTERCHUNK;
     }
     
     /**
@@ -340,9 +355,18 @@ public class Interchunk {
                     input_buffer.setPos(last);
                 } else {
                     if (tmpword.size() != 0) {
-                        output.write('^');
-                        output.write(tmpword.get(0));
-                        output.write('$');
+                        switch(icMode) {
+                            case POSTCHUNK:
+                                unchunk(tmpword.get(0), output);
+                                break;
+                            //If it's not postchunk, it's interchunk.
+                            case INTERCHUNK:
+                            default:
+                                output.write('^');
+                                output.write(tmpword.get(0));
+                                output.write('$');
+                                break;
+                        }
                         tmpword.clear();
                         input_buffer.setPos(last);
                         input_buffer.next();
@@ -405,7 +429,8 @@ public class Interchunk {
                         ms.clear();
                     } else {
                         output.write(current.content);
-                        tmpblank.clear();
+                        //This line only exists in Intechunk, not postchunk
+                        if(icMode == InterchunkMode.INTERCHUNK) { tmpblank.clear(); }
                         if (DO_TIMING) {
                             timing.log("interchunk");
                             timing.report();
@@ -561,5 +586,19 @@ public class Interchunk {
         ms.step('$');
         if (DO_TIMING)
             timing.log("applyWord");
+    }
+
+    /**
+     * This function only exists to allow for the code in interchunk() to compile. This code helps eliminate
+     * duplicating almost all of the code in interchunk() in Postchunk.
+     * @param chunk
+     * @param output
+     * @throws IOException
+     * @throws UnsupportedOperationException
+     */
+    protected void unchunk(final String chunk, Writer output) throws IOException, UnsupportedOperationException {
+        String message = "Interchunk.unchunk should never be called. Instead this should only be called from " +
+            "a Postchunk object, and instead should run Postchunk.unchunk.";
+        throw new UnsupportedOperationException(message);
     }
 }
