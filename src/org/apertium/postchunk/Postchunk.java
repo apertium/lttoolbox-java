@@ -35,6 +35,15 @@ import org.apertium.transfer.TransferWord;
  */
 public class Postchunk extends Interchunk {
     
+    /* This is a (non-exaustive) list of Methods that don't need to be 
+     * changed from the versions in Interchunk.
+     * readData(InputStream), read(String, String), read(Class, String),
+     * getNullFlush(), setNullFlush().
+     * applyWord() has a bunch of code commented out in Postchunk, but
+     * is otherwise exactly the same, not sure why it's commented out.
+     */
+    
+    
     /**
      * This function parses a chunk and reads all the tags
      * from the beginning part of the chunk (before the first "{") 
@@ -65,35 +74,38 @@ public class Postchunk extends Interchunk {
     }
 
     /**
-     * Returns the length of the beginning part of the chunk, before the
-     * curly brace-enclosed ("{}") part of it.
+     * Returns the index of the first character of the part of the chunk
+     * inside the curly braces ("{}").
      * @param chunk -- The string chunk to process.
-     * @return The length of the beginning part of the chunk, which may
-     * be the entire chunk, if there is no end part.
+     * @return The index of the first char of the inner part of the chunk, after
+     * the first '{'. If there is no inner part, this will be the length of the chunk.
      */
     private static int beginChunk(final String chunk) {
         for(int i = 0, limit = chunk.length(); i != limit; i++) {
             if(chunk.charAt(i) == '\\') {
                 i++;
             } else if(chunk.charAt(i) == '{') {
-                /* We only want the length of first part of the chunk,
-                 * before the {}. Adding 1 to i gives the length of
-                 * that substring.
+                /* This value is used as the start of a for loop, which
+                 * loops through the inside part of the {} in a chunk.
+                 * Since we want to start on the first character after
+                 * the '{', we return i + 1
                  */
                 return i + 1;
             }
         }
         /* We ran through the entire chunk and didn't find a single
-         * curly brace '{', so the part of the chunk we want is the
-         * entire thing. 
+         * curly brace '{', so we want to return the length of the
+         * string, as that will cause the for loop to not even run.
          */
         return chunk.length();
     }
     
     private static int endChunk(final String chunk) {
-        /* Returns the length of the chunk - 2,
-         * If passing in an entire chunk, this would return
-         * the length up to the final '}$'
+        /* This is used to set the upper limit for a for loop,
+         * which is supposed to loop through the part inside the {}
+         * in the chunk. The reason why we take the length minus two
+         * as the upper limit is so that we stop iterating through
+         * the for loop before we hit the "}$" at the end.
          */
         return chunk.length() - 2;
     }
