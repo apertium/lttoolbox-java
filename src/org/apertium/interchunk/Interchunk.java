@@ -456,7 +456,7 @@ public class Interchunk {
      * @throws IllegalArgumentException
      * @throws InvocationTargetException
      */
-    private void applyRule(Writer output) throws IOException, IllegalAccessException,
+    protected void applyRule(Writer output) throws IOException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {
         if (DEBUG)
             System.err.println("tmpword = " + tmpword2 + "  tmpblank = "
@@ -560,19 +560,22 @@ public class Interchunk {
                     break;
     
                 case '<':
-                    for (int j = i + 1; j != limit; j++) {
-                        if (word_str.charAt(j) == '>') {
-                            int symbol = alphabet.cast(word_str.substring(i, j + 1));
-                            if (symbol != 0) {
-                                ms.step(symbol, any_tag);
-                            } else {
-                                ms.step(any_tag);
+                    //This chunk of code is commented out in postchunk.cc
+                    if(icMode == InterchunkMode.INTERCHUNK) {
+                        for (int j = i + 1; j != limit; j++) {
+                            if (word_str.charAt(j) == '>') {
+                                int symbol = alphabet.cast(word_str.substring(i, j + 1));
+                                if (symbol != 0) {
+                                    ms.step(symbol, any_tag);
+                                } else {
+                                    ms.step(any_tag);
+                                }
+                                i = j;
+                                break;
                             }
-                            i = j;
-                            break;
                         }
+                        break;
                     }
-                    break;
     
                 case '{': //ignore the unmodifiable part of the chunk
                     ms.step('$');
