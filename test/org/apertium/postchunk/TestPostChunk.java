@@ -83,8 +83,7 @@ public class TestPostChunk {
         Class[] paramTypes = {String.class};
         Object[] params = {inputString};
         
-        int returnVal = (Integer) 
-                runPrivateMethod(methodName, paramTypes, params);
+        int returnVal = (Integer) runPrivateMethod(methodName, paramTypes, params);
 
         assertEquals("TestPostChunk.testBeginChunk() failed: output does not match expected output", returnVal, expectedOutput);
     }
@@ -94,8 +93,18 @@ public class TestPostChunk {
      * Yeah, no real need to test that. XD
      */
     
-    public void testPseudoLemma() {
-        //TODO: Implement this
+    @Test
+    public void testPseudoLemma() throws SecurityException, IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        String methodName = "pseudolemma";
+        String inputString = "^Nom<SN><PDET><m><sg>{^anarquismo<n><3><4>$}$";
+        String expectedOutput = "^Nom";
+
+        Class[] paramTypes = {String.class};
+        Object[] params = {inputString};
+        
+        String returnVal = (String) runPrivateMethod(methodName, paramTypes, params);
+
+        assertEquals("TestPostChunk.testPseudoLemma() failed: output does not match expected output", returnVal, expectedOutput);
     }
     
     public void testSplitWordsAndBlanks() {

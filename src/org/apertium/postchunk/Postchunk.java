@@ -139,12 +139,14 @@ public class Postchunk extends Interchunk {
             if(chunk.charAt(i) == '\\') {
                 i++;
             } else if(chunk.charAt(i) == '<' || chunk.charAt(i) == '{') {
-                /* Return the chunk text up to the first tag.
+                /* Return the chunk text up to the first tag, or if there
+                 * are no tags before the curly brace set ("{}"), everything
+                 * up to the '{'.
                  */
                 return chunk.substring(0, i);
             }
         }
-        //No tags found, return an empty string.
+        //No tags or "{}" found, return an empty string.
         return "";
     }
     
