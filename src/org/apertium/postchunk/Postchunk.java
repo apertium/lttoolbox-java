@@ -23,8 +23,10 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
+import java.util.Arrays;
 import org.apertium.interchunk.Interchunk;
 import org.apertium.transfer.TransferWord;
 
@@ -325,11 +327,30 @@ public class Postchunk extends Interchunk {
      * Modified to be in-line with the differences between transfer.cc and interchunk.cc
      */
     @Override
-    protected void applyRule(Writer output) {
-      // signature a la public void rule0__nom(Writer out, InterchunkWord[] words, String[] blanks)
-        Object[] args = new Object[3];
-        // Jacob TODO
+   protected void applyRule(Writer output, Method rule, ArrayList<String> words, ArrayList<String> blanks)
+        throws IOException {
+    // signature a la public void rule0__nom(Writer out, InterchunkWord[] words, String[] blanks)
+    Object[] args = new Object[3];
+
+    args[0] = output;
+    args[1] = words.toArray(new String[words.size()]);
+    args[2] = blanks.toArray(new String[blanks.size()]);
+
+
+    //here was in C++: processRule(lastrule) to interpret XML, but we use Java bytecode via Java Method Invocation
+    if (DEBUG) System.err.println("#args = " + args.length);
+    if (DEBUG) System.err.println("processRule:"+rule.getName()+"("+Arrays.toString(args));
+    try {
+      rule.invoke(transferObject, args);
+    } catch (Exception e) {
+      System.err.println("Error during invokation of "+rule);
+      System.err.println("#args = " + args.length);
+      System.err.println("processRule:"+rule.getName()+"("+Arrays.toString(args));
+      throw new IOException(e);
     }
+    if (DEBUG) output.flush();
+
+  }
     
     public Postchunk() {
         super();

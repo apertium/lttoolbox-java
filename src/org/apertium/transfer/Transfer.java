@@ -376,7 +376,7 @@ So the array of rule_map Method is taken by introspection, taking all methods be
     ArrayList<String> matchedWords=new ArrayList<String>();
     ArrayList<String> matchedBlanks=new ArrayList<String>();
 
-    int last=0;
+    int lastPos=0;
     ms.init(me.getInitial());
     if (DO_TIMING) timing=new Timing("Transfer");
     while (true) {
@@ -387,7 +387,7 @@ So the array of rule_map Method is taken by introspection, taking all methods be
           tmpword.clear();
           tmpblank.clear();
           ms.init(me.getInitial());
-          input_buffer.setPos(last);
+          input_buffer.setPos(lastPos);
         } else {
           if (tmpword.size()!=0) {
             Pair<String, Integer> tr;
@@ -431,16 +431,16 @@ So the array of rule_map Method is taken by introspection, taking all methods be
               }
             }
             tmpword.clear();
-            input_buffer.setPos(last);
+            input_buffer.setPos(lastPos);
             input_buffer.next();
-            last=input_buffer.getPos();
+            lastPos=input_buffer.getPos();
             ms.init(me.getInitial());
           } 
           else if (tmpblank.size()!=0)
           {
             fputws_unlocked(tmpblank.get(0), output);
             tmpblank.clear();
-            last=input_buffer.getPos();
+            lastPos=input_buffer.getPos();
             ms.init(me.getInitial());
           }
         }
@@ -452,7 +452,7 @@ So the array of rule_map Method is taken by introspection, taking all methods be
         // a rule match was found. This might not be the longest match, though.
         // so, we store the stuff to invoke applyRule() later
         lastMatchedRule=rule_map[(val-1)];
-        last=input_buffer.getPos();
+        lastPos=input_buffer.getPos();
 
         if (DEBUG) System.err.println("lastrule = "+(val-1)+ " "+lastMatchedRule.getName());
         if (DEBUG) System.err.println("tmpword = " + tmpword.size()+ "  tmpblank = " + tmpblank.size());

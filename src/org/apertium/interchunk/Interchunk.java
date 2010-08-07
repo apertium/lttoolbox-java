@@ -75,15 +75,10 @@ public class Interchunk {
     private Method[] rule_map = null; // vector<xmlNode *> rule_map;
 
     private BufferT<TransferToken> input_buffer=new BufferT<TransferToken>(); // Buffer<TransferToken> input_buffer;
-    private ArrayList<String> tmpword = new ArrayList<String>(); // vector<wstring *> tmpword;
-    private ArrayList<String> tmpblank = new ArrayList<String>(); // vector<wstring *> tmpblank;
-    private ArrayList<String> tmpword2 = new ArrayList<String>();
-    private ArrayList<String> tmpblank2 = new ArrayList<String>();
 
     private int any_char;
     private int any_tag;
 
-    private Method lastrule; // xmlNode *lastrule;
     public GeneratedTransferBase transferObject;
 
     private boolean inword;
@@ -103,7 +98,6 @@ public class Interchunk {
      */
     public Interchunk() {
         me = null;
-        lastrule = null;
         inword = false;
         null_flush = false;
         internal_null_flush = false;
@@ -344,15 +338,24 @@ public class Interchunk {
             interchunk_wrapper_null_flush(in, output);
         }
 
-        int last = 0;
+        Method lastMatchedRule = null; // xmlNode *lastrule;
+        ArrayList<String> tmpword = new ArrayList<String>(); // vector<wstring *> tmpword;
+        ArrayList<String> tmpblank = new ArrayList<String>(); // vector<wstring *> tmpblank;
+        ArrayList<String> matchedWords = new ArrayList<String>();
+        ArrayList<String> matchedBlanks = new ArrayList<String>();
+        int lastPos = 0;
         ms.init(me.getInitial());
         if (DO_TIMING)
             timing = new Timing("Interchunk");
         while (true) {
             if (ms.size() == 0) {
-                if (lastrule != null) {
-                    applyRule(output);
-                    input_buffer.setPos(last);
+                if (lastMatchedRule != null) {
+                    applyRule(output, lastMatchedRule, matchedWords, matchedBlanks);
+                    lastMatchedRule = null;
+                    tmpword.clear();
+                    tmpblank.clear();
+                    ms.init(me.getInitial());
+                    input_buffer.setPos(lastPos);
                 } else {
                     if (tmpword.size() != 0) {
                         switch(icMode) {
@@ -368,14 +371,14 @@ public class Interchunk {
                                 break;
                         }
                         tmpword.clear();
-                        input_buffer.setPos(last);
+                        input_buffer.setPos(lastPos);
                         input_buffer.next();
-                        last = input_buffer.getPos();
+                        lastPos = input_buffer.getPos();
                         ms.init(me.getInitial());
                     } else if (tmpblank.size() != 0) {
                         output.write(tmpblank.get(0));
                         tmpblank.clear();
-                        last = input_buffer.getPos();
+                        lastPos = input_buffer.getPos();
                         ms.init(me.getInitial());
                     }
                 }
@@ -386,24 +389,25 @@ public class Interchunk {
             if (DO_TIMING)
                 timing.log("interchunk/ms.classifyFinals");
             if (val != -1) {
+                // a rule match was found. This might not be the longest match, though.
+                // so, we store the stuff to invoke applyRule() later
 
-                lastrule = rule_map[(val - 1)];
-                // XXXXXXXX lastrule = rule_map.get(val-1);
-                last = input_buffer.getPos();
+                lastMatchedRule = rule_map[(val - 1)];
+                lastPos = input_buffer.getPos();
 
                 if (DEBUG)
                     System.err.println("lastrule = " + (val - 1) + " "
-                            + lastrule.getName());
+                            + lastMatchedRule.getName());
                 if (DEBUG)
                     System.err.println("tmpword = " + tmpword.size()
                             + "  tmpblank = " + tmpblank.size());
                 if (DEBUG)
                     System.err.println("tmpword = " + tmpword + "  tmpblank = "
                             + tmpblank);
-                tmpword2.clear();
-                tmpblank2.clear();
-                tmpword2.addAll(tmpword);
-                tmpblank2.addAll(tmpblank);
+                matchedWords.clear();
+                matchedBlanks.clear();
+                matchedWords.addAll(tmpword);
+                matchedBlanks.addAll(tmpblank);
             }
 
             if (DO_TIMING)
@@ -456,41 +460,28 @@ public class Interchunk {
      * @throws IllegalArgumentException
      * @throws InvocationTargetException
      */
-    protected void applyRule(Writer output) throws IOException, IllegalAccessException,
+  protected void applyRule(Writer output, Method rule,
+    ArrayList<String> words, ArrayList<String> blanks)
+    throws IOException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {
         if (DEBUG)
-            System.err.println("tmpword = " + tmpword2 + "  tmpblank = "
-                    + tmpblank2);
+            System.err.println("tmpword = " + words + "  tmpblank = "
+                    + blanks);
         if (DO_TIMING)
             timing.log("other1");
 
-        int limit = tmpword2.size();
+        int limit = words.size(); // number of words
 
-        Object[] args = new Object[1 + limit + limit - 1];
+        Object[] args = new Object[1 + limit + limit - 1]; // number of arguments out:1, words:limit, blanks:limit-1
         int argn = 0;
         args[argn++] = output;
 
-        InterchunkWord[] word = null; // TransferWord **word;
-        String[] blank = null; // string **blank;
-
         for (int i = 0; i != limit; i++) {
-            if (i == 0) {
-                word = new InterchunkWord[limit];
-                if (limit != 0) {
-                    blank = new String[limit - 1];
-                } else {
-                    blank = null;
-                }
-            } else {
-                blank[i - 1] = tmpblank2.get(i - 1);
-                args[argn++] = tmpblank2.get(i - 1);
-            }
-
-            args[argn++] = word[i] = new InterchunkWord(tmpword2.get(i));
+          if (i>0) args[argn++] = blanks.get(i-1);
+          args[argn++] = new InterchunkWord(words.get(i));
         }
 
         if (DEBUG)
-            System.err.println("word = " + Arrays.toString(word));
 
         if (DEBUG)
             System.err.println("#args = " + args.length);
@@ -500,39 +491,25 @@ public class Interchunk {
         try {
             if (DO_TIMING)
                 timing.log("applyRule 1");
-            lastrule.invoke(transferObject, args);
+            rule.invoke(transferObject, args);
             if (DO_TIMING)
                 timing.log("rule invoke");
         } catch (IllegalAccessException e) {
-            _outputInvokeErrorMsg(lastrule, Arrays.toString(word), args.length,
-                    lastrule.getName() + "(" + Arrays.toString(args) + ")");
+            _outputInvokeErrorMsg(rule, null, args.length,
+                    rule.getName() + "(" + Arrays.toString(args) + ")");
             throw e;
         } catch (IllegalArgumentException e) {
-            _outputInvokeErrorMsg(lastrule, Arrays.toString(word), args.length,
-                    lastrule.getName() + "(" + Arrays.toString(args) + ")");
+            _outputInvokeErrorMsg(rule, null, args.length,
+                    rule.getName() + "(" + Arrays.toString(args) + ")");
             throw e;
         } catch (InvocationTargetException e) {
-            _outputInvokeErrorMsg(lastrule, Arrays.toString(word), args.length,
-                    lastrule.getName() + "(" + Arrays.toString(args) + ")");
+            _outputInvokeErrorMsg(rule, null, args.length,
+                    rule.getName() + "(" + Arrays.toString(args) + ")");
             throw e;
         }
         if (DEBUG)
             output.flush();
 
-        // processRule(lastrule);
-        lastrule = null;
-
-        word = null;
-        blank = null;
-        tmpword.clear();
-        tmpblank.clear();
-        tmpword2.clear();
-        tmpblank2.clear();
-        if (DO_TIMING)
-            timing.log("applyRule 1");
-        ms.init(me.getInitial());
-        if (DO_TIMING)
-            timing.log("applyRule 2");
     }
     
     private void _outputInvokeErrorMsg(Method rule, String word, 
