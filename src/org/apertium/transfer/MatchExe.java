@@ -68,12 +68,9 @@ public class MatchExe {
     //reading the list of final states - not used
     int number_of_finals = Compression.multibyte_read(in);
 
-    /* Not sure why the following section is enclosed in this headless block.
-     */
-    {
-      /* The purpose of this section seems to be just to read and discard the bytes
+      /* Discard the bytes
        * for the list of final states, since this implementation doesn't actually
-       * use that list. The point being to advance the read pointer past the finals
+       * use that list. But we need to advance the read pointer past the finals
        * list.
        */
       for (int i = number_of_finals; i > 0; i--) {
@@ -85,7 +82,6 @@ public class MatchExe {
           //t.finals.add(base);
           //System.err.println("t_finals.add( base = " + base);
       }
-    }
 
 
     //reading the transitions
@@ -128,7 +124,9 @@ public class MatchExe {
   }
 
   private void _readAndAddFinals(InputStream in, int number_of_finals) throws IllegalStateException, IOException {
-    int[][] singleFinalNodeCache = new int[number_of_finals][]; // TODO share instances
+    // was int[number_of_finals+1][] here, but it seems that a (postchunk) file
+    // with just one rule match (apertium-eo-en.en-eo.t3x) needs a +1 here
+    int[][] singleFinalNodeCache = new int[number_of_finals+1][]; // TODO share instances
 
     int noOfFinals2=Compression.multibyte_read(in);
     if (noOfFinals2!=number_of_finals) {
