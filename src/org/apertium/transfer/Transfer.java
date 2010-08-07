@@ -126,16 +126,11 @@ So the array of rule_map Method is taken by introspection, taking all methods be
   private Method[] rule_map=null;// vector<xmlNode *> rule_map;
 
   private BufferT<TransferToken> input_buffer=new BufferT<TransferToken>();
-  private ArrayList<String> tmpword=new ArrayList<String>();
-  private ArrayList<String> tmpblank=new ArrayList<String>();
-  private ArrayList<String> tmpword2=new ArrayList<String>();
-  private ArrayList<String> tmpblank2=new ArrayList<String>();
   private FSTProcessor fstp =new FSTProcessor();
   private FSTProcessor extended;
   private boolean isExtended;
   private int any_char;
   private int any_tag;
-  private Method lastrule; //xmlNode *lastrule;
   public GeneratedTransferBase transferObject;
 
   public static boolean DEBUG = false;
@@ -375,13 +370,23 @@ So the array of rule_map Method is taken by introspection, taking all methods be
       transfer_wrapper_null_flush(in, output);
     }
 
+    Method lastMatchedRule=null;
+    ArrayList<String> tmpword=new ArrayList<String>();
+    ArrayList<String> tmpblank=new ArrayList<String>();
+    ArrayList<String> matchedWords=new ArrayList<String>();
+    ArrayList<String> matchedBlanks=new ArrayList<String>();
+
     int last=0;
     ms.init(me.getInitial());
     if (DO_TIMING) timing=new Timing("Transfer");
     while (true) {
       if (ms.size()==0) {
-        if (lastrule!=null) {
-          applyRule(output);
+        if (lastMatchedRule!=null) {
+          applyRule(output, lastMatchedRule, matchedWords, matchedBlanks);
+          lastMatchedRule = null;
+          tmpword.clear();
+          tmpblank.clear();
+          ms.init(me.getInitial());
           input_buffer.setPos(last);
         } else {
           if (tmpword.size()!=0) {
@@ -444,18 +449,18 @@ So the array of rule_map Method is taken by introspection, taking all methods be
       int val=ms.classifyFinals();
       if (DO_TIMING) timing.log("transfer/ms.classifyFinals");
       if (val!=-1) {
-
-        lastrule=rule_map[(val-1)];
-        // XXXXXXXX lastrule = rule_map.get(val-1);
+        // a rule match was found. This might not be the longest match, though.
+        // so, we store the stuff to invoke applyRule() later
+        lastMatchedRule=rule_map[(val-1)];
         last=input_buffer.getPos();
 
-        if (DEBUG) System.err.println("lastrule = "+(val-1)+ " "+lastrule.getName());
+        if (DEBUG) System.err.println("lastrule = "+(val-1)+ " "+lastMatchedRule.getName());
         if (DEBUG) System.err.println("tmpword = " + tmpword.size()+ "  tmpblank = " + tmpblank.size());
         if (DEBUG) System.err.println("tmpword = " + tmpword+ "  tmpblank = " + tmpblank);
-        tmpword2.clear();
-        tmpblank2.clear();
-        tmpword2.addAll(tmpword);
-        tmpblank2.addAll(tmpblank);
+        matchedWords.clear();
+        matchedBlanks.clear();
+        matchedWords.addAll(tmpword);
+        matchedBlanks.addAll(tmpblank);
       }
 
       if (DO_TIMING) timing.log("transfer");
@@ -495,87 +500,58 @@ So the array of rule_map Method is taken by introspection, taking all methods be
     }
   }
 
-  // Kanmuri: Cleanup needed. Pls do :-)
-  private void applyRule(Writer output) throws Exception {
-    if (DEBUG) System.err.println("tmpword = " + tmpword2+ "  tmpblank = " + tmpblank2);
+
+  private void applyRule(Writer output, Method rule,
+    ArrayList<String> words, ArrayList<String> blanks) throws Exception
+  {
+    if (DEBUG) System.err.println("applyRule("+rule+ ", " + words+ ", " + blanks);
     if (DO_TIMING) timing.log("other1");
 
-    // TODO. Cleanup. Code is a mess! Jacob
 
-    int limit=tmpword2.size();
+    int limit=words.size(); // number of words
 
-    Object[] args = new Object[1+limit + limit -1];
+    Object[] args = new Object[1+limit + limit-1]; // number of arguments out:1, words:limit, blanks:limit-1
     int argn = 0;
     args[argn++] = output;
 
 
-    TransferWord[] word=null; // TransferWord **word;
-    String[] blank=null; // string **blank;
-
-  for (int i=0; i!=limit; i++)
+    for (int i=0; i!=limit; i++)
     {
-      if (i==0)
-      {
-        word=new TransferWord[limit];
-        if (limit!=0)
-        {
-          blank=new String[limit-1];
-        } else
-        {
-          blank=null;
-        }
-      }
-      else
-      {
-        blank[i-1]=tmpblank2.get(i-1);
-        args[argn++] = tmpblank2.get(i-1);
-      }
+      if (i>0) args[argn++] = blanks.get(i-1);
 
       Pair<String, Integer> tr;
       if (useBilingual)
       {
         if (DO_TIMING) timing.log("applyRule 1");
-        tr=fstp.biltransWithQueue(tmpword2.get(i), false);
+        tr=fstp.biltransWithQueue(words.get(i), false);
         if (DO_TIMING) timing.log("applyRule/fstp.biltransWithQueue ");
       } 
       else
       {
         // If no bilingual dictionary is used (i.e. for apertium-transfer -n, for apertium-interchunk and for apertium-postchunk), then the sl and tl values will be the same.
-        tr=new Pair<String, Integer>(tmpword2.get(i), 0);
+        tr=new Pair<String, Integer>(words.get(i), 0);
       }
 
-      args[argn++] = word[i]=new TransferWord(tmpword2.get(i), tr.first, tr.second);
+      args[argn++] =new TransferWord(words.get(i), tr.first, tr.second);
     }
 
-    if (DEBUG) System.err.println("word = " + Arrays.toString(word));
-
+    //here was in C++: processRule(lastrule) to interpret XML, but we use Java bytecode via Java Method Invocation
     if (DEBUG) System.err.println("#args = " + args.length);
-    if (DEBUG) System.err.println("processRule:"+lastrule.getName()+"("+Arrays.toString(args));
+    if (DEBUG) System.err.println("processRule:"+rule.getName()+"("+Arrays.toString(args));
     try {
       if (DO_TIMING) timing.log("applyRule 1");
-      lastrule.invoke(transferObject, args);
+      rule.invoke(transferObject, args);
       if (DO_TIMING) timing.log("rule invoke");
     } catch (Exception e) {
-      System.err.println("Error during invokation of "+lastrule);
-      System.err.println("word = " + Arrays.toString(word));
+      System.err.println("Error during invokation of "+rule);
       System.err.println("#args = " + args.length);
-      System.err.println("processRule:"+lastrule.getName()+"("+Arrays.toString(args));
+      System.err.println("processRule:"+rule.getName()+"("+Arrays.toString(args));
       throw e;
     }
     if (DEBUG) output.flush();
     
-    //processRule(lastrule);
-    lastrule=null;
 
-    word=null;
-    blank=null;
-    tmpword.clear();
-    tmpblank.clear();
-    tmpword2.clear();
-    tmpblank2.clear();
     if (DO_TIMING) timing.log("applyRule 1");
-    ms.init(me.getInitial());
-    if (DO_TIMING) timing.log("applyRule 2");
   }
 
   void applyWord(String word_str) {

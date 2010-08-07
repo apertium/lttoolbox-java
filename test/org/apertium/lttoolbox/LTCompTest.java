@@ -65,20 +65,6 @@ public class LTCompTest extends TestCase {
 
 
 
-  public void testLTCompJava3() throws Exception {
-    LTComp.main(new String[] { "lr", "testdata/apertium-eo-en.eo-en.dix", "tmp/testJava.bin"});
-    int compareExitValue = Runtime.getRuntime().exec("cmp tmp/testJava.bin testdata/correct-apertium-eo-en.eo-en.bin").waitFor();
-    assertEquals("files must be binary equal", 0, compareExitValue);
-  }
-
-
-  public void testLTCompCpp3() throws Exception {
-    Runtime.getRuntime().exec("lt-comp lr testdata/apertium-eo-en.eo-en.dix tmp/testC++.bin").waitFor();
-    int compareExitValue = Runtime.getRuntime().exec("cmp tmp/testC++.bin testdata/correct-apertium-eo-en.eo-en.bin").waitFor();
-    assertEquals("files must be binary equal", 0, compareExitValue);
-  }
-
-
   public void testLTCompJavaLatin1() throws Exception {
     LTComp.main(new String[] { "lr", "testdata/latin-1.dix", "tmp/testJava.bin"});
     int compareExitValue = Runtime.getRuntime().exec("cmp tmp/testJava.bin testdata/correct-latin-1.bin").waitFor();
@@ -107,8 +93,24 @@ public class LTCompTest extends TestCase {
     assertEquals("files must be binary equal", 0, compareExitValue);
   }
 
+/* skipping as they take too much CPU time. Should be working, though
 
-  public void testLTCompJavaBig() throws Exception {
+
+  public void testLTCompJava3() throws Exception {
+    LTComp.main(new String[] { "lr", "testdata/apertium-eo-en.eo-en.dix", "tmp/testJava.bin"});
+    int compareExitValue = Runtime.getRuntime().exec("cmp tmp/testJava.bin testdata/correct-apertium-eo-en.eo-en.bin").waitFor();
+    assertEquals("files must be binary equal", 0, compareExitValue);
+  }
+
+
+  public void testLTCompCpp3() throws Exception {
+    Runtime.getRuntime().exec("lt-comp lr testdata/apertium-eo-en.eo-en.dix tmp/testC++.bin").waitFor();
+    int compareExitValue = Runtime.getRuntime().exec("cmp tmp/testC++.bin testdata/correct-apertium-eo-en.eo-en.bin").waitFor();
+    assertEquals("files must be binary equal", 0, compareExitValue);
+  }
+
+
+ public void testLTCompJavaBig() throws Exception {
     LTComp.main(new String[] { "rl", "testdata/apertium-fr-es.fr.dix", "tmp/testJava.bin"});
     int compareExitValue = Runtime.getRuntime().exec("cmp tmp/testJava.bin testdata/es-fr.autogen.bin").waitFor();
     assertEquals("files must be binary equal", 0, compareExitValue);
@@ -120,5 +122,5 @@ public class LTCompTest extends TestCase {
     int compareExitValue = Runtime.getRuntime().exec("cmp tmp/testC++.bin testdata/es-fr.autogen.bin").waitFor();
     assertEquals("files must be binary equal", 0, compareExitValue);
   }
-
+*/
 }
