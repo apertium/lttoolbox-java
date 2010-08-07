@@ -19,13 +19,24 @@
 
 package org.apertium.postchunk;
 
+import static org.apertium.utils.IOUtils.readFile;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.apertium.interchunk.Interchunk;
 import org.junit.Test;
 
 
@@ -34,6 +45,9 @@ import org.junit.Test;
  *
  */
 public class TestPostChunk {
+
+    static String testDataDir = "testdata/postchunk/";
+    static String tempDir = "./tmp/";
     
     //Tests for the static methods
 
@@ -41,6 +55,7 @@ public class TestPostChunk {
      * This method uses the reflection API to run tests on the private static members of
      * Postchunk.
      */
+    @SuppressWarnings("unchecked")
     private static Object runPrivateMethod(String name, Class[] paramTypes, Object[] params)
             throws SecurityException, NoSuchMethodException, IllegalArgumentException, 
             IllegalAccessException, InvocationTargetException {
@@ -57,13 +72,14 @@ public class TestPostChunk {
         return returnObject;
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testGetVecTags() throws SecurityException, IllegalArgumentException, 
             NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         String methodName = "getVecTags";
         String inputString = "^Nom<SN><PDET><m><sg>{^anarquismo<n><3><4>$}$";
         String[] expOutArray = {"<SN>", "<PDET>", "<m>", "<sg>"};
-        ArrayList expectedOutput = new ArrayList<String>(Arrays.asList(expOutArray));
+        ArrayList<String> expectedOutput = new ArrayList<String>(Arrays.asList(expOutArray));
         
         Class[] paramTypes = {String.class};
         Object[] params = {inputString};
@@ -73,6 +89,7 @@ public class TestPostChunk {
         assertEquals("TestPostChunk.testGetVecTags() failed: output does not match expected output", returnVal, expectedOutput);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testBeginChunk() throws SecurityException, IllegalArgumentException, 
             NoSuchMethodException, IllegalAccessException, InvocationTargetException {
@@ -93,6 +110,7 @@ public class TestPostChunk {
      * Yeah, no real need to test that. XD
      */
     
+    @SuppressWarnings("unchecked")
     @Test
     public void testPseudoLemma() throws SecurityException, IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         String methodName = "pseudolemma";
@@ -108,6 +126,120 @@ public class TestPostChunk {
     }
     
     public void testSplitWordsAndBlanks() {
-        //TODO: Implement this
+        /* TODO: Implement this -- Not sure what the output of splitWordsAndBlanks() should
+         * be yet. n.n;
+         */
     }
+
+
+    /**
+     * Test method for {@link org.apertium.postchunk.Postchunk#postchunk(java.io.Reader, Writer)}.
+     * Postchunk takes the output from interchunk as its input and outputs to lt-proc.
+     * This tests Postchunk with a single constructed sample sentence.
+     */
+    @Test
+    public void testThisIsATest() throws IOException {
+        String testIn = "^Prn<SN><tn><m><sp>{^esto<prn><tn><3><4>$}$ ^be<Vcop><vbser><pri><p3><sg>{^ser<vbser><3><4><5>$}$ ^det_nom<SN><DET><f><sg>{^uno<det><ind><3><4>$ ^prueba<n><3><4>$}$^punt<sent>{^.<sent>$}$";
+        String expTestOut = "^Esto<prn><tn><m><sp>$ ^ser<vbser><pri><p3><sg>$ ^uno<det><ind><f><sg>$ ^prueba<n><f><sg>$^.<sent>$";
+        
+        runSingleSentenceTest(testIn, expTestOut);
+    }
+
+    
+    
+    @SuppressWarnings("unchecked")
+    private void runSingleSentenceTest(String testIn, String expTestOut) throws IOException {
+        Class transferClass = org.apertium.transfer.generated.apertium_en_es_en_es_t3x.class;
+        String preprocFile = testDataDir + "en-es.t3x.bin";
+
+        /* The logic in ApertiumPostchunk.main() is mostly for parsing the command-line,
+         * since we're calling it directly in Java, we can bypass it.
+         */
+        StringReader input = new StringReader(testIn);
+        Writer output = new StringWriter();
+
+        Postchunk postchunk = new Postchunk();
+        //Interchunk.DEBUG = true;
+        try {
+            postchunk.read(transferClass, preprocFile);
+            //postchunk.transferObject.debug = true;
+            
+            postchunk.postchunk(input, output);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Exception occured during test.");
+        }
+
+        String testOutput = output.toString();
+
+        System.err.println("output = " + testOutput);
+        System.err.println("expout = " + expTestOut);
+        assertEquals("TestPostchunk.testMainThisIsATest() failed: output does not match expected output.", expTestOut, testOutput);
+    }
+    
+    /**
+     * Test of Interchunk.interchunk(), using external text files.
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    public void test200Sentences() throws IOException {
+        String inFile = testDataDir + "en-postchunk-input.txt";
+        Class transferClass = org.apertium.transfer.generated.apertium_en_es_en_es_t3x.class;
+        String preprocFile = testDataDir + "en-es.t3x.bin";
+        String compareOutFile = testDataDir + "en-postchunk-output.txt";
+
+        /* The logic in ApertiumInterchunk.main() is mostly for parsing the command-line,
+         * since we're calling it directly in Java, we can bypass it.
+         */
+        Reader input = new FileReader(inFile);
+        Writer output = new StringWriter();
+
+        Postchunk postchunk = new Postchunk();
+        //Debug produces too much output and slows down execution too much.
+        //Interchunk.DEBUG = true;
+        try {
+            postchunk.read(transferClass, preprocFile);
+            //interchunk.transferObject.debug = true;
+            
+            postchunk.interchunk(input, output);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Exception occured during test.");
+        }
+
+        /* Do not trim. Trimming the output will result in a failed test.
+         * Trim removes whitespace before and after the string, which will
+         * cause it to fail when testing against the C++ output which does
+         * not trim.
+         */
+        String testOutput = output.toString();
+
+        String expectedOutput = readFile(compareOutFile);
+
+        // write to file in case of fail, so we can debug
+        if (!testOutput.equals(expectedOutput)) {
+          PrintWriter pw = new PrintWriter(new FileOutputStream(tempDir+"en-postchunk-output-actual.txt"));
+          pw.append(testOutput);
+          pw.close();
+
+          System.err.println("total   testOutput = " + testOutput.length());
+
+          System.err.println("total expectedOutput = " + expectedOutput.length());
+          for (int i=0; i<200; i++) if (testOutput.split("\n")[i].length() !=  expectedOutput.split("\n")[i].length()) {
+            System.err.println(i+"    testOutput = " + testOutput.split("\n")[i].length());
+            System.err.println(i+"expectedOutput = " + expectedOutput.split("\n")[i].length());
+            System.err.println(i+"    testOutput = " + testOutput.split("\n")[i]);
+            System.err.println(i+"expectedOutput = " + expectedOutput.split("\n")[i]);
+          }
+
+        
+          //System.err.println("\n\n\ntestOutput = \n" + testOutput);
+          
+          //System.err.println("\n\n\nexpectedOutput = \n" + expectedOutput);
+        }
+
+
+        assertEquals("TestPostchunk.test200Sentences() failed: output does not match expected output.", expectedOutput, testOutput);
+    }
+
 }

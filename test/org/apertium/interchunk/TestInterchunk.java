@@ -60,7 +60,7 @@ public class TestInterchunk {
     }
     
     /**
-     * Test method for {@link org.apertium.interchunk.Interchunk#main(java.lang.String[])}.
+     * Test method for {@link org.apertium.interchunk.Interchunk#interchunk(Reader, Writer)}.
      * Interchunk takes the output from transfer as its input and outputs to postchunk.
      * This tests Interchunk with a single constructed sample sentence.
      */
@@ -125,7 +125,7 @@ public class TestInterchunk {
     }
 
     /**
-     * Test of main method, using external text files.
+     * Test of Interchunk.interchunk(), using external text files.
      */
     @SuppressWarnings("unchecked")
     @Test
@@ -186,6 +186,6 @@ public class TestInterchunk {
         }
 
 
-        assertEquals("TestInterchunk.testMain200Sentences() failed: output does not match expected output.", expectedOutput, testOutput);
+        assertEquals("TestInterchunk.test200Sentences() failed: output does not match expected output.", expectedOutput, testOutput);
     }
 }

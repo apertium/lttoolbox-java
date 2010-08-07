@@ -44,10 +44,19 @@ import org.apertium.transfer.Transfer;
  *
  */
 public class ApertiumInterchunk {
+    
+    public static class CommandLineParams {
+        public Reader input = null;
+        public Writer output = null;
 
-    private static void message() {
+        public String t2xFile = null;
+        public String preprocFile = null; //formerly f1, f2, these are more descriptive names
+        public boolean nullFlush = false;
+    }
+
+    private static void message(String commandName) {
         PrintStream stderr = System.err; //Allows ouput lines to be shorter.
-        stderr.println("USAGE: Interchunk  [-z] t2x preproc [input [output]]");
+        stderr.println("USAGE: " + commandName + " [-z] t2x preproc [input [output]]");
         stderr.println("  t2x        t2x rules file");
         stderr.println("  preproc    result of preprocess trules file");
         stderr.println("  input      input file, standard input by default");
@@ -100,18 +109,13 @@ public class ApertiumInterchunk {
         return out;
     }
 
-    /**
-     * @param args
-     */
-    public static void main(String[] args) {
-
-        System.setProperty("file.encoding", "UTF-8");
+    protected static void parseCommandLine(String[] args, CommandLineParams par,
+            String commandName) {
         if (args.length == 0) {
-            message();
+            message(commandName);
         }
 
-        Interchunk i = new Interchunk();
-        Getopt getopt = new Getopt("Interchunk", args, "zh");
+        Getopt getopt = new Getopt(commandName, args, "zh");
 
         while (true) {
             int c = getopt.getopt();
@@ -120,21 +124,15 @@ public class ApertiumInterchunk {
             }
             switch (c) {
                 case 'z':
-                    i.setNullFlush(true);
+                    par.nullFlush = true;
                     break;
 
                 case 'h':
                 default:
-                    message();
+                    message(commandName);
                     break;
             }
         }
-
-        Reader input = null;
-        Writer output = null;
-
-        String t2xFile = null;
-        String preprocFile = null; //formerly f1, f2, these are more descriptive names
 
         int optIndex = getopt.getOptind();
         switch(args.length - optIndex ) { //number of non-option args
@@ -144,27 +142,42 @@ public class ApertiumInterchunk {
              * breaking), we don't need to duplicate the same code several times.
              */
             case 4:
-                output = new OutputStreamWriter(openOutput(args[optIndex + 3]));
+                par.output = new OutputStreamWriter(openOutput(args[optIndex + 3]));
             case 3:
-                input = new InputStreamReader(openInput(args[optIndex + 2]));
+                par.input = new InputStreamReader(openInput(args[optIndex + 2]));
             case 2:
-                preprocFile = args[optIndex + 1];
-                t2xFile = args[optIndex];
+                par.preprocFile = args[optIndex + 1];
+                par.t2xFile = args[optIndex];
                 break;
             default:
-                message();
+                message(commandName);
                 break;
         }
         
+    }
+    
+    /**
+     * @param args
+     */
+    public static void main(String[] args) {
+        System.setProperty("file.encoding", "UTF-8");
+        Interchunk i = new Interchunk();
+
+        CommandLineParams par = new CommandLineParams();
+        /* Parse the command line. The passed-in CommandLineParams object
+         * will be modified by this method.
+         */
+        parseCommandLine(args, par, "Interchunk");
+        i.setNullFlush(par.nullFlush);
+        
         try {
-            i.read(t2xFile, preprocFile);
-            i.interchunk(input, output);
-            output.flush(); //Have to flush or there won't be any output.
+            i.read(par.t2xFile, par.preprocFile);
+            i.interchunk(par.input, par.output);
+            par.output.flush(); //Have to flush or there won't be any output.
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
     }
 
 }

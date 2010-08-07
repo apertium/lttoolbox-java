@@ -1,0 +1,1 @@
+^Esto<prn><tn><m><sp>$ ^ser<vbser><pri><p3><sg>$ ^uno<det><ind><f><sg>$ ^prueba<n><f><sg>$^.<sent>$
