@@ -158,6 +158,7 @@ public class Postchunk extends Interchunk {
     }
 
     /**
+     *
      * Called from interchunk as a workaround to avoid code duplication
      * @param chunk
      * @param output
@@ -298,7 +299,7 @@ public class Postchunk extends Interchunk {
                             myWord.append(Character.toUpperCase(chunk.charAt(i)));
                         } else if(uppercaseFirst) {
                             if(Character.isLetterOrDigit(chunk.charAt(i))) {
-                                myWord.append(chunk.charAt(i));
+                                myWord.append(Character.toUpperCase(chunk.charAt(i)));
                                 uppercaseFirst = false;
                             } else {
                                 myWord.append(chunk.charAt(i));

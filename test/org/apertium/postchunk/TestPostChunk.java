@@ -145,6 +145,13 @@ public class TestPostChunk {
         runSingleSentenceTest(testIn, expTestOut);
     }
 
+    @Test
+    public void testSentence4() throws IOException {
+        String testIn = "^Det_nom<SN><DET><m><sg>{^el<det><def><3><4>$ ^plazo<n><3><4>$}$";
+        String expTestOut = "^El<det><def><m><sg>$ ^plazo<n><m><sg>$";
+
+        runSingleSentenceTest(testIn, expTestOut);
+    }
     
     
     @SuppressWarnings("unchecked")
@@ -215,29 +222,6 @@ public class TestPostChunk {
         String testOutput = output.toString();
 
         String expectedOutput = readFile(compareOutFile);
-
-        // write to file in case of fail, so we can debug
-        if (!testOutput.equals(expectedOutput)) {
-          PrintWriter pw = new PrintWriter(new FileOutputStream(tempDir+"en-postchunk-output-actual.txt"));
-          pw.append(testOutput);
-          pw.close();
-
-          System.err.println("total   testOutput = " + testOutput.length());
-
-          System.err.println("total expectedOutput = " + expectedOutput.length());
-          for (int i=0; i<200; i++) if (testOutput.split("\n")[i].length() !=  expectedOutput.split("\n")[i].length()) {
-            System.err.println(i+"    testOutput = " + testOutput.split("\n")[i].length());
-            System.err.println(i+"expectedOutput = " + expectedOutput.split("\n")[i].length());
-            System.err.println(i+"    testOutput = " + testOutput.split("\n")[i]);
-            System.err.println(i+"expectedOutput = " + expectedOutput.split("\n")[i]);
-          }
-
-        
-          //System.err.println("\n\n\ntestOutput = \n" + testOutput);
-          
-          //System.err.println("\n\n\nexpectedOutput = \n" + expectedOutput);
-        }
-
 
         assertEquals("TestPostchunk.test200Sentences() failed: output does not match expected output.", expectedOutput, testOutput);
     }
