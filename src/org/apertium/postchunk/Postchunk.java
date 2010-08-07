@@ -188,15 +188,14 @@ public class Postchunk extends Interchunk {
                     } else if(chunk.charAt(i) == '<') {
                         if(Character.isDigit(chunk.charAt(i + 1))) {
                             //replace tag
-                            /* Using int instead of long because thats what
-                             * ArrayList.get() expects.
-                             */
-                            int value = Integer.parseInt(chunk.substring(i + 1)) - 1;
+                            //find end index (probably just 1 away in typical strings as <2>)
+                            int j = i+1;
+                            while(chunk.charAt(j) != '>') j++;
+                            int value = Integer.parseInt(chunk.substring(i + 1, j)) - 1;
                             if(vecTags.size() > value) {
                                 output.write(vecTags.get(value));
                             }
-                            //increment i until we hit the end of the tag
-                            while(chunk.charAt(i) != '>');
+                            i = j;
                         } else {
                             output.write('<');
                             while(chunk.charAt(++i) != '>') { output.write(chunk.charAt(i)); }
