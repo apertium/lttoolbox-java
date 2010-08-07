@@ -350,6 +350,7 @@ public class Interchunk {
         while (true) {
             if (ms.size() == 0) {
                 if (lastMatchedRule != null) {
+                    // there was a rule match
                     applyRule(output, lastMatchedRule, matchedWords, matchedBlanks);
                     lastMatchedRule = null;
                     tmpword.clear();
@@ -357,6 +358,7 @@ public class Interchunk {
                     ms.init(me.getInitial());
                     input_buffer.setPos(lastPos);
                 } else {
+                    // no rule match. then default is to just output the stuff
                     if (tmpword.size() != 0) {
                         switch(icMode) {
                             case POSTCHUNK:

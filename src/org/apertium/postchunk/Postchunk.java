@@ -28,6 +28,7 @@ import java.util.ArrayList;
 
 import java.util.Arrays;
 import org.apertium.interchunk.Interchunk;
+import org.apertium.interchunk.InterchunkWord;
 import org.apertium.transfer.TransferWord;
 
 /**
@@ -155,7 +156,13 @@ public class Postchunk extends Interchunk {
         //No tags or "{}" found, return an empty string.
         return "";
     }
-    
+
+    /**
+     * Called from interchunk as a workaround to avoid code duplication
+     * @param chunk
+     * @param output
+     * @throws java.io.IOException
+     */
     @Override
     protected void unchunk(final String chunk, Writer output) throws IOException {
         ArrayList<String> vecTags = getVecTags(chunk);
@@ -273,11 +280,14 @@ public class Postchunk extends Interchunk {
                     } else if(chunk.charAt(i) == '<') {
                         if(Character.isDigit(chunk.charAt(i + 1))) {
                             //replace tag
-                            int value = Integer.parseInt(chunk.substring(i + 1));
+                            //find end index (probably just 1 away in typical strings as <2>)
+                            int j = i+1;
+                            while(chunk.charAt(j) != '>') j++;
+                            int value = Integer.parseInt(chunk.substring(i + 1, j)) - 1;
                             if(vecTags.size() > value) {
                                 myWord.append(vecTags.get(value));
                             }
-                            while(chunk.charAt(++i) != '>');
+                            i = j;
                         } else {
                             myWord.append('<');
                             while(chunk.charAt(++i) != '>') { myWord.append(chunk.charAt(i)); }
@@ -322,19 +332,32 @@ public class Postchunk extends Interchunk {
     }
 
 
-    /**
-     * Much of this code originally copied from {@link org.apertium.transfer.Transfer#applyRule(Writer)}.
-     * Modified to be in-line with the differences between transfer.cc and interchunk.cc
-     */
-    @Override
-   protected void applyRule(Writer output, Method rule, ArrayList<String> words, ArrayList<String> blanks)
-        throws IOException {
-    // signature a la public void rule0__nom(Writer out, InterchunkWord[] words, String[] blanks)
-    Object[] args = new Object[3];
+  /**
+   * Much of this code originally copied from {@link org.apertium.transfer.Transfer#applyRule(Writer)}.
+   * Modified to be in-line with the differences between transfer.cc and interchunk.cc
+   */
+  @Override
+  protected void applyRule(Writer output, Method rule, ArrayList<String> words, ArrayList<String> blanks)
+      throws IOException {
+    if (words.size()!=1) {
+      System.err.println("WARNING: applyRule(words.size() = " + words.size()+". This should be 1 in postchunk. \nFor "+words);
+    }
+    String chunk = words.get(0);
+    words.clear();
+    splitWordsAndBlanks(chunk, words, blanks);
 
+    // make word array. Index 0 should be the chunk lemma+tags
+    InterchunkWord[] wordarr = new  InterchunkWord[words.size()+1];
+    wordarr[0] = new  InterchunkWord(wordZero(chunk));
+    for (int i=0; i<words.size(); i++) wordarr[i+1] = new  InterchunkWord(words.get(i));
+
+    String[] blankarr = new String[blanks.size()+1];
+    for (int i=0; i<blanks.size(); i++) blankarr[i+1] = blanks.get(i);
+    // signature here is a la public void rule0__nom(Writer out, InterchunkWord[] words, String[] blanks)
+    Object[] args = new Object[3];
     args[0] = output;
-    args[1] = words.toArray(new String[words.size()]);
-    args[2] = blanks.toArray(new String[blanks.size()]);
+    args[1] = wordarr;
+    args[2] = blankarr;
 
 
     //here was in C++: processRule(lastrule) to interpret XML, but we use Java bytecode via Java Method Invocation

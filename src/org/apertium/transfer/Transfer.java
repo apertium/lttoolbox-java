@@ -382,6 +382,7 @@ So the array of rule_map Method is taken by introspection, taking all methods be
     while (true) {
       if (ms.size()==0) {
         if (lastMatchedRule!=null) {
+          // there was a rule match
           applyRule(output, lastMatchedRule, matchedWords, matchedBlanks);
           lastMatchedRule = null;
           tmpword.clear();
@@ -390,6 +391,7 @@ So the array of rule_map Method is taken by introspection, taking all methods be
           input_buffer.setPos(lastPos);
         } else {
           if (tmpword.size()!=0) {
+            // no rule match. then default is to just output the stuff word by word
             Pair<String, Integer> tr;
             if (useBilingual) {
               if (isExtended&&(tmpword.get(0)).charAt(0)=='*') {
