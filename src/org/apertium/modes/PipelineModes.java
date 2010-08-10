@@ -17,7 +17,7 @@
  * 02111-1307, USA.
  */
 
-package org.apertium.pipeline;
+package org.apertium.modes;
 
 import java.io.File;
 import java.io.IOException;
