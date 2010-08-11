@@ -109,7 +109,7 @@ public class ApertiumInterchunk {
         return out;
     }
 
-    protected static void parseCommandLine(String[] args, CommandLineParams par,
+    public static void parseCommandLine(String[] args, CommandLineParams par,
             String commandName) {
         if (args.length == 0) {
             message(commandName);
@@ -155,19 +155,16 @@ public class ApertiumInterchunk {
         }
         
     }
-    
+
     /**
-     * @param args
+     * Split this off from the main() function to help facilitate inter-jvm
+     * launching of different components from a central dispatcher.
+     * @param par
      */
-    public static void main(String[] args) {
+    public static void doMain(CommandLineParams par) {
         System.setProperty("file.encoding", "UTF-8");
         Interchunk i = new Interchunk();
 
-        CommandLineParams par = new CommandLineParams();
-        /* Parse the command line. The passed-in CommandLineParams object
-         * will be modified by this method.
-         */
-        parseCommandLine(args, par, "Interchunk");
         i.setNullFlush(par.nullFlush);
         
         try {
@@ -178,6 +175,18 @@ public class ApertiumInterchunk {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+    
+    /**
+     * @param args
+     */
+    public static void main(String[] args) {
+        CommandLineParams par = new CommandLineParams();
+        /* Parse the command line. The passed-in CommandLineParams object
+         * will be modified by this method.
+         */
+        parseCommandLine(args, par, "Interchunk");
+        doMain(par);
     }
 
 }

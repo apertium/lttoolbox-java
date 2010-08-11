@@ -19,26 +19,21 @@
 
 package org.apertium.modes;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
 /**
  * @author Stephen Tigner
  *
  */
 public class Program {
     
-    public enum Programs {
+    public enum ProgEnum {
         LT_PROC, TAGGER, PRETRANSFER, TRANSFER, INTERCHUNK, POSTCHUNK,
         TXT_DEFORMAT, TXT_REFORMAT, UNKNOWN
     }
     
     //Each program has a "name" which is a command line.
     private String _commandName;
-    private final Programs _program;
+    private String _fullPath;
+    private final ProgEnum _program;
     //Each program also has a list of files, which are used, in order.
     private String _parameters;
 
@@ -58,29 +53,30 @@ public class Program {
          * Running the executables w/o a path prefix will work in Windows with
          * cygwin, provided that the user has the cygwin bin dir in their path.
          */
-        String[] commandPathList = paramList[0].trim().split("\\/");
-        //Grab the last entry
-        _commandName = commandPathList[commandPathList.length - 1];
+        _fullPath = paramList[0].trim();
+        String[] commandPathList = _fullPath.split("\\/");
+        //Grab the 2nd (and last) entry
+        _commandName = commandPathList[1];
         _parameters = paramList[1];
 
         if(_commandName.equals("lt-proc")) {
-            _program = Programs.LT_PROC;
+            _program = ProgEnum.LT_PROC;
         } else if(_commandName.equals("apertium-tagger")) {
-            _program = Programs.TAGGER;
+            _program = ProgEnum.TAGGER;
         } else if(_commandName.equals("apertium-pretransfer")) {
-            _program = Programs.PRETRANSFER;
+            _program = ProgEnum.PRETRANSFER;
         } else if(_commandName.equals("apertium-transfer")) {
-            _program = Programs.TRANSFER;
+            _program = ProgEnum.TRANSFER;
         } else if(_commandName.equals("apertium-interchunk")) {
-            _program = Programs.INTERCHUNK;
+            _program = ProgEnum.INTERCHUNK;
         } else if(_commandName.equals("apertium-postchunk")) {
-            _program = Programs.POSTCHUNK;
+            _program = ProgEnum.POSTCHUNK;
         } else if(_commandName.equals("apertium-destxt")) {
-            _program = Programs.TXT_DEFORMAT;
+            _program = ProgEnum.TXT_DEFORMAT;
         } else if(_commandName.equals("apertium-retxt")) {
-            _program = Programs.TXT_REFORMAT;
+            _program = ProgEnum.TXT_REFORMAT;
         } else {
-            _program = Programs.UNKNOWN;
+            _program = ProgEnum.UNKNOWN;
         }
     }
 
@@ -88,7 +84,11 @@ public class Program {
         return _commandName;
     }
     
-    public Programs getProgram() {
+    public String getFullPath() {
+        return _fullPath;
+    }
+    
+    public ProgEnum getProgram() {
         return _program;
     }
     
