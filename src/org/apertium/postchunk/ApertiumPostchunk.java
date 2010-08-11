@@ -40,12 +40,9 @@ public class ApertiumPostchunk extends ApertiumInterchunk {
          * will be modified by this method.
          */
         parseCommandLine(args, par, "Postchunk");
-        p.setNullFlush(par.nullFlush);
         
         try {
-            p.read(par.t2xFile, par.preprocFile);
-            p.interchunk(par.input, par.output);
-            par.output.flush(); //Have to flush or there won't be any output.
+            doMain(par, p);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

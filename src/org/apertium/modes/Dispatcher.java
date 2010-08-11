@@ -19,20 +19,25 @@
 
 package org.apertium.modes;
 
+import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 
 import org.apertium.interchunk.ApertiumInterchunk;
-import org.apertium.interchunk.ApertiumInterchunk.CommandLineParams;
+import org.apertium.interchunk.Interchunk;
+import org.apertium.postchunk.ApertiumPostchunk;
+import org.apertium.postchunk.Postchunk;
+import org.apertium.pretransfer.PreTransfer;
 
 /**
  * @author Stephen Tigner
  *
  */
 public class Dispatcher {
-    
+
     private static void doInterchunk(Program prog, Reader input, Writer output) {
-        CommandLineParams par = new CommandLineParams();
+        ApertiumInterchunk.CommandLineParams par = 
+            new ApertiumInterchunk.CommandLineParams();
         /* Parse the command line. The passed-in CommandLineParams object
          * will be modified by this method.
          */
@@ -43,7 +48,65 @@ public class Dispatcher {
          */
         par.input = input;
         par.output = output;
-        ApertiumInterchunk.doMain(par);
+
+        try {
+            ApertiumInterchunk.doMain(par, new Interchunk());
+        } catch (Exception e) {
+            //Add message that exception occurred in Interchunk.
+            throw new RuntimeException("Exception occurred in Interchunk.", e);
+        }
+    }
+
+    private static void doPostchunk(Program prog, Reader input, Writer output) {
+        /* Yes, there's duplicate code here with the method above, but
+         * there's only a few lines of actual code here, and I ran into issues
+         * trying to reduce the duplication further than this.
+         */
+        
+        ApertiumPostchunk.CommandLineParams par = 
+            new ApertiumPostchunk.CommandLineParams();
+        /* Parse the command line. The passed-in CommandLineParams object
+         * will be modified by this method.
+         */
+        String[] args = prog.getParameters().split(" ");
+        ApertiumInterchunk.parseCommandLine(args, par, "Interchunk");
+        /* Assume internal I/O, don't allow for specifying external temp
+         * files for I/O.
+         * External input and output files are used only at the beginning
+         * and end of the chain, and are handled by the code that calls the
+         * dispatcher.
+         */
+        par.input = input;
+        par.output = output;
+
+        try {
+            ApertiumPostchunk.doMain(par, new Postchunk());
+        } catch (Exception e) {
+            //Add message that exception occurred in Postchunk.
+            throw new RuntimeException("Exception occurred in Postchunk.", e);
+        }
+    }
+
+    private static void doPretransfer(Program prog, Reader input, Writer output) {
+        PreTransfer.CommandLineParams params = new PreTransfer.CommandLineParams();
+        String[] args = prog.getParameters().split(" ");
+        PreTransfer.parseArgs(args, params);
+
+        try {
+            /* Assume internal I/O, don't allow for specifying external temp
+             * files for I/O.
+             * External input and output files are used only at the beginning
+             * and end of the chain, and are handled by the code that calls the
+             * dispatcher.
+             */
+            PreTransfer.processStream(input, output, params.nullFlush);
+        } catch (IOException e) {
+            throw new RuntimeException("IOException occured in Pretransfer.", e);
+        }
+    }
+    
+    private static void doTagger(Program prog, Reader input, Writer output) {
+        //TODO: Implement this
     }
     
     public static void dispatch(Program prog, Reader input, Writer output) {
@@ -55,10 +118,10 @@ public class Dispatcher {
                 //TODO: call lt-proc
                 break;
             case POSTCHUNK:
-                //TODO: call postchunk
+                doPostchunk(prog, input, output);
                 break;
             case PRETRANSFER:
-                //TODO: call pretransfer
+                doPretransfer(prog, input, output);
                 break;
             case TAGGER:
                 //TODO: call tagger

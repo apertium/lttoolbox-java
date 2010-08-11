@@ -27,7 +27,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 
 import org.apertium.lttoolbox.Getopt;
 
@@ -38,9 +40,18 @@ import org.apertium.lttoolbox.Getopt;
 public class PreTransfer {
     /* The C++ code for pre-transfer is highly procedural, with no new classes, and thus
      * no member variables, just a bunch of functions called by each other and main().
-     * As such, all functions have been declared as static, but private so that the
+     * As such, originally all functions were declared as static, but private so that the
      * only entry point is main().
+     * When refactoring to allow for the internal pipeline, this had to change.
+     * main() was split into main() and parseArgs(), the latter of which is also public.
+     * The method processStream() also had to be made public.
      */
+    
+    public static class CommandLineParams {
+        public boolean nullFlush;
+        public InputStream input;
+        public OutputStream output;
+    }
 
     /**
      * Reads characters from an input stream and writes them to an output stream
@@ -53,7 +64,7 @@ public class PreTransfer {
      * written to the output stream.
      * @throws IOException
      */
-    private static void readAndWriteUntil(InputStreamReader input, OutputStreamWriter output, 
+    private static void readAndWriteUntil(Reader input, Writer output, 
             final int charCode) throws IOException {
         int myChar;
         
@@ -75,7 +86,7 @@ public class PreTransfer {
         }
     }
 
-    private static void procWord(InputStreamReader input, OutputStreamWriter output) 
+    private static void procWord(Reader input, Writer output) 
             throws IOException {
         int myChar;
         /* Using a StringBuilder instead of just a string for performance reasons, 
@@ -136,7 +147,7 @@ public class PreTransfer {
         output.write(buffer.toString());
     }
 
-    private static void processStream(InputStreamReader input, OutputStreamWriter output,
+    public static void processStream(Reader input, Writer output,
             boolean null_flush) throws IOException {
         int myChar;
         while((myChar = input.read()) != -1) {
@@ -198,14 +209,9 @@ public class PreTransfer {
     /**
      * @param args
      */
-    public static void main(String[] args) {
-        /* Not sure, at the moment, what this line in the C++ code is supposed to do
-         * LtLocale::tryToSetLocale();
-         * Probably something to do with Unicode support or the like, so I'm igorning
-         * it for now.
-         */
+    public static void parseArgs(String[] args, CommandLineParams params) {
         
-        boolean null_flush = false;
+        params.nullFlush = false;
         
         /* Only support short options, long opts are not currently supported.
          */
@@ -214,7 +220,7 @@ public class PreTransfer {
         while((c = getopt.getopt()) != -1) {
             switch(c) {
                 case 'z':
-                    null_flush = true;
+                    params.nullFlush = true;
                     break;
                 case 'h':
                 default:
@@ -250,39 +256,36 @@ public class PreTransfer {
             usage();
         }
         
-        InputStream input = null;
-        OutputStream output = null;
-        
         /* This really probably should be a switch statement.
          * Kept it as a sequence of if/else statements for ease of understanding
          * and code checking when comparing it with the C++ version.
          */
         if(numberOfArgs == 0) { //C++ version numberOfArgs == 1
-            input = System.in;
-            output = System.out;
+            params.input = System.in;
+            params.output = System.out;
         } else if (numberOfArgs == 1) { //C++ version numberOfArgs == 2
             try {
                 /* Attempt to open a file for input, using the last argument on the
                  * command line as the filename.
                  */
-                input = new FileInputStream(args[args.length - 1]);
+                params.input = new FileInputStream(args[args.length - 1]);
             } catch (FileNotFoundException e) {
                 /* This exception is thrown if the file cannot be found, or
                  * otherwise cannot be opened for reading.
                  */
                 usage();
             }
-            output = System.out;
+            params.output = System.out;
         } else {
             try {
                 /* Attempt to open a file for input, using the next-to-last argument
                  * on the command line as the filename.
                  */
-                input = new FileInputStream(args[args.length - 2]);
+                params.input = new FileInputStream(args[args.length - 2]);
                 /* Attempt to open a file for output, using the last argument on the
                  * command line as the filename.
                  */
-                output = new FileOutputStream(args[args.length - 1]);
+                params.output = new FileOutputStream(args[args.length - 1]);
             } catch (FileNotFoundException e) {
                 /* Either the input or the output file could not be found or otherwise
                  * could not be opened for reading/writing.
@@ -290,6 +293,13 @@ public class PreTransfer {
                 usage();
             }
         }
+    }
+
+    public static void main(String[] args) {        
+        System.setProperty("file.encoding", "UTF-8");
+        
+        CommandLineParams params = new CommandLineParams();
+        parseArgs(args, params);
         
         /* The C++ version checks for EOF at this point, and dies if it finds it.
          * However we can't check for EOF in the Java version w/o reading the file 
@@ -310,8 +320,8 @@ public class PreTransfer {
         OutputStreamWriter outputWriter = null;
         
         try {
-            inputReader = new InputStreamReader(input, "UTF-8");
-            outputWriter = new OutputStreamWriter(output, "UTF-8"); 
+            inputReader = new InputStreamReader(params.input, "UTF-8");
+            outputWriter = new OutputStreamWriter(params.output, "UTF-8"); 
         } catch (UnsupportedEncodingException e) {
             /* This system doesn't support UTF-8 for whatever reason.
              * Complain and then die.
@@ -324,7 +334,7 @@ public class PreTransfer {
         }
         
         try {
-            processStream(inputReader, outputWriter, null_flush);
+            processStream(inputReader, outputWriter, params.nullFlush);
             //Have to flush or won't get any output.
             outputWriter.flush();
         } catch (IOException e) {
