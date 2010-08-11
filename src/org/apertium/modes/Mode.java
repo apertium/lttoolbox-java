@@ -19,10 +19,10 @@
 
 package org.apertium.modes;
 
-import java.util.ArrayList;
+import static org.apertium.utils.IOUtils.readFile;
 
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
+import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * @author Stephen Tigner
@@ -32,51 +32,13 @@ public class Mode {
     //Each mode has a pipeline, which is a list of programs to run.
     ArrayList<Program> _pipeline = new ArrayList<Program>();
     //Mode name 
-    String _modeName;
-    //Install flag
-    boolean _install;
-
-    public Mode(Element currMode) {
-        Element pipelineElem = (Element) currMode.getElementsByTagName("pipeline").item(0);
-        NodeList progList = pipelineElem.getElementsByTagName("program");
-        _modeName = currMode.getAttribute("name");
-        /* Install is an optional attribute, assuming the default is "yes"
-         * when the attribute is not present.
-         * Thus we want to test if it equals "no" rather than if it equals
-         * "yes", because if it was missing, it wouldn't match "yes" when
-         * it should be yes.
-         * If it equals "no", then we want install to equal false, hence the
-         * '!' invert the result of that equals statement.
-         */
-        _install = (!currMode.getAttribute("install").equals("no"));
-        
-        int numProgs = progList.getLength();
-        for(int i = 0; i < numProgs; i++) {
-            Element currProg = (Element) progList.item(i);
-            _pipeline.add(new Program(currProg));
+    String _filename;
+    
+    public Mode(String filename) throws IOException {
+        _filename = filename;
+        String[] progList = readFile(filename).split("\\|");
+        for(String prog : progList) {
+            _pipeline.add(new Program(prog.trim()));
         }
-    }
-    
-    public String getModeName() {
-        return _modeName;
-    }
-    
-    public boolean getInstallFlag() {
-        return _install;
-    }
-    
-    public Program getProgByIndex(int index) {
-        return _pipeline.get(index);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder tempString = new StringBuilder();
-        tempString.append("[Mode -- " + _modeName + ": \n");
-        for(Program currProg : _pipeline) {
-            tempString.append(currProg.toString());
-        }
-        tempString.append(" ]");
-        return tempString.toString();
     }
 }

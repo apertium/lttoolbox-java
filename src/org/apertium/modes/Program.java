@@ -20,6 +20,7 @@
 package org.apertium.modes;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -29,52 +30,82 @@ import org.w3c.dom.NodeList;
  *
  */
 public class Program {
-    //Each program has a "name" which is a command line.
-    String _commandLine;
-    //Dunno what this is for yet, but it's in the DTD
-    String _prefix;
-    //Each program also has a list of files, which are used, in order.
-    ArrayList<String> _files;
     
-    public Program(Element progElem) {
-        _commandLine = progElem.getAttribute("name");
-        _prefix = progElem.getAttribute("prefix");
-        _files = new ArrayList<String>();
-        
-        _files = new ArrayList<String>();
-        NodeList fileNodeList = progElem.getElementsByTagName("file");
-        int numFiles = fileNodeList.getLength();
-        for(int i = 0; i < numFiles; i++) {
-            Element currFile = (Element) fileNodeList.item(i);
-            _files.add(currFile.getAttribute("name"));
+    public enum Programs {
+        LT_PROC, TAGGER, PRETRANSFER, TRANSFER, INTERCHUNK, POSTCHUNK,
+        TXT_DEFORMAT, TXT_REFORMAT, UNKNOWN
+    }
+    
+    //Each program has a "name" which is a command line.
+    private String _commandName;
+    private final Programs _program;
+    //Each program also has a list of files, which are used, in order.
+    private String _parameters;
+
+    public Program(String commandLine) {
+        /* Splits on spaces, assumes path won't have internal spaces.
+         * This only splits the command from the parameters. The parameters
+         * are left as a single string.
+         * This is to make it easier to run the command when the time comes.
+         * If a specific command needs to have the parameters split up for some
+         * reason, that can still be done later.
+         */
+        String[] paramList = commandLine.split(" ", 2);
+
+        /* Split off the command name from the rest of the path, as the paths in
+         * mode files are absolute unix paths and will fail in cygwin, as Java
+         * doesn't run in the cygwin filesystem.
+         * Running the executables w/o a path prefix will work in Windows with
+         * cygwin, provided that the user has the cygwin bin dir in their path.
+         */
+        String[] commandPathList = paramList[0].trim().split("\\/");
+        //Grab the last entry
+        _commandName = commandPathList[commandPathList.length - 1];
+        _parameters = paramList[1];
+
+        if(_commandName.equals("lt-proc")) {
+            _program = Programs.LT_PROC;
+        } else if(_commandName.equals("apertium-tagger")) {
+            _program = Programs.TAGGER;
+        } else if(_commandName.equals("apertium-pretransfer")) {
+            _program = Programs.PRETRANSFER;
+        } else if(_commandName.equals("apertium-transfer")) {
+            _program = Programs.TRANSFER;
+        } else if(_commandName.equals("apertium-interchunk")) {
+            _program = Programs.INTERCHUNK;
+        } else if(_commandName.equals("apertium-postchunk")) {
+            _program = Programs.POSTCHUNK;
+        } else if(_commandName.equals("apertium-destxt")) {
+            _program = Programs.TXT_DEFORMAT;
+        } else if(_commandName.equals("apertium-retxt")) {
+            _program = Programs.TXT_REFORMAT;
+        } else {
+            _program = Programs.UNKNOWN;
         }
     }
 
-    public String getCommandLine() {
-        return _commandLine;
+    public String getCommandName() {
+        return _commandName;
     }
     
-    public String getPrefix() {
-        return _prefix;
+    public Programs getProgram() {
+        return _program;
     }
     
-    public String getFile(int index) {
-        return _files.get(index);
-    }
-
     /**
      * Allows for all the filename strings to be retrieved at once.
-     * @return A copy of the internal list of filename strings.
+     * @return A copy of the internal list of parameters.
      */
-    public ArrayList<String> getFiles() {
-        return new ArrayList<String>(_files);
+    public String getParameters() {
+        return _parameters;
     }
     
     @Override
     public String toString() {
         StringBuilder tempString = new StringBuilder();
-        tempString.append("{Program -- " + _commandLine + ": \n");
-        tempString.append("Files: " + _files + " }");
+        tempString.append("{Program -- " + _commandName + " (" + 
+                _program.toString() + "): \n");
+        tempString.append("Parameters: " + _parameters + " }");
         return tempString.toString();
     }
 }

@@ -29,14 +29,18 @@ import java.io.InputStreamReader;
  *
  */
 public class IOUtils {
-
+    
     public static String readFile(String path) throws IOException {
+        return readFile(path, "UTF-8");
+    }
+
+    public static String readFile(String path, String encoding) throws IOException {
         File outFile = new File(path);
         FileInputStream fis = new FileInputStream(outFile);
         /* If we don't do it this way, by explicitly setting UTF-8 encoding
          * when reading in a file, we get mojibake (scrambled character encodings).
          */
-        InputStreamReader fisReader = new InputStreamReader(fis, "UTF-8");
+        InputStreamReader fisReader = new InputStreamReader(fis, encoding);
         /* This will leave us with a bunch of extra nulls at the end if the
          * input file has any multi-byte characters in it, we take care of that
          * further down before returning the string.
