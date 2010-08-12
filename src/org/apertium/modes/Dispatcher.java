@@ -32,6 +32,7 @@ import org.apertium.postchunk.ApertiumPostchunk;
 import org.apertium.postchunk.Postchunk;
 import org.apertium.pretransfer.PreTransfer;
 import org.apertium.tagger.Tagger;
+import org.apertium.transfer.ApertiumTransfer;
 import org.apertium.utils.StringTable;
 import org.apertium.utils.StringTable.Entries;
 
@@ -145,10 +146,34 @@ public class Dispatcher {
             System.err.println("TextFormatter -- " + 
                     StringTable.getString(Entries.UNSUPPORTED_ENCODING));
             e.printStackTrace();
+            System.exit(1);
         } catch (FileNotFoundException e) {
             System.err.println("TextFormatter -- " + 
                     StringTable.getString(Entries.FILE_NOT_FOUND));
             e.printStackTrace();
+            System.exit(1);
+        }
+    }
+    
+    private static void doTransfer(Program prog, Reader input, Writer output) {
+        String[] args = prog.getParameters().split(" ");
+        try {
+            ApertiumTransfer.doMain(args, input, output);
+        } catch (UnsupportedEncodingException e) {
+            System.err.println("Transfer -- " + 
+                    StringTable.getString(Entries.UNSUPPORTED_ENCODING));
+            e.printStackTrace();
+            System.exit(1);
+        } catch (FileNotFoundException e) {
+            System.err.println("Transfer -- " + 
+                    StringTable.getString(Entries.FILE_NOT_FOUND));
+            e.printStackTrace();
+            System.exit(1);
+        } catch (Exception e) {
+            System.err.println("Transfer -- " + 
+                    StringTable.getString(Entries.GENERIC_EXCEPTION));
+            e.printStackTrace();
+            System.exit(1);
         }
     }
     
@@ -170,7 +195,7 @@ public class Dispatcher {
                 doTagger(prog, input, output);
                 break;
             case TRANSFER:
-                //TODO: call transfer
+                doTransfer(prog, input, output);
                 break;
             case TXT_DEFORMAT:
                 doTextFormat(prog, input, output, true);

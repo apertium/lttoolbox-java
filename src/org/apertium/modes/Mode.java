@@ -41,4 +41,8 @@ public class Mode {
             _pipeline.add(new Program(prog.trim()));
         }
     }
+    
+    public Program getProgramByIndex(int index) {
+        return _pipeline.get(index);
+    }
 }

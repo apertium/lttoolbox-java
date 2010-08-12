@@ -17,21 +17,16 @@ package org.apertium.transfer;
  * 02111-1307, USA.
  */
 
+import static org.apertium.utils.IOUtils.getStdinReader;
+import static org.apertium.utils.IOUtils.getStdoutWriter;
+import static org.apertium.utils.IOUtils.openInFileReader;
+import static org.apertium.utils.IOUtils.openOutFileWriter;
+
 import org.apertium.lttoolbox.*;
 import org.apertium.lttoolbox.process.FSTProcessor;
 import java.io.*;
-import org.apertium.lttoolbox.process.State;
-import static org.apertium.lttoolbox.LTProc.*;
-/*
-// The implementation of MyGetOpt currently used is Sun proprietary API and may be removed in a future release.
-// Making this small subclass makes the compiler warn only once instead of 3 times
-class MyGetOpt extends com.sun.org.apache.xalan.internal.xsltc.cmdline.getopt.GetOpt {
 
-  public MyGetOpt(String[] argv, String string) {
-    super(argv, string);
-  }
-}
- */
+import org.apertium.lttoolbox.process.State;
 
 // Use GNU Getopt
 
@@ -75,6 +70,12 @@ public class ApertiumTransfer {
     }
 
     public static void main(String[] argv) throws Exception {
+        doMain(argv, null, null);
+    }
+    
+    public static void doMain(String[] argv, Reader input, Writer output) 
+            throws IOException, InstantiationException, IllegalAccessException, 
+            ClassNotFoundException {
 
         System.setProperty("file.encoding", "UTF-8");
         if (argv.length == 0) {
@@ -127,38 +128,54 @@ public class ApertiumTransfer {
             }
         }
 
-        Reader input;
-        Writer output;
         if (argv.length > optind+3) {
           t.read(argv[optind + 1], argv[optind + 2], argv[optind + 3]);
           if (t.DEBUG) t.transferObject.debug = true;
         } else {
           endProgram();
         }
-        if (argv.length > optind+4) {
-            input = openReader(argv[optind + 4]);
+        
+        if(input != null || output != null) {
+            /* If either is supplied, ignore command-line input/output files,
+             * as we are in inter-jvm pipeline mode, and if the modes file
+             * is supplying input/ouput files, we don't want to use them,
+             * as we are keeping everything in memory inside the jvm.
+             */
+            if(input == null) { input = getStdinReader(); }
+            if(output == null) { output = getStdoutWriter(); }
         } else {
-          input = new InputStreamReader(System.in);
-        }
-        if (argv.length > optind+5) {
-            output = fout(argv[optind + 5]);
-        } else {
-          output = new OutputStreamWriter(System.out);
+            if (argv.length > optind+4) {
+                input = openInFileReader(argv[optind + 4]);
+            } else {
+              input = getStdinReader();
+            }
+            if (argv.length > optind+5) {
+                output = openOutFileWriter(argv[optind + 5]);
+            } else {
+              output = getStdoutWriter();
+            }
         }
 
         try {
-          t.transfer(input, output);
-          input.close();
-          output.close();
+            t.transfer(input, output);
+            input.close();
+            output.close();
         } catch (Exception e) {
-          output.flush();
-          System.out.flush();
-          Thread.sleep(10);
-          e.printStackTrace();
-          if (t.getNullFlush()) {
-              output.write('\0');
-          }
-          System.exit(1);
+            output.flush();
+            System.out.flush();
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e1) {
+                /* Do nothing, we really don't care if we've been
+                 * interrupted by anything, as this isn't synchronized
+                 * code.
+                 */
+            }
+            e.printStackTrace();
+            if (t.getNullFlush()) {
+                output.write('\0');
+            }
+            System.exit(1);
         }
         
     }

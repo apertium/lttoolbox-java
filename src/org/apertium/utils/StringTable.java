@@ -28,7 +28,7 @@ import java.util.Map;
  */
 public class StringTable {
     public enum Entries {
-        UNSUPPORTED_ENCODING, FILE_NOT_FOUND
+        UNSUPPORTED_ENCODING, FILE_NOT_FOUND, GENERIC_EXCEPTION
     }
     
     private static Map<Entries, String> stringMap = null;
@@ -46,6 +46,10 @@ public class StringTable {
         		"the filename and try again.";
         
         stringMap.put(Entries.FILE_NOT_FOUND, tempString);
+        
+        tempString = "An exception occured during execution.";
+        
+        stringMap.put(Entries.GENERIC_EXCEPTION, tempString);
     }
     
     public static String getString(Entries entry) {

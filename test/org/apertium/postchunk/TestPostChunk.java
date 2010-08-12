@@ -195,7 +195,7 @@ public class TestPostChunk {
         String preprocFile = testDataDir + "en-es.t3x.bin";
         String compareOutFile = testDataDir + "en-postchunk-output.txt";
 
-        /* The logic in ApertiumInterchunk.main() is mostly for parsing the command-line,
+        /* The logic in ApertiumPostchunk.main() is mostly for parsing the command-line,
          * since we're calling it directly in Java, we can bypass it.
          */
         Reader input = new FileReader(inFile);
@@ -203,7 +203,7 @@ public class TestPostChunk {
 
         Postchunk postchunk = new Postchunk();
         //Debug produces too much output and slows down execution too much.
-        //Interchunk.DEBUG = true;
+        Postchunk.DEBUG = false;
         try {
             postchunk.read(transferClass, preprocFile);
             //interchunk.transferObject.debug = true;

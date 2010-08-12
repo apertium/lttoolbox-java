@@ -7,6 +7,7 @@ package org.apertium.transfer;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
@@ -145,78 +146,14 @@ So the array of rule_map Method is taken by introspection, taking all methods be
   private boolean internal_null_flush;
 
   public void readData(InputStream in) throws IOException {
-
     // symbols
     alphabet=Alphabet.read(in);
     any_char=alphabet.cast(TRXReader__ANY_CHAR);
     any_tag=alphabet.cast(TRXReader__ANY_TAG);
 
-    //System.err.println("  timing = " + timing.toString());
-
-    /* old code
-     * 
-    HashMap<Integer, Integer> finals=new HashMap<Integer, Integer>();
-    // finals
-    for (int i=0, limit=Compression.multibyte_read(in); i!=limit; i++) {
-      int key=Compression.multibyte_read(in);
-      finals.put(key, Compression.multibyte_read(in));
-    }
-
-    me=new MatchExe(t, finals);
-     */
-
     // faster - let it read itselv, thus no need to make a big hashmap
     me=new MatchExe(in, alphabet.size());
     ms =new MatchState(me);
-  //System.err.println("me = " + me);
-
-    
-/*  Rest of data file is not used
-
-  // attr_items
-  for(int i = 0, limit = Compression.multibyte_read(in); i != limit; i++)
-  {
-    String cad_k = Compression.wstring_read_toUtf8(in);
-    //ApertiumRE re = new ApertiumRE();
-    int size = Compression.multibyte_read(in);
-    byte[] reb = new byte[size];
-    in.read(reb);
-    //System.err.println("ApertiumRE.read(size = " + size+": "+new String(reb,"UTF-8")+ Arrays.toString(reb));
-    //attr_items.put(cad_k, re);
-
-    //System.err.println("cad_k = " + cad_k);
-  }
-
-    if (DEBUG) System.err.println("attr_items = " + attr_items);
-
-  // variables
-  for(int i = 0, limit = Compression.multibyte_read(in); i != limit; i++)
-  {
-    String cad_k = Compression.wstring_read_toUtf8(in);
-    variables.put(cad_k, Compression.wstring_read_toUtf8(in));
-  }
-    if (DEBUG) System.err.println("variables = " + variables);
-
-  // macros
-  for(int i = 0, limit = Compression.multibyte_read(in); i != limit; i++)
-  {
-    String cad_k = Compression.wstring_read_toUtf8(in);
-    macros.put(cad_k, Compression.multibyte_read(in));
-  }
-    if (DEBUG) System.err.println("macros = " + macros);
-
-   // lists
-  for(int i = 0, limit = Compression.multibyte_read(in); i != limit; i++)
-  {
-  string const cad_k = Compression.wstring_read_toUtf8(in);
-
-  for(int j = 0, limit2 = Compression.multibyte_read(in); j != limit2; j++)
-  {
-  String const cad_v = Compression.String_read(in);
-  lists[cad_k].insert(UtfConverter.toUtf8(cad_v));
-  listslow[cad_k].insert(UtfConverter.toUtf8(StringUtils.tolower(cad_v)));
-  }
-   */
   }
 
   /**
@@ -251,8 +188,12 @@ So the array of rule_map Method is taken by introspection, taking all methods be
    *  so, preprocessed by, apertium-preprocess-transfer-bytecode-j  (.class)
    * @param datafile same file, preprocessed by, apertium-preprocess-transfer  (.bin)
    * @param bilFstFile bilingual FST file - might be null
+ * @throws ClassNotFoundException 
+ * @throws IllegalAccessException 
+ * @throws InstantiationException 
+ * @throws IOException 
    */
-  public void read(String classFile, String datafile, String bilFstFile) throws Exception {
+  public void read(String classFile, String datafile, String bilFstFile) throws IOException, InstantiationException, IllegalAccessException, ClassNotFoundException {
     if (!classFile.endsWith(".class")) {
       System.err.println("Warning: " + classFile+ " should be a Java .class file. You probably got it wrong");
     }
@@ -263,7 +204,8 @@ So the array of rule_map Method is taken by introspection, taking all methods be
 
 
   @SuppressWarnings("unchecked")
-  public void read(Class transferClass, String datafile, String bilFstFile) throws Exception {
+  public void read(Class transferClass, String datafile, String bilFstFile) 
+          throws IOException, InstantiationException, IllegalAccessException {
 
     InputStream is = new BufferedInputStream(new FileInputStream(datafile));
     readData(is);
