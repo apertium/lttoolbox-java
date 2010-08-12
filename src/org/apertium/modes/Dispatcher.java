@@ -19,16 +19,21 @@
 
 package org.apertium.modes;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
+import org.apertium.formatter.TextFormatter;
 import org.apertium.interchunk.ApertiumInterchunk;
 import org.apertium.interchunk.Interchunk;
 import org.apertium.postchunk.ApertiumPostchunk;
 import org.apertium.postchunk.Postchunk;
 import org.apertium.pretransfer.PreTransfer;
 import org.apertium.tagger.Tagger;
+import org.apertium.utils.StringTable;
+import org.apertium.utils.StringTable.Entries;
 
 /**
  * @author Stephen Tigner
@@ -114,6 +119,39 @@ public class Dispatcher {
         Tagger.taggerDispatch(args, input, output);
     }
     
+    private static void doTextFormat(Program prog, Reader input, Writer output, 
+            boolean deformatMode) {
+        String paramString = prog.getParameters();
+
+        if(deformatMode) {
+            /* Since the same class is used for deformatting and re-formatting, but the
+             * .mode files aren't setup like that, so prepending "-d" to set it to 
+             * deformatting mode.
+             */
+            paramString = "-d " + paramString;
+        } else {
+            /* If not in deformatting mode, must be in reformatting mode.
+             * So prepend with "-r" instead.
+             */
+            paramString = "-r " + paramString;
+        }
+        
+        TextFormatter formatter = new TextFormatter();
+
+        String[] args = paramString.split(" ");
+        try {
+            formatter.doMain(args, input, output);
+        } catch (UnsupportedEncodingException e) {
+            System.err.println("TextFormatter -- " + 
+                    StringTable.getString(Entries.UNSUPPORTED_ENCODING));
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            System.err.println("TextFormatter -- " + 
+                    StringTable.getString(Entries.FILE_NOT_FOUND));
+            e.printStackTrace();
+        }
+    }
+    
     public static void dispatch(Program prog, Reader input, Writer output) {
         switch(prog.getProgram()) {
             case INTERCHUNK:
@@ -129,16 +167,16 @@ public class Dispatcher {
                 doPretransfer(prog, input, output);
                 break;
             case TAGGER:
-                //TODO: call tagger
+                doTagger(prog, input, output);
                 break;
             case TRANSFER:
                 //TODO: call transfer
                 break;
             case TXT_DEFORMAT:
-                //TODO: call text deformatter
+                doTextFormat(prog, input, output, true);
                 break;
             case TXT_REFORMAT:
-                //TODO: call text reformatter
+                doTextFormat(prog, input, output, false);
                 break;
             case UNKNOWN:
                 //TODO: call the literal program

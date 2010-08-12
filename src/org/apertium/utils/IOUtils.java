@@ -19,10 +19,22 @@
 
 package org.apertium.utils;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 
 /**
  * @author Stephen Tigner
@@ -67,4 +79,84 @@ public class IOUtils {
         return testOutput;
     }
 
+    /**
+     * 
+     * @return A reader for System.in with the default encoding of UTF-8.
+     * @throws UnsupportedEncodingException
+     */
+    public static Reader getStdinReader() throws UnsupportedEncodingException {
+        return getStdinReader("UTF-8");
+    }
+    
+    public static Reader getStdinReader(String encoding) throws UnsupportedEncodingException {
+        return new BufferedReader(new InputStreamReader(System.in, encoding));
+    }
+
+    /**
+     * 
+     * @return A writer for System.out with the default encoding of UTF-8.
+     * @throws UnsupportedEncodingException
+     */
+    public static Writer getStdoutWriter() throws UnsupportedEncodingException {
+        return getStdoutWriter("UTF-8");
+    }
+    
+    public static Writer getStdoutWriter(String encoding) throws UnsupportedEncodingException {
+        return new BufferedWriter(new OutputStreamWriter(System.out, encoding));
+    }
+    
+    /**
+     * Takes a filename string and a command-line label and attempts to open an input
+     * stream to the file given in the filename.
+     * @param filename - A string with the filename to open
+     * @return An InputStream for reading from the file specified.
+     * @throws FileNotFoundException 
+     */
+    public static InputStream openInFileStream(String filename) 
+            throws FileNotFoundException {
+        return new BufferedInputStream(new FileInputStream(filename));
+    }
+
+    /**
+     * 
+     * @param filename -- The file to open for reading.
+     * @return A reader for the file with the default UTF-8 encoding.
+     * @throws UnsupportedEncodingException
+     * @throws FileNotFoundException
+     */
+    public static Reader openInFileReader(String filename) 
+            throws UnsupportedEncodingException, FileNotFoundException {
+        return openInFileReader(filename, "UTF-8");
+    }
+    
+    public static Reader openInFileReader(String filename, String encoding) 
+            throws UnsupportedEncodingException, FileNotFoundException {
+        return new InputStreamReader(openInFileStream(filename), encoding);
+    }
+    
+    /**
+     * Takes a filename string and a command-line label and attempts to open an output
+     * stream to the file given in the filename.
+     * @param filename - A string with the filename to open
+     * @return An OutputStream for writing to the file specified.
+     * @throws FileNotFoundException 
+     */
+    public static OutputStream openOutFileStream(String filename) throws FileNotFoundException {
+        return new BufferedOutputStream(new FileOutputStream(filename));
+    }
+
+    /**
+     * 
+     * @param filename -- The file to open for writing.
+     * @return A writer for the file with the default UTF-8 encoding.
+     * @throws FileNotFoundException
+     */
+    public static Writer openOutFileWriter(String filename) throws FileNotFoundException {
+        return openOutFileWriter(filename, "UTF-8");
+    }
+    
+    public static Writer openOutFileWriter(String filename, String encoding) throws FileNotFoundException {
+        return new OutputStreamWriter(openOutFileStream(filename));
+    }
+    
 }

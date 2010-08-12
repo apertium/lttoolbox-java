@@ -19,11 +19,19 @@
 
 package org.apertium.formatter;
 
+import static org.apertium.utils.IOUtils.getStdinReader;
+import static org.apertium.utils.IOUtils.getStdoutWriter;
+import static org.apertium.utils.IOUtils.openInFileReader;
+import static org.apertium.utils.IOUtils.openOutFileWriter;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 
 import org.apertium.lttoolbox.Getopt;
 
@@ -155,77 +163,39 @@ public abstract class GenericFormatter {
     }
 
     /**
-     * Takes a filename string and a command-line label and attempts to open an input
-     * stream to the file given in the filename. If the file is not found (or otherwise 
-     * could not be opened), then prints an appropriate message using the commandLabel 
-     * passed in and then exits.
-     * @param filename - A string with the filename to open
-     * @param commandLabel - A label used at the beginning of the error message to
-     * identify the the program the error is coming from.
-     * @return An InputStream for reading from the file specified.
-     */
-    protected InputStream openInFile(String filename, String commandLabel) {
-        InputStream in = null;
-        try {
-            in = new FileInputStream(filename);
-        } catch(FileNotFoundException e) {
-            System.err.println(commandLabel + " -- Input file not found or could not be opened: " + filename);
-            System.err.println("Cannot continue.");
-            System.exit(1);
-        } 
-        return in;
-    }
-    
-    /**
-     * Takes a filename string and a command-line label and attempts to open an output
-     * stream to the file given in the filename. If the file is not found (or otherwise 
-     * could not be opened), then prints an appropriate message using the commandLabel 
-     * passed in and then exits.
-     * @param filename - A string with the filename to open
-     * @param commandLabel - A label used at the beginning of the error message to
-     * identify the the program the error is coming from.
-     * @return An OutputStream for reading from the file specified.
-     */
-    protected OutputStream openOutFile(String filename, String commandLabel) {
-        OutputStream out = null;
-        try {
-            out = new FileOutputStream(filename);
-        } catch(FileNotFoundException e) {
-            System.err.println(commandLabel + " -- Output file not found or could not be opened: " + filename);
-            System.err.println("Cannot continue.");
-            System.exit(1);
-        } 
-        return out;
-    }
-    
-    /**
      * De-formats the incoming text in a format-specific manner.
      * In other words, it converts the text into Apertium stream format by escaping
      * special characters, white space, and other data that should not be translated.
      * (Such as tags in the case of HTML.)
-     * @param in - An InputStream to pull the text to deformat from.
-     * @param out - An OutputStream to output the deformatted text to.
+     * @param in - A Reader to pull the text to deformat from.
+     * @param out - A Writer to output the deformatted text to.
      */
-    protected abstract void deFormat(InputStream in, OutputStream out);
+    protected abstract void deFormat(Reader in, Writer out);
 
     /**
      * Re-formats the incoming text in a format-specific manner.
      * In other words, it converts the text from Apertium stream format by de-escaping
      * special characters, and removing the superblanks around whitespace and other data
      * that was not to be translated. (Such as tags in the case of HTML.)
-     * @param in - An InputStream to pull the text to deformat from.
-     * @param out - An OutputStream to output the deformatted text to.
+     * @param in - A Reader to pull the text to deformat from.
+     * @param out - A Writer to output the deformatted text to.
      */
-    protected abstract void reFormat(InputStream in, OutputStream out);
+    protected abstract void reFormat(Reader in, Writer out);
 
     /**
      * Reads the command-line arguments, sets up the mode and input/output streams, 
      * and calls the appropriate deFormat or reFormat function.
      * @param args
+     * @throws FileNotFoundException 
+     * @throws UnsupportedEncodingException 
      */
-    protected void doMain(String[] args) {
-        InputStream in = null;
-        OutputStream out = null;
+    public void doMain(String[] args) throws UnsupportedEncodingException, 
+            FileNotFoundException {
+        doMain(args, null, null);
+    }
+    
+    public void doMain(String[] args, Reader in, Writer out) 
+            throws UnsupportedEncodingException, FileNotFoundException {
 
         FormatterMode mode = getModeAndFiles(args, _commandLabel);
 
@@ -234,14 +204,14 @@ public abstract class GenericFormatter {
         }
         
         if(_inputFile != null) {
-            in =  openInFile(_inputFile, _commandLabel);
+            in =  openInFileReader(_inputFile);
         } else {
-            in = System.in;
+            in = getStdinReader();
         }
         if(_outputFile != null) {
-            out = openOutFile(_outputFile, _commandLabel);
+            out = openOutFileWriter(_outputFile);
         } else {
-            out = System.out;
+            out = getStdoutWriter();
         }
         
         switch(mode) {
@@ -265,8 +235,5 @@ public abstract class GenericFormatter {
     public GenericFormatter(String commandLabel) {
         _commandLabel = commandLabel;
     }
-    
-    public GenericFormatter() {
-        _commandLabel = "ThisNeedsToBeSet";
-    }
+
 }

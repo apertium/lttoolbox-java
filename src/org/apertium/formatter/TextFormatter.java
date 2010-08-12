@@ -19,15 +19,15 @@
 
 package org.apertium.formatter;
 
-import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+
+import org.apertium.utils.StringTable;
+import org.apertium.utils.StringTable.Entries;
 
 /**
  * @author Stephen Tigner
@@ -66,25 +66,7 @@ public class TextFormatter extends GenericFormatter {
         }
     }
     
-    @Override
-    protected void deFormat(InputStream in, OutputStream out) {
-        InputStreamReader inRead = null;
-        Writer outWrite = null;
-        try {
-            inRead = new InputStreamReader(in, "UTF-8");
-            /* The OutputStreamWriter is wrapped in a BufferedWriter for
-             * performance reasons, per the Java API docs on OutputStreamWriter.
-             * "Each invocation of a write() method causes the encoding converter 
-             * to be invoked on the given character(s). [...]
-             * For top efficiency, consider wrapping an OutputStreamWriter within a 
-             * BufferedWriter so as to avoid frequent converter invocations."
-             */
-            outWrite = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            System.err.println(_commandLabel + " -- This system apparently doesn't support UTF-8 encoding.");
-            System.err.println("Cannot continue. Find a system that does (or enable UTF-8 on this system) and try again.");
-            System.exit(1);
-        }
+    protected void deFormat(Reader inRead, Writer outWrite) {
         try {
             int currentChar = inRead.read();
             /* Keep track of the previous char, intended for use if needing
@@ -191,26 +173,7 @@ public class TextFormatter extends GenericFormatter {
         }
     }
 
-    @Override
-    protected void reFormat(InputStream in, OutputStream out) {
-        InputStreamReader inRead = null;
-        Writer outWrite = null;
-        try {
-            inRead = new InputStreamReader(in, "UTF-8");
-            /* The OutputStreamWriter is wrapped in a BufferedWriter for
-             * performance reasons, per the Java API docs on OutputStreamWriter.
-             * "Each invocation of a write() method causes the encoding converter 
-             * to be invoked on the given character(s). [...]
-             * For top efficiency, consider wrapping an OutputStreamWriter within a 
-             * BufferedWriter so as to avoid frequent converter invocations."
-             */
-            outWrite = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            System.err.println(_commandLabel + " -- This system apparently doesn't support UTF-8 encoding.");
-            System.err.println("Cannot continue. Find a system that does and try again.");
-            System.exit(1);
-        }
-
+    protected void reFormat(Reader inRead, Writer outWrite) {
         try {
             int currentChar = inRead.read();
             int previousChar = -1;
@@ -316,11 +279,25 @@ public class TextFormatter extends GenericFormatter {
         super(commandLabel);
     }
     
+    public TextFormatter() {
+        this("TextFormatter");
+    }
+    
     /**
      * @param args
      */
     public static void main(String[] args) {
-        TextFormatter formatter = new TextFormatter("TextFormatter");
-        formatter.doMain(args);
+        TextFormatter formatter = new TextFormatter();
+        try {
+            formatter.doMain(args);
+        } catch (UnsupportedEncodingException e) {
+            System.err.println("TextFormatter -- " + 
+                    StringTable.getString(Entries.UNSUPPORTED_ENCODING));
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            System.err.println("TextFormatter -- " + 
+                    StringTable.getString(Entries.FILE_NOT_FOUND));
+            e.printStackTrace();
+        }
     }
 }

@@ -18,6 +18,12 @@
  */
 package org.apertium.tagger;
 
+import static org.apertium.utils.IOUtils.getStdinReader;
+import static org.apertium.utils.IOUtils.getStdoutWriter;
+import static org.apertium.utils.IOUtils.openInFileReader;
+import static org.apertium.utils.IOUtils.openInFileStream;
+import static org.apertium.utils.IOUtils.openOutFileWriter;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.io.*;
@@ -325,7 +331,7 @@ public class Tagger {
             throws IOException {
         String encoding ="UTF-8";
 
-        InputStream ftdata = fopen(filenames.get(0));
+        InputStream ftdata = openInFileStream(filenames.get(0));
 
         TaggerData td = new TaggerData();
 
@@ -338,10 +344,8 @@ public class Tagger {
         hmm.set_show_sf(showSF);
         hmm.setNullFlush(null_flush);
         
-        Reader sysInReader = 
-            new BufferedReader(new InputStreamReader(System.in, encoding));
-        Writer sysOutWriter = 
-            new BufferedWriter(new OutputStreamWriter(System.out, encoding));
+        Reader sysInReader = getStdinReader();
+        Writer sysOutWriter = getStdoutWriter();
         
         //If input or output provided, ignore input/output files on command line
         if(input != null || output != null) {
@@ -352,18 +356,16 @@ public class Tagger {
             hmm.tagger(sysInReader, sysOutWriter, mode_first);
 
         } else {
-            InputStream finput = fopen(filenames.get(1));
-            Reader fReader = new InputStreamReader(finput, encoding);
+            Reader fReader = openInFileReader(filenames.get(1));
             if (filenames.size() == 2) {
                 hmm.tagger(fReader, sysOutWriter, mode_first);
 
             } else {
-                OutputStream foutput = foutopen(filenames.get(2));
-                Writer fWriter = new OutputStreamWriter(foutput, encoding);
+                Writer fWriter = openOutFileWriter(filenames.get(2));
                 hmm.tagger(fReader, fWriter, mode_first);
-                foutput.close();
+                fWriter.close();
             }
-            finput.close();
+            fReader.close();
 
         }
 
@@ -381,11 +383,4 @@ public class Tagger {
         tagger(false, input, output);
     }
 
-    public static InputStream fopen(String filename) throws FileNotFoundException {
-        return new BufferedInputStream(new FileInputStream(filename));
-    }
-
-    public static OutputStream foutopen(String filename) throws FileNotFoundException {
-        return new BufferedOutputStream(new FileOutputStream(filename));
-    }
 }
