@@ -154,6 +154,10 @@ So the array of rule_map Method is taken by introspection, taking all methods be
     // faster - let it read itselv, thus no need to make a big hashmap
     me=new MatchExe(in, alphabet.size());
     ms =new MatchState(me);
+
+    // Rest of data file contains attr_items, variables. macros, lists.
+    // This is encoded in the class/bytecode, so we skip the rest of the file.
+    // See old code at: http://apertium.svn.sourceforge.net/viewvc/apertium/trunk/lttoolbox-java/src/org/apertium/transfer/Transfer.java?r1=24752&r2=24751&pathrev=24752
   }
 
   /**
