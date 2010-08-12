@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import org.apertium.transfer.ApertiumRE;
 import java.io.OutputStream;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 
@@ -354,7 +355,7 @@ public class TaggerWord {
         return tempString;
     }
 
-    public void outputOriginal (OutputStream o) throws IOException {
+    public void outputOriginal (Writer out2) throws IOException {
         String s=this.superficial_form;
 
         for (String form : lexical_forms.values()) {
@@ -369,8 +370,8 @@ public class TaggerWord {
             out="^"+s+"$\n";
         }
 
-        //Make sure string is UTF-8 encoded before writing it out
-        o.write(out.getBytes("UTF-8"));
+        //Assuming writer is already setup for UTF-8
+        out2.write(out);
 
     }
 

@@ -27,6 +27,7 @@ import org.apertium.transfer.MatchState;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 
 /**
@@ -61,7 +62,7 @@ public class MorphoStream {
      * directly byte-by-byte from the InputStream. ALL reading from the input stream
      * should be done through this reader instead of the InputStream directly.
      */
-    private InputStreamReader inputReader;
+    private Reader inputReader;
     private MatchExe me;
     private TaggerData td;
     private Alphabet alphabet;
@@ -80,7 +81,7 @@ public class MorphoStream {
      * Constructor
      * @param ftxt the input stream.
      */
-    MorphoStream(InputStream ftxt, boolean d, TaggerData t) throws UnsupportedEncodingException {
+    MorphoStream(Reader ftxt, boolean d, TaggerData t) throws UnsupportedEncodingException {
         // this();
         foundEOF = false;
         debug = d;
@@ -95,8 +96,7 @@ public class MorphoStream {
         }
 
         null_flush = false;
-        this.input = ftxt;
-        this.inputReader = new InputStreamReader(this.input, "UTF-8");
+        this.inputReader = ftxt;
         this.end_of_file = false;
         this.me = this.td.getPatternList().newMatchExe();
         ms = new MatchState(me);

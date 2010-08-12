@@ -22,6 +22,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
 
 import org.apertium.lttoolbox.Compression;
 
@@ -142,9 +144,9 @@ public class HMM {
     /**
      * Initializes the transition (a) and emission (b) probabilities
      * from an untagged input text by means of Kupiec's method
-     * @param is the input stream with the untagged corpus to process
+     * @param is the input reader with the untagged corpus to process
      */
-    void init_probabilities_kupiec(InputStream is) throws IOException {
+    void init_probabilities_kupiec(Reader in) throws IOException {
         int N = td.getN();
         int M = td.getM();
         int i, j, k, k1, k2, nw = 0;
@@ -161,7 +163,7 @@ public class HMM {
 
         Collection output = td.getOutput();
 
-        MorphoStream lexmorfo = new MorphoStream(is, true, td);
+        MorphoStream lexmorfo = new MorphoStream(in, true, td);
         TaggerWord word = new TaggerWord();
 
         for (k = 0; k < M; k++) {
@@ -276,10 +278,10 @@ public class HMM {
      * Initializes the transtion (a) and emission (b) probabilities
      * from a tagged input text by means of the expected-likelihood
      * estimate (ELE) method
-     * @param ftagged the input stream with the tagged corpus to process
+     * @param ftagged the input reader with the tagged corpus to process
      * @param funtagged the same corpus to process but untagged
      */
-    void init_probabilities_from_tagged_text(InputStream ftagged, InputStream funtagged) throws IOException {
+    void init_probabilities_from_tagged_text(Reader ftagged, Reader funtagged) throws IOException {
         int i, j, k, nw = 0;
         int N = td.getN();
         int M = td.getM();
@@ -457,9 +459,9 @@ public class HMM {
     /**
      * Reads the expanded dictionary received as a parameter and calculates
      * the set of ambiguity classes that the tagger will manage.
-     * @param fdic the input stream with the expanded dictionary to read
+     * @param fdic the input reader with the expanded dictionary to read
      */
-    void read_dictionary(InputStream fdic) throws IOException {
+    void read_dictionary(Reader fdic) throws IOException {
         int i, k, nw = 0;
         TaggerWord word = new TaggerWord();
         Set<Integer> tags = new LinkedHashSet<Integer>();
@@ -508,11 +510,11 @@ public class HMM {
 
     /**
      * Filters ambiguity classes
-     * @param in Stream to filter
+     * @param input reader to filter
      * @param out Output
      * @throws IOException
      */
-    void filter_ambiguity_classes(InputStream in, OutputStream out) throws IOException {
+    void filter_ambiguity_classes(Reader in, Writer out) throws IOException {
         Set<Set<Integer>> ambiguity_classes = new LinkedHashSet<Set<Integer>>();
         MorphoStream morpho_stream = new MorphoStream(in, true, td);
 
@@ -531,7 +533,7 @@ public class HMM {
         }
     }
 
-    void train(InputStream ftxt) throws IOException, UnsupportedOperationException {
+    void train(Reader ftxt) throws IOException, UnsupportedOperationException {
         if(true) {
             throw new UnsupportedOperationException("HMM training doesn't work, " +
                   "it hasn't been fully ported, yet!");
@@ -768,15 +770,10 @@ public class HMM {
          */
     }
 
-    void tagger(InputStream in, OutputStream out, boolean show_all_good_first) throws IOException {
+    void tagger(Reader in, Writer out, boolean show_all_good_first) throws IOException {
         int i, j, k;
         TaggerWord word = null;// new TaggerWord();  // word =null;
         Integer tag;
-
-        /* Changed all calls to out to use outWriter instead.
-         * This should help solve the encoding issues.
-         */
-        OutputStreamWriter outWriter = new OutputStreamWriter(out, "UTF-8");
 
         Set<Integer> tags = new LinkedHashSet<Integer>();
         Set<Integer> pretags = new LinkedHashSet<Integer>();
@@ -884,7 +881,7 @@ public class HMM {
                 for (int t = 0; t < best[nwpend2][tag].nodes.size(); t++) {
                     if (show_all_good_first) {
                         String micad = wpend.get(t).get_all_chosen_tag_first(best[nwpend2][tag].nodes.get(t), td.getTagIndex().get("TAG_kEOF"));
-                        outWriter.write(micad);
+                        out.write(micad);
                     } else {
                         //Split out the following line for debugging.
                         //String micad = wpend.get(t).get_lexical_form(best[nwpend2][tag].nodes.get(t), td.getTagIndex().get("TAG_kEOF"));
@@ -893,7 +890,7 @@ public class HMM {
                         TaggerWord tempWord = wpend.get(t);
                         tempWord.set_show_sf(show_sf); //Was missing, show superficial forms option won't work w/o this line
                         String micad = tempWord.get_lexical_form(tagT, tagkeof);
-                        outWriter.write(micad);
+                        out.write(micad);
                     }
                 }
                 wpend.clear();
@@ -902,10 +899,10 @@ public class HMM {
 
             if (morpho_stream.getEndOfFile()) {
                 if (null_flush) {
-                    outWriter.write(0x00);
+                    out.write(0x00);
                 }
 
-                outWriter.flush();
+                out.flush();
                 morpho_stream.setEndOfFile(false);
             }
             word = morpho_stream.get_next_word();

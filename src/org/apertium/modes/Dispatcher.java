@@ -28,6 +28,7 @@ import org.apertium.interchunk.Interchunk;
 import org.apertium.postchunk.ApertiumPostchunk;
 import org.apertium.postchunk.Postchunk;
 import org.apertium.pretransfer.PreTransfer;
+import org.apertium.tagger.Tagger;
 
 /**
  * @author Stephen Tigner
@@ -106,7 +107,11 @@ public class Dispatcher {
     }
     
     private static void doTagger(Program prog, Reader input, Writer output) {
-        //TODO: Implement this
+        String[] args = prog.getParameters().split(" ");
+        /* Existing tagger code requires Input and Output streams, not readers
+         * and writers.
+         */
+        Tagger.taggerDispatch(args, input, output);
     }
     
     public static void dispatch(Program prog, Reader input, Writer output) {

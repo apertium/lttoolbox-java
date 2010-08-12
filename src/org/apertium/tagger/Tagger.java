@@ -21,6 +21,7 @@ package org.apertium.tagger;
 import java.util.List;
 import java.util.ArrayList;
 import java.io.*;
+
 import org.apertium.lttoolbox.Getopt;
 
 // Use GNU Getopt
@@ -264,9 +265,14 @@ public class Tagger {
         }
     }
 
-    public static void main(String[] argv) {
+    public static void taggerDispatch(String[] args) {
+        taggerDispatch(args, null, null);
+    }
+    
+    public static void taggerDispatch(String[] args, Reader input, 
+            Writer output) {
         Tagger t = new Tagger();
-        int mode = t.getMode(argv);
+        int mode = t.getMode(args);
         switch (mode) {
             case TRAIN_MODE:
                 //train();
@@ -282,7 +288,11 @@ public class Tagger {
 
             case TAGGER_MODE:
                 try {
-                    t.tagger();
+                    if(input != null || output != null) {
+                        t.tagger(input, output);
+                    } else {
+                        t.tagger();
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -290,7 +300,11 @@ public class Tagger {
 
             case TAGGER_FIRST_MODE:
                 try {
-                    t.tagger(true);
+                    if(input != null || output != null) {
+                        t.tagger(true, input, output);
+                    } else {
+                        t.tagger(true);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -302,8 +316,15 @@ public class Tagger {
                 break;
         }
     }
+    
+    public static void main(String[] argv) {
+        taggerDispatch(argv);
+    }
 
-    void tagger(boolean mode_first) throws IOException {
+    void tagger(boolean mode_first, Reader input, Writer output) 
+            throws IOException {
+        String encoding ="UTF-8";
+
         InputStream ftdata = fopen(filenames.get(0));
 
         TaggerData td = new TaggerData();
@@ -316,18 +337,30 @@ public class Tagger {
 
         hmm.set_show_sf(showSF);
         hmm.setNullFlush(null_flush);
-
-        if (filenames.size() == 1) {
-            hmm.tagger(System.in, System.out, mode_first);
+        
+        Reader sysInReader = 
+            new BufferedReader(new InputStreamReader(System.in, encoding));
+        Writer sysOutWriter = 
+            new BufferedWriter(new OutputStreamWriter(System.out, encoding));
+        
+        //If input or output provided, ignore input/output files on command line
+        if(input != null || output != null) {
+            if(input == null) { input = sysInReader; }
+            if(output == null) { output = sysOutWriter; }
+            hmm.tagger(input, output, mode_first);
+        } else if (filenames.size() == 1) {
+            hmm.tagger(sysInReader, sysOutWriter, mode_first);
 
         } else {
             InputStream finput = fopen(filenames.get(1));
+            Reader fReader = new InputStreamReader(finput, encoding);
             if (filenames.size() == 2) {
-                hmm.tagger(finput, System.out, mode_first);
+                hmm.tagger(fReader, sysOutWriter, mode_first);
 
             } else {
                 OutputStream foutput = foutopen(filenames.get(2));
-                hmm.tagger(finput, foutput, mode_first);
+                Writer fWriter = new OutputStreamWriter(foutput, encoding);
+                hmm.tagger(fReader, fWriter, mode_first);
                 foutput.close();
             }
             finput.close();
@@ -338,6 +371,14 @@ public class Tagger {
 
     void tagger() throws IOException {
         tagger(false);
+    }
+    
+    void tagger(boolean mode_first) throws IOException {
+        tagger(mode_first, null, null);
+    }
+    
+    void tagger(Reader input, Writer output) throws IOException {
+        tagger(false, input, output);
     }
 
     public static InputStream fopen(String filename) throws FileNotFoundException {
