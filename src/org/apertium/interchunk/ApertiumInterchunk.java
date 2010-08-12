@@ -19,9 +19,6 @@
 
 package org.apertium.interchunk;
 
-import static org.apertium.lttoolbox.LTProc.fout;
-import static org.apertium.lttoolbox.LTProc.openReader;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;

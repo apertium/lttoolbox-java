@@ -17,20 +17,16 @@ package org.apertium.lttoolbox;
  * 02111-1307, USA.
  */
 
+import static org.apertium.utils.IOUtils.getStdinReader;
+import static org.apertium.utils.IOUtils.getStdoutWriter;
+import static org.apertium.utils.IOUtils.openInFileReader;
+import static org.apertium.utils.IOUtils.openOutFileWriter;
+import static org.apertium.utils.IOUtils.openInFileStream;
+
 import org.apertium.lttoolbox.process.FSTProcessor;
 import java.io.*;
+
 import org.apertium.lttoolbox.process.State;
-
-/*
-// The implementation of MyGetOpt currently used is Sun proprietary API and may be removed in a future release.
-// Making this small subclass makes the compiler warn only once instead of 3 times
-class MyGetOpt extends com.sun.org.apache.xalan.internal.xsltc.cmdline.getopt.GetOpt {
-
-  public MyGetOpt(String[] argv, String string) {
-    super(argv, string);
-  }
-}
- */
 
 // Use GNU Getopt
 
@@ -86,8 +82,14 @@ public class LTProc {
     }
 
     public static void main(String[] argv) throws Exception {
-
         System.setProperty("file.encoding", "UTF-8");
+        
+        doMain(argv, null, null);
+    }
+    
+    public static void doMain(String[] argv, Reader input, Writer output) 
+            throws IOException {
+
         if (argv.length == 0) {
             endProgram("LTProc");
         }
@@ -168,36 +170,49 @@ public class LTProc {
                 endProgram("LTProc");
             }
         }
+        
+        boolean pipelineMode = false;
 
-        final Reader input;
-        Writer output = new OutputStreamWriter(System.out);
+        if(input != null || output != null) {
+            /* We are running in pipeline mode and want to ignore any temporary
+             * input/output files that may have been specified on the command line
+             * in the modes file.
+             */
+            if(input == null) { getStdinReader(); }
+            if(output == null) { getStdoutWriter(); }
+            pipelineMode = true;
+        } else {
+            output = getStdoutWriter();
+        }
 
-        if (optind == (argc - 4)) {
+        if (optind == (argc - 4) && !pipelineMode) { 
+            //Both input and output files specified, and not in pipeline mode
 
-            InputStream in = fopen(argv[optind + 1]);
+            InputStream in = openInFileStream(argv[optind + 1]);
             if (in == null) {
                 endProgram("LTProc");
             }
 
-            input = openReader(argv[optind + 2]);
+            input = openInFileReader(argv[optind + 2]);
             if (input == null) {
                 endProgram("LTProc");
             }
 
-            output = fout(argv[optind + 3]);
+            output = openOutFileWriter(argv[optind + 3]);
             if (output == null) {
                 endProgram("LTProc");
             }
 
             fstp.load(in);
             in.close();
-        } else if (optind == (argc - 3)) {
-            InputStream in = fopen(argv[optind + 1]);
+        } else if (optind == (argc - 3) && !pipelineMode) { 
+            //Only input file specified, and not in pipeline mode
+            InputStream in = openInFileStream(argv[optind + 1]);
             if (in == null) {
                 endProgram("LTProc");
             }
 
-            input = openReader(argv[optind + 2]);
+            input = openInFileReader(argv[optind + 2]);
             if (input == null) {
                 endProgram("LTProc");
             }
@@ -205,13 +220,15 @@ public class LTProc {
             fstp.load(in);
             in.close();
 
-        } else {
+        } else { //Neither file specified, or in pipeline mode
 
-            input = new InputStreamReader(System.in);
+            if(input == null) { //Only assign if it hasn't been assigned yet
+                input = getStdinReader();
+            }
 
             if (optind == (argc - 2)) {
                 final String filename = argv[optind + 1];
-                InputStream in = fopen(filename);
+                InputStream in = openInFileStream(filename);
                 if (in == null) {
                     endProgram("LTProc");
                 }
@@ -278,9 +295,15 @@ public class LTProc {
                     break;
             }
         } catch (Exception e) {
-          output.flush();
-          System.out.flush();
-          Thread.sleep(10);
+            output.flush();
+            System.out.flush();
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e1) {
+                /* Do nothing, we don't really care that we've been interrupted,
+                 * as this is not synchronized code.
+                 */
+            }
             e.printStackTrace();
             if (fstp.getNullFlush()) {
                 output.write('\0');
@@ -292,29 +315,5 @@ public class LTProc {
         output.close();
         
     }
-    public static Writer fout(String filename) throws FileNotFoundException, UnsupportedEncodingException {
-        String encoding = "UTF-8";
-        if (System.getProperties().containsKey("file.encoding")) {
-            encoding = System.getProperty("file.encoding");
-        }
-        return new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(filename)), encoding));
-    }
 
-    public static InputStream fopen(String filename) throws FileNotFoundException {
-      File f = new File(filename);
-      if (!f.canRead()) {
-        System.err.println("Could not open file for reading: " + filename);
-        return null;
-      }
-      /*
-      String encoding = "UTF-8";
-      if (System.getProperties().containsKey("file.encoding")) {
-          encoding = System.getProperty("file.encoding");
-      }*/
-      return new BufferedInputStream(new FileInputStream(f));
-    }
-
-    public static Reader openReader(String filename) throws FileNotFoundException {
-        return new FileReader(filename);
-    }
 }

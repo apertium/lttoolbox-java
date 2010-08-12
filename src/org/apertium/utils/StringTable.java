@@ -28,7 +28,8 @@ import java.util.Map;
  */
 public class StringTable {
     public enum Entries {
-        UNSUPPORTED_ENCODING, FILE_NOT_FOUND, GENERIC_EXCEPTION
+        UNSUPPORTED_ENCODING, FILE_NOT_FOUND, GENERIC_EXCEPTION,
+        IO_EXCEPTION
     }
     
     private static Map<Entries, String> stringMap = null;
@@ -50,6 +51,10 @@ public class StringTable {
         tempString = "An exception occured during execution.";
         
         stringMap.put(Entries.GENERIC_EXCEPTION, tempString);
+        
+        tempString = "An I/O exception occured during execution.";
+        
+        stringMap.put(Entries.IO_EXCEPTION, tempString);
     }
     
     public static String getString(Entries entry) {

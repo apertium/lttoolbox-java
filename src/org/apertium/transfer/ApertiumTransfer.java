@@ -70,6 +70,8 @@ public class ApertiumTransfer {
     }
 
     public static void main(String[] argv) throws Exception {
+        System.setProperty("file.encoding", "UTF-8");
+        
         doMain(argv, null, null);
     }
     
@@ -77,7 +79,6 @@ public class ApertiumTransfer {
             throws IOException, InstantiationException, IllegalAccessException, 
             ClassNotFoundException {
 
-        System.setProperty("file.encoding", "UTF-8");
         if (argv.length == 0) {
             endProgram("apertium-transfer-j");
         }

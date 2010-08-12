@@ -21,13 +21,18 @@ package org.apertium.modes;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.nio.CharBuffer;
 
 import org.apertium.formatter.TextFormatter;
 import org.apertium.interchunk.ApertiumInterchunk;
 import org.apertium.interchunk.Interchunk;
+import org.apertium.lttoolbox.LTProc;
 import org.apertium.postchunk.ApertiumPostchunk;
 import org.apertium.postchunk.Postchunk;
 import org.apertium.pretransfer.PreTransfer;
@@ -59,8 +64,10 @@ public class Dispatcher {
         try {
             ApertiumInterchunk.doMain(par, new Interchunk());
         } catch (Exception e) {
-            //Add message that exception occurred in Interchunk.
-            throw new RuntimeException("Exception occurred in Interchunk.", e);
+            System.err.println("Interchunk -- " +
+                    StringTable.getString(Entries.GENERIC_EXCEPTION));
+            e.printStackTrace();
+            System.exit(1);
         }
     }
 
@@ -89,8 +96,10 @@ public class Dispatcher {
         try {
             ApertiumPostchunk.doMain(par, new Postchunk());
         } catch (Exception e) {
-            //Add message that exception occurred in Postchunk.
-            throw new RuntimeException("Exception occurred in Postchunk.", e);
+            System.err.println("Postchunk -- " +
+                    StringTable.getString(Entries.GENERIC_EXCEPTION));
+            e.printStackTrace();
+            System.exit(1);
         }
     }
 
@@ -108,7 +117,10 @@ public class Dispatcher {
              */
             PreTransfer.processStream(input, output, params.nullFlush);
         } catch (IOException e) {
-            throw new RuntimeException("IOException occured in Pretransfer.", e);
+            System.err.println("Pretransfer -- " +
+                    StringTable.getString(Entries.IO_EXCEPTION));
+            e.printStackTrace();
+            System.exit(1);
         }
     }
     
@@ -176,14 +188,70 @@ public class Dispatcher {
             System.exit(1);
         }
     }
+
+    private static void doLTProc(Program prog, Reader input, Writer output) {
+        String[] args = prog.getParameters().split(" ");
+        try {
+            LTProc.doMain(args, input, output);
+        } catch (IOException e) {
+            System.err.println("LTProc -- " +
+                    StringTable.getString(Entries.IO_EXCEPTION));
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    private static void doUnknown(Program prog, InputStream input, OutputStream output) {
+        InputStream oldStdIn = System.in;
+        PrintStream oldStdOut = System.out;
+        
+        System.setIn(input);
+        System.setOut(new PrintStream(output));
+        try {
+            Runtime.getRuntime().exec(prog.getFullPath() + " " + prog.getParameters()).waitFor();
+        } catch (IOException e) {
+            System.err.println(prog.getCommandName() + " (Unknown) -- " +
+                    StringTable.getString(Entries.IO_EXCEPTION));
+            e.printStackTrace();
+            System.exit(1);
+        } catch (InterruptedException e) {
+            /* We're going to assume that the external program executed and continue,
+             * so we do nothing here.
+             */
+        } finally {
+            System.setIn(oldStdIn);
+            System.setOut(oldStdOut);
+        }
+    }
+
+    /**
+     * This separate dispatch for UNKNOWN programs is because we have to use
+     * InputStream and PrintStream instead of Reader and Writer, when redirecting
+     * input and output to and from the externally existing program.
+     * @param prog
+     * @param input
+     * @param output
+     */
+    public static void dispatchUnknown(Program prog, InputStream input, 
+            OutputStream output) {
+        switch(prog.getProgram()) {
+            case UNKNOWN:
+                doUnknown(prog, input, output);
+                break;
+            default:
+                throw new IllegalArgumentException("dispatchUnknown() should only be " + 
+                        "used for UNKNOWN programs. ProgEnum was: " + prog.getProgram());
+        }
+    }
     
+
     public static void dispatch(Program prog, Reader input, Writer output) {
         switch(prog.getProgram()) {
             case INTERCHUNK:
                 doInterchunk(prog, input, output);
                 break;
             case LT_PROC:
-                //TODO: call lt-proc
+                doLTProc(prog, input, output);
                 break;
             case POSTCHUNK:
                 doPostchunk(prog, input, output);
@@ -204,11 +272,12 @@ public class Dispatcher {
                 doTextFormat(prog, input, output, false);
                 break;
             case UNKNOWN:
-                //TODO: call the literal program
-                break;
+                throw new IllegalArgumentException("dispatch() should not be used for " + 
+                        "UNKNOWN programs, use dispatchUnknown() instead.");
             default:
                 //We should never get here.
-                throw new IllegalArgumentException("Unrecognized ProgEnum: " + prog);
+                throw new IllegalArgumentException("Unrecognized ProgEnum: " + 
+                        prog.getProgram());
         }
     }
 }
