@@ -45,4 +45,8 @@ public class Mode {
     public Program getProgramByIndex(int index) {
         return _pipeline.get(index);
     }
+    
+    public int getPipelineLength() {
+        return _pipeline.size();
+    }
 }
