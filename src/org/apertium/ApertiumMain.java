@@ -19,20 +19,17 @@
 
 package org.apertium;
 
-import static org.apertium.utils.IOUtils.readFile;
 import static org.apertium.utils.IOUtils.getStdinReader;
 import static org.apertium.utils.IOUtils.getStdoutWriter;
 import static org.apertium.utils.IOUtils.openInFileReader;
 import static org.apertium.utils.IOUtils.openOutFileWriter;
+import static org.apertium.utils.IOUtils.listFilesInDir;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.Reader;
 import java.io.StringReader;
@@ -55,13 +52,19 @@ import org.apertium.utils.StringTable.Entries;
 public class ApertiumMain {
 
     //Directory to look for modes files in
-    private static String _dataDir;
+    private static String _dataDir = null;
     //What mode to use
     private static String _direction;
     //Display ambiguity, defaults to false
     private static boolean _dispAmb = false;
     //Display marks '*' for unknown words, defaults to true
     private static boolean _dispMarks = true;
+    /* List translation directions in the given data dir.
+     * Done as a flag because we need to make sure the datadir
+     * has been parsed from the command line before we try and read
+     * the files in it.
+     */
+    private static boolean _listModes = false;
 
     private static Program _deformatter;
     private static Program _reformatter;
@@ -69,14 +72,21 @@ public class ApertiumMain {
     private static Reader _extInput = null;
     private static Writer _extOutput = null;
     
-    private static void displayHelpAndExit() {
+    private static void _displayHelpAndExit() {
         PrintStream p = System.err;
-        p.println("USAGE: Apertium [-d datadir] [-f format] [-u] <direction> [in [out]]");
+        /* XXX Made datadir non-optional for now to solve the issue of not really
+         * having a way to configure a "default dir" for the Java runtime, at the moment.
+         */
+        p.println("USAGE: Apertium -d datadir [-f format] [-u] <direction> [in [out]]");
         p.println(" -d datadir     directory of linguistic data");
         p.println(" -f format      input format, only txt available at this time,");
         p.println("                and is the default format.");
+        /* Okay, I have the code to parse these options, but I haven't figured out what
+         * I'm supposed to do with them yet.
+         * In other words, I don't know where to pass them to, or how, at the moment.
         p.println(" -a             display ambiguity");
         p.println(" -u             don't display marks '*' for unknown words.");
+        */
         /* Does the java code support translation memories right now?
          * It doesn't that I know of, at least... (could be wrong, though.)
         p.println(" -m memory.tmx  use a translation memory to recycle translations");
@@ -92,17 +102,17 @@ public class ApertiumMain {
         System.exit(0);
     }
     
-    private static void setFormatter(String formatterName) {
+    private static void _setFormatter(String formatterName) {
         String deFormatProgName = "apertium-des" + formatterName;
         String reFormatProgName = "apertium-re" + formatterName;
         
         //Adding -c switch to enable C++ compat mode by default
         _deformatter = new Program(deFormatProgName + " -c");
-        _reformatter = new Program(deFormatProgName + " -c");
+        _reformatter = new Program(reFormatProgName + " -c");
     }
 
-    private static void parseCommandLine(String[] args) {
-        Getopt getopt = new Getopt("Apertium", args, "d:f:ua");
+    private static void _parseCommandLine(String[] args) {
+        Getopt getopt = new Getopt("Apertium", args, "d:f:ual");
 
         while (true) {
             int c = getopt.getopt();
@@ -118,10 +128,13 @@ public class ApertiumMain {
                     break;
                 case 'a':
                     _dispAmb = true;
+                    break;
+                case 'l':
+                    _listModes = true;
                 case 'f':
                     String formatterName = getopt.getOptarg();
                     if(FormatterRegistry.isRegistered(formatterName)) {
-                        setFormatter(formatterName);
+                        _setFormatter(formatterName);
                         break;
                     } 
                     /* If not registered, will fall through to bottom of switch and
@@ -129,13 +142,16 @@ public class ApertiumMain {
                      */
                 case 'h':
                 default:
-                    displayHelpAndExit();
+                    _displayHelpAndExit();
                     break;
             }
         }
+        
+        if(_dataDir == null) { _displayHelpAndExit(); }
+        
         if(_deformatter == null || _reformatter == null) {
             //Formatters weren't set on command-line, set default of txt
-            setFormatter("txt");
+            _setFormatter("txt");
         }
         
         //Setup external input and output
@@ -172,7 +188,7 @@ public class ApertiumMain {
         
     }
 
-    private static void dispatchPipeline(Mode mode) {
+    private static void _dispatchPipeline(Mode mode) {
         StringReader input = null;
         StringWriter output = new StringWriter();
         
@@ -220,7 +236,20 @@ public class ApertiumMain {
         input = new StringReader(output.toString());
         Dispatcher.dispatch(_reformatter, input, _extOutput);
     }
+
     
+    private static void _listModes() {
+        String[] modeList = listFilesInDir(_dataDir, "mode");
+        
+        if(modeList == null) {
+            System.out.println("No translation directions in the specified directory.");
+            System.exit(0);
+        } else {
+            for(String mode : modeList) {
+                System.out.println(mode.replaceAll("\\.mode", ""));
+            }
+        }
+    }
     
     /**
      * @param args
@@ -229,10 +258,14 @@ public class ApertiumMain {
         //Ensure we are using UTF-8 encoding by default
         System.setProperty("file.encoding", "UTF-8");
 
+        _parseCommandLine(args);
+        
+        if(_listModes) { _listModes(); }
+        
         Mode mode = null;
         
         try {
-            mode = new Mode(_dataDir + "/" + _direction + ".mode");
+            mode = new Mode(_dataDir + _direction + ".mode");
         } catch (IOException e) {
             System.err.println("Apertium (mode parsing) -- " + 
                     StringTable.getString(Entries.IO_EXCEPTION));
@@ -240,7 +273,7 @@ public class ApertiumMain {
             System.exit(1);
         }
         
-        dispatchPipeline(mode);
+        _dispatchPipeline(mode);
 
         try {
             _extOutput.flush(); //Just to make sure it gets flushed.

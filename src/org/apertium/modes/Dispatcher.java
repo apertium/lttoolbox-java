@@ -46,7 +46,7 @@ import org.apertium.utils.StringTable.Entries;
  *
  */
 public class Dispatcher {
-
+    
     private static void doInterchunk(Program prog, Reader input, Writer output) {
         ApertiumInterchunk.CommandLineParams par = 
             new ApertiumInterchunk.CommandLineParams();
@@ -54,7 +54,27 @@ public class Dispatcher {
          * will be modified by this method.
          */
         String[] args = prog.getParameters().split(" ");
-        ApertiumInterchunk.parseCommandLine(args, par, "Interchunk");
+        try {
+            ApertiumInterchunk.parseCommandLine(args, par, "Interchunk", true);
+        } catch (FileNotFoundException e) {
+            /* This is here because the compiler requires it, but with pipelineMode
+             * set to true, it won't ever be thrown.
+             * If we get this, something is wrong. Report it and die.
+             */
+            System.err.println("Apertium (Dispatch, Interchunk) -- " + 
+                    StringTable.getString(Entries.UNEXPECTED_FILE_NOT_FOUND));
+            e.printStackTrace();
+            System.exit(1);
+        } catch (UnsupportedEncodingException e) {
+            /* This is here because the compiler requires it, but with pipelineMode
+             * set to true, it won't ever be thrown.
+             * If we get this, something is wrong. Report it and die.
+             */
+            System.err.println("Apertium (Dispatch, Interchunk) -- " + 
+                    StringTable.getString(Entries.UNEXPECTED_UNSUPPORTED_ENCODING));
+            e.printStackTrace();
+            System.exit(1);
+        }
         /* Assume internal i/o, don't allow for specifying external temp
          * files for i/o.
          */
@@ -83,7 +103,27 @@ public class Dispatcher {
          * will be modified by this method.
          */
         String[] args = prog.getParameters().split(" ");
-        ApertiumInterchunk.parseCommandLine(args, par, "Interchunk");
+        try {
+            ApertiumPostchunk.parseCommandLine(args, par, "Interchunk", true);
+        } catch (FileNotFoundException e) {
+            /* This is here because the compiler requires it, but with pipelineMode
+             * set to true, it won't ever be thrown.
+             * If we get this, something is wrong. Report it and die.
+             */
+            System.err.println("Apertium (Dispatch, Postchunk) -- " + 
+                    StringTable.getString(Entries.UNEXPECTED_FILE_NOT_FOUND));
+            e.printStackTrace();
+            System.exit(1);
+        } catch (UnsupportedEncodingException e) {
+            /* This is here because the compiler requires it, but with pipelineMode
+             * set to true, it won't ever be thrown.
+             * If we get this, something is wrong. Report it and die.
+             */
+            System.err.println("Apertium (Dispatch, Postchunk) -- " + 
+                    StringTable.getString(Entries.UNEXPECTED_UNSUPPORTED_ENCODING));
+            e.printStackTrace();
+            System.exit(1);
+        }
         /* Assume internal I/O, don't allow for specifying external temp
          * files for I/O.
          * External input and output files are used only at the beginning

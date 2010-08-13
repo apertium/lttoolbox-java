@@ -329,7 +329,6 @@ public class Tagger {
 
     void tagger(boolean mode_first, Reader input, Writer output) 
             throws IOException {
-        String encoding ="UTF-8";
 
         InputStream ftdata = openInFileStream(filenames.get(0));
 

@@ -19,22 +19,18 @@
 
 package org.apertium.interchunk;
 
-import java.io.FileInputStream;
+import static org.apertium.utils.IOUtils.openInFileReader;
+import static org.apertium.utils.IOUtils.openOutFileWriter;
+
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
 import org.apertium.lttoolbox.Getopt;
-import org.apertium.lttoolbox.LTToolbox;
-import org.apertium.lttoolbox.process.FSTProcessor;
-import org.apertium.lttoolbox.process.State;
-import org.apertium.transfer.Transfer;
+import org.apertium.utils.StringTable;
+import org.apertium.utils.StringTable.Entries;
 
 /**
  * @author Stephen Tigner
@@ -67,47 +63,10 @@ public class ApertiumInterchunk {
     /* We don't use or need the testfile() function that's here in the C++ version.
      * It's just used in main() to check for the existence of the t2x and preproc files.
      */
-
-    /**
-     * Takes a filename string and attempts to open an input stream to the file given 
-     * in the filename. If the file is not found (or otherwise could not be opened), 
-     * then prints an appropriate message and then exits.
-     * @param filename - A string with the filename to open
-     * @return An InputStream for reading from the file specified.
-     */
-    protected static InputStream openInput(String filename) {
-        InputStream in = null;
-        try {
-            in = new FileInputStream(filename);
-        } catch(FileNotFoundException e) {
-            System.err.println("Interchunk -- Input file not found or could not be opened: " + filename);
-            System.err.println("Cannot continue.");
-            System.exit(1);
-        } 
-        return in;
-    }
     
-    /**
-     * Takes a filename string and attempts to open an output stream to the file given 
-     * in the filename. If the file is not found (or otherwise could not be opened), 
-     * then prints an appropriate message and then exits.
-     * @param filename - A string with the filename to open
-     * @return An OutputStream for reading from the file specified.
-     */
-    protected static OutputStream openOutput(String filename) {
-        OutputStream out = null;
-        try {
-            out = new FileOutputStream(filename);
-        } catch(FileNotFoundException e) {
-            System.err.println("Interchunk -- Output file not found or could not be opened: " + filename);
-            System.err.println("Cannot continue.");
-            System.exit(1);
-        } 
-        return out;
-    }
-
     public static void parseCommandLine(String[] args, CommandLineParams par,
-            String commandName) {
+            String commandName, boolean pipelineMode) throws FileNotFoundException, 
+            UnsupportedEncodingException {
         if (args.length == 0) {
             message(commandName);
         }
@@ -139,9 +98,17 @@ public class ApertiumInterchunk {
              * breaking), we don't need to duplicate the same code several times.
              */
             case 4:
-                par.output = new OutputStreamWriter(openOutput(args[optIndex + 3]));
+                /* The reason why the output and input assignments are skipped if
+                 * we are in pipeline mode is because they are ignored in pipeline
+                 * mode, as we are using internal string readers and writers.
+                 */
+                if(!pipelineMode) {
+                    par.output = openOutFileWriter(args[optIndex + 3]);
+                }
             case 3:
-                par.input = new InputStreamReader(openInput(args[optIndex + 2]));
+                if(!pipelineMode) {
+                    par.input = openInFileReader(args[optIndex + 2]);
+                }
             case 2:
                 par.preprocFile = args[optIndex + 1];
                 par.t2xFile = args[optIndex];
@@ -150,7 +117,7 @@ public class ApertiumInterchunk {
                 message(commandName);
                 break;
         }
-        
+
     }
 
     /**
@@ -167,7 +134,7 @@ public class ApertiumInterchunk {
         i.interchunk(par.input, par.output);
         par.output.flush(); //Have to flush or there won't be any output.
     }
-    
+
     /**
      * @param args
      */
@@ -176,10 +143,20 @@ public class ApertiumInterchunk {
         Interchunk i = new Interchunk();
         
         CommandLineParams par = new CommandLineParams();
-        /* Parse the command line. The passed-in CommandLineParams object
-         * will be modified by this method.
-         */
-        parseCommandLine(args, par, "Interchunk");
+        try {
+            /* Parse the command line. The passed-in CommandLineParams object
+             * will be modified by this method.
+             */
+            parseCommandLine(args, par, "Interchunk", false);
+        } catch (FileNotFoundException e) {
+            System.err.println("ApertiumInterchunk (I/O files) -- " +
+                    StringTable.getString(Entries.FILE_NOT_FOUND));
+            System.exit(1);
+        } catch (UnsupportedEncodingException e) {
+            System.err.println("ApertiumInterchunk (I/O files) -- " +
+                    StringTable.getString(Entries.UNSUPPORTED_ENCODING));
+            System.exit(1);
+        }
         
         try {
             doMain(par, i);

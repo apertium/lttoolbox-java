@@ -29,7 +29,7 @@ import java.util.Map;
 public class StringTable {
     public enum Entries {
         UNSUPPORTED_ENCODING, FILE_NOT_FOUND, GENERIC_EXCEPTION,
-        IO_EXCEPTION
+        IO_EXCEPTION, UNEXPECTED_FILE_NOT_FOUND, UNEXPECTED_UNSUPPORTED_ENCODING
     }
     
     private static Map<Entries, String> stringMap = null;
@@ -55,6 +55,20 @@ public class StringTable {
         tempString = "An I/O exception occured during execution.";
         
         stringMap.put(Entries.IO_EXCEPTION, tempString);
+        
+        tempString =
+            "Got a FileNotFoundException whle parsing the commandLine from " +
+            "the modes file. This should not happen, so you must have found " + 
+            "a bug. Here's a stack trace to help track that down.";
+
+        stringMap.put(Entries.UNEXPECTED_FILE_NOT_FOUND, tempString);
+        
+        tempString =
+            "Got an UnsupportedEncodingException whle parsing the commandLine " +
+            "from the modes file. This should not happen, so you must have " + 
+            "found a bug. Here's a stack trace to help track that down.";
+        
+        stringMap.put(Entries.UNEXPECTED_UNSUPPORTED_ENCODING, tempString);
     }
     
     public static String getString(Entries entry) {

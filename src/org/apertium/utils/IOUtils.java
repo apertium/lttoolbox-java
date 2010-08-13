@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -158,5 +159,31 @@ public class IOUtils {
     public static Writer openOutFileWriter(String filename, String encoding) throws FileNotFoundException {
         return new OutputStreamWriter(openOutFileStream(filename));
     }
+
+    public static FilenameFilter getExtensionFilter(final String extension) {
+        FilenameFilter filter = new FilenameFilter() {
+            private String _extension = extension;
+            
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.endsWith(_extension);
+            }
+        };
+        return filter;
+    }
+
+    public static String[] listFilesInDir(String path) {
+        return listFilesInDir(path, null);
+    }
     
+    public static String[] listFilesInDir(String path, String extension) {
+        File directory = new File(path);
+        String[] fileList;
+        if(extension == null) {
+            fileList = directory.list();
+        } else {
+            fileList = directory.list(getExtensionFilter(extension));
+        }
+        return fileList;
+    }
 }

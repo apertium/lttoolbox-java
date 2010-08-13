@@ -19,8 +19,13 @@
 
 package org.apertium.postchunk;
 
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
+
 import org.apertium.interchunk.ApertiumInterchunk;
 import org.apertium.interchunk.Interchunk;
+import org.apertium.utils.StringTable;
+import org.apertium.utils.StringTable.Entries;
 
 /**
  * @author Stephen Tigner
@@ -36,10 +41,20 @@ public class ApertiumPostchunk extends ApertiumInterchunk {
         Postchunk p = new Postchunk();
 
         CommandLineParams par = new CommandLineParams();
-        /* Parse the command line. The passed-in CommandLineParams object
-         * will be modified by this method.
-         */
-        parseCommandLine(args, par, "Postchunk");
+        try {
+            /* Parse the command line. The passed-in CommandLineParams object
+             * will be modified by this method.
+             */
+            parseCommandLine(args, par, "Postchunk", false);
+        } catch (FileNotFoundException e) {
+            System.err.println("ApertiumPostchunk (I/O files) -- " +
+                    StringTable.getString(Entries.FILE_NOT_FOUND));
+            System.exit(1);
+        } catch (UnsupportedEncodingException e) {
+            System.err.println("ApertiumPostchunk (I/O files) -- " +
+                    StringTable.getString(Entries.UNSUPPORTED_ENCODING));
+            System.exit(1);
+        }
         
         try {
             doMain(par, p);
