@@ -101,7 +101,18 @@ public class IOUtils {
      */
     public static InputStream openInFileStream(String filename) 
             throws FileNotFoundException {
-        return new BufferedInputStream(new FileInputStream(openFile(filename)));
+        File file = null;
+        BufferedInputStream bis = null;
+       
+        try {
+            file = openFile(filename);
+            bis = new BufferedInputStream(new FileInputStream(file));
+        } catch (FileNotFoundException e) {
+            throw new FileNotFoundException("File: " + file.getPath() + 
+                    " -- " + e.getLocalizedMessage());
+        }
+        
+        return bis;
     }
 
     /**
@@ -129,7 +140,18 @@ public class IOUtils {
      * @throws FileNotFoundException 
      */
     public static OutputStream openOutFileStream(String filename) throws FileNotFoundException {
-        return new BufferedOutputStream(new FileOutputStream(openFile(filename)));
+        File file = null;
+        BufferedOutputStream bos = null;
+       
+        try {
+            file = openFile(filename);
+            bos = new BufferedOutputStream(new FileOutputStream(file));
+        } catch (FileNotFoundException e) {
+            throw new FileNotFoundException("File: " + file.getPath() + 
+                    " -- " + e.getLocalizedMessage());
+        }
+        
+        return bos;
     }
 
     /**

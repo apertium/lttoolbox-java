@@ -198,7 +198,9 @@ public class ApertiumMain {
         try {
             for(int i = 0; i < pipelineLength; i++) {
                 Program currProg = mode.getProgramByIndex(i);
-                if(DEBUG) { 
+                if(DEBUG) {
+                    System.err.println("*** DEBUG: output size: " + 
+                            output.toString().length());
                     System.err.println("*** DEBUG: dispatching " + 
                             currProg.getCommandName()); 
                 }
