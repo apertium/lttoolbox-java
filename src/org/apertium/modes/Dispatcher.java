@@ -48,6 +48,9 @@ import org.apertium.utils.StringTable.Entries;
  */
 public class Dispatcher {
     
+    private static boolean _dispAmb = false;
+    private static boolean _dispMarks = true;
+    
     private static void doInterchunk(Program prog, Reader input, Writer output) {
         ApertiumInterchunk.CommandLineParams par = 
             new ApertiumInterchunk.CommandLineParams();
@@ -166,10 +169,11 @@ public class Dispatcher {
     }
     
     private static void doTagger(Program prog, Reader input, Writer output) {
-        String[] args = prog.getParameters().split(" ");
-        /* Existing tagger code requires Input and Output streams, not readers
-         * and writers.
-         */
+        String paramString = prog.getParameters();
+        String replacement = (_dispAmb ? "-m" : "");
+        paramString = paramString.replaceAll("\\$2", replacement);
+        
+        String[] args = paramString.split(" ");
         Tagger.taggerDispatch(args, input, output);
     }
     
@@ -231,7 +235,11 @@ public class Dispatcher {
     }
 
     private static void doLTProc(Program prog, Reader input, Writer output) {
-        String[] args = prog.getParameters().split(" ");
+        String paramString = prog.getParameters();
+        String replacement = (_dispMarks ? "-g" : "-n");
+        paramString = paramString.replaceAll("\\$1", replacement);
+        
+        String[] args = paramString.split(" ");
         try {
             LTProc.doMain(args, input, output);
         } catch (IOException e) {
@@ -333,5 +341,13 @@ public class Dispatcher {
                 throw new IllegalArgumentException("Unrecognized ProgEnum: " + 
                         prog.getProgram());
         }
+    }
+    
+    public static void setDispAmp(boolean dispAmb) {
+        _dispAmb = dispAmb;
+    }
+    
+    public static void setDispMarks(boolean dispMarks) {
+        _dispMarks = dispMarks;
     }
 }

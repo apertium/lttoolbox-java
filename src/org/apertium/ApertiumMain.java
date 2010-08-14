@@ -50,6 +50,7 @@ import org.apertium.utils.StringTable.Entries;
  *
  */
 public class ApertiumMain {
+    private static final boolean DEBUG = true;
 
     //Directory to look for modes files in
     private static String _dataDir = null;
@@ -81,12 +82,8 @@ public class ApertiumMain {
         p.println(" -d datadir     directory of linguistic data");
         p.println(" -f format      input format, only txt available at this time,");
         p.println("                and is the default format.");
-        /* Okay, I have the code to parse these options, but I haven't figured out what
-         * I'm supposed to do with them yet.
-         * In other words, I don't know where to pass them to, or how, at the moment.
         p.println(" -a             display ambiguity");
         p.println(" -u             don't display marks '*' for unknown words.");
-        */
         /* Does the java code support translation memories right now?
          * It doesn't that I know of, at least... (could be wrong, though.)
         p.println(" -m memory.tmx  use a translation memory to recycle translations");
@@ -192,11 +189,19 @@ public class ApertiumMain {
         StringReader input = null;
         StringWriter output = new StringWriter();
         
+        Dispatcher.setDispAmp(_dispAmb);
+        Dispatcher.setDispAmp(_dispMarks);
+        
         Dispatcher.dispatch(_deformatter, _extInput, output);
+        if(DEBUG) { System.err.println("*** DEBUG: deformatter run"); }
         int pipelineLength = mode.getPipelineLength();
         try {
             for(int i = 0; i < pipelineLength; i++) {
                 Program currProg = mode.getProgramByIndex(i);
+                if(DEBUG) { 
+                    System.err.println("*** DEBUG: dispatching " + 
+                            currProg.getCommandName()); 
+                }
                 switch(currProg.getProgram()) {
                     case UNKNOWN:
                         /* Okay, this probably needs some explanation. When executing
