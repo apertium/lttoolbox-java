@@ -4,6 +4,8 @@
  */
 package org.apertium.transfer;
 
+import static org.apertium.utils.IOUtils.openInFileStream;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -165,7 +167,7 @@ So the array of rule_map Method is taken by introspection, taking all methods be
    * @param bilFstFile file name
    */
   private void readBil(String bilFstFile) throws IOException {
-    InputStream is = new BufferedInputStream(new FileInputStream(bilFstFile));
+    InputStream is = openInFileStream(bilFstFile);
     fstp.load(is);
     is.close();
     fstp.initBiltrans();
@@ -179,7 +181,7 @@ So the array of rule_map Method is taken by introspection, taking all methods be
    */
   private void setExtendedDictionary(String fstfile) throws IOException {
     extended=new FSTProcessor();
-    InputStream is = new BufferedInputStream(new FileInputStream(fstfile));
+    InputStream is = openInFileStream(fstfile);
     extended.load(is);
     is.close();
     extended.initBiltrans();
@@ -211,7 +213,7 @@ So the array of rule_map Method is taken by introspection, taking all methods be
   public void read(Class transferClass, String datafile, String bilFstFile) 
           throws IOException, InstantiationException, IllegalAccessException {
 
-    InputStream is = new BufferedInputStream(new FileInputStream(datafile));
+    InputStream is = openInFileStream(datafile);
     readData(is);
     is.close();
 

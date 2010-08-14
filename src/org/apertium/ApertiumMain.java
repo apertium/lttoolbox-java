@@ -209,9 +209,8 @@ public class ApertiumMain {
                          * String.getBytes() with "UTF-8" as the charset name.
                          */
                         byte[] inputBytes = output.toString().getBytes("UTF-8");
-                        InputStream inputStream = new ByteArrayInputStream(inputBytes);
                         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                        Dispatcher.dispatchUnknown(currProg, inputStream, outputStream);
+                        Dispatcher.dispatchUnknown(currProg, inputBytes, outputStream);
                         /* When finished with the external program, we need to convert
                          * it back to a UTF-8 string and put the result in the output
                          * writer for the next iteration of the loop.

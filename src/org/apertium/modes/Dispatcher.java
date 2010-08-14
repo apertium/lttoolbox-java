@@ -19,6 +19,7 @@
 
 package org.apertium.modes;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -146,7 +147,7 @@ public class Dispatcher {
     private static void doPretransfer(Program prog, Reader input, Writer output) {
         PreTransfer.CommandLineParams params = new PreTransfer.CommandLineParams();
         String[] args = prog.getParameters().split(" ");
-        PreTransfer.parseArgs(args, params);
+        PreTransfer.parseArgs(args, params, true);
 
         try {
             /* Assume internal I/O, don't allow for specifying external temp
@@ -241,38 +242,51 @@ public class Dispatcher {
         }
     }
 
-    private static void doUnknown(Program prog, InputStream input, OutputStream output) {
-        InputStream oldStdIn = System.in;
-        PrintStream oldStdOut = System.out;
-        
-        System.setIn(input);
-        System.setOut(new PrintStream(output));
+    private static void doUnknown(Program prog, byte[] input, OutputStream output) {
         try {
-            Runtime.getRuntime().exec(prog.getFullPath() + " " + prog.getParameters()).waitFor();
+            Process extProcess = Runtime.getRuntime().exec(prog.getFullPath() + 
+                    " " + prog.getParameters());
+            extProcess.getOutputStream().write(input);
+            while(true) { //Keep waiting until process is finished.
+                try {
+                    extProcess.waitFor();
+                    /* If external process is finished, we'll get to the break
+                     * statement below. If we are interrupted, we won't.
+                     */
+                    break;
+                } catch (InterruptedException e) {
+                    /* We got interrupted. Run the loop again.
+                     */
+                }
+            }
+            if(extProcess.exitValue() != 0) { 
+                //Assume process follows convention of 0 == Success
+                System.err.println(prog.getCommandName() + " (Unknown) -- " +
+                        "External program failed, returned non-zero value: " + 
+                        extProcess.exitValue());
+                System.exit(1);
+            }
+            int currByte;
+            while((currByte = extProcess.getInputStream().read()) != -1 ) {
+                output.write(currByte);
+            }
         } catch (IOException e) {
             System.err.println(prog.getCommandName() + " (Unknown) -- " +
                     StringTable.getString(Entries.IO_EXCEPTION));
             e.printStackTrace();
             System.exit(1);
-        } catch (InterruptedException e) {
-            /* We're going to assume that the external program executed and continue,
-             * so we do nothing here.
-             */
-        } finally {
-            System.setIn(oldStdIn);
-            System.setOut(oldStdOut);
         }
     }
 
     /**
      * This separate dispatch for UNKNOWN programs is because we have to use
-     * InputStream and PrintStream instead of Reader and Writer, when redirecting
+     * a byte array and an output stream instead of Reader and Writer, when redirecting
      * input and output to and from the externally existing program.
      * @param prog
      * @param input
      * @param output
      */
-    public static void dispatchUnknown(Program prog, InputStream input, 
+    public static void dispatchUnknown(Program prog, byte[] input, 
             OutputStream output) {
         switch(prog.getProgram()) {
             case UNKNOWN:

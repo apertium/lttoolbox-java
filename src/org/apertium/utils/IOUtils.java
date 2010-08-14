@@ -48,8 +48,8 @@ public class IOUtils {
     }
 
     public static String readFile(String path, String encoding) throws IOException {
-        File outFile = new File(path);
-        FileInputStream fis = new FileInputStream(outFile);
+        File fileToRead = openFile(path);
+        FileInputStream fis = new FileInputStream(fileToRead);
         /* If we don't do it this way, by explicitly setting UTF-8 encoding
          * when reading in a file, we get mojibake (scrambled character encodings).
          */
@@ -58,10 +58,10 @@ public class IOUtils {
          * input file has any multi-byte characters in it, we take care of that
          * further down before returning the string.
          */
-        char[] charArray = new char[(int) outFile.length()];
+        char[] charArray = new char[(int) fileToRead.length()];
         fisReader.read(charArray);
         fisReader.close();
-        String testOutput = new String(charArray);
+        String fileContents = new String(charArray);
         /* Work backwards from the end of the string to find the first non-null
          * character. That is the true end of the string. (Java strings don't have
          * a null at the end of them to mark the end, since they know exactly how
@@ -71,13 +71,13 @@ public class IOUtils {
          * The reason why we need to remove these nulls is that they cause the string
          * to be longer than it actually should be, and messes up testing diffs.
          */
-        for(int i = testOutput.length() - 1; i > -1; i--) {
-            if(testOutput.charAt(i) != '\0') {
-                testOutput = testOutput.substring(0, i + 1);
+        for(int i = fileContents.length() - 1; i > -1; i--) {
+            if(fileContents.charAt(i) != '\0') {
+                fileContents = fileContents.substring(0, i + 1);
                 break;
             }
         }
-        return testOutput;
+        return fileContents;
     }
 
     /**
@@ -185,5 +185,9 @@ public class IOUtils {
             fileList = directory.list(getExtensionFilter(extension));
         }
         return fileList;
+    }
+    
+    public static File openFile(String filename) {
+        return new File(filename);
     }
 }

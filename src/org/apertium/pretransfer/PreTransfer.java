@@ -19,19 +19,20 @@
 
 package org.apertium.pretransfer;
 
-import java.io.FileInputStream;
+import static org.apertium.utils.IOUtils.getStdinReader;
+import static org.apertium.utils.IOUtils.getStdoutWriter;
+import static org.apertium.utils.IOUtils.openInFileReader;
+import static org.apertium.utils.IOUtils.openOutFileWriter;
+
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
 import org.apertium.lttoolbox.Getopt;
+import org.apertium.utils.StringTable;
+import org.apertium.utils.StringTable.Entries;
 
 /**
  * @author Stephen Tigner
@@ -49,8 +50,8 @@ public class PreTransfer {
     
     public static class CommandLineParams {
         public boolean nullFlush;
-        public InputStream input;
-        public OutputStream output;
+        public Reader input;
+        public Writer output;
     }
 
     /**
@@ -209,7 +210,8 @@ public class PreTransfer {
     /**
      * @param args
      */
-    public static void parseArgs(String[] args, CommandLineParams params) {
+    public static void parseArgs(String[] args, CommandLineParams params, 
+            boolean pipelineMode) {
         
         params.nullFlush = false;
         
@@ -260,38 +262,48 @@ public class PreTransfer {
          * Kept it as a sequence of if/else statements for ease of understanding
          * and code checking when comparing it with the C++ version.
          */
-        if(numberOfArgs == 0) { //C++ version numberOfArgs == 1
-            params.input = System.in;
-            params.output = System.out;
-        } else if (numberOfArgs == 1) { //C++ version numberOfArgs == 2
-            try {
-                /* Attempt to open a file for input, using the last argument on the
-                 * command line as the filename.
+        try {
+            if(numberOfArgs == 0 || pipelineMode) { //C++ version numberOfArgs == 1
+                /* If we are in pipeline mode, we want to ignore any input/output
+                 * files specified on the command line, as we are using only internal
+                 * string readers and writers.
                  */
-                params.input = new FileInputStream(args[args.length - 1]);
-            } catch (FileNotFoundException e) {
-                /* This exception is thrown if the file cannot be found, or
-                 * otherwise cannot be opened for reading.
-                 */
-                usage();
+                params.input = getStdinReader();
+                params.output = getStdoutWriter();
+            } else if (numberOfArgs == 1) { //C++ version numberOfArgs == 2
+                try {
+                    /* Attempt to open a file for input, using the last argument on the
+                     * command line as the filename.
+                     */
+                    params.input = openInFileReader(args[args.length - 1]);
+                } catch (FileNotFoundException e) {
+                    /* This exception is thrown if the file cannot be found, or
+                     * otherwise cannot be opened for reading.
+                     */
+                    usage();
+                }
+                params.output = getStdoutWriter();
+            } else {
+                try {
+                    /* Attempt to open a file for input, using the next-to-last argument
+                     * on the command line as the filename.
+                     */
+                    params.input = openInFileReader(args[args.length - 2]);
+                    /* Attempt to open a file for output, using the last argument on the
+                     * command line as the filename.
+                     */
+                    params.output = openOutFileWriter(args[args.length - 1]);
+                } catch (FileNotFoundException e) {
+                    /* Either the input or the output file could not be found or otherwise
+                     * could not be opened for reading/writing.
+                     */
+                    usage();
+                }
             }
-            params.output = System.out;
-        } else {
-            try {
-                /* Attempt to open a file for input, using the next-to-last argument
-                 * on the command line as the filename.
-                 */
-                params.input = new FileInputStream(args[args.length - 2]);
-                /* Attempt to open a file for output, using the last argument on the
-                 * command line as the filename.
-                 */
-                params.output = new FileOutputStream(args[args.length - 1]);
-            } catch (FileNotFoundException e) {
-                /* Either the input or the output file could not be found or otherwise
-                 * could not be opened for reading/writing.
-                 */
-                usage();
-            }
+        } catch (UnsupportedEncodingException e) {
+            System.err.println("Pretransfer (parse args) -- " + 
+                    StringTable.getString(Entries.UNSUPPORTED_ENCODING));
+            System.exit(1);
         }
     }
 
@@ -299,7 +311,7 @@ public class PreTransfer {
         System.setProperty("file.encoding", "UTF-8");
         
         CommandLineParams params = new CommandLineParams();
-        parseArgs(args, params);
+        parseArgs(args, params, false);
         
         /* The C++ version checks for EOF at this point, and dies if it finds it.
          * However we can't check for EOF in the Java version w/o reading the file 
@@ -316,27 +328,10 @@ public class PreTransfer {
          * InputStreamReader and OutputStreamWriter objects.
          */
         
-        InputStreamReader inputReader = null;
-        OutputStreamWriter outputWriter = null;
-        
         try {
-            inputReader = new InputStreamReader(params.input, "UTF-8");
-            outputWriter = new OutputStreamWriter(params.output, "UTF-8"); 
-        } catch (UnsupportedEncodingException e) {
-            /* This system doesn't support UTF-8 for whatever reason.
-             * Complain and then die.
-             */
-            System.err.println("PreTransfer -- ERROR: This system doesn't seem to " +
-                    "support UTF-8 encoding.");
-            System.err.println("Please install/enable such support or find a system " +
-                    "that does support UTF-8 and try again.");
-            System.exit(1);
-        }
-        
-        try {
-            processStream(inputReader, outputWriter, params.nullFlush);
+            processStream(params.input, params.output, params.nullFlush);
             //Have to flush or won't get any output.
-            outputWriter.flush();
+            params.output.flush();
         } catch (IOException e) {
             System.err.println("Pretransfer -- ERROR: IOException");
             e.printStackTrace();
