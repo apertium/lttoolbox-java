@@ -52,36 +52,17 @@ public class IOUtils {
         return readFile(path, "UTF-8");
     }
 
+
     public static String readFile(String path, String encoding) throws IOException {
         File fileToRead = openFile(path);
         FileInputStream fis = new FileInputStream(fileToRead);
+        byte[] byteArray = new byte[(int) fileToRead.length()];
+        fis.read(byteArray);
+        fis.close();
         /* If we don't do it this way, by explicitly setting UTF-8 encoding
          * when reading in a file, we get mojibake (scrambled character encodings).
          */
-        InputStreamReader fisReader = new InputStreamReader(fis, encoding);
-        /* This will leave us with a bunch of extra nulls at the end if the
-         * input file has any multi-byte characters in it, we take care of that
-         * further down before returning the string.
-         */
-        char[] charArray = new char[(int) fileToRead.length()];
-        fisReader.read(charArray);
-        fisReader.close();
-        String fileContents = new String(charArray);
-        /* Work backwards from the end of the string to find the first non-null
-         * character. That is the true end of the string. (Java strings don't have
-         * a null at the end of them to mark the end, since they know exactly how
-         * long they are, which is why we can have a bunch of nulls at the end of
-         * the string.)
-         * 
-         * The reason why we need to remove these nulls is that they cause the string
-         * to be longer than it actually should be, and messes up testing diffs.
-         */
-        for(int i = fileContents.length() - 1; i > -1; i--) {
-            if(fileContents.charAt(i) != '\0') {
-                fileContents = fileContents.substring(0, i + 1);
-                break;
-            }
-        }
+        String fileContents = new String(byteArray, encoding);
         return fileContents;
     }
 
