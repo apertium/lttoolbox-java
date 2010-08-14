@@ -23,6 +23,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -34,8 +35,11 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+
+import org.apertium.utils.StringTable.Entries;
 
 /**
  * @author Stephen Tigner
@@ -115,7 +119,7 @@ public class IOUtils {
      */
     public static InputStream openInFileStream(String filename) 
             throws FileNotFoundException {
-        return new BufferedInputStream(new FileInputStream(filename));
+        return new BufferedInputStream(new FileInputStream(openFile(filename)));
     }
 
     /**
@@ -143,7 +147,7 @@ public class IOUtils {
      * @throws FileNotFoundException 
      */
     public static OutputStream openOutFileStream(String filename) throws FileNotFoundException {
-        return new BufferedOutputStream(new FileOutputStream(filename));
+        return new BufferedOutputStream(new FileOutputStream(openFile(filename)));
     }
 
     /**
@@ -177,7 +181,7 @@ public class IOUtils {
     }
     
     public static String[] listFilesInDir(String path, String extension) {
-        File directory = new File(path);
+        File directory = openFile(path);
         String[] fileList;
         if(extension == null) {
             fileList = directory.list();
@@ -188,6 +192,70 @@ public class IOUtils {
     }
     
     public static File openFile(String filename) {
-        return new File(filename);
+        File file = new File(filename);
+        if(!file.exists() && System.getProperty("os.name").startsWith("Windows")) {
+            filename = getWindowsPathFromCygwin(filename);
+            if(filename != null) {
+                File winFile = new File(filename);
+                if(winFile.exists()) {
+                    file = winFile;
+                }
+                /* If trying to run it through cygwin fails, just return the
+                 * original file object, created with the original path.
+                 */
+            }
+        }
+        return file;
+    }
+    
+    /**
+     * Given a cygwin unix-style path, this calls the external cygwin utility
+     * "cygpath" to return the equivalent Windows path.
+     * This assumes that "cygpath" is on the user's path. It should be if they have
+     * cygwin installed, but if it is not on the user's path, then we can't run it.
+     * @param filename -- The cygwin unix-style path and filename to convert
+     * @return A windows-style path for that same filename that was input.
+     */
+    public static String getWindowsPathFromCygwin(String filename) {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        try {
+            Process extProcess = Runtime.getRuntime().exec("cygpath -w " + filename);
+            while(true) { //Keep waiting until process is finished.
+                try {
+                    extProcess.waitFor();
+                    /* If external process is finished, we'll get to the break
+                     * statement below. If we are interrupted, we won't.
+                     */
+                    break;
+                } catch (InterruptedException e) {
+                    /* We got interrupted. Run the loop again.
+                     */
+                }
+            }
+            if(extProcess.exitValue() != 0) { 
+                /* Assume process follows convention of 0 == Success.
+                 * Thus if the exit value is != 0, it failed
+                 */
+                return null;
+            }
+            int currByte;
+            while((currByte = extProcess.getInputStream().read()) != -1 ) {
+                output.write(currByte);
+            }
+        } catch (Exception e) { //catch all exceptions and discard them, returning null
+            return null;
+        }
+        
+        String outputString = null; 
+        try {
+             outputString = output.toString("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            //For some reason, this system doesn't support UTF-8??
+            System.err.println("Exception opening file/directory: " + filename + " -- " + 
+                    StringTable.getString(Entries.UNSUPPORTED_ENCODING));
+            //If the system doesn't support UTF-8, we cannot continue.
+            System.exit(1);
+        }
+        return outputString;
     }
 }
