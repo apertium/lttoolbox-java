@@ -109,7 +109,7 @@ public class IOUtils {
             bis = new BufferedInputStream(new FileInputStream(file));
         } catch (FileNotFoundException e) {
             throw new FileNotFoundException("File: " + file.getPath() + 
-                    " -- " + e.getLocalizedMessage());
+                    " ( " + filename + ") -- " + e.getLocalizedMessage());
         }
         
         return bis;
@@ -148,7 +148,7 @@ public class IOUtils {
             bos = new BufferedOutputStream(new FileOutputStream(file));
         } catch (FileNotFoundException e) {
             throw new FileNotFoundException("File: " + file.getPath() + 
-                    " -- " + e.getLocalizedMessage());
+                    " ( " + filename + ") -- " + e.getLocalizedMessage());
         }
         
         return bos;
