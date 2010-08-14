@@ -21,6 +21,7 @@ import static org.apertium.utils.IOUtils.getStdinReader;
 import static org.apertium.utils.IOUtils.getStdoutWriter;
 import static org.apertium.utils.IOUtils.openInFileReader;
 import static org.apertium.utils.IOUtils.openOutFileWriter;
+import static org.apertium.utils.MiscUtils.loadClassFromTxFilename;
 
 import org.apertium.lttoolbox.*;
 import org.apertium.lttoolbox.process.FSTProcessor;
@@ -129,11 +130,27 @@ public class ApertiumTransfer {
             }
         }
 
-        if (argv.length > optind+3) {
-          t.read(argv[optind + 1], argv[optind + 2], argv[optind + 3]);
-          if (t.DEBUG) t.transferObject.debug = true;
+        if (argv.length > optind + 3) {
+            /* Split out into explicit variables for readability and because
+             * tRulesClass originally was going to be tweaked here, but that
+             * was split off into a separate method so that it could be used
+             * in Interchunk and Postchunk as well.
+             */
+            String tRulesClassString = argv[optind + 1];
+            String preProc = argv[optind + 2];
+            String bilTrans = argv[optind + 3];
+
+            if(tRulesClassString.endsWith(".class")) {
+                t.read(tRulesClassString, preProc, bilTrans);
+            } else {
+                Class tRulesClass = loadClassFromTxFilename(tRulesClassString);
+                
+                t.read(tRulesClass, preProc, bilTrans);
+            }
+            if (t.DEBUG)
+                t.transferObject.debug = true;
         } else {
-          endProgram();
+            endProgram();
         }
         
         if(input != null || output != null) {

@@ -21,6 +21,7 @@ package org.apertium.interchunk;
 
 import static org.apertium.utils.IOUtils.openInFileReader;
 import static org.apertium.utils.IOUtils.openOutFileWriter;
+import static org.apertium.utils.MiscUtils.loadClassFromTxFilename;
 
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
@@ -130,7 +131,13 @@ public class ApertiumInterchunk {
 
         i.setNullFlush(par.nullFlush);
 
-        i.read(par.t2xFile, par.preprocFile);
+        if(par.t2xFile.endsWith(".class")) {
+            i.read(par.t2xFile, par.preprocFile);
+        } else {
+            Class t2xClass = loadClassFromTxFilename(par.t2xFile);
+            
+            i.read(t2xClass, par.preprocFile);
+        }
         i.interchunk(par.input, par.output);
         par.output.flush(); //Have to flush or there won't be any output.
     }
