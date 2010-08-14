@@ -1,5 +1,4 @@
 /*
- * Copyright (C) 2010 Stephen Tigner
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -51,13 +50,15 @@ public class Dispatcher {
     private static boolean _dispAmb = false;
     private static boolean _dispMarks = true;
     
+    private static final String splitPattern = "[ ]+";
+    
     private static void doInterchunk(Program prog, Reader input, Writer output) {
         ApertiumInterchunk.CommandLineParams par = 
             new ApertiumInterchunk.CommandLineParams();
         /* Parse the command line. The passed-in CommandLineParams object
          * will be modified by this method.
          */
-        String[] args = prog.getParameters().split(" ");
+        String[] args = prog.getParameters().split(splitPattern);
         try {
             ApertiumInterchunk.parseCommandLine(args, par, "Interchunk", true);
         } catch (FileNotFoundException e) {
@@ -106,7 +107,7 @@ public class Dispatcher {
         /* Parse the command line. The passed-in CommandLineParams object
          * will be modified by this method.
          */
-        String[] args = prog.getParameters().split(" ");
+        String[] args = prog.getParameters().split(splitPattern);
         try {
             ApertiumPostchunk.parseCommandLine(args, par, "Interchunk", true);
         } catch (FileNotFoundException e) {
@@ -149,7 +150,7 @@ public class Dispatcher {
 
     private static void doPretransfer(Program prog, Reader input, Writer output) {
         PreTransfer.CommandLineParams params = new PreTransfer.CommandLineParams();
-        String[] args = prog.getParameters().split(" ");
+        String[] args = prog.getParameters().split(splitPattern);
         PreTransfer.parseArgs(args, params, true);
 
         try {
@@ -173,7 +174,7 @@ public class Dispatcher {
         String replacement = (_dispAmb ? "-m" : "");
         paramString = paramString.replaceAll("\\$2", replacement);
         
-        String[] args = paramString.split(" ");
+        String[] args = paramString.split(splitPattern);
         Tagger.taggerDispatch(args, input, output);
     }
     
@@ -196,7 +197,7 @@ public class Dispatcher {
         
         TextFormatter formatter = new TextFormatter();
 
-        String[] args = paramString.split(" ");
+        String[] args = paramString.split(splitPattern);
         try {
             formatter.doMain(args, input, output);
         } catch (UnsupportedEncodingException e) {
@@ -213,7 +214,7 @@ public class Dispatcher {
     }
     
     private static void doTransfer(Program prog, Reader input, Writer output) {
-        String[] args = prog.getParameters().split(" ");
+        String[] args = prog.getParameters().split("[ ]+");
         try {
             ApertiumTransfer.doMain(args, input, output);
         } catch (UnsupportedEncodingException e) {
@@ -239,7 +240,7 @@ public class Dispatcher {
         String replacement = (_dispMarks ? "-g" : "-n");
         paramString = paramString.replaceAll("\\$1", replacement);
         
-        String[] args = paramString.split(" ");
+        String[] args = paramString.split(splitPattern);
         try {
             LTProc.doMain(args, input, output);
         } catch (IOException e) {
