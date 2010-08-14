@@ -46,6 +46,7 @@ import org.apertium.utils.StringTable.Entries;
  *
  */
 public class IOUtils {
+    private static final boolean DEBUG = false;
     
     public static String readFile(String path) throws IOException {
         return readFile(path, "UTF-8");
@@ -194,9 +195,21 @@ public class IOUtils {
     public static File openFile(String filename) {
         File file = new File(filename);
         if(!file.exists() && System.getProperty("os.name").startsWith("Windows")) {
+            if(DEBUG) {
+                System.err.println("*** DEBUG: Trying cygwin path...");
+            }
             filename = getWindowsPathFromCygwin(filename);
+            if(DEBUG) {
+                System.err.println("*** DEBUG: Cygwin path -- " + filename);
+            }
             if(filename != null) {
                 File winFile = new File(filename);
+                if(DEBUG) {
+                    System.err.println("*** DEBUG: winFile.exists() -- " + 
+                            winFile.exists());
+                    System.err.println("*** DEBUG: winFile.getAbsolutePath() -- " + 
+                            winFile.getAbsolutePath());
+                }
                 if(winFile.exists()) {
                     file = winFile;
                 }
@@ -219,7 +232,7 @@ public class IOUtils {
     public static String getWindowsPathFromCygwin(String filename) {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         try {
-            Process extProcess = Runtime.getRuntime().exec("cygpath -w " + filename);
+            Process extProcess = Runtime.getRuntime().exec("cygpath -m " + filename);
             while(true) { //Keep waiting until process is finished.
                 try {
                     extProcess.waitFor();
@@ -256,6 +269,9 @@ public class IOUtils {
             //If the system doesn't support UTF-8, we cannot continue.
             System.exit(1);
         }
-        return outputString;
+        /* If the string isn't trimmed, calls to File.exists() will return false, even when
+         * the file exists.
+         */
+        return outputString.trim();
     }
 }

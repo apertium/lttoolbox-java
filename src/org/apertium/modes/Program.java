@@ -55,9 +55,14 @@ public class Program {
          */
         _fullPath = paramList[0].trim();
         String[] commandPathList = _fullPath.split("\\/");
-        //Grab the 2nd (and last) entry
-        _commandName = commandPathList[1];
-        _parameters = paramList[1];
+        //Grab the last entry
+        _commandName = commandPathList[commandPathList.length - 1];
+        //Grab the 2nd (and last) entry -- if it exists
+        if(paramList.length > 1) {
+            _parameters = paramList[1];
+        } else {
+            _parameters = "";
+        }
 
         if(_commandName.equals("lt-proc")) {
             _program = ProgEnum.LT_PROC;
