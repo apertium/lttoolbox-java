@@ -25,11 +25,9 @@ import static org.apertium.utils.IOUtils.openInFileReader;
 import static org.apertium.utils.IOUtils.openOutFileWriter;
 import static org.apertium.utils.IOUtils.listFilesInDir;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintStream;
 import java.io.Reader;
 import java.io.StringReader;
@@ -50,7 +48,7 @@ import org.apertium.utils.StringTable.Entries;
  *
  */
 public class ApertiumMain {
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     //Directory to look for modes files in
     private static String _dataDir = null;
@@ -118,6 +116,18 @@ public class ApertiumMain {
             switch (c) {
                 case 'd':
                     _dataDir = getopt.getOptarg();
+                    char lastChar = _dataDir.charAt(_dataDir.length() - 1);
+                    if(lastChar != '/' && lastChar != '\\') {
+                        /* If there is not a forward slash (unix) or backward
+                         * slash (Windows) at the end of the path, add a slash.
+                         * Java can handle mixed slashes, so only need to worry
+                         * about adding a forward slash.
+                         * The reason we aren't just using the pathSeparator system
+                         * property is that we might have a unix-style path on a
+                         * Windows system in the case of cygwin.
+                         */
+                        _dataDir += "/";
+                    }
                     break;
                 case 'u':
                     _dispMarks = false;
@@ -246,7 +256,7 @@ public class ApertiumMain {
 
     
     private static void _listModes() {
-        String[] modeList = listFilesInDir(_dataDir, "mode");
+        String[] modeList = listFilesInDir(_dataDir + "modes/", "mode");
         
         if(modeList == null) {
             System.out.println("No translation directions in the specified directory.");
@@ -272,7 +282,7 @@ public class ApertiumMain {
         Mode mode = null;
         
         try {
-            mode = new Mode(_dataDir + _direction + ".mode");
+            mode = new Mode(_dataDir + "modes/" + _direction + ".mode");
         } catch (IOException e) {
             System.err.println("Apertium (mode parsing) -- " + 
                     StringTable.getString(Entries.IO_EXCEPTION));
