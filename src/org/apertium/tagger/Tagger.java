@@ -87,9 +87,10 @@ public class Tagger {
 
         MyGetOpt getopt = new MyGetOpt(argv, "mdtsrgpefhz");
         
-        /* Reset TaggerWord.generate_marks to false in case a previous invocation set it to true.
-         * This usually only shows up when doing tests, as the static variables retain their states
-         * between tests.
+        /* Reset TaggerWord.generate_marks to false in case a previous invocation set it
+         * to true. This shows up when doing tests, as the static variables retain their 
+         * states between tests. This also may show up when in pipeline mode, if tagger
+         * is called more than once for some reason.
          */
         TaggerWord.setGenerateMarks(false);
 

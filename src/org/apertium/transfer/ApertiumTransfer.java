@@ -48,8 +48,6 @@ class MyGetOpt extends Getopt {
  */
 public class ApertiumTransfer {
 
-    static boolean _useBD = true;
-
     static void endProgram(String name) {
         System.out.print(name + LTToolbox.PACKAGE_VERSION +": \n" +
 "USAGE: "+name+" trules-class preproc biltrans [input [output]]\n" +
@@ -81,6 +79,8 @@ public class ApertiumTransfer {
             throws IOException, InstantiationException, IllegalAccessException, 
             ClassNotFoundException {
 
+        boolean useBD = true;
+        
         if (argv.length == 0) {
             endProgram("apertium-transfer-j");
         }
@@ -114,7 +114,7 @@ public class ApertiumTransfer {
 
                     case 'n':
                         t.setUseBilingual(false);
-                        _useBD = false;
+                        useBD = false;
                         break;
 
                     case 'v':
@@ -137,7 +137,7 @@ public class ApertiumTransfer {
          * This number should be one less than the number of args present, minus
          * command-line switches.
          */
-        int minArgs =(_useBD ? optind + 3 : optind + 2);
+        int minArgs =(useBD ? optind + 3 : optind + 2);
         
         if (argv.length > minArgs) {
             /* Split out into explicit variables for readability and because
@@ -148,7 +148,7 @@ public class ApertiumTransfer {
             String tRulesClassString = argv[optind + 1];
             String preProc = argv[optind + 2];
             String bilTrans = null;
-            if(_useBD) { bilTrans = argv[optind + 3]; }
+            if(useBD) { bilTrans = argv[optind + 3]; }
 
             if(tRulesClassString.endsWith(".class")) {
                 t.read(tRulesClassString, preProc, bilTrans);
@@ -177,13 +177,13 @@ public class ApertiumTransfer {
              * And input and output files are the last two arguments on the
              * command line
              */
-            int inputIndex = (_useBD ? optind + 4 : optind + 3);
+            int inputIndex = (useBD ? optind + 4 : optind + 3);
             if (argv.length > inputIndex) {
                 input = openInFileReader(argv[optind + 4]);
             } else {
               input = getStdinReader();
             }
-            int outputIndex = (_useBD ? optind + 5 : optind + 4);
+            int outputIndex = (useBD ? optind + 5 : optind + 4);
             if (argv.length > optind+5) {
                 output = openOutFileWriter(argv[optind + 5]);
             } else {

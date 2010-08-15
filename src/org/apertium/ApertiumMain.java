@@ -84,8 +84,7 @@ public class ApertiumMain {
         p.println("                and is the default format.");
         p.println(" -a             display ambiguity");
         p.println(" -u             don't display marks '*' for unknown words.");
-        /* Does the java code support translation memories right now?
-         * It doesn't that I know of, at least... (could be wrong, though.)
+        /* The java code doesn't support translation memories right now.
         p.println(" -m memory.tmx  use a translation memory to recycle translations");
         p.println(" -o direction   translation direction using the translation memory,");
         p.println("                by default 'direction' is used instead");
@@ -190,7 +189,7 @@ public class ApertiumMain {
         StringWriter output = new StringWriter();
         
         Dispatcher.setDispAmp(_dispAmb);
-        Dispatcher.setDispAmp(_dispMarks);
+        Dispatcher.setDispMarks(_dispMarks);
         
         Dispatcher.dispatch(_deformatter, _extInput, output);
         if(DEBUG) { System.err.println("*** DEBUG: deformatter run"); }
@@ -201,6 +200,8 @@ public class ApertiumMain {
                 if(DEBUG) {
                     System.err.println("*** DEBUG: output size: " + 
                             output.toString().length());
+                    System.err.println("*** DEBUG: output -- " + 
+                            output.toString());
                     System.err.println("*** DEBUG: dispatching " + 
                             currProg.getCommandName()); 
                 }
