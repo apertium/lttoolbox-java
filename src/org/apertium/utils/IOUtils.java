@@ -196,6 +196,7 @@ public class IOUtils {
     }
     
     public static File openFile(String filename) {
+        filename = filename.trim();
         File file = new File(filename);
         if(!file.exists() && System.getProperty("os.name").startsWith("Windows")) {
             if(DEBUG) {

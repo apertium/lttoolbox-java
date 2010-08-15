@@ -203,15 +203,22 @@ public abstract class GenericFormatter {
             System.err.println("mode: " + mode);
         }
         
-        if(_inputFile != null) {
-            in =  openInFileReader(_inputFile);
-        } else {
-            in = getStdinReader();
+        if(in == null) { 
+            //If we are given an input stream, use it, and ignore the command-line
+            if(_inputFile != null) {
+                in =  openInFileReader(_inputFile);
+            } else {
+                in = getStdinReader();
+            }
         }
-        if(_outputFile != null) {
-            out = openOutFileWriter(_outputFile);
-        } else {
-            out = getStdoutWriter();
+        
+        if(out == null) {
+            //If we are given an output stream, use it, and ignore the command-line
+            if(_outputFile != null) {
+                out = openOutFileWriter(_outputFile);
+            } else {
+                out = getStdoutWriter();
+            }
         }
         
         switch(mode) {

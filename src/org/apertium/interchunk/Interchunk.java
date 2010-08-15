@@ -19,8 +19,8 @@
 
 package org.apertium.interchunk;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
+import static org.apertium.utils.IOUtils.openInFileStream;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -156,7 +156,7 @@ public class Interchunk {
             throws FileNotFoundException, IOException, IllegalAccessException,
             InstantiationException {
 
-        InputStream is = new BufferedInputStream(new FileInputStream(datafile));
+        InputStream is = openInFileStream(datafile);
         readData(is);
         is.close();
 
