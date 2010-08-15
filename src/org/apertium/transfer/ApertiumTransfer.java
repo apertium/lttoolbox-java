@@ -48,11 +48,12 @@ class MyGetOpt extends Getopt {
  */
 public class ApertiumTransfer {
 
+    static boolean _useBD = true;
 
     static void endProgram(String name) {
         System.out.print(name + LTToolbox.PACKAGE_VERSION +": \n" +
 "USAGE: "+name+" trules-class preproc biltrans [input [output]]\n" +
-//"       "+name+" -n trules preproc [input [output]]\n" +
+"       "+name+" -n trules preproc [input [output]]\n" +
 //"       "+name+" -x extended trules preproc biltrans [input [output]]\n" +
 //"       "+name+" -c trules preproc biltrans [input [output]]\n" +
 "  trules-class Java bytecode compiled transfer rules (.class file)\n" +
@@ -113,6 +114,7 @@ public class ApertiumTransfer {
 
                     case 'n':
                         t.setUseBilingual(false);
+                        _useBD = false;
                         break;
 
                     case 'v':
@@ -130,7 +132,14 @@ public class ApertiumTransfer {
             }
         }
 
-        if (argv.length > optind + 3) {
+        /* If we're not using the billingual dictionary, we don't need the
+         * biltrans argument.
+         * This number should be one less than the number of args present, minus
+         * command-line switches.
+         */
+        int minArgs =(_useBD ? optind + 3 : optind + 2);
+        
+        if (argv.length > minArgs) {
             /* Split out into explicit variables for readability and because
              * tRulesClass originally was going to be tweaked here, but that
              * was split off into a separate method so that it could be used
@@ -138,7 +147,8 @@ public class ApertiumTransfer {
              */
             String tRulesClassString = argv[optind + 1];
             String preProc = argv[optind + 2];
-            String bilTrans = argv[optind + 3];
+            String bilTrans = null;
+            if(_useBD) { bilTrans = argv[optind + 3]; }
 
             if(tRulesClassString.endsWith(".class")) {
                 t.read(tRulesClassString, preProc, bilTrans);
@@ -162,11 +172,18 @@ public class ApertiumTransfer {
             if(input == null) { input = getStdinReader(); }
             if(output == null) { output = getStdoutWriter(); }
         } else {
-            if (argv.length > optind+4) {
+            /* If we aren't using the billingual dictionary, then there
+             * will be one less argument on the command line than if we are.
+             * And input and output files are the last two arguments on the
+             * command line
+             */
+            int inputIndex = (_useBD ? optind + 4 : optind + 3);
+            if (argv.length > inputIndex) {
                 input = openInFileReader(argv[optind + 4]);
             } else {
               input = getStdinReader();
             }
+            int outputIndex = (_useBD ? optind + 5 : optind + 4);
             if (argv.length > optind+5) {
                 output = openOutFileWriter(argv[optind + 5]);
             } else {
