@@ -29,7 +29,8 @@ import java.util.Map;
 public class StringTable {
     public enum Entries {
         UNSUPPORTED_ENCODING, FILE_NOT_FOUND, GENERIC_EXCEPTION,
-        IO_EXCEPTION, UNEXPECTED_FILE_NOT_FOUND, UNEXPECTED_UNSUPPORTED_ENCODING
+        IO_EXCEPTION, UNEXPECTED_FILE_NOT_FOUND, UNEXPECTED_UNSUPPORTED_ENCODING,
+        COMPILATION_FAILURE
     }
     
     private static Map<Entries, String> stringMap = null;
@@ -69,6 +70,10 @@ public class StringTable {
             "found a bug. Here's a stack trace to help track that down.";
         
         stringMap.put(Entries.UNEXPECTED_UNSUPPORTED_ENCODING, tempString);
+        
+        tempString = "Prechunk/Interchunk/Transfer compilation failed.";
+        
+        stringMap.put(Entries.COMPILATION_FAILURE, tempString);
     }
     
     public static String getString(Entries entry) {

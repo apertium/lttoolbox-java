@@ -60,6 +60,7 @@ public class TransferEoEnTest {
 
     assertEquals("Difference", "", exec("diff "+folder+outFile+" ./tmp/"+outFile));
     rm(outFile);
+    rm("./tmp/t1x.bin.class");
   }
 
 

@@ -17,14 +17,13 @@ package org.apertium.transfer.compile;
  * 02111-1307, USA.
  */
 
-//import com.sun.tools.javac.Main;
+import static org.apertium.utils.IOUtils.openFile;
+
 import org.apertium.lttoolbox.*;
-import org.apertium.lttoolbox.process.FSTProcessor;
 import java.io.*;
-import java.lang.reflect.Method;
-import org.apertium.lttoolbox.process.State;
 import org.apertium.transfer.compile.ParseTransferFile;
-import static org.apertium.lttoolbox.LTProc.*;
+import org.apertium.utils.StringTable;
+import org.apertium.utils.StringTable.Entries;
 
 /**
  * 
@@ -63,105 +62,88 @@ public class ApertiumTransferCompile {
       File javaDest = new File(dir, p.className+".java");
       File classDest = new File(dir, p.className+".class");
 
-      //System.err.println("Writing Java source code to " + javaDest);
-      //System.out.println("p.javaCode = " + p.getJavaCode());
-
       FileWriter fw = new FileWriter(javaDest);
       fw.append(p.getOptimizedJavaCode());
       fw.close();
+
+      doMain(openFile(argv[0]), dest, javaDest, classDest, true);
+  }
+
+  /**
+   * 
+   * @param txFile -- The .t*x file to generate java code from.
+   * @param targetClass -- The final name desired for the .class file
+   * @param javaSource -- Java source file name
+   * @param outputClass -- The name of the expected class output by the
+   * Java compiler. Should be the same as javaSource but with a .class
+   * instead of a .java extension.
+   * @param displayStatusMessages -- Controls whether or not status messages
+   * normally printed out to stderr while running standalone are sent.
+   * @throws IOException
+   */
+  public static void doMain(File txFile, File targetClass, File javaSource,
+          File outputClass, boolean displayStatusMessages) throws IOException {
+
+      /*ParseTransferFile p = new ParseTransferFile();
+      if(displayStatusMessages) System.err.println("Parsing " + txFile);
+      p.parse(txFile.getPath());*/
+      
+      /*FileWriter fw = new FileWriter(javaSource);
+      fw.append(p.getOptimizedJavaCode());
+      fw.close();*/
      
-      // don't depend on an internal javac - this might not be Sun's javac
-      //System.err.println("Compiling " + javaDest);
-      //com.sun.tools.javac.Main.compile( new String[] { javaDest.getPath() } );
-      /*
-       * see http://kickjava.com/src/com/caucho/java/InternalCompiler.java.htm
-       *
-      try {
-        String[] args = { javaDest.getPath() };
-        Method compileMet = Class.forName("com.sun.tools.javac.Main").getMethod("compile", args.getClass());
-        compileMet.invoke(null,  new Object[] { args });
-      } catch (Exception e) {
-        e.printStackTrace();
-      }*/
+      /* 
+       * If you're calling ApertiumCompile.doMain(), you should really want to 
+       * compile the file. If you don't want to compile it if it already exists, 
+       * check if it exists *before* you call ApertiumCompile.doMain()
+       */
+      //if (!outputClass.exists()) //Left here to provide context for the above comment
+      
+      // Try invoking javac
+      String cps =  System.getProperty("lttoolbox.jar");
+      File cp = new File(cps!=null? cps : "lttoolbox.jar");
+      if (!cp.exists()) cp = new File("dist/lttoolbox.jar");
+      if (!cp.exists()) cp = new File("/usr/local/share/apertium/lttoolbox.jar");
+      if (!cp.exists()) cp = new File("/usr/share/apertium/lttoolbox.jar");
+      if (!cp.exists()) cp = new File("dist/lttoolbox.jar"); // fall back to this, to give the best suggestion below
+      if (cps==null && displayStatusMessages) {
+          System.err.println("Please specify location of lttoolbox.jar, for example writing java -Dlttoolbox.jar="+cp.getPath());
+      }
 
-      if (!classDest.exists()) {
-        // Try invoking javac
-        String cps =  System.getProperty("lttoolbox.jar");
-        File cp = new File(cps!=null? cps : "lttoolbox.jar");
-        if (!cp.exists()) cp = new File("dist/lttoolbox.jar");
-        if (!cp.exists()) cp = new File("/usr/local/share/apertium/lttoolbox.jar");
-        if (!cp.exists()) cp = new File("/usr/share/apertium/lttoolbox.jar");
-        if (!cp.exists()) cp = new File("dist/lttoolbox.jar"); // fall back to this, to give the best suggestion below
-        if (cps==null) {
-            System.err.println("Please specify location of lttoolbox.jar, for example writing java -Dlttoolbox.jar="+cp.getPath());
-        }
-
-        String exec = "javac -cp "+cp.getPath()+" "+javaDest;
-        System.err.println("Compiling: "+exec);
-        if (!cp.exists()) {
+      String exec = "javac -cp "+cp.getPath()+" "+javaSource;
+      System.err.println("Compiling: "+exec);
+      if (!cp.exists()) {
+        if(displayStatusMessages) {
           System.err.println("Error: "+cp.getPath()+" is missing.");
           System.err.println("Please rebuild lttoolbox-java to make it appear.");
-          throw new FileNotFoundException(cp.getPath()+" is needed to be able to compile transfer files.");
         }
-        exec(exec);
-        // deadbeef, dont just insert a
-        //        com.sun.tools.javac.Main.compile(options);
-        // here, pls read the comments 25 lines above!
-
+        throw new FileNotFoundException(cp.getPath()+" is needed to be able to compile transfer files.");
       }
 
+      BaseTransferCompile tc = new InternalTransferCompile();
+      int result = tc.compile(cp, javaSource);
+      if(result != 0) { //compilation failed with internal, try external instead
+          tc = new ExternalTransferCompile();
+          try {
+              result = tc.compile(cp, javaSource);
+          } catch (FileNotFoundException e) {
+              throw new 
+                  InternalError(StringTable.getString(Entries.COMPILATION_FAILURE));
+          }
+          if(result != 0) {
+              throw new 
+                  InternalError(StringTable.getString(Entries.COMPILATION_FAILURE));
+          }
+      }
 
-      if (!classDest.exists()) {
-        throw new InternalError("Compilation error - compiled "+javaDest+" but "+classDest+" didnt appear.");
+      if (!outputClass.exists()) {
+        throw new InternalError("Compilation error - compiled " + javaSource + 
+                " but " + outputClass + " didnt appear.");
       }
       
-      if (!classDest.equals(dest)) {
+      if (!outputClass.equals(targetClass)) {
         //System.err.println("Renaming " + classDest+" to "+dest);
-        classDest.renameTo(dest);
+        outputClass.renameTo(targetClass);
       }
     }
-  
-	private static void close(Closeable c) {
-		if (c != null) {
-			try {
-				c.close();
-			} catch (IOException e) {
-				// ignored
-			}
-		}
-	}
-
-	public static String exec(String cmd) throws IOException,
-			InterruptedException {
-		Process p = null;
-		String output = "";
-		try {
-			p = Runtime.getRuntime().exec(cmd);
-			String s;
-			BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
-			while ((s = br.readLine()) != null)
-				output = output + s + "\n";
-			br = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-			while ((s = br.readLine()) != null)
-				output = output + s + "\n";
-			p.waitFor();
-			if (p.exitValue() != 0)
-				throw new RuntimeException(cmd + " reported an error: "	+ output);
-			/*
-			 * if (output.length()>0) { System.err.println("exec: " + cmd);
-			 * System.err.println("output: " + output); return cmd+"\n"+output;
-			 * }
-			 */
-		} catch (Exception err) {
-			err.printStackTrace();
-		} finally {
-			if (p != null) {
-				close(p.getOutputStream());
-				close(p.getInputStream());
-				close(p.getErrorStream());
-				p.destroy();
-			}
-		}
-		return output;
-	}
 }

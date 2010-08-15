@@ -5,6 +5,8 @@
 
 package org.apertium.transfer.compile;
 
+import static org.apertium.utils.IOUtils.openFile;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -974,11 +976,15 @@ public class ParseTransferFile {
      * @param file the address of the XML file to be read
      */
     public void parse(String file) throws IOException, ParserConfigurationException, SAXException {
+      /* Don't need to switch this new File() call with an IOUtils version, because this
+       * isn't actually opening a file. The purpose of this new File() is to easily split
+       * the filename name off from the rest of the path.
+       */
       className = javaIdentifier(new File(file).getName());
       commentHandler = new StringWriter();
 
       try {
-        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(file));
+        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(openFile(file));
         Element root = doc.getDocumentElement();
         String rootTagName = root.getTagName();
         if(rootTagName.equals("transfer")) {

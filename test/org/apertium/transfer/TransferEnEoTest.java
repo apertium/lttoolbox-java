@@ -73,6 +73,7 @@ public class TransferEnEoTest {
 
     assertEquals("Difference", "", exec("diff "+dir+"transferoutput-en-eo.t1x-malgranda.txt "+outFile));
     rm(outFile);
+    rm("./tmp/t1x.bin.class");
   }
 
 
