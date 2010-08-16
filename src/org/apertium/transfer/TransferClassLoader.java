@@ -72,22 +72,13 @@ public class TransferClassLoader extends ClassLoader {
         String baseBinFilename = getFilenameMinusExtension(binFile.getName());
         String classFilename = baseBinFilename + ".class";
 
-        String tempDirString = System.getProperty("java.io.tmpdir");
-        char lastChar = tempDirString.charAt(tempDirString.length() - 1);
-        if(lastChar != '/' && lastChar != '\\') {
-            /* If there is not a forward slash (unix) or backward
-             * slash (Windows) at the end of the path, add a slash.
-             * Java can handle mixed slashes, so only need to worry
-             * about adding a forward slash.
-             * The reason we aren't just using the pathSeparator system
-             * property is that we might have a unix-style path on a
-             * Windows system in the case of cygwin.
-             */
-            tempDirString += "/";
-        }
+        /* If I made this a File, it would lose the slash or backslash at the end
+         * and there's no reason to make this a File object, so keeping it just as
+         * a string.
+         */
         
-        File tempDir = openFile(tempDirString);
-
+        String tempDir = System.getProperty("java.io.tmpdir");
+       
         File classFile = openFile(binFile.getParent() + classFilename);
         // If it doesn't exist in the binFile directory, try the temp directory
         if (!classFile.exists()) {
@@ -125,8 +116,8 @@ public class TransferClassLoader extends ClassLoader {
         try {
             fw = new FileWriter(javaSource);
         } catch (IOException e) { //Unable to open output file for writing
-            javaSource = openFile(tempDir.getCanonicalPath() + p.className + ".java");
-            outputClass = openFile(tempDir.getCanonicalPath() + p.className + ".class");
+            javaSource = openFile(tempDir + "/" + p.className + ".java");
+            outputClass = openFile(tempDir + "/" + p.className + ".class");
             fw = new FileWriter(javaSource);
         }
         fw.append(p.getOptimizedJavaCode());
