@@ -8,7 +8,10 @@ package org.apertium;
 import org.apertium.lttoolbox.*;
 import java.util.Arrays;
 import org.apertium.formatter.TextFormatter;
+import org.apertium.interchunk.ApertiumInterchunk;
+import org.apertium.postchunk.ApertiumPostchunk;
 import org.apertium.pretransfer.PreTransfer;
+import org.apertium.tagger.Tagger;
 import org.apertium.transfer.ApertiumTransfer;
 import org.apertium.transfer.compile.ApertiumTransferCompile;
 
@@ -53,12 +56,17 @@ public class CommandLineInterface {
       String task = argv[0];
 
       // strip evt path
+      // TODO: Make platform independent (check on Windows)
       int n = task.lastIndexOf('/');
       if (n>=0) task = task.substring(n+1);
 
       String[] restOfArgs = Arrays.copyOfRange(argv, 1 , argv.length);
       if (task.startsWith("lt-proc")) LTProc.main(restOfArgs);
+      else if (task.equals("apertium") || task.equals("apertium-j")) ApertiumMain.main(restOfArgs);
       else if (task.startsWith("apertium-transfer")) ApertiumTransfer.main(restOfArgs);
+      else if (task.startsWith("apertium-interchunk")) ApertiumInterchunk.main(restOfArgs);
+      else if (task.startsWith("apertium-postchunk")) ApertiumPostchunk.main(restOfArgs);
+      else if (task.startsWith("apertium-tagger")) Tagger.main(restOfArgs);
       else if (task.startsWith("apertium-pretransfer")) PreTransfer.main(restOfArgs);
       else if (task.startsWith("apertium-destxt")) {
         // Hack: Here should be

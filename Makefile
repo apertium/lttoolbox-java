@@ -14,6 +14,15 @@ apertium-preprocess-transfer-bytecode-j: lt-proc-j
 apertium-transfer-j: lt-proc-j
 	ln -s lt-proc-j $@
 
+apertium-interchunk-j: lt-proc-j
+	ln -s lt-proc-j $@
+
+apertium-postchunk-j: lt-proc-j
+	ln -s lt-proc-j $@
+
+apertium-tagger-j: lt-proc-j
+	ln -s lt-proc-j $@
+
 apertium-pretransfer-j: lt-proc-j
 	ln -s lt-proc-j $@
 
@@ -32,7 +41,7 @@ lt-expand-j: lt-proc-j
 lt-validate-j: lt-proc-j
 	ln -s lt-proc-j $@
 
-symlinks: lt-validate-j lt-expand-j lt-comp-j apertium-transfer-j apertium-preprocess-transfer-bytecode-j apertium-pretransfer-j apertium-destxt-j apertium-retxt-j 
+symlinks: lt-validate-j lt-expand-j lt-comp-j apertium-transfer-j apertium-interchunk-j apertium-postchunk-j apertium-tagger-j apertium-preprocess-transfer-bytecode-j apertium-pretransfer-j apertium-destxt-j apertium-retxt-j apertium-j
 	echo "Making symlinks"
 
 install: dist/lttoolbox.jar
