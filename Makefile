@@ -8,6 +8,9 @@ all: dist/lttoolbox.jar symlinks
 dist/lttoolbox.jar:
 	ant -quiet jar
 
+apertium-j: lt-proc-j
+	ln -s lt-proc-j $@
+
 apertium-preprocess-transfer-bytecode-j: lt-proc-j
 	ln -s lt-proc-j $@
 
