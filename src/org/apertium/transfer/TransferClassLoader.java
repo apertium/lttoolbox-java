@@ -45,28 +45,34 @@ public class TransferClassLoader extends ClassLoader {
     }
 
     @SuppressWarnings("unchecked")
-    public static Class loadTxClass(File txFile, File binFile) 
+    public static Class loadTxClass(File txOrClassFile, File binFile)
             throws ClassNotFoundException, IOException {
-        return loadTxClass(txFile, binFile, new TransferClassLoader());
+        return loadTxClass(txOrClassFile, binFile, new TransferClassLoader());
     }
 
     
     @SuppressWarnings("unchecked")
-    public static Class loadTxClass(File txFile, File binFile, TransferClassLoader tcl)
+    public static Class loadTxClass(File txOrClassFile, File binFile, TransferClassLoader tcl)
             throws ClassNotFoundException, IOException {
-        if (!txFile.exists()) {
+
+
+      System.err.println("binFile = " + binFile);
+
+        System.err.println("txFile = " + txOrClassFile);
+        if (!txOrClassFile.exists()) {
             throw new FileNotFoundException("Loading TX Class txFile ("
-                    + txFile + ")");
+                    + txOrClassFile + ")");
         }
         if (!binFile.exists()) {
             throw new FileNotFoundException("Loading TX Class binFile ("
-                    + txFile + ")");
+                    + txOrClassFile + ")");
         }
 
-        if (txFile.getName().endsWith(".class") && txFile.exists()) {
-            return tcl.loadClassFile(txFile);
+
+        if (txOrClassFile.getName().endsWith(".class") && txOrClassFile.exists()) {
+            return tcl.loadClassFile(txOrClassFile);
         } else {
-            return buildAndLoadClass(txFile, binFile, tcl);
+            return buildAndLoadClass(txOrClassFile, binFile, tcl);
         }
     }
 

@@ -49,19 +49,24 @@ public class InternalTransferCompile extends BaseTransferCompile {
      * @throws UnsupportedEncodingException 
      */
     public int compile(InputStream input, OutputStream output, OutputStream errOutput,
-            File classPath, File javaFile) throws UnsupportedEncodingException {
+            File classPath, File javaFile) {
         //Default to stdin/out/err if not specified
         if(input == null) { input = System.in; }
         if(output == null) { output = System.out; }
         if(errOutput == null) { errOutput = System.err; }
-        
-        final JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-        if(compiler == null) { //There is no system Java compiler available
-            return -1;
-        }
 
-        String[] args = {"-cp", classPath.getPath(), javaFile.getPath()};
-        
-        return compiler.run(input, output, errOutput, args);
+        try {
+          JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+          if(compiler == null) { //There is no system Java compiler available
+              return -1;
+          }
+
+          String[] args = {"-cp", classPath.getPath(), javaFile.getPath()};
+
+          return compiler.run(input, output, errOutput, args);
+        } catch (Throwable t) {
+          // no matter what error turns up this means we will have to try another compilation method!
+          return -1;
+        }
     }
 }
