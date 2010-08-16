@@ -17,6 +17,7 @@ package org.apertium.transfer.compile;
  * 02111-1307, USA.
  */
 
+import org.apertium.CommandLineInterface;
 import static org.apertium.utils.IOUtils.openFile;
 
 import org.apertium.lttoolbox.*;
@@ -32,7 +33,7 @@ public class ApertiumTransferCompile {
 
 
     static void endProgram(String name) {
-        System.out.print(name + LTToolbox.PACKAGE_VERSION +": \n" +
+        System.out.print(name + CommandLineInterface.PACKAGE_VERSION +": \n" +
 "USAGE: "+name+" trules  trules-class\n" +
 "  trules     transfer rule (.t1x) source file\n" +
 "  trules-class  Java bytecode compiled transfer rules (.class) output file\n" +

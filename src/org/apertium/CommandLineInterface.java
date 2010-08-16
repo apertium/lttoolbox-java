@@ -3,8 +3,9 @@
  * and open the template in the editor.
  */
 
-package org.apertium.lttoolbox;
+package org.apertium;
 
+import org.apertium.lttoolbox.*;
 import java.util.Arrays;
 import org.apertium.formatter.TextFormatter;
 import org.apertium.pretransfer.PreTransfer;
@@ -15,7 +16,7 @@ import org.apertium.transfer.compile.ApertiumTransferCompile;
  *
  * @author Jacob Nordfalk
  */
-public class LTToolbox {
+public class CommandLineInterface {
 
     public static final String PACKAGE_VERSION = "3.2j";
 
@@ -31,8 +32,8 @@ public class LTToolbox {
       System.out.println(System.getProperty("java.class.path"));
       System.out.println(System.getProperties());
       System.out.println(System.getenv());
-      System.out.println(LTToolbox.class.getResource("/x"));
-      System.out.println(LTToolbox.class.getResource("."));
+      System.out.println(CommandLineInterface.class.getResource("/x"));
+      System.out.println(CommandLineInterface.class.getResource("."));
        */
         System.err.println("lttoolbox: a toolbox for lexical processing, morphological analysis and generation of words\n" +
             "USAGE: "+invocationCommand+"\n" +

@@ -17,6 +17,7 @@ package org.apertium.lttoolbox;
  * 02111-1307, USA.
  */
 
+import org.apertium.CommandLineInterface;
 import org.xml.sax.SAXException;
 import java.io.*;
 
@@ -28,7 +29,7 @@ public class LTExpand {
 
   static void endProgram(String name) {
     if (name != null) {
-      System.out.println(" v" + LTToolbox.PACKAGE_VERSION + ": expand the contents of a dictionary file" +
+      System.out.println(" v" + CommandLineInterface.PACKAGE_VERSION + ": expand the contents of a dictionary file" +
               "USAGE: " + name + " dictionary_file [output_file]");
     }
     System.exit(-1);

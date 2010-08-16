@@ -5,6 +5,7 @@
 
 package org.apertium.lttoolbox;
 
+import org.apertium.CommandLineInterface;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -51,7 +52,7 @@ public class LTValidate {
         //System.out.println(" v" + PACKAGE_VERSION + ": validate an XML file" +
         //    " according to a schema\n" +
         //    "USAGE : LTValidate XML_File Schema");
-        System.out.println(" v" + LTToolbox.PACKAGE_VERSION + ": validate an XML file" +
+        System.out.println(" v" + CommandLineInterface.PACKAGE_VERSION + ": validate an XML file" +
             " according to a schema\n" +
             "USAGE : LTValidate -dix dictionary.xml\n"+
             "        LTValidate -acx dictionary.acx"

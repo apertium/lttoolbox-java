@@ -17,6 +17,7 @@ package org.apertium.transfer;
  * 02111-1307, USA.
  */
 
+import org.apertium.CommandLineInterface;
 import static org.apertium.utils.IOUtils.getStdinReader;
 import static org.apertium.utils.IOUtils.getStdoutWriter;
 import static org.apertium.utils.IOUtils.openInFileReader;
@@ -49,11 +50,11 @@ class MyGetOpt extends Getopt {
 public class ApertiumTransfer {
 
     static void endProgram(String name) {
-        System.out.print(name + LTToolbox.PACKAGE_VERSION +": \n" +
+        System.out.print(name + CommandLineInterface.PACKAGE_VERSION +": \n" +
 "USAGE: "+name+" trules-class preproc biltrans [input [output]]\n" +
 "       "+name+" -n trules-class preproc [input [output]]\n" +
 //"       "+name+" -x extended trules preproc biltrans [input [output]]\n" +
-//"       "+name+" -c trules preproc biltrans [input [output]]\n" +
+"       "+name+" -c trules-class  preproc biltrans [input [output]]\n" +
 "  trules-class  Java bytecode compiled transfer rules (.class file)\n" +
 "                or XML transfer rules (.t1x file)\n" +
 "  preproc       result of preprocess trules (.bin file)\n" +
@@ -62,7 +63,7 @@ public class ApertiumTransfer {
 "  output        output file, standard output by default\n" +
 "  -n            don't use bilingual dictionary\n" +
 //"  -x bindix  extended mode with user dictionary\n" +
-//"  -c         case-sensitiveness while accessing bilingual dictionary\n" +
+"  -c         case-sensitiveness while accessing bilingual dictionary\n" +
 "  -z            null-flushing output on '\n" +
 "  -h            shows this message\n" +
 "");
@@ -120,7 +121,7 @@ public class ApertiumTransfer {
                         break;
 
                     case 'v':
-                        System.out.println(LTToolbox.PACKAGE_VERSION);
+                        System.out.println(CommandLineInterface.PACKAGE_VERSION);
                         return;
 
                     case 'h':

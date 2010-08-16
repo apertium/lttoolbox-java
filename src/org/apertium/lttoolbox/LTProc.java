@@ -17,6 +17,7 @@ package org.apertium.lttoolbox;
  * 02111-1307, USA.
  */
 
+import org.apertium.CommandLineInterface;
 import static org.apertium.utils.IOUtils.getStdinReader;
 import static org.apertium.utils.IOUtils.getStdoutWriter;
 import static org.apertium.utils.IOUtils.openInFileReader;
@@ -49,7 +50,7 @@ public class LTProc {
 
 
     static void endProgram(String name) {
-        System.out.print(name + LTToolbox.PACKAGE_VERSION +": process a stream with a letter transducer\n" +
+        System.out.print(name + CommandLineInterface.PACKAGE_VERSION +": process a stream with a letter transducer\n" +
             "USAGE: " + name + " [-c] [-a|-g|-n|-d|-b|-p|-s|-t] fst_file [input_file [output_file]]\n" +
             "Options:\n" +
             "  -a:   morphological analysis (default behavior)\n" +
@@ -155,7 +156,7 @@ public class LTProc {
                         break;
 
                     case 'v':
-                        System.out.println("org.apertium.lttoolbox.LTProc version " + LTToolbox.PACKAGE_VERSION);
+                        System.out.println("org.apertium.lttoolbox.LTProc version " + CommandLineInterface.PACKAGE_VERSION);
                         return;
 
                     case 'h':

@@ -19,6 +19,7 @@ package org.apertium.lttoolbox;
  * 02111-1307, USA.
  */
 
+import org.apertium.CommandLineInterface;
 import org.apertium.lttoolbox.compile.Compile;
 import java.io.*;
 
@@ -35,7 +36,7 @@ public class LTComp {
      */
     static void endProgram(String name) {
         if (name != null) {
-            System.out.println(" v" +LTToolbox.PACKAGE_VERSION + ": build a letter transducer from a dictionary\n" +
+            System.out.println(" v" +CommandLineInterface.PACKAGE_VERSION + ": build a letter transducer from a dictionary\n" +
                     "USAGE: " + name + " lr | rl dictionary_file output_file [acx_file]\n" +
                     "Modes:\n" +
                     "  lr:     left-to-right compilation\n" +
