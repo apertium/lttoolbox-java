@@ -58,6 +58,7 @@ public class TaggerWord {
      */
     private boolean show_sf;
     
+    //TODO: check and make sure these really need to be static variables
     /**
      * Will be set to true if the -m (mark disambiguated words) option was used
      * on the command-line.
