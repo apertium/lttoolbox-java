@@ -107,7 +107,14 @@ public class TransferClassLoader extends ClassLoader {
                 + ".class");
 
         // Write the source out to a file
-        FileWriter fw = new FileWriter(javaSource);
+        FileWriter fw = null;
+        try {
+            fw = new FileWriter(javaSource);
+        } catch (IOException e) { //Unable to open output file for writing
+            javaSource = openFile(tempDir + p.className + ".java");
+            outputClass = openFile(tempDir + p.className + ".class");
+            fw = new FileWriter(javaSource);
+        }
         fw.append(p.getOptimizedJavaCode());
         fw.close();
 
