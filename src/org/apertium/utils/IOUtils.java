@@ -53,6 +53,30 @@ public class IOUtils {
         return filename.substring(0, dotIndex);
     }
 
+    /**
+     * This method checks to see if there is a a trailing slash on the string
+     * path given and if not, adds it. Checks for both forward and backslashes,
+     * but only adds a forward slash.
+     * @param path -- The filename (path) string to check
+     * @return The path string with a trailing slash added if one was missing,
+     * or the same string if it was already there.
+     */
+    public static String addTrailingSlash(String path) {
+        char lastChar = path.charAt(path.length() - 1);
+        if(lastChar != '/' && lastChar != '\\') {
+            /* If there is not a forward slash (unix) or backward
+             * slash (Windows) at the end of the path, add a slash.
+             * Java can handle mixed slashes, so only need to worry
+             * about adding a forward slash.
+             * The reason we aren't just using the pathSeparator system
+             * property is that we might have a unix-style path on a
+             * Windows system in the case of cygwin.
+             */
+            path += "/";
+        }
+        return path;
+    }
+    
     public static String readFile(String path) throws IOException {
         return readFile(path, "UTF-8");
     }

@@ -24,6 +24,7 @@ import static org.apertium.utils.IOUtils.getStdoutWriter;
 import static org.apertium.utils.IOUtils.openInFileReader;
 import static org.apertium.utils.IOUtils.openOutFileWriter;
 import static org.apertium.utils.IOUtils.listFilesInDir;
+import static org.apertium.utils.IOUtils.addTrailingSlash;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -116,18 +117,7 @@ public class ApertiumMain {
             switch (c) {
                 case 'd':
                     _dataDir = getopt.getOptarg();
-                    char lastChar = _dataDir.charAt(_dataDir.length() - 1);
-                    if(lastChar != '/' && lastChar != '\\') {
-                        /* If there is not a forward slash (unix) or backward
-                         * slash (Windows) at the end of the path, add a slash.
-                         * Java can handle mixed slashes, so only need to worry
-                         * about adding a forward slash.
-                         * The reason we aren't just using the pathSeparator system
-                         * property is that we might have a unix-style path on a
-                         * Windows system in the case of cygwin.
-                         */
-                        _dataDir += "/";
-                    }
+                    _dataDir = addTrailingSlash(_dataDir);
                     break;
                 case 'u':
                     _dispMarks = false;

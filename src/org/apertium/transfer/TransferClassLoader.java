@@ -2,6 +2,7 @@ package org.apertium.transfer;
 
 import static org.apertium.utils.IOUtils.openFile;
 import static org.apertium.utils.IOUtils.getFilenameMinusExtension;
+import static org.apertium.utils.IOUtils.addTrailingSlash;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -78,8 +79,9 @@ public class TransferClassLoader extends ClassLoader {
          */
         
         String tempDir = System.getProperty("java.io.tmpdir");
-       
-        File classFile = openFile(binFile.getParent() + classFilename);
+        tempDir = addTrailingSlash(tempDir);
+        
+        File classFile = openFile(addTrailingSlash(binFile.getParent()) + classFilename);
         // If it doesn't exist in the binFile directory, try the temp directory
         if (!classFile.exists()) {
             classFile = openFile(tempDir + classFilename);
@@ -87,7 +89,7 @@ public class TransferClassLoader extends ClassLoader {
         // If it doesn't exist there either, switch back to the binFile
         // directory
         if (!classFile.exists()) {
-            openFile(binFile.getParent() + classFilename);
+            openFile(addTrailingSlash(binFile.getParent()) + classFilename);
         }
 
         // If the class file exists already, try and load it.
@@ -107,17 +109,18 @@ public class TransferClassLoader extends ClassLoader {
                     + ") parsing failed -- " + e.getLocalizedMessage());
         }
 
-        File javaSource = openFile(binFile.getParent() + p.className + ".java");
-        File outputClass = openFile(binFile.getParent() + p.className
-                + ".class");
+        File javaSource = openFile(addTrailingSlash(binFile.getParent()) + 
+                p.className + ".java");
+        File outputClass = openFile(addTrailingSlash(binFile.getParent()) 
+                + p.className + ".class");
 
         // Write the source out to a file
         FileWriter fw = null;
         try {
             fw = new FileWriter(javaSource);
         } catch (IOException e) { //Unable to open output file for writing
-            javaSource = openFile(tempDir + "/" + p.className + ".java");
-            outputClass = openFile(tempDir + "/" + p.className + ".class");
+            javaSource = openFile(tempDir +  p.className + ".java");
+            outputClass = openFile(tempDir + p.className + ".class");
             fw = new FileWriter(javaSource);
         }
         fw.append(p.getOptimizedJavaCode());
