@@ -5,6 +5,7 @@
 
 package org.apertium;
 
+import java.io.File;
 import org.apertium.lttoolbox.*;
 import java.util.Arrays;
 import org.apertium.formatter.TextFormatter;
@@ -53,12 +54,8 @@ public class CommandLineInterface {
 
   public static void main(String[] argv) throws Exception {
     if (argv.length == 0) showHelp(null);
-      String task = argv[0];
-
       // strip evt path
-      // TODO: Make platform independent (check on Windows)
-      int n = task.lastIndexOf('/');
-      if (n>=0) task = task.substring(n+1);
+      String task = new File(argv[0]).getName();
 
       String[] restOfArgs = Arrays.copyOfRange(argv, 1 , argv.length);
       if (task.startsWith("lt-proc")) LTProc.main(restOfArgs);
