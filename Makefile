@@ -14,8 +14,10 @@ dist/lttoolbox.jar:
 	ant -quiet jar
 
 symlinks: ${SYMLINKS}
-	echo "Making symlinks"
-	for i in ${SYMLINKS}; do ln -s apertium-j $i; done
+
+${SYMLINKS}:
+	@echo "Making symlinks"
+	for i in ${SYMLINKS}; do ln -sf apertium-j $$i; done
 
 install: dist/lttoolbox.jar
 	@if [ ! -e prefix ]; then \
