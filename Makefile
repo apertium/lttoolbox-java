@@ -1,5 +1,10 @@
 PACKAGE=lttoolbox-java-3.2.0
-DISTFILES=README dist/lttoolbox.jar autogen.sh build.xml COPYING lt-comp-j lt-expand-j lt-proc-j lt-validate-j Makefile nbproject src test testdata
+
+SYMLINKS=lt-validate-j lt-expand-j lt-comp-j lt-proc-j\
+apertium-destxt-j apertium-retxt-j apertium-tagger-j apertium-pretransfer-j\
+apertium-transfer-j apertium-interchunk-j apertium-postchunk-j apertium-preprocess-transfer-bytecode-j
+
+DISTFILES=README dist/lttoolbox.jar autogen.sh build.xml COPYING Makefile nbproject src test testdata apertium-j ${SYMLINKS}
 
 .PHONY : test dist
 
@@ -8,44 +13,9 @@ all: dist/lttoolbox.jar symlinks
 dist/lttoolbox.jar:
 	ant -quiet jar
 
-apertium-j: lt-proc-j
-	ln -s lt-proc-j $@
-
-apertium-preprocess-transfer-bytecode-j: lt-proc-j
-	ln -s lt-proc-j $@
-
-apertium-transfer-j: lt-proc-j
-	ln -s lt-proc-j $@
-
-apertium-interchunk-j: lt-proc-j
-	ln -s lt-proc-j $@
-
-apertium-postchunk-j: lt-proc-j
-	ln -s lt-proc-j $@
-
-apertium-tagger-j: lt-proc-j
-	ln -s lt-proc-j $@
-
-apertium-pretransfer-j: lt-proc-j
-	ln -s lt-proc-j $@
-
-apertium-destxt-j: lt-proc-j
-	ln -s lt-proc-j $@
-
-apertium-retxt-j: lt-proc-j
-	ln -s lt-proc-j $@
-
-lt-comp-j: lt-proc-j
-	ln -s lt-proc-j $@
-
-lt-expand-j: lt-proc-j
-	ln -s lt-proc-j $@
-
-lt-validate-j: lt-proc-j
-	ln -s lt-proc-j $@
-
-symlinks: lt-validate-j lt-expand-j lt-comp-j apertium-transfer-j apertium-interchunk-j apertium-postchunk-j apertium-tagger-j apertium-preprocess-transfer-bytecode-j apertium-pretransfer-j apertium-destxt-j apertium-retxt-j apertium-j
+symlinks: ${SYMLINKS}
 	echo "Making symlinks"
+	for i in ${SYMLINKS}; do ln -s apertium-j $i; done
 
 install: dist/lttoolbox.jar
 	@if [ ! -e prefix ]; then \
@@ -54,16 +24,18 @@ install: dist/lttoolbox.jar
 	@echo installing into `cat prefix`;
 	mkdir -p `cat prefix`/share/apertium/;
 	cp dist/lttoolbox.jar `cat prefix`/share/apertium/;
-#	cp -a lt-proc-j lt-expand-j lt-comp-j lt-validate-j `cat prefix`/bin/;
-	chmod a+x apertium-transfer-j apertium-preprocess-transfer-bytecode-j lt-proc-j lt-expand-j lt-comp-j lt-validate-j apertium-pretransfer-j apertium-destxt-j apertium-retxt-j;
-	cp -a apertium-transfer-j apertium-preprocess-transfer-bytecode-j lt-proc-j lt-expand-j lt-comp-j lt-validate-j apertium-pretransfer-j apertium-destxt-j apertium-retxt-j `cat prefix`/bin/;
+#	cp -a apertium-j lt-expand-j lt-comp-j lt-validate-j `cat prefix`/bin/;
+	chmod a+x ${SYMLINKS} apertium-j;
+	cp -a ${SYMLINKS} apertium-j `cat prefix`/bin/;
 
 test:
 	ant -quiet test
 
 clean:
 	ant -quiet clean
-	rm -f prefix;
+
+distclean: clean
+	rm -f prefix ${SYMLINKS};
 
 dist: dist/lttoolbox.jar
 	rm -rf ${PACKAGE}
@@ -71,6 +43,3 @@ dist: dist/lttoolbox.jar
 	cp -a ${DISTFILES} ${PACKAGE}
 	tar --exclude-vcs --exclude=${PACKAGE}/nbproject/private -czf ${PACKAGE}.tar.gz ${PACKAGE}
 	rm -rf ${PACKAGE}
-
-
-
