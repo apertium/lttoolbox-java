@@ -25,7 +25,6 @@ import org.apertium.lttoolbox.Alphabet;
 import org.apertium.transfer.MatchExe;
 import org.apertium.transfer.MatchState;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;

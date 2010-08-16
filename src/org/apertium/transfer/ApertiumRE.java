@@ -5,12 +5,8 @@
 
 package org.apertium.transfer;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apertium.lttoolbox.Compression;
 
 /**
  *

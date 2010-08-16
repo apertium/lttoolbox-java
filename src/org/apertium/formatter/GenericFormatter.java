@@ -24,11 +24,7 @@ import static org.apertium.utils.IOUtils.getStdoutWriter;
 import static org.apertium.utils.IOUtils.openInFileReader;
 import static org.apertium.utils.IOUtils.openOutFileWriter;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;

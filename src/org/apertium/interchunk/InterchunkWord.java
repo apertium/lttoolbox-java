@@ -20,7 +20,6 @@
 package org.apertium.interchunk;
 
 import org.apertium.transfer.ApertiumRE;
-import org.apertium.transfer.TransferWord;
 
 /**
  * @author Stephen Tigner

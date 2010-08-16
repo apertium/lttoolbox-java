@@ -35,7 +35,6 @@ import org.apertium.lttoolbox.Alphabet;
 import org.apertium.transfer.BufferT;
 import org.apertium.transfer.MatchExe;
 import org.apertium.transfer.MatchState;
-import org.apertium.transfer.TransferClassLoader;
 import org.apertium.transfer.TransferToken;
 import org.apertium.transfer.development.Timing;
 import org.apertium.transfer.generated.GeneratedTransferBase;

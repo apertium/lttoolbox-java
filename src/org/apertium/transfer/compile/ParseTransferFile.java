@@ -9,22 +9,17 @@ import static org.apertium.utils.IOUtils.openFile;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.TreeSet;
-import java.util.regex.Matcher;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import org.apertium.transfer.Transfer;
-import org.apertium.transfer.TransferWord;
 import org.apertium.transfer.development.ParseTestTransferFiles;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -444,7 +439,7 @@ public class ParseTransferFile {
       }
       res += ")";
       return res;
-    } else if (n.equals("lu-count") && parseMode==parseMode.POSTCHUNK) {
+    } else if (n.equals("lu-count") && parseMode==ParseMode.POSTCHUNK) {
       // the number of lexical units inside the chunk is the length of the words array, but as we might be in a
       // macro, where we dont have access to the array, we use a global variable
       return "lu_count";

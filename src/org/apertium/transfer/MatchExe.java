@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.HashMap;
 import org.apertium.lttoolbox.Compression;
 import org.apertium.lttoolbox.compile.Transducer;
 import org.apertium.lttoolbox.collections.IntSet;

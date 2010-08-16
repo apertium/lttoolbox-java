@@ -76,6 +76,7 @@ public class ApertiumTransfer {
         doMain(argv, null, null);
     }
     
+    @SuppressWarnings("unchecked")
     public static void doMain(String[] argv, Reader input, Writer output) 
             throws IOException, InstantiationException, IllegalAccessException, 
             ClassNotFoundException {
@@ -156,7 +157,7 @@ public class ApertiumTransfer {
             Class tRulesClass = TransferClassLoader.loadTxClass(txFile, binFile);
             
             t.read(tRulesClass, preProc, bilTrans);
-            if (t.DEBUG)
+            if (Transfer.DEBUG)
                 t.transferObject.debug = true;
         } else {
             endProgram();
@@ -183,7 +184,7 @@ public class ApertiumTransfer {
               input = getStdinReader();
             }
             int outputIndex = (useBD ? optind + 5 : optind + 4);
-            if (argv.length > optind+5) {
+            if (argv.length > outputIndex) {
                 output = openOutFileWriter(argv[optind + 5]);
             } else {
               output = getStdoutWriter();

@@ -23,6 +23,7 @@ public class TransferClassLoader extends ClassLoader {
         super(TransferClassLoader.class.getClassLoader());
     }
 
+    @SuppressWarnings("unchecked")
     public Class loadClassFile(String filename) throws ClassNotFoundException, IOException {
         return loadClassFile(openFile(filename));
     }
@@ -43,12 +44,14 @@ public class TransferClassLoader extends ClassLoader {
         return defineClass(null, data, 0, data.length);
     }
 
+    @SuppressWarnings("unchecked")
     public static Class loadTxClass(File txFile, File binFile) 
             throws ClassNotFoundException, IOException {
         return loadTxClass(txFile, binFile, new TransferClassLoader());
     }
 
     
+    @SuppressWarnings("unchecked")
     public static Class loadTxClass(File txFile, File binFile, TransferClassLoader tcl)
             throws ClassNotFoundException, IOException {
         if (!txFile.exists()) {
@@ -67,9 +70,10 @@ public class TransferClassLoader extends ClassLoader {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private static Class buildAndLoadClass(File txFile, File binFile,
             TransferClassLoader tcl) throws ClassNotFoundException, IOException {
-        String baseTxFilename = getFilenameMinusExtension(txFile.getName());
+        
         String baseBinFilename = getFilenameMinusExtension(binFile.getName());
         String classFilename = baseBinFilename + ".class";
 

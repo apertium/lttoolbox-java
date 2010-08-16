@@ -46,6 +46,7 @@ public class FormatterRegistry {
         /* If indexOf returns something other than -1, then the supplied string
          * is in the registered list.
          */
+        if(_registry == null) { initializeRegistry(); }
         return(_registry.indexOf(formatterName) != -1);
     }
 }

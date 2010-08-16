@@ -23,7 +23,6 @@ import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 
 import org.apertium.interchunk.ApertiumInterchunk;
-import org.apertium.interchunk.Interchunk;
 import org.apertium.utils.StringTable;
 
 /**
