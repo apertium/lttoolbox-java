@@ -18,16 +18,12 @@
 
 package org.apertium.modes;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintStream;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
-import java.nio.CharBuffer;
 
 import org.apertium.formatter.TextFormatter;
 import org.apertium.interchunk.ApertiumInterchunk;
@@ -39,7 +35,6 @@ import org.apertium.pretransfer.PreTransfer;
 import org.apertium.tagger.Tagger;
 import org.apertium.transfer.ApertiumTransfer;
 import org.apertium.utils.StringTable;
-import org.apertium.utils.StringTable.Entries;
 
 /**
  * @author Stephen Tigner
@@ -67,7 +62,7 @@ public class Dispatcher {
              * If we get this, something is wrong. Report it and die.
              */
             System.err.println("Apertium (Dispatch, Interchunk) -- " + 
-                    StringTable.getString(Entries.UNEXPECTED_FILE_NOT_FOUND));
+                    StringTable.UNEXPECTED_FILE_NOT_FOUND);
             e.printStackTrace();
             System.exit(1);
         } catch (UnsupportedEncodingException e) {
@@ -76,7 +71,7 @@ public class Dispatcher {
              * If we get this, something is wrong. Report it and die.
              */
             System.err.println("Apertium (Dispatch, Interchunk) -- " + 
-                    StringTable.getString(Entries.UNEXPECTED_UNSUPPORTED_ENCODING));
+                    StringTable.UNEXPECTED_UNSUPPORTED_ENCODING);
             e.printStackTrace();
             System.exit(1);
         }
@@ -90,7 +85,7 @@ public class Dispatcher {
             ApertiumInterchunk.doMain(par, new Interchunk());
         } catch (Exception e) {
             System.err.println("Interchunk -- " +
-                    StringTable.getString(Entries.GENERIC_EXCEPTION));
+                    StringTable.GENERIC_EXCEPTION);
             e.printStackTrace();
             System.exit(1);
         }
@@ -116,7 +111,7 @@ public class Dispatcher {
              * If we get this, something is wrong. Report it and die.
              */
             System.err.println("Apertium (Dispatch, Postchunk) -- " + 
-                    StringTable.getString(Entries.UNEXPECTED_FILE_NOT_FOUND));
+                    StringTable.UNEXPECTED_FILE_NOT_FOUND);
             e.printStackTrace();
             System.exit(1);
         } catch (UnsupportedEncodingException e) {
@@ -125,7 +120,7 @@ public class Dispatcher {
              * If we get this, something is wrong. Report it and die.
              */
             System.err.println("Apertium (Dispatch, Postchunk) -- " + 
-                    StringTable.getString(Entries.UNEXPECTED_UNSUPPORTED_ENCODING));
+                    StringTable.UNEXPECTED_UNSUPPORTED_ENCODING);
             e.printStackTrace();
             System.exit(1);
         }
@@ -142,7 +137,7 @@ public class Dispatcher {
             ApertiumPostchunk.doMain(par, new Postchunk());
         } catch (Exception e) {
             System.err.println("Postchunk -- " +
-                    StringTable.getString(Entries.GENERIC_EXCEPTION));
+                    StringTable.GENERIC_EXCEPTION);
             e.printStackTrace();
             System.exit(1);
         }
@@ -163,7 +158,7 @@ public class Dispatcher {
             PreTransfer.processStream(input, output, params.nullFlush);
         } catch (IOException e) {
             System.err.println("Pretransfer -- " +
-                    StringTable.getString(Entries.IO_EXCEPTION));
+                    StringTable.IO_EXCEPTION);
             e.printStackTrace();
             System.exit(1);
         }
@@ -202,12 +197,12 @@ public class Dispatcher {
             formatter.doMain(args, input, output);
         } catch (UnsupportedEncodingException e) {
             System.err.println("TextFormatter -- " + 
-                    StringTable.getString(Entries.UNSUPPORTED_ENCODING));
+                    StringTable.UNSUPPORTED_ENCODING);
             e.printStackTrace();
             System.exit(1);
         } catch (FileNotFoundException e) {
             System.err.println("TextFormatter -- " + 
-                    StringTable.getString(Entries.FILE_NOT_FOUND));
+                    StringTable.FILE_NOT_FOUND);
             e.printStackTrace();
             System.exit(1);
         }
@@ -219,17 +214,17 @@ public class Dispatcher {
             ApertiumTransfer.doMain(args, input, output);
         } catch (UnsupportedEncodingException e) {
             System.err.println("Transfer -- " + 
-                    StringTable.getString(Entries.UNSUPPORTED_ENCODING));
+                    StringTable.UNSUPPORTED_ENCODING);
             e.printStackTrace();
             System.exit(1);
         } catch (FileNotFoundException e) {
             System.err.println("Transfer -- " + 
-                    StringTable.getString(Entries.FILE_NOT_FOUND));
+                    StringTable.FILE_NOT_FOUND);
             e.printStackTrace();
             System.exit(1);
         } catch (Exception e) {
             System.err.println("Transfer -- " + 
-                    StringTable.getString(Entries.GENERIC_EXCEPTION));
+                    StringTable.GENERIC_EXCEPTION);
             e.printStackTrace();
             System.exit(1);
         }
@@ -245,7 +240,7 @@ public class Dispatcher {
             LTProc.doMain(args, input, output);
         } catch (IOException e) {
             System.err.println("LTProc -- " +
-                    StringTable.getString(Entries.IO_EXCEPTION));
+                    StringTable.IO_EXCEPTION);
             e.printStackTrace();
             System.exit(1);
         }
@@ -281,7 +276,7 @@ public class Dispatcher {
             }
         } catch (IOException e) {
             System.err.println(prog.getCommandName() + " (Unknown) -- " +
-                    StringTable.getString(Entries.IO_EXCEPTION));
+                    StringTable.IO_EXCEPTION);
             e.printStackTrace();
             System.exit(1);
         }

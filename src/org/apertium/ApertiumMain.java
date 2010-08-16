@@ -42,7 +42,6 @@ import org.apertium.modes.Dispatcher;
 import org.apertium.modes.Mode;
 import org.apertium.modes.Program;
 import org.apertium.utils.StringTable;
-import org.apertium.utils.StringTable.Entries;
 
 /**
  * @author Stephen Tigner
@@ -172,12 +171,12 @@ public class ApertiumMain {
             if(_extOutput == null) { _extOutput = getStdoutWriter(); }
         } catch (FileNotFoundException e) {
             System.err.println("Apertium (Input/Output files) -- " + 
-                    StringTable.getString(Entries.FILE_NOT_FOUND));
+                    StringTable.FILE_NOT_FOUND);
             e.printStackTrace();
             System.exit(1);
         } catch (UnsupportedEncodingException e) {
             System.err.println("Apertium (Input/Output files) -- " + 
-                    StringTable.getString(Entries.UNSUPPORTED_ENCODING));
+                    StringTable.UNSUPPORTED_ENCODING);
             e.printStackTrace();
             System.exit(1);
         }
@@ -235,7 +234,7 @@ public class ApertiumMain {
             }
         } catch (UnsupportedEncodingException e) {
             System.err.println("Apertium (pipeline) -- " + 
-                    StringTable.getString(Entries.UNSUPPORTED_ENCODING));
+                    StringTable.UNSUPPORTED_ENCODING);
             e.printStackTrace();
             System.exit(1);
         }
@@ -275,7 +274,7 @@ public class ApertiumMain {
             mode = new Mode(_dataDir + "modes/" + _direction + ".mode");
         } catch (IOException e) {
             System.err.println("Apertium (mode parsing) -- " + 
-                    StringTable.getString(Entries.IO_EXCEPTION));
+                    StringTable.IO_EXCEPTION);
             e.printStackTrace();
             System.exit(1);
         }
@@ -286,7 +285,7 @@ public class ApertiumMain {
             _extOutput.flush(); //Just to make sure it gets flushed.
         } catch (IOException e) {
             System.err.println("Apertium (flushing output) -- " + 
-                    StringTable.getString(Entries.IO_EXCEPTION));
+                    StringTable.IO_EXCEPTION);
             e.printStackTrace();
             System.exit(1);
         }

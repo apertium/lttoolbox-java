@@ -39,8 +39,6 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
-import org.apertium.utils.StringTable.Entries;
-
 /**
  * @author Stephen Tigner
  *
@@ -298,7 +296,7 @@ public class IOUtils {
         } catch (UnsupportedEncodingException e) {
             //For some reason, this system doesn't support UTF-8??
             System.err.println("Exception opening file/directory: " + filename + " -- " + 
-                    StringTable.getString(Entries.UNSUPPORTED_ENCODING));
+                    StringTable.UNSUPPORTED_ENCODING);
             //If the system doesn't support UTF-8, we cannot continue.
             System.exit(1);
         }

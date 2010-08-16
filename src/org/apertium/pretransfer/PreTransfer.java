@@ -32,7 +32,6 @@ import java.io.Writer;
 
 import org.apertium.lttoolbox.Getopt;
 import org.apertium.utils.StringTable;
-import org.apertium.utils.StringTable.Entries;
 
 /**
  * @author Stephen Tigner
@@ -302,7 +301,7 @@ public class PreTransfer {
             }
         } catch (UnsupportedEncodingException e) {
             System.err.println("Pretransfer (parse args) -- " + 
-                    StringTable.getString(Entries.UNSUPPORTED_ENCODING));
+                    StringTable.UNSUPPORTED_ENCODING);
             System.exit(1);
         }
     }

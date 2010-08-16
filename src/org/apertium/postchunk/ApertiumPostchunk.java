@@ -25,7 +25,6 @@ import java.io.UnsupportedEncodingException;
 import org.apertium.interchunk.ApertiumInterchunk;
 import org.apertium.interchunk.Interchunk;
 import org.apertium.utils.StringTable;
-import org.apertium.utils.StringTable.Entries;
 
 /**
  * @author Stephen Tigner
@@ -48,11 +47,11 @@ public class ApertiumPostchunk extends ApertiumInterchunk {
             parseCommandLine(args, par, "Postchunk", false);
         } catch (FileNotFoundException e) {
             System.err.println("ApertiumPostchunk (I/O files) -- " +
-                    StringTable.getString(Entries.FILE_NOT_FOUND));
+                    StringTable.FILE_NOT_FOUND);
             System.exit(1);
         } catch (UnsupportedEncodingException e) {
             System.err.println("ApertiumPostchunk (I/O files) -- " +
-                    StringTable.getString(Entries.UNSUPPORTED_ENCODING));
+                    StringTable.UNSUPPORTED_ENCODING);
             System.exit(1);
         }
         

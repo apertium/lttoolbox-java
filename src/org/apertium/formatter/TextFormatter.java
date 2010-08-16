@@ -27,7 +27,6 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
 import org.apertium.utils.StringTable;
-import org.apertium.utils.StringTable.Entries;
 
 /**
  * @author Stephen Tigner
@@ -292,11 +291,11 @@ public class TextFormatter extends GenericFormatter {
             formatter.doMain(args);
         } catch (UnsupportedEncodingException e) {
             System.err.println("TextFormatter -- " + 
-                    StringTable.getString(Entries.UNSUPPORTED_ENCODING));
+                    StringTable.UNSUPPORTED_ENCODING);
             e.printStackTrace();
         } catch (FileNotFoundException e) {
             System.err.println("TextFormatter -- " + 
-                    StringTable.getString(Entries.FILE_NOT_FOUND));
+                    StringTable.FILE_NOT_FOUND);
             e.printStackTrace();
         }
     }

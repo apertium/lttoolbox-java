@@ -26,7 +26,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.apertium.utils.StringTable;
-import org.apertium.utils.StringTable.Entries;
 
 /**
  * @author Stephen Tigner
@@ -72,11 +71,11 @@ public abstract class BaseTransferCompile {
             throws FileNotFoundException {
         if(!classPath.exists()) {
             throw new FileNotFoundException("Transfer compile classpath (" + 
-                    classPath + " -- " + StringTable.getString(Entries.FILE_NOT_FOUND));
+                    classPath + " -- " + StringTable.FILE_NOT_FOUND);
         }
         if(!javaFile.exists()) {
             throw new FileNotFoundException("Transfer compile source file (" + 
-                    javaFile + " -- " + StringTable.getString(Entries.FILE_NOT_FOUND));
+                    javaFile + " -- " + StringTable.FILE_NOT_FOUND);
         }
     }
 }

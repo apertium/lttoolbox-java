@@ -23,7 +23,6 @@ import org.apertium.lttoolbox.*;
 import java.io.*;
 import org.apertium.transfer.compile.ParseTransferFile;
 import org.apertium.utils.StringTable;
-import org.apertium.utils.StringTable.Entries;
 
 /**
  * 
@@ -128,11 +127,11 @@ public class ApertiumTransferCompile {
               result = tc.compile(cp, javaSource);
           } catch (FileNotFoundException e) {
               throw new 
-                  InternalError(StringTable.getString(Entries.COMPILATION_FAILURE));
+                  InternalError(StringTable.COMPILATION_FAILURE);
           }
           if(result != 0) {
               throw new 
-                  InternalError(StringTable.getString(Entries.COMPILATION_FAILURE));
+                  InternalError(StringTable.COMPILATION_FAILURE);
           }
       }
 

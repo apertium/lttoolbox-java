@@ -33,7 +33,6 @@ import java.io.Writer;
 import org.apertium.lttoolbox.Getopt;
 import org.apertium.transfer.TransferClassLoader;
 import org.apertium.utils.StringTable;
-import org.apertium.utils.StringTable.Entries;
 
 /**
  * @author Stephen Tigner
@@ -129,6 +128,7 @@ public class ApertiumInterchunk {
      * @param par
      * @throws Exception 
      */
+    @SuppressWarnings("unchecked")
     public static void doMain(CommandLineParams par, Interchunk i) throws Exception {
 
         i.setNullFlush(par.nullFlush);
@@ -157,11 +157,11 @@ public class ApertiumInterchunk {
             parseCommandLine(args, par, "Interchunk", false);
         } catch (FileNotFoundException e) {
             System.err.println("ApertiumInterchunk (I/O files) -- " +
-                    StringTable.getString(Entries.FILE_NOT_FOUND));
+                    StringTable.FILE_NOT_FOUND);
             System.exit(1);
         } catch (UnsupportedEncodingException e) {
             System.err.println("ApertiumInterchunk (I/O files) -- " +
-                    StringTable.getString(Entries.UNSUPPORTED_ENCODING));
+                    StringTable.UNSUPPORTED_ENCODING);
             System.exit(1);
         }
         
