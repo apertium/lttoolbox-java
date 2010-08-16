@@ -21,7 +21,7 @@ import static org.apertium.utils.IOUtils.getStdinReader;
 import static org.apertium.utils.IOUtils.getStdoutWriter;
 import static org.apertium.utils.IOUtils.openInFileReader;
 import static org.apertium.utils.IOUtils.openOutFileWriter;
-import static org.apertium.utils.MiscUtils.loadClassFromTxFilename;
+import static org.apertium.utils.IOUtils.openFile;
 
 import org.apertium.lttoolbox.*;
 import org.apertium.lttoolbox.process.FSTProcessor;
@@ -51,19 +51,20 @@ public class ApertiumTransfer {
     static void endProgram(String name) {
         System.out.print(name + LTToolbox.PACKAGE_VERSION +": \n" +
 "USAGE: "+name+" trules-class preproc biltrans [input [output]]\n" +
-"       "+name+" -n trules preproc [input [output]]\n" +
+"       "+name+" -n trules-class preproc [input [output]]\n" +
 //"       "+name+" -x extended trules preproc biltrans [input [output]]\n" +
 //"       "+name+" -c trules preproc biltrans [input [output]]\n" +
-"  trules-class Java bytecode compiled transfer rules (.class file)\n" +
-"  preproc    result of preprocess trules (.bin file)\n" +
-"  biltrans   bilingual letter transducer file\n" +
-"  input      input file, standard input by default\n" +
-"  output     output file, standard output by default\n" +
-"  -n         don't use bilingual dictionary\n" +
+"  trules-class  Java bytecode compiled transfer rules (.class file)\n" +
+"                or XML transfer rules (.t1x file)\n" +
+"  preproc       result of preprocess trules (.bin file)\n" +
+"  biltrans      bilingual letter transducer file\n" +
+"  input         input file, standard input by default\n" +
+"  output        output file, standard output by default\n" +
+"  -n            don't use bilingual dictionary\n" +
 //"  -x bindix  extended mode with user dictionary\n" +
 //"  -c         case-sensitiveness while accessing bilingual dictionary\n" +
-"  -z         null-flushing output on '\n" +
-"  -h         shows this message\n" +
+"  -z            null-flushing output on '\n" +
+"  -h            shows this message\n" +
 "");
         System.exit(-1);
 
@@ -150,13 +151,11 @@ public class ApertiumTransfer {
             String bilTrans = null;
             if(useBD) { bilTrans = argv[optind + 3]; }
 
-            if(tRulesClassString.endsWith(".class")) {
-                t.read(tRulesClassString, preProc, bilTrans);
-            } else {
-                Class tRulesClass = loadClassFromTxFilename(tRulesClassString);
-                
-                t.read(tRulesClass, preProc, bilTrans);
-            }
+            File txFile = openFile(tRulesClassString);
+            File binFile = openFile(preProc);
+            Class tRulesClass = TransferClassLoader.loadTxClass(txFile, binFile);
+            
+            t.read(tRulesClass, preProc, bilTrans);
             if (t.DEBUG)
                 t.transferObject.debug = true;
         } else {

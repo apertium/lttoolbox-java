@@ -124,26 +124,6 @@ public class Interchunk {
 
     /**
      * Copied from
-     * {@link org.apertium.transfer.Transfer#read(String, String, String)}
-     * 
-     * @param classFile
-     * @param datafile
-     * @param fstfile
-     * @throws Exception
-     */
-    public void read(String classFile, String datafile) throws Exception {
-        if (!classFile.endsWith(".class")) {
-            System.err
-                    .println("Warning: "
-                            + classFile
-                            + " should be a Java .class file. You probably got it wrong");
-        }
-
-        read(new TransferClassLoader().loadClassFile(classFile), datafile);
-    }
-
-    /**
-     * Copied from
      * {@link org.apertium.transfer.Transfer#read(Class, String, String)}
      * 
      * @param transferClass

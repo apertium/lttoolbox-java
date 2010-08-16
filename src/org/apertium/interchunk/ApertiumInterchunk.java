@@ -21,8 +21,9 @@ package org.apertium.interchunk;
 
 import static org.apertium.utils.IOUtils.openInFileReader;
 import static org.apertium.utils.IOUtils.openOutFileWriter;
-import static org.apertium.utils.MiscUtils.loadClassFromTxFilename;
+import static org.apertium.utils.IOUtils.openFile;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.io.Reader;
@@ -30,6 +31,7 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
 import org.apertium.lttoolbox.Getopt;
+import org.apertium.transfer.TransferClassLoader;
 import org.apertium.utils.StringTable;
 import org.apertium.utils.StringTable.Entries;
 
@@ -131,13 +133,11 @@ public class ApertiumInterchunk {
 
         i.setNullFlush(par.nullFlush);
 
-        if(par.t2xFile.endsWith(".class")) {
-            i.read(par.t2xFile, par.preprocFile);
-        } else {
-            Class t2xClass = loadClassFromTxFilename(par.t2xFile);
-            
-            i.read(t2xClass, par.preprocFile);
-        }
+        File txFile = openFile(par.t2xFile);
+        File binFile = openFile(par.preprocFile); 
+        Class t2xClass = TransferClassLoader.loadTxClass(txFile, binFile);
+
+        i.read(t2xClass, par.preprocFile);
         i.interchunk(par.input, par.output);
         par.output.flush(); //Have to flush or there won't be any output.
     }

@@ -47,7 +47,12 @@ import org.apertium.utils.StringTable.Entries;
  */
 public class IOUtils {
     private static final boolean DEBUG = false;
-    
+
+    public static String getFilenameMinusExtension(String filename) {
+        int dotIndex = filename.lastIndexOf('.');
+        return filename.substring(0, dotIndex);
+    }
+
     public static String readFile(String path) throws IOException {
         return readFile(path, "UTF-8");
     }

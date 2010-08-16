@@ -5,6 +5,7 @@
 package org.apertium.transfer;
 
 import static org.apertium.utils.IOUtils.openInFileStream;
+import static org.apertium.utils.IOUtils.openFile;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -194,21 +195,11 @@ So the array of rule_map Method is taken by introspection, taking all methods be
    *  so, preprocessed by, apertium-preprocess-transfer-bytecode-j  (.class)
    * @param datafile same file, preprocessed by, apertium-preprocess-transfer  (.bin)
    * @param bilFstFile bilingual FST file - might be null
- * @throws ClassNotFoundException 
- * @throws IllegalAccessException 
- * @throws InstantiationException 
- * @throws IOException 
+   * @throws ClassNotFoundException 
+   * @throws IllegalAccessException 
+   * @throws InstantiationException 
+   * @throws IOException 
    */
-  public void read(String classFile, String datafile, String bilFstFile) throws IOException, InstantiationException, IllegalAccessException, ClassNotFoundException {
-    if (!classFile.endsWith(".class")) {
-      System.err.println("Warning: " + classFile+ " should be a Java .class file. You probably got it wrong");
-    }
-
-    read(new TransferClassLoader().loadClassFile(classFile), datafile, bilFstFile);
-//    read(apertium_nn_nb_nb_nn_t1x.class, "testdata/transfer/nb-nn.t1x.bin", fstfile);
-  }
-
-
   @SuppressWarnings("unchecked")
   public void read(Class transferClass, String datafile, String bilFstFile) 
           throws IOException, InstantiationException, IllegalAccessException {

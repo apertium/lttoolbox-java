@@ -52,7 +52,7 @@ public class ApertiumTransferCompile {
       System.err.println("Parsing " + argv[0]);
       p.parse(argv[0]);
 
-      File dest = new File(argv[1]);
+      File dest = openFile(argv[1]);
       File dir = dest.getParentFile();
       if (dir!=null) {
         dir.mkdirs();
