@@ -72,7 +72,21 @@ public class TransferClassLoader extends ClassLoader {
         String baseBinFilename = getFilenameMinusExtension(binFile.getName());
         String classFilename = baseBinFilename + ".class";
 
-        File tempDir = openFile(System.getProperty("java.io.tmpdir"));
+        String tempDirString = System.getProperty("java.io.tmpdir");
+        char lastChar = tempDirString.charAt(tempDirString.length() - 1);
+        if(lastChar != '/' && lastChar != '\\') {
+            /* If there is not a forward slash (unix) or backward
+             * slash (Windows) at the end of the path, add a slash.
+             * Java can handle mixed slashes, so only need to worry
+             * about adding a forward slash.
+             * The reason we aren't just using the pathSeparator system
+             * property is that we might have a unix-style path on a
+             * Windows system in the case of cygwin.
+             */
+            tempDirString += "/";
+        }
+        
+        File tempDir = openFile(tempDirString);
 
         File classFile = openFile(binFile.getParent() + classFilename);
         // If it doesn't exist in the binFile directory, try the temp directory
