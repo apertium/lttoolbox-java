@@ -55,7 +55,7 @@ public class CommandLineInterface {
   public static void main(String[] argv) throws Exception {
     if (argv.length == 0) showHelp(null);
       // strip evt path
-      String task = new File(argv[0]).getName();
+      String task = new File(argv[0]).getName().trim();
 
       String[] restOfArgs = Arrays.copyOfRange(argv, 1 , argv.length);
       if (task.startsWith("lt-proc")) LTProc.main(restOfArgs);
