@@ -84,14 +84,6 @@ public class ApertiumTransferCompile {
   public static void doMain(File txFile, File targetClass, File javaSource,
           File outputClass, boolean displayStatusMessages) throws IOException {
 
-      /*ParseTransferFile p = new ParseTransferFile();
-      if(displayStatusMessages) System.err.println("Parsing " + txFile);
-      p.parse(txFile.getPath());*/
-      
-      /*FileWriter fw = new FileWriter(javaSource);
-      fw.append(p.getOptimizedJavaCode());
-      fw.close();*/
-     
       /* 
        * If you're calling ApertiumCompile.doMain(), you should really want to 
        * compile the file. If you don't want to compile it if it already exists, 

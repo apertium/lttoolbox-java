@@ -55,10 +55,9 @@ public class TransferClassLoader extends ClassLoader {
     public static Class loadTxClass(File txOrClassFile, File binFile, TransferClassLoader tcl)
             throws ClassNotFoundException, IOException {
 
+        //System.err.println("binFile = " + binFile);
+        //System.err.println("txFile = " + txOrClassFile);
 
-      System.err.println("binFile = " + binFile);
-
-        System.err.println("txFile = " + txOrClassFile);
         if (!txOrClassFile.exists()) {
             throw new FileNotFoundException("Loading TX Class txFile ("
                     + txOrClassFile + ")");
