@@ -99,7 +99,7 @@ public class TransferClassLoader extends ClassLoader {
         // If it doesn't exist there either, switch back to the binFile
         // directory
         if (!classFile.exists()) {
-            openFile(addTrailingSlash(binFile.getParent()) + classFilename);
+            classFile = openFile(addTrailingSlash(binFile.getParent()) + classFilename);
         }
 
         // If the class file exists already, try and load it.
@@ -140,6 +140,9 @@ public class TransferClassLoader extends ClassLoader {
         ApertiumTransferCompile.doMain(txFile, classFile, javaSource,
                 outputClass, false);
 
+        //Remove the java source file, as we don't need it anymore
+        javaSource.delete();
+        
         // Load and return the class file.
         return tcl.loadClassFile(classFile);
     }

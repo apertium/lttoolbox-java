@@ -149,12 +149,15 @@ public class ApertiumTransfer {
              * in Interchunk and Postchunk as well.
              */
 
-            // Now, heres a dilemma: We might have been invoked with an XML file (t1x, t2x, t3x) instead of a bytecode .class file!
-            // This is because apertium-j is interpreting the .mode files in a fully braindead way 
-            // with no check of argument suffices etc and letting the stages themselves decide what to do.
-            // C++ way is: apertium-transfer    apertium-eo-en.eo-en.t1x  eo-en.t1x.bin  eo-en.autobil.bin
-            // expeted is:  apertium-transfer-j  eo-en.t1x.class                  eo-en.t1x.bin  eo-en.autobil.bin
-            // see also http://wiki.apertium.org/wiki/Bytecode_for_transfer
+            /* Now, heres a dilemma: We might have been invoked with an XML file 
+             * (t1x, t2x, t3x) instead of a bytecode .class file!
+             * This is because apertium-j is interpreting the .mode files in a fully 
+             * ignorant way with no check of argument suffices etc and letting the 
+             * stages themselves decide what to do. (This is a good thing!)
+             * C++ way is: apertium-transfer    apertium-eo-en.eo-en.t1x  eo-en.t1x.bin  eo-en.autobil.bin
+             * expected is:  apertium-transfer-j  eo-en.t1x.class                  eo-en.t1x.bin  eo-en.autobil.bin
+             * see also http://wiki.apertium.org/wiki/Bytecode_for_transfer
+             */
             String tRulesOrClassString = argv[optind + 1];
             String preProc = argv[optind + 2];
             String bilTrans = null;
