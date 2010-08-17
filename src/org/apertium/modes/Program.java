@@ -66,19 +66,19 @@ public class Program {
 
         if(_commandName.equals("lt-proc")) {
             _program = ProgEnum.LT_PROC;
-        } else if(_commandName.equals("apertium-tagger")) {
+        } else if(_commandName.matches("^apertium-tagger(-j)?$")) {
             _program = ProgEnum.TAGGER;
-        } else if(_commandName.equals("apertium-pretransfer")) {
+        } else if(_commandName.matches("^apertium-pretransfer(-j)?$")) {
             _program = ProgEnum.PRETRANSFER;
-        } else if(_commandName.equals("apertium-transfer")) {
+        } else if(_commandName.matches("^apertium-transfer(-j)?$")) {
             _program = ProgEnum.TRANSFER;
-        } else if(_commandName.equals("apertium-interchunk")) {
+        } else if(_commandName.matches("^apertium-interchunk(-j)?$")) {
             _program = ProgEnum.INTERCHUNK;
-        } else if(_commandName.equals("apertium-postchunk")) {
+        } else if(_commandName.matches("^apertium-postchunk(-j)?$")) {
             _program = ProgEnum.POSTCHUNK;
-        } else if(_commandName.equals("apertium-destxt")) {
+        } else if(_commandName.matches("^apertium-destxt(-j)?$")) {
             _program = ProgEnum.TXT_DEFORMAT;
-        } else if(_commandName.equals("apertium-retxt")) {
+        } else if(_commandName.matches("^apertium-retxt(-j)?$")) {
             _program = ProgEnum.TXT_REFORMAT;
         } else {
             _program = ProgEnum.UNKNOWN;

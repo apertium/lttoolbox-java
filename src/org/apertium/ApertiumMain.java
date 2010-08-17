@@ -100,9 +100,8 @@ public class ApertiumMain {
         String deFormatProgName = "apertium-des" + formatterName;
         String reFormatProgName = "apertium-re" + formatterName;
         
-        //Adding -c switch to enable C++ compat mode by default
-        _deformatter = new Program(deFormatProgName + " -c");
-        _reformatter = new Program(reFormatProgName + " -c");
+        _deformatter = new Program(deFormatProgName);
+        _reformatter = new Program(reFormatProgName);
     }
 
     private static void _parseCommandLine(String[] args) {

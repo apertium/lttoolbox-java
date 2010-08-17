@@ -77,7 +77,7 @@ public abstract class GenericFormatter {
      * Another would be the C++ failing to escape some Apertium stream characters, even
      * though it really should.
      */
-    protected boolean _cppCompat = false;
+    protected boolean _cppCompat = true;
     //Low-level dev debugging
     protected boolean DEBUG = false;
     
@@ -123,7 +123,7 @@ public abstract class GenericFormatter {
                     }
                     break;
                 case 'c':
-                    _cppCompat = true;
+                    _cppCompat = false;
                     break;
                 case 'i':
                     _inputFile = getOpt.getOptarg();
@@ -151,7 +151,7 @@ public abstract class GenericFormatter {
         System.out.println("OPTIONS:");
         System.out.println(" -d: Deformat, escape special characters and whitespace.");
         System.out.println(" -r: Reformat, un-escape special characters and whitespace.");
-        System.out.println(" -c: C++ compatibility mode, emulate C++ output, including some sub-optimal behavior");
+        System.out.println(" -c: Disable C++ compatibility mode, which emulates C++ output, including some sub-optimal behavior");
         System.out.println(" -i: Input file, uses the file INPUT_FILE as input.");
         System.out.println(" -o: Output file, uses the file OUTPUT_FILE as output");
         System.out.println("If the input and output files are not specified, then " +
