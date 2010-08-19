@@ -92,6 +92,17 @@ public class IOUtils {
         return fileContents;
     }
 
+    public static void writeFile(String path, String data) throws IOException {
+        writeFile(path, data, "UTF-8");
+    }
+    
+    public static void writeFile(String path, String data, String encoding) 
+            throws IOException {
+        Writer output = openOutFileWriter(path);
+        output.write(data);
+        output.close();
+    }
+    
     /**
      * 
      * @return A reader for System.in with the default encoding of UTF-8.

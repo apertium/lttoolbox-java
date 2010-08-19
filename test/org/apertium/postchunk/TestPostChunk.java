@@ -86,7 +86,7 @@ public class TestPostChunk {
         
         ArrayList<String> returnVal = (ArrayList<String>) 
                 runPrivateMethod(methodName, paramTypes, params);
-        assertEquals("TestPostChunk.testGetVecTags() failed: output does not match expected output", returnVal, expectedOutput);
+        assertEquals("TestPostChunk.testGetVecTags() failed: output does not match expected output", expectedOutput, returnVal);
     }
 
     @SuppressWarnings("unchecked")
@@ -102,7 +102,7 @@ public class TestPostChunk {
         
         int returnVal = (Integer) runPrivateMethod(methodName, paramTypes, params);
 
-        assertEquals("TestPostChunk.testBeginChunk() failed: output does not match expected output", returnVal, expectedOutput);
+        assertEquals("TestPostChunk.testBeginChunk() failed: output does not match expected output", expectedOutput, returnVal);
     }
     
     /* There *was* a method for testing endChunk here... then I realized it was
@@ -122,7 +122,7 @@ public class TestPostChunk {
         
         String returnVal = (String) runPrivateMethod(methodName, paramTypes, params);
 
-        assertEquals("TestPostChunk.testPseudoLemma() failed: output does not match expected output", returnVal, expectedOutput);
+        assertEquals("TestPostChunk.testPseudoLemma() failed: output does not match expected output", expectedOutput, returnVal);
     }
     
     public void testSplitWordsAndBlanks() {
