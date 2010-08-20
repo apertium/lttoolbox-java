@@ -229,10 +229,10 @@ public class Postchunk extends Interchunk {
                 output.write('$');
             } else if(chunk.charAt(i) == '[') {
                 output.write('[');
-                while(chunk.charAt(i) != ']') {
+                while(chunk.charAt(++i) != ']') {
                     if(chunk.charAt(i) == '\\') {
                         output.write('\\');
-                        output.write(chunk.charAt(i));
+                        output.write(chunk.charAt(++i));
                     } else {
                         output.write(chunk.charAt(i));
                     }
