@@ -17,7 +17,7 @@
  * 02111-1307, USA.
  */
 
-package org.apertium.modes;
+package org.apertium.pipeline;
 
 /**
  * @author Stephen Tigner

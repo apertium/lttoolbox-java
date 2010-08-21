@@ -1,5 +1,6 @@
 package org.apertium;
 
+import org.apertium.pipeline.ApertiumMain;
 import static org.apertium.utils.IOUtils.addTrailingSlash;
 import static org.apertium.utils.IOUtils.readFile;
 import static org.apertium.utils.IOUtils.writeFile;
@@ -32,9 +33,9 @@ import org.junit.Test;
  * @author Stephen Tigner
  *
  */
-public class ApertiumTestEoEnTest {
+public class ApertiumEoEnTest {
     String lingDataDir = "../apertium-eo-en/";
-    String testDataDir = "testdata/full_pipeline/";
+    String testDataDir = "testdata/pipeline/";
     String tempDir = addTrailingSlash(System.getProperty("java.io.tmpdir"));
 
     @Test

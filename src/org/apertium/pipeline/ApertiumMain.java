@@ -17,7 +17,7 @@
  * 02111-1307, USA.
  */
 
-package org.apertium;
+package org.apertium.pipeline;
 
 import static org.apertium.utils.IOUtils.getStdinReader;
 import static org.apertium.utils.IOUtils.getStdoutWriter;
@@ -38,9 +38,9 @@ import java.io.Writer;
 
 import org.apertium.formatter.FormatterRegistry;
 import org.apertium.lttoolbox.Getopt;
-import org.apertium.modes.Dispatcher;
-import org.apertium.modes.Mode;
-import org.apertium.modes.Program;
+import org.apertium.pipeline.Dispatcher;
+import org.apertium.pipeline.Mode;
+import org.apertium.pipeline.Program;
 import org.apertium.utils.StringTable;
 
 /**

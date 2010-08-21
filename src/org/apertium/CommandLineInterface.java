@@ -5,6 +5,7 @@
 
 package org.apertium;
 
+import org.apertium.pipeline.ApertiumMain;
 import java.io.File;
 import org.apertium.lttoolbox.*;
 import java.util.Arrays;
