@@ -89,7 +89,7 @@ public class InterchunkWord {
     }
     
     
-    public String chunkApart(final ApertiumRE part) {
+    public String chunkPart(final ApertiumRE part) {
         String result = part.match(_chunk);
         if(result.length() == 0) {
             result = part.match(_queue);
@@ -105,21 +105,21 @@ public class InterchunkWord {
         }
     }
     
-    public void chunkApartSet(final ApertiumRE part, final String value) {
+    public void chunkPartSet(final ApertiumRE part, final String value) {
         _chunk = part.replace(_chunk, value);
     }
 
 
     public void tlSet(final ApertiumRE part, final String value) {
-        chunkApartSet(part, value);
+        chunkPartSet(part, value);
     }
     public void slSet(final ApertiumRE part, final String value) {
-        chunkApartSet(part, value);
+        chunkPartSet(part, value);
     }
     public String tl(final ApertiumRE part) {
-      return chunkApart(part);
+      return chunkPart(part);
     }
     public String sl(final ApertiumRE part) {
-      return chunkApart(part);
+      return chunkPart(part);
     }
 }
