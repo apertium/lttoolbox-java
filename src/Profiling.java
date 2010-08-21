@@ -406,4 +406,21 @@ main@standard 62442 96775
 lt-comp took sec 6572 msec
 BUILD SUCCESSFUL (total time: 10 seconds)
 
+ {java.runtime.name=Java(TM) SE Runtime Environment, sun.boot.library.path=/usr/lib/jvm/java-6-sun-1.6.0.20/jre/lib/i386, java.vm.version=16.3-b01, java.vm.vendor=Sun Microsystems Inc., java.vendor.url=http://java.sun.com/, path.separator=:, java.vm.name=Java HotSpot(TM) Client VM, file.encoding.pkg=sun.io, sun.java.launcher=SUN_STANDARD, user.country=DK, sun.os.patch.level=unknown, java.vm.specification.name=Java Virtual Machine Specification, user.dir=/home/j/esperanto/a/lttoolbox-java, java.runtime.version=1.6.0_20-b02, java.awt.graphicsenv=sun.awt.X11GraphicsEnvironment, java.endorsed.dirs=/usr/lib/jvm/java-6-sun-1.6.0.20/jre/lib/endorsed, os.arch=i386, java.io.tmpdir=/tmp, line.separator=
+, java.vm.specification.vendor=Sun Microsystems Inc., os.name=Linux, sun.jnu.encoding=UTF-8, java.library.path=/usr/lib/jvm/java-6-sun-1.6.0.20/jre/lib/i386/client:/usr/lib/jvm/java-6-sun-1.6.0.20/jre/lib/i386:/usr/lib/jvm/java-6-sun-1.6.0.20/jre/../lib/i386:/usr/java/packages/lib/i386:/lib:/usr/lib, java.specification.name=Java Platform API Specification, java.class.version=50.0, sun.management.compiler=HotSpot Client Compiler, os.version=2.6.32-24-generic, user.home=/home/j, user.timezone=, java.awt.printerjob=sun.print.PSPrinterJob, file.encoding=UTF-8, java.specification.version=1.6, java.class.path=/home/j/esperanto/apertium/lttoolbox-java/build/classes:/home/j/esperanto/apertium/lttoolbox-java/src, user.name=j, java.vm.specification.version=1.0, java.home=/usr/lib/jvm/java-6-sun-1.6.0.20/jre, sun.arch.data.model=32, user.language=da, java.specification.vendor=Sun Microsystems Inc., java.vm.info=mixed mode, sharing, java.version=1.6.0_20, java.ext.dirs=/usr/lib/jvm/java-6-sun-1.6.0.20/jre/lib/ext:/usr/java/packages/lib/ext, sun.boot.class.path=/usr/lib/jvm/java-6-sun-1.6.0.20/jre/lib/resources.jar:/usr/lib/jvm/java-6-sun-1.6.0.20/jre/lib/rt.jar:/usr/lib/jvm/java-6-sun-1.6.0.20/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-6-sun-1.6.0.20/jre/lib/jsse.jar:/usr/lib/jvm/java-6-sun-1.6.0.20/jre/lib/jce.jar:/usr/lib/jvm/java-6-sun-1.6.0.20/jre/lib/charsets.jar:/usr/lib/jvm/java-6-sun-1.6.0.20/jre/classes, java.vendor=Sun Microsystems Inc., file.separator=/, java.vendor.url.bug=http://java.sun.com/cgi-bin/bugreport.cgi, sun.io.unicode.encoding=UnicodeLittle, sun.cpu.endian=little, sun.desktop=gnome, sun.cpu.isalist=}
+Profiling Sat Aug 21 09:08:14 CEST 2010 Java HotSpot(TM) Client VM 1.6.0_20
+start /home/j/esperanto/a/lttoolbox-java/. took sec 22 msec
+transfer-init apertium_en_ca_en_ca_t1x took sec 333 msec
+transfer took sec 297 msec
+analysis -a   took sec 529 msec
+tagger took sec 173 msec
+generation -g took sec 504 msec
+generation -d took sec 507 msec
+generation -n took sec 472 msec
+generation -p took sec 133 msec
+analysis -a   took sec 485 msec
+final@inconditional 61 858
+main@standard 62442 96775
+lt-comp took sec 6363 msec
+BUILD SUCCESSFUL (total time: 10 seconds)
  */

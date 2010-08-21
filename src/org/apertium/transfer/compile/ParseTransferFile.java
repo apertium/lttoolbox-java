@@ -348,6 +348,11 @@ public class ParseTransferFile {
 
     String clipReadExpr = word(pos)+"."+side+queue+"("+attr(part)+")";
 
+    // fix for apertium/interchunk.cc evalString(): if(ti.getContent() == "content") then we need to strip the brackets
+    if ("content".equals(part)) {
+      clipReadExpr = "TransferWord.stripBrackets("+clipReadExpr+")";
+    }
+
     // Update/check cache
     Integer count = clipExprReadCount.get(clipReadExpr);
     count = count==null? 1 : count+1;

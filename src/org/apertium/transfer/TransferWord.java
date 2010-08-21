@@ -178,4 +178,12 @@ public class TransferWord {
       return "Aa";
     }
   }
+
+  // fix for apertium/interchunk.cc evalString(): if(ti.getContent() == "content") then we need to strip the brackets
+  // it is put here as copycase() and other utility methods are already here too
+  public static String stripBrackets(String chunk) {
+     // string wf = word[ti.getPos()]->chunkPart(attr_items[ti.getContent()]);
+     // return wf.substr(1, wf.length()-2); // trim away the { and }
+    return chunk.substring(1, chunk.length()-1);
+  }
 }
