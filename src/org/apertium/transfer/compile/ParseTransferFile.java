@@ -1045,19 +1045,20 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
         */
 
         String[][] fixed_attributes = {
-          { "lem" , "(([^<]|\\\"\\\\<\\\")+)" },
-          { "lemq" , "\\\\#[- _][^<]+" },
-          { "lemh" , "(([^<#]|\\\"\\\\<\\\"|\\\"\\\\#\\\")+)" },
+          { "lem" , "(([^<]|\"\\<\")+)" },
+          { "lemq" , "\\#[- _][^<]+" },
+          { "lemh" , "(([^<#]|\"\\<\"|\"\\#\")+)" },
           { "whole" , "(.+)" },
           { "tags" , "((<[^>]+>)+)" },
-          { "chname" , "(\\\\{([^/]+)\\\\/)" }, // includes delimiters { and / !!!
-          { "chcontent" , "(\\\\{.+)" },
-          { "content" , "(\\\\{.+)" },
+          { "chname" , "(\\{([^/]+)\\/)" }, // includes delimiters { and / !!!
+          { "chcontent" , "(\\{.+)" },
+          { "content" ,  "(\\{.+)" }, // "\\{(.+)\\}" } would be correct, but wont work as InterchunkWord.chunkPart()
+          // requires the match to have the same length as the matched string
         };
 
         for (String[] nameval : fixed_attributes) {
           if (attrList.add(nameval[0])) {
-            println("ApertiumRE attr_"+nameval[0]+" = new ApertiumRE(\""+nameval[1]+"\");");
+            println("ApertiumRE attr_"+nameval[0]+" = new ApertiumRE(\""+escapeStr(nameval[1])+"\");");
           } else {
             parseError("// WARNING: Don't define attribute "+nameval[0]+", it should keep its predefined value: "+nameval[1]);
           }
