@@ -50,26 +50,28 @@ import org.apertium.utils.StringTable;
 public class ApertiumMain {
     private static final boolean DEBUG = false;
 
-    //Directory to look for modes files in
-    private static String _dataDir = null;
-    //What mode to use
-    private static String _direction;
-    //Display ambiguity, defaults to false
-    private static boolean _dispAmb = false;
-    //Display marks '*' for unknown words, defaults to true
-    private static boolean _dispMarks = true;
-    /* List translation directions in the given data dir.
-     * Done as a flag because we need to make sure the datadir
-     * has been parsed from the command line before we try and read
-     * the files in it.
-     */
-    private static boolean _listModes = false;
-
-    private static Program _deformatter;
-    private static Program _reformatter;
+    private static class CommandLineParams {
+        //Directory to look for modes files in
+        String dataDir = null;
+        //What mode to use
+        String direction;
+        //Display ambiguity, defaults to false
+        boolean dispAmb = false;
+        //Display marks '*' for unknown words, defaults to true
+        boolean dispMarks = true;
+        /* List translation directions in the given data dir.
+         * Done as a flag because we need to make sure the datadir
+         * has been parsed from the command line before we try and read
+         * the files in it.
+         */
+        boolean listModes = false;
     
-    private static Reader _extInput = null;
-    private static Writer _extOutput = null;
+        Program deformatter;
+        Program reformatter;
+        
+        Reader extInput = null;
+        Writer extOutput = null;
+    }
     
     private static void _displayHelpAndExit() {
         PrintStream p = System.err;
@@ -96,15 +98,17 @@ public class ApertiumMain {
         System.exit(0);
     }
     
-    private static void _setFormatter(String formatterName) {
+    private static void _setFormatter(String formatterName, 
+            CommandLineParams clp) {
         String deFormatProgName = "apertium-des" + formatterName;
         String reFormatProgName = "apertium-re" + formatterName;
         
-        _deformatter = new Program(deFormatProgName);
-        _reformatter = new Program(reFormatProgName);
+        clp.deformatter = new Program(deFormatProgName);
+        clp.reformatter = new Program(reFormatProgName);
     }
 
-    private static void _parseCommandLine(String[] args) {
+    private static void _parseCommandLine(String[] args, 
+            CommandLineParams clp) {
         Getopt getopt = new Getopt("Apertium", args, "d:f:ual");
 
         while (true) {
@@ -114,21 +118,21 @@ public class ApertiumMain {
             }
             switch (c) {
                 case 'd':
-                    _dataDir = getopt.getOptarg();
-                    _dataDir = addTrailingSlash(_dataDir);
+                    clp.dataDir = getopt.getOptarg();
+                    clp.dataDir = addTrailingSlash(clp.dataDir);
                     break;
                 case 'u':
-                    _dispMarks = false;
+                    clp.dispMarks = false;
                     break;
                 case 'a':
-                    _dispAmb = true;
+                    clp.dispAmb = true;
                     break;
                 case 'l':
-                    _listModes = true;
+                    clp.listModes = true;
                 case 'f':
                     String formatterName = getopt.getOptarg();
                     if(FormatterRegistry.isRegistered(formatterName)) {
-                        _setFormatter(formatterName);
+                        _setFormatter(formatterName, clp);
                         break;
                     } 
                     /* If not registered, will fall through to bottom of switch and
@@ -141,11 +145,11 @@ public class ApertiumMain {
             }
         }
         
-        if(_dataDir == null) { _displayHelpAndExit(); }
+        if(clp.dataDir == null) { _displayHelpAndExit(); }
         
-        if(_deformatter == null || _reformatter == null) {
+        if(clp.deformatter == null || clp.reformatter == null) {
             //Formatters weren't set on command-line, set default of txt
-            _setFormatter("txt");
+            _setFormatter("txt", clp);
         }
         
         //Setup external input and output
@@ -158,16 +162,16 @@ public class ApertiumMain {
                  * breaking), we don't need to duplicate the same code several times.
                  */
                 case 3:
-                    _extOutput = openOutFileWriter(args[optIndex + 2]);
+                    clp.extOutput = openOutFileWriter(args[optIndex + 2]);
                 case 2:
-                    _extInput = openInFileReader(args[optIndex + 1]);
+                    clp.extInput = openInFileReader(args[optIndex + 1]);
                 case 1:
-                    _direction = args[optIndex];
+                    clp.direction = args[optIndex];
                 default:
                     break;
             }
-            if(_extInput == null) { _extInput = getStdinReader(); }
-            if(_extOutput == null) { _extOutput = getStdoutWriter(); }
+            if(clp.extInput == null) { clp.extInput = getStdinReader(); }
+            if(clp.extOutput == null) { clp.extOutput = getStdoutWriter(); }
         } catch (FileNotFoundException e) {
             System.err.println("Apertium (Input/Output files) -- " + 
                     StringTable.FILE_NOT_FOUND);
@@ -182,12 +186,13 @@ public class ApertiumMain {
         
     }
 
-    private static void _dispatchPipeline(Mode mode) {
+    private static void _dispatchPipeline(Mode mode, 
+            CommandLineParams clp) {
         StringReader input = null;
         StringWriter output = new StringWriter();
         
-        Dispatcher.dispatch(_deformatter, _extInput, output, _dispAmb, 
-                _dispMarks);
+        Dispatcher.dispatch(clp.deformatter, clp.extInput, output, clp.dispAmb, 
+                clp.dispMarks);
         if(DEBUG) { System.err.println("*** DEBUG: deformatter run"); }
         int pipelineLength = mode.getPipelineLength();
         try {
@@ -225,8 +230,8 @@ public class ApertiumMain {
                     default:
                         input = new StringReader(output.toString());
                         output = new StringWriter();
-                        Dispatcher.dispatch(currProg, input, output, _dispAmb,
-                                _dispMarks);
+                        Dispatcher.dispatch(currProg, input, output, clp.dispAmb,
+                                clp.dispMarks);
                         break;
                 }
             }
@@ -238,12 +243,13 @@ public class ApertiumMain {
         }
 
         input = new StringReader(output.toString());
-        Dispatcher.dispatch(_reformatter, input, _extOutput, _dispAmb, _dispMarks);
+        Dispatcher.dispatch(clp.reformatter, input, clp.extOutput, clp.dispAmb, 
+                clp.dispMarks);
     }
 
     
-    private static void _listModes() {
-        String[] modeList = listFilesInDir(_dataDir + "modes/", "mode");
+    private static void _listModes(CommandLineParams clp) {
+        String[] modeList = listFilesInDir(clp.dataDir + "modes/", "mode");
         
         if(modeList == null) {
             System.out.println("No translation directions in the specified directory.");
@@ -262,14 +268,16 @@ public class ApertiumMain {
         //Ensure we are using UTF-8 encoding by default
         System.setProperty("file.encoding", "UTF-8");
 
-        _parseCommandLine(args);
+        CommandLineParams clp = new CommandLineParams();
         
-        if(_listModes) { _listModes(); }
+        _parseCommandLine(args, clp);
+        
+        if(clp.listModes) { _listModes(clp); }
         
         Mode mode = null;
         
         try {
-            mode = new Mode(_dataDir + "modes/" + _direction + ".mode");
+            mode = new Mode(clp.dataDir + "modes/" + clp.direction + ".mode");
         } catch (IOException e) {
             System.err.println("Apertium (mode parsing) -- " + 
                     StringTable.IO_EXCEPTION);
@@ -277,10 +285,10 @@ public class ApertiumMain {
             System.exit(1);
         }
         
-        _dispatchPipeline(mode);
+        _dispatchPipeline(mode, clp);
 
         try {
-            _extOutput.flush(); //Just to make sure it gets flushed.
+            clp.extOutput.flush(); //Just to make sure it gets flushed.
         } catch (IOException e) {
             System.err.println("Apertium (flushing output) -- " + 
                     StringTable.IO_EXCEPTION);
