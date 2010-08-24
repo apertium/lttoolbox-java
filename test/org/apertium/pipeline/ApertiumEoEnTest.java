@@ -1,4 +1,4 @@
-package org.apertium;
+package org.apertium.pipeline;
 
 import org.apertium.pipeline.ApertiumMain;
 import static org.apertium.utils.IOUtils.addTrailingSlash;

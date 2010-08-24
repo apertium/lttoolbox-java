@@ -186,10 +186,8 @@ public class ApertiumMain {
         StringReader input = null;
         StringWriter output = new StringWriter();
         
-        Dispatcher.setDispAmp(_dispAmb);
-        Dispatcher.setDispMarks(_dispMarks);
-        
-        Dispatcher.dispatch(_deformatter, _extInput, output);
+        Dispatcher.dispatch(_deformatter, _extInput, output, _dispAmb, 
+                _dispMarks);
         if(DEBUG) { System.err.println("*** DEBUG: deformatter run"); }
         int pipelineLength = mode.getPipelineLength();
         try {
@@ -227,7 +225,8 @@ public class ApertiumMain {
                     default:
                         input = new StringReader(output.toString());
                         output = new StringWriter();
-                        Dispatcher.dispatch(currProg, input, output);
+                        Dispatcher.dispatch(currProg, input, output, _dispAmb,
+                                _dispMarks);
                         break;
                 }
             }
@@ -239,7 +238,7 @@ public class ApertiumMain {
         }
 
         input = new StringReader(output.toString());
-        Dispatcher.dispatch(_reformatter, input, _extOutput);
+        Dispatcher.dispatch(_reformatter, input, _extOutput, _dispAmb, _dispMarks);
     }
 
     

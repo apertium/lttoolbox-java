@@ -42,9 +42,6 @@ import org.apertium.utils.StringTable;
  */
 public class Dispatcher {
     
-    private static boolean _dispAmb = false;
-    private static boolean _dispMarks = true;
-    
     private static final String splitPattern = "[ ]+";
     
     private static void doInterchunk(Program prog, Reader input, Writer output) {
@@ -164,9 +161,10 @@ public class Dispatcher {
         }
     }
     
-    private static void doTagger(Program prog, Reader input, Writer output) {
+    private static void doTagger(Program prog, Reader input, Writer output, 
+            boolean dispAmb) {
         String paramString = prog.getParameters();
-        String replacement = (_dispAmb ? "-m" : "");
+        String replacement = (dispAmb ? "-m" : "");
         paramString = paramString.replaceAll("\\$2", replacement);
         
         String[] args = paramString.split(splitPattern);
@@ -230,9 +228,10 @@ public class Dispatcher {
         }
     }
 
-    private static void doLTProc(Program prog, Reader input, Writer output) {
+    private static void doLTProc(Program prog, Reader input, Writer output,
+            boolean dispMarks) {
         String paramString = prog.getParameters();
-        String replacement = (_dispMarks ? "-g" : "-n");
+        String replacement = (dispMarks ? "-g" : "-n");
         paramString = paramString.replaceAll("\\$1", replacement);
         
         String[] args = paramString.split(splitPattern);
@@ -303,13 +302,14 @@ public class Dispatcher {
     }
     
 
-    public static void dispatch(Program prog, Reader input, Writer output) {
+    public static void dispatch(Program prog, Reader input, Writer output, 
+            boolean dispAmb, boolean dispMarks) {
         switch(prog.getProgram()) {
             case INTERCHUNK:
                 doInterchunk(prog, input, output);
                 break;
             case LT_PROC:
-                doLTProc(prog, input, output);
+                doLTProc(prog, input, output, dispMarks);
                 break;
             case POSTCHUNK:
                 doPostchunk(prog, input, output);
@@ -318,7 +318,7 @@ public class Dispatcher {
                 doPretransfer(prog, input, output);
                 break;
             case TAGGER:
-                doTagger(prog, input, output);
+                doTagger(prog, input, output, dispAmb);
                 break;
             case TRANSFER:
                 doTransfer(prog, input, output);
@@ -337,13 +337,5 @@ public class Dispatcher {
                 throw new IllegalArgumentException("Unrecognized ProgEnum: " + 
                         prog.getProgram());
         }
-    }
-    
-    public static void setDispAmp(boolean dispAmb) {
-        _dispAmb = dispAmb;
-    }
-    
-    public static void setDispMarks(boolean dispMarks) {
-        _dispMarks = dispMarks;
     }
 }
