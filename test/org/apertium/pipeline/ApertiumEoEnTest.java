@@ -1,5 +1,6 @@
 package org.apertium.pipeline;
 
+import java.io.File;
 import org.apertium.pipeline.ApertiumMain;
 import static org.apertium.utils.IOUtils.addTrailingSlash;
 import static org.apertium.utils.IOUtils.readFile;
@@ -43,13 +44,26 @@ public class ApertiumEoEnTest {
         String inputFilename = testDataDir + "en-input-100.txt";
         String outputFilename = tempDir + "full_pipeline-en-eo-100-output.txt";
         String expOutputFilename = testDataDir + "en-eo-output-100.txt";
-        runInputFileTest(inputFilename, outputFilename, expOutputFilename, "en-eo", 
-                "testEnEo100");
+        runInputFileTest(inputFilename, outputFilename, expOutputFilename, "en-eo", "testEnEo100");
     }
+    
+/*
+    @Test
+    public void testEnEo20000() throws IOException {
+        String inputFilename = lingDataDir + "corpa/en.crp.txt";
+        String outputFilename = tempDir + "full_pipeline-en-eo-20000-output.txt";
+        String expOutputFilename = testDataDir + "en-eo-output-2000.txt";
+        runInputFileTest(inputFilename, outputFilename, expOutputFilename, "en-eo", "testEnEo20000");
+    }
+*/
     
     private void runInputFileTest(String inputFilename, String outputFilename,
             String expOutputFilename, String direction, String testName) 
             throws IOException {
+        // skip test if directory or some of the files doesent exist
+        if (!new File(lingDataDir).exists()) return;
+        if (!new File(inputFilename).exists()) return;
+        if (!new File(expOutputFilename).exists()) return;
         String[] args = {"-d", lingDataDir, direction, inputFilename, outputFilename};
         ApertiumMain.main(args);
         String output = readFile(outputFilename);
@@ -57,6 +71,10 @@ public class ApertiumEoEnTest {
         assertEquals("ApertiumTestEoEn -- " + testName + " failed", expOut, output);
     }
 
+    /**
+     * This tests a feature in interchunk: the special <clip part="contents"/>  part.
+     * @throws java.io.IOException
+     */
     @Test
     public void testEnEoSingleSentence() throws IOException {
         String inputFilename = tempDir + "en-input.txt";
@@ -69,12 +87,32 @@ public class ApertiumEoEnTest {
         assertEquals("ApertiumTestEoEn -- testEnEoSingleSentence failed", expOut, output);
     }
     
+    /**
+     * There seems to be a problem with brackets
+<   2496.	La israela ambasadoro al Angolo estas *Avraham Benjamin.[1] En 2005, Prezidanto José Eduardo *dos Santos vizitis Israelon.
+---
+>   2496.	La israela ambasadoro al Angolo estas *Avraham Benjamin[.1] En 2005, Prezidanto José Eduardo *dos Santos vizitis Israelon.
+6111c6111
+     * @throws java.io.IOException
+     */
+    @Test
+    public void testEnEoSingleSentence2() throws IOException {
+        String inputFilename = tempDir + "en-input.txt";
+        String outputFilename = tempDir + "full_pipeline-en-eo-100-output.txt";
+        writeFile(inputFilename, "Avraham Benjamin.[1] In 2005");
+        String[] args = {"-d", lingDataDir, "en-eo", inputFilename, outputFilename};
+        ApertiumMain.main(args);
+        String output = readFile(outputFilename);
+        String expOut = "*Avraham Benjamin.[1] En 2005";
+        assertEquals("ApertiumTestEoEn -- testEnEoSingleSentence failed", expOut, output);
+    }
+
     @Test
     public void testEoEn2Sentences() throws IOException {
         String inputFilename = testDataDir + "eo-input-2.txt";
         String outputFilename = tempDir + "full_pipeline-eo-en-2-output.txt";
         String expOutputFilename = testDataDir + "eo-en-output-2.txt";
-        runInputFileTest(inputFilename, outputFilename, expOutputFilename, "eo-en", 
-                "testEoEn2Sentences");
+        runInputFileTest(inputFilename, outputFilename, expOutputFilename, "eo-en", "testEoEn2Sentences");
     }
+
 }
