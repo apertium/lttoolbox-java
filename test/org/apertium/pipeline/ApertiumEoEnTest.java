@@ -1,10 +1,10 @@
 package org.apertium.pipeline;
 
-import java.io.File;
 import org.apertium.pipeline.ApertiumMain;
 import static org.apertium.utils.IOUtils.addTrailingSlash;
 import static org.apertium.utils.IOUtils.readFile;
 import static org.apertium.utils.IOUtils.writeFile;
+import static org.apertium.utils.IOUtils.openFile;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
@@ -60,10 +60,10 @@ public class ApertiumEoEnTest {
     private void runInputFileTest(String inputFilename, String outputFilename,
             String expOutputFilename, String direction, String testName) 
             throws IOException {
-        // skip test if directory or some of the files doesent exist
-        if (!new File(lingDataDir).exists()) return;
-        if (!new File(inputFilename).exists()) return;
-        if (!new File(expOutputFilename).exists()) return;
+        // skip test if directory or some of the files don't exist
+        if (!openFile(lingDataDir).exists()) return;
+        if (!openFile(inputFilename).exists()) return;
+        if (!openFile(expOutputFilename).exists()) return;
         String[] args = {"-d", lingDataDir, direction, inputFilename, outputFilename};
         ApertiumMain.main(args);
         String output = readFile(outputFilename);
@@ -88,11 +88,12 @@ public class ApertiumEoEnTest {
     }
     
     /**
-     * There seems to be a problem with brackets
+     * There was a problem with brackets
 <   2496.	La israela ambasadoro al Angolo estas *Avraham Benjamin.[1] En 2005, Prezidanto José Eduardo *dos Santos vizitis Israelon.
 ---
 >   2496.	La israela ambasadoro al Angolo estas *Avraham Benjamin[.1] En 2005, Prezidanto José Eduardo *dos Santos vizitis Israelon.
 6111c6111
+     * That issue has now been resolved, leaving test in here for verification purposes
      * @throws java.io.IOException
      */
     @Test

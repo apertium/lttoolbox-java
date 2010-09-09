@@ -189,6 +189,15 @@ public class TextFormatter extends GenericFormatter {
             
             do {
                 if(currentChar == '\\') { //Escaped character
+                    if(foundPeriod) {
+                        /* A period was the previous character, since this one is not a
+                         * '[', which would start a superblank, output the period and reset
+                         * the flag.
+                         */
+                        outWrite.write('.');
+                        foundPeriod = false;
+                    }
+                    
                     /* All backslashes in the incoming text are treated as escaping
                      * the characters that follow them and are removed, regardless of
                      * if the following character is an Apertium stream character or not
