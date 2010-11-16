@@ -18,6 +18,8 @@ package org.apertium.transfer.compile;
  */
 
 import org.apertium.CommandLineInterface;
+
+import static org.apertium.utils.IOUtils.addTrailingSlash;
 import static org.apertium.utils.IOUtils.openFile;
 
 import org.apertium.lttoolbox.*;
@@ -79,9 +81,15 @@ public class ApertiumTransferCompile {
    * instead of a .java extension.
    * @param displayStatusMessages -- Controls whether or not status messages
    * normally printed out to stderr while running standalone are sent.
+   * @return A File object representing the filename of the resultant
+   * class after compilation. Should be targetClass unless that the compiled
+   * file cannot be renamed to targetClass. If the rename/move fails, then
+   * it will be attempted to the same filename as targetClass, but in the system
+   * temp directory. If that fails as well, null is returned.
    * @throws IOException
+   * 
    */
-  public static void doMain(File txFile, File targetClass, File javaSource,
+  public static File doMain(File txFile, File targetClass, File javaSource,
           File outputClass, boolean displayStatusMessages) throws IOException {
 
       /* 
@@ -134,8 +142,29 @@ public class ApertiumTransferCompile {
       }
       
       if (!outputClass.equals(targetClass)) {
-        //System.err.println("Renaming " + classDest+" to "+dest);
-        outputClass.renameTo(targetClass);
+          return _renameClass(outputClass, targetClass);
+      } else {
+          return outputClass;
       }
-    }
+  }
+  
+  private static File _renameClass(File outputClass, File targetClass) {
+      //System.err.println("Renaming " + classDest+" to "+dest);
+      boolean renSucc = outputClass.renameTo(targetClass);
+      if(!renSucc) { //rename was not successful
+          String tempDir = System.getProperty("java.io.tmpdir");
+          tempDir = addTrailingSlash(tempDir);
+          //Try to put the renamed output file in the system temp directory
+          File newTarget = openFile(tempDir + targetClass.getName());
+          renSucc = outputClass.renameTo(newTarget);
+          if(!renSucc) {
+              return null; 
+              //Returning null means rename failed for temp directory too
+          } else {
+              return newTarget;
+          }
+      }
+      return outputClass;
+  }
+
 }

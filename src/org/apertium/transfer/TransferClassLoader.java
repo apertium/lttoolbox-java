@@ -136,13 +136,22 @@ public class TransferClassLoader extends ClassLoader {
         fw.close();
 
         // Compile the source file
-        ApertiumTransferCompile.doMain(txFile, classFile, javaSource,
+        File actualClassFile = ApertiumTransferCompile.doMain(txFile, classFile, javaSource,
                 outputClass, false);
+        if(actualClassFile == null) {
+            /* We weren't able to get the compiled output file to rename
+             * to the desired classFile name, or to the same filename in
+             * the system temp directory. Throw an exception.
+             */
+            throw new ClassNotFoundException(
+                    "Unable to write compiled transfer class to specified " +
+                    "or system temp directories.");
+        }
 
         //Remove the java source file, as we don't need it anymore
         javaSource.delete();
         
         // Load and return the class file.
-        return tcl.loadClassFile(classFile);
+        return tcl.loadClassFile(actualClassFile);
     }
 }
