@@ -229,9 +229,9 @@ public abstract class GenericFormatter {
                 break;
             default:
                 //We should never get here, if we do, something is broken.
-                System.err.println(_commandLabel + ": invalid mode");
-                System.err.println("Cannot continue.");
-                System.exit(1);
+                String errorString = _commandLabel + ": invalid mode";
+                errorString += System.getProperty("line.separator") + "Cannot continue.";
+                throw new IllegalArgumentException(errorString);
         }
     }
     

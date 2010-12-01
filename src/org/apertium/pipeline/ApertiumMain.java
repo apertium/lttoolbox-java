@@ -25,6 +25,7 @@ import static org.apertium.utils.IOUtils.openInFileReader;
 import static org.apertium.utils.IOUtils.openOutFileWriter;
 import static org.apertium.utils.IOUtils.listFilesInDir;
 import static org.apertium.utils.IOUtils.addTrailingSlash;
+import static org.apertium.utils.MiscUtils.getLineSeparator;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -73,7 +74,7 @@ public class ApertiumMain {
         Writer extOutput = null;
     }
     
-    private static void _displayHelpAndExit() {
+    private static void _displayHelp() {
         PrintStream p = System.err;
         /* XXX Made datadir non-optional for now to solve the issue of not really
          * having a way to configure a "default dir" for the Java runtime, at the moment.
@@ -94,8 +95,6 @@ public class ApertiumMain {
         p.println("                data");
         p.println(" in             input file (stdin by default)");
         p.println(" out            output file (stdout by default)");
-        
-        System.exit(0);
     }
     
     private static void _setFormatter(String formatterName, 
@@ -107,8 +106,9 @@ public class ApertiumMain {
         clp.reformatter = new Program(reFormatProgName);
     }
 
-    private static void _parseCommandLine(String[] args, 
-            CommandLineParams clp) {
+    private static boolean _parseCommandLine(String[] args, 
+            CommandLineParams clp) throws FileNotFoundException,
+            UnsupportedEncodingException {
         Getopt getopt = new Getopt("Apertium", args, "d:f:ual");
 
         while (true) {
@@ -140,12 +140,12 @@ public class ApertiumMain {
                      */
                 case 'h':
                 default:
-                    _displayHelpAndExit();
-                    break;
+                    _displayHelp();
+                    return false;
             }
         }
         
-        if(clp.dataDir == null) { _displayHelpAndExit(); }
+        if(clp.dataDir == null) { _displayHelp(); return false; }
         
         if(clp.deformatter == null || clp.reformatter == null) {
             //Formatters weren't set on command-line, set default of txt
@@ -173,21 +173,21 @@ public class ApertiumMain {
             if(clp.extInput == null) { clp.extInput = getStdinReader(); }
             if(clp.extOutput == null) { clp.extOutput = getStdoutWriter(); }
         } catch (FileNotFoundException e) {
-            System.err.println("Apertium (Input/Output files) -- " + 
-                    StringTable.FILE_NOT_FOUND);
-            e.printStackTrace();
-            System.exit(1);
+            String errorString = "Apertium (Input/Output files) -- " + 
+                    StringTable.FILE_NOT_FOUND;
+            errorString += getLineSeparator() + e.getLocalizedMessage();
+            throw new FileNotFoundException(errorString);
         } catch (UnsupportedEncodingException e) {
-            System.err.println("Apertium (Input/Output files) -- " + 
-                    StringTable.UNSUPPORTED_ENCODING);
-            e.printStackTrace();
-            System.exit(1);
+            String errorString = "Apertium (Input/Output files) -- " + 
+                    StringTable.UNSUPPORTED_ENCODING;
+            errorString += getLineSeparator() + e.getLocalizedMessage();
+            throw new UnsupportedEncodingException(errorString);
         }
-        
+        return true;
     }
 
     private static void _dispatchPipeline(Mode mode, 
-            CommandLineParams clp) {
+            CommandLineParams clp) throws Exception {
         StringReader input = null;
         StringWriter output = new StringWriter();
         
@@ -236,10 +236,10 @@ public class ApertiumMain {
                 }
             }
         } catch (UnsupportedEncodingException e) {
-            System.err.println("Apertium (pipeline) -- " + 
-                    StringTable.UNSUPPORTED_ENCODING);
-            e.printStackTrace();
-            System.exit(1);
+            String errorString = "Apertium (pipeline) -- " + 
+                    StringTable.UNSUPPORTED_ENCODING;
+            errorString += getLineSeparator() + e.getLocalizedMessage();
+            throw new UnsupportedEncodingException(errorString);
         }
 
         input = new StringReader(output.toString());
@@ -253,7 +253,6 @@ public class ApertiumMain {
         
         if(modeList == null) {
             System.out.println("No translation directions in the specified directory.");
-            System.exit(0);
         } else {
             for(String mode : modeList) {
                 System.out.println(mode.replaceAll("\\.mode", ""));
@@ -263,8 +262,10 @@ public class ApertiumMain {
     
     /**
      * @param args
+     * @throws Exception 
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) 
+            throws Exception {
         //Ensure we are using UTF-8 encoding by default
         System.setProperty("file.encoding", "UTF-8");
 
@@ -279,10 +280,10 @@ public class ApertiumMain {
         try {
             mode = new Mode(clp.dataDir + "modes/" + clp.direction + ".mode");
         } catch (IOException e) {
-            System.err.println("Apertium (mode parsing) -- " + 
-                    StringTable.IO_EXCEPTION);
-            e.printStackTrace();
-            System.exit(1);
+            String errorString = "Apertium (mode parsing) -- " + 
+                    StringTable.IO_EXCEPTION;
+            errorString += getLineSeparator() + e.getLocalizedMessage();
+            throw new IOException(errorString);
         }
         
         _dispatchPipeline(mode, clp);
@@ -290,10 +291,10 @@ public class ApertiumMain {
         try {
             clp.extOutput.flush(); //Just to make sure it gets flushed.
         } catch (IOException e) {
-            System.err.println("Apertium (flushing output) -- " + 
-                    StringTable.IO_EXCEPTION);
-            e.printStackTrace();
-            System.exit(1);
+            String errorString = "Apertium (flushing output) -- " + 
+                    StringTable.IO_EXCEPTION;
+            errorString += getLineSeparator() + e.getLocalizedMessage();
+            throw new IOException(errorString);
         }
     }
 
