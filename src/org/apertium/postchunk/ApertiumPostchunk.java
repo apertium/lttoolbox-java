@@ -19,6 +19,8 @@
 
 package org.apertium.postchunk;
 
+import static org.apertium.utils.MiscUtils.getLineSeparator;
+
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 
@@ -33,8 +35,9 @@ public class ApertiumPostchunk extends ApertiumInterchunk {
 
     /**
      * @param args
+     * @throws Exception 
      */
-    public static void main(String[] args) {
+    public static int main(String[] args) throws Exception {
         System.setProperty("file.encoding", "UTF-8");
         Postchunk p = new Postchunk();
 
@@ -43,23 +46,23 @@ public class ApertiumPostchunk extends ApertiumInterchunk {
             /* Parse the command line. The passed-in CommandLineParams object
              * will be modified by this method.
              */
-            parseCommandLine(args, par, "Postchunk", false);
+            if(!parseCommandLine(args, par, "Postchunk", false)) {
+                return 1;
+            }
         } catch (FileNotFoundException e) {
-            System.err.println("ApertiumPostchunk (I/O files) -- " +
-                    StringTable.FILE_NOT_FOUND);
-            System.exit(1);
+            String errorString = "ApertiumPostchunk (I/O files) -- " +
+                StringTable.FILE_NOT_FOUND;
+            errorString += getLineSeparator() + e.getLocalizedMessage();
+            throw new Exception(errorString, e);
         } catch (UnsupportedEncodingException e) {
-            System.err.println("ApertiumPostchunk (I/O files) -- " +
-                    StringTable.UNSUPPORTED_ENCODING);
-            System.exit(1);
+            String errorString = "ApertiumPostchunk (I/O files) -- " +
+                StringTable.UNSUPPORTED_ENCODING;
+            errorString += getLineSeparator() + e.getLocalizedMessage();
+            throw new Exception(errorString, e);
         }
         
-        try {
-            doMain(par, p);
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        doMain(par, p);
+        return 0;
     }
 
 }

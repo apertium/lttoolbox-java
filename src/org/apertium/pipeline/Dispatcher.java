@@ -55,7 +55,11 @@ public class Dispatcher {
          */
         String[] args = prog.getParameters().split(splitPattern);
         try {
-            ApertiumInterchunk.parseCommandLine(args, par, "Interchunk", true);
+            if (!ApertiumInterchunk.
+                    parseCommandLine(args, par, "Interchunk", true)) {
+                throw new IllegalArgumentException("Failed to parse " +
+                    "Interchunk arguments.");
+            }
         } catch (FileNotFoundException e) {
             /* This is here because the compiler requires it, but with pipelineMode
              * set to true, it won't ever be thrown.
@@ -66,7 +70,7 @@ public class Dispatcher {
             String errorString = "Apertium (Dispatch, Interchunk) -- " + 
                 StringTable.UNEXPECTED_FILE_NOT_FOUND;
             errorString += getLineSeparator() + e.getLocalizedMessage();
-            throw new FileNotFoundException(errorString);
+            throw new Exception(errorString, e);
         } catch (UnsupportedEncodingException e) {
             /* This is here because the compiler requires it, but with pipelineMode
              * set to true, it won't ever be thrown.
@@ -77,7 +81,7 @@ public class Dispatcher {
             String errorString = "Apertium (Dispatch, Interchunk) -- " + 
                 StringTable.UNEXPECTED_UNSUPPORTED_ENCODING;
             errorString += getLineSeparator() + e.getLocalizedMessage();
-            throw new UnsupportedEncodingException(errorString);
+            throw new Exception(errorString, e);
         }
         /* Assume internal i/o, don't allow for specifying external temp
          * files for i/o.
@@ -91,7 +95,7 @@ public class Dispatcher {
             String errorString = "Interchunk -- " +
                 StringTable.GENERIC_EXCEPTION;
             errorString += getLineSeparator() + e.getLocalizedMessage();
-            throw new Exception(errorString);
+            throw new Exception(errorString, e);
         }
     }
 
@@ -109,7 +113,11 @@ public class Dispatcher {
          */
         String[] args = prog.getParameters().split(splitPattern);
         try {
-            ApertiumPostchunk.parseCommandLine(args, par, "Interchunk", true);
+            if(!ApertiumPostchunk.
+                    parseCommandLine(args, par, "Interchunk", true)) {
+                throw new IllegalArgumentException("Failed to parse " +
+                		"Postchunk arguments.");
+            }
         } catch (FileNotFoundException e) {
             /* This is here because the compiler requires it, but with pipelineMode
              * set to true, it won't ever be thrown.
@@ -120,7 +128,7 @@ public class Dispatcher {
             String errorString = "Apertium (Dispatch, Postchunk) -- " + 
                 StringTable.UNEXPECTED_FILE_NOT_FOUND;
             errorString += getLineSeparator() + e.getLocalizedMessage();
-            throw new FileNotFoundException(errorString);
+            throw new Exception(errorString, e);
         } catch (UnsupportedEncodingException e) {
             /* This is here because the compiler requires it, but with pipelineMode
              * set to true, it won't ever be thrown.
@@ -131,7 +139,7 @@ public class Dispatcher {
             String errorString = "Apertium (Dispatch, Postchunk) -- " + 
                 StringTable.UNEXPECTED_UNSUPPORTED_ENCODING;
             errorString += getLineSeparator() + e.getLocalizedMessage();
-            throw new UnsupportedEncodingException(errorString);
+            throw new Exception(errorString, e);
         }
         /* Assume internal I/O, don't allow for specifying external temp
          * files for I/O.
@@ -147,7 +155,7 @@ public class Dispatcher {
         } catch (Exception e) {
             String errorString = "PostChunk -- " + StringTable.GENERIC_EXCEPTION;
             errorString += getLineSeparator() + e.getLocalizedMessage();
-            throw new Exception(errorString);
+            throw new Exception(errorString, e);
         }
     }
 
@@ -168,7 +176,7 @@ public class Dispatcher {
         } catch (IOException e) {
             String errorString = "Pretransfer -- " + StringTable.IO_EXCEPTION;
             errorString += getLineSeparator() + e.getLocalizedMessage();
-            throw new IOException(errorString);
+            throw new IOException(errorString, e);
         }
     }
     
@@ -183,8 +191,7 @@ public class Dispatcher {
     }
     
     private static void doTextFormat(Program prog, Reader input, Writer output, 
-            boolean deformatMode) throws UnsupportedEncodingException, 
-            FileNotFoundException {
+            boolean deformatMode) throws Exception {
         String paramString = prog.getParameters();
 
         if(deformatMode) {
@@ -209,12 +216,12 @@ public class Dispatcher {
             String errorString = "TextFormatter -- " + 
                 StringTable.UNSUPPORTED_ENCODING;
             errorString += getLineSeparator() + e.getLocalizedMessage();
-            throw new UnsupportedEncodingException(errorString);
+            throw new Exception(errorString, e);
         } catch (FileNotFoundException e) {
             String errorString = "TextFormatter -- " + 
                     StringTable.FILE_NOT_FOUND;
             errorString += getLineSeparator() + e.getLocalizedMessage();
-            throw new FileNotFoundException(errorString);
+            throw new Exception(errorString, e);
         }
     }
     
@@ -232,12 +239,12 @@ public class Dispatcher {
             String errorString = "Transfer -- " + 
                     StringTable.FILE_NOT_FOUND;
             errorString += getLineSeparator() + e.getLocalizedMessage();
-            throw new FileNotFoundException(errorString);
+            throw new Exception(errorString, e);
         } catch (Exception e) {
             String errorString = "Transfer -- " + 
                     StringTable.GENERIC_EXCEPTION;
             errorString += getLineSeparator() + e.getLocalizedMessage();
-            throw new Exception(errorString);
+            throw new Exception(errorString, e);
         }
     }
 
@@ -253,7 +260,7 @@ public class Dispatcher {
         } catch (IOException e) {
             String errorString = "LTProc -- " + StringTable.IO_EXCEPTION;
             errorString += getLineSeparator() + e.getLocalizedMessage();
-            throw new IOException(errorString);
+            throw new IOException(errorString, e);
         }
     }
 
@@ -290,7 +297,7 @@ public class Dispatcher {
             String errorString = prog.getCommandName() + " (Unknown) -- " +
                     StringTable.IO_EXCEPTION;
             errorString += getLineSeparator() + e.getLocalizedMessage();
-            throw new IOException(errorString);
+            throw new IOException(errorString, e);
         }
     }
 

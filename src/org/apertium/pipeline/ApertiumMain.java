@@ -107,8 +107,7 @@ public class ApertiumMain {
     }
 
     private static boolean _parseCommandLine(String[] args, 
-            CommandLineParams clp) throws FileNotFoundException,
-            UnsupportedEncodingException {
+            CommandLineParams clp) throws Exception {
         Getopt getopt = new Getopt("Apertium", args, "d:f:ual");
 
         while (true) {
@@ -176,12 +175,12 @@ public class ApertiumMain {
             String errorString = "Apertium (Input/Output files) -- " + 
                     StringTable.FILE_NOT_FOUND;
             errorString += getLineSeparator() + e.getLocalizedMessage();
-            throw new FileNotFoundException(errorString);
+            throw new Exception(errorString, e);
         } catch (UnsupportedEncodingException e) {
             String errorString = "Apertium (Input/Output files) -- " + 
                     StringTable.UNSUPPORTED_ENCODING;
             errorString += getLineSeparator() + e.getLocalizedMessage();
-            throw new UnsupportedEncodingException(errorString);
+            throw new Exception(errorString, e);
         }
         return true;
     }
@@ -230,8 +229,8 @@ public class ApertiumMain {
                     default:
                         input = new StringReader(output.toString());
                         output = new StringWriter();
-                        Dispatcher.dispatch(currProg, input, output, clp.dispAmb,
-                                clp.dispMarks);
+                        Dispatcher.dispatch(currProg, input, output, 
+                                clp.dispAmb, clp.dispMarks);
                         break;
                 }
             }
@@ -239,7 +238,7 @@ public class ApertiumMain {
             String errorString = "Apertium (pipeline) -- " + 
                     StringTable.UNSUPPORTED_ENCODING;
             errorString += getLineSeparator() + e.getLocalizedMessage();
-            throw new UnsupportedEncodingException(errorString);
+            throw new Exception(errorString, e);
         }
 
         input = new StringReader(output.toString());
@@ -264,14 +263,16 @@ public class ApertiumMain {
      * @param args
      * @throws Exception 
      */
-    public static void main(String[] args) 
+    public static int main(String[] args) 
             throws Exception {
         //Ensure we are using UTF-8 encoding by default
         System.setProperty("file.encoding", "UTF-8");
 
         CommandLineParams clp = new CommandLineParams();
         
-        _parseCommandLine(args, clp);
+        if(!_parseCommandLine(args, clp)) {
+            return 1;
+        }
         
         if(clp.listModes) { _listModes(clp); }
         
@@ -283,7 +284,7 @@ public class ApertiumMain {
             String errorString = "Apertium (mode parsing) -- " + 
                     StringTable.IO_EXCEPTION;
             errorString += getLineSeparator() + e.getLocalizedMessage();
-            throw new IOException(errorString);
+            throw new IOException(errorString, e);
         }
         
         _dispatchPipeline(mode, clp);
@@ -294,8 +295,10 @@ public class ApertiumMain {
             String errorString = "Apertium (flushing output) -- " + 
                     StringTable.IO_EXCEPTION;
             errorString += getLineSeparator() + e.getLocalizedMessage();
-            throw new IOException(errorString);
+            throw new IOException(errorString, e);
         }
+        
+        return 0;
     }
 
 }

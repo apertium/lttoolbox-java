@@ -22,6 +22,7 @@ package org.apertium.interchunk;
 import static org.apertium.utils.IOUtils.openInFileReader;
 import static org.apertium.utils.IOUtils.openOutFileWriter;
 import static org.apertium.utils.IOUtils.openFile;
+import static org.apertium.utils.MiscUtils.getLineSeparator;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -58,19 +59,18 @@ public class ApertiumInterchunk {
         stderr.println("  output     output file, standard output by default");
         stderr.println("OPTIONS");
         stderr.println("  -z         flush buffer on '\0'");
-        
-        System.exit(1); //EXIT_FAILURE C++ macro = 1
     }
     
     /* We don't use or need the testfile() function that's here in the C++ version.
      * It's just used in main() to check for the existence of the t2x and preproc files.
      */
     
-    public static void parseCommandLine(String[] args, CommandLineParams par,
+    public static boolean parseCommandLine(String[] args, CommandLineParams par,
             String commandName, boolean pipelineMode) throws FileNotFoundException, 
             UnsupportedEncodingException {
         if (args.length == 0) {
-            message(commandName);
+            if(!pipelineMode) { message(commandName); }
+            return false;
         }
 
         Getopt getopt = new Getopt(commandName, args, "zh");
@@ -87,8 +87,8 @@ public class ApertiumInterchunk {
 
                 case 'h':
                 default:
-                    message(commandName);
-                    break;
+                    if(!pipelineMode) { message(commandName); }
+                    return false;
             }
         }
 
@@ -116,10 +116,10 @@ public class ApertiumInterchunk {
                 par.t2xFile = args[optIndex];
                 break;
             default:
-                message(commandName);
-                break;
+                if(!pipelineMode) { message(commandName); }
+                return false;
         }
-
+        return true;
     }
 
     /**
@@ -129,7 +129,8 @@ public class ApertiumInterchunk {
      * @throws Exception 
      */
     @SuppressWarnings("unchecked")
-    public static void doMain(CommandLineParams par, Interchunk i) throws Exception {
+    public static void doMain(CommandLineParams par, Interchunk i) 
+            throws Exception {
 
         i.setNullFlush(par.nullFlush);
 
@@ -144,8 +145,9 @@ public class ApertiumInterchunk {
 
     /**
      * @param args
+     * @throws Exception 
      */
-    public static void main(String[] args) {
+    public static int main(String[] args) throws Exception {
         System.setProperty("file.encoding", "UTF-8");
         Interchunk i = new Interchunk();
         
@@ -154,23 +156,23 @@ public class ApertiumInterchunk {
             /* Parse the command line. The passed-in CommandLineParams object
              * will be modified by this method.
              */
-            parseCommandLine(args, par, "Interchunk", false);
+            if(!parseCommandLine(args, par, "Interchunk", false)) {
+                return 1;
+            }
         } catch (FileNotFoundException e) {
-            System.err.println("ApertiumInterchunk (I/O files) -- " +
-                    StringTable.FILE_NOT_FOUND);
-            System.exit(1);
+            String errorString = "ApertiumInterchunk (I/O files) -- " +
+                    StringTable.FILE_NOT_FOUND;
+            errorString += getLineSeparator() + e.getLocalizedMessage();
+            throw new Exception(errorString, e);
         } catch (UnsupportedEncodingException e) {
-            System.err.println("ApertiumInterchunk (I/O files) -- " +
-                    StringTable.UNSUPPORTED_ENCODING);
-            System.exit(1);
+            String errorString = "ApertiumInterchunk (I/O files) -- " +
+                    StringTable.UNSUPPORTED_ENCODING;
+            errorString += getLineSeparator() + e.getLocalizedMessage();
+            throw new Exception(errorString, e);
         }
         
-        try {
-            doMain(par, i);
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        doMain(par, i);
+        return 0;
     }
 
 }

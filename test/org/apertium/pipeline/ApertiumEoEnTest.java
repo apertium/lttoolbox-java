@@ -40,7 +40,7 @@ public class ApertiumEoEnTest {
     String tempDir = addTrailingSlash(System.getProperty("java.io.tmpdir"));
 
     @Test
-    public void testEnEo100() throws IOException {
+    public void testEnEo100() throws Exception {
         String inputFilename = testDataDir + "en-input-100.txt";
         String outputFilename = tempDir + "full_pipeline-en-eo-100-output.txt";
         String expOutputFilename = testDataDir + "en-eo-output-100.txt";
@@ -59,7 +59,7 @@ public class ApertiumEoEnTest {
     
     private void runInputFileTest(String inputFilename, String outputFilename,
             String expOutputFilename, String direction, String testName) 
-            throws IOException {
+            throws Exception {
         // skip test if directory or some of the files don't exist
         if (!openFile(lingDataDir).exists()) return;
         if (!openFile(inputFilename).exists()) return;
@@ -73,10 +73,10 @@ public class ApertiumEoEnTest {
 
     /**
      * This tests a feature in interchunk: the special <clip part="contents"/>  part.
-     * @throws java.io.IOException
+     * @throws Exception 
      */
     @Test
-    public void testEnEoSingleSentence() throws IOException {
+    public void testEnEoSingleSentence() throws Exception {
         String inputFilename = tempDir + "en-input.txt";
         String outputFilename = tempDir + "full_pipeline-en-eo-100-output.txt";
         writeFile(inputFilename, "two different  categories");
@@ -94,10 +94,10 @@ public class ApertiumEoEnTest {
 >   2496.	La israela ambasadoro al Angolo estas *Avraham Benjamin[.1] En 2005, Prezidanto José Eduardo *dos Santos vizitis Israelon.
 6111c6111
      * That issue has now been resolved, leaving test in here for verification purposes
-     * @throws java.io.IOException
+     * @throws Exception 
      */
     @Test
-    public void testEnEoSingleSentence2() throws IOException {
+    public void testEnEoSingleSentence2() throws Exception {
         String inputFilename = tempDir + "en-input.txt";
         String outputFilename = tempDir + "full_pipeline-en-eo-100-output.txt";
         writeFile(inputFilename, "Avraham Benjamin.[1] In 2005");
@@ -109,7 +109,7 @@ public class ApertiumEoEnTest {
     }
 
     @Test
-    public void testEoEn2Sentences() throws IOException {
+    public void testEoEn2Sentences() throws Exception {
         String inputFilename = testDataDir + "eo-input-2.txt";
         String outputFilename = tempDir + "full_pipeline-eo-en-2-output.txt";
         String expOutputFilename = testDataDir + "eo-en-output-2.txt";
