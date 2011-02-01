@@ -163,8 +163,13 @@ public class ApertiumTransferCompile {
           } else {
               return newTarget;
           }
+      } else { //Added this else clause to make the code more readable.
+          /* calling File.renameTo() doesn't change the filename for the outputClass
+           * File object, so if we are successful, we need to return the targetClass
+           * instead.
+           */
+          return targetClass;
       }
-      return outputClass;
   }
 
 }
