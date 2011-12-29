@@ -44,7 +44,7 @@ class MyGetOpt extends Getopt {
 }
 
 /**
- * 
+ *
  * @author Raah
  */
 public class ApertiumTransfer {
@@ -52,6 +52,7 @@ public class ApertiumTransfer {
     static void endProgram(String name) {
         System.out.print(name + CommandLineInterface.PACKAGE_VERSION +": \n" +
 "USAGE: "+name+" trules-class preproc biltrans [input [output]]\n" +
+"       "+name+" -b trules preproc [input [output]]\n" +
 "       "+name+" -n trules-class preproc [input [output]]\n" +
 //"       "+name+" -x extended trules preproc biltrans [input [output]]\n" +
 "       "+name+" -c trules-class  preproc biltrans [input [output]]\n" +
@@ -61,6 +62,7 @@ public class ApertiumTransfer {
 "  biltrans      bilingual letter transducer file\n" +
 "  input         input file, standard input by default\n" +
 "  output        output file, standard output by default\n" +
+"  -b            input from lexical transfer (single level transfer only)\n" +
 "  -n            don't use bilingual dictionary\n" +
 //"  -x bindix  extended mode with user dictionary\n" +
 "  -c         case-sensitiveness while accessing bilingual dictionary\n" +
@@ -73,23 +75,23 @@ public class ApertiumTransfer {
 
     public static void main(String[] argv) throws Exception {
         System.setProperty("file.encoding", "UTF-8");
-        
+
         doMain(argv, null, null);
     }
-    
+
     @SuppressWarnings("unchecked")
-    public static void doMain(String[] argv, Reader input, Writer output) 
-            throws IOException, InstantiationException, IllegalAccessException, 
+    public static void doMain(String[] argv, Reader input, Writer output)
+            throws IOException, InstantiationException, IllegalAccessException,
             ClassNotFoundException {
 
         boolean useBD = true;
-        
+
         if (argv.length == 0) {
             endProgram("apertium-transfer-j");
         }
 
         Transfer t = new Transfer();
-        MyGetOpt getopt = new MyGetOpt(argv, "cvnzhD");
+        MyGetOpt getopt = new MyGetOpt(argv, "cvbnzhD");
 
         int optind = -1;
         while (true) {
@@ -113,6 +115,11 @@ public class ApertiumTransfer {
 
                     case 'z':
                         t.setNullFlush(true);
+                        break;
+
+                    case 'b':
+                        t.setPreBilingual(true);
+                        useBD = false;
                         break;
 
                     case 'n':
@@ -141,7 +148,7 @@ public class ApertiumTransfer {
          * command-line switches.
          */
         int minArgs =(useBD ? optind + 3 : optind + 2);
-        
+
         if (argv.length > minArgs) {
             /* Split out into explicit variables for readability and because
              * tRulesClass originally was going to be tweaked here, but that
@@ -149,10 +156,10 @@ public class ApertiumTransfer {
              * in Interchunk and Postchunk as well.
              */
 
-            /* Now, heres a dilemma: We might have been invoked with an XML file 
+            /* Now, heres a dilemma: We might have been invoked with an XML file
              * (t1x, t2x, t3x) instead of a bytecode .class file!
-             * This is because apertium-j is interpreting the .mode files in a fully 
-             * ignorant way with no check of argument suffices etc and letting the 
+             * This is because apertium-j is interpreting the .mode files in a fully
+             * ignorant way with no check of argument suffices etc and letting the
              * stages themselves decide what to do. (This is a good thing!)
              * C++ way is: apertium-transfer    apertium-eo-en.eo-en.t1x  eo-en.t1x.bin  eo-en.autobil.bin
              * expected is:  apertium-transfer-j  eo-en.t1x.class                  eo-en.t1x.bin  eo-en.autobil.bin
@@ -166,14 +173,14 @@ public class ApertiumTransfer {
             File txOrClassFile = openFile(tRulesOrClassString);
             File binFile = openFile(preProc);
             Class tRulesClass = TransferClassLoader.loadTxClass(txOrClassFile, binFile);
-            
+
             t.read(tRulesClass, preProc, bilTrans);
             if (Transfer.DEBUG)
                 t.transferObject.debug = true;
         } else {
             endProgram();
         }
-        
+
         if(input != null || output != null) {
             /* If either is supplied, ignore command-line input/output files,
              * as we are in inter-jvm pipeline mode, and if the modes file
@@ -223,7 +230,7 @@ public class ApertiumTransfer {
             }
             System.exit(1);
         }
-        
+
     }
 
   private static void endProgram() {

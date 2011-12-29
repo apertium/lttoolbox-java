@@ -114,7 +114,7 @@ public class Transfer {
   //private LinkedHashMap<String, ApertiumRE> attr_items = new LinkedHashMap<String, ApertiumRE>(); //   map<string, ApertiumRE, Ltstr> attr_items;
   //private LinkedHashMap<String, String> variables = new LinkedHashMap<String, String>(); // map<string, string, Ltstr> variables;
   //private LinkedHashMap<String, Integer> macros= new LinkedHashMap<String, Integer>(); // map<string, int, Ltstr> macros;
-  
+
 
   /**
    *
@@ -137,6 +137,8 @@ So the array of rule_map Method is taken by introspection, taking all methods be
 
   //map<xmlNode *, TransferInstr> evalStringCache;
   private boolean useBilingual=true;
+
+  private boolean preBilingual=false;
   /**
    * if true, flush the output when the null character is found
    */
@@ -190,13 +192,13 @@ So the array of rule_map Method is taken by introspection, taking all methods be
    *  so, preprocessed by, apertium-preprocess-transfer-bytecode-j  (.class)
    * @param datafile same file, preprocessed by, apertium-preprocess-transfer  (.bin)
    * @param bilFstFile bilingual FST file - might be null
-   * @throws ClassNotFoundException 
-   * @throws IllegalAccessException 
-   * @throws InstantiationException 
-   * @throws IOException 
+   * @throws ClassNotFoundException
+   * @throws IllegalAccessException
+   * @throws InstantiationException
+   * @throws IOException
    */
   @SuppressWarnings("unchecked")
-  public void read(Class transferClass, String datafile, String bilFstFile) 
+  public void read(Class transferClass, String datafile, String bilFstFile)
           throws IOException, InstantiationException, IllegalAccessException {
 
     InputStream is = openInFileStream(datafile);
@@ -327,7 +329,7 @@ So the array of rule_map Method is taken by introspection, taking all methods be
           if (tmpword.size()!=0) {
             // no rule match. then default is to just output the stuff word by word
             Pair<String, Integer> tr;
-            if (useBilingual) {
+            if (useBilingual && preBilingual==false) {
               if (isExtended&&(tmpword.get(0)).charAt(0)=='*') {
                 tr=extended.biltransWithQueue((tmpword.get(0)).substring(1), false);
                 if (tr.first.charAt(0)=='@') {
@@ -340,7 +342,17 @@ So the array of rule_map Method is taken by introspection, taking all methods be
                 tr=fstp.biltransWithQueue(tmpword.get(0), false);
                 if (DO_TIMING) timing.log("transfer/fstp.biltransWithQueue ");
               }
-            } else {
+            } else if (preBilingual) {
+							/* 	input = ^esperanto/english1/english2/english3$
+									<spectei> we can only have one translation in transfer
+									<spectei> so we want ^esperanto/english1 BREAK
+							*/
+							String[] splits = tmpword.get(0).split("/");
+							String sl = splits[0];
+							String tl = splits.length>1 ? splits[1] : "";
+							tmpword.set(0, sl);
+              tr=new Pair<String, Integer>(tl, 0);
+						} else {
               tr=new Pair<String, Integer>(tmpword.get(0), 0);
             }
 
@@ -351,7 +363,7 @@ So the array of rule_map Method is taken by introspection, taking all methods be
                 fputwc_unlocked('^', output);
                 fputws_unlocked(tr.first, output);
                 fputwc_unlocked('$', output);
-              } 
+              }
               else
               {
                 if (tr.first.charAt(0)=='*')
@@ -371,7 +383,7 @@ So the array of rule_map Method is taken by introspection, taking all methods be
             input_buffer.next();
             lastPos=input_buffer.getPos();
             ms.init(me.getInitial());
-          } 
+          }
           else if (tmpblank.size()!=0)
           {
             fputws_unlocked(tmpblank.get(0), output);
@@ -456,13 +468,24 @@ So the array of rule_map Method is taken by introspection, taking all methods be
       if (i>0) args[argn++] = blanks.get(i-1);
 
       Pair<String, Integer> tr;
-      if (useBilingual)
+      if (useBilingual && preBilingual==false)
       {
         if (DO_TIMING) timing.log("applyRule 1");
         tr=fstp.biltransWithQueue(words.get(i), false);
         if (DO_TIMING) timing.log("applyRule/fstp.biltransWithQueue ");
-      } 
-      else
+      }
+			else if (preBilingual) {
+				/* 	input = ^esperanto/english1/english2/english3$
+						<spectei> we can only have one translation in transfer
+						<spectei> so we want ^esperanto/english1 BREAK
+				*/
+				String[] splits = words.get(i).split("/");
+				String sl = splits[0];
+				String tl = splits.length>1 ? splits[1] : "";
+				words.set(i, sl);
+				tr=new Pair<String, Integer>(tl, 0);
+			}
+			else
       {
         // If no bilingual dictionary is used (i.e. for apertium-transfer -n, for apertium-interchunk and for apertium-postchunk), then the sl and tl values will be the same.
         tr=new Pair<String, Integer>(words.get(i), 0);
@@ -485,7 +508,7 @@ So the array of rule_map Method is taken by introspection, taking all methods be
       throw e;
     }
     if (DEBUG) output.flush();
-    
+
 
     if (DO_TIMING) timing.log("applyRule 1");
   }
@@ -498,6 +521,10 @@ So the array of rule_map Method is taken by introspection, taking all methods be
         case '\\':
           i++;
           ms.step(Character.toLowerCase(word_str.charAt(i)), any_char);
+          break;
+
+        case '/':
+          i = limit;
           break;
 
         case '<':
@@ -532,6 +559,10 @@ So the array of rule_map Method is taken by introspection, taking all methods be
   public void setUseBilingual(boolean useBilingual) {
     this.useBilingual=useBilingual;
   }
+
+	public void setPreBilingual(boolean preBilingual) {
+		this.preBilingual = preBilingual;
+	}
 
   //TODO: Cleanup -- unnecessary method
   private void fputwc_unlocked(char c, Writer output) throws IOException {
