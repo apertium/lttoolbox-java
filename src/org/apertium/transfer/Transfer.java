@@ -350,7 +350,8 @@ So the array of rule_map Method is taken by introspection, taking all methods be
 							String[] splits = tmpword.get(0).split("/");
 							String sl = splits[0];
 							String tl = splits.length>1 ? splits[1] : "";
-							tmpword.set(0, sl);
+              // http://freedict.svn.sourceforge.net/viewvc/apertium/trunk/apertium/apertium/transfer.cc?r1=35560&r2=35639
+							// tmpword.set(0, sl);
               tr=new Pair<String, Integer>(tl, 0);
 						} else {
               tr=new Pair<String, Integer>(tmpword.get(0), 0);
@@ -482,7 +483,8 @@ So the array of rule_map Method is taken by introspection, taking all methods be
 				String[] splits = words.get(i).split("/");
 				String sl = splits[0];
 				String tl = splits.length>1 ? splits[1] : "";
-				words.set(i, sl);
+        // http://freedict.svn.sourceforge.net/viewvc/apertium/trunk/apertium/apertium/transfer.cc?r1=35560&r2=35639
+				//words.set(i, sl);
 				tr=new Pair<String, Integer>(tl, 0);
 			}
 			else
