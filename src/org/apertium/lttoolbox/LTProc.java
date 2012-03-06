@@ -97,13 +97,11 @@ public class LTProc {
 
         final int argc = argv.length;
 
-        int cmd = 0;
+        int cmd = 'a';
         FSTProcessor fstp = new FSTProcessor();
 
         MyGetOpt getopt = new MyGetOpt(argv, "DSacdefgndpstwzvh");
 
-        int optind = -1;
-        int counter = 0;
         while (true) {
 
             try {
@@ -139,12 +137,7 @@ public class LTProc {
                     case 'p':
                     case 't':
                     case 's':
-                        if (optind == -1) {
-                            optind = counter;
-                            cmd = c;
-                        } else {
-                            endProgram("LTProc");
-                        }
+                        cmd = c;
                         break;
 
                     case 'w':
@@ -161,11 +154,10 @@ public class LTProc {
 
                     case 'h':
                     default:
-                        System.err.println("Unregognized parameter: " + c);
+                        System.err.println("Unregognized parameter: " + (char) c);
                         endProgram("LTProc");
                         break;
                 }
-                counter++;
 
             } catch (Exception e) {
                 endProgram("LTProc");
@@ -186,6 +178,8 @@ public class LTProc {
             output = getStdoutWriter();
         }
 
+        int optind = getopt.getOptind()-1;
+        //System.out.println("optind="+optind+"  "+argv.length);
         if (optind == (argc - 4) && !pipelineMode) { 
             //Both input and output files specified, and not in pipeline mode
 
