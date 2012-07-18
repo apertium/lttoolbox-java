@@ -1357,7 +1357,7 @@ public class FSTProcessor {
                     } else if (mode == GenerationMode.gm_clean) {
                         writeEscaped(removeTags(sf), output);
                     } else if (mode == GenerationMode.gm_unknown) {
-                        if (!sf.equals("")) {
+                        if (sf != null && !sf.equals("")) {
                           output.write('#');
                           writeEscaped(removeTags(sf), output);
                         }
