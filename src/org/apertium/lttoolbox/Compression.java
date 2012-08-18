@@ -17,13 +17,8 @@ package org.apertium.lttoolbox;
  * 02111-1307, USA.
  */
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Writer;
+import java.io.*;
+import java.nio.ByteBuffer;
 
 /**
  * Clase "Compression".
@@ -124,6 +119,63 @@ public class Compression {
         return (int) result;
     }
 
+  public static int multibyte_read(ByteBuffer input) {
+        int up;
+        long result;
+
+        up = (0xff & input.get());
+        if (up < 0x40) {
+            return up;
+        } else if (up < 0x80) {
+            up &= 0x3f;
+            int aux = (int) up;
+            aux = aux << 8;
+            char low = (char) (0xff & input.get());
+            result = (int) low;
+            result = result | aux;
+        } else if (up < 0xc0) {
+            up &= 0x3f;
+            int aux = (int) up;
+            aux = aux << 8;
+            char middle = (char) (0xff & input.get());
+            result = (int) middle;
+            aux = (int) result | aux;
+            aux = aux << 8;
+            char low = (char) (0xff & input.get());
+            result = (int) low;
+            result = result | aux;
+        } else {
+            up &= 0x3f;
+            int aux = (int) up;
+            aux = aux << 8;
+            char middleup = (char) (0xff & input.get());
+            result = (int) middleup;
+            aux = (int) result | aux;
+            aux = aux << 8;
+            char middlelow = (char) (0xff & input.get());
+            result = (int) middlelow;
+            aux = (int) result | aux;
+            aux = aux << 8;
+            char low = (char) (0xff & input.get());
+            result = (int) low;
+            result = result | aux;
+        }
+        return (int) result;
+  }
+    /**
+     * Skips a number of integers on the input stream and stores them in a byte array for later reading
+     * @param input input stream.
+     * @return array of bytes skipped
+     */
+    public static void multibyte_skip(final ByteBuffer input, final int no_of_multibyte_reads) throws IOException {
+
+      // TODO TODO!!  This can be improved to get muuuuuuuch faster
+      for (int i=no_of_multibyte_reads; i>0; i--) {
+        multibyte_read(input);
+      }
+    }
+
+
     /**
      * This method allows to write a wide string to an output stream
      * using its UCSencoding as integer.
@@ -152,6 +204,14 @@ public class Compression {
         return retval;
     }
 
+  public static String String_read(ByteBuffer input) {
+        String retval = "";
+        for (int i = 0,  limit = multibyte_read(input); i != limit; i++) {
+            retval += (char) (multibyte_read(input));
+        }
+        return retval;
+  }
+
   public static String wstring_read_toUtf8(InputStream in) throws IOException {
     // TODO
     return String_read(in);
@@ -174,4 +234,6 @@ public class Compression {
       DataOutputStream data = new DataOutputStream(out);
       data.writeDouble(d);
   }
+
+
 }

@@ -1,11 +1,15 @@
+(c) 2012        Mikel Artetxe <artetxem@gmail.com>
+                during Google Summer of Code
+
 (c) 2010        Stephen Tigner <stephen.tigner@gmail.com>
                 http://stephentigner.com/
                 during Google Summer of Code
 
-(c) 2009--2010, Jacob Nordfalk <jacob.nordfalk@gmail.com>
-
-(c) 2009        Raphaël Laurent <raphal.laurent@gmail.com> 
+(c) 2009        Raphaël Laurent <raphal.laurent@gmail.com>
                 during Google Summer of Code
+
+(c) 2009--2012  Jacob Nordfalk <jacob.nordfalk@gmail.com>
+                Maintainer and GSOC mentor 2010 and 2012
 
 Initial port of lttoolbox by Nic Cottrell http://www.transmachina.com/
 
@@ -13,4 +17,4 @@ lttoolbox is
 (c) 2005 Universitat d'Alacant / Universidad de Alicante.
 (c) 2007-2008 Prompsit Language Engineering S.L.
 
- 
+

@@ -11,7 +11,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
-import org.apertium.transfer.development.FindAndCompareAllReleasedTransferFiles;
+import org.apertium.transfer.old.development.FindAndCompareAllReleasedTransferFiles;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.apertium.lttoolbox.TestTools.*;
@@ -27,7 +27,7 @@ public class TransferEnEo_minusN {
   @Test
   public void testTransfer1Prase() throws Exception {
       Transfer t = new Transfer();
-      Class transferClass = org.apertium.transfer.generated.apertium_eo_en_en_eo_genitive_t1x.class;
+      Class transferClass = org.apertium.transfer.old.generated.apertium_eo_en_en_eo_genitive_t1x.class;
       t.setUseBilingual(false);
 
       t.read(transferClass, dir+"en-eo.genitive.t1x.bin", null);

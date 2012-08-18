@@ -32,7 +32,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 
-import org.apertium.transfer.compile.ApertiumTransferCompile;
+import org.apertium.transfer.old.compile.ApertiumTransferCompile;
 import org.junit.Test;
 
 
@@ -96,7 +96,7 @@ public class TestInterchunk {
 
     @SuppressWarnings("unchecked")
     private void runSingleSentenceTest(String testIn, String expTestOut) throws IOException {
-        Class transferClass = org.apertium.transfer.generated.apertium_en_es_en_es_t2x.class;
+        Class transferClass = org.apertium.transfer.old.generated.apertium_en_es_en_es_t2x.class;
         String preprocFile = testDataDir + "en-es.t2x.bin";
 
         /* The logic in ApertiumInterchunk.main() is mostly for parsing the command-line,
@@ -131,7 +131,7 @@ public class TestInterchunk {
     @Test
     public void test200Sentences() throws IOException {
         String inFile = testDataDir + "en-interchunk-input.txt";
-        Class transferClass = org.apertium.transfer.generated.apertium_en_es_en_es_t2x.class;
+        Class transferClass = org.apertium.transfer.old.generated.apertium_en_es_en_es_t2x.class;
         String preprocFile = testDataDir + "en-es.t2x.bin";
         String compareOutFile = testDataDir + "en-interchunk-output.txt";
 

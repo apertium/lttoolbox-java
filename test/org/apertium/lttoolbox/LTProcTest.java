@@ -34,7 +34,7 @@ public class LTProcTest extends TestCase {
    */
   public void testAnalysis_small_oneWound_Java() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
-      fstp.load(new BufferedInputStream(new FileInputStream("testdata/wound-example.bin")));
+      fstp.load("testdata/wound-example.bin");
       fstp.initAnalysis();
       StringWriter output = new StringWriter();
       fstp.analysis(new StringReader("wound\n"), output);
@@ -48,7 +48,7 @@ public class LTProcTest extends TestCase {
 
   public void testAnalysis_small_oneWord_Java() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
-      fstp.load(new BufferedInputStream(new FileInputStream("testdata/correct-test.bin")));
+      fstp.load("testdata/correct-test.bin");
       fstp.initAnalysis();
       // input a single 'a'   - should give  ^a/avoir<vbhaver><pri><p3><sg>$
       InputStream input = new ByteArrayInputStream("a\n".getBytes());
@@ -64,7 +64,7 @@ public class LTProcTest extends TestCase {
 
   public void testAnalysis_small_twoWords_Java() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
-      fstp.load(new BufferedInputStream(new FileInputStream("testdata/correct-test.bin")));
+      fstp.load("testdata/correct-test.bin");
       fstp.initAnalysis();
       InputStream input = new ByteArrayInputStream("a a\n".getBytes());
       StringWriter output = new StringWriter();
@@ -92,7 +92,7 @@ public class LTProcTest extends TestCase {
 
   public void testAnalysisUppercasetransformation() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
-      fstp.load(new BufferedInputStream(new FileInputStream("testdata/regression/fr-es.automorf.bin")));
+      fstp.load("testdata/regression/fr-es.automorf.bin");
       fstp.initAnalysis();
       StringWriter output = new StringWriter();
       String input = "Un article ";
@@ -110,7 +110,7 @@ public class LTProcTest extends TestCase {
 
   public void testAnalysis3wordsWithSuperblanksAndNewlines() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
-      fstp.load(new BufferedInputStream(new FileInputStream("testdata/regression/fr-es.automorf.bin")));
+      fstp.load("testdata/regression/fr-es.automorf.bin");
       fstp.initAnalysis();
       StringWriter output = new StringWriter();
       String input = "je[\npart ]\n[]suis"
@@ -132,7 +132,7 @@ public class LTProcTest extends TestCase {
 
     public void testAnalysis13words() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
-      fstp.load(new BufferedInputStream(new FileInputStream("testdata/regression/fr-es.automorf.bin")));
+      fstp.load("testdata/regression/fr-es.automorf.bin");
       fstp.initAnalysis();
       StringWriter output = new StringWriter();
       fstp.analysis(new StringReader("Militairement, la France possède l'une des principales forces armées d'Europe et est une\n"), output);
@@ -149,7 +149,7 @@ public class LTProcTest extends TestCase {
 
   public void testGeneration() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
-      fstp.load(new BufferedInputStream(new FileInputStream("testdata/generator.bin")));
+      fstp.load("testdata/generator.bin");
       fstp.initGeneration();
       StringWriter output = new StringWriter();
 
@@ -165,7 +165,7 @@ public class LTProcTest extends TestCase {
 
   public void testTaggedGeneration() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
-      fstp.load(new BufferedInputStream(new FileInputStream("testdata/generator.bin")));
+      fstp.load("testdata/generator.bin");
       fstp.initGeneration();
       StringWriter output = new StringWriter();
 
@@ -178,7 +178,7 @@ public class LTProcTest extends TestCase {
 
   public void testGenerationSuperblankAndUnknown() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
-      fstp.load(new BufferedInputStream(new FileInputStream("testdata/generator.bin")));
+      fstp.load("testdata/generator.bin");
       fstp.initGeneration();
       StringWriter output = new StringWriter();
       fstp.generation(new StringReader( "^de<n>$ ^Europe<np><loc>$[<\\/a> <i>]\n"), output, FSTProcessor.GenerationMode.gm_unknown);
@@ -191,7 +191,7 @@ public class LTProcTest extends TestCase {
 
   public void testPostGeneration() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
-      fstp.load(new BufferedInputStream(new FileInputStream("testdata/regression/fr-es.autopgen.bin")));
+      fstp.load("testdata/regression/fr-es.autopgen.bin");
       fstp.initGeneration();
 
       StringWriter output = new StringWriter();

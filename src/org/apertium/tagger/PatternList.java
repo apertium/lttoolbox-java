@@ -1,6 +1,5 @@
 package org.apertium.tagger;
 
-import org.apertium.transfer.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -9,8 +8,8 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import org.apertium.lttoolbox.Alphabet;
-import org.apertium.lttoolbox.compile.Transducer;
 import org.apertium.lttoolbox.Compression;
+import org.apertium.lttoolbox.compile.Transducer;
 
 /**
  * Created by Nic Cottrell, Jan 27, 2009 5:00:21 PM
@@ -34,7 +33,7 @@ tsx_reader.h:  PatternList *plist;
 
 class PatternList {
 
-  Alphabet alphabet;
+  private Alphabet alphabet;
 
   /* PatternStore is just a typedef in the C++ version for a multimap<int, vector<int>>.
    * The Java standard library doesn't have a multimap, so I'm making a map with Integer
@@ -42,17 +41,17 @@ class PatternList {
    * This approach was chosen over writing a full PatternStore class, as then I would
    * have had to implement iterators in the PatternStore. This is much simpler.
    */
-  Map<Integer, ArrayList<ArrayList<Integer>>> patterns;
+  private Map<Integer, ArrayList<ArrayList<Integer>>> patterns;
 
-  boolean sequence;
+  private boolean sequence;
 
-  ArrayList<ArrayList<Integer>> sequence_data;
+  private ArrayList<ArrayList<Integer>> sequence_data;
 
-  Transducer transducer;
+  private Transducer transducer;
 
-  Map<Integer, Integer> final_type;
+  private Map<Integer, Integer> final_type;
 
-  int sequence_id;
+  private int sequence_id;
 
   /**
    * This symbol stands for any char
@@ -78,7 +77,7 @@ class PatternList {
 	  alphabet.includeSymbol(ANY_TAG);
 	  alphabet.includeSymbol(ANY_CHAR);
 	  alphabet.includeSymbol(QUEUE);
-	  
+
 	  final_type = new LinkedHashMap<Integer, Integer>();
   }
 
@@ -115,7 +114,7 @@ class PatternList {
     }
     patternEntry.add(seqData);
   }
-  
+
   void beginSequence() throws RuntimeException {
     if (sequence) {
       throw new RuntimeException("Error: opening an unended sequence");
@@ -205,7 +204,7 @@ class PatternList {
         sequence_data.add(pSecond);
       }
     } else {
-      ArrayList<ArrayList<Integer>> new_sequence_data = 
+      ArrayList<ArrayList<Integer>> new_sequence_data =
     	  new ArrayList<ArrayList<Integer>>();
 
       for (ArrayList<Integer> it : sequence_data) {
@@ -326,7 +325,7 @@ class PatternList {
     Compression.multibyte_write(1, output);
     Compression.String_write(tagger_name, output);
     transducer.write(output, alphabet.size());
-    
+
     Compression.multibyte_write(final_type.size(), output);
 
     for (Map.Entry<Integer, Integer> it : final_type.entrySet()) {
@@ -336,17 +335,13 @@ class PatternList {
   }
 
   void read(InputStream input) throws IOException {
-    
+
     sequence = false;
     final_type.clear();
-    
+
     alphabet = Alphabet.read(input);
     if (Compression.multibyte_read(input) == 1) {
-      /* Okay, what's the purpose of this string?
-       * The variable 'myStr' isn't actually read anywhere.
-       * I copied this straight over from the C++ version, and it's not used there either.
-       */
-      String myStr = Compression.String_read(input);
+      String myStr = Compression.String_read(input);  // string (value "tagger") must be read/skipped
       transducer = Transducer.read(input, alphabet.size());
 
       int finalSize = Compression.multibyte_read(input);

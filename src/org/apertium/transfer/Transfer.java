@@ -4,13 +4,12 @@
  */
 package org.apertium.transfer;
 
-import static org.apertium.utils.IOUtils.openInFileStream;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.lang.reflect.Method;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import org.apertium.lttoolbox.Alphabet;
@@ -18,6 +17,8 @@ import org.apertium.lttoolbox.Pair;
 import org.apertium.lttoolbox.process.FSTProcessor;
 import org.apertium.transfer.development.Timing;
 import org.apertium.transfer.generated.GeneratedTransferBase;
+import org.apertium.utils.IOUtils;
+import static org.apertium.utils.IOUtils.openFileAsByteBuffer;
 
 
 
@@ -145,7 +146,7 @@ So the array of rule_map Method is taken by introspection, taking all methods be
   private boolean null_flush;
   private boolean internal_null_flush;
 
-  public void readData(InputStream in) throws IOException {
+  public void readData(ByteBuffer in) throws IOException {
     // symbols
     alphabet=Alphabet.read(in);
     any_char=alphabet.cast(TRXReader__ANY_CHAR);
@@ -165,9 +166,8 @@ So the array of rule_map Method is taken by introspection, taking all methods be
    * @param bilFstFile file name
    */
   private void readBil(String bilFstFile) throws IOException {
-    InputStream is = openInFileStream(bilFstFile);
+    ByteBuffer is = openFileAsByteBuffer(bilFstFile);
     fstp.load(is);
-    is.close();
     fstp.initBiltrans();
   }
 
@@ -179,9 +179,8 @@ So the array of rule_map Method is taken by introspection, taking all methods be
    */
   private void setExtendedDictionary(String fstfile) throws IOException {
     extended=new FSTProcessor();
-    InputStream is = openInFileStream(fstfile);
+    ByteBuffer is = openFileAsByteBuffer(fstfile);
     extended.load(is);
-    is.close();
     extended.initBiltrans();
     isExtended = true;
   }
@@ -201,9 +200,8 @@ So the array of rule_map Method is taken by introspection, taking all methods be
   public void read(Class transferClass, String datafile, String bilFstFile)
           throws IOException, InstantiationException, IllegalAccessException {
 
-    InputStream is = openInFileStream(datafile);
+    ByteBuffer is = IOUtils.openFileAsByteBuffer(datafile);
     readData(is);
-    is.close();
 
     Method[] mets =  transferClass.getMethods();
     rule_map = new Method[mets.length];

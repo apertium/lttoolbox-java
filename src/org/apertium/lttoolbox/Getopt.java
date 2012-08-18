@@ -580,12 +580,11 @@ Getopt(String progname, String[] argv, String optstring,
   // Check for property "gnu.posixly_correct" to determine whether to
   // strictly follow the POSIX standard.  This replaces the "POSIXLY_CORRECT"
   // environment variable in the C version
-  if (System.getProperty("gnu.posixly_correct", null) == null)
+  try {
+    posixly_correct = System.getProperty("gnu.posixly_correct", null) != null;
+  } catch (Exception e) {
     posixly_correct = false;
-  else
-    {
-      posixly_correct = true;
-    }
+  }
 
   // Determine how to handle the ordering of options and non-options
   if (optstring.charAt(0) == '-')

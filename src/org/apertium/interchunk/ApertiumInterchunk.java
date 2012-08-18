@@ -21,15 +21,15 @@ package org.apertium.interchunk;
 
 import static org.apertium.utils.IOUtils.openInFileReader;
 import static org.apertium.utils.IOUtils.openOutFileWriter;
-import static org.apertium.utils.IOUtils.openFile;
 import static org.apertium.utils.MiscUtils.getLineSeparator;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.lang.ref.SoftReference;
+import java.util.HashMap;
 
 import org.apertium.lttoolbox.Getopt;
 import org.apertium.transfer.TransferClassLoader;
@@ -49,6 +49,20 @@ public class ApertiumInterchunk {
         public String preprocFile = null; //formerly f1, f2, these are more descriptive names
         public boolean nullFlush = false;
     }
+
+
+    private static HashMap<String, SoftReference<Interchunk>> cache = new HashMap<String, SoftReference<Interchunk>>();
+    private static boolean cacheEnabled = false;
+
+    public static void setCacheEnabled(boolean enabled) {
+        cacheEnabled = enabled;
+        if (!enabled) clearCache();
+    }
+
+    public static void clearCache() {
+        cache.clear();
+    }
+
 
     private static void message(String commandName) {
         PrintStream stderr = System.err; //Allows ouput lines to be shorter.
@@ -132,13 +146,20 @@ public class ApertiumInterchunk {
     public static void doMain(CommandLineParams par, Interchunk i) 
             throws Exception {
 
+        String key = par.t2xFile + "; " + par.preprocFile;
+        SoftReference<Interchunk> ref = cache.get(key);
+        Interchunk cachedInterchunk = null;
+        if (ref != null) cachedInterchunk = ref.get(); // there was a soft ref, get the contents
+        if (cachedInterchunk != null) // contents might be null if it wasn't cached or it has been was garbage collected
+            i = cachedInterchunk;
+        else {
+            Class t2xClass = TransferClassLoader.loadTxClass(par.t2xFile, par.preprocFile);
+            i.read(t2xClass, par.preprocFile);
+            if (cacheEnabled)
+                cache.put(key, new SoftReference<Interchunk>(i));
+        }
+
         i.setNullFlush(par.nullFlush);
-
-        File txFile = openFile(par.t2xFile);
-        File binFile = openFile(par.preprocFile); 
-        Class t2xClass = TransferClassLoader.loadTxClass(txFile, binFile);
-
-        i.read(t2xClass, par.preprocFile);
         i.interchunk(par.input, par.output);
         par.output.flush(); //Have to flush or there won't be any output.
     }

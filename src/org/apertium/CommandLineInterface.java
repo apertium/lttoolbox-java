@@ -9,13 +9,14 @@ import org.apertium.pipeline.ApertiumMain;
 import java.io.File;
 import org.apertium.lttoolbox.*;
 import java.util.Arrays;
+import javax.swing.UIManager;
 import org.apertium.formatter.TextFormatter;
 import org.apertium.interchunk.ApertiumInterchunk;
 import org.apertium.postchunk.ApertiumPostchunk;
 import org.apertium.pretransfer.PreTransfer;
 import org.apertium.tagger.Tagger;
 import org.apertium.transfer.ApertiumTransfer;
-import org.apertium.transfer.compile.ApertiumTransferCompile;
+import org.apertium.transfer.generation.TransferBytecode;
 
 /**
  *
@@ -54,7 +55,17 @@ public class CommandLineInterface {
     }
 
   public static void main(String[] argv) throws Exception {
-    if (argv.length == 0) showHelp(null);
+    if (argv.length == 0) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+	} catch (Exception e) {}
+        ApertiumGUI gui = new ApertiumGUI();
+        gui.setVisible(true);
+        return;
+        //ApertiumMain.main(argv);
+        //System.exit(0);
+    }//showHelp(null);
+
       // strip evt path
       String task = new File(argv[0]).getName().trim();
 
@@ -83,10 +94,11 @@ public class CommandLineInterface {
       else if (task.startsWith("lt-expand")) LTExpand.main(restOfArgs);
       else if (task.startsWith("lt-comp")) LTComp.main(restOfArgs);
       else if (task.startsWith("lt-validate")) LTValidate.main(restOfArgs);
-      else if (task.startsWith("apertium-preprocess-transfer-bytecode")) ApertiumTransferCompile.main(restOfArgs);
+      else if (task.startsWith("apertium-preprocess-transfer-bytecode")) TransferBytecode.main(restOfArgs);
       else {
-        System.err.println("Command not recognized: "+task); // Arrays.toString(argv).replaceAll(", ", " ")
-        showHelp(null);
+        ApertiumMain.main(argv);
+        //System.err.println("Command not recognized: "+task); // Arrays.toString(argv).replaceAll(", ", " ")
+        //showHelp(null);
       }
     }
 

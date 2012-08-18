@@ -18,15 +18,23 @@
 
 package org.apertium.pipeline;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static org.apertium.utils.MiscUtils.getLineSeparator;
 
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
+import org.apertium.formatter.OmegatFormatter;
 import org.apertium.formatter.TextFormatter;
 import org.apertium.interchunk.ApertiumInterchunk;
 import org.apertium.interchunk.Interchunk;
@@ -36,6 +44,7 @@ import org.apertium.postchunk.Postchunk;
 import org.apertium.pretransfer.PreTransfer;
 import org.apertium.tagger.Tagger;
 import org.apertium.transfer.ApertiumTransfer;
+import org.apertium.utils.IOUtils;
 import org.apertium.utils.StringTable;
 
 /**
@@ -225,6 +234,41 @@ public class Dispatcher {
         }
     }
     
+    private static void doOmegatFormat(Program prog, Reader input, Writer output, 
+            boolean deformatMode) throws Exception {
+        String paramString = prog.getParameters();
+
+        if(deformatMode) {
+            /* Since the same class is used for deformatting and re-formatting, but the
+             * .mode files aren't setup like that, so prepending "-d" to set it to 
+             * deformatting mode.
+             */
+            paramString = "-d " + paramString;
+        } else {
+            /* If not in deformatting mode, must be in reformatting mode.
+             * So prepend with "-r" instead.
+             */
+            paramString = "-r " + paramString;
+        }
+        
+        OmegatFormatter formatter = new OmegatFormatter();
+
+        String[] args = paramString.split(splitPattern);
+        try {
+            formatter.doMain(args, input, output);
+        } catch (UnsupportedEncodingException e) {
+            String errorString = "OmegatFormatter -- " + 
+                StringTable.UNSUPPORTED_ENCODING;
+            errorString += getLineSeparator() + e.getLocalizedMessage();
+            throw new Exception(errorString, e);
+        } catch (FileNotFoundException e) {
+            String errorString = "OmegatFormatter -- " + 
+                    StringTable.FILE_NOT_FOUND;
+            errorString += getLineSeparator() + e.getLocalizedMessage();
+            throw new Exception(errorString, e);
+        }
+    }
+    
     private static void doTransfer(Program prog, Reader input, Writer output)
             throws Exception {
         String[] args = prog.getParameters().split("[ ]+");
@@ -264,65 +308,90 @@ public class Dispatcher {
         }
     }
 
-    private static void doUnknown(Program prog, byte[] input, OutputStream output) 
-            throws Exception {
+    private static void doUnknown(Program prog, final Reader input, Writer output) throws Exception {
         try {
-            Process extProcess = Runtime.getRuntime().exec(prog.getFullPath() + 
-                    " " + prog.getParameters());
-            extProcess.getOutputStream().write(input);
-            while(true) { //Keep waiting until process is finished.
+            File tempDir = new File(System.getProperty("java.io.tmpdir"));
+            for (String filename : prog.getParameters().split(" ")) {
+                try {
+                    BufferedInputStream bis = new BufferedInputStream(IOUtils.openInFileStream(filename));
+                    File dest = new File(tempDir, filename);
+                    dest.getParentFile().mkdirs();
+                    int b;
+                    byte buffer[] = new byte[1024];
+                    BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(dest), 1024);
+                    while ((b = bis.read(buffer, 0, 1024)) != -1) bos.write(buffer, 0, b);
+                    bos.flush();
+                    bos.close();
+                    bis.close();
+                } catch (Exception e) {}
+            }
+            final Process extProcess = Runtime.getRuntime().exec(prog.getFullPath() + " " + prog.getParameters(), null, tempDir);
+            
+            // We will create a new thread to copy from the input Reader to the OutputStream of the
+            // external process (note that we must convert the input to UTF-8)
+            // The following variable is used to be able to propagate an exception that might happen
+            // inside the new thread
+            final AtomicReference<IOException> writingException = new AtomicReference<IOException>();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        char buffer[] = new char[1024];
+                        int count;
+                        while ((count = input.read(buffer)) != -1)
+                            extProcess.getOutputStream().write(new String(buffer, 0, count).getBytes("UTF-8"));
+                    } catch (IOException ex) {
+                        writingException.set(ex);
+                    } finally {
+                        try {
+                            extProcess.getOutputStream().close();
+                        } catch (IOException ex) {
+                            // We haven't been able to close the input Reader that we were given
+                            // We will load the exception and exit the program (it's certainly a
+                            // radical solution but... what else could we do?)
+                            Logger.getLogger(Dispatcher.class.getName()).log(Level.SEVERE, null, ex);
+                            System.exit(-1);
+                        }
+                    }
+                }
+            }).start();
+            
+            // We copy from the OutputStream of the external process to the output Writer that
+            // we were given (note that we must convert the output to UTF-16)
+            byte buffer[] = new byte[1024];
+            int count;
+            while ((count = extProcess.getInputStream().read(buffer)) != -1)
+                output.write(new String(buffer, 0, count, "UTF-8"));
+            
+            // We wait for the external process to end (its InputStream is surely closed, but the
+            // process might still be running)
+            while (true)
                 try {
                     extProcess.waitFor();
-                    /* If external process is finished, we'll get to the break
-                     * statement below. If we are interrupted, we won't.
-                     */
                     break;
-                } catch (InterruptedException e) {
-                    /* We got interrupted. Run the loop again.
-                     */
-                }
-            }
-            if(extProcess.exitValue() != 0) { 
+                } catch (InterruptedException e) {}
+
+            // We check the exit value of the external process
+            if (extProcess.exitValue() != 0) { 
                 //Assume process follows convention of 0 == Success
                 String errorString = prog.getCommandName() + " (Unknown) -- " +
                         "External program failed, returned non-zero value: " + 
                         extProcess.exitValue();
                 throw new Exception(errorString);
             }
-            int currByte;
-            while((currByte = extProcess.getInputStream().read()) != -1 ) {
-                output.write(currByte);
-            }
+            
+            // We check that there hasn't been any error while writing to the OutputStream of the
+            // external process
+            if (writingException.get() != null) throw writingException.get();
+            
         } catch (IOException e) {
-            String errorString = prog.getCommandName() + " (Unknown) -- " +
-                    StringTable.IO_EXCEPTION;
+            String errorString = prog.getCommandName() + " (Unknown) -- " + StringTable.IO_EXCEPTION;
             errorString += getLineSeparator() + e.getLocalizedMessage();
             throw new IOException(errorString, e);
         }
     }
-
-    /**
-     * This separate dispatch for UNKNOWN programs is because we have to use
-     * a byte array and an output stream instead of Reader and Writer, when redirecting
-     * input and output to and from the externally existing program.
-     * @param prog
-     * @param input
-     * @param output
-     * @throws Exception 
-     */
-    public static void dispatchUnknown(Program prog, byte[] input, 
-            OutputStream output) throws Exception {
-        switch(prog.getProgram()) {
-            case UNKNOWN:
-                doUnknown(prog, input, output);
-                break;
-            default:
-                throw new IllegalArgumentException("dispatchUnknown() should only be " + 
-                        "used for UNKNOWN programs. ProgEnum was: " + prog.getProgram());
-        }
-    }
     
-
+    
     public static void dispatch(Program prog, Reader input, Writer output, 
             boolean dispAmb, boolean dispMarks) throws Exception {
         switch(prog.getProgram()) {
@@ -350,13 +419,18 @@ public class Dispatcher {
             case TXT_REFORMAT:
                 doTextFormat(prog, input, output, false);
                 break;
+            case OMEGAT_DEFORMAT:
+                doOmegatFormat(prog, input, output, true);
+                break;
+            case OMEGAT_REFORMAT:
+                doOmegatFormat(prog, input, output, false);
+                break;
             case UNKNOWN:
-                throw new IllegalArgumentException("dispatch() should not be used for " + 
-                        "UNKNOWN programs, use dispatchUnknown() instead.");
+                doUnknown(prog, input, output);
+                break;
             default:
                 //We should never get here.
-                throw new IllegalArgumentException("Unrecognized ProgEnum: " + 
-                        prog.getProgram());
+                throw new IllegalArgumentException("Unrecognized ProgEnum: " + prog.getProgram());
         }
     }
 }

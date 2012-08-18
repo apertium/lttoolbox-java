@@ -27,21 +27,16 @@ import static org.apertium.utils.IOUtils.listFilesInDir;
 import static org.apertium.utils.IOUtils.addTrailingSlash;
 import static org.apertium.utils.MiscUtils.getLineSeparator;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.Reader;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
+import org.apertium.Translator;
 import org.apertium.formatter.FormatterRegistry;
 import org.apertium.lttoolbox.Getopt;
-import org.apertium.pipeline.Dispatcher;
-import org.apertium.pipeline.Mode;
-import org.apertium.pipeline.Program;
 import org.apertium.utils.StringTable;
 
 /**
@@ -118,7 +113,6 @@ public class ApertiumMain {
             switch (c) {
                 case 'd':
                     clp.dataDir = getopt.getOptarg();
-                    clp.dataDir = addTrailingSlash(clp.dataDir);
                     break;
                 case 'u':
                     clp.dispMarks = false;
@@ -143,8 +137,6 @@ public class ApertiumMain {
                     return false;
             }
         }
-        
-        if(clp.dataDir == null) { _displayHelp(); return false; }
         
         if(clp.deformatter == null || clp.reformatter == null) {
             //Formatters weren't set on command-line, set default of txt
@@ -184,68 +176,6 @@ public class ApertiumMain {
         }
         return true;
     }
-
-    private static void _dispatchPipeline(Mode mode, 
-            CommandLineParams clp) throws Exception {
-        StringReader input = null;
-        StringWriter output = new StringWriter();
-        
-        Dispatcher.dispatch(clp.deformatter, clp.extInput, output, clp.dispAmb, 
-                clp.dispMarks);
-        if(DEBUG) { System.err.println("*** DEBUG: deformatter run"); }
-        int pipelineLength = mode.getPipelineLength();
-        try {
-            for(int i = 0; i < pipelineLength; i++) {
-                Program currProg = mode.getProgramByIndex(i);
-                if(DEBUG) {
-                    System.err.println("*** DEBUG: output size: " + 
-                            output.toString().length());
-                    System.err.println("*** DEBUG: output -- " + 
-                            output.toString());
-                    System.err.println("*** DEBUG: dispatching " + 
-                            currProg.getCommandName()); 
-                }
-                switch(currProg.getProgram()) {
-                    case UNKNOWN:
-                        /* Okay, this probably needs some explanation. When executing
-                         * an external program, as the UNKNOWN program type does, we can't
-                         * use Readers and Writers, we have to use byte streams instead.
-                         * Using a StringBufferInputStream is not recommended and is,
-                         * in fact, deprecated because of encoding issues.
-                         * To hopefully avoid those issues, byte array streams are
-                         * used instead. The input is converted to a byte array using
-                         * String.getBytes() with "UTF-8" as the charset name.
-                         */
-                        byte[] inputBytes = output.toString().getBytes("UTF-8");
-                        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                        Dispatcher.dispatchUnknown(currProg, inputBytes, outputStream);
-                        /* When finished with the external program, we need to convert
-                         * it back to a UTF-8 string and put the result in the output
-                         * writer for the next iteration of the loop.
-                         */
-                        output = new StringWriter();
-                        output.write(outputStream.toString("UTF-8"));
-                        break;
-                    default:
-                        input = new StringReader(output.toString());
-                        output = new StringWriter();
-                        Dispatcher.dispatch(currProg, input, output, 
-                                clp.dispAmb, clp.dispMarks);
-                        break;
-                }
-            }
-        } catch (UnsupportedEncodingException e) {
-            String errorString = "Apertium (pipeline) -- " + 
-                    StringTable.UNSUPPORTED_ENCODING;
-            errorString += getLineSeparator() + e.getLocalizedMessage();
-            throw new Exception(errorString, e);
-        }
-
-        input = new StringReader(output.toString());
-        Dispatcher.dispatch(clp.reformatter, input, clp.extOutput, clp.dispAmb, 
-                clp.dispMarks);
-    }
-
     
     private static void _listModes(CommandLineParams clp) {
         String[] modeList = listFilesInDir(clp.dataDir + "modes/", "mode");
@@ -263,8 +193,7 @@ public class ApertiumMain {
      * @param args
      * @throws Exception 
      */
-    public static int main(String[] args) 
-            throws Exception {
+    public static int main(String[] args) throws Exception {
         //Ensure we are using UTF-8 encoding by default
         System.setProperty("file.encoding", "UTF-8");
 
@@ -274,26 +203,37 @@ public class ApertiumMain {
             return 1;
         }
         
-        if(clp.listModes) { _listModes(clp); }
+        if (clp.listModes) { _listModes(clp); }
         
-        Mode mode = null;
-        
-        try {
-            mode = new Mode(clp.dataDir + "modes/" + clp.direction + ".mode");
-        } catch (IOException e) {
-            String errorString = "Apertium (mode parsing) -- " + 
-                    StringTable.IO_EXCEPTION;
-            errorString += getLineSeparator() + e.getLocalizedMessage();
-            throw new IOException(errorString, e);
+        if (clp.dataDir == null)
+            Translator.setJarAsBase();
+        else if (clp.dataDir.endsWith(".jar") || clp.dataDir.endsWith(".zip"))
+            Translator.setBase(clp.dataDir);
+        else if (clp.direction != null)
+            Translator.setBase(addTrailingSlash(clp.dataDir) +  "modes/" + clp.direction + ".mode");
+        else {
+            _displayHelp();
+            return 1;
         }
         
-        _dispatchPipeline(mode, clp);
-
+        if (clp.direction != null) Translator.setMode(clp.direction);
+        else if (clp.direction == null && Translator.getAvailableModes().length > 1) {
+            System.out.println("Several mode files found. Run again specifying one of them:");
+            for (String mode : Translator.getAvailableModes()) System.out.println("\t" + mode);
+            return 1;
+        }
+        
+        //Parallel processing is buggy right now, so we disable it
+        Translator.setParallelProcessingEnabled(false);
+        
+        Translator.setDisplayMarks(clp.dispMarks);
+        Translator.setDisplayAmbiguity(clp.dispAmb);
+        Translator.translate(clp.extInput, clp.extOutput, clp.deformatter, clp.reformatter);
+        
         try {
             clp.extOutput.flush(); //Just to make sure it gets flushed.
         } catch (IOException e) {
-            String errorString = "Apertium (flushing output) -- " + 
-                    StringTable.IO_EXCEPTION;
+            String errorString = "Apertium (flushing output) -- " + StringTable.IO_EXCEPTION;
             errorString += getLineSeparator() + e.getLocalizedMessage();
             throw new IOException(errorString, e);
         }

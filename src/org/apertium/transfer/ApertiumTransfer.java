@@ -22,11 +22,12 @@ import static org.apertium.utils.IOUtils.getStdinReader;
 import static org.apertium.utils.IOUtils.getStdoutWriter;
 import static org.apertium.utils.IOUtils.openInFileReader;
 import static org.apertium.utils.IOUtils.openOutFileWriter;
-import static org.apertium.utils.IOUtils.openFile;
 
 import org.apertium.lttoolbox.*;
 import org.apertium.lttoolbox.process.FSTProcessor;
 import java.io.*;
+import java.lang.ref.SoftReference;
+import java.util.HashMap;
 
 import org.apertium.lttoolbox.process.State;
 
@@ -48,6 +49,19 @@ class MyGetOpt extends Getopt {
  * @author Raah
  */
 public class ApertiumTransfer {
+
+
+    private static HashMap<String, SoftReference<Transfer>> cache = new HashMap<String, SoftReference<Transfer>>();
+    private static boolean cacheEnabled = false;
+
+    public static void setCacheEnabled(boolean enabled) {
+        cacheEnabled = enabled;
+        if (!enabled) clearCache();
+    }
+
+    public static void clearCache() {
+        cache.clear();
+    }
 
     static void endProgram(String name) {
         System.out.print(name + CommandLineInterface.PACKAGE_VERSION +": \n" +
@@ -90,7 +104,11 @@ public class ApertiumTransfer {
             endProgram("apertium-transfer-j");
         }
 
-        Transfer t = new Transfer();
+        boolean caseSensitiveMode = false;
+        boolean nullFlush = false;
+        boolean preBilingual = false;
+        boolean useBilingual = true;
+        
         MyGetOpt getopt = new MyGetOpt(argv, "cvbnzhD");
 
         int optind = -1;
@@ -104,7 +122,7 @@ public class ApertiumTransfer {
                 optind ++;
                 switch (c) {
                     case 'c':
-                        t.setCaseSensitiveMode(true);
+                        caseSensitiveMode = true;
                         break;
 
                     case 'D':
@@ -114,16 +132,16 @@ public class ApertiumTransfer {
                         break;
 
                     case 'z':
-                        t.setNullFlush(true);
+                        nullFlush = true;
                         break;
 
                     case 'b':
-                        t.setPreBilingual(true);
+                        preBilingual = true;
                         useBD = false;
                         break;
 
                     case 'n':
-                        t.setUseBilingual(false);
+                        useBilingual = false;
                         useBD = false;
                         break;
 
@@ -149,37 +167,43 @@ public class ApertiumTransfer {
          */
         int minArgs =(useBD ? optind + 3 : optind + 2);
 
-        if (argv.length > minArgs) {
-            /* Split out into explicit variables for readability and because
-             * tRulesClass originally was going to be tweaked here, but that
-             * was split off into a separate method so that it could be used
-             * in Interchunk and Postchunk as well.
-             */
+        if (argv.length <= minArgs) endProgram();
+        
+        /* Split out into explicit variables for readability and because
+         * tRulesClass originally was going to be tweaked here, but that
+         * was split off into a separate method so that it could be used
+         * in Interchunk and Postchunk as well.
+         */
 
-            /* Now, heres a dilemma: We might have been invoked with an XML file
-             * (t1x, t2x, t3x) instead of a bytecode .class file!
-             * This is because apertium-j is interpreting the .mode files in a fully
-             * ignorant way with no check of argument suffices etc and letting the
-             * stages themselves decide what to do. (This is a good thing!)
-             * C++ way is: apertium-transfer    apertium-eo-en.eo-en.t1x  eo-en.t1x.bin  eo-en.autobil.bin
-             * expected is:  apertium-transfer-j  eo-en.t1x.class                  eo-en.t1x.bin  eo-en.autobil.bin
-             * see also http://wiki.apertium.org/wiki/Bytecode_for_transfer
-             */
-            String tRulesOrClassString = argv[optind + 1];
-            String preProc = argv[optind + 2];
-            String bilTrans = null;
-            if(useBD) { bilTrans = argv[optind + 3]; }
-
-            File txOrClassFile = openFile(tRulesOrClassString);
-            File binFile = openFile(preProc);
-            Class tRulesClass = TransferClassLoader.loadTxClass(txOrClassFile, binFile);
-
+        /* Now, heres a dilemma: We might have been invoked with an XML file
+         * (t1x, t2x, t3x) instead of a bytecode .class file!
+         * This is because apertium-j is interpreting the .mode files in a fully
+         * ignorant way with no check of argument suffices etc and letting the
+         * stages themselves decide what to do. (This is a good thing!)
+         * C++ way is: apertium-transfer    apertium-eo-en.eo-en.t1x  eo-en.t1x.bin  eo-en.autobil.bin
+         * expected is:  apertium-transfer-j  eo-en.t1x.class                  eo-en.t1x.bin  eo-en.autobil.bin
+         * see also http://wiki.apertium.org/wiki/Bytecode_for_transfer
+         */
+        Transfer t = null;
+        String tRulesOrClassString = argv[optind + 1];
+        String preProc = argv[optind + 2];
+        String bilTrans = useBD ? argv[optind + 3] : null;
+        String key = tRulesOrClassString + "; " + preProc + "; " + bilTrans;
+        SoftReference<Transfer> ref = cache.get(key);
+        if (ref != null) t = ref.get(); // there was a soft ref, get the contents
+        if (t == null) { // contents might be null if it wasn't cached or it has been was garbage collected
+            Class tRulesClass = TransferClassLoader.loadTxClass(tRulesOrClassString, preProc);
+            t = new Transfer();
             t.read(tRulesClass, preProc, bilTrans);
-            if (Transfer.DEBUG)
-                t.transferObject.debug = true;
-        } else {
-            endProgram();
+            if (cacheEnabled)
+                cache.put(key, new SoftReference<Transfer>(t));
         }
+        t.setNullFlush(nullFlush);
+        t.setPreBilingual(preBilingual);
+        t.setUseBilingual(useBilingual);
+        //setCaseSensitiveMode is not implemented yet at Transfer, so we comment the following line
+        //t.setCaseSensitiveMode(caseSensitiveMode);
+        t.transferObject.debug = Transfer.DEBUG;
 
         if(input != null || output != null) {
             /* If either is supplied, ignore command-line input/output files,

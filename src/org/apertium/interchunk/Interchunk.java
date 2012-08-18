@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2010 Stephen Tigner
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
@@ -19,8 +19,6 @@
 
 package org.apertium.interchunk;
 
-import static org.apertium.utils.IOUtils.openInFileStream;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,6 +26,7 @@ import java.io.Reader;
 import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -38,24 +37,25 @@ import org.apertium.transfer.MatchState;
 import org.apertium.transfer.TransferToken;
 import org.apertium.transfer.development.Timing;
 import org.apertium.transfer.generated.GeneratedTransferBase;
+import org.apertium.utils.IOUtils;
 
 /**
  * @author Stephen Tigner
- * 
+ *
  */
 public class Interchunk {
-    
+
     /* Yes, this increases the linkage and entanglement of the classes, but
      * but it's better than duplicating so much code just for a change of a
      * couple of lines between Interchunk and Postchunk.
      * Defines the mode certain parts of code operates in, either in
      * Interchunk or Postchunk mode.
      */
-    
+
     protected enum InterchunkMode {
         INTERCHUNK, POSTCHUNK
     }
-    
+
     protected InterchunkMode icMode;
 
     /*
@@ -103,14 +103,14 @@ public class Interchunk {
 
         icMode = InterchunkMode.INTERCHUNK;
     }
-    
+
     /**
      * Copied from {@link org.apertium.transfer.Transfer#readData(InputStream)}
-     * 
+     *
      * @param in
      * @throws IOException
      */
-    public void readData(InputStream in) throws IOException {
+    public void readData(ByteBuffer in) throws IOException {
         // symbols
         alphabet = Alphabet.read(in);
         any_char = alphabet.cast(TRXReader__ANY_CHAR);
@@ -124,20 +124,19 @@ public class Interchunk {
     /**
      * Copied from
      * {@link org.apertium.transfer.Transfer#read(Class, String, String)}
-     * 
+     *
      * @param transferClass
      * @param datafile
      * @param fstfile
      * @throws Exception
      */
     @SuppressWarnings("unchecked")
-    public void read(Class transferClass, String datafile) 
+    public void read(Class transferClass, String datafile)
             throws FileNotFoundException, IOException, IllegalAccessException,
             InstantiationException {
 
-        InputStream is = openInFileStream(datafile);
+        ByteBuffer is = IOUtils.openFileAsByteBuffer(datafile);
         readData(is);
-        is.close();
 
         Method[] mets = transferClass.getMethods();
         rule_map = new Method[mets.length];
@@ -184,9 +183,9 @@ public class Interchunk {
         String content = "";
         int val = -1; //declare and initialize val outside of while statement.
         while (true) {
-            if(skipRead) { //Already read ahead to the next character 
+            if(skipRead) { //Already read ahead to the next character
                 skipRead = false; //unset flag
-            } 
+            }
             else {
                 val = in.read();
                 //if (DEBUG) System.err.println("val = " + (char) val);
@@ -261,19 +260,19 @@ public class Interchunk {
 
     /**
      * Copied from
-     * {@link org.apertium.transfer.Transfer#transfer_wrapper_null_flush(Reader, Writer)}, 
+     * {@link org.apertium.transfer.Transfer#transfer_wrapper_null_flush(Reader, Writer)},
      * then modified slightly, in-line with the changes between transfer.cc
      * and interchunk.cc
-     * 
+     *
      * @param input
      * @param output
-     * @throws InvocationTargetException 
-     * @throws IllegalAccessException 
-     * @throws IllegalArgumentException 
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
      * @throws Exception
      */
     private void interchunk_wrapper_null_flush(Reader input, Writer output)
-            throws IOException, IllegalArgumentException, 
+            throws IOException, IllegalArgumentException,
             IllegalAccessException, InvocationTargetException {
         null_flush = false;
         internal_null_flush = true;
@@ -290,7 +289,7 @@ public class Interchunk {
         internal_null_flush = false;
         null_flush = true;
     }
-    
+
     public boolean getNullFlush() {
         return null_flush;
     }
@@ -305,13 +304,13 @@ public class Interchunk {
      * @param in
      * @param output
      * @throws IOException
-     * @throws InvocationTargetException 
-     * @throws IllegalAccessException 
-     * @throws IllegalArgumentException 
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
      * @throws Exception
      */
-    public void interchunk(Reader in, Writer output) throws IOException, 
-            IllegalArgumentException, IllegalAccessException, 
+    public void interchunk(Reader in, Writer output) throws IOException,
+            IllegalArgumentException, IllegalAccessException,
             InvocationTargetException {
         if (getNullFlush()) {
             interchunk_wrapper_null_flush(in, output);
@@ -423,7 +422,7 @@ public class Interchunk {
                         return;
                     }
                     break;
-    
+
                 default:
 
                     System.err.println("Error: Unknown input token.");
@@ -492,8 +491,8 @@ public class Interchunk {
             output.flush();
 
     }
-    
-    private void _outputInvokeErrorMsg(Method rule, String word, 
+
+    private void _outputInvokeErrorMsg(Method rule, String word,
             int numArgs, String processRule) {
         System.err.println("Error during invokation of " + rule);
         System.err.println("word = " + word);
@@ -503,7 +502,7 @@ public class Interchunk {
 
     /**
      * Much of this code originally copied from {@link org.apertium.transfer.Transfer#applyWord(string)}.
-     * Modified to be in-line with the differences between transfer.cc and interchunk.cc 
+     * Modified to be in-line with the differences between transfer.cc and interchunk.cc
      * @param word_str
      */
     private void applyWord(String word_str) {
@@ -516,7 +515,7 @@ public class Interchunk {
                     i++;
                     ms.step(Character.toLowerCase(word_str.charAt(i)), any_char);
                     break;
-    
+
                 case '<':
                     //This chunk of code is commented out in postchunk.cc
                     if(icMode == InterchunkMode.INTERCHUNK) {
@@ -534,11 +533,11 @@ public class Interchunk {
                         }
                         break;
                     }
-    
+
                 case '{': //ignore the unmodifiable part of the chunk
                     ms.step('$');
                     return;
-    
+
                 default:
                     ms.step(Character.toLowerCase(word_str.charAt(i)), any_char);
                     break;

@@ -3,18 +3,15 @@ package org.apertium.transfer;
 import static org.apertium.utils.IOUtils.openFile;
 import static org.apertium.utils.IOUtils.getFilenameMinusExtension;
 import static org.apertium.utils.IOUtils.addTrailingSlash;
+import static org.apertium.utils.IOUtils.loadByteArray;
+import static org.apertium.utils.IOUtils.getLoader;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apertium.transfer.compile.ApertiumTransferCompile;
-import org.apertium.transfer.compile.ParseTransferFile;
+import org.apertium.transfer.generation.TransferBytecode;
 import org.xml.sax.SAXException;
 
 public class TransferClassLoader extends ClassLoader {
@@ -25,54 +22,46 @@ public class TransferClassLoader extends ClassLoader {
 
     @SuppressWarnings("unchecked")
     public Class loadClassFile(String filename) throws ClassNotFoundException, IOException {
-        return loadClassFile(openFile(filename));
-    }
-    
-    @SuppressWarnings("unchecked")
-    public Class loadClassFile(File classFile) throws ClassNotFoundException, IOException {
-        // System.err.println("filename = " + filename);
-        /* The reason for the static import of openFile, when we could just
-         * do new File(filename), is to allow for future code centered in IOUtils.
-         * This code will help deal with issues of disparate path notations, specifically
-         * in the case of running this Java code on a Windows installation that has
-         * the C++ code running under cygwin.
-         */
-        InputStream input = new FileInputStream(classFile);
-        byte data[] = new byte[(int) classFile.length()];
-        input.read(data);
-        input.close();
+        byte data[] = loadByteArray(filename);
         return defineClass(null, data, 0, data.length);
     }
 
     @SuppressWarnings("unchecked")
-    public static Class loadTxClass(File txOrClassFile, File binFile)
+    public static Class loadTxClass(String txOrClassFile, String binFile)
             throws ClassNotFoundException, IOException {
+        try { // We first try to load the class directly
+            String className = txOrClassFile.replace('.', '_').replace('-', '_').replace('/', '.').replace('\\', '.');
+            if (className.startsWith("data.")) className = "transfer_classes" + className.substring(4);
+            if (className.endsWith("_class")) className = className.substring(0, className.length() - 6);
+            ClassLoader loader = getLoader() != null ? getLoader() : TransferClassLoader.class.getClassLoader();
+            return loader.loadClass(className);
+        } catch (Exception e) {} //If it fails we will keep trying and, if necessary, generate it
         return loadTxClass(txOrClassFile, binFile, new TransferClassLoader());
     }
 
     
     @SuppressWarnings("unchecked")
-    public static Class loadTxClass(File txOrClassFile, File binFile, TransferClassLoader tcl)
+    public static Class loadTxClass(String txOrClassFile, String binFile, TransferClassLoader tcl)
             throws ClassNotFoundException, IOException {
-
-        //System.err.println("binFile = " + binFile);
-        //System.err.println("txFile = " + txOrClassFile);
-
-        if (!txOrClassFile.exists()) {
-            throw new FileNotFoundException("Loading TX Class txFile ("
-                    + txOrClassFile + ")");
-        }
-        if (!binFile.exists()) {
-            throw new FileNotFoundException("Loading TX Class binFile ("
-                    + txOrClassFile + ")");
-        }
-
-
-        if (txOrClassFile.getName().endsWith(".class") && txOrClassFile.exists()) {
+        
+        //If we have been given a class, we load it
+        if (txOrClassFile.endsWith(".class") && openFile(txOrClassFile).exists())
             return tcl.loadClassFile(txOrClassFile);
-        } else {
-            return buildAndLoadClass(txOrClassFile, binFile, tcl);
-        }
+        
+        try {
+            // Even if we haven't been given a class, the corresponding class might already exist...
+            // let's try to load it! (This is necessary when working with compressed files, since
+            // resources inside them cannot be accessed as Files and, thus, the following attempts
+            // that are using them will fail)
+            String classFile = txOrClassFile.replace('.', '_').replace('-', '_');
+            if (classFile.startsWith("data/") || classFile.startsWith("data\\"))
+                classFile = "transfer_classes" + classFile.substring(4);
+            if (!classFile.endsWith(".class")) classFile += ".class";
+            return tcl.loadClassFile(classFile);
+        } catch (Exception e) {} //We will keep trying!
+        
+        //OK, it seems that we will finally have to build the class...
+        return buildAndLoadClass(openFile(txOrClassFile), openFile(binFile), tcl);
     }
 
     @SuppressWarnings("unchecked")
@@ -103,55 +92,25 @@ public class TransferClassLoader extends ClassLoader {
 
         // If the class file exists already, try and load it.
         if (classFile.exists()) {
-            return tcl.loadClassFile(classFile);
+            return tcl.loadClassFile(classFile.getPath());
         }
 
-        // Generate the java source.
-        ParseTransferFile p = new ParseTransferFile();
+        // Generate and return the class file
         try {
-            p.parse(txFile.getPath());
+            TransferBytecode tb = new TransferBytecode(txFile.getPath());
+            try { //Try to dump the class to avoid having to create it again next time
+                tb.dump(addTrailingSlash(txFile.getParent()) + classFilename);
+            } catch (Exception e1) {
+                try { //Try in the temporary directory
+                    tb.dump(tempDir + classFilename);
+                } catch (Exception e2) {} //Do nothing (the class will be generated again next time)
+            }
+            return tb.getJavaClass();
         } catch (ParserConfigurationException e) {
-            throw new InternalError("TX File (" + txFile
-                    + ") parsing failed -- " + e.getLocalizedMessage());
+            throw new InternalError("TX File (" + txFile + ") parsing failed -- " + e.getLocalizedMessage());
         } catch (SAXException e) {
-            throw new InternalError("TX File (" + txFile
-                    + ") parsing failed -- " + e.getLocalizedMessage());
+            throw new InternalError("TX File (" + txFile + ") parsing failed -- " + e.getLocalizedMessage());
         }
-
-        File javaSource = openFile(addTrailingSlash(binFile.getParent()) + 
-                p.className + ".java");
-        File outputClass = openFile(addTrailingSlash(binFile.getParent()) 
-                + p.className + ".class");
-
-        // Write the source out to a file
-        FileWriter fw = null;
-        try {
-            fw = new FileWriter(javaSource);
-        } catch (IOException e) { //Unable to open output file for writing
-            javaSource = openFile(tempDir +  p.className + ".java");
-            outputClass = openFile(tempDir + p.className + ".class");
-            fw = new FileWriter(javaSource);
-        }
-        fw.append(p.getOptimizedJavaCode());
-        fw.close();
-
-        // Compile the source file
-        File actualClassFile = ApertiumTransferCompile.doMain(txFile, classFile, javaSource,
-                outputClass, false);
-        if(actualClassFile == null) {
-            /* We weren't able to get the compiled output file to rename
-             * to the desired classFile name, or to the same filename in
-             * the system temp directory. Throw an exception.
-             */
-            throw new ClassNotFoundException(
-                    "Unable to write compiled transfer class to specified " +
-                    "or system temp directories.");
-        }
-
-        //Remove the java source file, as we don't need it anymore
-        javaSource.delete();
         
-        // Load and return the class file.
-        return tcl.loadClassFile(actualClassFile);
     }
 }

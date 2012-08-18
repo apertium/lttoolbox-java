@@ -156,7 +156,7 @@ public class TestPostChunk {
     
     @SuppressWarnings("unchecked")
     private void runSingleSentenceTest(String testIn, String expTestOut) throws IOException {
-        Class transferClass = org.apertium.transfer.generated.apertium_en_es_en_es_t3x.class;
+        Class transferClass = org.apertium.transfer.old.generated.apertium_en_es_en_es_t3x.class;
         String preprocFile = testDataDir + "en-es.t3x.bin";
 
         /* The logic in ApertiumPostchunk.main() is mostly for parsing the command-line,
@@ -191,7 +191,7 @@ public class TestPostChunk {
     @Test
     public void test200Sentences() throws IOException {
         String inFile = testDataDir + "en-postchunk-input.txt";
-        Class transferClass = org.apertium.transfer.generated.apertium_en_es_en_es_t3x.class;
+        Class transferClass = org.apertium.transfer.old.generated.apertium_en_es_en_es_t3x.class;
         String preprocFile = testDataDir + "en-es.t3x.bin";
         String compareOutFile = testDataDir + "en-postchunk-output.txt";
 

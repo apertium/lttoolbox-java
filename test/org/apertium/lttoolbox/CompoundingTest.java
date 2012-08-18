@@ -49,14 +49,14 @@ public class CompoundingTest extends TestCase {
 /*
   public void testCompound2_Nnnb() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
-      fstp.load(new BufferedInputStream(new FileInputStream("/home/j/esperanto/apertium/apertium-nn-nb/compound.dix.bin")));
+      fstp.load("/home/j/esperanto/apertium/apertium-nn-nb/compound.dix.bin");
       fstp.initDecomposition(true);
 
       // FSTProcessor.DEBUG = true;
       // State.DEBUG = true;
       assertNull(fstp.compoundAnalysis2("befinner"));
 
-      
+
       StringWriter output = new StringWriter();
       fstp.analysis(new StringReader("fader\n"), output);
       System.err.println("output.toString() = " + output.toString().replaceAll("/", "\n/"));
@@ -68,7 +68,7 @@ public class CompoundingTest extends TestCase {
 
   public void testCompound2_Esperanto() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
-      fstp.load(new BufferedInputStream(new FileInputStream("testdata/compounding/eo-en.automorf.bin")));
+      fstp.load("testdata/compounding/eo-en.automorf.bin");
       fstp.initDecomposition();
 
       //State.DEBUG = true;
@@ -98,7 +98,7 @@ public class CompoundingTest extends TestCase {
 
   public void testCompoundOld() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
-      fstp.load(new BufferedInputStream(new FileInputStream("testdata/compounding/eo-en.automorf.bin")));
+      fstp.load("testdata/compounding/eo-en.automorf.bin");
       fstp.initAnalysis();
       fstp.alphabet.setSymbol(fstp.alphabet.cast("<:compound:only-L>"), "");
       fstp.alphabet.setSymbol(fstp.alphabet.cast("<:compound:R>"), "");
@@ -154,7 +154,7 @@ public class CompoundingTest extends TestCase {
 
 
 
-  
+
 // ^Bændasamtökunum/Bóndi<n><m><pl><gen><ind>+samtök<n><nt><sg><dat><ind>/Bóndi<n><m><pl><gen><ind>+samtök<n><nt><pl><dat><def>$ ^samtökunum/samtök<n><nt><sg><dat><ind>/samtök<n><nt><pl><dat><def>$
 */
 

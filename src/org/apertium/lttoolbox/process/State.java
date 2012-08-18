@@ -58,22 +58,6 @@ class TNodeState {
   TNodeState(int sequence_size) {
     sequence = new ArrayList<Integer>(sequence_size);
   }
-
-
-    @Override
-    public String toString() {
-       if (Alphabet.debuggingInstance==null) return "Alphabet.debuggingInstance==null";
-
-        StringBuilder sb = new StringBuilder(sequence==null?20 : 20+sequence.size()*2);
-        if (caseWasChanged) sb.append("caseWasChanged;");
-        if (sequence!=null) for (int i : sequence) sb.append(Alphabet.debuggingInstance.getSymbol(i, caseWasChanged));
-        sb.append('→');
-        if (where!=null) {
-          for (int i : where.transitions.keySet()) sb.append(Alphabet.debuggingInstance.getSymbol(i));
-          return sb.toString()+"@"+Integer.toString(where.hashCode(), Character.MAX_RADIX);
-        }
-        return sb.toString()+"@null";
-    }
 }
 
 /**
@@ -83,10 +67,10 @@ class TNodeState {
 public class State {
   /**
    * Whether object pooling should be done.
-   * Object allocation (of small objects) on modern JVMs is even so fast that making a copy of immutable 
+   * Object allocation (of small objects) on modern JVMs is even so fast that making a copy of immutable
    * objects sometimes outperforms modification of mutable (and often old) objects.
    * See also "Object pooling is now a serious performance loss": http://www.theserverside.com/news/thread.tss?thread_id=37146
-   * 
+   *
    * Pooling seems to do no difference on JDK 1.6, but it might make a big difference for smaller VMs,
    * like Androids or J2ME JVMs in phones, so we turn it on for now
    */
@@ -94,7 +78,7 @@ public class State {
 
   /** Pre-allocate for this amount of elements in a sequence */
   public static final int INITAL_SEQUENCE_ALLOCATION = 50;
-  
+
   /*
   static int oprettet=0;
   static int genbrugt=0;
@@ -106,7 +90,7 @@ public class State {
 
 
     ArrayList<TNodeState> state = new ArrayList<TNodeState>(50);
-    
+
     /**
      * Pool of TNodeState (with their sequence list), for efficiency
      */
@@ -192,7 +176,7 @@ public class State {
         TNodeState tn = REUSE_OBJECTS?nodeStatePool_get():new TNodeState(true);
         tn.where = initial;
         tn.caseWasChanged = false;
-        state.add(tn); 
+        state.add(tn);
         epsilonClosure();
     }
 
@@ -228,10 +212,10 @@ public class State {
 
         for (int i = 0,  limit = state.size(); i != limit; i++) {
             TNodeState state_i = state.get(i);
-            Transition it = state_i.where.transitions.get(input);
+            Transition it = state_i.where.transitions_get(input);
             while (it != null) {
               TNodeState tn = REUSE_OBJECTS?nodeStatePool_get(): new TNodeState(state_i.sequence.size()+1);
-              tn.where = it.dest;
+              tn.where = it.node_dest;
               tn.caseWasChanged = state_i.caseWasChanged;
               tn.sequence.addAll(state_i.sequence);
               tn.sequence.add(it.output_symbol);
@@ -260,10 +244,10 @@ public class State {
 
         for (int i = 0,  limit = state.size(); i != limit; i++) {
             TNodeState state_i = state.get(i);
-            Transition it = state_i.where.transitions.get(input);
+            Transition it = state_i.where.transitions_get(input);
             while (it != null) {
               TNodeState tn = REUSE_OBJECTS?nodeStatePool_get(): new TNodeState(state_i.sequence.size()+1);
-              tn.where = it.dest;
+              tn.where = it.node_dest;
               tn.caseWasChanged = state_i.caseWasChanged;
               tn.sequence.addAll(state_i.sequence);
               tn.sequence.add(it.output_symbol);
@@ -272,10 +256,10 @@ public class State {
             } //XXX no pool now: pool.release(state.get(i).sequence);
 
             // try also apply lowerCasedInput
-            it = state_i.where.transitions.get(lowerCasedInput);
+            it = state_i.where.transitions_get(lowerCasedInput);
             while (it != null) {
               TNodeState tn = REUSE_OBJECTS?nodeStatePool_get(): new TNodeState(state_i.sequence.size()+1);
-              tn.where = it.dest;
+              tn.where = it.node_dest;
               tn.caseWasChanged = true; // lowercased version of input
               tn.sequence.addAll(state_i.sequence);
               tn.sequence.add(it.output_symbol);
@@ -297,10 +281,10 @@ public class State {
         for (int i = 0; i != state.size(); i++) {
             TNodeState state_i = state.get(i);
             // get the transitions consuming θ (the empty input symbol)
-            Transition epsilonTransition = state_i.where.transitions.get(0);
+            Transition epsilonTransition = state_i.where.transitions_get(0);
             while (epsilonTransition != null) {
               TNodeState tn = REUSE_OBJECTS?nodeStatePool_get(): new TNodeState(state_i.sequence.size()+1);
-                tn.where = epsilonTransition.dest;
+                tn.where = epsilonTransition.node_dest;
                 tn.caseWasChanged = state_i.caseWasChanged;
                 tn.sequence.addAll(state_i.sequence);
                 if (epsilonTransition.output_symbol != 0) {
@@ -312,56 +296,14 @@ public class State {
         }
     }
 
-    /**
-     * Calculates an extended epsilon where a set of symbols are considered epsilons
-     * i.e. expand to all states reachable consuming this set of symbols
-     *
-    private void flagClosure(Integer[] flagMatch_symbolList) {
-        for (int i = 0; i != state.size(); i++) {
-            TNodeState state_i = state.get(i);
-            // get the transitions consuming a symbol from the list
-            for (int j=0; j<flagMatch_symbolList.length; j++) {
-              Transition epsilonTransition = state_i.where.transitions.get(flagMatch_symbolList[j]);
-              while (epsilonTransition != null) {
-                  List<Integer> tmp; // JACOB = pool.get();
-                  tmp = new ArrayList<Integer>(state_i.sequence);
-                  if (epsilonTransition.output_symbol != 0) {
-                      tmp.add(epsilonTransition.output_symbol);
-                  }
-                  state.add(new TNodeState(epsilonTransition.dest, tmp, state_i.caseWasChanged));
-                  epsilonTransition = epsilonTransition.next;
-              }
-            }
-        }
-    }
-   */
-    void tjekDubletter() {
-        //System.err.println("Duble? "+ state.size());
-        for (int i = 0; i != state.size(); i++) {
-          TNodeState state_i = state.get(i);
-          for (int j = i+1; j != state.size(); j++) {
-            TNodeState state_j = state.get(j);
-            if (state_i.where == state_j.where && state_i.caseWasChanged ==state_j.caseWasChanged && state_i.sequence.equals(state_j.sequence)) {
-                System.err.println("Dublet!!! "+ i + " " + j);
-                System.err.println("Dublet?: state_j = " + state_i + "==" + state_j);
-                new Exception().printStackTrace();
-                state.remove(j);
-                j--;
-            }
-          }
-        }
-    }
 
     /**
      * step = apply + epsilonClosure
      * @param input the input symbol
      */
     public void step(int input) {
-//        if (DEBUG) System.err.println();
 //        if (DEBUG) System.err.println("state f = " + state  +"     - apply (" + (char) input);
-//        if (DEBUG) tjekDubletter();
         apply(input);
-//        if (DEBUG) tjekDubletter();
 //        if (DEBUG) System.err.println("state e1= " + state);
         epsilonClosure();
 //        if (DEBUG) System.err.println("state e2= " + state);
@@ -376,20 +318,7 @@ public class State {
         apply(input, lowerCasedInput);
         epsilonClosure();
     }
-/*
-    public void step_case(char val, boolean caseSensitive, Integer[] flagMatch_symbolList) {
-        if (!Alphabet.isUpperCase(val) || caseSensitive) {
-            apply(val);
-            if (DEBUG) System.err.println("state e1= " + state);
-            flagClosure(flagMatch_symbolList);
-            epsilonClosure();
-        } else {
-            apply(val, Alphabet.toLowerCase(val));
-            flagClosure(flagMatch_symbolList);
-            epsilonClosure();
-        }
-    }
-*/
+
 
     public void step_case(char val, boolean caseSensitive) {
         if (!Alphabet.isUpperCase(val) || caseSensitive) {
@@ -409,7 +338,7 @@ public class State {
       /**
      * Return true if at least one record of the state references a
      * final node of the set
-     * @param finals set of final nodes 
+     * @param finals set of final nodes
      * @return true if the state is final
      */
     boolean isFinal(Set<Node> finals) {
@@ -461,7 +390,7 @@ public class State {
                 }
 
 
-                if (firstupper && state_i.caseWasChanged ) {
+                if (firstupper && state_i.caseWasChanged && result.length()>first_char) {
                     if (result.charAt(first_char) == '~') {
                         // skip post-generation mark
                         result.setCharAt(first_char + 1, Alphabet.toUpperCase(result.charAt(first_char + 1)));
@@ -475,11 +404,6 @@ public class State {
         return result;
     }
 
-            /*
-            if (DEBUG && finals.contains(state_i.where) != state_i.where.transitions.isEmpty()) {
-              System.err.println("!HM finals.contains(state_i.where) = " + finals.contains(state_i.where));
-              System.err.println("!HM state_i.where.transitions = " + state_i);
-            }*/
 
     /**
      * Find final states, remove those that not has a requiredSymbol and 'restart' each of them as the set of initial states, but remembering the sequence and adding a separationSymbol
@@ -516,20 +440,6 @@ public class State {
         state.addAll(added_states);
     }
 
-
-                    /*
-                    if (restart && state_i.sequence.size()-n<10) {
-                      restart = false;
-
-                      StringBuilder result = new StringBuilder();
-                      for (int j = 0,  limit2 = state_i.sequence.size(); j != limit2; j++) {
-                          symbol = ((state_i.sequence).get(j)).intValue();
-                          result.append(Alphabet.debuggingInstance.getSymbol(symbol));
-                      }
-
-                      System.err.println("Unhammer sjusk: "+result);
-                    } // Unhammer sjusk :-)
-                     */
 
     private boolean lastPartHasRequiredSymbol(List<Integer> seq, int requiredSymbol, int separationSymbol) {
       // state is final - it should be restarted it with all elements in stateset restart_state, with old symbols conserved
@@ -722,9 +632,9 @@ public class State {
         return result;
     }
 
-    
+
     /**
-     * Compute if a character is a digit (gives the same results as 
+     * Compute if a character is a digit (gives the same results as
      * the c++ iswdigit() function
      * @param c the character
      * @return true if the c is a digit

@@ -70,49 +70,52 @@ public class Compile {
     public static String COMPILER_LEMMA_ATTR = "lm";
     public static String COMPILER_IGNORE_ATTR = "i";
     public static String COMPILER_IGNORE_YES_VAL = "yes";
-    
+
     /**
      * The paradigm being compiled
      */
     private String current_paradigm = "";
-    
+
     /**
      * The dictionary section being compiled
      */
     private String current_section = "";
-    
+
     /**
      * The direction of the compilation, 'lr' (leftSide-to-right) or 'rl'
      * (right-to-leftSide)
      */
     private String direction = "";
-    
+
     /**
      * List of characters to be considered alphabetic
      */
     private String letters = "";
-    
+
     /**
      * Identifier of all the symbols during the compilation
      */
-    private Alphabet alphabet;
-    
+    private CompileAlphabet alphabet;
+
+    /** this lookup is needed very often and thus cached */
+    private Integer alphabet_cast00;
+
     /**
      * List of named transducers-paradigms
      */
     private Map<String, Transducer> paradigms = new HashMap<String, Transducer>();
-    
+
     /**
      * List of named dictionary sections.
      * MUST be sorted when writing .bin file to retain compatibility with C++ code.
      */
     public Map<String, Transducer> sections = new TreeMap<String, Transducer>();
-    
+
     /**
      * List of named prefix copy of a paradigm
      */
     private HashMap<String, HashMap<String, Integer>> prefix_paradigms = new HashMap<String, HashMap<String, Integer>>();
-    
+
     /**
      * List of named suffix copy of a paradigm
      */
@@ -122,24 +125,24 @@ public class Compile {
      * List of named endings of a suffix copy of a paradgim
      */
     private HashMap<String, HashMap<String, Integer>> postsuffix_paradigms = new HashMap<String, HashMap<String, Integer>>();
-    
+
     /**
      * Mapping of aliases of characters specified in ACX files
      */
     private HashMap<Integer, HashSet<Integer>> acx_map = new HashMap<Integer, HashSet<Integer>>();
-    
+
     /**
      * Original char being mapped
      */
     int acx_current_char;
-    
+
     /**
      * to remember the type of the XML file
      */
     String version = "";
     String encoding = "";
     Boolean standalone = false;
-    
+
     /**
      * The reader
      */
@@ -152,7 +155,8 @@ public class Compile {
      * The constructor
      */
     public Compile() {
-        alphabet = new Alphabet();
+        alphabet = new CompileAlphabet();
+        alphabet_cast00 = alphabet.cast(0,0);
     // LtLocale.tryToSetLocale();
     }
 
@@ -221,9 +225,9 @@ public class Compile {
             throw new RuntimeException("Error: An error occured parsing '" + file + "'.");
         }
     }
-    
+
     /**
-     * Write the result of compilation 
+     * Write the result of compilation
      * @param output the stream where write the result
      * @throws java.io.IOException
      */
@@ -294,7 +298,7 @@ public class Compile {
                     RegexpCompiler analyzer = new RegexpCompiler();
                     analyzer.initialize(alphabet);
                     analyzer.compile(entry.regexp);
-                    t.setEpsilon_Tag(alphabet.cast00);
+                    t.setEpsilon_Tag(alphabet_cast00);
                     e = t.insertTransducer(e, analyzer.getTransducer());
                 } else {
                     throw new RuntimeException("Error (" + reader.getLocation().getLineNumber() +
@@ -326,7 +330,7 @@ public class Compile {
                             t.linkStates(e, suffix_paradigms.get(current_section).get(paradigmName), 0);
                             e = postsuffix_paradigms.get(current_section).get(paradigmName);
                         } else {
-                            e = t.insertNewSingleTransduction(alphabet.cast00, e);
+                            e = t.insertNewSingleTransduction(alphabet_cast00, e);
                             suffix_paradigms.get(current_section).put(paradigmName, e);
                             t.setEpsilon_Tag(0);
                             e = t.insertTransducer(e, paradigms.get(paradigmName));
@@ -359,7 +363,7 @@ public class Compile {
                     RegexpCompiler analyzer = new RegexpCompiler();
                     analyzer.initialize(alphabet);
                     analyzer.compile(entry.regexp);
-                    t.setEpsilon_Tag(alphabet.cast00);
+                    t.setEpsilon_Tag(alphabet_cast00);
                     e = t.insertTransducer(e, analyzer.getTransducer());
                 } else {
                     e = matchTransduction(entry.leftSide, entry.rightSide, e, t);
@@ -388,7 +392,7 @@ public class Compile {
 
             if (pi.size() == 0 && pd.size() == 0) {
               if (DEBUG) System.err.println("e = " + t.toString());
-              state = t.insertNewSingleTransduction(alphabet.cast00, state);
+              state = t.insertNewSingleTransduction(alphabet_cast00, state);
             } else {
                 HashSet<Integer> acx_map_ptr = null;
                 int rsymbol = 0;
@@ -434,7 +438,7 @@ public class Compile {
             limdcha = pi.size();
 
             if (pi.size() == 0 && pd.size() == 0) {
-                state = t.insertNewSingleTransduction(alphabet.cast00, state);
+                state = t.insertNewSingleTransduction(alphabet_cast00, state);
             } else {
                 HashSet<Integer> acx_map_ptr = null;
                 int rsymbol = 0;
@@ -658,7 +662,7 @@ public class Compile {
             version = reader.getVersion();
             encoding = reader.getCharacterEncodingScheme();
             //System.err.println("encoding = " + encoding);
-            
+
             standalone = reader.isStandalone();
         } else if (eventType == XMLStreamConstants.END_DOCUMENT) {
           //do nothing
@@ -725,7 +729,7 @@ public class Compile {
     }
 
     /**
-     * Gets an attribute value in the current context from their name 
+     * Gets an attribute value in the current context from their name
      * @param s the name of the attribute
      * @return the value of the attribute
      */
@@ -1020,7 +1024,7 @@ public class Compile {
 
     /**
      * Force an element to be empty, and check for it
-     * @param name the element 
+     * @param name the element
      */
     private void requireEmptyError(String name) {
         //FIXME
@@ -1056,7 +1060,7 @@ public class Compile {
     }
 
     /**
-     * 
+     *
      * @param name the name of the current node
      * @param elem the name of the node until which we want to skip
      * @throws javax.xml.stream.XMLStreamException
@@ -1070,82 +1074,6 @@ public class Compile {
         XMLPrint.printNEvent(reader, 3);
         throw new RuntimeException("Error (" + reader.getLocation().getLineNumber() + ", " + reader.getLocation().getColumnNumber() +
             "): Parse error.");
-        
-    }
-  
-    /**
-     * Create a new Instance of the Compile class from a stream
-     * Was written for debugging purpose
-     * @param input the inpus stream from which to read the data
-     * @return an instance of the Compile class that contains
-     * all the data read from the input
-     * @throws java.io.IOException
-     */
-    public static Compile DEBUG_read(InputStream input) throws IOException {
-        Compile c = new Compile();
-        
-        //reading of letters 
-    	//TODO Check if there's supposed to be a new Alphabet instance here
-        c.letters = Compression.String_read(input);
-        c.alphabet = Alphabet.read(input);
-        
-        //reading of sections
-        int number_of_sections = Compression.multibyte_read(input);
-        while (number_of_sections > 0) {
-            String section_name = Compression.String_read(input);
-            Transducer t = Transducer.read(input);
-            c.sections.put(section_name,t);
-            number_of_sections--;
-        }
-        return c;
-    }
-    
-    /**
-     * Compare with another instance of the Compile class
-     * Was written for debugging purpose
-     * @param c to NewCompiler to DEBUG_compare to
-     * @return true if both compilers are similar
-     */
-    public boolean DEBUG_compare(Compile other) {
-        boolean sameAlphabet = true;
-        System.out.println("comparing this:"+this+" with other"+other);
-        if (this.alphabet.DEBUG_compare(other.alphabet)) {
-            System.out.println("the two alphabets are the same : true");
-        } else {
-            sameAlphabet = false;
-            System.out.println("the two alphabets are the NOT same:");
-            this.alphabet.display();
-            other.alphabet.display();
-            return false;
-        }
-        boolean sameTransducer = true;
-        boolean allTransducersAlike = true;
-        boolean sameSectionsNumber = true;
-        if (sections.size()!=other.sections.size()) {
-            System.out.println("the two instances of NewCompiler don't have the same number of sections");
-            sameSectionsNumber = false;
-        }
-        for (String s :sections.keySet()) {
-            if (!sections.get(s).DEBUG_compare(other.sections.get(s))) {
-                System.out.println("the transducers from section '"+s+"' are different");
-                allTransducersAlike=false;
-            } else {
-                System.out.println("the transducers from section '"+s+"' are the same");                
-            }
-            
-        }
-        System.out.println("sections de this :\n"+sections.keySet()+"\nsections de c :\n"+other.sections.keySet());
-        return (sameAlphabet&&sameSectionsNumber&&allTransducersAlike);
-    }
-    
-    public static void main(String[] a) throws Exception {
-        Compile c = DEBUG_read(new BufferedInputStream (new FileInputStream("xxx/c.bin")));
-        Compile c2 = DEBUG_read(new BufferedInputStream (new FileInputStream("xxx/c2.bin")));
-        if (c2.DEBUG_compare(c)) {
-            System.out.println("the two instances of NewCompiler are the same : true");
-        } else {
-            System.out.println("the two instances of NewCompiler are the same : false");
-        }
-        
+
     }
 }

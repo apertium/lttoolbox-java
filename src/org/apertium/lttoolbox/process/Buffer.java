@@ -21,39 +21,28 @@ package org.apertium.lttoolbox.process;
  * circular character buffer class
  * @author Raah
  */
-public class Buffer {
+class Buffer {
 
     /**
      * Buffer size.
      */
-    int size;
-    
+    private int size;
+
     /**
      * Buffer array.
      */
-    char[] buf;
-    
+    private char[] buf;
+
     /**
      * Buffer current position.
      */
-    int currentpos;
-    
+    private int currentpos;
+
     /**
      * Last position.
      */
-    int lastpos;
+    private int lastpos;
 
-    /**
-     * Copy the buffer
-     * @param b the buffer to copy
-     */
-    void copy(Buffer b) {
-        currentpos = b.currentpos;
-        lastpos = b.lastpos;
-        size = b.size;
-        buf = new char[size];
-        System.arraycopy(buf, 0, b.buf, 0, size);
-    }
 
     /**
      * Constructor
@@ -62,19 +51,11 @@ public class Buffer {
     Buffer(int buf_size) {
         if (buf_size == 0) {
             throw new RuntimeException("Error: Cannot create empty buffer.");
-
         }
         buf = new char[buf_size];
         size = buf_size;
         currentpos = 0;
         lastpos = 0;
-    }
-
-    /**
-     * Copy constructor.
-     */
-    Buffer(Buffer b) {
-        copy(b);
     }
 
     /**
@@ -148,20 +129,6 @@ public class Buffer {
     }
 
     /**
-     * Return the range size between the buffer current position and a
-     * outside stored given position that is following to the current
-     * @param postpos the given position.
-     * @return the range size.
-     */
-    int diffPostPos(int postpos) {
-        if (postpos >= currentpos) {
-            return postpos - currentpos;
-        } else {
-            return postpos + size - currentpos;
-        }
-    }
-
-    /**
      * Checks the buffer for emptyness.
      * @return true if the buffer is empty.
      */
@@ -179,20 +146,5 @@ public class Buffer {
         } else {
             currentpos = size - (posback - currentpos);
         }
-    }
-
-    /**
-     * Computes a string representation of the buffer
-     * @return the string representation of the buffer
-     */
-    @Override
-    public String toString() {
-        StringBuffer sb = new StringBuffer();
-    	sb.append("content : ");
-        for (int i = 0; i < buf.length; i++) {
-            sb.append(buf[i]);
-        }
-        sb.append(", lastpos : " + lastpos + ", currentpos : " + currentpos);
-        return sb.toString();
     }
 }

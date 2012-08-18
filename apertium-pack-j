@@ -1,0 +1,156 @@
+#!/bin/bash
+###############################################################################
+###############################################################################
+###############################################################################
+#############    UNCOMMENT AND SET THE CORRECT PATHS FOR YOUR     #############
+#############    ANDROID-SDK AND LTTOOLBOX-JAVA INSTALLATIONS     #############
+###############################################################################
+#LTTOOLBOX_JAVA_PATH="/path/to/your/lttoolbox.jar"
+#ANDROID_SDK_PATH="/path/to/your/android-sdk-linux"
+###############################################################################
+###############################################################################
+#############         For instance, in my particular case         #############
+#############      this would be the correct configuration:       #############
+###############################################################################
+#LTTOOLBOX_JAVA_PATH="/usr/local/share/apertium/lttoolbox.jar"
+#ANDROID_SDK_PATH="/home/mikel/developer/android-sdk-linux"
+###############################################################################
+###############################################################################
+###############################################################################
+
+
+if [ $# = 0 ] || [ $1 = --help ] ; then
+	echo "USAGE: apertium-pack-j modefile..."
+	echo -e "  modefile\tmode file(s) for which to create the package(s)" 
+	exit
+fi
+if [ -z "$LTTOOLBOX_JAVA_PATH" ] ; then
+	# Try the standard location
+	LTTOOLBOX_JAVA_PATH="/usr/local/share/apertium/lttoolbox.jar"
+fi
+if [ -z "$LTTOOLBOX_JAVA_PATH" ] || [ ! -e $LTTOOLBOX_JAVA_PATH ] ; then
+	echo "Specify the correct path for your lttoolbox-java installation as follows:"
+	echo -e "\texport LTTOOLBOX_JAVA_PATH=\"/path/to/your/lttoolbox.jar\""
+	echo "To permanently save the path, you can edit this script (instructions inside)"
+	exit
+fi
+if [ -z "$ANDROID_SDK_PATH" ] || [ ! -e $ANDROID_SDK_PATH ] ; then
+	echo "Specify the correct path for your android-sdk installation as follows:"
+	echo -e "\texport ANDROID_SDK_PATH=\"/path/to/your/android-sdk-linux\""
+	echo "To permanently save the path, you can edit this script (instructions inside)"
+	exit
+fi
+
+
+PACK_ID=`echo ${1//*\/}`
+PACK_ID=`echo ${PACK_ID%.*}`
+JAR_FILE=`echo apertium-${PACK_ID%.*}.jar`
+
+CURRENT_DIR=$( pwd )
+TEMP_DIR=$( mktemp -d )
+trap "{ cd $CURRENT_DIR ; rm -rf $TEMP_DIR; }" INT TERM EXIT
+
+cd $TEMP_DIR
+mkdir transfer_classes
+mkdir data
+mkdir data/modes
+cp $LTTOOLBOX_JAVA_PATH $JAR_FILE
+
+for MODE_FILE in "$@"
+do
+	cd $CURRENT_DIR
+	if [ ! -e $MODE_FILE ] ; then
+		echo "$MODE_FILE: File not found. Skipping..."
+		cd $TEMP_DIR
+		continue
+	fi
+	if [[ ! $MODE_FILE = *.mode ]] ; then
+		echo "$MODE_FILE: Invalid mode file (you must use Apertium .mode files). Skipping..."
+		cd $TEMP_DIR
+		continue
+	fi
+	MODE_CONTENT=`cat $MODE_FILE`
+	OLD_IFS="$IFS"
+	IFS="|"
+	PROGRAM_ARRAY=( $MODE_CONTENT )
+	IFS="$OLD_IFS"
+	cd $TEMP_DIR
+
+	NEW_MODE_FILE=data/modes/`echo ${MODE_FILE//*\/}`
+
+	FIRST_PROGRAM=true
+	for PROGRAM in "${PROGRAM_ARRAY[@]}"
+	do
+		if $FIRST_PROGRAM; then
+			FIRST_PROGRAM=false
+		else
+			echo -n " |" >> $NEW_MODE_FILE
+		fi
+		FIRST_ARG=true
+		TRANSFER_FILE_EXPECTED=false
+		for ARG in $PROGRAM
+		do
+			if $FIRST_ARG; then
+				FIRST_ARG=false
+				echo -n " ${ARG//*\/}" >> $NEW_MODE_FILE
+				if [[ ${ARG//*\/} == apertium-transfer || ${ARG//*\/} == apertium-interchunk || ${ARG//*\/} == apertium-postchunk ]]; then
+					TRANSFER_FILE_EXPECTED=true
+				fi
+			elif [[ $ARG == -* || $ARG == \$* ]] ; then
+				echo -n " $ARG" >> $NEW_MODE_FILE
+			else
+				if $TRANSFER_FILE_EXPECTED; then
+					TRANSFER_FILE_EXPECTED=false
+					CLASS_NAME=${ARG//*\/}
+					CLASS_NAME=${CLASS_NAME//./_}
+					CLASS_NAME=${CLASS_NAME//-/_}.class
+					java -Dlttoolbox.jar=$JAR_FILE -client -Dfile.encoding=UTF-8 -jar $JAR_FILE apertium-preprocess-transfer-bytecode-j $ARG transfer_classes/$CLASS_NAME
+					zip $JAR_FILE transfer_classes/$CLASS_NAME
+				fi
+				TEMP_FILE=data/${ARG//*\/}
+				echo -n " $TEMP_FILE" >> $NEW_MODE_FILE
+				cp $ARG $TEMP_FILE
+				zip $JAR_FILE $TEMP_FILE
+			fi
+		done
+	done
+
+	zip $JAR_FILE $NEW_MODE_FILE
+
+	echo $NEW_MODE_FILE >> modes
+done
+
+if [ ! -e modes ] ; then
+	echo "Nothing to do!"
+	exit
+fi
+
+zip -j $JAR_FILE modes
+
+#Convert to Dalvik bytecode for Android
+$ANDROID_SDK_PATH/platform-tools/dx --dex --verbose --output classes.dex transfer_classes/*
+zip $JAR_FILE classes.dex
+
+#Delete unnecessary classes for runtime
+zip -d $JAR_FILE org/apertium/transfer/old/* org/apertium/transfer/generation/* org/apertium/charlifter/* Playground.class Profiling.class acx.xsd dix.xsd
+
+#Create the README file
+echo >  README "Content of the package:"
+echo >> README
+echo >> README "- data/ -> This directory contains the language pair itself. You could extract it and use with your local installation of Apertium."
+echo >> README
+echo >> README "- transfer_classes/ -> This directory contains the Java bytecode classes for transfer. This is only used when using the package from standard Java so, if you are going to use it exclusively from Android, you can delete it."
+echo >> README
+echo >> README "- org/ -> This directory contains the lttoolbox-java engine, which makes the package self-executable. If you are not interested on this feature (for instance, because you are going to use the package exclusively from Android), you can delete it."
+echo >> README
+echo >> README "- META-INF/ -> Contains the MANIFEST.MF of this Jar, which is used by Java. It takes a few bytes and can rarely be removed, so please don't touch it unless you know what you are doing."
+echo >> README
+echo >> README "- classes.dex -> Dalvik bytecode of the transfer classes, used by Android instead of the standard Java bytecode classes at transfer_classes. If you are not going to use the package from Android, you can delete it."
+echo >> README
+echo >> README "- modes -> This simply lists the path of the available modes inside the package, and its used by lttoolbox-java. It takes a few bytes and can rarely be removed, so please don't touch it unless you know what you are doing."
+echo >> README
+echo >> README "- README -> This readme file."
+zip $JAR_FILE README
+
+
+mv $JAR_FILE $CURRENT_DIR

@@ -99,7 +99,7 @@ public class Profiling {
       Transfer t;
 
       //Class transferClass =org.apertium.transfer.generated.apertium_eo_en_en_eo_t1x.class;
-      Class transferClass =org.apertium.transfer.generated.apertium_en_ca_en_ca_t1x.class;
+      Class transferClass =org.apertium.transfer.old.generated.apertium_en_ca_en_ca_t1x.class;
 
       t = new Transfer();
 //      t.read(transferClass, tdir+"en-eo.t1x.bin", tdir+"en-eo.autobil.bin");

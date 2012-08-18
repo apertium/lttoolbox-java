@@ -45,12 +45,12 @@ public class Transducer {
      * Initial state
      */
     Integer initial;
-    
+
     /**
      * tag for epsilon transitions
      */
     Integer epsilon_tag  = 0;
-        
+
     /**
      * Final state set
      */
@@ -88,7 +88,7 @@ public class Transducer {
         transitions.clear();
         initial = newState();
     }
-    
+
     /**
      * Check if the transducer is empty
      * @return true if the transducer is empty
@@ -107,7 +107,7 @@ public class Transducer {
         reverse();
         determinize();
      }
-      
+
     /**
      * Returns the initial state of a transducer
      * @return the initial state identifier
@@ -171,7 +171,7 @@ public class Transducer {
     public Transducer() {
         initial = newState();
     }
-    
+
     /**
      * Creates a new Transducer object by copying the one passed in.
      * @param t - The Transducer object to copy.
@@ -179,7 +179,7 @@ public class Transducer {
     public Transducer(Transducer t) {
     	copy(t);
     }
-    
+
     /**
      * Copies the passed-in Transducer object to this one.
      * @param t - The Transducer object to copy.
@@ -192,7 +192,7 @@ public class Transducer {
 
     /**
      * Insertion of a single transduction, creating a new target state
-     * if needed  
+     * if needed
      * @param tag the tag of the transduction being inserted
      * @param source the source state of the new transduction
      * @return the target state
@@ -255,7 +255,7 @@ public class Transducer {
      * @param source the source state
      * @param t the transducer being inserted
      * @return the new target state
-     */    
+     */
     Integer insertTransducer(Integer source, Transducer t) {
 
         // base of node translation
@@ -281,7 +281,7 @@ public class Transducer {
         int untranslated_final = t.finals.firstInt();
         return first_state + untranslated_final;
     }
-    
+
     /**
      * Computes the number of transitions of a transducer
      * @return the number of transitions
@@ -493,7 +493,7 @@ public class Transducer {
     }
 
     /**
-     * Make a transducer cyclic (link final states with initial state with 
+     * Make a transducer cyclic (link final states with initial state with
      * empty transductions)
      */
     void oneOrMore() {
@@ -531,7 +531,7 @@ public class Transducer {
      */
     private void reverse() {
         joinFinals();
-        
+
         ArrayList<Map<Integer, IntSet>> result = new ArrayList<Map<Integer, IntSet>>();
 
 //        for (Map.Entry<Integer, Map<Integer, Set<Integer>>> it : transitions.entrySet()) {
@@ -742,7 +742,7 @@ public class Transducer {
 
 
         //System.err.println("t.initial  = " + t.initial );
-        
+
         //reading the final states
         int base = 0;
         for (int i = Compression.multibyte_read(input); i > 0; i--) {
@@ -793,12 +793,7 @@ public class Transducer {
             Compression.multibyte_write(it - base, output);
             base = it;
          }
-/*
-        for (Integer it : finals) {
-            Compression.multibyte_write(it - base, output);
-            base = it;
-        }
-*/
+
         base = transitions.size();
         Compression.multibyte_write(base, output);
         for(int itFirst=0; itFirst<transitions.size(); itFirst++) {
@@ -822,5 +817,4 @@ public class Transducer {
             }
         }
     }
-
 }

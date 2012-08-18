@@ -12,7 +12,7 @@ import java.util.HashSet;
  *
  * @author Jacob Nordfalk
  */
-public final class SetOfCharacters {
+final class SetOfCharacters {
   /** Limit on when to fall back on a slower HashSet<Character> */
   private static final int LIMIT = 255;
   final boolean[] set = new boolean[LIMIT];

@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2005 Universitat d'Alacant / Universidad de Alicante
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
@@ -22,8 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.apertium.lttoolbox.Alphabet;
-import org.apertium.transfer.MatchExe;
-import org.apertium.transfer.MatchState;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.Reader;
@@ -143,39 +141,39 @@ public class MorphoStream {
         }
 
         int symbol = inputReader.read();
-        /* The mark() function takes an int argument that is the number of bytes 
-         * that can be read before the mark is invalidated. Supplying an argument of 0 
-         * is pretty much useless, in other words. ^^; That really should be 1, because 
+        /* The mark() function takes an int argument that is the number of bytes
+         * that can be read before the mark is invalidated. Supplying an argument of 0
+         * is pretty much useless, in other words. ^^; That really should be 1, because
          * we're only going to try and read one byte before calling reset().
-         * 
-         * However, that's a moot point though, because of a line in the documentation 
-         * for reset(): "The method reset for class InputStream  does nothing except throw 
-         * an IOException." In other words, expecting the reset() method to work on a 
-         * generic InputStream object is not type-safe, and will likely fail. Even though 
-         * there's a "markSupported()" method, the program logic at that point depends on 
+         *
+         * However, that's a moot point though, because of a line in the documentation
+         * for reset(): "The method reset for class InputStream  does nothing except throw
+         * an IOException." In other words, expecting the reset() method to work on a
+         * generic InputStream object is not type-safe, and will likely fail. Even though
+         * there's a "markSupported()" method, the program logic at that point depends on
          * being able to mark and reset the pointer like that.
-         * 
+         *
          * Thus the while() loop below was slightly changed to remove the need to reset
          * the read pointer.
-         * 
+         *
          * However, the issue is with trying to duplicate the behavior of the code in
          * the C++ version, which uses feof() to check for end of file.
-         * 
+         *
          * The issue is that all it does is check to see if the eof flag has been set
          * on the stream yet, which would only be set once a read call that reaches eof
          * has been made. Which means that the next read call would set eof, but feof
          * would still return false because that hasn't happened yet.
-         * 
+         *
          * Testing for end_of_file && symbol == -1 does keep it from exiting prematurely,
          * but sticks us in an infinit loop, so an additional test needs to be added. The
          * member variable "foundEOF" wasn't actually being used for anything, so I
-         * co-opted it for this use. 
+         * co-opted it for this use.
          */
         if(end_of_file || (symbol == -1 && foundEOF)) {
             if(DEBUG) System.out.println("MorphoStream.get_next_word: EOF reached, returning NULL.");
             return null;
         }
-        
+
         /* Set this after that test above so that it doesn't exit prematurely, but we
          * aren't stuck in an infinite loop, either.
          */
@@ -245,8 +243,8 @@ public class MorphoStream {
 
             }
             /* Moved this down to here, to allow for read before initial run of loop.
-             * Will effectively still be run in the same order as before, just won't be 
-             * called at the beginning of the first iteration of the loop. 
+             * Will effectively still be run in the same order as before, just won't be
+             * called at the beginning of the first iteration of the loop.
              */
             symbol = inputReader.read();
         }
@@ -377,7 +375,7 @@ public class MorphoStream {
             if (ms.size() == 0) {
                 if (last_pos != floor) {
                     if(DEBUG) {
-                        System.out.println("MorphoStream.lrlmclassify -- floor: " + 
+                        System.out.println("MorphoStream.lrlmclassify -- floor: " +
                                 floor);
                         System.out.println("MorphoStream.lrlmclassify -- last_pos: " +
                                 last_pos);
@@ -386,9 +384,9 @@ public class MorphoStream {
                             str.substring(floor, last_pos + 1),
                             td.getPreferRules());
                     if (str.charAt(last_pos + 1) == '+' && last_pos + 1 < limit) {
-                        if(DEBUG) { 
+                        if(DEBUG) {
                             System.out.println(
-                                    "MorphoStream.lrlmClassify -- plus cut, word added: " + 
+                                    "MorphoStream.lrlmClassify -- plus cut, word added: " +
                                     str.substring(floor, last_pos + 1));
                         }
                         floor = last_pos + 1;
@@ -419,7 +417,7 @@ public class MorphoStream {
             } else if (i == (limit - 1)) {
             	if (ms.classifyFinals() == -1) {
             		if (last_pos != floor) {
-            			vwords.get(ivwords).add_tag(last_type, 
+            			vwords.get(ivwords).add_tag(last_type,
             					str.substring(floor, last_pos), td.getPreferRules());
             			if(str.charAt(last_pos + 1) == '+' && last_pos + 1 < limit) {
             				floor = last_pos + 1;
@@ -437,7 +435,7 @@ public class MorphoStream {
             				System.err.println("Warning: There is no coarse tag for the fine tag '" + str.substring(floor) + "'");
             				System.err.println("         This is because of an incomplete tageset definition or a dictionary error");
             			}
-            			vwords.get(ivwords).add_tag(ca_tag_kundef, 
+            			vwords.get(ivwords).add_tag(ca_tag_kundef,
             					str.substring(floor), td.getPreferRules());
             			return;
             		}
@@ -457,7 +455,7 @@ public class MorphoStream {
         // this line was missing -- no, it was just misplaced
         //   vwords[ivwords]->add_tag(val, str.substr(floor), td->getPreferRules());
         tw = vwords.get(ivwords);
-        if(DEBUG) { 
+        if(DEBUG) {
             System.out.println("add_tag called at the end of lrlmClassify.");
             System.out.println("end of lrlmClassify -- floor: " + floor);
         }

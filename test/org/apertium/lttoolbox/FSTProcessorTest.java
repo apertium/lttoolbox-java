@@ -21,7 +21,7 @@ public class FSTProcessorTest extends TestCase {
 
   public void test_biltrans() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
-      fstp.load(new BufferedInputStream(new FileInputStream("testdata/bilingual/eo-en.autobil.bin")));
+      fstp.load("testdata/bilingual/eo-en.autobil.bin");
       fstp.initBiltrans();
 
       String res = fstp.biltrans("^domo<n><sg>$", true);
@@ -40,7 +40,7 @@ lt-comp rl apertium-eo-en.eo-en.dix en-eo.autobil.bin
 
   public void test_biltrans2() throws IOException {
       FSTProcessor fstp = new FSTProcessor();
-      fstp.load(new BufferedInputStream(new FileInputStream("testdata/bilingual/en-eo.autobil.bin")));
+      fstp.load("testdata/bilingual/en-eo.autobil.bin");
       fstp.initBiltrans();
 
       assertEquals("^domo<n><sg>$", fstp.biltrans("^house<n><sg>$", true));;

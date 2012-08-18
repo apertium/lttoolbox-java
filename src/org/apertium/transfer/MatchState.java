@@ -48,32 +48,17 @@ public class MatchState {
 
   private static int BUF_LIMIT = 1024;
 
-  /** Copy of node list from MatchExe.
-   * @see MatchExe
-   */
-  int[][] node_list;
+  MatchExe me;
 
 
   public MatchState(MatchExe me) {
-    node_list = me.node_list;
+    this.me = me;
     first = last = 0;
     state = new int[BUF_LIMIT];
   }
 
-  public MatchState(MatchState s) {
-    _copy(s);
-  }
-
   public void clear() {
     first = last = 0;
-  }
-
-  private void _copy(MatchState s) {
-    System.arraycopy(s.state, 0, state, 0, BUF_LIMIT);
-    //XXX - Does this need to be arraycopy'd as well?
-    node_list = s.node_list;
-    first = s.first;
-    last = s.last;
   }
 
   public int size() {
@@ -87,11 +72,12 @@ public class MatchState {
   }
 
   private void applySymbol(int pnode, int symbol) {
-    /* pnode is the node ID. 
+    /* pnode is the node ID.
      * symbol is the input symbol to search for.
      * node pulls out the list from node_list to make it easier to access.
      */
-    int[] node = node_list[pnode];
+    int[] node = me.loadNode(pnode);
+    if (node==null) return;
 
     /* Search through the list of transitions from pnode to the input symbol.
      * The step is 2 because of the format of the node list, see the
@@ -101,9 +87,9 @@ public class MatchState {
       if (node[i]==symbol) { //If the input symbol was found
         int aux = node[i+1]; //Grab that symbol's node id
         state[last] = aux; //store that node id
-        last = (last + 1) % BUF_LIMIT; 
+        last = (last + 1) % BUF_LIMIT;
         //increment last by 1 up to BUF_LIMIT, then wrap back around to zero.
-        break; 
+        break;
       }
     }
   }
@@ -113,11 +99,11 @@ public class MatchState {
   public void step(int input) {
     if (DEBUG) System.out.println("step "+input);
     //Store the current end of the buffer, as the applySymbol calls will advance it.
-    int mylast = last; 
+    int mylast = last;
     /* Loop through each node in the state buffer from first to the old last
      * looking for transitions from each of those states to the input symbol.
      * By having i != mylast as the test, and using the % BUF_LIMIT, we can start
-     * in the middle of the buffer somewhere, go to the end, wrap around to the 
+     * in the middle of the buffer somewhere, go to the end, wrap around to the
      * beginning, and continue searching.
      */
     for (int i = first; i != mylast; i = (i + 1) % BUF_LIMIT) {
@@ -147,19 +133,11 @@ public class MatchState {
   public int classifyFinals() {
     int result = Integer.MAX_VALUE;
     /* This iterates from the first element to the last element, wrapping around
-     * from the end of the buffer to the beginning, if necessary. 
+     * from the end of the buffer to the beginning, if necessary.
      */
     for (int i = first; i != last; i = (i + 1) % BUF_LIMIT) {
-      int[] node = node_list[state[i]];
-
-      //System.err.println("2node["+i+"] state = " + state[i]);
-      /* If this is a final node, it will have an uneven number of entries.
-       * Because a final symbol doesn't have a target ID.
-       * node.length % 2 will equal 1 when the number of entries is uneven.
-       */
-      if (node.length % 2 == 1) {
-        result = Math.min(result, node[node.length-1]); // last elem is the value
-      }
+      short symbol = me.final_state_to_symbol[state[i]];
+      if (symbol!=0) result = Math.min(result, symbol);
     }
     result = (result < Integer.MAX_VALUE) ? result : (-1);
 

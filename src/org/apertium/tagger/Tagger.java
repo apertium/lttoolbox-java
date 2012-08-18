@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2005 Universitat d'Alacant / Universidad de Alicante
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
@@ -27,6 +27,8 @@ import static org.apertium.utils.IOUtils.openOutFileWriter;
 import java.util.List;
 import java.util.ArrayList;
 import java.io.*;
+import java.lang.ref.SoftReference;
+import java.util.HashMap;
 
 import org.apertium.lttoolbox.Getopt;
 
@@ -65,7 +67,21 @@ public class Tagger {
 
     //Low-level dev debugging
     private static boolean DEBUG = false;
-    
+
+
+    private static HashMap<String, SoftReference<TaggerData>> cache = new HashMap<String, SoftReference<TaggerData>>();
+    private static boolean cacheEnabled = false;
+
+    public static void setCacheEnabled(boolean enabled) {
+        cacheEnabled = enabled;
+        if (!enabled) clearCache();
+    }
+
+    public static void clearCache() {
+        cache.clear();
+    }
+
+
     Tagger() {
         debug = false;
         showSF = false;
@@ -86,9 +102,9 @@ public class Tagger {
         int mode = UNKNOWN_MODE;
 
         MyGetOpt getopt = new MyGetOpt(argv, "mdtsrgpefhz");
-        
+
         /* Reset TaggerWord.generate_marks to false in case a previous invocation set it
-         * to true. This shows up when doing tests, as the static variables retain their 
+         * to true. This shows up when doing tests, as the static variables retain their
          * states between tests. This also may show up when in pipeline mode, if tagger
          * is called more than once for some reason.
          */
@@ -175,10 +191,10 @@ public class Tagger {
                 e.printStackTrace();
             }
         }
-        
+
         if(DEBUG) {
             System.out.println("Tagger.getMode -- argv.length: " + argv.length +
-                    ", getopt.getOptind: " + getopt.getOptind() + 
+                    ", getopt.getOptind: " + getopt.getOptind() +
                     ", mode: " + mode);
         }
         switch (argv.length - getopt.getOptind()) {
@@ -275,8 +291,8 @@ public class Tagger {
     public static void taggerDispatch(String[] args) {
         taggerDispatch(args, null, null);
     }
-    
-    public static void taggerDispatch(String[] args, Reader input, 
+
+    public static void taggerDispatch(String[] args, Reader input,
             Writer output) {
         Tagger t = new Tagger();
         int mode = t.getMode(args);
@@ -323,30 +339,35 @@ public class Tagger {
                 break;
         }
     }
-    
+
     public static void main(String[] argv) {
         taggerDispatch(argv);
     }
 
-    void tagger(boolean mode_first, Reader input, Writer output) 
+    void tagger(boolean mode_first, Reader input, Writer output)
             throws IOException {
 
-        InputStream ftdata = openInFileStream(filenames.get(0));
+        TaggerData td = null;
 
-        TaggerData td = new TaggerData();
-
-        td.read(ftdata);
-
-        ftdata.close();
+        SoftReference<TaggerData> ref = cache.get(filenames.get(0));
+        if (ref != null) td = ref.get(); // there was a soft ref, get the contents
+        if (td == null) { // contents might be null if it wasn't cached or it has been was garbage collected
+            InputStream ftdata = openInFileStream(filenames.get(0));
+            td = new TaggerData();
+            td.read(ftdata);
+            ftdata.close();
+            if (cacheEnabled)
+                cache.put(filenames.get(0), new SoftReference<TaggerData>(td));
+        }
 
         HMM hmm = new HMM(td);
 
         hmm.set_show_sf(showSF);
         hmm.setNullFlush(null_flush);
-        
+
         Reader sysInReader = getStdinReader();
         Writer sysOutWriter = getStdoutWriter();
-        
+
         //If input or output provided, ignore input/output files on command line
         if(input != null || output != null) {
             if(input == null) { input = sysInReader; }
@@ -374,11 +395,11 @@ public class Tagger {
     void tagger() throws IOException {
         tagger(false);
     }
-    
+
     void tagger(boolean mode_first) throws IOException {
         tagger(mode_first, null, null);
     }
-    
+
     void tagger(Reader input, Writer output) throws IOException {
         tagger(false, input, output);
     }

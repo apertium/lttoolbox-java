@@ -23,6 +23,7 @@ import static org.apertium.utils.IOUtils.readFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import org.apertium.Translator;
 
 /**
  * @author Stephen Tigner
@@ -49,4 +50,14 @@ public class Mode {
     public int getPipelineLength() {
         return _pipeline.size();
     }
+
+    public String getFilename() {
+        return _filename;
+    }
+
+    @Override
+    public String toString() {
+        return Translator.getTitle(_filename.substring(_filename.lastIndexOf('/') + 1, _filename.endsWith(".mode")? _filename.length() - 5 : _filename.length()));
+    }
+
 }

@@ -18,6 +18,7 @@
  */
 
 package org.apertium.tagger;
+import java.io.DataInputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -90,7 +91,7 @@ public class TaggerData {
     	constants =  new ConstantManager(o.constants);
     	plist = new PatternList(o.plist);
     }
-    
+
     Set<Integer> getOpenClass () {
         return open_class;
     }
@@ -147,7 +148,7 @@ public class TaggerData {
     void setPreferRules (List<String> a) {
         prefer_rules = a;
     }
-    
+
     public void read (InputStream in) throws IOException {
       // open class
       int val = 0;
@@ -157,7 +158,7 @@ public class TaggerData {
       }
 
 			//if (DEBUG) System.out.println("open_class = " + open_class);
-   
+
       // forbid_rules
       for (int i = Compression.multibyte_read(in); i != 0; i--) {
           TForbidRule aux = new TForbidRule();
@@ -181,7 +182,7 @@ public class TaggerData {
           String tmp = Compression.String_read(in);
           tag_index.put(tmp, Compression.multibyte_read(in));
       }
-  
+
       // enforce_rules
       for (int i = Compression.multibyte_read(in); i != 0; i--) {
           TEnforceAfterRule aux = new TEnforceAfterRule();
@@ -211,18 +212,16 @@ public class TaggerData {
 			if (DEBUG) System.out.println("N = " + N);
 			if (DEBUG) System.out.println("M = " + M);
 
-      a = new double[N][];
-      b = new double[N][];
-      for (int i = 0; i != N; i++) {
-          a[i] = new double[N];
-          b[i] = new double[M];
-      }
-   
+      a = new double[N][N];
+      b = new double[N][M];
+
       // readDouble a
+      DataInputStream indata = new DataInputStream(in);
       for (int i = 0; i != N; i++) {
           for (int j = 0; j != N; j++) {
-              a[i][j] = Compression.readDouble(in);
-              /*if(DEBUG) { 
+              //a[i][j] = Compression.readDouble(in);
+              a[i][j] = indata.readDouble();
+              /*if(DEBUG) {
                   System.out.println("a[" + i + "][" + j +"] = " + a[i][j]);
                   System.out.flush();
               }*/
@@ -242,8 +241,8 @@ public class TaggerData {
       for (; nval != 0; nval--) {
           int i = Compression.multibyte_read(in);
           int j = Compression.multibyte_read(in);
-          b[i][j] = Compression.readDouble(in);
-          /*if(DEBUG) { 
+          b[i][j] = indata.readDouble(); // Compression.readDouble(in);
+          /*if(DEBUG) {
               System.out.println("b[" + i + "][" + j +"] = " + b[i][j]);
               System.out.flush();
           }*/
@@ -251,7 +250,7 @@ public class TaggerData {
 
       // readDouble pattern list
       plist.read(in);
-    
+
       // readDouble discards on ambiguity
 			discard.clear();
 
@@ -260,7 +259,7 @@ public class TaggerData {
       if (limit < 0) { // EOF ?
           return;
       }
-  
+
       for (int i = 0; i < limit; i++) {
           discard.add(Compression.String_read(in));
       }

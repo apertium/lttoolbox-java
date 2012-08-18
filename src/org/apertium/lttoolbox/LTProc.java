@@ -17,17 +17,17 @@ package org.apertium.lttoolbox;
  * 02111-1307, USA.
  */
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.io.Writer;
+import java.lang.ref.SoftReference;
+import java.nio.ByteBuffer;
+import java.util.HashMap;
 import org.apertium.CommandLineInterface;
-import static org.apertium.utils.IOUtils.getStdinReader;
-import static org.apertium.utils.IOUtils.getStdoutWriter;
-import static org.apertium.utils.IOUtils.openInFileReader;
-import static org.apertium.utils.IOUtils.openOutFileWriter;
-import static org.apertium.utils.IOUtils.openInFileStream;
-
 import org.apertium.lttoolbox.process.FSTProcessor;
-import java.io.*;
-
 import org.apertium.lttoolbox.process.State;
+import static org.apertium.utils.IOUtils.*;
 
 // Use GNU Getopt
 
@@ -43,10 +43,25 @@ class MyGetOpt extends Getopt {
 }
 
 /**
- * 
+ *
  * @author Raah
  */
 public class LTProc {
+
+
+
+    private static HashMap<String, SoftReference<FSTProcessor>> cache = new HashMap<String, SoftReference<FSTProcessor>>();
+    private static boolean cacheEnabled = false;
+
+    public static void setCacheEnabled(boolean enabled) {
+        cacheEnabled = enabled;
+        if (!enabled) clearCache();
+    }
+
+    public static void clearCache() {
+        cache.clear();
+    }
+
 
 
     static void endProgram(String name) {
@@ -84,11 +99,11 @@ public class LTProc {
 
     public static void main(String[] argv) throws Exception {
         System.setProperty("file.encoding", "UTF-8");
-        
+
         doMain(argv, null, null);
     }
-    
-    public static void doMain(String[] argv, Reader input, Writer output) 
+
+    public static void doMain(String[] argv, Reader input, Writer output)
             throws IOException {
 
         if (argv.length == 0) {
@@ -98,7 +113,12 @@ public class LTProc {
         final int argc = argv.length;
 
         int cmd = 'a';
-        FSTProcessor fstp = new FSTProcessor();
+
+        boolean caseSensitiveMode = false;
+        boolean flagMatchMode = false;
+        boolean showControlSymbols = false;
+        boolean dictionaryCase = false;
+        boolean nullFlush = false;
 
         MyGetOpt getopt = new MyGetOpt(argv, "DSacdefgndpstwzvh");
 
@@ -112,15 +132,15 @@ public class LTProc {
 
                 switch (c) {
                     case 'c':
-                        fstp.setCaseSensitiveMode(true);
+                        caseSensitiveMode = true;
                         break;
 
                     case 'f':
-                        fstp.setFlagMatchMode(true);
+                        flagMatchMode = true;
                         break;
 
                     case 'S':
-                        fstp.setShowControlSymbols(true);
+                        showControlSymbols = true;
                         break;
 
                     case 'D':
@@ -141,11 +161,11 @@ public class LTProc {
                         break;
 
                     case 'w':
-                        fstp.setDictionaryCase(true);
+                        dictionaryCase = true;
                         break;
 
                     case 'z':
-                        fstp.setNullFlush(true);
+                        nullFlush = true;
                         break;
 
                     case 'v':
@@ -163,7 +183,7 @@ public class LTProc {
                 endProgram("LTProc");
             }
         }
-        
+
         boolean pipelineMode = false;
 
         if(input != null || output != null) {
@@ -179,60 +199,35 @@ public class LTProc {
         }
 
         int optind = getopt.getOptind()-1;
-        //System.out.println("optind="+optind+"  "+argv.length);
-        if (optind == (argc - 4) && !pipelineMode) { 
-            //Both input and output files specified, and not in pipeline mode
-
-            InputStream in = openInFileStream(argv[optind + 1]);
-            if (in == null) {
-                endProgram("LTProc");
-            }
-
-            input = openInFileReader(argv[optind + 2]);
-            if (input == null) {
-                endProgram("LTProc");
-            }
-
-            output = openOutFileWriter(argv[optind + 3]);
-            if (output == null) {
-                endProgram("LTProc");
-            }
-
-            fstp.load(in);
-            in.close();
-        } else if (optind == (argc - 3) && !pipelineMode) { 
-            //Only input file specified, and not in pipeline mode
-            InputStream in = openInFileStream(argv[optind + 1]);
-            if (in == null) {
-                endProgram("LTProc");
-            }
-
-            input = openInFileReader(argv[optind + 2]);
-            if (input == null) {
-                endProgram("LTProc");
-            }
-
-            fstp.load(in);
-            in.close();
-
+        if (optind == (argc - 4) && !pipelineMode) { //Both input and output files specified, and not in pipeline mode
+            if ((input = openInFileReader(argv[optind + 2])) == null) endProgram("LTProc");
+            if ((output = openOutFileWriter(argv[optind + 3])) == null) endProgram("LTProc");
+        } else if (optind == (argc - 3) && !pipelineMode) { //Only input file specified, and not in pipeline mode
+            if ((input = openInFileReader(argv[optind + 2])) == null) endProgram("LTProc");
         } else { //Neither file specified, or in pipeline mode
-
-            if(input == null) { //Only assign if it hasn't been assigned yet
-                input = getStdinReader();
-            }
-
-            if (optind == (argc - 2)) {
-                final String filename = argv[optind + 1];
-                InputStream in = openInFileStream(filename);
-                if (in == null) {
-                    endProgram("LTProc");
-                }
-                fstp.load(in);
-                in.close();
-            } else {
-                endProgram("LTProc");
-            }
+            if (input == null) input = getStdinReader(); //Only assign if it hasn't been assigned yet
+            if (optind != (argc - 2)) endProgram("LTProc");
         }
+
+        FSTProcessor fstp = null;
+
+        final String filename = argv[optind + 1];
+        SoftReference<FSTProcessor> ref = cache.get(filename);
+        if (ref != null) fstp = ref.get(); // there was a soft ref, get the contents
+        if (fstp == null) { // contents might be null if it wasn't cached or it has been was garbage collected
+            ByteBuffer in = openFileAsByteBuffer(filename);
+            //never happens if (in == null) endProgram("LTProc");
+            fstp = new FSTProcessor();
+            fstp.load(in);
+            if (cacheEnabled)
+                cache.put(filename, new SoftReference<FSTProcessor>(fstp));
+        }
+
+        fstp.setCaseSensitiveMode(caseSensitiveMode);
+        fstp.setFlagMatchMode(flagMatchMode);
+        fstp.setShowControlSymbols(showControlSymbols);
+        fstp.setDictionaryCase(dictionaryCase);
+        fstp.setNullFlush(nullFlush);
 
         try {
             switch (cmd) {
@@ -308,7 +303,7 @@ public class LTProc {
 
         input.close();
         output.close();
-        
+
     }
 
 }

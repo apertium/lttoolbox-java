@@ -27,7 +27,7 @@ public class Program {
     
     public enum ProgEnum {
         LT_PROC, TAGGER, PRETRANSFER, TRANSFER, INTERCHUNK, POSTCHUNK,
-        TXT_DEFORMAT, TXT_REFORMAT, UNKNOWN
+        TXT_DEFORMAT, TXT_REFORMAT, OMEGAT_DEFORMAT, OMEGAT_REFORMAT, UNKNOWN
     }
     
     //Each program has a "name" which is a command line.
@@ -80,6 +80,10 @@ public class Program {
             _program = ProgEnum.TXT_DEFORMAT;
         } else if(_commandName.matches("^apertium-retxt(-j)?$")) {
             _program = ProgEnum.TXT_REFORMAT;
+        } else if(_commandName.matches("^apertium-desomegat(-j)?$")) {
+            _program = ProgEnum.OMEGAT_DEFORMAT;
+        } else if(_commandName.matches("^apertium-reomegat(-j)?$")) {
+            _program = ProgEnum.OMEGAT_REFORMAT;
         } else {
             _program = ProgEnum.UNKNOWN;
         }
@@ -107,10 +111,38 @@ public class Program {
     
     @Override
     public String toString() {
-        StringBuilder tempString = new StringBuilder();
+        /*StringBuilder tempString = new StringBuilder();
         tempString.append("{Program -- " + _commandName + " (" + 
                 _program.toString() + "): \n");
         tempString.append("Parameters: " + _parameters + " }");
-        return tempString.toString();
+        return tempString.toString();*/
+        return _commandName + " " + _parameters;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 23 * hash + (this._program != null ? this._program.hashCode() : 0);
+        hash = 23 * hash + (this._parameters != null ? this._parameters.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Program other = (Program) obj;
+        if (this._program != other._program) {
+            return false;
+        }
+        if ((this._parameters == null) ? (other._parameters != null) : !this._parameters.equals(other._parameters)) {
+            return false;
+        }
+        return true;
+    }
+    
 }

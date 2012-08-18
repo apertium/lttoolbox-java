@@ -5,7 +5,7 @@ import static org.apertium.utils.IOUtils.addTrailingSlash;
 import static org.apertium.utils.IOUtils.readFile;
 import static org.apertium.utils.IOUtils.writeFile;
 import static org.apertium.utils.IOUtils.openFile;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 
@@ -13,17 +13,17 @@ import org.junit.Test;
 
 /*
  * Copyright (C) 2010 Stephen Tigner
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
@@ -46,7 +46,7 @@ public class ApertiumEoEnTest {
         String expOutputFilename = testDataDir + "en-eo-output-100.txt";
         runInputFileTest(inputFilename, outputFilename, expOutputFilename, "en-eo", "testEnEo100");
     }
-    
+
 /*
     @Test
     public void testEnEo20000() throws IOException {
@@ -56,9 +56,9 @@ public class ApertiumEoEnTest {
         runInputFileTest(inputFilename, outputFilename, expOutputFilename, "en-eo", "testEnEo20000");
     }
 */
-    
+
     private void runInputFileTest(String inputFilename, String outputFilename,
-            String expOutputFilename, String direction, String testName) 
+            String expOutputFilename, String direction, String testName)
             throws Exception {
         // skip test if directory or some of the files don't exist
         if (!openFile(lingDataDir).exists()) return;
@@ -73,10 +73,12 @@ public class ApertiumEoEnTest {
 
     /**
      * This tests a feature in interchunk: the special <clip part="contents"/>  part.
-     * @throws Exception 
+     * @throws Exception
      */
     @Test
     public void testEnEoSingleSentence() throws Exception {
+				assertTrue(lingDataDir+ " must exist", openFile(lingDataDir).exists());
+
         String inputFilename = tempDir + "en-input.txt";
         String outputFilename = tempDir + "full_pipeline-en-eo-100-output.txt";
         writeFile(inputFilename, "two different  categories");
@@ -86,7 +88,7 @@ public class ApertiumEoEnTest {
         String expOut = "du malsamaj  kategorioj";
         assertEquals("ApertiumTestEoEn -- testEnEoSingleSentence failed", expOut, output);
     }
-    
+
     /**
      * There was a problem with brackets
 <   2496.	La israela ambasadoro al Angolo estas *Avraham Benjamin.[1] En 2005, Prezidanto José Eduardo *dos Santos vizitis Israelon.
@@ -94,10 +96,12 @@ public class ApertiumEoEnTest {
 >   2496.	La israela ambasadoro al Angolo estas *Avraham Benjamin[.1] En 2005, Prezidanto José Eduardo *dos Santos vizitis Israelon.
 6111c6111
      * That issue has now been resolved, leaving test in here for verification purposes
-     * @throws Exception 
+     * @throws Exception
      */
     @Test
     public void testEnEoSingleSentence2() throws Exception {
+				assertTrue(lingDataDir+ " must exist", openFile(lingDataDir).exists());
+
         String inputFilename = tempDir + "en-input.txt";
         String outputFilename = tempDir + "full_pipeline-en-eo-100-output.txt";
         writeFile(inputFilename, "Avraham Benjamin.[1] In 2005");

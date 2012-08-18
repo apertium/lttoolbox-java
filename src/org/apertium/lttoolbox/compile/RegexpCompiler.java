@@ -29,42 +29,45 @@ import java.util.TreeSet;
 public class RegexpCompiler {
 
     private static final int FIN_FICHERO = -1;
-    
+
     /**
      * Last token
      */
     int token;
-    
+
     /**
      * Input string
      */
     String input;
-    
+
     /**
      * Alphabet to encode symbols
      */
-    Alphabet alphabet;
-    
+    private CompileAlphabet alphabet;
+
+    /** this lookup is needed very often and thus cached */
+    private int alphabet_cast00;
+
     /**
      * Transducer to store analysis
      */
     Transducer transducer;
-    
+
     /**
      * Current state
      */
     Integer state;
-    
+
     /**
      * Current letter
      */
     int letter;
-    
+
     /**
      * Post-operator: '+', '?', '*'
      */
     String postop;
-    
+
     /**
      *
      */
@@ -79,7 +82,7 @@ public class RegexpCompiler {
     }
 
     /**
-     * Detect if t is a reserved token 
+     * Detect if t is a reserved token
      * @param t the token to check
      * @return true if the token is reserved
      */
@@ -182,8 +185,8 @@ public class RegexpCompiler {
             consume('|');
             RExpr();
             Cola();
-            state = transducer.insertNewSingleTransduction(alphabet.cast00, state);
-            transducer.linkStates(e, state, alphabet.cast00);
+            state = transducer.insertNewSingleTransduction(alphabet_cast00, state);
+            transducer.linkStates(e, state, alphabet_cast00);
         } else {
             error();
         }
@@ -195,7 +198,7 @@ public class RegexpCompiler {
     void Term() {
         if (!isReserved(token) || token == '\\') {
             Transducer t = new Transducer();
-            t.setEpsilon_Tag(alphabet.cast00);
+            t.setEpsilon_Tag(alphabet_cast00);
             Integer e = t.getInitial();
             Letra();
             e = t.insertNewSingleTransduction(alphabet.cast(letter, letter), e);
@@ -212,7 +215,7 @@ public class RegexpCompiler {
             state = transducer.insertTransducer(state, t);
         } else if (token == '(') {
             Transducer t = transducer;
-            t.setEpsilon_Tag(alphabet.cast00);
+            t.setEpsilon_Tag(alphabet_cast00);
             Integer e = state;
             transducer = new Transducer();
             state = transducer.getInitial();
@@ -294,7 +297,7 @@ public class RegexpCompiler {
      */
     void Esp() {
         Transducer t = new Transducer();
-        t.setEpsilon_Tag(alphabet.cast00);
+        t.setEpsilon_Tag(alphabet_cast00);
         if (!isReserved(token) || token == '\\' || token == ']') {
             Lista();
             consume(']');
@@ -302,7 +305,7 @@ public class RegexpCompiler {
 
             for (Integer it : brackets) {
                 Integer mystate = t.getInitial();
-                mystate = t.insertNewSingleTransduction(alphabet.cast00, mystate);
+                mystate = t.insertNewSingleTransduction(alphabet_cast00, mystate);
                 mystate = t.insertNewSingleTransduction(alphabet.cast(it, it), mystate);
                 t.setFinal(mystate);
             }
@@ -316,7 +319,7 @@ public class RegexpCompiler {
             for (int i = 0; i < 256; i++) {
                 if (!brackets.contains(i)) {
                     Integer mystate = t.getInitial();
-                    mystate = t.insertNewSingleTransduction(alphabet.cast00, mystate);
+                    mystate = t.insertNewSingleTransduction(alphabet_cast00, mystate);
                     mystate = t.insertNewSingleTransduction(alphabet.cast(i, i), mystate);
                     t.setFinal(mystate);
                 }
@@ -402,8 +405,9 @@ public class RegexpCompiler {
      * Set the decoder of symbols
      * @param a the alphabet
      */
-    public void setAlphabet(Alphabet a) {
+    public void setAlphabet(CompileAlphabet a) {
         alphabet = a;
+        alphabet_cast00 = alphabet.cast(0,0);
     }
 
     /**
@@ -418,8 +422,9 @@ public class RegexpCompiler {
      * Initialize the compiler
      * @param a the alphabet
      */
-    void initialize(Alphabet a) {
+    void initialize(CompileAlphabet a) {
         setAlphabet(a);
+
         transducer.clear();
         brackets.clear();
         postop = "";

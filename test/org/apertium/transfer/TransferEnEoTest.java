@@ -5,14 +5,14 @@
 
 package org.apertium.transfer;
 
-import org.apertium.transfer.compile.ApertiumTransferCompile;
+import org.apertium.transfer.old.compile.ApertiumTransferCompile;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
-import org.apertium.transfer.development.FindAndCompareAllReleasedTransferFiles;
+import org.apertium.transfer.old.development.FindAndCompareAllReleasedTransferFiles;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.apertium.lttoolbox.TestTools.*;
@@ -29,7 +29,7 @@ public class TransferEnEoTest {
   public void testTransfer1Prase() throws Exception {
       Transfer t = new Transfer();
 
-      Class transferClass = org.apertium.transfer.generated.apertium_eo_en_en_eo_t1x.class;
+      Class transferClass = org.apertium.transfer.old.generated.apertium_eo_en_en_eo_t1x.class;
       t.read(transferClass, dir+"en-eo.t1x.bin", dir+"en-eo.autobil.bin");
       t.transferObject.debug = true;
 
@@ -43,7 +43,7 @@ public class TransferEnEoTest {
   @Test
   public void testTransferMalgranda_en_eo() throws Exception {
       Transfer t = new Transfer();
-      Class transferClass = org.apertium.transfer.generated.apertium_eo_en_en_eo_t1x.class;
+      Class transferClass = org.apertium.transfer.old.generated.apertium_eo_en_en_eo_t1x.class;
       t.read(transferClass, dir+"en-eo.t1x.bin", dir+"en-eo.autobil.bin");
       Reader input = new FileReader(dir+"transferinput-en-eo.t1x-malgranda.txt");
       String outFile = "./tmp/transferoutput-en-eo.t1x-malgranda.txt";
