@@ -4,7 +4,7 @@ SYMLINKS=lt-validate-j lt-expand-j lt-comp-j lt-proc-j\
 apertium-destxt-j apertium-retxt-j apertium-tagger-j apertium-pretransfer-j\
 apertium-transfer-j apertium-interchunk-j apertium-postchunk-j apertium-preprocess-transfer-bytecode-j
 
-DISTFILES=README dist/lttoolbox.jar autogen.sh build.xml COPYING Makefile nbproject src test testdata apertium-j ${SYMLINKS}
+DISTFILES=README dist/lttoolbox.jar autogen.sh build.xml COPYING Makefile nbproject src test testdata apertium-j apertium-pack-j ${SYMLINKS}
 
 .PHONY : test dist
 
@@ -27,8 +27,8 @@ install: dist/lttoolbox.jar
 	mkdir -p `cat prefix`/share/apertium/;
 	cp dist/lttoolbox.jar `cat prefix`/share/apertium/;
 #	cp -a apertium-j lt-expand-j lt-comp-j lt-validate-j `cat prefix`/bin/;
-	chmod a+x ${SYMLINKS} apertium-j;
-	cp -a ${SYMLINKS} apertium-j `cat prefix`/bin/;
+	chmod a+x ${SYMLINKS} apertium-j apertium-pack-j;
+	cp -a ${SYMLINKS} apertium-j apertium-pack-j `cat prefix`/bin/;
 
 test:
 	ant -quiet test

@@ -1,27 +1,8 @@
 #!/bin/bash
-###############################################################################
-###############################################################################
-###############################################################################
-#############    UNCOMMENT AND SET THE CORRECT PATHS FOR YOUR     #############
-#############    ANDROID-SDK AND LTTOOLBOX-JAVA INSTALLATIONS     #############
-###############################################################################
-#LTTOOLBOX_JAVA_PATH="/path/to/your/lttoolbox.jar"
-#ANDROID_SDK_PATH="/path/to/your/android-sdk-linux"
-###############################################################################
-###############################################################################
-#############         For instance, in my particular case         #############
-#############      this would be the correct configuration:       #############
-###############################################################################
-#LTTOOLBOX_JAVA_PATH="/usr/local/share/apertium/lttoolbox.jar"
-#ANDROID_SDK_PATH="/home/mikel/developer/android-sdk-linux"
-###############################################################################
-###############################################################################
-###############################################################################
-
 
 if [ $# = 0 ] || [ $1 = --help ] ; then
 	echo "USAGE: apertium-pack-j modefile..."
-	echo -e "  modefile\tmode file(s) for which to create the package(s)" 
+	echo -e "  modefile\t.mode file(s) for which to create the package" 
 	exit
 fi
 if [ -z "$LTTOOLBOX_JAVA_PATH" ] ; then
@@ -29,16 +10,17 @@ if [ -z "$LTTOOLBOX_JAVA_PATH" ] ; then
 	LTTOOLBOX_JAVA_PATH="/usr/local/share/apertium/lttoolbox.jar"
 fi
 if [ -z "$LTTOOLBOX_JAVA_PATH" ] || [ ! -e $LTTOOLBOX_JAVA_PATH ] ; then
+	echo "ERROR: lttoolbox-java not found."
 	echo "Specify the correct path for your lttoolbox-java installation as follows:"
 	echo -e "\texport LTTOOLBOX_JAVA_PATH=\"/path/to/your/lttoolbox.jar\""
-	echo "To permanently save the path, you can edit this script (instructions inside)"
 	exit
 fi
 if [ -z "$ANDROID_SDK_PATH" ] || [ ! -e $ANDROID_SDK_PATH ] ; then
-	echo "Specify the correct path for your android-sdk installation as follows:"
+	echo "WARNING: Android SDK not found."
+	echo "The generated package will not be compatible with Android."
+	echo "Specify the correct path for your Android SDK installation as follows:"
 	echo -e "\texport ANDROID_SDK_PATH=\"/path/to/your/android-sdk-linux\""
-	echo "To permanently save the path, you can edit this script (instructions inside)"
-	exit
+	echo
 fi
 
 
@@ -128,8 +110,10 @@ fi
 zip -j $JAR_FILE modes
 
 #Convert to Dalvik bytecode for Android
-$ANDROID_SDK_PATH/platform-tools/dx --dex --verbose --output classes.dex transfer_classes/*
-zip $JAR_FILE classes.dex
+if [ -n "$ANDROID_SDK_PATH" ] && [ -e $ANDROID_SDK_PATH ] ; then
+	$ANDROID_SDK_PATH/platform-tools/dx --dex --verbose --output classes.dex transfer_classes/*
+	zip $JAR_FILE classes.dex
+fi
 
 #Delete unnecessary classes for runtime
 zip -d $JAR_FILE org/apertium/transfer/old/* org/apertium/transfer/generation/* org/apertium/charlifter/* Playground.class Profiling.class acx.xsd dix.xsd
