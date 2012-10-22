@@ -120,7 +120,7 @@ public class LTProc {
         boolean dictionaryCase = false;
         boolean nullFlush = false;
 
-        MyGetOpt getopt = new MyGetOpt(argv, "DSacdefgndpstwzvh");
+        MyGetOpt getopt = new MyGetOpt(argv, "DSabcdefglndpstwzvh");
 
         while (true) {
 
@@ -151,6 +151,7 @@ public class LTProc {
                     case 'e':
                     case 'a':
                     case 'b':
+                    case 'l':
                     case 'g':
                     case 'n':
                     case 'd':
@@ -248,7 +249,7 @@ public class LTProc {
                     checkValidity(fstp);
                     fstp.generation(input, output, FSTProcessor.GenerationMode.gm_all);
 
-                case 'b':
+                case 'l':
                     fstp.initGeneration();
                     checkValidity(fstp);
                     fstp.generation(input, output, FSTProcessor.GenerationMode.gm_tagged);
@@ -275,6 +276,12 @@ public class LTProc {
                     fstp.initDecomposition();
                     checkValidity(fstp);
                     fstp.analysis(input, output);
+                    break;
+
+                case 'b':
+                    fstp.initBiltrans();
+                    checkValidity(fstp);
+                    fstp.bilingual(input, output);
                     break;
 
                 case 'a':

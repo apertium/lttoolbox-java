@@ -109,7 +109,7 @@
 	<pardefs>
 
 <pardef n="Abc">
-  <e>       <re>[ÀÁÂÄÇÈÉÊËÌÍÎÏÑÒÓÔÖÙÚÛÜÚABCDEFGHIJKLMNOPQRSTUVWXYZĈĜĤĴŜŬÆØÅæøåàáâäçèéêëìíîïñòóôöõùúûüabcdefghijklmnopqrstuvwxyzĉĝĥĵŝŭÚéõóöäíáòñúŵã -.]*</re></e>
+  <e>       <re>[ÀÁÂÄÇÈÉÊËÌÍÎÏÑÒÓÔÖÙÚÛÜÚABCDEFGHIJKLMNOPQRSTUVWXYZĈĜĤĴŜŬÆØÅæøåàáâäçèéêëìíîïñòóôöõùúûüabcdefghijklmnopqrstuvwxyzĉĝĥĵŝŭÚéõóöäíáòñúŵã][ÀÁÂÄÇÈÉÊËÌÍÎÏÑÒÓÔÖÙÚÛÜÚABCDEFGHIJKLMNOPQRSTUVWXYZĈĜĤĴŜŬÆØÅæøåàáâäçèéêëìíîïñòóôöõùúûüabcdefghijklmnopqrstuvwxyzĉĝĥĵŝŭÚéõóöäíáòñúŵã -.]*</re></e>
 </pardef>
 
 <pardef n="litero">

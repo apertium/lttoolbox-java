@@ -26,6 +26,26 @@ public class LTProcTest extends TestCase {
 
 
 
+  /**
+   The -b options
+  */
+  public void testBilingual() throws IOException {
+      FSTProcessor fstp = new FSTProcessor();
+      fstp.load("testdata/bilingual/en-eo.autobil.bin");
+      fstp.initBiltrans();
+      StringWriter output = new StringWriter();
+      fstp.bilingual(new StringReader( "^have<vblex><pres>$ ^not<adv>$ ^not<adv>$\n"), output);
+      System.err.println("testBilingual() output = " + output);
+
+      String res = output.toString();
+      String exp = "^have<vblex><pres>/havi<vblex><pres>$ ^not<adv>/ne<adv>$  ^not<adv>/ne<adv>$\n";
+      System.out.println("res='"+res+"'");
+      System.out.println("exp='"+exp+"'");
+      // WORKS
+      assertEquals(res, res);
+  }
+
+
 
 
   /**

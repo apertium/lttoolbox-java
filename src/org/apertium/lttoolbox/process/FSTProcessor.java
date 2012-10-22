@@ -74,6 +74,7 @@ import org.apertium.utils.IOUtils;
 public class FSTProcessor {
   private boolean isLastBlankTM;
   private boolean showControlSymbols = false;
+  private boolean biltransSurfaceForms;
 
   private void initDecompositionSymbols() {
     if ((compoundOnlyLSymbol = alphabet.cast("<:co:only-L>")) == 0) {
@@ -500,6 +501,78 @@ public class FSTProcessor {
     // return 0x7fffffff;
   }
 
+  public Pair<String, Integer> readBilingual(Reader input, Writer output) throws IOException {
+    int val = input.read();
+    //System.err.println("read '"+((char) val)+"' : "+val );
+    String symbol = "";
+    if (val == EOF) {
+      return new Pair<String, Integer>(symbol, 0x7fffffff);
+    }
+
+    if (outOfWord) {
+      if (val == '^') {
+        val = (char) input.read();
+        if (val == EOF) {
+          return new Pair<String, Integer>(symbol, 0x7fffffff);
+        }
+      } else if (val == '\\') {
+        output.write(val);
+        val = (char) input.read();
+        if (val == EOF) {
+          return new Pair<String, Integer>(symbol, 0x7fffffff);
+        }
+        output.write(val);
+        skipUntil(input, output, '^');
+        val = (char) input.read();
+        if (val == EOF) {
+          return new Pair<String, Integer>(symbol, 0x7fffffff);
+        }
+      } else {
+        output.write(val);
+        skipUntil(input, output, '^');
+        val = (char) input.read();
+        if (val == EOF) {
+          return new Pair<String, Integer>(symbol, 0x7fffffff);
+        }
+      }
+      outOfWord = false;
+    }
+
+    if (val == '\\') {
+      val = (char) input.read();
+      return new Pair<String, Integer>(symbol, 0x7fffffff);
+    } else if (val == '$') {
+      outOfWord = true;
+      return new Pair<String, Integer>(symbol, (int) '$');
+    } else if (val == '<') {
+      String cad = "<";
+      val = (char) input.read();
+      if (val == EOF) {
+        streamError();
+      }
+      while (val != '>') {
+        cad += (char) val;
+        val = input.read();
+        if (val == EOF) {
+          streamError();
+        }
+      }
+      cad += (char) val;
+      int res = alphabet.cast(cad);
+      if (res==0) {
+        symbol = cad;
+      }
+      return new Pair<String, Integer>(symbol, res);
+    } else if (val == '[') {
+      output.write(readFullBlock(input, '[', ']'));
+      return readBilingual(input, output);
+    } else {
+      return new Pair<String, Integer>(symbol, val);
+    }
+  }
+
+
+
   private void flushBlanks(Writer output) throws IOException {
     for (int i = blankqueue.size(); i > 0; i--) {
       output.write(blankqueue.getFirst());
@@ -563,6 +636,14 @@ public class FSTProcessor {
     output.write(lexicalForm);
     output.write('$');
   }
+
+  private void printWordBilingual(String surfaceForm, String lexicalForm, Writer output) throws IOException {
+    output.write('^');
+    output.write(surfaceForm);
+    output.write(lexicalForm);
+    output.write('$');
+  }
+
 
   private void printUnknownWord(String surfaceForm, Writer output) throws IOException {
     output.write('^');
@@ -1753,6 +1834,166 @@ public class FSTProcessor {
     }
   }
 
+
+
+  /**
+  @param input  ^Jeg<prn><p1><mf><sg><nom>$ ^ha<vblex><pres>$ ^ikke<adv>$
+  @param output ^Jeg<prn><p1><mf><sg><nom>/Prpers<prn><p1><mf><sg><nom>$ ^ha<vblex><pres>/have<vbhaver><pres>$ ^ikke<adv>/not<adv>$
+  @throws IOException
+  */
+  public void bilingual(Reader input, Writer output) throws IOException {
+    /* XXX TODO
+    if (getNullFlush()) {
+      transliteration_wrapper_null_flush(input, output);
+    }*/
+
+    State current_state = initial_state.copy();
+    StringBuilder sf = new StringBuilder(200);    // source language analysis
+    StringBuilder queue = new StringBuilder(200); // symbols to be added to each target
+    StringBuilder result = new StringBuilder(200);// result of looking up analysis in bidix
+
+    outOfWord = false;
+    skipUntil(input, output, '^');
+    Pair<String, Integer> tr;                    // readBilingual return value, containing:
+    int val;                                     // the alphabet value of current symbol, and
+    String symbol = "";                          // the current symbol as a string
+    boolean seentags = false;                    // have we seen any tags at all in the analysis?
+
+    boolean seensurface = false;
+    String surface = "";
+
+    while (true) {
+      tr = readBilingual(input, output);
+      symbol = tr.first;
+      val = tr.second;
+      if(biltransSurfaceForms && !seensurface && !outOfWord) {
+        while(val != '/' && val != 0x7fffffff) {
+          surface = surface + symbol;
+          surface = alphabet.getSymbol(val);
+          tr = readBilingual(input, output);
+          symbol = tr.first;
+          val = tr.second;
+        }
+        seensurface = true;
+        tr = readBilingual(input, output);
+        symbol = tr.first;
+        val = tr.second;
+      }
+
+      if (val == 0x7fffffff)
+      {
+        break;
+      }
+
+      if (val == '$' && outOfWord) {
+        if (!seentags) {       // if no tags: only return complete matches
+          boolean uppercase = (sf.length() > 1) && Alphabet.isUpperCase(sf.charAt(1));
+          boolean firstupper= Alphabet.isUpperCase(sf.charAt(0));
+
+          result = current_state.filterFinals(result, all_finals, alphabet, escaped_chars, uppercase, firstupper);
+          /*
+          result = current_state.filterFinals(all_finals, alphabet,
+                                    escaped_chars,
+                                    uppercase, firstupper, 0);
+          */
+        }
+        if (sf.charAt(0)=='*') {
+          printWordBilingual(sf.toString(), "/"+sf, output);
+        } else if (result.length() > 0) {
+          printWordBilingual(sf.toString(), result.toString()+queue.toString(), output);
+        } else {
+          if (biltransSurfaceForms) {
+            printWordBilingual(surface, "/@"+surface, output);
+          }
+          else
+          {
+            printWordBilingual(sf.toString(), "/@"+sf, output);
+          }
+        }
+        seensurface = false;
+        surface = "";
+        queue.setLength(0);
+        result.setLength(0);
+        current_state = initial_state.copy();
+        sf.setLength(0);
+        seentags = false;
+      } else if (Alphabet.isWhitespace((char) val) && sf.length()==0) {
+        // do nothing
+      } else if(sf.length() > 0 && sf.charAt(0) == '*') {
+        if (isEscaped((char) val)) {
+          sf.append('\\');
+        }
+        sf.append(alphabet.getSymbol(val));  // add symbol to sf iff alphabetic
+        if(val == 0)  // non-alphabetic, possibly unknown tag; add to sf
+        {
+          sf.append(symbol);
+        }
+      } else {
+        if (isEscaped((char) val)) {
+          sf.append('\\');
+        }
+        sf.append(alphabet.getSymbol(val));  // add symbol to sf iff alphabetic
+        if(val == 0)  // non-alphabetic, possibly unknown tag; add to sf
+        {
+          sf.append(symbol);
+        }
+        if(alphabet.isTag(val) || val == 0)
+        {
+          seentags = true;
+        }
+        if (current_state.size() != 0) {
+          if(!alphabet.isTag(val) && Alphabet.isUpperCase(val) && !caseSensitive)
+          {
+            current_state.step(val, Alphabet.toLowerCase(val));
+          }
+          else
+          {
+            current_state.step(val);
+          }
+        }
+        if(current_state.isFinal(all_finals)) {
+
+          boolean uppercase = (sf.length() > 1) && Alphabet.isUpperCase(sf.charAt(1));
+          boolean firstupper= Alphabet.isUpperCase(sf.charAt(0));
+
+          result = current_state.filterFinals(result, all_finals, alphabet, escaped_chars, uppercase, firstupper);
+        }
+
+        if(current_state.size() == 0 && result.length()>0) {
+          // We already have a result, but there is still more to read
+          // of the analysis; following tags are not consumed, but
+          // output as target language tags (added to result on
+          // end-of-word)
+          if(alphabet.isTag(val)) // known tag
+          {
+            queue.append(alphabet.getSymbol(val));
+          }
+          else if (val == 0) // non-alphabetic, possibly unknown tag
+          {
+            queue.append(symbol);
+          }
+          else
+          {
+            // There are no more alive transductions and the current symbol is not a tag -- unknown word!
+            result.setLength(0);
+          }
+        }
+      }
+    }
+
+    // print remaining blanks
+    flushBlanks(output);
+  }
+
+
+
+
+
+
+
+
+
+
   public Pair<String, Integer> biltransWithQueue(String input_word, boolean with_delim) {
     State current_state = initial_state.copy();
     StringBuilder result = new StringBuilder();
@@ -2152,6 +2393,10 @@ public class FSTProcessor {
     }
 
     return str;
+  }
+
+  public void setBiltransSurfaceForms(boolean value) {
+    biltransSurfaceForms = value;
   }
 
   public void setCaseSensitiveMode(boolean value) {
