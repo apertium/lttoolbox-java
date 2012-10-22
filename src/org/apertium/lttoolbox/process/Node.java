@@ -13,6 +13,8 @@ package org.apertium.lttoolbox.process;
  */
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeSet;
+import org.apertium.lttoolbox.Alphabet;
 import org.apertium.lttoolbox.process.TransducerExe.NodeLoadInfo;
 
 
@@ -37,7 +39,7 @@ class Transition {
 
 
 
-class Node {
+public class Node {
   /**
    The outgoing transitions of this node. Schema: (input symbol, (output symbol, destination node))
    */
@@ -49,7 +51,7 @@ class Node {
   }
 
 
-  void initTransitions(int number_of_local_transitions) {
+  public void initTransitions(int number_of_local_transitions) {
     transitions = new HashMap<Integer, Transition>();//number_of_local_transitions);
   }
 
@@ -61,7 +63,7 @@ class Node {
    @param outs output symbol
    @param node_dest destination
    */
-  void addTransition(int ins, int outs, Node node_dest) {
+  public void addTransition(int ins, int outs, Node node_dest) {
 
     Transition newTransition = new Transition();
     newTransition.output_symbol = outs;
@@ -100,5 +102,26 @@ class Node {
   void load() {
     nodeLoadInfo.loadNode(this);
     nodeLoadInfo = null;
+  }
+
+  /** Note that this method is neccesarily very slow as the number of nodes increases,
+      as the nodes don't (and for memory usage reasont shouldnt) know their own node number */
+  void show_DEBUG(int n, Alphabet a, Node[] node_list) {
+    if (nodeLoadInfo!=null) {
+      load();
+    }
+    // TreeSet is used to get the list sorted
+    for (Integer i : new TreeSet<Integer>(transitions.keySet())) {
+      Transition t = transitions.get(i);
+      while (t != null) {
+        if (t.node_dest.nodeLoadInfo!=null) t.node_dest.load();
+        int dest_node_no = -1;
+        for (int j=0; j<node_list.length; j++) {
+          if (node_list[j]==t.node_dest) dest_node_no = j;
+        }
+        System.err.println(dest_node_no + "\t" +  n + "\t'" + a.getSymbol(i)+"'"+i+"\t'"+a.getSymbol(t.output_symbol)+"'"+t.output_symbol);
+        t = t.next;
+      }
+    }
   }
 }

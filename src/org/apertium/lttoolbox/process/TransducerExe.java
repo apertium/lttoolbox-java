@@ -33,6 +33,16 @@ import org.apertium.lttoolbox.Alphabet.IntegerPair;
 public class TransducerExe {
 
 
+  /** Note that this method is neccesarily very slow as the number of nodes increases,
+      as the nodes don't (and for memory usage reasont shouldnt) know their own node number */
+  public void show_DEBUG(Alphabet a) {
+    for (int i=0; i<node_list.length; i++) {
+      Node n = node_list[i];
+      n.show_DEBUG(i, a, node_list);
+    }
+  }
+
+
   /**
    * Inner class to hold the info on loading nodes.
    * Note that this has an implicit reference to the containing TransducerExe and
@@ -115,7 +125,7 @@ public static boolean DELAYED_NODE_LOADING = false;
 alloc 9556000
 */
 
-    void read(ByteBuffer input, Alphabet alphabet) throws IOException {
+    public void read(ByteBuffer input, Alphabet alphabet) throws IOException {
         //index = 0;
         initial_id = Compression.multibyte_read(input);  // 0 for eo-en.dix)
         final int finals_size = Compression.multibyte_read(input); // xx  (5 for eo-en.dix)
@@ -183,7 +193,7 @@ alloc 9556000
         return node_list[initial_id];
     }
 
-    ArrayList<Node> getFinals() {
+    public ArrayList<Node> getFinals() {
         return finals;
     }
 }
