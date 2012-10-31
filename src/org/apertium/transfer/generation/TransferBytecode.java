@@ -66,7 +66,7 @@ public class TransferBytecode {
     private static final Type STRING_ARRAY = new ArrayType(STRING, 1);
     private static final Type CHAR_SEQUENCE = getType(java.lang.CharSequence.class);
     private Type WORD;
-    
+
     private String className;
     private String fullClassName;
     private ClassGen cg;
@@ -78,22 +78,22 @@ public class TransferBytecode {
 
     private enum ParseMode {TRANSFER, INTERCHUNK, POSTCHUNK}
     private ParseMode parseMode;
-    
+
     //For checking macro names and numbers of parameters
     private HashMap<String, Integer> macroList = new HashMap<String, Integer>();
-    
+
     //For checking attributes. Order is important
     private LinkedHashSet<String> attrList = new LinkedHashSet<String>();
-    
+
     //For checking variables
     private LinkedHashSet<String> varList = new LinkedHashSet<String>();
-    
+
     //For checking lists
     private LinkedHashSet<String> listList = new LinkedHashSet<String>();
-    
+
     //The number of parameters in the rule/macro/method currently being defined
     private int currentNumberOfWordInParameterList;
-    
+
     private Element currentNode;
 
     private void writeMethodBody(Element c0) {
@@ -788,7 +788,7 @@ public class TransferBytecode {
     private void throwParseError(String n) {
         throw new UnsupportedOperationException("Not yet implemented:" + n + getPathAsString(currentNode));
     }
-    
+
     private boolean error_UNKNOWN_VAR = false;
     private String var(String name) {
         if (varList.contains(name)) {
@@ -799,7 +799,7 @@ public class TransferBytecode {
         error_UNKNOWN_VAR = true;
         return "error_UNKNOWN_VAR";
     }
-    
+
     private boolean error_UNKNOWN_ATTR = false;
     private String attr(String name) {
         if (attrList.contains(name)) {
@@ -810,7 +810,7 @@ public class TransferBytecode {
         error_UNKNOWN_ATTR = true;
         return "error_UNKNOWN_ATTR";
     }
-    
+
     private boolean error_UNKNOWN_LIST = false;
     private String list(String name) {
         if (listList.contains(name)) {
@@ -821,7 +821,7 @@ public class TransferBytecode {
         error_UNKNOWN_LIST = true;
         return "error_UNKNOWN_LIST";
     }
-    
+
     /**
     // in postchunk there is no certain fixed number of words when a rule is invoked
     // therefore word and blank parameters are implemented as an array
@@ -1239,13 +1239,13 @@ public class TransferBytecode {
             throw new RuntimeException("Error: Cannot open '" + txFilename + "'.");
         }
     }
-    
+
     private class BytecodeLoader extends ClassLoader {
         public Class getClassFromBytes(byte[] bytes) {
             return defineClass(null, bytes, 0, bytes.length);
         }
     }
-    
+
     public Class getJavaClass() {
         return new BytecodeLoader().getClassFromBytes(getBytes());
     }
@@ -1258,17 +1258,16 @@ public class TransferBytecode {
         cg.getJavaClass().dump(filename);
     }
 
-    private static void endProgram(String name) {
+    private static void showHelp(String name) {
         System.out.print(name + CommandLineInterface.PACKAGE_VERSION + ": \n"
                 + "USAGE: " + name + " trules  trules-class\n"
                 + "  trules     transfer rule (.t1x) source file\n"
                 + "  trules-class  Java bytecode compiled transfer rules (.class) output file\n"
                 + "");
-        System.exit(-1);
     }
 
     public static void main(String[] argv) throws Exception {
-        if (argv.length != 2) endProgram("apertium-preprocess-transfer-bytecode-j");
-        new TransferBytecode(argv[0]).dump(argv[1]);
+        if (argv.length != 2) showHelp("apertium-preprocess-transfer-bytecode-j");
+        else new TransferBytecode(argv[0]).dump(argv[1]);
     }
 }

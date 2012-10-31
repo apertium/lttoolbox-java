@@ -28,26 +28,25 @@ import org.apertium.transfer.old.compile.ParseTransferFile;
 import org.apertium.utils.StringTable;
 
 /**
- * 
+ *
  * @author Jacob Nordfalk
  */
 public class ApertiumTransferCompile {
 
 
-    static void endProgram(String name) {
+    static void showHelp(String name) {
         System.out.print(name + CommandLineInterface.PACKAGE_VERSION +": \n" +
 "USAGE: "+name+" trules  trules-class\n" +
 "  trules     transfer rule (.t1x) source file\n" +
 "  trules-class  Java bytecode compiled transfer rules (.class) output file\n" +
 "");
-        System.exit(-1);
-
     }
 
   public static void main(String[] argv) throws Exception {
 
       if (argv.length != 2) {
-          endProgram("apertium-preprocess-transfer-bytecode-j");
+          showHelp("apertium-preprocess-transfer-bytecode-j");
+          return;
       }
 
       ParseTransferFile p = new ParseTransferFile();
@@ -72,7 +71,7 @@ public class ApertiumTransferCompile {
   }
 
   /**
-   * 
+   *
    * @param txFile -- The .t*x file to generate java code from.
    * @param targetClass -- The final name desired for the .class file
    * @param javaSource -- Java source file name
@@ -87,18 +86,18 @@ public class ApertiumTransferCompile {
    * it will be attempted to the same filename as targetClass, but in the system
    * temp directory. If that fails as well, null is returned.
    * @throws IOException
-   * 
+   *
    */
   public static File doMain(File txFile, File targetClass, File javaSource,
           File outputClass, boolean displayStatusMessages) throws IOException {
 
-      /* 
-       * If you're calling ApertiumCompile.doMain(), you should really want to 
-       * compile the file. If you don't want to compile it if it already exists, 
+      /*
+       * If you're calling ApertiumCompile.doMain(), you should really want to
+       * compile the file. If you don't want to compile it if it already exists,
        * check if it exists *before* you call ApertiumCompile.doMain()
        */
       //if (!outputClass.exists()) //Left here to provide context for the above comment
-      
+
       // Try invoking javac
       String cps =  System.getProperty("lttoolbox.jar");
       File cp = new File(cps!=null? cps : "lttoolbox.jar");
@@ -127,27 +126,27 @@ public class ApertiumTransferCompile {
           try {
               result = tc.compile(cp, javaSource);
           } catch (FileNotFoundException e) {
-              throw new 
+              throw new
                   InternalError(StringTable.COMPILATION_FAILURE);
           }
           if(result != 0) {
-              throw new 
+              throw new
                   InternalError(StringTable.COMPILATION_FAILURE);
           }
       }
 
       if (!outputClass.exists()) {
-        throw new InternalError("Compilation error - compiled " + javaSource + 
+        throw new InternalError("Compilation error - compiled " + javaSource +
                 " but " + outputClass + " didnt appear.");
       }
-      
+
       if (!outputClass.equals(targetClass)) {
           return _renameClass(outputClass, targetClass);
       } else {
           return outputClass;
       }
   }
-  
+
   private static File _renameClass(File outputClass, File targetClass) {
       //System.err.println("Renaming " + classDest+" to "+dest);
       boolean renSucc = outputClass.renameTo(targetClass);
@@ -158,7 +157,7 @@ public class ApertiumTransferCompile {
           File newTarget = openFile(tempDir + targetClass.getName());
           renSucc = outputClass.renameTo(newTarget);
           if(!renSucc) {
-              return null; 
+              return null;
               //Returning null means rename failed for temp directory too
           } else {
               return newTarget;

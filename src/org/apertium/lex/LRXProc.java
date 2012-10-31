@@ -26,15 +26,6 @@ import static org.apertium.utils.IOUtils.*;
 public class LRXProc {
   private static LRXProcessor lrxp;
 
-  static void endProgram(String name) {
-    System.out.print(name + CommandLineInterface.PACKAGE_VERSION + ": process a bilingual stream with a lexical rule transducer\n"
-        + "USAGE: " + name + " [ -t | -d ] fst_file [input_file [output_file]]\n"
-        + "Options:\n"
-        + "  -t:         trace the rules which have been applied\n"
-        + "  -d:         print out information about how the rules are run\n");
-    System.exit(-1);
-  }
-
   public static void main(String[] argv) throws Exception {
     System.setProperty("file.encoding", "UTF-8");
     Reader input = null;
@@ -59,7 +50,6 @@ public class LRXProc {
           break;
         default:
           System.err.println("Unregognized parameter: " + (char) c);
-          endProgram("LTProc");
           break;
       }
     }

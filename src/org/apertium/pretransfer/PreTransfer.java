@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2010 Stephen Tigner
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
@@ -46,7 +46,7 @@ public class PreTransfer {
      * main() was split into main() and parseArgs(), the latter of which is also public.
      * The method processStream() also had to be made public.
      */
-    
+
     public static class CommandLineParams {
         public boolean nullFlush;
         public Reader input;
@@ -64,14 +64,15 @@ public class PreTransfer {
      * written to the output stream.
      * @throws IOException
      */
-    private static void readAndWriteUntil(Reader input, Writer output, 
+    private static void readAndWriteUntil(Reader input, Writer output,
             final int charCode) throws IOException {
         int myChar;
-        
+
         while((myChar = input.read()) != charCode) {
             if(myChar == -1) {
-                System.err.println("pretransfer -- ERROR: unexpected EOF");
-                System.exit(1); //EXIT_FAILURE macro constant in the C++ code = 1
+                throw new IOException("pretransfer -- ERROR: unexpected EOF");
+                // exit() is not an option as we are a library
+                //System.exit(1); //EXIT_FAILURE macro constant in the C++ code = 1
             }
             output.write(myChar);
             /* The C++ code has an additional condition checking for a backslash
@@ -86,27 +87,28 @@ public class PreTransfer {
         }
     }
 
-    private static void procWord(Reader input, Writer output) 
+    private static void procWord(Reader input, Writer output)
             throws IOException {
         int myChar;
-        /* Using a StringBuilder instead of just a string for performance reasons, 
+        /* Using a StringBuilder instead of just a string for performance reasons,
          * because Strings are immutable objects in Java, and we're going to be
          * changing this one a lot. StringBuilders are for when you want mutable Strings.
          * StringBuilder is not synchronized, but this is single-threaded code, anyway.
          * If we need synchronization, then we'd want to use a StringBuffer instead.
          */
         StringBuilder buffer = new StringBuilder();
-        
+
         boolean buffer_mode = false;
         boolean in_tag = false;
         boolean queuing = false;
-        
+
         while((myChar = input.read()) != '$') {
             if(myChar == -1) {
-                System.err.println("pretransfer -- ERROR: Unexpected EOF");
-                System.exit(1); //EXIT_FAILURE = 1
+                throw new IOException("pretransfer -- ERROR: Unexpected EOF");
+                // exit() is not an option as we are a library
+                //System.exit(1); //EXIT_FAILURE = 1
             }
-            
+
             switch(myChar) {
                 case '<':
                     in_tag = true;
@@ -114,11 +116,11 @@ public class PreTransfer {
                         buffer_mode = true;
                     }
                     break;
-                    
+
                 case '>':
                     in_tag = false;
                     break;
-                    
+
                 case '#':
                     if(buffer_mode) {
                         buffer_mode = false;
@@ -137,7 +139,7 @@ public class PreTransfer {
                     buffer.append("$ ^");
                 }
             } else {
-                if(myChar == '+' && queuing) { //Ditto for queuing 
+                if(myChar == '+' && queuing) { //Ditto for queuing
                     buffer.append("$ ^");
                 } else {
                     output.write(myChar);
@@ -152,7 +154,7 @@ public class PreTransfer {
         int myChar;
         while((myChar = input.read()) != -1) {
             /* The above while statement is equivalent to the C++ code:
-             * 
+             *
              * while(true)
              * {
              *   int mychar = fgetwc_unlocked(input);
@@ -161,7 +163,7 @@ public class PreTransfer {
              *     break;
              *   }
              */
-            
+
             switch(myChar) {
                 case '[':
                     output.write('[');
@@ -188,32 +190,31 @@ public class PreTransfer {
 
                 case '\0':
                     output.write(myChar);
-                    
+
                     if(null_flush) {
                         output.flush();
                     }
                     break;
-                    
+
                 default:
                     output.write(myChar);
                     break;
             }
         }
     }
-    
-    private static void usage() {
+
+    private static void showHelp() {
         System.err.println("USAGE: PreTransfer [input_file [output_file]]");
-        System.exit(1);
     }
-    
+
     /**
      * @param args
      */
-    public static void parseArgs(String[] args, CommandLineParams params, 
+    public static void parseArgs(String[] args, CommandLineParams params,
             boolean pipelineMode) {
-        
+
         params.nullFlush = false;
-        
+
         /* Only support short options, long opts are not currently supported.
          */
         Getopt getopt = new Getopt("PreTransfer", args, "zh");
@@ -225,22 +226,22 @@ public class PreTransfer {
                     break;
                 case 'h':
                 default:
-                    usage();
-                    break;
+                    showHelp();
+                    return;
             }
         }
 
         /* getOptind() returns the index of the first non-option argument
          * encountered (since we iterated through the options until we got back
-         * -1). 
-         * 
+         * -1).
+         *
          * In the C++ version, argv[0] is the command used to launch the program.
          * And since it's a zero-based array, adding 1 to it gives you the number
          * of options in argv. The expected arguments in argv (minus options) are
          * the program name, an input file, and an output file (3). If there are more
          * arguments supplied than that, then that is set of invalid arguments.
-         * 
-         * In the Java version, however, args does not have the command used to 
+         *
+         * In the Java version, however, args does not have the command used to
          * launch the program. So when subtracting options from the args, there
          * should be at most 2 options. And that's why the difference between
          * the C++ and Java versions in the following if statements.
@@ -252,11 +253,12 @@ public class PreTransfer {
          * Reminder: Does not include the executable's name, like in C++.
          */
         int numberOfArgs = args.length - getopt.getOptind();
-        
+
         if(numberOfArgs > 2) {
-            usage();
+            showHelp();
+            return;
         }
-        
+
         /* This really probably should be a switch statement.
          * Kept it as a sequence of if/else statements for ease of understanding
          * and code checking when comparing it with the C++ version.
@@ -279,7 +281,8 @@ public class PreTransfer {
                     /* This exception is thrown if the file cannot be found, or
                      * otherwise cannot be opened for reading.
                      */
-                    usage();
+                    showHelp();
+                    return;
                 }
                 params.output = getStdoutWriter();
             } else {
@@ -296,28 +299,29 @@ public class PreTransfer {
                     /* Either the input or the output file could not be found or otherwise
                      * could not be opened for reading/writing.
                      */
-                    usage();
+                    showHelp();
+                    return;
                 }
             }
         } catch (UnsupportedEncodingException e) {
-            System.err.println("Pretransfer (parse args) -- " + 
+          // exit() is not an option as we are a library
+            throw new RuntimeException("Pretransfer (parse args) -- " +
                     StringTable.UNSUPPORTED_ENCODING);
-            System.exit(1);
         }
     }
 
-    public static void main(String[] args) {        
+    public static void main(String[] args) {
         System.setProperty("file.encoding", "UTF-8");
-        
+
         CommandLineParams params = new CommandLineParams();
         parseArgs(args, params, false);
-        
+
         /* The C++ version checks for EOF at this point, and dies if it finds it.
-         * However we can't check for EOF in the Java version w/o reading the file 
-         * and advancing the pointer, so don't bother trying to check for EOF at 
+         * However we can't check for EOF in the Java version w/o reading the file
+         * and advancing the pointer, so don't bother trying to check for EOF at
          * this point.
          */
-        
+
         /* The ported functions have been written in the Java version to accept
          * InputStreamReader and OutputStreamWriter objects. The reason for this is to
          * avoid mojibake, which is a loanword from Japanese that refers to the garbled
@@ -326,7 +330,7 @@ public class PreTransfer {
          * switched from using just straight InputStream and OutputStream objects to
          * InputStreamReader and OutputStreamWriter objects.
          */
-        
+
         try {
             processStream(params.input, params.output, params.nullFlush);
             //Have to flush or won't get any output.

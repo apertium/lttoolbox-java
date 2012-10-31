@@ -1,15 +1,15 @@
 /*
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
@@ -52,12 +52,12 @@ import org.apertium.utils.StringTable;
  *
  */
 public class Dispatcher {
-    
+
     private static final String splitPattern = "[ ]+";
-    
-    private static void doInterchunk(Program prog, Reader input, Writer output) 
+
+    private static void doInterchunk(Program prog, Reader input, Writer output)
             throws Exception {
-        ApertiumInterchunk.CommandLineParams par = 
+        ApertiumInterchunk.CommandLineParams par =
             new ApertiumInterchunk.CommandLineParams();
         /* Parse the command line. The passed-in CommandLineParams object
          * will be modified by this method.
@@ -76,7 +76,7 @@ public class Dispatcher {
              * Append a message to the existing error message and
              * throw it up.
              */
-            String errorString = "Apertium (Dispatch, Interchunk) -- " + 
+            String errorString = "Apertium (Dispatch, Interchunk) -- " +
                 StringTable.UNEXPECTED_FILE_NOT_FOUND;
             errorString += getLineSeparator() + e.getLocalizedMessage();
             throw new Exception(errorString, e);
@@ -87,7 +87,7 @@ public class Dispatcher {
              * Append a message to the existing error message and
              * throw it up.
              */
-            String errorString = "Apertium (Dispatch, Interchunk) -- " + 
+            String errorString = "Apertium (Dispatch, Interchunk) -- " +
                 StringTable.UNEXPECTED_UNSUPPORTED_ENCODING;
             errorString += getLineSeparator() + e.getLocalizedMessage();
             throw new Exception(errorString, e);
@@ -108,14 +108,14 @@ public class Dispatcher {
         }
     }
 
-    private static void doPostchunk(Program prog, Reader input, Writer output) 
+    private static void doPostchunk(Program prog, Reader input, Writer output)
             throws Exception {
         /* Yes, there's duplicate code here with the method above, but
          * there's only a few lines of actual code here, and I ran into issues
          * trying to reduce the duplication further than this.
          */
-        
-        ApertiumPostchunk.CommandLineParams par = 
+
+        ApertiumPostchunk.CommandLineParams par =
             new ApertiumPostchunk.CommandLineParams();
         /* Parse the command line. The passed-in CommandLineParams object
          * will be modified by this method.
@@ -134,7 +134,7 @@ public class Dispatcher {
              * Append a message to the existing error message and
              * throw it up.
              */
-            String errorString = "Apertium (Dispatch, Postchunk) -- " + 
+            String errorString = "Apertium (Dispatch, Postchunk) -- " +
                 StringTable.UNEXPECTED_FILE_NOT_FOUND;
             errorString += getLineSeparator() + e.getLocalizedMessage();
             throw new Exception(errorString, e);
@@ -145,7 +145,7 @@ public class Dispatcher {
              * Append a message to the existing error message and
              * throw it up.
              */
-            String errorString = "Apertium (Dispatch, Postchunk) -- " + 
+            String errorString = "Apertium (Dispatch, Postchunk) -- " +
                 StringTable.UNEXPECTED_UNSUPPORTED_ENCODING;
             errorString += getLineSeparator() + e.getLocalizedMessage();
             throw new Exception(errorString, e);
@@ -168,7 +168,7 @@ public class Dispatcher {
         }
     }
 
-    private static void doPretransfer(Program prog, Reader input, Writer output) 
+    private static void doPretransfer(Program prog, Reader input, Writer output)
             throws IOException {
         PreTransfer.CommandLineParams params = new PreTransfer.CommandLineParams();
         String[] args = prog.getParameters().split(splitPattern);
@@ -188,24 +188,24 @@ public class Dispatcher {
             throw new IOException(errorString, e);
         }
     }
-    
-    private static void doTagger(Program prog, Reader input, Writer output, 
+
+    private static void doTagger(Program prog, Reader input, Writer output,
             boolean dispAmb) {
         String paramString = prog.getParameters();
         String replacement = (dispAmb ? "-m" : "");
         paramString = paramString.replaceAll("\\$2", replacement);
-        
+
         String[] args = paramString.split(splitPattern);
         Tagger.taggerDispatch(args, input, output);
     }
-    
-    private static void doTextFormat(Program prog, Reader input, Writer output, 
+
+    private static void doTextFormat(Program prog, Reader input, Writer output,
             boolean deformatMode) throws Exception {
         String paramString = prog.getParameters();
 
         if(deformatMode) {
             /* Since the same class is used for deformatting and re-formatting, but the
-             * .mode files aren't setup like that, so prepending "-d" to set it to 
+             * .mode files aren't setup like that, so prepending "-d" to set it to
              * deformatting mode.
              */
             paramString = "-d " + paramString;
@@ -215,32 +215,32 @@ public class Dispatcher {
              */
             paramString = "-r " + paramString;
         }
-        
+
         TextFormatter formatter = new TextFormatter();
 
         String[] args = paramString.split(splitPattern);
         try {
             formatter.doMain(args, input, output);
         } catch (UnsupportedEncodingException e) {
-            String errorString = "TextFormatter -- " + 
+            String errorString = "TextFormatter -- " +
                 StringTable.UNSUPPORTED_ENCODING;
             errorString += getLineSeparator() + e.getLocalizedMessage();
             throw new Exception(errorString, e);
         } catch (FileNotFoundException e) {
-            String errorString = "TextFormatter -- " + 
+            String errorString = "TextFormatter -- " +
                     StringTable.FILE_NOT_FOUND;
             errorString += getLineSeparator() + e.getLocalizedMessage();
             throw new Exception(errorString, e);
         }
     }
-    
-    private static void doOmegatFormat(Program prog, Reader input, Writer output, 
+
+    private static void doOmegatFormat(Program prog, Reader input, Writer output,
             boolean deformatMode) throws Exception {
         String paramString = prog.getParameters();
 
         if(deformatMode) {
             /* Since the same class is used for deformatting and re-formatting, but the
-             * .mode files aren't setup like that, so prepending "-d" to set it to 
+             * .mode files aren't setup like that, so prepending "-d" to set it to
              * deformatting mode.
              */
             paramString = "-d " + paramString;
@@ -250,42 +250,42 @@ public class Dispatcher {
              */
             paramString = "-r " + paramString;
         }
-        
+
         OmegatFormatter formatter = new OmegatFormatter();
 
         String[] args = paramString.split(splitPattern);
         try {
             formatter.doMain(args, input, output);
         } catch (UnsupportedEncodingException e) {
-            String errorString = "OmegatFormatter -- " + 
+            String errorString = "OmegatFormatter -- " +
                 StringTable.UNSUPPORTED_ENCODING;
             errorString += getLineSeparator() + e.getLocalizedMessage();
             throw new Exception(errorString, e);
         } catch (FileNotFoundException e) {
-            String errorString = "OmegatFormatter -- " + 
+            String errorString = "OmegatFormatter -- " +
                     StringTable.FILE_NOT_FOUND;
             errorString += getLineSeparator() + e.getLocalizedMessage();
             throw new Exception(errorString, e);
         }
     }
-    
+
     private static void doTransfer(Program prog, Reader input, Writer output)
             throws Exception {
         String[] args = prog.getParameters().split("[ ]+");
         try {
             ApertiumTransfer.doMain(args, input, output);
         } catch (UnsupportedEncodingException e) {
-            String errorString = "Transfer -- " + 
+            String errorString = "Transfer -- " +
                 StringTable.UNSUPPORTED_ENCODING;
             errorString += getLineSeparator() + e.getLocalizedMessage();
             throw new UnsupportedEncodingException(errorString);
         } catch (FileNotFoundException e) {
-            String errorString = "Transfer -- " + 
+            String errorString = "Transfer -- " +
                     StringTable.FILE_NOT_FOUND;
             errorString += getLineSeparator() + e.getLocalizedMessage();
             throw new Exception(errorString, e);
         } catch (Exception e) {
-            String errorString = "Transfer -- " + 
+            String errorString = "Transfer -- " +
                     StringTable.GENERIC_EXCEPTION;
             errorString += getLineSeparator() + e.getLocalizedMessage();
             throw new Exception(errorString, e);
@@ -297,7 +297,7 @@ public class Dispatcher {
         String paramString = prog.getParameters();
         String replacement = (dispMarks ? "-g" : "-n");
         paramString = paramString.replaceAll("\\$1", replacement);
-        
+
         String[] args = paramString.split(splitPattern);
         try {
             LTProc.doMain(args, input, output);
@@ -326,7 +326,7 @@ public class Dispatcher {
                 } catch (Exception e) {}
             }
             final Process extProcess = Runtime.getRuntime().exec(prog.getFullPath() + " " + prog.getParameters(), null, tempDir);
-            
+
             // We will create a new thread to copy from the input Reader to the OutputStream of the
             // external process (note that we must convert the input to UTF-8)
             // The following variable is used to be able to propagate an exception that might happen
@@ -347,22 +347,21 @@ public class Dispatcher {
                             extProcess.getOutputStream().close();
                         } catch (IOException ex) {
                             // We haven't been able to close the input Reader that we were given
-                            // We will load the exception and exit the program (it's certainly a
-                            // radical solution but... what else could we do?)
-                            Logger.getLogger(Dispatcher.class.getName()).log(Level.SEVERE, null, ex);
-                            System.exit(-1);
+                            // We will print the exception and return (it's certainly not a good
+                            // but... what else could we do, we're a library and should never exit)
+                            ex.printStackTrace();
                         }
                     }
                 }
             }).start();
-            
+
             // We copy from the OutputStream of the external process to the output Writer that
             // we were given (note that we must convert the output to UTF-16)
             byte buffer[] = new byte[1024];
             int count;
             while ((count = extProcess.getInputStream().read(buffer)) != -1)
                 output.write(new String(buffer, 0, count, "UTF-8"));
-            
+
             // We wait for the external process to end (its InputStream is surely closed, but the
             // process might still be running)
             while (true)
@@ -372,27 +371,27 @@ public class Dispatcher {
                 } catch (InterruptedException e) {}
 
             // We check the exit value of the external process
-            if (extProcess.exitValue() != 0) { 
+            if (extProcess.exitValue() != 0) {
                 //Assume process follows convention of 0 == Success
                 String errorString = prog.getCommandName() + " (Unknown) -- " +
-                        "External program failed, returned non-zero value: " + 
+                        "External program failed, returned non-zero value: " +
                         extProcess.exitValue();
                 throw new Exception(errorString);
             }
-            
+
             // We check that there hasn't been any error while writing to the OutputStream of the
             // external process
             if (writingException.get() != null) throw writingException.get();
-            
+
         } catch (IOException e) {
             String errorString = prog.getCommandName() + " (Unknown) -- " + StringTable.IO_EXCEPTION;
             errorString += getLineSeparator() + e.getLocalizedMessage();
             throw new IOException(errorString, e);
         }
     }
-    
-    
-    public static void dispatch(Program prog, Reader input, Writer output, 
+
+
+    public static void dispatch(Program prog, Reader input, Writer output,
             boolean dispAmb, boolean dispMarks) throws Exception {
         switch(prog.getProgram()) {
             case INTERCHUNK:

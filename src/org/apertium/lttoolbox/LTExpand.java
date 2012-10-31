@@ -27,13 +27,11 @@ import java.io.*;
  */
 public class LTExpand {
 
-  static void endProgram(String name) {
+  private static void showHelp(String name) {
     if (name != null) {
       System.out.println(" v" + CommandLineInterface.PACKAGE_VERSION + ": expand the contents of a dictionary file" +
               "USAGE: " + name + " dictionary_file [output_file]");
     }
-    System.exit(-1);
-
   }
 
   /**
@@ -59,8 +57,8 @@ public class LTExpand {
                 }
                 break;
             default:
-                endProgram("LTExpand");
-                break;
+                showHelp("LTExpand");
+                return;
         }
 
         Expander e = new Expander();

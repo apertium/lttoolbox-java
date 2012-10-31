@@ -48,7 +48,7 @@ public class LTValidate {
     /**
      * usage method
      */
-    static void usage() {
+    private static void showHelp() {
         //System.out.println(" v" + PACKAGE_VERSION + ": validate an XML file" +
         //    " according to a schema\n" +
         //    "USAGE : LTValidate XML_File Schema");
@@ -57,7 +57,6 @@ public class LTValidate {
             "USAGE : LTValidate -dix dictionary.xml\n"+
             "        LTValidate -acx dictionary.acx"
             );
-            System.exit(-1);
     }
 
   static boolean validateDix(String fn) {
@@ -109,12 +108,13 @@ public class LTValidate {
         final int argc = args.length;
         boolean ok = false;
         if (argc < 1 || argc>2) {
-            usage();
+            showHelp();
+            return;
         } if (argc == 1) {
           String fn = args[0];
           if (fn.endsWith(".dix")) ok = validateDix(fn);
           else if (fn.endsWith(".acx")) ok = validateAcx(fn);
-          else usage();
+          else { showHelp(); return; }
         } else {
           if (args[0].equals("-dix")) ok = validateDix(args[1]);
           else if (args[0].equals("-acx")) ok = validateAcx(args[1]);
@@ -126,7 +126,7 @@ public class LTValidate {
         }
 
         // Give exit values according to whether it validated or not
-        if (ok) System.exit(0);
-        else System.exit(1);
+        if (ok) System.exit(0);  // OK - this will never be invoked from a library
+        else System.exit(1); // OK - this will never be invoked from a library
     }
 }

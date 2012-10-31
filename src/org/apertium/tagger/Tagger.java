@@ -158,19 +158,9 @@ public class Tagger {
                         break;
 
                     case 'r':
-                        System.err.println("Training not supported");
-                        System.exit(0);
-                        break;
-
                     case 's':
-                        System.err.println("Training not supported");
-                        System.exit(0);
-                        break;
-
                     case 't':
-                        System.err.println("Training not supported");
-                        System.exit(0);
-                        break;
+                        throw new IllegalArgumentException("Training not supported");
 
                     case 'z':
                         null_flush = true;

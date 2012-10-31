@@ -63,7 +63,7 @@ public class ApertiumTransfer {
         cache.clear();
     }
 
-    static void endProgram(String name) {
+    static void showHelp(String name) {
         System.out.print(name + CommandLineInterface.PACKAGE_VERSION +": \n" +
 "USAGE: "+name+" trules-class preproc biltrans [input [output]]\n" +
 "       "+name+" -b trules preproc [input [output]]\n" +
@@ -83,8 +83,6 @@ public class ApertiumTransfer {
 "  -z            null-flushing output on '\n" +
 "  -h            shows this message\n" +
 "");
-        System.exit(-1);
-
     }
 
     public static void main(String[] argv) throws Exception {
@@ -101,14 +99,15 @@ public class ApertiumTransfer {
         boolean useBD = true;
 
         if (argv.length == 0) {
-            endProgram("apertium-transfer-j");
+            showHelp("apertium-transfer-j");
+            return;
         }
 
         boolean caseSensitiveMode = false;
         boolean nullFlush = false;
         boolean preBilingual = false;
         boolean useBilingual = true;
-        
+
         MyGetOpt getopt = new MyGetOpt(argv, "cvbnzhD");
 
         int optind = -1;
@@ -151,12 +150,12 @@ public class ApertiumTransfer {
 
                     case 'h':
                     default:
-                        endProgram(argv[0]);
-                        break;
+                        showHelp(argv[0]);
+                        return;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                endProgram();
+                showHelp(null);
             }
         }
 
@@ -167,8 +166,8 @@ public class ApertiumTransfer {
          */
         int minArgs =(useBD ? optind + 3 : optind + 2);
 
-        if (argv.length <= minArgs) endProgram();
-        
+        if (argv.length <= minArgs) { showHelp(null); return; }
+
         /* Split out into explicit variables for readability and because
          * tRulesClass originally was going to be tweaked here, but that
          * was split off into a separate method so that it could be used
@@ -243,21 +242,13 @@ public class ApertiumTransfer {
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e1) {
-                /* Do nothing, we really don't care if we've been
-                 * interrupted by anything, as this isn't synchronized
-                 * code.
-                 */
             }
             e.printStackTrace();
             if (t.getNullFlush()) {
                 output.write('\0');
             }
-            System.exit(1);
+            throw new IOException(e);
         }
 
     }
-
-  private static void endProgram() {
-    endProgram("apertium-transfer-j");
-  }
 }

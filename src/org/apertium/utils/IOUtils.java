@@ -38,7 +38,7 @@ public class IOUtils {
     private static ZipFile zip;
     private static ClassLoader loader;
     private static File parent;
-    
+
     public static boolean memmapping = true;
 
 
@@ -59,7 +59,7 @@ public class IOUtils {
         parent = null;
         zip = null;
     }
-    
+
     public static void setBasePathAndClassLoader(String basePath, ClassLoader classLoader) throws Exception {
         File f = new File(basePath);
         if (!f.exists()) throw new FileNotFoundException();
@@ -431,18 +431,7 @@ public class IOUtils {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         try {
             Process extProcess = Runtime.getRuntime().exec("cygpath -m " + filename);
-            while(true) { //Keep waiting until process is finished.
-                try {
-                    extProcess.waitFor();
-                    /* If external process is finished, we'll get to the break
-                     * statement below. If we are interrupted, we won't.
-                     */
-                    break;
-                } catch (InterruptedException e) {
-                    /* We got interrupted. Run the loop again.
-                     */
-                }
-            }
+            extProcess.waitFor();
             if(extProcess.exitValue() != 0) {
                 /* Assume process follows convention of 0 == Success.
                  * Thus if the exit value is != 0, it failed
@@ -453,24 +442,11 @@ public class IOUtils {
             while((currByte = extProcess.getInputStream().read()) != -1 ) {
                 output.write(currByte);
             }
+            return output.toString("UTF-8");
         } catch (Exception e) { //catch all exceptions and discard them, returning null
+            e.printStackTrace();
             return null;
         }
-
-        String outputString = null;
-        try {
-             outputString = output.toString("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            //For some reason, this system doesn't support UTF-8??
-            System.err.println("Exception opening file/directory: " + filename + " -- " +
-                    StringTable.UNSUPPORTED_ENCODING);
-            //If the system doesn't support UTF-8, we cannot continue.
-            System.exit(1);
-        }
-        /* If the string isn't trimmed, calls to File.exists() will return false, even when
-         * the file exists.
-         */
-        return outputString.trim();
     }
 
 }

@@ -86,7 +86,6 @@ class LRXProcessor {
     transducer = new TransducerExe();
     transducer.read(in, alphabet);
     transducer.show_DEBUG(alphabet);
-//    System.exit(0);
     D(name+" -> "+transducer);
     // Now read in weights
 //...

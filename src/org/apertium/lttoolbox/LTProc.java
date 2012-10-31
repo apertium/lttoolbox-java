@@ -64,7 +64,7 @@ public class LTProc {
 
 
 
-    static void endProgram(String name) {
+    private static void showHelp(String name) {
         System.out.print(name + CommandLineInterface.PACKAGE_VERSION +": process a stream with a letter transducer\n" +
             "USAGE: " + name + " [-c] [-a|-g|-n|-d|-b|-p|-s|-t] fst_file [input_file [output_file]]\n" +
             "Options:\n" +
@@ -86,9 +86,6 @@ public class LTProc {
             "  -S:   show hidden control symbols (for flagmatch and compounding)\n" +
             "  -h:   show this help\n");
 
-        //new Exception().printStackTrace();
-        System.exit(-1);
-
     }
 
     static void checkValidity(FSTProcessor fstp) {
@@ -107,7 +104,8 @@ public class LTProc {
             throws IOException {
 
         if (argv.length == 0) {
-            endProgram("LTProc");
+            showHelp("LTProc");
+            return;
         }
 
         final int argc = argv.length;
@@ -176,12 +174,13 @@ public class LTProc {
                     case 'h':
                     default:
                         System.err.println("Unregognized parameter: " + (char) c);
-                        endProgram("LTProc");
-                        break;
+                        showHelp("LTProc");
+                        return;
                 }
 
             } catch (Exception e) {
-                endProgram("LTProc");
+                showHelp("LTProc");
+                return;
             }
         }
 
@@ -201,13 +200,13 @@ public class LTProc {
 
         int optind = getopt.getOptind()-1;
         if (optind == (argc - 4) && !pipelineMode) { //Both input and output files specified, and not in pipeline mode
-            if ((input = openInFileReader(argv[optind + 2])) == null) endProgram("LTProc");
-            if ((output = openOutFileWriter(argv[optind + 3])) == null) endProgram("LTProc");
+            if ((input = openInFileReader(argv[optind + 2])) == null ||
+                (output = openOutFileWriter(argv[optind + 3])) == null) { showHelp("LTProc"); return; }
         } else if (optind == (argc - 3) && !pipelineMode) { //Only input file specified, and not in pipeline mode
-            if ((input = openInFileReader(argv[optind + 2])) == null) endProgram("LTProc");
+            if ((input = openInFileReader(argv[optind + 2])) == null) { showHelp("LTProc"); return; }
         } else { //Neither file specified, or in pipeline mode
             if (input == null) input = getStdinReader(); //Only assign if it hasn't been assigned yet
-            if (optind != (argc - 2)) endProgram("LTProc");
+            if (optind != (argc - 2))  { showHelp("LTProc"); return; }
         }
 
         FSTProcessor fstp = null;
@@ -217,7 +216,7 @@ public class LTProc {
         if (ref != null) fstp = ref.get(); // there was a soft ref, get the contents
         if (fstp == null) { // contents might be null if it wasn't cached or it has been was garbage collected
             ByteBuffer in = openFileAsByteBuffer(filename);
-            //never happens if (in == null) endProgram("LTProc");
+            //never happens if (in == null) showHelp("LTProc");
             fstp = new FSTProcessor();
             fstp.load(in);
             if (cacheEnabled)
@@ -296,16 +295,12 @@ public class LTProc {
             System.out.flush();
             try {
                 Thread.sleep(10);
-            } catch (InterruptedException e1) {
-                /* Do nothing, we don't really care that we've been interrupted,
-                 * as this is not synchronized code.
-                 */
-            }
+            } catch (InterruptedException e1) {}
             e.printStackTrace();
             if (fstp.getNullFlush()) {
                 output.write('\0');
             }
-            System.exit(1);
+            throw new IOException(e); // Send to parent
         }
 
         input.close();

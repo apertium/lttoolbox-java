@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2005 Universitat d'Alacant / Universidad de Alicante
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
@@ -43,7 +43,7 @@ public class HMM {
     class IntVector {
         ArrayList<Integer> nodes = new ArrayList<Integer>();
     }
-    
+
     private double ZERO = 1e-10;
     private TaggerData td;
     private int eos;
@@ -325,7 +325,8 @@ public class HMM {
                 System.err.println("Take a look at tagged text (.tagged).");
                 System.err.println("Perhaps this is caused by a multiword unit that is not a multiword unit in one of the two files.");
                 System.err.println(word_tagged + " -- " + word_untagged);
-                System.exit(1);
+                // exit() is not an option as we are a library
+                throw new Error();
             }
 
             if (++nw % 100 == 0) {
@@ -334,13 +335,9 @@ public class HMM {
             }
 
             tag2 = tag1;
-            
-            //XXX: maybe you should throw an exception form here, instead of printing 
-            // on stderr and invoking System.exit() -- think, for example, if this is
-            // used inside a service
+
             if (word_untagged == null) {
-                System.err.println("word_untagged==NULL");
-                System.exit(1);
+                throw new IOException("word_untagged==NULL");
             }
 
             if (word_tagged.get_tags().size() == 0) { // Unknown word
@@ -623,7 +620,7 @@ public class HMM {
                 }
 
             }
-            
+
             if (tags.size() > 1) {
                 pending.add(tags);
             } else { //word is unambiguous
@@ -637,7 +634,7 @@ public class HMM {
                 prob = alpha.get(len).get(tag);
 
                 loli -= Math.log(prob);
-                
+
                 for (t = 0; t < len; t++) {
                     Integer pendingSize = pending.size();
                     pretags = pending.get(pendingSize - 1); //Get the last element
@@ -655,12 +652,12 @@ public class HMM {
                                 xsi.put(j, new LinkedHashMap<Integer, Double>());
                             }
                             tmpDbl = xsi.get(j).get(i) + alpha.get(len - t - 1).get(j)
-                                    * td.getA()[j][i] * td.getB()[i][k] 
+                                    * td.getA()[j][i] * td.getB()[i][k]
                                     * beta.get(t % 2).get(i) / prob;
                             xsi.get(j).put(i, tmpDbl);
                         }
                         double previous_value = gamma.get(i);
-                        
+
                         tmpDbl = gamma.get(i) + alpha.get(len - t).get(i)
                                 * beta.get(t % 2).get(i) / prob;
                         gamma.put(i, tmpDbl);
@@ -669,22 +666,19 @@ public class HMM {
                          * just stored at i in gamma.
                          */
                         if (Double.isNaN(tmpDbl)) {
-                            String outString = "NAN(3) gamma[" + i + "] = " + tmpDbl +
-                                    " alpha[" + (len - t) + "][" + i + "]= " + 
+                            throw new IllegalStateException("NAN(3) gamma[" + i + "] = " + tmpDbl +
+                                    " alpha[" + (len - t) + "][" + i + "]= " +
                                     alpha.get(len - t).get(i) + " beta[" + (t %2) + "][" +
                                     i + "] = " + beta.get(t % 2).get(i) + " prob = " +
-                                    prob + " previous gamma = " + previous_value;
-                            System.err.println(outString);
-                            System.exit(1);
+                                    prob + " previous gamma = " + previous_value
+                            );
                         }
                         if (Double.isInfinite(tmpDbl)) {
-                            String outString = "INF(3) gamma[" + i + "] = " + tmpDbl +
-                                    " alpha[" + (len - t) + "][" + i + "]= " + 
+                            throw new IllegalStateException("INF(3) gamma[" + i + "] = " + tmpDbl +
+                                    " alpha[" + (len - t) + "][" + i + "]= " +
                                     alpha.get(len - t).get(i) + " beta[" + (t %2) + "][" +
                                     i + "] = " + beta.get(t % 2).get(i) + " prob = " +
-                                    prob + " previous gamma = " + previous_value;
-                            System.err.println(outString);
-                            System.exit(1);
+                                    prob + " previous gamma = " + previous_value);
                         }
                         if(tmpDbl == 0) {
                             gamma.put(i, DBL_MIN);
@@ -706,13 +700,13 @@ public class HMM {
                 alpha.put(0, tempNewMap);
                 tempNewMap = null;
             }
-            
+
             word = morpho_stream.get_next_word();
         }
         if ((pending.size() > 1) || ((tag != eos) && (tag != td.getTagIndex().get("TAG_kEOF")))) {
           System.err.println("Warning: The last tag is not the end-of-sentence tag.");
         }
-        
+
         int N = td.getN();
         int M = td.getM();
 
@@ -727,7 +721,7 @@ public class HMM {
                 tmpB[i][k] = ZERO;
             }
         }
-        
+
         //new parameters
         for(Integer i : xsi.keySet()) {
             for(Integer j : xsi.get(i).keySet()) {
@@ -736,29 +730,23 @@ public class HMM {
                         System.err.println("Warning: gamma[" + i + "]=0");
                         gamma.put(i, DBL_MIN);
                     }
-                    
+
                     //Reuse td.A reference grabbed before previous loop
                     tmpA[i][j] = xsi.get(i).get(j) / gamma.get(i);
-                    
+
                     if(Double.isNaN(tmpA[i][j])) {
-                        System.err.println("NAN");
-                        String outString = "Error: BW - NAN(1) a[" + i + "][" + j
+                        throw new IllegalStateException("Error: BW - NAN(1) a[" + i + "][" + j
                             + "]=" + tmpA[i][j] + "\txsi[" + i + "][" + j + "]="
-                            + xsi.get(i).get(j) + "\tgamma[" + i + "]=" + gamma.get(i);
-                        System.err.println(outString);
-                        System.exit(1);
+                            + xsi.get(i).get(j) + "\tgamma[" + i + "]=" + gamma.get(i));
                     }
                     if(Double.isInfinite(tmpA[i][j])) {
-                        System.err.println("INF");
-                        String outString = "Error: BW - INF(1) a[" + i + "][" + j
+                        throw new IllegalStateException("Error: BW - INF(1) a[" + i + "][" + j
                             + "]=" + tmpA[i][j] + "\txsi[" + i + "][" + j + "]="
-                            + xsi.get(i).get(j) + "\tgamma[" + i + "]=" + gamma.get(i);
-                        System.err.println(outString);
-                        System.exit(1);
+                            + xsi.get(i).get(j) + "\tgamma[" + i + "]=" + gamma.get(i));
                     }
                     if(tmpA[i][j] == 0) {
                         /* Do nothing for now, the code in the C++ version for this
-                         * conditional is all commented out. 
+                         * conditional is all commented out.
                          */
                     }
                 }
@@ -876,7 +864,7 @@ public class HMM {
                         System.err.println("Problem with word '" + word.get_superficial_form() + "' " + word.get_string_tags());
                     }
                 }
-                
+
                 for (int t = 0; t < best[nwpend2][tag].nodes.size(); t++) {
                     if (show_all_good_first) {
                         String micad = wpend.get(t).get_all_chosen_tag_first(best[nwpend2][tag].nodes.get(t), td.getTagIndex().get("TAG_kEOF"));
@@ -1003,12 +991,9 @@ public class HMM {
      * Helper method - prints an error message and exits
      * @param err The string to print
      */
-    //XXX: maybe you should throw an exception form here, instead of printing 
-    // on stderr and invoking System.exit() -- think, for example, if this is
-    // used inside a service
     private void fatal_error(String err) {
-        System.err.println(err);
-        System.exit(1);
+        throw new Error(err);
+        // NEVER do System.exit(1); as we are a library
     }
 
     /**
