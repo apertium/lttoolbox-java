@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2010 Stephen
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
@@ -48,7 +48,7 @@ public class TestPostChunk {
 
     static String testDataDir = "testdata/postchunk/";
     static String tempDir = "./tmp/";
-    
+
     //Tests for the static methods
 
     /**
@@ -57,7 +57,7 @@ public class TestPostChunk {
      */
     @SuppressWarnings("unchecked")
     private static Object runPrivateMethod(String name, Class[] paramTypes, Object[] params)
-            throws SecurityException, NoSuchMethodException, IllegalArgumentException, 
+            throws SecurityException, NoSuchMethodException, IllegalArgumentException,
             IllegalAccessException, InvocationTargetException {
         Class pcClass = Postchunk.class;
         Method privateMethod = pcClass.getDeclaredMethod(name, paramTypes);
@@ -74,42 +74,42 @@ public class TestPostChunk {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void testGetVecTags() throws SecurityException, IllegalArgumentException, 
+    public void testGetVecTags() throws SecurityException, IllegalArgumentException,
             NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         String methodName = "getVecTags";
         String inputString = "^Nom<SN><PDET><m><sg>{^anarquismo<n><3><4>$}$";
         String[] expOutArray = {"<SN>", "<PDET>", "<m>", "<sg>"};
         ArrayList<String> expectedOutput = new ArrayList<String>(Arrays.asList(expOutArray));
-        
+
         Class[] paramTypes = {String.class};
         Object[] params = {inputString};
-        
-        ArrayList<String> returnVal = (ArrayList<String>) 
+
+        ArrayList<String> returnVal = (ArrayList<String>)
                 runPrivateMethod(methodName, paramTypes, params);
         assertEquals("TestPostChunk.testGetVecTags() failed: output does not match expected output", expectedOutput, returnVal);
     }
 
     @SuppressWarnings("unchecked")
     @Test
-    public void testBeginChunk() throws SecurityException, IllegalArgumentException, 
+    public void testBeginChunk() throws SecurityException, IllegalArgumentException,
             NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         String methodName = "beginChunk";
         String inputString = "^Nom<SN><PDET><m><sg>{^anarquismo<n><3><4>$}$";
         int expectedOutput = 22; //This should be the index of the '^' after the '{'
-        
+
         Class[] paramTypes = {String.class};
         Object[] params = {inputString};
-        
+
         int returnVal = (Integer) runPrivateMethod(methodName, paramTypes, params);
 
         assertEquals("TestPostChunk.testBeginChunk() failed: output does not match expected output", expectedOutput, returnVal);
     }
-    
+
     /* There *was* a method for testing endChunk here... then I realized it was
      * one line... which returned the length of the string minus 2...
      * Yeah, no real need to test that. XD
      */
-    
+
     @SuppressWarnings("unchecked")
     @Test
     public void testPseudoLemma() throws SecurityException, IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
@@ -119,12 +119,12 @@ public class TestPostChunk {
 
         Class[] paramTypes = {String.class};
         Object[] params = {inputString};
-        
+
         String returnVal = (String) runPrivateMethod(methodName, paramTypes, params);
 
         assertEquals("TestPostChunk.testPseudoLemma() failed: output does not match expected output", expectedOutput, returnVal);
     }
-    
+
     public void testSplitWordsAndBlanks() {
         /* TODO: Implement this -- Not sure what the output of splitWordsAndBlanks() should
          * be yet. n.n;
@@ -141,7 +141,7 @@ public class TestPostChunk {
     public void testThisIsATest() throws IOException {
         String testIn = "^Prn<SN><tn><m><sp>{^esto<prn><tn><3><4>$}$ ^be<Vcop><vbser><pri><p3><sg>{^ser<vbser><3><4><5>$}$ ^det_nom<SN><DET><f><sg>{^uno<det><ind><3><4>$ ^prueba<n><3><4>$}$^punt<sent>{^.<sent>$}$";
         String expTestOut = "^Esto<prn><tn><m><sp>$ ^ser<vbser><pri><p3><sg>$ ^uno<det><ind><f><sg>$ ^prueba<n><f><sg>$^.<sent>$";
-        
+
         runSingleSentenceTest(testIn, expTestOut);
     }
 
@@ -152,8 +152,8 @@ public class TestPostChunk {
 
         runSingleSentenceTest(testIn, expTestOut);
     }
-    
-    
+
+
     @SuppressWarnings("unchecked")
     private void runSingleSentenceTest(String testIn, String expTestOut) throws IOException {
         Class transferClass = org.apertium.transfer.old.generated.apertium_en_es_en_es_t3x.class;
@@ -170,7 +170,7 @@ public class TestPostChunk {
         try {
             postchunk.read(transferClass, preprocFile);
             //postchunk.transferObject.debug = true;
-            
+
             postchunk.postchunk(input, output);
         } catch (Exception e) {
             e.printStackTrace();
@@ -183,7 +183,7 @@ public class TestPostChunk {
         System.err.println("expout = " + expTestOut);
         assertEquals("TestPostchunk.testMainThisIsATest() failed: output does not match expected output.", expTestOut, testOutput);
     }
-    
+
     /**
      * Test of Interchunk.interchunk(), using external text files.
      */
@@ -203,11 +203,11 @@ public class TestPostChunk {
 
         Postchunk postchunk = new Postchunk();
         //Debug produces too much output and slows down execution too much.
-        Postchunk.DEBUG = false;
+        //Postchunk.DEBUG = false;
         try {
             postchunk.read(transferClass, preprocFile);
             //interchunk.transferObject.debug = true;
-            
+
             postchunk.interchunk(input, output);
         } catch (Exception e) {
             e.printStackTrace();

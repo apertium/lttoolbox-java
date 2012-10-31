@@ -29,7 +29,7 @@ public class InterchunkEnEoTest {
 
       // apertium-preprocess-transfer apertium-eo-en.en-eo.t2x en-eo.t2x.bin
       Class transferClass = org.apertium.transfer.old.generated.apertium_eo_en_en_eo_t2x.class;
-      t.DEBUG = true;
+      //t.DEBUG = true;
       t.read(transferClass, dir+"en-eo.t2x.bin");
       t.transferObject.debug = true;
 

@@ -84,7 +84,7 @@ public class Interchunk {
     private boolean null_flush;
     private boolean internal_null_flush;
 
-    public static boolean DEBUG = false;
+    public static final boolean DEBUG = false;
 
     // Moved these up here, in contrast to Transfer, where they're stuck down
     // between some functions.
@@ -271,20 +271,14 @@ public class Interchunk {
      * @throws IllegalArgumentException
      * @throws Exception
      */
-    private void interchunk_wrapper_null_flush(Reader input, Writer output)
+    private void interchunk_wrapper_null_flush(Reader input, Appendable output)
             throws IOException, IllegalArgumentException,
             IllegalAccessException, InvocationTargetException {
         null_flush = false;
         internal_null_flush = true;
         while (input.ready()) {
             interchunk(input, output);
-            output.write('\0');
-            try {
-                output.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.err.println("Could not flush output");
-            }
+            output.append('\0');
         }
         internal_null_flush = false;
         null_flush = true;
@@ -309,7 +303,7 @@ public class Interchunk {
      * @throws IllegalArgumentException
      * @throws Exception
      */
-    public void interchunk(Reader in, Writer output) throws IOException,
+    public void interchunk(Reader in, Appendable output) throws IOException,
             IllegalArgumentException, IllegalAccessException,
             InvocationTargetException {
         if (getNullFlush()) {
@@ -345,9 +339,9 @@ public class Interchunk {
                             //If it's not postchunk, it's interchunk.
                             case INTERCHUNK:
                             default:
-                                output.write('^');
-                                output.write(tmpword.get(0));
-                                output.write('$');
+                                output.append('^');
+                                output.append(tmpword.get(0));
+                                output.append('$');
                                 break;
                         }
                         tmpword.clear();
@@ -356,7 +350,7 @@ public class Interchunk {
                         lastPos = input_buffer.getPos();
                         ms.init(me.getInitial());
                     } else if (tmpblank.size() != 0) {
-                        output.write(tmpblank.get(0));
+                        output.append(tmpblank.get(0));
                         tmpblank.clear();
                         lastPos = input_buffer.getPos();
                         ms.init(me.getInitial());
@@ -412,7 +406,7 @@ public class Interchunk {
                         tmpblank.add(current.content);
                         ms.clear();
                     } else {
-                        output.write(current.content);
+                        output.append(current.content);
                         //This line only exists in Intechunk, not postchunk
                         if(icMode == InterchunkMode.INTERCHUNK) { tmpblank.clear(); }
                         if (DO_TIMING) {
@@ -440,7 +434,7 @@ public class Interchunk {
      * @throws IllegalArgumentException
      * @throws InvocationTargetException
      */
-  protected void applyRule(Writer output, Method rule,
+  protected void applyRule(Appendable output, Method rule,
     ArrayList<String> words, ArrayList<String> blanks)
     throws IOException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {
@@ -460,8 +454,6 @@ public class Interchunk {
           if (i>0) args[argn++] = blanks.get(i-1);
           args[argn++] = new InterchunkWord(words.get(i));
         }
-
-        if (DEBUG)
 
         if (DEBUG)
             System.err.println("#args = " + args.length);
@@ -487,8 +479,6 @@ public class Interchunk {
                     rule.getName() + "(" + Arrays.toString(args) + ")");
             throw e;
         }
-        if (DEBUG)
-            output.flush();
 
     }
 
@@ -556,7 +546,7 @@ public class Interchunk {
      * @throws IOException
      * @throws UnsupportedOperationException
      */
-    protected void unchunk(final String chunk, Writer output) throws IOException, UnsupportedOperationException {
+    protected void unchunk(final String chunk, Appendable output) throws IOException, UnsupportedOperationException {
         String message = "Interchunk.unchunk should never be called. Instead this should only be called from " +
             "a Postchunk object, and instead should run Postchunk.unchunk.";
         throw new UnsupportedOperationException(message);

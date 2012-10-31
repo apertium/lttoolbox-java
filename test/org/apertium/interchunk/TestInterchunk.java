@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2010 Stephen Tigner
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
@@ -41,7 +41,7 @@ import org.junit.Test;
  *
  */
 public class TestInterchunk {
-    
+
     static String testDataDir = "testdata/interchunk/";
     static String tempDir = "./tmp/";
 
@@ -53,12 +53,12 @@ public class TestInterchunk {
          */
         String inFile = testDataDir + "apertium-en-es.en-es.t2x";
         String outFile = tempDir + "apertium_en_es_en_es_t2x.class";
-        
+
         String args[] = {inFile, outFile};
-        
+
         ApertiumTransferCompile.main(args);
     }
-    
+
     /**
      * Test method for {@link org.apertium.interchunk.Interchunk#interchunk(Reader, Writer)}.
      * Interchunk takes the output from transfer as its input and outputs to postchunk.
@@ -68,14 +68,14 @@ public class TestInterchunk {
     public void testThisIsATest() throws IOException {
         String testIn = "^Prn<SN><tn><m><sp>{^esto<prn><tn><3><4>$}$ ^be<Vcop><vbser><pri><p3><sg>{^ser<vbser><3><4><5>$}$ ^det_nom<SN><DET><f><sg>{^uno<det><ind><3><4>$ ^prueba<n><3><4>$}$^punt<sent>{^.<sent>$}$";
         String expTestOut = "^Prn<SN><tn><m><sp>{^esto<prn><tn><3><4>$}$ ^be<Vcop><vbser><pri><p3><sg>{^ser<vbser><3><4><5>$}$ ^det_nom<SN><DET><f><sg>{^uno<det><ind><3><4>$ ^prueba<n><3><4>$}$^punt<sent>{^.<sent>$}$";
-        
+
         runSingleSentenceTest(testIn, expTestOut);
     }
-    
+
     /* Extra tests added to test some specific representative sentences from the
      * 200 sentence test that are failing, while the above test still works.
      */
-    
+
     @Test
     public void testSentenceNumber2() throws IOException {
         String testInp = "     ^Num<NUM>{^2<num>$}$^punt<sent>{^.<sent>$}$ ^Nom<SN><UNDET><m><sg>{^anarquismo<n><3><4>$}$ ^adv<adv><NEG>{^no<adv>$}$ ^be<Vcop><vbser><pri><p3><sg>{^ser<vbser><3><4><5>$}$ ^det_nom<SN><DET><m><sg>{^el<det><def><3><4>$ ^reinado<n><3><4>$}$ ^pr<PREP>{^de<pr>$}$ ^nom<SN><UNDET><m><sg>{^amor<n><3><4>$}$^coma<cm>{^,<cm>$}$ ^cnj<cnjcoo>{^pero<cnjcoo>$}$ ^det_nom<SN><DET><m><sg>{^el<det><def><3><4>$ ^reinado<n><3><4>$}$ ^pr<PREP>{^de<pr>$}$ ^nom<SN><UNDET><f><sg>{^justicia<n><3><4>$}$^punt<sent>{^.<sent>$}$";
@@ -84,7 +84,7 @@ public class TestInterchunk {
         runSingleSentenceTest(testInp, testExp);
     }
 
-    
+
     @Test
     public void testSentenceNumber7() throws IOException {
         String testInp = "     ^Num<NUM>{^7<num>$}$^punt<sent>{^.<sent>$}$ ^Prnsubj<SN><tn><p3><m><pl>{^prpers<prn><2><p3><4><pl>$}$ ^adv<adv>{^en cambio<adv>$}$ ^inf<SV><vblex><inf><PD><ND>{^defender<vblex><3>$}$ ^det_nom<SN><DET><m><sg>{^el<det><def><3><4>$ ^proceso<n><3><4>$}$ ^pr<PREP>{^de<pr>$}$ ^unknown<unknown>{^*rewilding$}$ ^cnj<cnjcoo>{^o<cnjcoo>$}$ ^unknown<unknown>{^*reconnecting$}$ ^pr<PREP>{^con<pr>$}$ ^det_nom_adj<SN><DET><m><sg>{^el<det><def><3><4>$ ^entorno<n><3><4>$ ^natural<adj><mf><4>$}$^punt<sent>{^.<sent>$}$";
@@ -106,11 +106,11 @@ public class TestInterchunk {
         Writer output = new StringWriter();
 
         Interchunk interchunk = new Interchunk();
-        Interchunk.DEBUG = true;
+        //Interchunk.DEBUG = true;
         try {
             interchunk.read(transferClass, preprocFile);
             interchunk.transferObject.debug = true;
-            
+
             interchunk.interchunk(input, output);
         } catch (Exception e) {
             e.printStackTrace();
@@ -147,7 +147,7 @@ public class TestInterchunk {
         try {
             interchunk.read(transferClass, preprocFile);
             //interchunk.transferObject.debug = true;
-            
+
             interchunk.interchunk(input, output);
         } catch (Exception e) {
             e.printStackTrace();
@@ -179,9 +179,9 @@ public class TestInterchunk {
             System.err.println(i+"expectedOutput = " + expectedOutput.split("\n")[i]);
           }
 
-        
+
           //System.err.println("\n\n\ntestOutput = \n" + testOutput);
-          
+
           //System.err.println("\n\n\nexpectedOutput = \n" + expectedOutput);
         }
 

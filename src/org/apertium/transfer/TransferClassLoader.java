@@ -39,15 +39,15 @@ public class TransferClassLoader extends ClassLoader {
         return loadTxClass(txOrClassFile, binFile, new TransferClassLoader());
     }
 
-    
+
     @SuppressWarnings("unchecked")
     public static Class loadTxClass(String txOrClassFile, String binFile, TransferClassLoader tcl)
             throws ClassNotFoundException, IOException {
-        
+
         //If we have been given a class, we load it
         if (txOrClassFile.endsWith(".class") && openFile(txOrClassFile).exists())
             return tcl.loadClassFile(txOrClassFile);
-        
+
         try {
             // Even if we haven't been given a class, the corresponding class might already exist...
             // let's try to load it! (This is necessary when working with compressed files, since
@@ -59,7 +59,7 @@ public class TransferClassLoader extends ClassLoader {
             if (!classFile.endsWith(".class")) classFile += ".class";
             return tcl.loadClassFile(classFile);
         } catch (Exception e) {} //We will keep trying!
-        
+
         //OK, it seems that we will finally have to build the class...
         return buildAndLoadClass(openFile(txOrClassFile), openFile(binFile), tcl);
     }
@@ -67,7 +67,7 @@ public class TransferClassLoader extends ClassLoader {
     @SuppressWarnings("unchecked")
     private static Class buildAndLoadClass(File txFile, File binFile,
             TransferClassLoader tcl) throws ClassNotFoundException, IOException {
-        
+
         String baseBinFilename = getFilenameMinusExtension(binFile.getName());
         String classFilename = baseBinFilename + ".class";
 
@@ -75,10 +75,10 @@ public class TransferClassLoader extends ClassLoader {
          * and there's no reason to make this a File object, so keeping it just as
          * a string.
          */
-        
+
         String tempDir = System.getProperty("java.io.tmpdir");
         tempDir = addTrailingSlash(tempDir);
-        
+
         File classFile = openFile(addTrailingSlash(binFile.getParent()) + classFilename);
         // If it doesn't exist in the binFile directory, try the temp directory
         if (!classFile.exists()) {
@@ -107,10 +107,10 @@ public class TransferClassLoader extends ClassLoader {
             }
             return tb.getJavaClass();
         } catch (ParserConfigurationException e) {
-            throw new InternalError("TX File (" + txFile + ") parsing failed -- " + e.getLocalizedMessage());
+            throw new IOException("TX File (" + txFile + ") parsing failed -- " + e.getLocalizedMessage());
         } catch (SAXException e) {
-            throw new InternalError("TX File (" + txFile + ") parsing failed -- " + e.getLocalizedMessage());
+            throw new IOException("TX File (" + txFile + ") parsing failed -- " + e.getLocalizedMessage());
         }
-        
+
     }
 }

@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2010 Stephen Tigner
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
@@ -33,34 +33,34 @@ import org.apertium.transfer.TransferWord;
 
 /**
  * @author Stephen Tigner
- * 
+ *
  * This extends the Interchunk class since they have alot of the same code.
  *
  */
 public class Postchunk extends Interchunk {
-    
-    /* This is a list of Methods that don't need to be changed from the versions 
+
+    /* This is a list of Methods that don't need to be changed from the versions
      * in Interchunk, per diffing their C++ counterparts.
      * readData(InputStream), read(String, String), read(Class, String),
-     * readToken(Reader), getNullFlush(), setNullFlush(), 
-     * interchunk_wrapper_null_flush(), interchunk(). The latter two because of a 
+     * readToken(Reader), getNullFlush(), setNullFlush(),
+     * interchunk_wrapper_null_flush(), interchunk(). The latter two because of a
      * few lines introduced in interchunk to keep from duplicating so much code.
      * applyWord() has a bunch of code commented out in Postchunk, but
      * is otherwise exactly the same, not sure why it's commented out.
      * Went ahead and put in some conditional code into Interchunk to not run
      * that code when not in Interchunk mode.
      */
-    
+
     /**
      * This function parses a chunk and reads all the tags
-     * from the beginning part of the chunk (before the first "{") 
+     * from the beginning part of the chunk (before the first "{")
      * into an ArrayList.
      * @param chunk -- The string chunk to process.
      * @return An ArrayList of tags in the beginning part of the chunk.
      */
     private static ArrayList<String> getVecTags(final String chunk) {
         ArrayList<String> vecTags = new ArrayList<String>();
-        
+
         for(int i = 0, limit = chunk.length(); i != limit; i++) {
             if(chunk.charAt(i) == '\\') {
                 i++;
@@ -106,7 +106,7 @@ public class Postchunk extends Interchunk {
          */
         return chunk.length();
     }
-    
+
     private static int endChunk(final String chunk) {
         /* This is used to set the upper limit for a for loop,
          * which is supposed to loop through the part inside the {}
@@ -140,7 +140,7 @@ public class Postchunk extends Interchunk {
         }
         return "";
     }
-    
+
     private static String pseudolemma(final String chunk) {
         for(int i = 0, limit = chunk.length(); i != limit; i++) {
             if(chunk.charAt(i) == '\\') {
@@ -165,36 +165,36 @@ public class Postchunk extends Interchunk {
      * @throws java.io.IOException
      */
     @Override
-    protected void unchunk(final String chunk, Writer output) throws IOException {
+    protected void unchunk(final String chunk, Appendable output) throws IOException {
         ArrayList<String> vecTags = getVecTags(chunk);
         String caseInfo = TransferWord.caseOf(pseudolemma(chunk));
-        
+
         boolean uppercaseAll = false;
         boolean uppercaseFirst = false;
-        
+
         if(caseInfo.equals("AA")) {
             uppercaseAll = true;
         } else if(caseInfo.equals("Aa")) {
             uppercaseFirst = true;
         }
-        
+
         /* This for loop runs from the beginning of the first '{' in the chunk
          * to the end of the chunk right before the ending '}$'.
          */
         for(int i = beginChunk(chunk), limit = endChunk(chunk); i < limit; i++) {
             if(chunk.charAt(i) == '\\') {
-                output.write('\\');
+                output.append('\\');
                 /* Pre-increment of i, increments it, then evaluates the expression
                  * with the incremented value of i. This means that it grabs the
                  * next character after the backslash.
                  */
-                output.write(chunk.charAt(++i));
+                output.append(chunk.charAt(++i));
             } else if(chunk.charAt(i) == '^') {
-                output.write('^');
+                output.append('^');
                 while(chunk.charAt(++i) != '$') {
                     if(chunk.charAt(i) == '\\') {
-                        output.write('\\');
-                        output.write(chunk.charAt(++i));
+                        output.append('\\');
+                        output.append(chunk.charAt(++i));
                     } else if(chunk.charAt(i) == '<') {
                         if(Character.isDigit(chunk.charAt(i + 1))) {
                             //replace tag
@@ -203,62 +203,62 @@ public class Postchunk extends Interchunk {
                             while(chunk.charAt(j) != '>') j++;
                             int value = Integer.parseInt(chunk.substring(i + 1, j)) - 1;
                             if(vecTags.size() > value) {
-                                output.write(vecTags.get(value));
+                                output.append(vecTags.get(value));
                             }
                             i = j;
                         } else {
-                            output.write('<');
-                            while(chunk.charAt(++i) != '>') { output.write(chunk.charAt(i)); }
-                            output.write('>');
+                            output.append('<');
+                            while(chunk.charAt(++i) != '>') { output.append(chunk.charAt(i)); }
+                            output.append('>');
                         }
                     } else {
                         if(uppercaseAll) {
-                            output.write(Character.toUpperCase(chunk.charAt(i)));
+                            output.append(Character.toUpperCase(chunk.charAt(i)));
                         } else if(uppercaseFirst) {
                             if(Character.isLetterOrDigit(chunk.charAt(i))) {
-                                output.write(Character.toUpperCase(chunk.charAt(i)));
+                                output.append(Character.toUpperCase(chunk.charAt(i)));
                                 uppercaseFirst = false;
                             } else {
-                                output.write(chunk.charAt(i));
+                                output.append(chunk.charAt(i));
                             }
                         } else {
-                            output.write(chunk.charAt(i));
+                            output.append(chunk.charAt(i));
                         }
                     }
                 }
-                output.write('$');
+                output.append('$');
             } else if(chunk.charAt(i) == '[') {
-                output.write('[');
+                output.append('[');
                 while(chunk.charAt(++i) != ']') {
                     if(chunk.charAt(i) == '\\') {
-                        output.write('\\');
-                        output.write(chunk.charAt(++i));
+                        output.append('\\');
+                        output.append(chunk.charAt(++i));
                     } else {
-                        output.write(chunk.charAt(i));
+                        output.append(chunk.charAt(i));
                     }
                 }
-                output.write(']');
+                output.append(']');
             } else {
-                output.write(chunk.charAt(i));
+                output.append(chunk.charAt(i));
             }
         }
     }
-    
+
     private static void splitWordsAndBlanks(final String chunk, ArrayList<String> words, ArrayList<String> blanks) {
         ArrayList<String> vecTags = getVecTags(chunk);
         StringBuilder result = new StringBuilder();
         String caseInfo = TransferWord.caseOf(pseudolemma(chunk));
-        
+
         boolean uppercaseAll = false;
         boolean uppercaseFirst = false;
         boolean lastBlank = true;
-        
+
         if(caseInfo.equals("AA")) {
             uppercaseAll = true;
         } else if(caseInfo.equals("Aa")) {
             uppercaseFirst = true;
         }
-        
+
         for(int i = beginChunk(chunk), limit = endChunk(chunk); i < limit; i++) {
             if(chunk.charAt(i) == '\\') {
                 result.append('\\');
@@ -273,7 +273,7 @@ public class Postchunk extends Interchunk {
                  * So will just be using myWord instead of "ref"
                  */
                 StringBuilder myWord = new StringBuilder();
-                
+
                 while(chunk.charAt(++i) != '$') {
                     if(chunk.charAt(i) == '\\') {
                         myWord.append('\\');
@@ -338,7 +338,7 @@ public class Postchunk extends Interchunk {
    * Modified to be in-line with the differences between transfer.cc and interchunk.cc
    */
   @Override
-  protected void applyRule(Writer output, Method rule, ArrayList<String> words, ArrayList<String> blanks)
+  protected void applyRule(Appendable output, Method rule, ArrayList<String> words, ArrayList<String> blanks)
       throws IOException {
     if (words.size()!=1) {
       System.err.println("WARNING: applyRule(words.size() = " + words.size()+". This should be 1 in postchunk. \nFor "+words);
@@ -372,15 +372,14 @@ public class Postchunk extends Interchunk {
       System.err.println("processRule:"+rule.getName()+"("+Arrays.toString(args));
       throw new IOException(e);
     }
-    if (DEBUG) output.flush();
 
   }
-    
+
     public Postchunk() {
         super();
         icMode = InterchunkMode.POSTCHUNK;
     }
-    
+
     /* This just calls the interchunk method. It's provided as a convenience because
      * it's expected that postchunk will have a postchunk method, instead of an interchunk
      * method.
