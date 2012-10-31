@@ -26,7 +26,7 @@ public class CommandLineInterface {
 
     public static final String PACKAGE_VERSION = "3.2j";
 
-    static void showHelp(String invocationCommand) {
+    private static void showHelp(String invocationCommand) {
       String bareCommand = "";
       if (invocationCommand == null) {
         String jar = System.getProperty("java.class.path");
@@ -41,30 +41,33 @@ public class CommandLineInterface {
       System.out.println(CommandLineInterface.class.getResource("/x"));
       System.out.println(CommandLineInterface.class.getResource("."));
        */
-        System.err.println("lttoolbox: a toolbox for lexical processing, morphological analysis and generation of words\n" +
+        System.err.println("lttoolbox-java: A java port of the apertium machine translation architecture\n" +
             "USAGE: "+invocationCommand+"\n" +
             "Examples:\n" +
-            " " +bareCommand+ " lt-expand dictionary.dix     expand a dictionary\n" +
-            " " +bareCommand+ " lt-comp lr dic.dix dic.bin   compile a dictionary\n" +
-            " " +bareCommand+ " lt-proc dic.bin              morphological analysis/generation\n" +
-            " " +bareCommand+ " lt-validate  dic.dix     validate a  dictionary\n" +
-//            "For more help, run without a task, like: " +bareCommand+ "\n" +
-            "For more help on a task, run it, like: " +bareCommand+ " lt-proc\n" +
+            " " +bareCommand+ " gui                         start a simple Graphical User Interface\n" +
+            " " +bareCommand+ " apertium en-eo              use the translator\n" +
+            " " +bareCommand+ " lt-expand dictionary.dix    expand a dictionary\n" +
+            " " +bareCommand+ " lt-validate  dic.dix        validate a  dictionary\n" +
+            " " +bareCommand+ " lt-comp lr dic.dix dic.bin  compile a dictionary\n" +
+            " " +bareCommand+ " lt-proc dic.bin             morphological analysis/generation\n" +
+            " " +bareCommand+ " apertium-tagger             tagging/disambigation\n" +
+            " " +bareCommand+ " apertium-transfer           lexical transfer\n" +
+            " " +bareCommand+ " apertium-destxt             lexical transfer\n" +
+            "For more help on a task, run it without parameters, like: " +bareCommand+ " lt-proc\n" +
+            "Note: Not all tasks shown, the above are just examples of Apertium commandt.\n" +
             "See also http://wiki.apertium.org/wiki/Lttoolbox-java");
-        System.exit(-1);
     }
 
   public static void main(String[] argv) throws Exception {
-    if (argv.length == 0) {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-	} catch (Exception e) {}
-        ApertiumGUI gui = new ApertiumGUI();
-        gui.setVisible(true);
-        return;
-        //ApertiumMain.main(argv);
-        //System.exit(0);
-    }//showHelp(null);
+    if (argv.length == 0) try {
+      showGui();
+      System.err.println("No arguments given, assuming 'gui'. Invoke with -h for help.");
+      return;
+    } catch (Exception e) {
+      // GUI failed. Show help.
+      System.err.println("No arguments given and no pair to show. Assuming '-h' for help.");
+      argv = new String[] { "-h" };
+    }
 
       // strip evt path
       String task = new File(argv[0]).getName().trim();
@@ -95,11 +98,22 @@ public class CommandLineInterface {
       else if (task.startsWith("lt-comp")) LTComp.main(restOfArgs);
       else if (task.startsWith("lt-validate")) LTValidate.main(restOfArgs);
       else if (task.startsWith("apertium-preprocess-transfer-bytecode")) TransferBytecode.main(restOfArgs);
+      else if (task.equals("gui")) showGui();
+      else if (task.equals("-h")) showHelp(task);
       else {
         ApertiumMain.main(argv);
         //System.err.println("Command not recognized: "+task); // Arrays.toString(argv).replaceAll(", ", " ")
         //showHelp(null);
       }
     }
+
+  private static void showGui() throws Exception {
+    ApertiumGUI.prepare();
+    try {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    } catch (Exception e) {}
+    ApertiumGUI gui = new ApertiumGUI();
+    gui.setVisible(true);
+  }
 
 }

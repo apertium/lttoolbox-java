@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2012 Mikel Artetxe
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
@@ -41,29 +41,34 @@ import javax.swing.text.Highlighter.HighlightPainter;
  * @author Mikel Artetxe
  */
 public class ApertiumGUI extends javax.swing.JFrame {
-    
+
     private static final boolean hideMarks = true;
     private static final boolean highlightMarkedWords = true;
-    
+
+    public static void prepare() throws Exception {
+      Translator.setParallelProcessingEnabled(false);
+      Translator.setCacheEnabled(true);
+      Translator.setDisplayMarks(true);
+      Translator.setJarAsBase();
+      if (Translator.getAvailableModes().length==0)
+        throw new Exception("The JAR doesn't include any mode!");
+    }
+
     private HashMap<String, String> titleToMode = new HashMap<String, String>();
 
-    /** Creates new form ApertiumGUI */
+    /** Creates new form ApertiumGUI. You must invoce prepare() to check for modes in JAR file first */
     public ApertiumGUI() throws Exception {
         initComponents();
         setLocationRelativeTo(null);
-        
-        Translator.setParallelProcessingEnabled(false);
-        Translator.setCacheEnabled(true);
-        Translator.setDisplayMarks(true);
-        Translator.setJarAsBase();
+
         for (String mode : Translator.getAvailableModes()) titleToMode.put(Translator.getTitle(mode), mode);
         Object titles[] = titleToMode.keySet().toArray();
         Arrays.sort(titles);
         modesComboBox.setModel(new DefaultComboBoxModel(titles));
-        
+
         if (modesComboBox.getItemCount() == 0)
             throw new Exception("The JAR doesn't include any mode!");
-        
+
         modesComboBox.setSelectedIndex(0);
 
         inputTextArea.requestFocusInWindow();
@@ -72,7 +77,7 @@ public class ApertiumGUI extends javax.swing.JFrame {
             public void removeUpdate(DocumentEvent e) {update();}
             public void changedUpdate(DocumentEvent e) {update();}
         });
-        
+
         // We create a popup menu for the input text area
         JPopupMenu popup = new JPopupMenu();
         JMenuItem item = new JMenuItem("Copy");
@@ -105,7 +110,7 @@ public class ApertiumGUI extends javax.swing.JFrame {
         });
         popup.add(item);
         inputTextArea.setComponentPopupMenu(popup);
-        
+
         // We create a popup menu for the output text area
         popup = new JPopupMenu();
         item = new JMenuItem("Copy");

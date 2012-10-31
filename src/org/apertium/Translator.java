@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2012 Mikel Artetxe
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
@@ -59,9 +59,9 @@ public class Translator {
 
     private static boolean cacheEnabled = false;
     private static boolean parallelProcessingEnabled = false;
-    
+
     private static Thread loader;
-    
+
     private Translator() {}
 
     public static void setDisplayAmbiguity(boolean displayAmbiguity) {
@@ -75,15 +75,15 @@ public class Translator {
     public static void setParallelProcessingEnabled(boolean enabled) {
         parallelProcessingEnabled = enabled;
     }
-    
+
     public static void setDelayedNodeLoadingEnabled(boolean enabled) {
         org.apertium.lttoolbox.process.TransducerExe.DELAYED_NODE_LOADING = enabled;
     }
-    
+
     public static void setMemmappingEnabled(boolean enabled) {
         IOUtils.memmapping = enabled;
     }
-    
+
     public static void setCacheEnabled(boolean enabled) {
         cacheEnabled = enabled;
         LTProc.setCacheEnabled(enabled);
@@ -91,7 +91,7 @@ public class Translator {
         ApertiumTransfer.setCacheEnabled(enabled);
         ApertiumInterchunk.setCacheEnabled(enabled);
     }
-    
+
     public static void clearCache() {
         LTProc.clearCache();
         Tagger.clearCache();
@@ -107,7 +107,7 @@ public class Translator {
             loader = null;
         }
         clearCache();
-        
+
         try {
             IOUtils.setJarAsResourceZip();
             modeFiles = IOUtils.listFilesWithExtension("mode");
@@ -127,7 +127,7 @@ public class Translator {
             loader = null;
         }
         clearCache();
-        
+
         if (filename.endsWith(".mode")) {
             IOUtils.setResourceZip(null);
             IOUtils.setClassLoader(null);
@@ -151,7 +151,7 @@ public class Translator {
 
     public static void setBase(ClassLoader classLoader) throws Exception {
         if (classLoader.equals(base)) return;
-        
+
         if (loader != null) {
             loader.interrupt();
             loader.join();
@@ -172,14 +172,14 @@ public class Translator {
     public static void setBase(String path, ClassLoader classLoader) throws Exception {
         if ((path + classLoader).equals(base)) return;
         base = path + classLoader;
-        
+
         if (loader != null) {
             loader.interrupt();
             loader.join();
             loader = null;
         }
         clearCache();
-        
+
         IOUtils.setBasePathAndClassLoader(path, classLoader);
         modeFiles = IOUtils.listFilesWithExtension("mode");
         if (modeFiles.length == 1) setMode(modeFiles[0]);
@@ -188,7 +188,7 @@ public class Translator {
             modeId = null;
         }
     }
-    
+
     public static void setMode(String mode) throws Exception {
         if (mode.equals(modeId)) return;
 
@@ -213,7 +213,7 @@ public class Translator {
                 }
                 return;
             }
-        throw new Exception ("Invalid mode.");
+        throw new IllegalArgumentException("Invalid mode.");
     }
 
     public static String[] getAvailableModes() {
@@ -259,30 +259,30 @@ public class Translator {
             return title.toString();
         }
     }
-    
+
     private static String getTitleForPair(String[] pair, boolean bidirectional) {
         if (pair.length == 0) return "";
         if (pair.length == 1) return pair[0];
-        
+
         StringBuilder title = new StringBuilder();
-        
+
         String lang[] = pair[0].split("_");
         title.append(getTitleForCode(lang[0]));
         for (int i = 1; i < lang.length; i++)
             title.append("(").append(lang[i].toUpperCase()).append(")");
-        
+
         title.append(bidirectional ? " ⇆ " : " → ");
-        
+
         lang = pair[1].split("_");
         title.append(getTitleForCode(lang[0]));
         for (int i = 1; i < lang.length; i++)
             title.append("(").append(lang[i].toUpperCase()).append(")");
         for (int i = 2; i < pair.length; i++)
             title.append(" (").append(pair[i].toUpperCase()).append(")");
-        
+
         return title.toString();
     }
-    
+
     private static String getTitleForCode(String code) {
         String title;
         title = new Locale(code).getDisplayLanguage();
@@ -293,16 +293,16 @@ public class Translator {
         }
         return title;
     }
-    
+
     private static HashMap<String, String> codeToTitle;
     private static void initCodeToTitle() {
         codeToTitle = new HashMap<String, String>();
-        
+
         //Trunk
         codeToTitle.put("ast", "Asturian");
         codeToTitle.put("sme", "Northern Sami");
         codeToTitle.put("nob", "Norwegian Bokmål");
-        
+
         //Incubator
         codeToTitle.put("sco", "Scots");
         codeToTitle.put("eng", "English");
@@ -326,44 +326,44 @@ public class Translator {
         codeToTitle.put("sma", "Southern Sami");
         codeToTitle.put("tgl", "Tagalog");
         codeToTitle.put("ceb", "Cebuano");
-        
+
         //Nursery
         codeToTitle.put("ssp", "Spanish sign language");
         codeToTitle.put("smj", "Lule Sami");
         codeToTitle.put("tur", "Turkish");
         codeToTitle.put("rus", "Russian");
-        
+
         //Staging
         codeToTitle.put("kir", "Kirghiz");
     }
-    
+
     public static String translate(String text) throws Exception {
         StringWriter output = new StringWriter();
         translate(new StringReader(text), output);
         return output.toString();
     }
-    
+
     public static String translate(String text, String format) throws Exception {
         StringWriter output = new StringWriter();
         translate(new StringReader(text), output, format);
         return output.toString();
     }
-    
+
     public static String translate(String text, Program deformatter, Program reformatter) throws Exception {
         StringWriter output = new StringWriter();
         translate(new StringReader(text), output, deformatter, reformatter);
         return output.toString();
     }
-    
+
     public static void translate(Reader input, Writer output) throws Exception {
         translate(input, output, "txt");
     }
-    
+
     public static void translate(Reader input, Writer output, String format) throws Exception {
         translate(input, output, new Program("apertium-des" + format), new Program("apertium-re" + format));
     }
-    
-    
+
+
     private static Exception processingException = null;
     public static void translate(Reader input, Writer output, Program deformatter, Program reformatter) throws Exception {
         if (Thread.interrupted()) throw new InterruptedException();
@@ -372,25 +372,25 @@ public class Translator {
             loader.join();
             loader = null;
         }
-        
+
         Writer intOutput = parallelProcessingEnabled ? new PipedWriter() : new StringWriter();
         dispatch(deformatter, input, intOutput, parallelProcessingEnabled);
         Reader intInput = parallelProcessingEnabled ? new PipedReader((PipedWriter)intOutput) : new StringReader(intOutput.toString());
-        
+
         for (int i = 0; i < mode.getPipelineLength(); i++) {
             intOutput = parallelProcessingEnabled ? new PipedWriter() : new StringWriter();
             dispatch(mode.getProgramByIndex(i), intInput, intOutput, parallelProcessingEnabled);
             intInput = parallelProcessingEnabled ? new PipedReader((PipedWriter)intOutput) : new StringReader(intOutput.toString());
         }
         dispatch(reformatter, intInput, output, false);
-        
+
         if (processingException != null) {
             Exception aux = processingException;
             processingException = null;
             throw aux;
         }
     }
-    
+
      private static void dispatch(final Program program, final Reader input, final Writer output, boolean async) throws Exception {
         if (async)
             new Thread(new Runnable(){
@@ -405,15 +405,14 @@ public class Translator {
                             output.close();
                         } catch (IOException ex1) {
                             // We haven't been able to close the input Reader that we were given
-                            // We will load the exception and exit the program (it's certainly a
-                            // radical solution but... what else could we do?)
-                            Logger.getLogger(Translator.class.getName()).log(Level.SEVERE, null, ex1);
-                            System.exit(-1);
+                            // We will print the exception and return (it's certainly not a good
+                            // solution but exiting in a library is worse... what else could we do?)
+                          ex1.printStackTrace();
                         }
                     }
                 }
             }).start();
         else Dispatcher.dispatch(program, input, output, dispAmb, dispMarks);
      }
-     
+
 }
