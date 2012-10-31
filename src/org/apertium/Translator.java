@@ -355,17 +355,17 @@ public class Translator {
         return output.toString();
     }
 
-    public static void translate(Reader input, Writer output) throws Exception {
+    public static void translate(Reader input, Appendable output) throws Exception {
         translate(input, output, "txt");
     }
 
-    public static void translate(Reader input, Writer output, String format) throws Exception {
+    public static void translate(Reader input, Appendable output, String format) throws Exception {
         translate(input, output, new Program("apertium-des" + format), new Program("apertium-re" + format));
     }
 
 
     private static Exception processingException = null;
-    public static void translate(Reader input, Writer output, Program deformatter, Program reformatter) throws Exception {
+    public static void translate(Reader input, Appendable output, Program deformatter, Program reformatter) throws Exception {
         if (Thread.interrupted()) throw new InterruptedException();
         if (cacheEnabled && loader != null && !Thread.currentThread().equals(loader)) {
             loader.interrupt();
@@ -373,16 +373,31 @@ public class Translator {
             loader = null;
         }
 
-        Writer intOutput = parallelProcessingEnabled ? new PipedWriter() : new StringWriter();
-        dispatch(deformatter, input, intOutput, parallelProcessingEnabled);
-        Reader intInput = parallelProcessingEnabled ? new PipedReader((PipedWriter)intOutput) : new StringReader(intOutput.toString());
+        if (parallelProcessingEnabled) {
+          // Warning: Parallel processing not tested
+          PipedWriter intOutput = new PipedWriter();
+          dispatch(deformatter, input, intOutput, parallelProcessingEnabled);
+          Reader intInput = new PipedReader(intOutput);
 
-        for (int i = 0; i < mode.getPipelineLength(); i++) {
-            intOutput = parallelProcessingEnabled ? new PipedWriter() : new StringWriter();
-            dispatch(mode.getProgramByIndex(i), intInput, intOutput, parallelProcessingEnabled);
-            intInput = parallelProcessingEnabled ? new PipedReader((PipedWriter)intOutput) : new StringReader(intOutput.toString());
+          for (int i = 0; i < mode.getPipelineLength(); i++) {
+              intOutput = new PipedWriter();
+              dispatch(mode.getProgramByIndex(i), intInput, intOutput, parallelProcessingEnabled);
+              intInput = new PipedReader(intOutput);
+          }
+          dispatch(reformatter, intInput, output, false);
+        } else {
+          StringBuilder intOutput = new StringBuilder(1000);
+          dispatch(deformatter, input, intOutput, parallelProcessingEnabled);
+          Reader intInput = new StringReader(intOutput.toString());
+
+          for (int i = 0; i < mode.getPipelineLength(); i++) {
+              intOutput = new StringBuilder(intOutput.length());
+              dispatch(mode.getProgramByIndex(i), intInput, intOutput, parallelProcessingEnabled);
+              intInput = new StringReader(intOutput.toString());
+          }
+          dispatch(reformatter, intInput, output, false);
         }
-        dispatch(reformatter, intInput, output, false);
+
 
         if (processingException != null) {
             Exception aux = processingException;
@@ -391,24 +406,16 @@ public class Translator {
         }
     }
 
-     private static void dispatch(final Program program, final Reader input, final Writer output, boolean async) throws Exception {
+     private static void dispatch(final Program program, final Reader input, final Appendable output, boolean async) throws Exception {
         if (async)
             new Thread(new Runnable(){
                 @Override
                 public void run() {
                     try {
                         Dispatcher.dispatch(program, input, output, dispAmb, dispMarks);
+                        IOUtils.close(output);
                     } catch (Exception ex) {
                         processingException = ex;
-                    } finally {
-                        try {
-                            output.close();
-                        } catch (IOException ex1) {
-                            // We haven't been able to close the input Reader that we were given
-                            // We will print the exception and return (it's certainly not a good
-                            // solution but exiting in a library is worse... what else could we do?)
-                          ex1.printStackTrace();
-                        }
                     }
                 }
             }).start();

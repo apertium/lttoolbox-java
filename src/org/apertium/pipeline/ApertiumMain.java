@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2010 Stephen Tigner
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
@@ -37,6 +37,7 @@ import java.io.Writer;
 import org.apertium.Translator;
 import org.apertium.formatter.FormatterRegistry;
 import org.apertium.lttoolbox.Getopt;
+import org.apertium.utils.IOUtils;
 import org.apertium.utils.StringTable;
 
 /**
@@ -61,14 +62,14 @@ public class ApertiumMain {
          * the files in it.
          */
         boolean listModes = false;
-    
+
         Program deformatter;
         Program reformatter;
-        
+
         Reader extInput = null;
-        Writer extOutput = null;
+        Appendable extOutput = null;
     }
-    
+
     private static void _displayHelp() {
         PrintStream p = System.err;
         /* XXX Made datadir non-optional for now to solve the issue of not really
@@ -91,17 +92,17 @@ public class ApertiumMain {
         p.println(" in             input file (stdin by default)");
         p.println(" out            output file (stdout by default)");
     }
-    
-    private static void _setFormatter(String formatterName, 
+
+    private static void _setFormatter(String formatterName,
             CommandLineParams clp) {
         String deFormatProgName = "apertium-des" + formatterName;
         String reFormatProgName = "apertium-re" + formatterName;
-        
+
         clp.deformatter = new Program(deFormatProgName);
         clp.reformatter = new Program(reFormatProgName);
     }
 
-    private static boolean _parseCommandLine(String[] args, 
+    private static boolean _parseCommandLine(String[] args,
             CommandLineParams clp) throws Exception {
         Getopt getopt = new Getopt("Apertium", args, "d:f:ual");
 
@@ -127,7 +128,7 @@ public class ApertiumMain {
                     if(FormatterRegistry.isRegistered(formatterName)) {
                         _setFormatter(formatterName, clp);
                         break;
-                    } 
+                    }
                     /* If not registered, will fall through to bottom of switch and
                      * call displayHelpAndExit()
                      */
@@ -137,12 +138,12 @@ public class ApertiumMain {
                     return false;
             }
         }
-        
+
         if(clp.deformatter == null || clp.reformatter == null) {
             //Formatters weren't set on command-line, set default of txt
             _setFormatter("txt", clp);
         }
-        
+
         //Setup external input and output
         int optIndex = getopt.getOptind();
         try {
@@ -164,22 +165,22 @@ public class ApertiumMain {
             if(clp.extInput == null) { clp.extInput = getStdinReader(); }
             if(clp.extOutput == null) { clp.extOutput = getStdoutWriter(); }
         } catch (FileNotFoundException e) {
-            String errorString = "Apertium (Input/Output files) -- " + 
+            String errorString = "Apertium (Input/Output files) -- " +
                     StringTable.FILE_NOT_FOUND;
             errorString += getLineSeparator() + e.getLocalizedMessage();
             throw new Exception(errorString, e);
         } catch (UnsupportedEncodingException e) {
-            String errorString = "Apertium (Input/Output files) -- " + 
+            String errorString = "Apertium (Input/Output files) -- " +
                     StringTable.UNSUPPORTED_ENCODING;
             errorString += getLineSeparator() + e.getLocalizedMessage();
             throw new Exception(errorString, e);
         }
         return true;
     }
-    
+
     private static void _listModes(CommandLineParams clp) {
         String[] modeList = listFilesInDir(clp.dataDir + "modes/", "mode");
-        
+
         if(modeList == null) {
             System.out.println("No translation directions in the specified directory.");
         } else {
@@ -188,23 +189,23 @@ public class ApertiumMain {
             }
         }
     }
-    
+
     /**
      * @param args
-     * @throws Exception 
+     * @throws Exception
      */
     public static int main(String[] args) throws Exception {
         //Ensure we are using UTF-8 encoding by default
         System.setProperty("file.encoding", "UTF-8");
 
         CommandLineParams clp = new CommandLineParams();
-        
+
         if(!_parseCommandLine(args, clp)) {
             return 1;
         }
-        
+
         if (clp.listModes) { _listModes(clp); }
-        
+
         if (clp.dataDir == null)
             Translator.setJarAsBase();
         else if (clp.dataDir.endsWith(".jar") || clp.dataDir.endsWith(".zip"))
@@ -215,29 +216,22 @@ public class ApertiumMain {
             _displayHelp();
             return 1;
         }
-        
+
         if (clp.direction != null) Translator.setMode(clp.direction);
         else if (clp.direction == null && Translator.getAvailableModes().length > 1) {
             System.out.println("Several mode files found. Run again specifying one of them:");
             for (String mode : Translator.getAvailableModes()) System.out.println("\t" + mode);
             return 1;
         }
-        
+
         //Parallel processing is buggy right now, so we disable it
         Translator.setParallelProcessingEnabled(false);
-        
+
         Translator.setDisplayMarks(clp.dispMarks);
         Translator.setDisplayAmbiguity(clp.dispAmb);
         Translator.translate(clp.extInput, clp.extOutput, clp.deformatter, clp.reformatter);
-        
-        try {
-            clp.extOutput.flush(); //Just to make sure it gets flushed.
-        } catch (IOException e) {
-            String errorString = "Apertium (flushing output) -- " + StringTable.IO_EXCEPTION;
-            errorString += getLineSeparator() + e.getLocalizedMessage();
-            throw new IOException(errorString, e);
-        }
-        
+        IOUtils.flush(clp.extOutput);
+        IOUtils.close(clp.extOutput);
         return 0;
     }
 

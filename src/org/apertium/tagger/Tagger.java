@@ -283,7 +283,7 @@ public class Tagger {
     }
 
     public static void taggerDispatch(String[] args, Reader input,
-            Writer output) {
+            Appendable output) {
         Tagger t = new Tagger();
         int mode = t.getMode(args);
         switch (mode) {
@@ -334,7 +334,7 @@ public class Tagger {
         taggerDispatch(argv);
     }
 
-    void tagger(boolean mode_first, Reader input, Writer output)
+    void tagger(boolean mode_first, Reader input, Appendable output)
             throws IOException {
 
         TaggerData td = null;
@@ -356,7 +356,7 @@ public class Tagger {
         hmm.setNullFlush(null_flush);
 
         Reader sysInReader = getStdinReader();
-        Writer sysOutWriter = getStdoutWriter();
+        Appendable sysOutWriter = getStdoutWriter();
 
         //If input or output provided, ignore input/output files on command line
         if(input != null || output != null) {
@@ -390,7 +390,7 @@ public class Tagger {
         tagger(mode_first, null, null);
     }
 
-    void tagger(Reader input, Writer output) throws IOException {
+    void tagger(Reader input, Appendable output) throws IOException {
         tagger(false, input, output);
     }
 

@@ -354,7 +354,7 @@ public class Postchunk extends Interchunk {
 
     String[] blankarr = new String[blanks.size()+1];
     for (int i=0; i<blanks.size(); i++) blankarr[i+1] = blanks.get(i);
-    // signature here is a la public void rule0__nom(Writer out, InterchunkWord[] words, String[] blanks)
+    // signature here is a la public void rule0__nom(Appendable out, InterchunkWord[] words, String[] blanks)
     Object[] args = new Object[3];
     args[0] = output;
     args[1] = wordarr;
@@ -384,7 +384,7 @@ public class Postchunk extends Interchunk {
      * it's expected that postchunk will have a postchunk method, instead of an interchunk
      * method.
      */
-    public void postchunk(Reader in, Writer output) throws IllegalArgumentException,
+    public void postchunk(Reader in, Appendable output) throws IllegalArgumentException,
             IOException, IllegalAccessException, InvocationTargetException {
         interchunk(in, output);
     }

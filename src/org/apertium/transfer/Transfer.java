@@ -278,18 +278,13 @@ So the array of rule_map Method is taken by introspection, taking all methods be
   }
 
 
-  private void transfer_wrapper_null_flush(Reader input, Writer output) throws Exception {
+  private void transfer_wrapper_null_flush(Reader input, Appendable output) throws Exception {
     null_flush= false;
     internal_null_flush = true;
     while (input.ready()) {
       transfer(input, output);
-      output.write('\0');
-      try {
-        output.flush();
-      } catch (IOException e) {
-        e.printStackTrace();
-        System.err.println("Could not flush output");
-      }
+      output.append('\0');
+      IOUtils.flush(output);
     }
     internal_null_flush = false;
     null_flush= true;
@@ -299,10 +294,12 @@ So the array of rule_map Method is taken by introspection, taking all methods be
   public Timing timing;
   public static final boolean DO_TIMING = false;
 
-  public void transfer(Reader in, Writer output) throws Exception {
+  public void transfer(Reader in, Appendable output) throws Exception {
     if (getNullFlush()) {
       transfer_wrapper_null_flush(in, output);
     }
+
+    output = Transfer.checkIfOutputMustBeWriterCompatible(output, rule_map);
 
     Method lastMatchedRule=null;
     ArrayList<String> tmpword=new ArrayList<String>();
@@ -448,7 +445,7 @@ So the array of rule_map Method is taken by introspection, taking all methods be
   }
 
 
-  private void applyRule(Writer output, Method rule,
+  private void applyRule(Appendable output, Method rule,
     ArrayList<String> words, ArrayList<String> blanks) throws Exception
   {
     if (DEBUG) System.err.println("applyRule("+rule+ ", " + words+ ", " + blanks);
@@ -507,7 +504,6 @@ So the array of rule_map Method is taken by introspection, taking all methods be
       System.err.println("processRule:"+rule.getName()+"("+Arrays.toString(args));
       throw e;
     }
-    if (DEBUG) output.flush();
 
 
     if (DO_TIMING) timing.log("applyRule 1");
@@ -564,13 +560,84 @@ So the array of rule_map Method is taken by introspection, taking all methods be
 		this.preBilingual = preBilingual;
 	}
 
+/**
+  Backwards compatibility issue:
+  Prior to 31 oct 2012 bytecode transfer classes were generated with a signature with a Writer
+  as the output:
+  private void macro_genere_nombre(Writer out, TransferWord word1) throws IOException
+  Therefore we need to ensure that there is a Writer here, until a time that we can be sure
+  that all transfer classes have been re-generated
+  @param output output
+  @param rule_map rule map which might have issues with the above signature
+  @return output, safely wrapped in a Writer if neccesary
+  */
+  public static Appendable checkIfOutputMustBeWriterCompatible(Appendable output, Method[] rule_map) {
+    boolean outputMustBeWriterCompatible = rule_map.length>0 && !rule_map[0].getParameterTypes()[0].isAssignableFrom(Appendable.class);
+    System.err.println("outputMustBeWriterCompatible = "+outputMustBeWriterCompatible);
+    if (!(output instanceof Writer) && outputMustBeWriterCompatible) {
+      final Appendable target = output;
+      output = new Writer() {
+        @Override
+        public void write(char[] cbuf, int off, int len) throws IOException {
+          target.append(new String(cbuf, off, len));
+        }
+
+        @Override
+        public void flush() throws IOException {
+        }
+
+        @Override
+        public void close() throws IOException {
+        }
+        // Source: http://www.java2s.com/Code/Java/File-Input-Output/WriterthatplacesalloutputonanlinkAppendabletarget.htm
+        /*
+         * Override a few functions for performance reasons to avoid creating
+         * unnecessary strings.
+         */
+
+        @Override public void write(int c) throws IOException {
+          target.append((char) c);
+        }
+
+        @Override public void write(String str) throws IOException {
+          target.append(str);
+        }
+
+        @Override public void write(String str, int off, int len) throws IOException {
+          // tricky: append takes start, end pair...
+          target.append(str, off, off + len);
+        }
+
+        @Override public Writer append(char c) throws IOException {
+          target.append(c);
+          return this;
+        }
+
+        @Override public Writer append(CharSequence charSeq) throws IOException {
+          target.append(charSeq);
+          return this;
+        }
+
+        @Override public Writer append(CharSequence charSeq, int start, int end)
+            throws IOException {
+          target.append(charSeq, start, end);
+          return this;
+        }
+
+
+      };
+    }
+    return output;
+  }
+
+
   //TODO: Cleanup -- unnecessary method
-  private void fputwc_unlocked(char c, Writer output) throws IOException {
+  private void fputwc_unlocked(char c, Appendable output) throws IOException {
     output.append(c);
   }
 
   //TODO: Cleanup -- unnecessary method
-  private void fputws_unlocked(String first, Writer output) throws IOException {
+  private void fputws_unlocked(String first, Appendable output) throws IOException {
     output.append(first);
   }
 }

@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2010 Stephen Tigner
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
@@ -25,6 +25,7 @@ import java.io.Reader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import org.apertium.utils.IOUtils;
 
 import org.apertium.utils.StringTable;
 
@@ -63,8 +64,8 @@ public class OmegatFormatter extends GenericFormatter {
                 return false;
         }
     }
-    
-    protected void deFormat(Reader inRead, Writer outWrite) {
+
+    protected void deFormat(Reader inRead, Appendable outWrite) {
         try {
             int currentChar = inRead.read();
             /* Keep track of the previous char, intended for use if needing
@@ -77,19 +78,19 @@ public class OmegatFormatter extends GenericFormatter {
                             new String(Character.toChars(currentChar)) + "'");
                 }
                 if (Character.isWhitespace(currentChar) || currentChar == '<') {
-                    StringWriter spaceWrite = new StringWriter();
+                    StringBuilder spaceWrite = new StringBuilder();
                     boolean writePeriod = false;
                     /* Whitespace is other than a single space.
                      * If the whitespace is just a single space, then we don't want to
                      * output the superblank brackets around it. For multiple spaces,
                      * or for whitespace characters other than a single space
-                     * (for example, '\t', '\n', etc.), we do want to output the 
+                     * (for example, '\t', '\n', etc.), we do want to output the
                      * superblank brackets around that whitespace.
                      */
                     boolean writeBrackets = false;
-                    
+
                     boolean inTag = currentChar == '<';
-                    if (currentChar == '<') spaceWrite.write("\\");
+                    if (currentChar == '<') spaceWrite.append("\\");
 
                     /* Insert a period before a newline, to mimic the behavior
                      * of the C++ deformatter. However, we don't have to completely
@@ -104,13 +105,13 @@ public class OmegatFormatter extends GenericFormatter {
                     if(currentChar != ' ') { //Whitespace char is other than space
                         writeBrackets = true;
                     }
-                    spaceWrite.write(currentChar);
+                    spaceWrite.append(currentChar);
                     previousChar = currentChar;
                     while(Character.isWhitespace((currentChar = inRead.read())) || inTag || currentChar == '<') {
                         if (currentChar == '<') inTag = true;
                         else if (currentChar == '>') inTag = false;
-                        if (isApertiumSpecialCharacter(currentChar)) spaceWrite.write('\\');
-                        spaceWrite.write(currentChar);
+                        if (isApertiumSpecialCharacter(currentChar)) spaceWrite.append('\\');
+                        spaceWrite.append(currentChar);
                         previousChar = currentChar;
                     }
                     if(currentChar != -1) {
@@ -121,28 +122,28 @@ public class OmegatFormatter extends GenericFormatter {
                          * them, to denote that the period was added, so that it can
                          * be removed by the reformatter.
                          */
-                        outWrite.write(".[]");
+                        outWrite.append(".[]");
                     }
                     /* If this section of whitespace is more than one character long,
                      * or if it has non-space whitespace, then we do a superblank.
                      * If it's only a single space, no superblank.
                      */
                     if((spaceWrite.toString().length() > 1) || writeBrackets) {
-                        outWrite.write("[" + spaceWrite.toString() + "]");
+                        outWrite.append('[').append(spaceWrite).append(']');
                     } else {
-                        outWrite.write(spaceWrite.toString());
+                        outWrite.append(spaceWrite);
                     }
                     if(currentChar != -1) {
-                        if (isApertiumSpecialCharacter(currentChar)) outWrite.write('\\');
-                        outWrite.write(currentChar);
+                        if (isApertiumSpecialCharacter(currentChar)) outWrite.append('\\');
+                        outWrite.append((char) currentChar);
                         previousChar = currentChar;
                     }
                 } else if (isApertiumSpecialCharacter(currentChar)) {
-                    outWrite.write("\\");
-                    outWrite.write(currentChar);
+                    outWrite.append('\\');
+                    outWrite.append((char) currentChar);
                     previousChar = currentChar;
                 } else {
-                    outWrite.write(currentChar);
+                    outWrite.append((char) currentChar);
                     previousChar = currentChar;
                 }
             } while((currentChar = inRead.read()) != -1);
@@ -154,20 +155,15 @@ public class OmegatFormatter extends GenericFormatter {
                 /* Again, write an empty superblank ("[]") along with the period, to mark
                  * it as added for the reformatter.
                  */
-                outWrite.write(".[]");
+                outWrite.append(".[]");
             }
-            /* Have to flush it, or you'll never get any output!
-             * This is needed both with and without the BufferedWriter wrapped
-             * around the OutputStreamWriter.
-             */
-            outWrite.flush();
         } catch (IOException e) {
             System.err.println("IOException occured in OmegatFormatter.deFormat()");
             e.printStackTrace();
         }
     }
 
-    protected void reFormat(Reader inRead, Writer outWrite) {
+    protected void reFormat(Reader inRead, Appendable outWrite) {
         try {
             int currentChar = inRead.read();
             int previousChar = -1;
@@ -176,12 +172,12 @@ public class OmegatFormatter extends GenericFormatter {
              * this flag is set and the period is skipped. If the next character is not
              * a '[', indicating the beginning of a superblank, then it is output.
              * If it *is* a '[', then the period is held until the superblank is resolved.
-             * If the superblank is empty ("[]"), then it's marking an extra period that 
+             * If the superblank is empty ("[]"), then it's marking an extra period that
              * was added, and the period should be discarded. If it's not empty, then the
-             * period should be output. 
+             * period should be output.
              */
             boolean foundPeriod = false;
-            
+
             do {
                 if(currentChar == '\\') { //Escaped character
                     if(foundPeriod) {
@@ -189,10 +185,10 @@ public class OmegatFormatter extends GenericFormatter {
                          * '[', which would start a superblank, output the period and reset
                          * the flag.
                          */
-                        outWrite.write('.');
+                        outWrite.append('.');
                         foundPeriod = false;
                     }
-                    
+
                     /* All backslashes in the incoming text are treated as escaping
                      * the characters that follow them and are removed, regardless of
                      * if the following character is an Apertium stream character or not
@@ -205,15 +201,15 @@ public class OmegatFormatter extends GenericFormatter {
                     previousChar = currentChar;
                     currentChar = inRead.read();
                     if(currentChar == -1) {
-                        /* This should never happen, we shouldn't get a single backslash 
-                         * at the end of the file, but we should expect the unexpected 
-                         * and deal with it anyway. Go ahead and output the backslash. 
+                        /* This should never happen, we shouldn't get a single backslash
+                         * at the end of the file, but we should expect the unexpected
+                         * and deal with it anyway. Go ahead and output the backslash.
                          * This is also how the C++ code handles this situation.
                          */
-                        outWrite.write(previousChar);
+                        outWrite.append((char)previousChar);
                     } else {
                         //Output the char that was escaped.
-                        outWrite.write(currentChar);
+                        outWrite.append((char)currentChar);
                     }
                 } else if(currentChar == '[') { //Start of a superblank
                     previousChar = currentChar;
@@ -221,15 +217,15 @@ public class OmegatFormatter extends GenericFormatter {
                     /* This writes the contents of the superblank to a separate
                      * string buffer so that we can deal with it as a whole after the
                      * entire thing has been read, as the logic dealing with the
-                     * empty superblanks (".[]"), which mark periods added by the 
+                     * empty superblanks (".[]"), which mark periods added by the
                      * deformatter, requires us to have read the superblank
                      * to decide if we should output the period or not.
                      */
-                    StringWriter spaceWrite = new StringWriter();
+                    StringBuilder spaceWrite = new StringBuilder();
                     while((currentChar != -1) && (currentChar != ']')) {
                         if (currentChar == '\\') //We skip the escape character
                             currentChar = inRead.read();
-                        spaceWrite.write(currentChar);
+                        spaceWrite.append((char)currentChar);
                         previousChar = currentChar;
                         currentChar = inRead.read();
                     }
@@ -241,27 +237,27 @@ public class OmegatFormatter extends GenericFormatter {
                      */
                     if(spaceWrite.toString().length() > 0) {
                         if(foundPeriod) {
-                            outWrite.write('.');
+                            outWrite.append('.');
                             //Set foundPeriod to false, since we just output it.
                             foundPeriod = false;
                         }
-                        outWrite.write(spaceWrite.toString());
+                        outWrite.append(spaceWrite);
                     } else { //Empty superblank, meaning we need to drop that period.
                         //Set foundPeriod to false, since we're dropping it.
                         foundPeriod = false;
                     }
                 } else if(currentChar == '.') {
-                    if(foundPeriod) { 
+                    if(foundPeriod) {
                         //Multiple periods in a row, output the previous one.
-                        outWrite.write('.');
+                        outWrite.append('.');
                     }
                     foundPeriod = true;
                 } else { //Not a backslash, period, or '['
                     if(foundPeriod) { //No superblank after found period, output period
-                        outWrite.write('.');
+                        outWrite.append('.');
                         foundPeriod = false; //Period output, set to false.
                     }
-                    outWrite.write(currentChar);
+                    outWrite.append((char)currentChar);
                 }
                 previousChar = currentChar;
             } while((currentChar = inRead.read()) != -1);
@@ -269,7 +265,7 @@ public class OmegatFormatter extends GenericFormatter {
              * This is needed both with and without the BufferedWriter wrapped
              * around the OutputStreamWriter.
              */
-            outWrite.flush();
+            IOUtils.flush(outWrite);
         } catch (IOException e) {
             System.err.println("IOException occured in OmegatFormatter.reFormat()");
             e.printStackTrace();
@@ -279,11 +275,11 @@ public class OmegatFormatter extends GenericFormatter {
     public OmegatFormatter(String commandLabel) {
         super(commandLabel);
     }
-    
+
     public OmegatFormatter() {
         this("OmegatFormatter");
     }
-    
+
     /**
      * @param args
      */
@@ -292,11 +288,11 @@ public class OmegatFormatter extends GenericFormatter {
         try {
             formatter.doMain(args);
         } catch (UnsupportedEncodingException e) {
-            System.err.println("OmegatFormatter -- " + 
+            System.err.println("OmegatFormatter -- " +
                     StringTable.UNSUPPORTED_ENCODING);
             e.printStackTrace();
         } catch (FileNotFoundException e) {
-            System.err.println("OmegatFormatter -- " + 
+            System.err.println("OmegatFormatter -- " +
                     StringTable.FILE_NOT_FOUND);
             e.printStackTrace();
         }

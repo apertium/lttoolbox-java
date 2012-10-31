@@ -29,7 +29,7 @@ public class LRXProc {
   public static void main(String[] argv) throws Exception {
     System.setProperty("file.encoding", "UTF-8");
     Reader input = null;
-    Writer output = null;
+    Appendable output = null;
 
     final int argc = argv.length;
 
@@ -76,7 +76,7 @@ public class LRXProc {
     lrxp.process(input, output);
 
     input.close();
-    output.close();
+    ((Writer)output).close();
 
   }
 }

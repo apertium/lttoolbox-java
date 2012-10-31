@@ -164,9 +164,9 @@ public abstract class GenericFormatter {
      * special characters, white space, and other data that should not be translated.
      * (Such as tags in the case of HTML.)
      * @param in - A Reader to pull the text to deformat from.
-     * @param out - A Writer to output the deformatted text to.
+     * @param out - A Appendable to output the deformatted text to.
      */
-    protected abstract void deFormat(Reader in, Writer out);
+    protected abstract void deFormat(Reader in, Appendable out);
 
     /**
      * Re-formats the incoming text in a format-specific manner.
@@ -174,9 +174,9 @@ public abstract class GenericFormatter {
      * special characters, and removing the superblanks around whitespace and other data
      * that was not to be translated. (Such as tags in the case of HTML.)
      * @param in - A Reader to pull the text to deformat from.
-     * @param out - A Writer to output the deformatted text to.
+     * @param out - A Appendable to output the deformatted text to.
      */
-    protected abstract void reFormat(Reader in, Writer out);
+    protected abstract void reFormat(Reader in, Appendable out);
 
     /**
      * Reads the command-line arguments, sets up the mode and input/output streams, 
@@ -190,7 +190,7 @@ public abstract class GenericFormatter {
         doMain(args, null, null);
     }
     
-    public void doMain(String[] args, Reader in, Writer out) 
+    public void doMain(String[] args, Reader in, Appendable out) 
             throws UnsupportedEncodingException, FileNotFoundException {
 
         FormatterMode mode = getModeAndFiles(args, _commandLabel);

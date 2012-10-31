@@ -30,6 +30,7 @@ import java.lang.ref.SoftReference;
 import java.util.HashMap;
 
 import org.apertium.lttoolbox.process.State;
+import org.apertium.utils.IOUtils;
 
 // Use GNU Getopt
 
@@ -92,7 +93,7 @@ public class ApertiumTransfer {
     }
 
     @SuppressWarnings("unchecked")
-    public static void doMain(String[] argv, Reader input, Writer output)
+    public static void doMain(String[] argv, Reader input, Appendable output)
             throws IOException, InstantiationException, IllegalAccessException,
             ClassNotFoundException {
 
@@ -235,9 +236,9 @@ public class ApertiumTransfer {
         try {
             t.transfer(input, output);
             input.close();
-            output.close();
+            IOUtils.close(output);
         } catch (Exception e) {
-            output.flush();
+            IOUtils.flush(output);
             System.out.flush();
             try {
                 Thread.sleep(10);
@@ -245,7 +246,7 @@ public class ApertiumTransfer {
             }
             e.printStackTrace();
             if (t.getNullFlush()) {
-                output.write('\0');
+                output.append('\0');
             }
             throw new IOException(e);
         }

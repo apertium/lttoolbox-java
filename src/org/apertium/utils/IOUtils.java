@@ -449,4 +449,14 @@ public class IOUtils {
         }
     }
 
+  /** Flush if possible */
+  public static void flush(Appendable output) throws IOException {
+    if (output instanceof Flushable) ((Flushable) output).flush();
+  }
+
+  /** Close if possible */
+  public static void close(Appendable output) throws IOException {
+    if (output instanceof Closeable) ((Closeable) output).close();
+  }
+
 }

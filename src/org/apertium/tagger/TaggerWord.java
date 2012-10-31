@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2005 Universitat d'Alacant / Universidad de Alicante
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
@@ -57,7 +57,7 @@ public class TaggerWord {
      * Show the superficial form in the output
      */
     private boolean show_sf;
-    
+
     //TODO: check and make sure these really need to be static variables
     /**
      * Will be set to true if the -m (mark disambiguated words) option was used
@@ -66,7 +66,7 @@ public class TaggerWord {
     private static boolean generate_marks = false;
     public static ArrayList<String> array_tags;
     public static boolean show_ignored_string = true;
-    
+
     private static Map<String, ApertiumRE> patterns = new LinkedHashMap<String, ApertiumRE>();
     private static boolean DEBUG = false;
 
@@ -81,7 +81,7 @@ public class TaggerWord {
     public TaggerWord () {
         this(false);
     }
-    
+
     /**
      * Sets the static generate_marks flag.
      * Keep in mind when doing testing that the state of this flag may be retained
@@ -261,8 +261,8 @@ public class TaggerWord {
                 ret += '$';
             }
         }
-        if(DEBUG) { 
-            System.out.println("TaggerWord.get_lexical_form -- returning: " + ret); 
+        if(DEBUG) {
+            System.out.println("TaggerWord.get_lexical_form -- returning: " + ret);
         }
         return ret;
     }
@@ -309,7 +309,7 @@ public class TaggerWord {
             else
                 ret += "$";
         }
-        
+
         return ret;
     }
 
@@ -343,7 +343,7 @@ public class TaggerWord {
         //This functionality was reworked into the toString() method
         System.out.println(toString());
     }
-    
+
     @Override
     public String toString() {
         String tempString = new String();
@@ -355,7 +355,7 @@ public class TaggerWord {
         return tempString;
     }
 
-    public void outputOriginal (Writer out2) throws IOException {
+    public void outputOriginal (Appendable out2) throws IOException {
         String s=this.superficial_form;
 
         for (String form : lexical_forms.values()) {
@@ -371,7 +371,7 @@ public class TaggerWord {
         }
 
         //Assuming writer is already setup for UTF-8
-        out2.write(out);
+        out2.append(out);
 
     }
 

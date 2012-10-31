@@ -55,7 +55,7 @@ public class Dispatcher {
 
     private static final String splitPattern = "[ ]+";
 
-    private static void doInterchunk(Program prog, Reader input, Writer output)
+    private static void doInterchunk(Program prog, Reader input, Appendable output)
             throws Exception {
         ApertiumInterchunk.CommandLineParams par =
             new ApertiumInterchunk.CommandLineParams();
@@ -108,7 +108,7 @@ public class Dispatcher {
         }
     }
 
-    private static void doPostchunk(Program prog, Reader input, Writer output)
+    private static void doPostchunk(Program prog, Reader input, Appendable output)
             throws Exception {
         /* Yes, there's duplicate code here with the method above, but
          * there's only a few lines of actual code here, and I ran into issues
@@ -168,7 +168,7 @@ public class Dispatcher {
         }
     }
 
-    private static void doPretransfer(Program prog, Reader input, Writer output)
+    private static void doPretransfer(Program prog, Reader input, Appendable output)
             throws IOException {
         PreTransfer.CommandLineParams params = new PreTransfer.CommandLineParams();
         String[] args = prog.getParameters().split(splitPattern);
@@ -189,7 +189,7 @@ public class Dispatcher {
         }
     }
 
-    private static void doTagger(Program prog, Reader input, Writer output,
+    private static void doTagger(Program prog, Reader input, Appendable output,
             boolean dispAmb) {
         String paramString = prog.getParameters();
         String replacement = (dispAmb ? "-m" : "");
@@ -199,7 +199,7 @@ public class Dispatcher {
         Tagger.taggerDispatch(args, input, output);
     }
 
-    private static void doTextFormat(Program prog, Reader input, Writer output,
+    private static void doTextFormat(Program prog, Reader input, Appendable output,
             boolean deformatMode) throws Exception {
         String paramString = prog.getParameters();
 
@@ -234,7 +234,7 @@ public class Dispatcher {
         }
     }
 
-    private static void doOmegatFormat(Program prog, Reader input, Writer output,
+    private static void doOmegatFormat(Program prog, Reader input, Appendable output,
             boolean deformatMode) throws Exception {
         String paramString = prog.getParameters();
 
@@ -269,7 +269,7 @@ public class Dispatcher {
         }
     }
 
-    private static void doTransfer(Program prog, Reader input, Writer output)
+    private static void doTransfer(Program prog, Reader input, Appendable output)
             throws Exception {
         String[] args = prog.getParameters().split("[ ]+");
         try {
@@ -292,7 +292,7 @@ public class Dispatcher {
         }
     }
 
-    private static void doLTProc(Program prog, Reader input, Writer output,
+    private static void doLTProc(Program prog, Reader input, Appendable output,
             boolean dispMarks) throws IOException {
         String paramString = prog.getParameters();
         String replacement = (dispMarks ? "-g" : "-n");
@@ -308,7 +308,7 @@ public class Dispatcher {
         }
     }
 
-    private static void doUnknown(Program prog, final Reader input, Writer output) throws Exception {
+    private static void doUnknown(Program prog, final Reader input, Appendable output) throws Exception {
         try {
             File tempDir = new File(System.getProperty("java.io.tmpdir"));
             for (String filename : prog.getParameters().split(" ")) {
@@ -355,12 +355,12 @@ public class Dispatcher {
                 }
             }).start();
 
-            // We copy from the OutputStream of the external process to the output Writer that
+            // We copy from the OutputStream of the external process to the output Appendable that
             // we were given (note that we must convert the output to UTF-16)
             byte buffer[] = new byte[1024];
             int count;
             while ((count = extProcess.getInputStream().read(buffer)) != -1)
-                output.write(new String(buffer, 0, count, "UTF-8"));
+                output.append(new String(buffer, 0, count, "UTF-8"));
 
             // We wait for the external process to end (its InputStream is surely closed, but the
             // process might still be running)
@@ -391,7 +391,7 @@ public class Dispatcher {
     }
 
 
-    public static void dispatch(Program prog, Reader input, Writer output,
+    public static void dispatch(Program prog, Reader input, Appendable output,
             boolean dispAmb, boolean dispMarks) throws Exception {
         switch(prog.getProgram()) {
             case INTERCHUNK:
@@ -431,5 +431,6 @@ public class Dispatcher {
                 //We should never get here.
                 throw new IllegalArgumentException("Unrecognized ProgEnum: " + prog.getProgram());
         }
+        IOUtils.flush(output);
     }
 }

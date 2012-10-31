@@ -31,6 +31,7 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
 import org.apertium.lttoolbox.Getopt;
+import org.apertium.utils.IOUtils;
 import org.apertium.utils.StringTable;
 
 /**
@@ -50,7 +51,7 @@ public class PreTransfer {
     public static class CommandLineParams {
         public boolean nullFlush;
         public Reader input;
-        public Writer output;
+        public Appendable output;
     }
 
     /**
@@ -64,7 +65,7 @@ public class PreTransfer {
      * written to the output stream.
      * @throws IOException
      */
-    private static void readAndWriteUntil(Reader input, Writer output,
+    private static void readAndWriteUntil(Reader input, Appendable output,
             final int charCode) throws IOException {
         int myChar;
 
@@ -74,7 +75,7 @@ public class PreTransfer {
                 // exit() is not an option as we are a library
                 //System.exit(1); //EXIT_FAILURE macro constant in the C++ code = 1
             }
-            output.write(myChar);
+            output.append((char) myChar);
             /* The C++ code has an additional condition checking for a backslash
              * character ('\\'), then reading and writing another character.
              * This additional read and write is different, however, because
@@ -87,7 +88,7 @@ public class PreTransfer {
         }
     }
 
-    private static void procWord(Reader input, Writer output)
+    private static void procWord(Reader input, Appendable output)
             throws IOException {
         int myChar;
         /* Using a StringBuilder instead of just a string for performance reasons,
@@ -142,14 +143,14 @@ public class PreTransfer {
                 if(myChar == '+' && queuing) { //Ditto for queuing
                     buffer.append("$ ^");
                 } else {
-                    output.write(myChar);
+                    output.append((char)myChar);
                 }
             }
         }
-        output.write(buffer.toString());
+        output.append(buffer);
     }
 
-    public static void processStream(Reader input, Writer output,
+    public static void processStream(Reader input, Appendable output,
             boolean null_flush) throws IOException {
         int myChar;
         while((myChar = input.read()) != -1) {
@@ -166,38 +167,34 @@ public class PreTransfer {
 
             switch(myChar) {
                 case '[':
-                    output.write('[');
+                    output.append('[');
                     readAndWriteUntil(input, output, ']');
-                    output.write(']');
+                    output.append(']');
                     break;
 
                 case '\\':
-                    output.write(myChar);
+                    output.append((char) myChar);
                     int tempChar = input.read();
                     /* C++ code doesn't seem to handle a backslash at the end of the file
                      * with nothing after it. That's what this code is supposed to handle.
                      * Only write out the char after the backslash if there's actually a
                      * char to output.
                      */
-                    if(tempChar != -1 ) { output.write(tempChar); }
+                    if(tempChar != -1 ) { output.append((char)tempChar); }
                     break;
 
                 case '^':
-                    output.write(myChar);
+                    output.append((char) myChar);
                     procWord(input, output);
-                    output.write('$');
+                    output.append('$');
                     break;
 
                 case '\0':
-                    output.write(myChar);
-
-                    if(null_flush) {
-                        output.flush();
-                    }
+                    output.append((char) myChar);
                     break;
 
                 default:
-                    output.write(myChar);
+                    output.append((char)myChar);
                     break;
             }
         }
@@ -334,7 +331,7 @@ public class PreTransfer {
         try {
             processStream(params.input, params.output, params.nullFlush);
             //Have to flush or won't get any output.
-            params.output.flush();
+            IOUtils.flush(params.output);
         } catch (IOException e) {
             System.err.println("Pretransfer -- ERROR: IOException");
             e.printStackTrace();

@@ -406,7 +406,7 @@ public class FSTProcessor {
     }
   }
 
-  private void skipUntil(Reader input, Writer output, char character) throws IOException {
+  private void skipUntil(Reader input, Appendable output, char character) throws IOException {
     while (true) {
       char val = (char) input.read();
 
@@ -418,17 +418,17 @@ public class FSTProcessor {
           return;
         }
 
-        output.write('\\');
-        output.write(val);
+        output.append('\\');
+        output.append(val);
       } else if (val == EOF) {
         return;
       } else {
-        output.write(val);
+        output.append(val);
       }
     }
   }
 
-  private int readGeneration(Reader input, Writer output) throws IOException {
+  private int readGeneration(Reader input, Appendable output) throws IOException {
 
     char val = (char) input.read();
     if (val == EOF) {
@@ -444,13 +444,13 @@ public class FSTProcessor {
         }
 
       } else if (val == '\\') {
-        output.write(val);
+        output.append(val);
         val = (char) input.read();
         if (val == EOF) {
           return 0x7fffffff;
         }
 
-        output.write(val);
+        output.append(val);
         skipUntil(input, output, '^');
         val = (char) input.read();
         if (val == EOF) {
@@ -458,7 +458,7 @@ public class FSTProcessor {
         }
 
       } else {
-        output.write(val);
+        output.append(val);
         skipUntil(input, output, '^');
         val = (char) input.read();
         if (val == EOF) {
@@ -492,7 +492,7 @@ public class FSTProcessor {
       cad += val;
       return alphabet.cast(cad);
     } else if (val == '[') {
-      output.write(readFullBlock(input, '[', ']'));
+      output.append(readFullBlock(input, '[', ']'));
       return readGeneration(input, output);
     } else {
       return (int) (val);
@@ -501,7 +501,7 @@ public class FSTProcessor {
     // return 0x7fffffff;
   }
 
-  public Pair<String, Integer> readBilingual(Reader input, Writer output) throws IOException {
+  public Pair<String, Integer> readBilingual(Reader input, Appendable output) throws IOException {
     int val = input.read();
     //System.err.println("read '"+((char) val)+"' : "+val );
     String symbol = "";
@@ -516,19 +516,19 @@ public class FSTProcessor {
           return new Pair<String, Integer>(symbol, 0x7fffffff);
         }
       } else if (val == '\\') {
-        output.write(val);
+        output.append((char)val);
         val = (char) input.read();
         if (val == EOF) {
           return new Pair<String, Integer>(symbol, 0x7fffffff);
         }
-        output.write(val);
+        output.append((char)val);
         skipUntil(input, output, '^');
         val = (char) input.read();
         if (val == EOF) {
           return new Pair<String, Integer>(symbol, 0x7fffffff);
         }
       } else {
-        output.write(val);
+        output.append((char)val);
         skipUntil(input, output, '^');
         val = (char) input.read();
         if (val == EOF) {
@@ -564,7 +564,7 @@ public class FSTProcessor {
       }
       return new Pair<String, Integer>(symbol, res);
     } else if (val == '[') {
-      output.write(readFullBlock(input, '[', ']'));
+      output.append(readFullBlock(input, '[', ']'));
       return readBilingual(input, output);
     } else {
       return new Pair<String, Integer>(symbol, val);
@@ -573,9 +573,9 @@ public class FSTProcessor {
 
 
 
-  private void flushBlanks(Writer output) throws IOException {
+  private void flushBlanks(Appendable output) throws IOException {
     for (int i = blankqueue.size(); i > 0; i--) {
-      output.write(blankqueue.getFirst());
+      output.append(blankqueue.getFirst());
       blankqueue.removeFirst();
     }
   }
@@ -618,40 +618,40 @@ public class FSTProcessor {
     }
   }
 
-  private void writeEscaped(CharSequence str, Writer output) throws IOException {
+  private void writeEscaped(CharSequence str, Appendable output) throws IOException {
     //int len = str.length();
     //System.err.println("writeEscaped( str.length() = " + str.length());
     for (int i = 0, limit = str.length(); i < limit; i++) {
       char ch = str.charAt(i);
       if (escaped_chars.contains(ch)) {
-        output.write('\\');
+        output.append('\\');
       }
-      output.write(ch);
+      output.append(ch);
     }
   }
 
-  private void printWord(String surfaceForm, String lexicalForm, Writer output) throws IOException {
-    output.write('^');
+  private void printWord(String surfaceForm, String lexicalForm, Appendable output) throws IOException {
+    output.append('^');
     writeEscaped(surfaceForm, output);
-    output.write(lexicalForm);
-    output.write('$');
+    output.append(lexicalForm);
+    output.append('$');
   }
 
-  private void printWordBilingual(String surfaceForm, String lexicalForm, Writer output) throws IOException {
-    output.write('^');
-    output.write(surfaceForm);
-    output.write(lexicalForm);
-    output.write('$');
+  private void printWordBilingual(String surfaceForm, String lexicalForm, Appendable output) throws IOException {
+    output.append('^');
+    output.append(surfaceForm);
+    output.append(lexicalForm);
+    output.append('$');
   }
 
 
-  private void printUnknownWord(String surfaceForm, Writer output) throws IOException {
-    output.write('^');
+  private void printUnknownWord(String surfaceForm, Appendable output) throws IOException {
+    output.append('^');
     writeEscaped(surfaceForm, output);
-    output.write('/');
-    output.write('*');
+    output.append('/');
+    output.append('*');
     writeEscaped(surfaceForm, output);
-    output.write('$');
+    output.append('$');
   }
 
   private int lastBlank(CharSequence str) {
@@ -663,11 +663,11 @@ public class FSTProcessor {
     return 0;
   }
 
-  void printSpace(char val, Writer output) throws IOException {
+  void printSpace(char val, Appendable output) throws IOException {
     if (blankqueue.size() > 0) {
       flushBlanks(output);
     } else {
-      output.write(val);
+      output.append(val);
     }
   }
 
@@ -947,7 +947,7 @@ public class FSTProcessor {
   /*
    private final char charAt(String s, int index) { return s.charAt(index); }
    */
-  public void analysis(Reader input, Writer output) throws IOException {
+  public void analysis(Reader input, Appendable output) throws IOException {
     if (getNullFlush()) {
       analysis_wrapper_null_flush(input, output);
     }
@@ -1043,17 +1043,17 @@ public class FSTProcessor {
             printSpace(val, output);
           } else {
             if (isEscaped(val)) {
-              output.write('\\');
+              output.append('\\');
             }
-            output.write(val);
+            output.append((char)val);
           }
         } else if (last_postblank) {
           printWord(sf.substring(0, sf.length() - input_buffer.diffPrevPos(last)), lf.toString(), output);
-          output.write(' ');
+          output.append(' ');
           input_buffer.setPos(last);
           input_buffer.back(1);
         } else if (last_preblank) {
-          output.write(' ');
+          output.append(' ');
           printWord(sf.substring(0, sf.length() - input_buffer.diffPrevPos(last)), lf.toString(), output);
           input_buffer.setPos(last);
           input_buffer.back(1);
@@ -1071,7 +1071,7 @@ public class FSTProcessor {
           limit = (limit == Integer.MAX_VALUE ? size : limit);
           if (limit == 0) {
             input_buffer.back(sf.length());
-            output.write(sf.charAt(0));
+            output.append(sf.charAt(0));
           } else {
             input_buffer.back(1 + (size - limit));
             String unknownWord = sf.substring(0, limit);
@@ -1092,7 +1092,7 @@ public class FSTProcessor {
           limit = (limit == Integer.MAX_VALUE ? size : limit);
           if (limit == 0) {
             input_buffer.back(sf.length());
-            output.write(sf.charAt(0));
+            output.append(sf.charAt(0));
           } else {
             input_buffer.back(1 + (size - limit));
             //printUnknownWord(sf.substring(0, limit), output);
@@ -1301,63 +1301,43 @@ public class FSTProcessor {
     return null;
   }
 
-  private void analysis_wrapper_null_flush(Reader input, Writer output) throws IOException {
+  private void analysis_wrapper_null_flush(Reader input, Appendable output) throws IOException {
     setNullFlush(false);
     while (input.ready()) {
       analysis(input, output);
-      output.write('\0');
-      try {
-        output.flush();
-      } catch (IOException e) {
-        e.printStackTrace();
-        System.err.println("Could not flush output");
-      }
+      output.append('\0');
+      IOUtils.flush(output);
     }
   }
 
-  private void generation_wrapper_null_flush(Reader input, Writer output, GenerationMode mode) throws IOException {
+  private void generation_wrapper_null_flush(Reader input, Appendable output, GenerationMode mode) throws IOException {
     setNullFlush(false);
     while (input.ready()) {
       generation(input, output, mode);
-      output.write('\0');
-      try {
-        output.flush();
-      } catch (IOException e) {
-        e.printStackTrace();
-        System.err.println("Could not flush output");
-      }
+      output.append('\0');
+      IOUtils.flush(output);
     }
   }
 
-  private void postgeneration_wrapper_null_flush(Reader input, Writer output) throws IOException {
+  private void postgeneration_wrapper_null_flush(Reader input, Appendable output) throws IOException {
     setNullFlush(false);
     while (input.ready()) {
       postgeneration(input, output);
-      output.write('\0');
-      try {
-        output.flush();
-      } catch (IOException e) {
-        e.printStackTrace();
-        System.err.println("Could not flush output");
-      }
+      output.append('\0');
+      IOUtils.flush(output);
     }
   }
 
-  private void transliteration_wrapper_null_flush(Reader input, Writer output) throws IOException {
+  private void transliteration_wrapper_null_flush(Reader input, Appendable output) throws IOException {
     setNullFlush(false);
     while (input.ready()) {
       transliteration(input, output);
-      output.write('\0');
-      try {
-        output.flush();
-      } catch (IOException e) {
-        e.printStackTrace();
-        System.err.println("Could not flush output");
-      }
+      output.append('\0');
+      IOUtils.flush(output);
     }
   }
 
-  private void tm_analysis(Reader input, Writer output) throws IOException {
+  private void tm_analysis(Reader input, Appendable output) throws IOException {
 
     State current_state = initial_state.copy();
     String lf = "";
@@ -1394,9 +1374,9 @@ public class FSTProcessor {
             printSpace(val, output);
           } else {
             if (isEscaped(val)) {
-              output.write("\\");
+              output.append('\\');
             }
-            output.write(val);
+            output.append(val);
           }
         } else if (!Alphabet.isWhitespace(val) && !iswpunct(val)
             && ((sf.length() - input_buffer.diffPrevPos(last)) > lastBlank(sf)
@@ -1413,11 +1393,11 @@ public class FSTProcessor {
           } while (((val = readTMAnalysis(input)) != (char) 0) && !Alphabet.isWhitespace(val) && !iswpunct(val));
 
           if (val == 0) {
-            output.write(sf);
+            output.append(sf);
             return;
           }
           input_buffer.back(1);
-          output.write(sf);
+          output.append(sf);
           while (blankqueue.size() > 0) {
             if (blankqueue.size() == 1 && isLastBlankTM) {
               break;
@@ -1427,7 +1407,7 @@ public class FSTProcessor {
         } else if (lf.equals("")) {
           input_buffer.back(1);
 
-          output.write(sf);
+          output.append(sf);
           while (blankqueue.size() > 0) {
             if (blankqueue.size() == 1 && isLastBlankTM) {
               break;
@@ -1436,9 +1416,9 @@ public class FSTProcessor {
           }
         } else {
 
-          output.write('[');
-          output.write(lf);
-          output.write(']');
+          output.append('[');
+          output.append(lf);
+          output.append(']');
           input_buffer.setPos(last);
           input_buffer.back(1);
         }
@@ -1452,7 +1432,7 @@ public class FSTProcessor {
     flushBlanks(output);
   }
 
-  public void generation(Reader input, Writer output, GenerationMode mode) throws IOException {
+  public void generation(Reader input, Appendable output, GenerationMode mode) throws IOException {
     if (getNullFlush()) {
       generation_wrapper_null_flush(input, output, mode);
     }
@@ -1466,7 +1446,7 @@ public class FSTProcessor {
     int val;
     while ((val = readGeneration(input, output)) != 0x7fffffff) {
       if (sf.length() == 0 && val == '=') {
-        output.write('=');
+        output.append('=');
         val = readGeneration(input, output);
       }
       if (val == '$' && outOfWord) {
@@ -1492,27 +1472,27 @@ public class FSTProcessor {
             boolean uppercase = sf.length() > 1 && Alphabet.isUpperCase(sf.charAt(1));
             boolean firstupper = Alphabet.isUpperCase(ch0);
             if (mode == GenerationMode.gm_tagged) {
-              output.write('^');
+              output.append('^');
             }
             if (do_flagMatch) {
               deleteStatesWithConflictingFlags(current_state);
             }
-            output.write(current_state.filterFinals(all_finals, alphabet,
+            output.append(current_state.filterFinals(all_finals, alphabet,
                 escaped_chars, uppercase, firstupper).substring(1));
             if (mode == GenerationMode.gm_tagged) {
-              output.write('/');
+              output.append('/');
               output.append(sf);
-              output.write('$');
+              output.append('$');
             }
 
           } else {
             if (mode == GenerationMode.gm_all) {
-              output.write('#');
+              output.append('#');
               writeEscaped(sf, output);
             } else if (mode == GenerationMode.gm_clean) {
               writeEscaped(removeTags(sf), output);
             } else if (mode == GenerationMode.gm_unknown) {
-              output.write('#');
+              output.append('#');
               writeEscaped(removeTags(sf), output);
             }
           }
@@ -1531,7 +1511,7 @@ public class FSTProcessor {
     }
   }
 
-  public void postgeneration(Reader input, Writer output) throws IOException {
+  public void postgeneration(Reader input, Appendable output) throws IOException {
     if (getNullFlush()) {
       postgeneration_wrapper_null_flush(input, output);
     }
@@ -1555,9 +1535,9 @@ public class FSTProcessor {
           printSpace(val, output);
         } else {
           if (isEscaped(val)) {
-            output.write('\\');
+            output.append('\\');
           }
-          output.write(val);
+          output.append(val);
         }
       } else {
         // test for final states
@@ -1615,14 +1595,14 @@ public class FSTProcessor {
                 break;
               }
             }
-            output.write(sf.substring(1, mark - 1 + 1));
+            output.append(sf.substring(1, mark - 1 + 1));
             if (mark == sf.length()) {
               input_buffer.back(1);
             } else {
               input_buffer.back(sf.length() - mark);
             }
           } else {
-            output.write(lf.substring(1, lf.length() - 3 + 1));
+            output.append(lf.substring(1, lf.length() - 3 + 1));
             input_buffer.setPos(last);
             input_buffer.back(2);
             val = lf.charAt(lf.length() - 2);
@@ -1630,9 +1610,9 @@ public class FSTProcessor {
               printSpace(val, output);
             } else {
               if (isEscaped(val)) {
-                output.write('\\');
+                output.append('\\');
               }
-              output.write(val);
+              output.append(val);
             }
           }
 
@@ -1648,7 +1628,7 @@ public class FSTProcessor {
     flushBlanks(output);
   }
 
-  public void transliteration(Reader input, Writer output) throws IOException {
+  public void transliteration(Reader input, Appendable output) throws IOException {
     if (getNullFlush()) {
       transliteration_wrapper_null_flush(input, output);
     }
@@ -1669,7 +1649,7 @@ public class FSTProcessor {
         }
         lf = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
         if (lf.length() > 0) {
-          output.write(lf.substring(1));
+          output.append(lf.substring(1));
           current_state.copy(initial_state);
           lf = "";
           sf = "";
@@ -1678,9 +1658,9 @@ public class FSTProcessor {
           printSpace(val, output);
         } else {
           if (isEscaped(val)) {
-            output.write('\\');
+            output.append('\\');
           }
-          output.write(val);
+          output.append(val);
         }
       } else {
         if (current_state.isFinal(all_finals)) {
@@ -1695,7 +1675,7 @@ public class FSTProcessor {
           sf += alphabet.getSymbol(val);
         } else {
           if (lf.length() > 0) {
-            output.write(lf.substring(1));
+            output.append(lf.substring(1));
             input_buffer.setPos(last);
             input_buffer.back(1);
             val = lf.charAt(lf.length() - 1);
@@ -1704,9 +1684,9 @@ public class FSTProcessor {
               printSpace(val, output);
             } else {
               if (isEscaped(val)) {
-                output.write('\\');
+                output.append('\\');
               }
-              output.write(val);
+              output.append(val);
             }
           }
           current_state.copy(initial_state);
@@ -1841,7 +1821,7 @@ public class FSTProcessor {
   @param output ^Jeg<prn><p1><mf><sg><nom>/Prpers<prn><p1><mf><sg><nom>$ ^ha<vblex><pres>/have<vbhaver><pres>$ ^ikke<adv>/not<adv>$
   @throws IOException
   */
-  public void bilingual(Reader input, Writer output) throws IOException {
+  public void bilingual(Reader input, Appendable output) throws IOException {
     /* XXX TODO
     if (getNullFlush()) {
       transliteration_wrapper_null_flush(input, output);
@@ -2263,16 +2243,16 @@ public class FSTProcessor {
     return (val);
   }
 
-  void printSAOWord(String lf, Writer output) throws IOException {
+  void printSAOWord(String lf, Appendable output) throws IOException {
     for (int i = 1, limit = lf.length(); i != limit; i++) {
       if (lf.charAt(i) == '/') {
         break;
       }
-      output.write(lf.charAt(i));
+      output.append(lf.charAt(i));
     }
   }
 
-  public void SAO(Reader input, Writer output) throws IOException {
+  public void SAO(Reader input, Appendable output) throws IOException {
     boolean last_incond = false;
     boolean last_postblank = false;
     State current_state = initial_state.copy();
@@ -2332,9 +2312,9 @@ public class FSTProcessor {
             printSpace(val, output);
           } else {
             if (isEscaped(val)) {
-              output.write('\\');
+              output.append('\\');
             }
-            output.write(val);
+            output.append(val);
           }
         } else if (last_incond) {
           printSAOWord(lf, output);
@@ -2342,7 +2322,7 @@ public class FSTProcessor {
           input_buffer.back(1);
         } else if (last_postblank) {
           printSAOWord(lf, output);
-          output.write(' ');
+          output.append(' ');
           input_buffer.setPos(last);
           input_buffer.back(1);
         } else if (isAlphabetic(val) && ((sf.length() - input_buffer.diffPrevPos(last)) > lastBlank(sf) || lf.equals(""))) {
@@ -2354,15 +2334,15 @@ public class FSTProcessor {
           int size = sf.length();
           limit = (limit == Integer.MAX_VALUE ? size : limit);
           input_buffer.back(1 + (size - limit));
-          output.write("<d>");
-          output.write(sf);
-          output.write("</d>");
+          output.append("<d>");
+          output.append(sf);
+          output.append("</d>");
         } else if (lf.equals("")) {
           int limit = firstNotAlpha(sf);
           int size = sf.length();
           limit = (limit == Integer.MAX_VALUE ? size : limit);
           input_buffer.back(1 + (size - limit));
-          output.write("<d>" + sf + "</d>");
+          output.append("<d>").append(sf).append("</d>");
         } else {
           printSAOWord(lf, output);
           input_buffer.setPos(last);

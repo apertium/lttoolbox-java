@@ -17,6 +17,7 @@ package org.apertium.lttoolbox;
  * 02111-1307, USA.
  */
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
@@ -27,6 +28,7 @@ import java.util.HashMap;
 import org.apertium.CommandLineInterface;
 import org.apertium.lttoolbox.process.FSTProcessor;
 import org.apertium.lttoolbox.process.State;
+import org.apertium.utils.IOUtils;
 import static org.apertium.utils.IOUtils.*;
 
 // Use GNU Getopt
@@ -100,7 +102,7 @@ public class LTProc {
         doMain(argv, null, null);
     }
 
-    public static void doMain(String[] argv, Reader input, Writer output)
+    public static void doMain(String[] argv, Reader input, Appendable output)
             throws IOException {
 
         if (argv.length == 0) {
@@ -291,21 +293,19 @@ public class LTProc {
                     break;
             }
         } catch (Exception e) {
-            output.flush();
             System.out.flush();
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e1) {}
             e.printStackTrace();
             if (fstp.getNullFlush()) {
-                output.write('\0');
+                output.append('\0');
             }
             throw new IOException(e); // Send to parent
         }
 
         input.close();
-        output.close();
-
+        IOUtils.close(output);
     }
 
 }

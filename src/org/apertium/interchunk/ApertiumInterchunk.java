@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2010 Stephen Tigner
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
@@ -19,11 +19,13 @@
 
 package org.apertium.interchunk;
 
+import java.io.Closeable;
 import static org.apertium.utils.IOUtils.openInFileReader;
 import static org.apertium.utils.IOUtils.openOutFileWriter;
 import static org.apertium.utils.MiscUtils.getLineSeparator;
 
 import java.io.FileNotFoundException;
+import java.io.Flushable;
 import java.io.PrintStream;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
@@ -33,6 +35,7 @@ import java.util.HashMap;
 
 import org.apertium.lttoolbox.Getopt;
 import org.apertium.transfer.TransferClassLoader;
+import org.apertium.utils.IOUtils;
 import org.apertium.utils.StringTable;
 
 /**
@@ -40,10 +43,10 @@ import org.apertium.utils.StringTable;
  *
  */
 public class ApertiumInterchunk {
-    
+
     public static class CommandLineParams {
         public Reader input = null;
-        public Writer output = null;
+        public Appendable output = null;
 
         public String t2xFile = null;
         public String preprocFile = null; //formerly f1, f2, these are more descriptive names
@@ -74,13 +77,13 @@ public class ApertiumInterchunk {
         stderr.println("OPTIONS");
         stderr.println("  -z         flush buffer on '\0'");
     }
-    
+
     /* We don't use or need the testfile() function that's here in the C++ version.
      * It's just used in main() to check for the existence of the t2x and preproc files.
      */
-    
+
     public static boolean parseCommandLine(String[] args, CommandLineParams par,
-            String commandName, boolean pipelineMode) throws FileNotFoundException, 
+            String commandName, boolean pipelineMode) throws FileNotFoundException,
             UnsupportedEncodingException {
         if (args.length == 0) {
             if(!pipelineMode) { message(commandName); }
@@ -140,10 +143,10 @@ public class ApertiumInterchunk {
      * Split this off from the main() function to help facilitate inter-jvm
      * launching of different components from a central dispatcher.
      * @param par
-     * @throws Exception 
+     * @throws Exception
      */
     @SuppressWarnings("unchecked")
-    public static void doMain(CommandLineParams par, Interchunk i) 
+    public static void doMain(CommandLineParams par, Interchunk i)
             throws Exception {
 
         String key = par.t2xFile + "; " + par.preprocFile;
@@ -161,17 +164,18 @@ public class ApertiumInterchunk {
 
         i.setNullFlush(par.nullFlush);
         i.interchunk(par.input, par.output);
-        par.output.flush(); //Have to flush or there won't be any output.
+        //Have to flush or there won't be any output.
+        IOUtils.flush(par.output);
     }
 
     /**
      * @param args
-     * @throws Exception 
+     * @throws Exception
      */
     public static int main(String[] args) throws Exception {
         System.setProperty("file.encoding", "UTF-8");
         Interchunk i = new Interchunk();
-        
+
         CommandLineParams par = new CommandLineParams();
         try {
             /* Parse the command line. The passed-in CommandLineParams object
@@ -191,7 +195,7 @@ public class ApertiumInterchunk {
             errorString += getLineSeparator() + e.getLocalizedMessage();
             throw new Exception(errorString, e);
         }
-        
+
         doMain(par, i);
         return 0;
     }

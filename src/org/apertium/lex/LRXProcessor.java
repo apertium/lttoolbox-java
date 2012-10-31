@@ -155,21 +155,21 @@ class LRXProcessor {
   }
 
 
-  private void skipUntil(Reader input, Writer output, char character) throws IOException {
+  private void skipUntil(Reader input, Appendable output, char character) throws IOException {
     while (true) {
       char val = eofRead(input);
 
       if (val == character) {
         return;
       } else if (val == '\\') {
-        output.write(val);
-        output.write(eofRead(input));
+        output.append(val);
+        output.append(eofRead(input));
       } else if (val == '[') {
-        output.write(val);
+        output.append(val);
         skipUntil(input, output, ']');
-        output.write(']');
+        output.append(']');
       } else {
-        output.write(val);
+        output.append(val);
       }
     }
   }
@@ -179,7 +179,7 @@ echo "^liten<adj><posi><mf><sg><ind>/small<adj><sint><posi><mf><sg><ind>/little<
 */
   public static void main(String[] argv) throws Exception {
     Reader input = new StringReader("hej [sd\\$sd \\^sdsd\\$] oh ^liten<adj><posi><mf><sg><ind>/small<adj><sint><posi><mf><sg><ind>/little<adj><sint><posi><mf><sg><ind>$");
-    Writer output = new StringWriter();
+    Appendable output = new StringWriter();
     LRXProcessor lrxp = new LRXProcessor();
     //lrxp.load(openFileAsByteBuffer("/home/j/esperanto/apertium/nursery/apertium-no-en/no-en.lrx.bin"));
     lrxp.load(openFileAsByteBuffer("/home/j/esperanto/apertium/nursery/apertium-no-en/rules.bin"));
@@ -193,7 +193,7 @@ echo "^liten<adj><posi><mf><sg><ind>/small<adj><sint><posi><mf><sg><ind>/little<
   }
 
 
-  void process(Reader input, Writer output) throws IOException {
+  void process(Reader input, Appendable output) throws IOException {
 /*
 ^liten<adj><posi><mf><sg><ind>/small<adj><sint><posi><mf><sg><ind>/little<adj><sint><posi><mf><sg><ind>$
 ^liten<adj><posi><mf><sg><ind>/little<adj><sint><posi><mf><sg><ind>$

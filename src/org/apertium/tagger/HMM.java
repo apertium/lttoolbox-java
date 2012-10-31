@@ -32,6 +32,7 @@ import java.util.Set;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
+import org.apertium.utils.IOUtils;
 
 /**
  *
@@ -510,7 +511,7 @@ public class HMM {
      * @param out Output
      * @throws IOException
      */
-    void filter_ambiguity_classes(Reader in, Writer out) throws IOException {
+    void filter_ambiguity_classes(Reader in, Appendable out) throws IOException {
         Set<Set<Integer>> ambiguity_classes = new LinkedHashSet<Set<Integer>>();
         MorphoStream morpho_stream = new MorphoStream(in, true, td);
 
@@ -757,7 +758,7 @@ public class HMM {
          */
     }
 
-    void tagger(Reader in, Writer out, boolean show_all_good_first) throws IOException {
+    void tagger(Reader in, Appendable out, boolean show_all_good_first) throws IOException {
         int i, j, k;
         TaggerWord word = null;// new TaggerWord();  // word =null;
         Integer tag;
@@ -868,7 +869,7 @@ public class HMM {
                 for (int t = 0; t < best[nwpend2][tag].nodes.size(); t++) {
                     if (show_all_good_first) {
                         String micad = wpend.get(t).get_all_chosen_tag_first(best[nwpend2][tag].nodes.get(t), td.getTagIndex().get("TAG_kEOF"));
-                        out.write(micad);
+                        out.append(micad);
                     } else {
                         //Split out the following line for debugging.
                         //String micad = wpend.get(t).get_lexical_form(best[nwpend2][tag].nodes.get(t), td.getTagIndex().get("TAG_kEOF"));
@@ -877,7 +878,7 @@ public class HMM {
                         TaggerWord tempWord = wpend.get(t);
                         tempWord.set_show_sf(show_sf); //Was missing, show superficial forms option won't work w/o this line
                         String micad = tempWord.get_lexical_form(tagT, tagkeof);
-                        out.write(micad);
+                        out.append(micad);
                     }
                 }
                 wpend.clear();
@@ -886,10 +887,10 @@ public class HMM {
 
             if (morpho_stream.getEndOfFile()) {
                 if (null_flush) {
-                    out.write(0x00);
+                    out.append((char) 0x00);
                 }
 
-                out.flush();
+                IOUtils.flush(out);
                 morpho_stream.setEndOfFile(false);
             }
             word = morpho_stream.get_next_word();

@@ -43,7 +43,7 @@ public class Expander {
      * The paradigm being compiled
      */
     String current_paradigm;
-    
+
     /**
      * The direction of the compilation, 'lr' (left-to-right) or 'rl'
      * (right-to-left)
@@ -548,7 +548,7 @@ private static class EntList extends ArrayList<SPair> {
 
     /**
      * Force an element to be empty, and check for it
-     * @param name the name of the element 
+     * @param name the name of the element
      */
     private void requireEmptyError(String name) {
         if (false) {
