@@ -19,15 +19,10 @@
 
 package org.apertium.formatter;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
 import org.apertium.utils.IOUtils;
 
-import org.apertium.utils.StringTable;
 
 /**
  * @author Stephen Tigner
@@ -292,18 +287,8 @@ public class TextFormatter extends GenericFormatter {
     /**
      * @param args
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         TextFormatter formatter = new TextFormatter();
-        try {
-            formatter.doMain(args);
-        } catch (UnsupportedEncodingException e) {
-            System.err.println("TextFormatter -- " +
-                    StringTable.UNSUPPORTED_ENCODING);
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            System.err.println("TextFormatter -- " +
-                    StringTable.FILE_NOT_FOUND);
-            e.printStackTrace();
-        }
+        formatter.doMain(args);
     }
 }

@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2010 Stephen Tigner
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
@@ -25,6 +25,7 @@ import static org.apertium.utils.IOUtils.openInFileReader;
 import static org.apertium.utils.IOUtils.openOutFileWriter;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
@@ -54,7 +55,7 @@ public abstract class GenericFormatter {
     protected enum FormatterMode {
         DEFORMAT, REFORMAT, NOMODE
     }
-    
+
     /**
      * Input filename, if not defined on the command line, stdin will be used.
      */
@@ -80,7 +81,7 @@ public abstract class GenericFormatter {
     protected boolean _cppCompat = true;
     //Low-level dev debugging
     protected boolean DEBUG = false;
-    
+
     /**
      * Gets the mode (either deformat or reformat) selected on the command line.
      * Also parses the input and output file parameters.
@@ -102,10 +103,10 @@ public abstract class GenericFormatter {
          */
         Getopt getOpt = new Getopt(commandLabel,argv, "drci:o:");
         FormatterMode mode = FormatterMode.NOMODE;
-        
+
         int opt = getOpt.getopt();
         boolean helpNeeded = false;
-        
+
         do {
             switch(opt) {
                 case 'd':
@@ -136,14 +137,14 @@ public abstract class GenericFormatter {
             }
         } while((opt = getOpt.getopt()) != -1);
         if(mode == FormatterMode.NOMODE) { helpNeeded = true; }
-        if(helpNeeded) { 
+        if(helpNeeded) {
             help(commandLabel);
             //Reset mode to NOMODE since we have an invalid command line
             mode = FormatterMode.NOMODE;
         }
         return mode;
     }
-    
+
     protected void help(String commandLabel) {
         System.out.println(commandLabel + ": deformatter and reformatter");
         System.out.println("USAGE: " + commandLabel + " -d [-c] [-i INPUT_FILE] [-o OUTPUT_FILE]");
@@ -179,27 +180,25 @@ public abstract class GenericFormatter {
     protected abstract void reFormat(Reader in, Appendable out);
 
     /**
-     * Reads the command-line arguments, sets up the mode and input/output streams, 
+     * Reads the command-line arguments, sets up the mode and input/output streams,
      * and calls the appropriate deFormat or reFormat function.
      * @param args
-     * @throws FileNotFoundException 
-     * @throws UnsupportedEncodingException 
+     * @throws FileNotFoundException
+     * @throws UnsupportedEncodingException
      */
-    public void doMain(String[] args) throws UnsupportedEncodingException, 
-            FileNotFoundException {
+    public void doMain(String[] args) throws IOException {
         doMain(args, null, null);
     }
-    
-    public void doMain(String[] args, Reader in, Appendable out) 
-            throws UnsupportedEncodingException, FileNotFoundException {
+
+    public void doMain(String[] args, Reader in, Appendable out) throws IOException {
 
         FormatterMode mode = getModeAndFiles(args, _commandLabel);
 
         if(DEBUG) {
             System.err.println("mode: " + mode);
         }
-        
-        if(in == null) { 
+
+        if(in == null) {
             //If we are given an input stream, use it, and ignore the command-line
             if(_inputFile != null) {
                 in =  openInFileReader(_inputFile);
@@ -207,7 +206,7 @@ public abstract class GenericFormatter {
                 in = getStdinReader();
             }
         }
-        
+
         if(out == null) {
             //If we are given an output stream, use it, and ignore the command-line
             if(_outputFile != null) {
@@ -216,7 +215,7 @@ public abstract class GenericFormatter {
                 out = getStdoutWriter();
             }
         }
-        
+
         switch(mode) {
             case DEFORMAT:
                 deFormat(in, out);
@@ -234,7 +233,7 @@ public abstract class GenericFormatter {
                 throw new IllegalArgumentException(errorString);
         }
     }
-    
+
     public GenericFormatter(String commandLabel) {
         _commandLabel = commandLabel;
     }

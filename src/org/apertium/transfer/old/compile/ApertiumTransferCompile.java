@@ -22,10 +22,7 @@ import org.apertium.CommandLineInterface;
 import static org.apertium.utils.IOUtils.addTrailingSlash;
 import static org.apertium.utils.IOUtils.openFile;
 
-import org.apertium.lttoolbox.*;
 import java.io.*;
-import org.apertium.transfer.old.compile.ParseTransferFile;
-import org.apertium.utils.StringTable;
 
 /**
  *
@@ -123,15 +120,9 @@ public class ApertiumTransferCompile {
       int result = tc.compile(cp, javaSource);
       if(result != 0) { //compilation failed with internal, try external instead
           tc = new ExternalTransferCompile();
-          try {
-              result = tc.compile(cp, javaSource);
-          } catch (FileNotFoundException e) {
-              throw new
-                  InternalError(StringTable.COMPILATION_FAILURE);
-          }
+          result = tc.compile(cp, javaSource);
           if(result != 0) {
-              throw new
-                  InternalError(StringTable.COMPILATION_FAILURE);
+              throw new InternalError("COMPILATION_FAILURE");
           }
       }
 

@@ -95,7 +95,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
   the second was a TV live action version.
 
  ekzamenas la vorton kaj metas majuskligajn informojn en variablo "firstWord"  */
-	private void macro_firstWord(Writer out, TransferWord word1) throws IOException
+	private void macro_firstWord(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_firstWord",  word1); } 
 		if (((var_EOS.equals("true")
@@ -116,7 +116,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	/**  kontrolas cxu la parametro estas konata vorto.
          Se jes "nomvar" := <nom>. Se ne nomvar="".
          Tio cxu estas por eviti ke nekonataj vortoj ricevos tag'on kiu poste estas montrata.  */
-	private void macro_set_nomvar_if_known1(Writer out, TransferWord word1) throws IOException
+	private void macro_set_nomvar_if_known1(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_set_nomvar_if_known1",  word1); } 
 		if (word1.tl(attr_a_nbr).equals(""))
@@ -130,7 +130,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	}
 	
 	/**  Sxangxas la genron de vorto: Se la genro estas nekonata "GD" gxi estas sxangxata al vira genro  */
-	private void macro_ordigu_genron(Writer out, TransferWord word1) throws IOException
+	private void macro_ordigu_genron(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_ordigu_genron",  word1); } 
 		if (word1.tl(attr_a_gen).equalsIgnoreCase("<GD>"))
@@ -151,7 +151,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
       </choose>
     </def-macro>
  atribuas "numero"  al "pl" se estas pluralo, kaj al "sg" alikaze  (ND, sp aux nekonata vorto sen numero-etikedo) */
-	private void macro_set_numero1(Writer out, TransferWord word1) throws IOException
+	private void macro_set_numero1(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_set_numero1",  word1); } 
 		if (word1.tl(attr_a_nbr).equals("<pl>"))
@@ -167,7 +167,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 	/**  Tiu cxi makroo rigardas anglan adjektivon kaj la rilatan substantivon kaj poste
          adjectiu = ^pli<preadv>$ ^bona<adj>
          preadv_added = yes    */
-	private void macro_set_adjectiu2(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	private void macro_set_adjectiu2(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("macro_set_adjectiu2",  word1, blank1,  word2); } 
 		macro_set_numero1(out, word2);
@@ -199,7 +199,7 @@ public class apertium_eo_en_en_eo_t1x extends GeneratedTransferBase
 		}
 	}
 	
-	private void macro_set_tipus_verbs1(Writer out, TransferWord word1) throws IOException
+	private void macro_set_tipus_verbs1(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_set_tipus_verbs1",  word1); } 
 		if (list_netransitivaj.containsIgnoreCase(word1.sl(attr_lemh)))
@@ -253,7 +253,7 @@ pos 2= nekonjugaciita verbo
 La rezulto estas unu sola leksika formo (venos):
 verbfinal = pensi<vblex><pres>
   */
-	private void macro_set_verbkonj2_do(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	private void macro_set_verbkonj2_do(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("macro_set_verbkonj2_do",  word1, blank1,  word2); } 
 		if ((word1.sl(attr_a_tns).equals("<pres>")
@@ -273,7 +273,7 @@ verbfinal = pensi<vblex><pres>
 		var_verbkonj = (""+word2.tl(attr_lemh)+word2.tl(attr_a_vrb)+var_macro_tmp1+word2.tl(attr_lemq));
 	}
 	
-	private void macro_set_verbkonj2_willShallWould(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	private void macro_set_verbkonj2_willShallWould(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("macro_set_verbkonj2_willShallWould",  word1, blank1,  word2); } 
 		if ((word1.sl(attr_lem).equalsIgnoreCase("will")
@@ -293,7 +293,7 @@ verbfinal = pensi<vblex><pres>
 		var_verbkonj = (""+word2.tl(attr_lemh)+word2.tl(attr_a_vrb)+var_macro_tmp1+word2.tl(attr_lemq));
 	}
 	
-	private void macro_set_temps1(Writer out, TransferWord word1) throws IOException
+	private void macro_set_temps1(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_set_temps1",  word1); } 
 		var_temps = "<UNKNOWN>";
@@ -328,7 +328,7 @@ verbfinal = pensi<vblex><pres>
      por ke ne aperu du sinsekvaj blankoj.
 
      Prenita de "f_bcond" apertium-en-es/apertium-en-es.es-en.t1x  */
-	private void macro_sendu_blankon_se_havas_formaton2(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	private void macro_sendu_blankon_se_havas_formaton2(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("macro_sendu_blankon_se_havas_formaton2",  word1, blank1,  word2); } 
 		if (!blank1.equals(" "))
@@ -347,7 +347,7 @@ verbfinal = pensi<vblex><pres>
      "blanko" havos valoron "" se estas nur blanko " ", kaj
      la enhavon de la blanko gxi enhavis ion alian.
   */
-	private void macro_set_blankon_se_havas_formaton2(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	private void macro_set_blankon_se_havas_formaton2(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("macro_set_blankon_se_havas_formaton2",  word1, blank1,  word2); } 
 		if (blank1.equals(" "))
@@ -371,7 +371,7 @@ verbfinal = pensi<vblex><pres>
         </choose>
           <let><var n="EOS"/><lit v="false"/></let>
  */
-	private void macro_set_determiner3(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	private void macro_set_determiner3(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
 		if (debug) { logCall("macro_set_determiner3",  word1, blank1,  word2, blank2,  word3); } 
 		if (word1.sl(attr_lem).equalsIgnoreCase("a"))
@@ -392,7 +392,7 @@ verbfinal = pensi<vblex><pres>
 		}
 	}
 	
-	private void macro_set_determiner_de_genitivo2(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	private void macro_set_determiner_de_genitivo2(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("macro_set_determiner_de_genitivo2",  word1, blank1,  word2); } 
 		macro_set_numero1(out, word2);
@@ -413,7 +413,7 @@ verbfinal = pensi<vblex><pres>
     ekzemple:   and/or/but did they acquire any influence?   - demando
     ekzemple:   neither/nor did they acquire any influence   - konstato
     "  */
-	private void macro_set_and_or_but(Writer out, TransferWord word1) throws IOException
+	private void macro_set_and_or_but(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_set_and_or_but",  word1); } 
 		if (list_listo_and_or_but.containsIgnoreCase(word1.sl(attr_lem)))
@@ -433,7 +433,7 @@ verbfinal = pensi<vblex><pres>
 
  */
 	// REGLA: prnref   - himself, themselves
-	public void rule0__prnref(Writer out, TransferWord word1) throws IOException
+	public void rule0__prnref(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule0__prnref",  word1); } 
 		macro_firstWord(out, word1);
@@ -446,7 +446,7 @@ verbfinal = pensi<vblex><pres>
 	}
 	
 	// REGLA: Prn
-	public void rule1__prnaltres(Writer out, TransferWord word1) throws IOException
+	public void rule1__prnaltres(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule1__prnaltres",  word1); } 
 		macro_firstWord(out, word1);
@@ -461,7 +461,7 @@ verbfinal = pensi<vblex><pres>
 	}
 	
 	// REGLA: PrnPers
-	public void rule2__prnpers(Writer out, TransferWord word1) throws IOException
+	public void rule2__prnpers(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule2__prnpers",  word1); } 
 		macro_firstWord(out, word1);
@@ -472,7 +472,7 @@ verbfinal = pensi<vblex><pres>
 		out.append("<2>$}$");
 	}
 	
-	public void rule3__num(Writer out, TransferWord word1) throws IOException
+	public void rule3__num(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule3__num",  word1); } 
 		macro_firstWord(out, word1);
@@ -494,7 +494,7 @@ verbfinal = pensi<vblex><pres>
 	}
 	
 	// July 2 - 2a de julio
-	public void rule4__monato__num_dato(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule4__monato__num_dato(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule4__monato__num_dato",  word1, blank1,  word2); } 
 		macro_firstWord(out, word1);
@@ -511,7 +511,7 @@ verbfinal = pensi<vblex><pres>
 	}
 	
 	// July 2nd - 2a de julio
-	public void rule5__monato__num_ord(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule5__monato__num_ord(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule5__monato__num_ord",  word1, blank1,  word2); } 
 		macro_firstWord(out, word1);
@@ -528,7 +528,7 @@ verbfinal = pensi<vblex><pres>
 	}
 	
 	// on July 2 - la 2an de julio
-	public void rule6__on__monato__num_dato(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule6__on__monato__num_dato(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
 		if (debug) { logCall("rule6__on__monato__num_dato",  word1, blank1,  word2, blank2,  word3); } 
 		macro_firstWord(out, word1);
@@ -547,7 +547,7 @@ verbfinal = pensi<vblex><pres>
 	}
 	
 	// on July 2nd - la 2a de julio
-	public void rule7__on__monato__num_ord(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule7__on__monato__num_ord(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
 		if (debug) { logCall("rule7__on__monato__num_ord",  word1, blank1,  word2, blank2,  word3); } 
 		macro_firstWord(out, word1);
@@ -566,7 +566,7 @@ verbfinal = pensi<vblex><pres>
 	}
 	
 	// REGLA NUM of      5 of => 5 el 
-	public void rule8__num_sen_ord__of(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule8__num_sen_ord__of(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule8__num_sen_ord__of",  word1, blank1,  word2); } 
 		macro_firstWord(out, word1);
@@ -590,7 +590,7 @@ verbfinal = pensi<vblex><pres>
 	}
 	
 	// REGLA NUM times NUM  5 times 8 => 5 oble 8 
-	public void rule9__num_sen_ord__times__num_sen_ord(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule9__num_sen_ord__times__num_sen_ord(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
 		if (debug) { logCall("rule9__num_sen_ord__times__num_sen_ord",  word1, blank1,  word2, blank2,  word3); } 
 		macro_firstWord(out, word1);
@@ -668,7 +668,7 @@ verbfinal = pensi<vblex><pres>
     </rule>
  */
 	// REGLA NUM time   5 times => 5 fojoj, 5th time => 5a fojo,   
-	public void rule10__num__times(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule10__num__times(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule10__num__times",  word1, blank1,  word2); } 
 		macro_firstWord(out, word1);
@@ -693,7 +693,7 @@ verbfinal = pensi<vblex><pres>
 	}
 	
 	// REGLA: DET:a  - the derminier 'a' should just be deleted. Having this rule makes it possible to avoid handling 'a' in all the other rules
-	public void rule11__a(Writer out, TransferWord word1) throws IOException
+	public void rule11__a(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule11__a",  word1); } 
 		if (word1.sl(attr_lem).equals("A"))
@@ -704,7 +704,7 @@ verbfinal = pensi<vblex><pres>
 	}
 	
 	// REGLA: DET the, his, ... (alia ol 'a')
-	public void rule12__det(Writer out, TransferWord word1) throws IOException
+	public void rule12__det(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule12__det",  word1); } 
 		macro_firstWord(out, word1);
@@ -720,7 +720,7 @@ verbfinal = pensi<vblex><pres>
 	
 	/**  Sintagmas nominales  */
 	// REGLA: NOM
-	public void rule13__nom(Writer out, TransferWord word1) throws IOException
+	public void rule13__nom(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule13__nom",  word1); } 
 		macro_firstWord(out, word1);
@@ -734,7 +734,7 @@ verbfinal = pensi<vblex><pres>
 	}
 	
 	// REGLA: more NOM, f.eks. 'more tea'  to 'Pli da teo'
-	public void rule14__more__nom(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule14__more__nom(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule14__more__nom",  word1, blank1,  word2); } 
 		macro_firstWord(out, word1);
@@ -754,7 +754,7 @@ verbfinal = pensi<vblex><pres>
 	}
 	
 	// REGLA: DET NOM
-	public void rule15__det__nom(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule15__det__nom(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule15__det__nom",  word1, blank1,  word2); } 
 		macro_firstWord(out, word1);
@@ -814,7 +814,7 @@ verbfinal = pensi<vblex><pres>
     </rule>
  */
 	// REGLA: DET NOM NOM (nova)  la testaj firmaoj
-	public void rule16__det__nom__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule16__det__nom__nom(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
 		if (debug) { logCall("rule16__det__nom__nom",  word1, blank1,  word2, blank2,  word3); } 
 		macro_firstWord(out, word1);
@@ -842,7 +842,7 @@ verbfinal = pensi<vblex><pres>
 	}
 	
 	// REGLA: DET NOM NOM NOM 
-	public void rule17__det__nom__nom__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
+	public void rule17__det__nom__nom__nom(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
 		if (debug) { logCall("rule17__det__nom__nom__nom",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		macro_firstWord(out, word1);
@@ -881,7 +881,7 @@ verbfinal = pensi<vblex><pres>
 	}
 	
 	// REGLA: DET NOM NOM NOM NOM
-	public void rule18__det__nom__nom__nom__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5) throws IOException
+	public void rule18__det__nom__nom__nom__nom(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5) throws IOException
 	{
 		if (debug) { logCall("rule18__det__nom__nom__nom__nom",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5); } 
 		macro_firstWord(out, word1);
@@ -931,7 +931,7 @@ verbfinal = pensi<vblex><pres>
 	}
 	
 	// REGLA: ADJ
-	public void rule19__adj(Writer out, TransferWord word1) throws IOException
+	public void rule19__adj(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule19__adj",  word1); } 
 		macro_firstWord(out, word1);
@@ -956,7 +956,7 @@ verbfinal = pensi<vblex><pres>
 	}
 	
 	// REGLA: DET ADJ NOM
-	public void rule20__det__adj__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule20__det__adj__nom(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
 		if (debug) { logCall("rule20__det__adj__nom",  word1, blank1,  word2, blank2,  word3); } 
 		macro_firstWord(out, word1);
@@ -1018,7 +1018,7 @@ verbfinal = pensi<vblex><pres>
     </rule>
  */
 	// REGLA: ADJ NOM
-	public void rule21__adj__nom(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule21__adj__nom(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule21__adj__nom",  word1, blank1,  word2); } 
 		macro_firstWord(out, word1);
@@ -1046,7 +1046,7 @@ verbfinal = pensi<vblex><pres>
 	}
 	
 	// REGLA: ADJ ADJ NOM
-	public void rule22__adj__adj__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule22__adj__adj__nom(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
 		if (debug) { logCall("rule22__adj__adj__nom",  word1, blank1,  word2, blank2,  word3); } 
 		macro_firstWord(out, word1);
@@ -1089,7 +1089,7 @@ verbfinal = pensi<vblex><pres>
 	}
 	
 	// REGLA: DET UNKNOWN/ADV/NUM UNKNOWN/ADV/NUM NOM
-	public void rule23__det__unknown_adv_num__unknown_adv_num__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
+	public void rule23__det__unknown_adv_num__unknown_adv_num__nom(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
 		if (debug) { logCall("rule23__det__unknown_adv_num__unknown_adv_num__nom",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		macro_firstWord(out, word1);
@@ -1130,7 +1130,7 @@ verbfinal = pensi<vblex><pres>
 	}
 	
 	// REGLA: DET ADJ ADJ NOM
-	public void rule24__det__adj__adj__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
+	public void rule24__det__adj__adj__nom(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
 		if (debug) { logCall("rule24__det__adj__adj__nom",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		macro_firstWord(out, word1);
@@ -1174,7 +1174,7 @@ verbfinal = pensi<vblex><pres>
 	}
 	
 	// REGLA: DET ADJ ADJ ADJ NOM
-	public void rule25__det__adj__adj__adj__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5) throws IOException
+	public void rule25__det__adj__adj__adj__nom(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5) throws IOException
 	{
 		if (debug) { logCall("rule25__det__adj__adj__adj__nom",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5); } 
 		macro_firstWord(out, word1);
@@ -1267,7 +1267,7 @@ verbfinal = pensi<vblex><pres>
     </rule>
  */
 	// REGLA: NOM NOM   - testaj firmaoj (nova provo)
-	public void rule26__nom__nom(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule26__nom__nom(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule26__nom__nom",  word1, blank1,  word2); } 
 		macro_firstWord(out, word1);
@@ -1290,7 +1290,7 @@ verbfinal = pensi<vblex><pres>
 	}
 	
 	// REGLA: ANT
-	public void rule27__ant_cog(Writer out, TransferWord word1) throws IOException
+	public void rule27__ant_cog(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule27__ant_cog",  word1); } 
 		macro_firstWord(out, word1);
@@ -1303,7 +1303,7 @@ verbfinal = pensi<vblex><pres>
 	}
 	
 	// REGLA: ANT ANT
-	public void rule28__ant_cog__ant_cog(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule28__ant_cog__ant_cog(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule28__ant_cog__ant_cog",  word1, blank1,  word2); } 
 		macro_firstWord(out, word1);
@@ -1321,7 +1321,7 @@ verbfinal = pensi<vblex><pres>
 	}
 	
 	// REGLA: ANT ANT ANT
-	public void rule29__ant_cog__ant_cog__ant_cog(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule29__ant_cog__ant_cog__ant_cog(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
 		if (debug) { logCall("rule29__ant_cog__ant_cog__ant_cog",  word1, blank1,  word2, blank2,  word3); } 
 		macro_firstWord(out, word1);
@@ -1344,7 +1344,7 @@ verbfinal = pensi<vblex><pres>
 	}
 	
 	// REGLA: ANT ANT ANT ANT
-	public void rule30__ant_cog__ant_cog__ant_cog__ant_cog(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
+	public void rule30__ant_cog__ant_cog__ant_cog__ant_cog(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
 		if (debug) { logCall("rule30__ant_cog__ant_cog__ant_cog__ant_cog",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		macro_firstWord(out, word1);
@@ -1372,7 +1372,7 @@ verbfinal = pensi<vblex><pres>
 	}
 	
 	// REGLA: ANT - ANT ANT
-	public void rule31__ant_cog__guio__ant_cog__ant_cog(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
+	public void rule31__ant_cog__guio__ant_cog__ant_cog(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
 		if (debug) { logCall("rule31__ant_cog__guio__ant_cog__ant_cog",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		macro_firstWord(out, word1);
@@ -1407,7 +1407,7 @@ verbfinal = pensi<vblex><pres>
 	}
 	
 	// REGLA: ANT ANT - ANT
-	public void rule32__ant_cog__ant_cog__guio__ant_cog(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
+	public void rule32__ant_cog__ant_cog__guio__ant_cog(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
 		if (debug) { logCall("rule32__ant_cog__ant_cog__guio__ant_cog",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		macro_firstWord(out, word1);
@@ -1442,7 +1442,7 @@ verbfinal = pensi<vblex><pres>
 	}
 	
 	// REGLA: ANT - ANT ANT - ANT
-	public void rule33__ant_cog__guio__ant_cog__ant_cog__guio__ant_cog(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5, String blank5, TransferWord word6) throws IOException
+	public void rule33__ant_cog__guio__ant_cog__ant_cog__guio__ant_cog(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5, String blank5, TransferWord word6) throws IOException
 	{
 		if (debug) { logCall("rule33__ant_cog__guio__ant_cog__ant_cog__guio__ant_cog",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5, blank5,  word6); } 
 		macro_firstWord(out, word1);
@@ -1494,7 +1494,7 @@ verbfinal = pensi<vblex><pres>
 	}
 	
 	// REGLA: NOM/ANT 's NOM:  gardener's dog => la hundo de gxardenisto
-	public void rule34__genitive_possessors__gen__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule34__genitive_possessors__gen__nom(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
 		if (debug) { logCall("rule34__genitive_possessors__gen__nom",  word1, blank1,  word2, blank2,  word3); } 
 		macro_firstWord(out, word1);
@@ -1544,7 +1544,7 @@ verbfinal = pensi<vblex><pres>
 	}
 	
 	// REGLA: NOM/ANT 's NOM:  gardener's dog => hundo de gxardenisto
-	public void rule35__genitive_possessors__gen__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule35__genitive_possessors__gen__nom(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
 		if (debug) { logCall("rule35__genitive_possessors__gen__nom",  word1, blank1,  word2, blank2,  word3); } 
 		macro_firstWord(out, word1);
@@ -1594,7 +1594,7 @@ verbfinal = pensi<vblex><pres>
 	}
 	
 	// REGLA: NOM/ANT 's NOM NOM:  gardener's dog house => hunda domo de gxardenisto
-	public void rule36__genitive_possessors__gen__nom__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
+	public void rule36__genitive_possessors__gen__nom__nom(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
 		if (debug) { logCall("rule36__genitive_possessors__gen__nom__nom",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		macro_firstWord(out, word1);
@@ -1656,7 +1656,7 @@ verbfinal = pensi<vblex><pres>
 	}
 	
 	// REGLA: DET NOM/ANT 's NOM:  his gardener's dog => la hundo de lia gxardenisto
-	public void rule37__det__genitive_possessors__gen__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
+	public void rule37__det__genitive_possessors__gen__nom(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
 		if (debug) { logCall("rule37__det__genitive_possessors__gen__nom",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		macro_firstWord(out, word1);
@@ -1718,7 +1718,7 @@ verbfinal = pensi<vblex><pres>
 	}
 	
 	// REGLA: DET NOM/ANT NOM/ANT 's NOM:  his garden man's dog   - La hundo de lia ĝardeno viro 
-	public void rule38__det__genitive_possessors__genitive_possessors__gen__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5) throws IOException
+	public void rule38__det__genitive_possessors__genitive_possessors__gen__nom(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5) throws IOException
 	{
 		if (debug) { logCall("rule38__det__genitive_possessors__genitive_possessors__gen__nom",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5); } 
 		macro_firstWord(out, word1);
@@ -1808,7 +1808,7 @@ verbfinal = pensi<vblex><pres>
 ...
  ************************************************************* **                                                         ** **                    DIVERSAJ                             ** **                                                         ** ************************************************************* */
 	// rekunu and, or kaj nor aparte - ĉar povas esti parto de listo de aferoj
-	public void rule39__and_or_nor(Writer out, TransferWord word1) throws IOException
+	public void rule39__and_or_nor(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule39__and_or_nor",  word1); } 
 		macro_firstWord(out, word1);
@@ -1833,7 +1833,7 @@ verbfinal = pensi<vblex><pres>
 	}
 	
 	/**  Conjunctions  */
-	public void rule40__cnjcoo(Writer out, TransferWord word1) throws IOException
+	public void rule40__cnjcoo(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule40__cnjcoo",  word1); } 
 		macro_firstWord(out, word1);
@@ -1857,7 +1857,7 @@ verbfinal = pensi<vblex><pres>
 		out.append("}$");
 	}
 	
-	public void rule41__cnjadv(Writer out, TransferWord word1) throws IOException
+	public void rule41__cnjadv(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule41__cnjadv",  word1); } 
 		macro_firstWord(out, word1);
@@ -1878,7 +1878,7 @@ verbfinal = pensi<vblex><pres>
 		out.append("}$");
 	}
 	
-	public void rule42__cnjsub(Writer out, TransferWord word1) throws IOException
+	public void rule42__cnjsub(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule42__cnjsub",  word1); } 
 		macro_firstWord(out, word1);
@@ -1899,7 +1899,7 @@ verbfinal = pensi<vblex><pres>
 		out.append("}$");
 	}
 	
-	public void rule43__cm(Writer out, TransferWord word1) throws IOException
+	public void rule43__cm(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule43__cm",  word1); } 
 		out.append("^cm<CM>{");
@@ -1925,7 +1925,7 @@ whom:whom<rel><an><mf><sp>
 the ones that:the ones that<rel><nn><mf><pl>
 the ones who:the ones who<rel><nn><mf><pl>
  */
-	public void rule44__rel(Writer out, TransferWord word1) throws IOException
+	public void rule44__rel(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule44__rel",  word1); } 
 		macro_firstWord(out, word1);
@@ -1947,7 +1947,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 	}
 	
 	/**  any, as, how, just as, more, most, pretty, really, so, too, very, fairly  */
-	public void rule45__preadv(Writer out, TransferWord word1) throws IOException
+	public void rule45__preadv(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule45__preadv",  word1); } 
 		macro_firstWord(out, word1);
@@ -1969,7 +1969,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 	}
 	
 	/**  all<predet><sp>  */
-	public void rule46__predet(Writer out, TransferWord word1) throws IOException
+	public void rule46__predet(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule46__predet",  word1); } 
 		macro_firstWord(out, word1);
@@ -2010,7 +2010,7 @@ the ones who:the ones who<rel><nn><mf><pl>
       </action>
     </rule>
  */
-	public void rule47__adv(Writer out, TransferWord word1) throws IOException
+	public void rule47__adv(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule47__adv",  word1); } 
 		macro_firstWord(out, word1);
@@ -2032,7 +2032,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 	}
 	
 	/**  of<pr> off<pr> on<pr> onto<pr> over<pr> per<pr> ...  */
-	public void rule48__pr(Writer out, TransferWord word1) throws IOException
+	public void rule48__pr(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule48__pr",  word1); } 
 		macro_firstWord(out, word1);
@@ -2054,14 +2054,14 @@ the ones who:the ones who<rel><nn><mf><pl>
 	}
 	
 	// REGLA: non-recognized genitive ('s) fallback :  XXX's YYY   => XXX'a YYY
-	public void rule49__gen(Writer out, TransferWord word1) throws IOException
+	public void rule49__gen(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule49__gen",  word1); } 
 		out.append("^gen<GEN>{^a<gen>$}$");
 	}
 	
 	// REGLA: SENT ;: - frazparto
-	public void rule50__sent_komopunkto_dupunkto(Writer out, TransferWord word1) throws IOException
+	public void rule50__sent_komopunkto_dupunkto(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule50__sent_komopunkto_dupunkto",  word1); } 
 		out.append("^sent<S>{");
@@ -2080,7 +2080,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 	}
 	
 	// REGLA: SENT .?!  - fino de frazo
-	public void rule51__sent(Writer out, TransferWord word1) throws IOException
+	public void rule51__sent(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule51__sent",  word1); } 
 		var_EOS = "true";
@@ -2099,7 +2099,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 		out.append("}$");
 	}
 	
-	public void rule52__unknown(Writer out, TransferWord word1) throws IOException
+	public void rule52__unknown(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule52__unknown",  word1); } 
 		macro_firstWord(out, word1);
@@ -2123,7 +2123,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 	
 	/**  ************************************************************* **                                                         ** **                    VERBOJ                               ** **                                                         ** ************************************************************* to run, to swim  */
 	// REGLA: to VBLEXinf
-	public void rule53__to__vblexinf(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule53__to__vblexinf(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule53__to__vblexinf",  word1, blank1,  word2); } 
 		macro_firstWord(out, word1);
@@ -2143,7 +2143,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 	}
 	
 	// REGLA: of VBLEXger - of being, of running, of looking - esti, kuri, vidi
-	public void rule54__of__vblexger(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule54__of__vblexger(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule54__of__vblexger",  word1, blank1,  word2); } 
 		macro_firstWord(out, word1);
@@ -2162,7 +2162,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 	}
 	
 	// REGLA: to have suffered  -  suferi
-	public void rule55__to__vbhaverinf__vblex_vbser(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule55__to__vbhaverinf__vblex_vbser(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
 		if (debug) { logCall("rule55__to__vbhaverinf__vblex_vbser",  word1, blank1,  word2, blank2,  word3); } 
 		macro_firstWord(out, word1);
@@ -2183,7 +2183,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 	
 	/**  ^be/be<vbser><inf>$ ^being/be<vbser><ger>$  ^been/be<vbser><pp>$ ^applying/apply<vblex><ger>$   */
 	// REGLA: be VBLEXger
-	public void rule56__vbser__vblexger(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule56__vbser__vblexger(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule56__vbser__vblexger",  word1, blank1,  word2); } 
 		macro_firstWord(out, word1);
@@ -2218,7 +2218,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 	}
 	
 	// REGLA: level out - elebenigi
-	public void rule57__vblex__out(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule57__vblex__out(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule57__vblex__out",  word1, blank1,  word2); } 
 		macro_firstWord(out, word1);
@@ -2238,7 +2238,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 	}
 	
 	// REGLA: VBSER not
-	public void rule58__vbser__not(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule58__vbser__not(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule58__vbser__not",  word1, blank1,  word2); } 
 		macro_firstWord(out, word1);
@@ -2270,7 +2270,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 	}
 	
 	// RULE: please + vblex in present => please + vblex in infinitive
-	public void rule59__please__c_vblex_pres(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule59__please__c_vblex_pres(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule59__please__c_vblex_pres",  word1, blank1,  word2); } 
 		macro_set_tipus_verbs1(out, word2);
@@ -2294,7 +2294,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 	}
 	
 	// REGLA: do ADV VERB (I do not think -> mi ne pensas. I do always think -> mi ja ĉiam pensas)
-	public void rule60__do__adv__infpres(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule60__do__adv__infpres(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
 		if (debug) { logCall("rule60__do__adv__infpres",  word1, blank1,  word2, blank2,  word3); } 
 		macro_firstWord(out, word1);
@@ -2347,7 +2347,7 @@ the ones who:the ones who<rel><nn><mf><pl>
 	}
 	
 	// REGLA: do VERB (I do think -> mi ja pensas) 
-	public void rule61__do__infpres(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule61__do__infpres(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule61__do__infpres",  word1, blank1,  word2); } 
 		macro_firstWord(out, word1);
@@ -2387,7 +2387,7 @@ may:may<vaux><inf>
 might:might<vaux><inf>
  */
 	// REGLA: VAUX VBLEX
-	public void rule62__vaux_vbhaver__vblex_vbser(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule62__vaux_vbhaver__vblex_vbser(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule62__vaux_vbhaver__vblex_vbser",  word1, blank1,  word2); } 
 		macro_firstWord(out, word1);
@@ -2487,7 +2487,7 @@ might:might<vaux><inf>
 	}
 	
 	// REGLA: VAUX ADV VBLEX
-	public void rule63__vaux_vbhaver__adv__vblex_vbser(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule63__vaux_vbhaver__adv__vblex_vbser(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
 		if (debug) { logCall("rule63__vaux_vbhaver__adv__vblex_vbser",  word1, blank1,  word2, blank2,  word3); } 
 		macro_firstWord(out, word1);
@@ -2596,7 +2596,7 @@ might:might<vaux><inf>
 	}
 	
 	// REGLA: VAUX ADV ADV VBLEX - have also abruptly changed - ankaŭ abrupte ŝanĝis
-	public void rule64__vaux_vbhaver__adv__adv__vblex_vbser(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
+	public void rule64__vaux_vbhaver__adv__adv__vblex_vbser(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
 		if (debug) { logCall("rule64__vaux_vbhaver__adv__adv__vblex_vbser",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		macro_firstWord(out, word1);
@@ -2741,7 +2741,7 @@ might:might<vaux><inf>
 	}
 	
 	// REGLA: VAUX VBHAVER VBLEX/VBSER - would have been,  would have ended,  might have allowed,  could have levelled out, may have represented,  might have been
-	public void rule65__vaux_vbhaver__vbhaver__vblex_vbser(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule65__vaux_vbhaver__vbhaver__vblex_vbser(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
 		if (debug) { logCall("rule65__vaux_vbhaver__vbhaver__vblex_vbser",  word1, blank1,  word2, blank2,  word3); } 
 		macro_firstWord(out, word1);
@@ -2852,7 +2852,7 @@ might:might<vaux><inf>
 	}
 	
 	// REGLA: VAUX VBSER VBLEXGER
-	public void rule66__vaux_vbhaver__vbser__vblexger(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule66__vaux_vbhaver__vbser__vblexger(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
 		if (debug) { logCall("rule66__vaux_vbhaver__vbser__vblexger",  word1, blank1,  word2, blank2,  word3); } 
 		macro_firstWord(out, word1);
@@ -2930,7 +2930,7 @@ might:might<vaux><inf>
 	}
 	
 	/**  <b/><lu><lit v="DEBUG_vaux_vbser_vblexger"/></lu>  */
-	public void rule67__vbdo(Writer out, TransferWord word1) throws IOException
+	public void rule67__vbdo(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule67__vbdo",  word1); } 
 		macro_firstWord(out, word1);
@@ -2948,7 +2948,7 @@ might:might<vaux><inf>
 		out.append("$}$");
 	}
 	
-	public void rule68__vb_all(Writer out, TransferWord word1) throws IOException
+	public void rule68__vb_all(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule68__vb_all",  word1); } 
 		macro_firstWord(out, word1);

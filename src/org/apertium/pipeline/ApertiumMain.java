@@ -25,20 +25,13 @@ import static org.apertium.utils.IOUtils.openInFileReader;
 import static org.apertium.utils.IOUtils.openOutFileWriter;
 import static org.apertium.utils.IOUtils.listFilesInDir;
 import static org.apertium.utils.IOUtils.addTrailingSlash;
-import static org.apertium.utils.MiscUtils.getLineSeparator;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.PrintStream;
 import java.io.Reader;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
 
 import org.apertium.Translator;
 import org.apertium.formatter.FormatterRegistry;
 import org.apertium.lttoolbox.Getopt;
 import org.apertium.utils.IOUtils;
-import org.apertium.utils.StringTable;
 
 /**
  * @author Stephen Tigner
@@ -146,35 +139,23 @@ public class ApertiumMain {
 
         //Setup external input and output
         int optIndex = getopt.getOptind();
-        try {
-            switch(args.length - optIndex ) { //number of non-option args
-                /* This avoids code duplication by allowing cases to "fall through."
-                 * The higher cases just add extra lines to the top of the lower cases,
-                 * so by allowing the code to fall through to the lower cases (instead of
-                 * breaking), we don't need to duplicate the same code several times.
-                 */
-                case 3:
-                    clp.extOutput = openOutFileWriter(args[optIndex + 2]);
-                case 2:
-                    clp.extInput = openInFileReader(args[optIndex + 1]);
-                case 1:
-                    clp.direction = args[optIndex];
-                default:
-                    break;
-            }
-            if(clp.extInput == null) { clp.extInput = getStdinReader(); }
-            if(clp.extOutput == null) { clp.extOutput = getStdoutWriter(); }
-        } catch (FileNotFoundException e) {
-            String errorString = "Apertium (Input/Output files) -- " +
-                    StringTable.FILE_NOT_FOUND;
-            errorString += getLineSeparator() + e.getLocalizedMessage();
-            throw new Exception(errorString, e);
-        } catch (UnsupportedEncodingException e) {
-            String errorString = "Apertium (Input/Output files) -- " +
-                    StringTable.UNSUPPORTED_ENCODING;
-            errorString += getLineSeparator() + e.getLocalizedMessage();
-            throw new Exception(errorString, e);
+        switch(args.length - optIndex ) { //number of non-option args
+            /* This avoids code duplication by allowing cases to "fall through."
+             * The higher cases just add extra lines to the top of the lower cases,
+             * so by allowing the code to fall through to the lower cases (instead of
+             * breaking), we don't need to duplicate the same code several times.
+             */
+            case 3:
+                clp.extOutput = openOutFileWriter(args[optIndex + 2]);
+            case 2:
+                clp.extInput = openInFileReader(args[optIndex + 1]);
+            case 1:
+                clp.direction = args[optIndex];
+            default:
+                break;
         }
+        if(clp.extInput == null) { clp.extInput = getStdinReader(); }
+        if(clp.extOutput == null) { clp.extOutput = getStdoutWriter(); }
         return true;
     }
 

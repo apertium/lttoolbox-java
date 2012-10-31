@@ -19,15 +19,10 @@
 
 package org.apertium.formatter;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
 import org.apertium.utils.IOUtils;
 
-import org.apertium.utils.StringTable;
 
 /**
  * @author Stephen Tigner, Mikel Artetxe
@@ -283,18 +278,8 @@ public class OmegatFormatter extends GenericFormatter {
     /**
      * @param args
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         OmegatFormatter formatter = new OmegatFormatter();
-        try {
-            formatter.doMain(args);
-        } catch (UnsupportedEncodingException e) {
-            System.err.println("OmegatFormatter -- " +
-                    StringTable.UNSUPPORTED_ENCODING);
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            System.err.println("OmegatFormatter -- " +
-                    StringTable.FILE_NOT_FOUND);
-            e.printStackTrace();
-        }
+        formatter.doMain(args);
     }
 }

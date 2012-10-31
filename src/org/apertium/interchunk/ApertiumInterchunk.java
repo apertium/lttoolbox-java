@@ -19,24 +19,19 @@
 
 package org.apertium.interchunk;
 
-import java.io.Closeable;
 import static org.apertium.utils.IOUtils.openInFileReader;
 import static org.apertium.utils.IOUtils.openOutFileWriter;
-import static org.apertium.utils.MiscUtils.getLineSeparator;
 
 import java.io.FileNotFoundException;
-import java.io.Flushable;
 import java.io.PrintStream;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
-import java.io.Writer;
 import java.lang.ref.SoftReference;
 import java.util.HashMap;
 
 import org.apertium.lttoolbox.Getopt;
 import org.apertium.transfer.TransferClassLoader;
 import org.apertium.utils.IOUtils;
-import org.apertium.utils.StringTable;
 
 /**
  * @author Stephen Tigner
@@ -177,24 +172,12 @@ public class ApertiumInterchunk {
         Interchunk i = new Interchunk();
 
         CommandLineParams par = new CommandLineParams();
-        try {
-            /* Parse the command line. The passed-in CommandLineParams object
-             * will be modified by this method.
-             */
-            if(!parseCommandLine(args, par, "Interchunk", false)) {
-                return 1;
-            }
-        } catch (FileNotFoundException e) {
-            String errorString = "ApertiumInterchunk (I/O files) -- " +
-                    StringTable.FILE_NOT_FOUND;
-            errorString += getLineSeparator() + e.getLocalizedMessage();
-            throw new Exception(errorString, e);
-        } catch (UnsupportedEncodingException e) {
-            String errorString = "ApertiumInterchunk (I/O files) -- " +
-                    StringTable.UNSUPPORTED_ENCODING;
-            errorString += getLineSeparator() + e.getLocalizedMessage();
-            throw new Exception(errorString, e);
-        }
+          /* Parse the command line. The passed-in CommandLineParams object
+           * will be modified by this method.
+           */
+          if(!parseCommandLine(args, par, "Interchunk", false)) {
+              return 1;
+          }
 
         doMain(par, i);
         return 0;

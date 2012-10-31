@@ -19,7 +19,7 @@ public class apertium_en_es_en_es_genitive_t1x extends GeneratedTransferBase
 	ApertiumRE attr_content = new ApertiumRE("(\\{.+)");
 	String var_dummy = "";
 	
-	public void rule0__apos__any__apos_aposgen(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule0__apos__any__apos_aposgen(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
 		if (debug) { logCall("rule0__apos__any__apos_aposgen",  word1, blank1,  word2, blank2,  word3); } 
 		{
@@ -51,7 +51,7 @@ public class apertium_en_es_en_es_genitive_t1x extends GeneratedTransferBase
 		out.append("<apos>$");
 	}
 	
-	public void rule1__apos__any__any__apos_aposgen(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
+	public void rule1__apos__any__any__apos_aposgen(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
 		if (debug) { logCall("rule1__apos__any__any__apos_aposgen",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		{
@@ -95,7 +95,7 @@ public class apertium_en_es_en_es_genitive_t1x extends GeneratedTransferBase
 		out.append("<apos>$");
 	}
 	
-	public void rule2__apos__any__any__any__apos_aposgen(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5) throws IOException
+	public void rule2__apos__any__any__any__apos_aposgen(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5) throws IOException
 	{
 		if (debug) { logCall("rule2__apos__any__any__any__apos_aposgen",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5); } 
 		{
@@ -151,7 +151,7 @@ public class apertium_en_es_en_es_genitive_t1x extends GeneratedTransferBase
 		out.append("<apos>$");
 	}
 	
-	public void rule3__apos__any__any__any__any__apos_aposgen(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5, String blank5, TransferWord word6) throws IOException
+	public void rule3__apos__any__any__any__any__apos_aposgen(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5, String blank5, TransferWord word6) throws IOException
 	{
 		if (debug) { logCall("rule3__apos__any__any__any__any__apos_aposgen",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5, blank5,  word6); } 
 		{
@@ -219,7 +219,7 @@ public class apertium_en_es_en_es_genitive_t1x extends GeneratedTransferBase
 		out.append("<apos>$");
 	}
 	
-	public void rule4__apos__any__any__any__any__any__apos_aposgen(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5, String blank5, TransferWord word6, String blank6, TransferWord word7) throws IOException
+	public void rule4__apos__any__any__any__any__any__apos_aposgen(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5, String blank5, TransferWord word6, String blank6, TransferWord word7) throws IOException
 	{
 		if (debug) { logCall("rule4__apos__any__any__any__any__any__apos_aposgen",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5, blank5,  word6, blank6,  word7); } 
 		{
@@ -299,7 +299,7 @@ public class apertium_en_es_en_es_genitive_t1x extends GeneratedTransferBase
 		out.append("<apos>$");
 	}
 	
-	public void rule5__apos__any__any__any__any__any__any__apos_aposgen(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5, String blank5, TransferWord word6, String blank6, TransferWord word7, String blank7, TransferWord word8) throws IOException
+	public void rule5__apos__any__any__any__any__any__any__apos_aposgen(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5, String blank5, TransferWord word6, String blank6, TransferWord word7, String blank7, TransferWord word8) throws IOException
 	{
 		if (debug) { logCall("rule5__apos__any__any__any__any__any__any__apos_aposgen",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5, blank5,  word6, blank6,  word7, blank7,  word8); } 
 		{

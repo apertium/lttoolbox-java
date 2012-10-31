@@ -23,7 +23,7 @@ public class apertium_eo_en_en_eo_t3x extends GeneratedTransferBase
 	String var_paraula = "";
 	String lu_count;
 	
-	private void macro_drop_gender1(Writer out, InterchunkWord word1) throws IOException
+	private void macro_drop_gender1(Appendable out, InterchunkWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_drop_gender1",  word1); } 
 		if (word1.tl(attr_a_gen).equals("<GN>"))
@@ -33,7 +33,7 @@ public class apertium_eo_en_en_eo_t3x extends GeneratedTransferBase
 	}
 	
 	// CHUNK: Ne-uzata regulo (nur cxar DEVAS esti unu cxi tie)
-	public void rule0__nomxxxxxxx(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule0__nomxxxxxxx(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule0__nomxxxxxxx",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);

@@ -28,11 +28,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
-import java.io.Writer;
 
 import org.apertium.lttoolbox.Getopt;
 import org.apertium.utils.IOUtils;
-import org.apertium.utils.StringTable;
 
 /**
  * @author Stephen Tigner
@@ -208,7 +206,7 @@ public class PreTransfer {
      * @param args
      */
     public static void parseArgs(String[] args, CommandLineParams params,
-            boolean pipelineMode) {
+            boolean pipelineMode) throws UnsupportedEncodingException {
 
         params.nullFlush = false;
 
@@ -260,54 +258,48 @@ public class PreTransfer {
          * Kept it as a sequence of if/else statements for ease of understanding
          * and code checking when comparing it with the C++ version.
          */
-        try {
-            if(numberOfArgs == 0 || pipelineMode) { //C++ version numberOfArgs == 1
-                /* If we are in pipeline mode, we want to ignore any input/output
-                 * files specified on the command line, as we are using only internal
-                 * string readers and writers.
+        if(numberOfArgs == 0 || pipelineMode) { //C++ version numberOfArgs == 1
+            /* If we are in pipeline mode, we want to ignore any input/output
+             * files specified on the command line, as we are using only internal
+             * string readers and writers.
+             */
+            params.input = getStdinReader();
+            params.output = getStdoutWriter();
+        } else if (numberOfArgs == 1) { //C++ version numberOfArgs == 2
+            try {
+                /* Attempt to open a file for input, using the last argument on the
+                 * command line as the filename.
                  */
-                params.input = getStdinReader();
-                params.output = getStdoutWriter();
-            } else if (numberOfArgs == 1) { //C++ version numberOfArgs == 2
-                try {
-                    /* Attempt to open a file for input, using the last argument on the
-                     * command line as the filename.
-                     */
-                    params.input = openInFileReader(args[args.length - 1]);
-                } catch (FileNotFoundException e) {
-                    /* This exception is thrown if the file cannot be found, or
-                     * otherwise cannot be opened for reading.
-                     */
-                    showHelp();
-                    return;
-                }
-                params.output = getStdoutWriter();
-            } else {
-                try {
-                    /* Attempt to open a file for input, using the next-to-last argument
-                     * on the command line as the filename.
-                     */
-                    params.input = openInFileReader(args[args.length - 2]);
-                    /* Attempt to open a file for output, using the last argument on the
-                     * command line as the filename.
-                     */
-                    params.output = openOutFileWriter(args[args.length - 1]);
-                } catch (FileNotFoundException e) {
-                    /* Either the input or the output file could not be found or otherwise
-                     * could not be opened for reading/writing.
-                     */
-                    showHelp();
-                    return;
-                }
+                params.input = openInFileReader(args[args.length - 1]);
+            } catch (FileNotFoundException e) {
+                /* This exception is thrown if the file cannot be found, or
+                 * otherwise cannot be opened for reading.
+                 */
+                showHelp();
+                return;
             }
-        } catch (UnsupportedEncodingException e) {
-          // exit() is not an option as we are a library
-            throw new RuntimeException("Pretransfer (parse args) -- " +
-                    StringTable.UNSUPPORTED_ENCODING);
+            params.output = getStdoutWriter();
+        } else {
+            try {
+                /* Attempt to open a file for input, using the next-to-last argument
+                 * on the command line as the filename.
+                 */
+                params.input = openInFileReader(args[args.length - 2]);
+                /* Attempt to open a file for output, using the last argument on the
+                 * command line as the filename.
+                 */
+                params.output = openOutFileWriter(args[args.length - 1]);
+            } catch (FileNotFoundException e) {
+                /* Either the input or the output file could not be found or otherwise
+                 * could not be opened for reading/writing.
+                 */
+                showHelp();
+                return;
+            }
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         System.setProperty("file.encoding", "UTF-8");
 
         CommandLineParams params = new CommandLineParams();
@@ -328,13 +320,8 @@ public class PreTransfer {
          * InputStreamReader and OutputStreamWriter objects.
          */
 
-        try {
-            processStream(params.input, params.output, params.nullFlush);
-            //Have to flush or won't get any output.
-            IOUtils.flush(params.output);
-        } catch (IOException e) {
-            System.err.println("Pretransfer -- ERROR: IOException");
-            e.printStackTrace();
-        }
+        processStream(params.input, params.output, params.nullFlush);
+        //Have to flush or won't get any output.
+        IOUtils.flush(params.output);
     }
 }

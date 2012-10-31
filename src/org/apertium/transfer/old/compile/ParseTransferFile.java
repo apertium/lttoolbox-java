@@ -1120,7 +1120,7 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
           println("");
           printComments();
           String methodName = "macro_"+javaIdentifier(name);
-          println("private void "+methodName+"(Writer out"+methodArguments+") throws IOException");
+          println("private void "+methodName+"(Appendable out"+methodArguments+") throws IOException");
           println("{");
           println("if (debug) { logCall(\""+methodName+"\""+logCallParameters+"); } "); // TODO Check performance impact
 
@@ -1164,9 +1164,9 @@ pcre match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>)  on ^what<prn><itg><sp>  i
           String comment = c0.getAttribute("comment");
           if (!comment.isEmpty()) println("// "+comment);
           if (mode == JAVASCRIPT)
-              println("function "+methodName+"(Writer out"+methodArguments+") ");
+              println("function "+methodName+"(Appendable out"+methodArguments+") ");
           else
-              println("public void "+methodName+"(Writer out"+methodArguments+") throws IOException");
+              println("public void "+methodName+"(Appendable out"+methodArguments+") throws IOException");
           println("{");
           println("if (debug) { logCall(\""+methodName+"\""+logCallParameters+"); } "); // TODO Check performance impact
 

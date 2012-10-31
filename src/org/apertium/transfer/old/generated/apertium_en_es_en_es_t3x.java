@@ -37,7 +37,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 	String var_numero = "";
 	String lu_count;
 	
-	private void macro_f_bcond(Writer out, InterchunkWord word1) throws IOException
+	private void macro_f_bcond(Appendable out, InterchunkWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_f_bcond",  word1); } 
 		// WARNING blank pos=1 is out of range. Replacing with a zero-space blank. - for <postchunk>/<section-def-macros>/<def-macro n="f_bcond" npar="1">/<choose>/<when>/<test>/<not>/<equal>/<b pos="1">
@@ -48,7 +48,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 		}
 	}
 	
-	private void macro_gen_nbr_determinante(Writer out, InterchunkWord word1) throws IOException
+	private void macro_gen_nbr_determinante(Appendable out, InterchunkWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_gen_nbr_determinante",  word1); } 
 		if (!word1.tl(attr_gen).equals("<mf>"))
@@ -70,7 +70,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 	}
 	
 	// CHUNK: nom
-	public void rule0__nom(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule0__nom(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule0__nom",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -101,7 +101,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 	}
 	
 	// CHUNK: SN_2words3
-	public void rule1__SN_2words3(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule1__SN_2words3(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule1__SN_2words3",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -160,7 +160,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 	}
 	
 	// CHUNK: nom conj nom
-	public void rule2__nom_i_nom(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule2__nom_i_nom(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule2__nom_i_nom",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -260,7 +260,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 	}
 	
 	// CHUNK: SN_3words5
-	public void rule3__SN_3words5(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule3__SN_3words5(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule3__SN_3words5",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -359,7 +359,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 	}
 	
 	// CHUNK: SN_3words
-	public void rule4__SN_3words(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule4__SN_3words(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule4__SN_3words",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -414,7 +414,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 	}
 	
 	// CHUNK: SN_4words6
-	public void rule5__SN_4words6(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule5__SN_4words6(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule5__SN_4words6",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -525,7 +525,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 	}
 	
 	// CHUNK: SN de 5 paraules: es posa det si son PDET
-	public void rule6__SN_5words(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule6__SN_5words(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule6__SN_5words",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -604,7 +604,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 	}
 	
 	// CHUNK: SN de 6 paraules: es posa det si son PDET
-	public void rule7__SN_6words(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule7__SN_6words(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule7__SN_6words",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -695,7 +695,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 	}
 	
 	// CHUNK: SN de 5 paraules: es posa det si son PDET
-	public void rule8__SN_5words7(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule8__SN_5words7(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule8__SN_5words7",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -818,7 +818,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 	}
 	
 	// CHUNK: SN de 6 o 7 paraules: es posa det si son PDET, i s'envia la 7a paraula si hi ha un 'més' preadv
-	public void rule9__SN_6words7(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule9__SN_6words7(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule9__SN_6words7",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -925,7 +925,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 	}
 	
 	// CHUNK: SN de 7 paraules: es posa det si son PDET
-	public void rule10__SN_7words(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule10__SN_7words(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule10__SN_7words",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -1028,7 +1028,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 	}
 	
 	// CHUNK: SN_4words
-	public void rule11__SN_4words(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule11__SN_4words(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule11__SN_4words",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -1095,7 +1095,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 	}
 	
 	// CHUNK: INF
-	public void rule12__inf(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule12__inf(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule12__inf",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -1135,7 +1135,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 	}
 	
 	// CHUNK: INF + 2a paraula
-	public void rule13__inf_2(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule13__inf_2(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule13__inf_2",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -1187,7 +1187,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 	}
 	
 	// CHUNK: INF + enc
-	public void rule14__inf_enc(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule14__inf_enc(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule14__inf_enc",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -1295,7 +1295,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 		}
 	}
 	
-	public void rule15__inf_enc_enc(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule15__inf_enc_enc(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule15__inf_enc_enc",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -1434,7 +1434,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 	}
 	
 	// CHUNK: INF +INF + enc
-	public void rule16__inf_inf_enc(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule16__inf_inf_enc(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule16__inf_inf_enc",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -1553,7 +1553,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 		}
 	}
 	
-	public void rule17__have_enc_pp(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule17__have_enc_pp(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule17__have_enc_pp",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -1625,7 +1625,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 		}
 	}
 	
-	public void rule18__have_enc_enc_pp(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule18__have_enc_enc_pp(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule18__have_enc_enc_pp",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -1700,7 +1700,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 	}
 	
 	// CHUNK: GER  (BCN)
-	public void rule19__ger(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule19__ger(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule19__ger",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -1740,7 +1740,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 	}
 	
 	// CHUNK: GER ENC
-	public void rule20__ger_enc(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule20__ger_enc(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule20__ger_enc",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -1804,7 +1804,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 	}
 	
 	// CHUNK: GER ENC
-	public void rule21__ger_enc_enc(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule21__ger_enc_enc(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule21__ger_enc_enc",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -1877,7 +1877,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 	}
 	
 	// CHUNK: BE (there is)
-	public void rule22__be(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule22__be(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule22__be",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -1909,7 +1909,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 	
 	/**  regles per arreglar els verbs tipus "like->m'agrada"  */
 	// assigna persona i nombre als verbs tipus LIKE amb pronom
-	public void rule23__pro_vblike(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule23__pro_vblike(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule23__pro_vblike",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -1930,7 +1930,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 	}
 	
 	// assigna persona i nombre als verbs tipus LIKE amb pronom
-	public void rule24__pro_vblike2(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule24__pro_vblike2(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule24__pro_vblike2",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -1963,7 +1963,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 	}
 	
 	// assigna persona i nombre als verbs tipus LIKE amb pronom
-	public void rule25__pro_vblike3(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule25__pro_vblike3(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule25__pro_vblike3",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -2009,7 +2009,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 	
 	/**  regles per arreglar el pronom reflexiu de tercera persona (li-> se) */
 	// arregla el pronom proclític, i arregla el verb 'haver-hi'
-	public void rule26__have_pp(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule26__have_pp(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule26__have_pp",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -2156,7 +2156,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 	}
 	
 	// arregla el pron reflexiu de tercera persona, enclític: si és p3 fes que sigui 'es' (reflexiu)
-	public void rule27__be_ger(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule27__be_ger(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule27__be_ger",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -2215,7 +2215,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 	}
 	
 	// arregla el pron reflexiu de tercera persona, enclític: si és p3 fes que sigui 'es' (reflexiu)
-	public void rule28__be_ger_enc(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule28__be_ger_enc(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule28__be_ger_enc",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -2270,7 +2270,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 	}
 	
 	// arregla el pron reflexiu de tercera persona, enclític: si és p3 fes que sigui 'es' (reflexiu)
-	public void rule29__be_ger_inf(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule29__be_ger_inf(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule29__be_ger_inf",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -2353,7 +2353,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 	}
 	
 	// arregla el pron reflexiu de tercera persona, enclític: si és p3 fes que sigui 'es' (reflexiu)
-	public void rule30__auxmod_have_pp_inf(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule30__auxmod_have_pp_inf(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule30__auxmod_have_pp_inf",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -2460,7 +2460,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 	}
 	
 	// arregla el pron reflexiu de tercera persona, enclític
-	public void rule31__verbcj_inf(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule31__verbcj_inf(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule31__verbcj_inf",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -2685,7 +2685,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 	}
 	
 	// arregla el pron reflexiu de tercera persona, enclític
-	public void rule32__verbcj_inf_enc(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule32__verbcj_inf_enc(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule32__verbcj_inf_enc",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -2818,7 +2818,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 	}
 	
 	// arregla el pron reflexiu de tercera persona, quan és proclític
-	public void rule33__pottenirpronom(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule33__pottenirpronom(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule33__pottenirpronom",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -3115,7 +3115,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
       </action>
 </rule> */
 	// CHUNK: reflexiu (arregla el pronom reflexiu creat en t2x)
-	public void rule34__reflexiu(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule34__reflexiu(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule34__reflexiu",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -3140,7 +3140,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 	}
 	
 	// CHUNK: HI
-	public void rule35__hi(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule35__hi(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule35__hi",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);
@@ -3160,7 +3160,7 @@ public class apertium_en_es_en_es_t3x extends GeneratedTransferBase
 	}
 	
 	// CHUNK: tenir (el chunk 'tenir' és resultat de canviar 'ser' per 'tenir' en el t2x en el patró 'I am 20 years old'
-	public void rule36__tener(Writer out, InterchunkWord[] words, String[] blanks) throws IOException
+	public void rule36__tener(Appendable out, InterchunkWord[] words, String[] blanks) throws IOException
 	{
 		if (debug) { logCall("rule36__tener",  words[1]); } 
 		lu_count = Integer.toString(words.length-1);

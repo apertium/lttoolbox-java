@@ -34,7 +34,7 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 	String var_adjectiu1 = "";
 	WordList list_prepos_adjs = new WordList(new String[] { "hen", "ambell", "pob", "prif", "holl", "cryn", });
 	
-	private void macro_firstWord(Writer out, TransferWord word1) throws IOException
+	private void macro_firstWord(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_firstWord",  word1); } 
 		if (word1.sl(attr_a_np_acr).equals(""))
@@ -52,7 +52,7 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 		var_EOS = "false";
 	}
 	
-	private void macro_adjectiu(Writer out, TransferWord word1) throws IOException
+	private void macro_adjectiu(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_adjectiu",  word1); } 
 		var_adjectiu1 = "";
@@ -76,7 +76,7 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 	}
 	
 	// REGLA: NOM
-	public void rule0__nom(Writer out, TransferWord word1) throws IOException
+	public void rule0__nom(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule0__nom",  word1); } 
 		out.append('^');
@@ -105,7 +105,7 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 	}
 	
 	// REGLA: DET NOM
-	public void rule1__det__nom(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule1__det__nom(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule1__det__nom",  word1, blank1,  word2); } 
 		if (word1.sl(attr_a_det).equals("<det><ind>"))
@@ -174,7 +174,7 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 	}
 	
 	// REGLA: DET ADJ NOM
-	public void rule2__det__adj__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule2__det__adj__nom(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
 		if (debug) { logCall("rule2__det__adj__nom",  word1, blank1,  word2, blank2,  word3); } 
 		macro_adjectiu(out, word2);
@@ -283,7 +283,7 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 	}
 	
 	// REGLA: DET
-	public void rule3__det(Writer out, TransferWord word1) throws IOException
+	public void rule3__det(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule3__det",  word1); } 
 		if (word1.sl(attr_a_det).equals("<det><ind>"))
@@ -317,7 +317,7 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 	}
 	
 	// REGLA: VBLEX
-	public void rule4__verb(Writer out, TransferWord word1) throws IOException
+	public void rule4__verb(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule4__verb",  word1); } 
 		out.append('^');
@@ -346,7 +346,7 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 	}
 	
 	// REGLA: instead of VERB ger
-	public void rule5__instead_of__verbger(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule5__instead_of__verbger(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule5__instead_of__verbger",  word1, blank1,  word2); } 
 		out.append('^');
@@ -384,7 +384,7 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 	}
 	
 	// REGLA: PRSUBJ VBLEX
-	public void rule6__prsubj__verb(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule6__prsubj__verb(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule6__prsubj__verb",  word1, blank1,  word2); } 
 		out.append('^');

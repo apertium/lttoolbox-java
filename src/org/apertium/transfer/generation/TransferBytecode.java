@@ -45,6 +45,7 @@ import static com.sun.org.apache.bcel.internal.Constants.ACC_SUPER;
 import static com.sun.org.apache.bcel.internal.Constants.INVOKESTATIC;
 import static com.sun.org.apache.bcel.internal.Constants.INVOKEVIRTUAL;
 import static com.sun.org.apache.bcel.internal.Constants.INVOKESPECIAL;
+import static com.sun.org.apache.bcel.internal.Constants.INVOKEINTERFACE;
 
 import org.apertium.CommandLineInterface;
 import static org.apertium.transfer.generation.DOMTools.*;
@@ -60,7 +61,7 @@ public class TransferBytecode {
     private static final Type WORD_LIST = getType(org.apertium.transfer.WordList.class);
     private static final Type TRANSFER_WORD = getType(org.apertium.transfer.TransferWord.class);
     private static final Type INTERCHUNK_WORD = getType(org.apertium.interchunk.InterchunkWord.class);
-    private static final Type WRITER = getType(java.io.Writer.class);
+    private static final Type APPENDABLE = getType(java.lang.Appendable.class);
     private static final Type STRING_BUILDER = getType(java.lang.StringBuilder.class);
     private static final Type INTERCHUNK_WORD_ARRAY = new ArrayType(INTERCHUNK_WORD, 1);
     private static final Type STRING_ARRAY = new ArrayType(STRING, 1);
@@ -113,15 +114,15 @@ public class TransferBytecode {
             }
         }
         if (surelyNotEmpty) {
-            il.append(createLoad(WRITER, 1));
+            il.append(createLoad(APPENDABLE, 1));
             il.append(factory.createConstant('^'));
-            il.append(factory.createInvoke("java.io.Writer", "append", WRITER, new Type[]{CHAR}, INVOKEVIRTUAL));
+            il.append(factory.createInvoke("java.lang.Appendable", "append", APPENDABLE, new Type[]{CHAR}, INVOKEINTERFACE));
             for (Element lu : listChildren(e)) {
                 evalString(lu);
-                il.append(factory.createInvoke("java.io.Writer", "append", WRITER, new Type[]{CHAR_SEQUENCE}, INVOKEVIRTUAL));
+                il.append(factory.createInvoke("java.lang.Appendable", "append", APPENDABLE, new Type[]{CHAR_SEQUENCE}, INVOKEINTERFACE));
             }
             il.append(factory.createConstant('$'));
-            il.append(factory.createInvoke("java.io.Writer", "append", WRITER, new Type[]{CHAR}, INVOKEVIRTUAL));
+            il.append(factory.createInvoke("java.lang.Appendable", "append", APPENDABLE, new Type[]{CHAR}, INVOKEINTERFACE));
             il.append(POP);
         } else {
             //Perhaps empty expression. Do a temp string and evaluate runtime.
@@ -138,13 +139,13 @@ public class TransferBytecode {
             il.append(createLoad(STRING, index));
             il.append(factory.createInvoke("java.lang.String", "length", INT, NO_ARGS, INVOKEVIRTUAL));
             BranchHandle ifle = il.append(new IFLE(null));
-            il.append(createLoad(WRITER, 1));
+            il.append(createLoad(APPENDABLE, 1));
             il.append(factory.createConstant('^'));
-            il.append(factory.createInvoke("java.io.Writer", "append", WRITER, new Type[]{CHAR}, INVOKEVIRTUAL));
+            il.append(factory.createInvoke("java.lang.Appendable", "append", APPENDABLE, new Type[]{CHAR}, INVOKEINTERFACE));
             il.append(createLoad(STRING, index));
-            il.append(factory.createInvoke("java.io.Writer", "append", WRITER, new Type[]{CHAR_SEQUENCE}, INVOKEVIRTUAL));
+            il.append(factory.createInvoke("java.lang.Appendable", "append", APPENDABLE, new Type[]{CHAR_SEQUENCE}, INVOKEINTERFACE));
             il.append(factory.createConstant('$'));
-            il.append(factory.createInvoke("java.io.Writer", "append", WRITER, new Type[]{CHAR}, INVOKEVIRTUAL));
+            il.append(factory.createInvoke("java.lang.Appendable", "append", APPENDABLE, new Type[]{CHAR}, INVOKEINTERFACE));
             il.append(POP);
             ifle.setTarget(il.append(NOP));
         }
@@ -312,29 +313,29 @@ public class TransferBytecode {
             if (n.equals("lu")) {
                 processLu(e);
             } else if (n.equals("mlu")) {
-                il.append(createLoad(WRITER, 1));
+                il.append(createLoad(APPENDABLE, 1));
                 il.append(factory.createConstant('^'));
-                il.append(factory.createInvoke("java.io.Writer", "append", WRITER, new Type[]{CHAR}, INVOKEVIRTUAL));
+                il.append(factory.createInvoke("java.lang.Appendable", "append", APPENDABLE, new Type[]{CHAR}, INVOKEINTERFACE));
                 for (java.util.Iterator<Element> it = listChildren(e).iterator(); it.hasNext();) {
                     Element mlu = it.next();
                     for (Element lu : listChildren(mlu)) {
                         evalString(lu);
-                        il.append(factory.createInvoke("java.io.Writer", "append", WRITER, new Type[]{CHAR_SEQUENCE}, INVOKEVIRTUAL));
+                        il.append(factory.createInvoke("java.lang.Appendable", "append", APPENDABLE, new Type[]{CHAR_SEQUENCE}, INVOKEINTERFACE));
                     }
                     if (it.hasNext()) {
                         il.append(factory.createConstant('+'));
-                        il.append(factory.createInvoke("java.io.Writer", "append", WRITER, new Type[]{CHAR}, INVOKEVIRTUAL));
+                        il.append(factory.createInvoke("java.lang.Appendable", "append", APPENDABLE, new Type[]{CHAR}, INVOKEINTERFACE));
                     }
                 }
                 il.append(factory.createConstant('$'));
-                il.append(factory.createInvoke("java.io.Writer", "append", WRITER, new Type[]{CHAR}, INVOKEVIRTUAL));
+                il.append(factory.createInvoke("java.lang.Appendable", "append", APPENDABLE, new Type[]{CHAR}, INVOKEINTERFACE));
                 il.append(POP);
             } else if (n.equals("chunk")) {
                 processChunk(e);
             } else {
-                il.append(createLoad(WRITER, 1));
+                il.append(createLoad(APPENDABLE, 1));
                 evalString(e);
-                il.append(factory.createInvoke("java.io.Writer", "append", WRITER, new Type[]{CHAR_SEQUENCE}, INVOKEVIRTUAL));
+                il.append(factory.createInvoke("java.lang.Appendable", "append", APPENDABLE, new Type[]{CHAR_SEQUENCE}, INVOKEINTERFACE));
                 il.append(POP);
             }
         }
@@ -359,17 +360,17 @@ public class TransferBytecode {
         String namefromvar = e.getAttribute("namefrom");
         String caseofchunkvar = e.getAttribute("case");
 
-        il.append(createLoad(WRITER, 1));
+        il.append(createLoad(APPENDABLE, 1));
         il.append(factory.createConstant('^'));
-        il.append(factory.createInvoke("java.io.Writer", "append", WRITER, new Type[]{CHAR}, INVOKEVIRTUAL));
+        il.append(factory.createInvoke("java.lang.Appendable", "append", APPENDABLE, new Type[]{CHAR}, INVOKEINTERFACE));
         if (caseofchunkvar.isEmpty()) {
             if (!name.isEmpty()) {
                 il.append(factory.createConstant(name));
-                il.append(factory.createInvoke("java.io.Writer", "append", WRITER, new Type[]{CHAR_SEQUENCE}, INVOKEVIRTUAL));
+                il.append(factory.createInvoke("java.lang.Appendable", "append", APPENDABLE, new Type[]{CHAR_SEQUENCE}, INVOKEINTERFACE));
             } else if (!namefromvar.isEmpty()) {
                 il.append(createThis());
                 il.append(factory.createGetField(fullClassName, var(namefromvar), STRING));
-                il.append(factory.createInvoke("java.io.Writer", "append", WRITER, new Type[]{CHAR_SEQUENCE}, INVOKEVIRTUAL));
+                il.append(factory.createInvoke("java.lang.Appendable", "append", APPENDABLE, new Type[]{CHAR_SEQUENCE}, INVOKEINTERFACE));
             } else {
                 printErrorMessage("ERROR: you must specify either 'name' or 'namefrom' for the 'chunk' element");
             }
@@ -379,14 +380,14 @@ public class TransferBytecode {
                 il.append(factory.createGetField(fullClassName, var(caseofchunkvar), STRING));
                 il.append(factory.createConstant(name));
                 il.append(factory.createInvoke(TRANSFER_WORD.toString(), "copycase", STRING, new Type[]{STRING, STRING}, INVOKESTATIC));
-                il.append(factory.createInvoke("java.io.Writer", "append", WRITER, new Type[]{CHAR_SEQUENCE}, INVOKEVIRTUAL));
+                il.append(factory.createInvoke("java.lang.Appendable", "append", APPENDABLE, new Type[]{CHAR_SEQUENCE}, INVOKEINTERFACE));
             } else if (!namefromvar.isEmpty()) {
                 il.append(createThis());
                 il.append(factory.createGetField(fullClassName, var(caseofchunkvar), STRING));
                 il.append(createThis());
                 il.append(factory.createGetField(fullClassName, var(namefromvar), STRING));
                 il.append(factory.createInvoke(TRANSFER_WORD.toString(), "copycase", STRING, new Type[]{STRING, STRING}, INVOKESTATIC));
-                il.append(factory.createInvoke("java.io.Writer", "append", WRITER, new Type[]{CHAR_SEQUENCE}, INVOKEVIRTUAL));
+                il.append(factory.createInvoke("java.lang.Appendable", "append", APPENDABLE, new Type[]{CHAR_SEQUENCE}, INVOKEINTERFACE));
             } else {
                 printErrorMessage("ERROR: you must specify either 'name' or 'namefrom' for the 'chunk' element");
             }
@@ -397,35 +398,35 @@ public class TransferBytecode {
             if (n.equals("tags")) {
                 for (Element tag : listChildren(c0)) {
                     evalString(findElementSibling(tag.getFirstChild()));
-                    il.append(factory.createInvoke("java.io.Writer", "append", WRITER, new Type[]{CHAR_SEQUENCE}, INVOKEVIRTUAL));
+                    il.append(factory.createInvoke("java.lang.Appendable", "append", APPENDABLE, new Type[]{CHAR_SEQUENCE}, INVOKEINTERFACE));
                 }
                 il.append(factory.createConstant('{'));
-                il.append(factory.createInvoke("java.io.Writer", "append", WRITER, new Type[]{CHAR}, INVOKEVIRTUAL));
+                il.append(factory.createInvoke("java.lang.Appendable", "append", APPENDABLE, new Type[]{CHAR}, INVOKEINTERFACE));
             } else if (n.equals("lu")) {
                 processLu(c0);
             } else if (n.equals("mlu")) {
                 il.append(factory.createConstant('^'));
-                il.append(factory.createInvoke("java.io.Writer", "append", WRITER, new Type[]{CHAR}, INVOKEVIRTUAL));
+                il.append(factory.createInvoke("java.lang.Appendable", "append", APPENDABLE, new Type[]{CHAR}, INVOKEINTERFACE));
                 for (java.util.Iterator<Element> it = listChildren(c0).iterator(); it.hasNext();) {
                     Element mlu = it.next();
                     for (Element lu : listChildren(mlu)) {
                         evalString(lu);
-                        il.append(factory.createInvoke("java.io.Writer", "append", WRITER, new Type[]{CHAR_SEQUENCE}, INVOKEVIRTUAL));
+                        il.append(factory.createInvoke("java.lang.Appendable", "append", APPENDABLE, new Type[]{CHAR_SEQUENCE}, INVOKEINTERFACE));
                     }
                     if (it.hasNext()) {
                         il.append(factory.createConstant('+'));
-                        il.append(factory.createInvoke("java.io.Writer", "append", WRITER, new Type[]{CHAR}, INVOKEVIRTUAL));
+                        il.append(factory.createInvoke("java.lang.Appendable", "append", APPENDABLE, new Type[]{CHAR}, INVOKEINTERFACE));
                     }
                 }
                 il.append(factory.createConstant('$'));
-                il.append(factory.createInvoke("java.io.Writer", "append", WRITER, new Type[]{CHAR}, INVOKEVIRTUAL));
+                il.append(factory.createInvoke("java.lang.Appendable", "append", APPENDABLE, new Type[]{CHAR}, INVOKEINTERFACE));
             } else {
                 evalString(c0);
-                il.append(factory.createInvoke("java.io.Writer", "append", WRITER, new Type[]{CHAR_SEQUENCE}, INVOKEVIRTUAL));
+                il.append(factory.createInvoke("java.lang.Appendable", "append", APPENDABLE, new Type[]{CHAR_SEQUENCE}, INVOKEINTERFACE));
             }
         }
         il.append(factory.createConstant("}$"));
-        il.append(factory.createInvoke("java.io.Writer", "append", WRITER, new Type[]{CHAR_SEQUENCE}, INVOKEVIRTUAL));
+        il.append(factory.createInvoke("java.lang.Appendable", "append", APPENDABLE, new Type[]{CHAR_SEQUENCE}, INVOKEINTERFACE));
         il.append(POP);
     }
 
@@ -556,10 +557,10 @@ public class TransferBytecode {
             return;
         }
         il.append(createThis());
-        il.append(createLoad(WRITER, 1));
+        il.append(createLoad(APPENDABLE, 1));
         int macronpar = macroList.get(n);
         Type args[] = new Type[macronpar != 0 ? macronpar * 2 : 1];
-        args[0] = WRITER;
+        args[0] = APPENDABLE;
         int npar = 0;
         for (Element c : listChildren(instr)) {
             if (npar >= macronpar) {
@@ -1061,7 +1062,7 @@ public class TransferBytecode {
                 macroList.put(name, npar);
 
                 ArrayList<Type> args = new ArrayList<Type>();
-                args.add(WRITER);
+                args.add(APPENDABLE);
 
                 if (this.parseMode == ParseMode.TRANSFER) {
                     for (int i = 1; i <= npar; i++) {
@@ -1120,7 +1121,7 @@ public class TransferBytecode {
                 currentNumberOfWordInParameterList = patternItems.size();
 
                 ArrayList<Type> args = new ArrayList<Type>();
-                args.add(WRITER);
+                args.add(APPENDABLE);
 
                 if (this.parseMode == ParseMode.TRANSFER) {
                     for (int i = 1; i <= currentNumberOfWordInParameterList; i++) {

@@ -26,7 +26,7 @@ public class apertium_eo_en_en_eo_t2x extends GeneratedTransferBase
 	String var_genere = "";
 	
 	/**  En SN SV SAdj atribuas al SAdj la nombron: Tiun de SV, se difinita, aŭ tiun de SN, se difinita  kaj al SV, se ne difinita, la nombron de SN, se difinita, aŭ tiun de SAdj, se difinita  */
-	private void macro_set_nbr3(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3) throws IOException
+	private void macro_set_nbr3(Appendable out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3) throws IOException
 	{
 		if (debug) { logCall("macro_set_nbr3",  word1, blank1,  word2, blank2,  word3); } 
 		/**  Atribuo de SAdj  */
@@ -58,7 +58,7 @@ public class apertium_eo_en_en_eo_t2x extends GeneratedTransferBase
 		}
 	}
 	
-	private void macro_set_tns(Writer out, InterchunkWord word1) throws IOException
+	private void macro_set_tns(Appendable out, InterchunkWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_set_tns",  word1); } 
 		if (word1.tl(attr_a_tns).equals("<inf>"))
@@ -73,7 +73,7 @@ public class apertium_eo_en_en_eo_t2x extends GeneratedTransferBase
 	}
 	
 	// REGLA: SN
-	public void rule0__SN(Writer out, InterchunkWord word1) throws IOException
+	public void rule0__SN(Appendable out, InterchunkWord word1) throws IOException
 	{
 		if (debug) { logCall("rule0__SN",  word1); } 
 		{
@@ -100,7 +100,7 @@ public class apertium_eo_en_en_eo_t2x extends GeneratedTransferBase
           </chunk>
  For questions "is the cat big?"  */
 	// REGLA: Adv do SN SV - how did you work - kiel vi laboris
-	public void rule1__Adv_aux_SN_aux_konstatovorto__vbdoSV__SN__SV(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4) throws IOException
+	public void rule1__Adv_aux_SN_aux_konstatovorto__vbdoSV__SN__SV(Appendable out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4) throws IOException
 	{
 		if (debug) { logCall("rule1__Adv_aux_SN_aux_konstatovorto__vbdoSV__SN__SV",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		{
@@ -137,7 +137,7 @@ public class apertium_eo_en_en_eo_t2x extends GeneratedTransferBase
 	}
 	
 	// REGLA: do SN SV - do you know the cat?
-	public void rule2__vbdoSV__SN__SV(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3) throws IOException
+	public void rule2__vbdoSV__SN__SV(Appendable out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3) throws IOException
 	{
 		if (debug) { logCall("rule2__vbdoSV__SN__SV",  word1, blank1,  word2, blank2,  word3); } 
 		out.append("^ĉu<adv><itg>{^");
@@ -170,7 +170,7 @@ public class apertium_eo_en_en_eo_t2x extends GeneratedTransferBase
 	}
 	
 	// REGLA: Adv SV SN SN
-	public void rule3__Adv_CA__SVall__SN__SN(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4) throws IOException
+	public void rule3__Adv_CA__SVall__SN__SN(Appendable out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4) throws IOException
 	{
 		if (debug) { logCall("rule3__Adv_CA__SVall__SN__SN",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		{
@@ -224,7 +224,7 @@ public class apertium_eo_en_en_eo_t2x extends GeneratedTransferBase
 	
 	/**  ONTE: SNSubj, sed pli komplike  */
 	// REGLA: SN SVcop SAdjGer - they are tall -> ili estas altaJ; they are living -> ili estas vivantaJ
-	public void rule4__SN__SVcop__SAdjGer(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3) throws IOException
+	public void rule4__SN__SVcop__SAdjGer(Appendable out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3) throws IOException
 	{
 		if (debug) { logCall("rule4__SN__SVcop__SAdjGer",  word1, blank1,  word2, blank2,  word3); } 
 		macro_set_nbr3(out, word1, blank1, word2, blank2, word3);
@@ -267,7 +267,7 @@ public class apertium_eo_en_en_eo_t2x extends GeneratedTransferBase
 	}
 	
 	// REGLA: SN SV SN - akuzativo
-	public void rule5__SNsubj__SV__SN_SAdj(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3) throws IOException
+	public void rule5__SNsubj__SV__SN_SAdj(Appendable out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3) throws IOException
 	{
 		if (debug) { logCall("rule5__SNsubj__SV__SN_SAdj",  word1, blank1,  word2, blank2,  word3); } 
 		{
@@ -305,7 +305,7 @@ public class apertium_eo_en_en_eo_t2x extends GeneratedTransferBase
 	}
 	
 	// REGLA: SN SVcop SVger SN - akuzativo
-	public void rule6__SNsubj__SVcop__SVger__SN_SAdj(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4) throws IOException
+	public void rule6__SNsubj__SVcop__SVger__SN_SAdj(Appendable out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4) throws IOException
 	{
 		if (debug) { logCall("rule6__SNsubj__SVcop__SVger__SN_SAdj",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		macro_set_nbr3(out, word1, blank2, word3, " ", word1);
@@ -356,7 +356,7 @@ public class apertium_eo_en_en_eo_t2x extends GeneratedTransferBase
 	}
 	
 	// REGLA: SN SVcop SVcopger SAdj - nombro
-	public void rule7__SNsubj__SVcop__SVcopger__SAdj(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4) throws IOException
+	public void rule7__SNsubj__SVcop__SVcopger__SAdj(Appendable out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4) throws IOException
 	{
 		if (debug) { logCall("rule7__SNsubj__SVcop__SVcopger__SAdj",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		macro_set_nbr3(out, word1, blank2, word3, blank3, word4);
@@ -411,7 +411,7 @@ public class apertium_eo_en_en_eo_t2x extends GeneratedTransferBase
 	}
 	
 	// REGLA: SN Adv SV SN - akuzativo + eventuala ŝanĝo de tenso en SV
-	public void rule8__SNsubj__Adv__SV__SN_SAdj(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4) throws IOException
+	public void rule8__SNsubj__Adv__SV__SN_SAdj(Appendable out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4) throws IOException
 	{
 		if (debug) { logCall("rule8__SNsubj__Adv__SV__SN_SAdj",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		macro_set_tns(out, word3);
@@ -462,7 +462,7 @@ public class apertium_eo_en_en_eo_t2x extends GeneratedTransferBase
 	}
 	
 	// REGLA: SNpers Adv SV - eventuala ŝanĝo de tenso en SV
-	public void rule9__SNpers__Adv__SV(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3) throws IOException
+	public void rule9__SNpers__Adv__SV(Appendable out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3) throws IOException
 	{
 		if (debug) { logCall("rule9__SNpers__Adv__SV",  word1, blank1,  word2, blank2,  word3); } 
 		macro_set_tns(out, word3);
@@ -505,7 +505,7 @@ public class apertium_eo_en_en_eo_t2x extends GeneratedTransferBase
 	}
 	
 	// REGLA: SV SN - akuzativo
-	public void rule10__SV__SN_SAdj(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2) throws IOException
+	public void rule10__SV__SN_SAdj(Appendable out, InterchunkWord word1, String blank1, InterchunkWord word2) throws IOException
 	{
 		if (debug) { logCall("rule10__SV__SN_SAdj",  word1, blank1,  word2); } 
 		{
@@ -531,7 +531,7 @@ public class apertium_eo_en_en_eo_t2x extends GeneratedTransferBase
 	}
 	
 	// REGLA: SV Adv SN - akuzativo
-	public void rule11__SV__Adv__SN_SAdj(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3) throws IOException
+	public void rule11__SV__Adv__SN_SAdj(Appendable out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3) throws IOException
 	{
 		if (debug) { logCall("rule11__SV__Adv__SN_SAdj",  word1, blank1,  word2, blank2,  word3); } 
 		{
@@ -665,7 +665,7 @@ public class apertium_eo_en_en_eo_t2x extends GeneratedTransferBase
     </rule>
  */
 	// REGLA: SN SV SN CC SN Adv - akuzativo
-	public void rule12__SN__SV__SN__CC__SN__Adv_CA(Writer out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4, String blank4, InterchunkWord word5, String blank5, InterchunkWord word6) throws IOException
+	public void rule12__SN__SV__SN__CC__SN__Adv_CA(Appendable out, InterchunkWord word1, String blank1, InterchunkWord word2, String blank2, InterchunkWord word3, String blank3, InterchunkWord word4, String blank4, InterchunkWord word5, String blank5, InterchunkWord word6) throws IOException
 	{
 		if (debug) { logCall("rule12__SN__SV__SN__CC__SN__Adv_CA",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5, blank5,  word6); } 
 		{

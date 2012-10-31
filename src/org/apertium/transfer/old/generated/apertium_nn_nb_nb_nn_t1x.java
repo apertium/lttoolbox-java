@@ -42,7 +42,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
            bokmål»  */
 	WordList list_det_indef = new WordList(new String[] { "denne", "disse", "dette", "den", "de", "DENNE", "DISSE", "DETTE", "DEN", "DE", "Denne", "Disse", "Dette", "Den", "De", });
 	
-	private void macro_f_bcond(Writer out, TransferWord word1) throws IOException
+	private void macro_f_bcond(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_f_bcond",  word1); } 
 		/** Per mirar si el blanc conté o no format awhatnow?  */
@@ -55,7 +55,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	}
 	
 	/**  Macros which set concordance variables:  */
-	private void macro_set_number1(Writer out, TransferWord word1) throws IOException
+	private void macro_set_number1(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_set_number1",  word1); } 
 		var_number = word1.tl(attr_nbr);
@@ -67,7 +67,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		}
 	}
 	
-	private void macro_set_number2(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	private void macro_set_number2(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("macro_set_number2",  word1, blank1,  word2); } 
 		/**  arg.1: noun, arg.2: determiner or adjective
@@ -114,7 +114,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		}
 	}
 	
-	private void macro_set_case(Writer out, TransferWord word1) throws IOException
+	private void macro_set_case(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_set_case",  word1); } 
 		/**  keep only case for proper nouns  */
@@ -125,7 +125,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		}
 	}
 	
-	private void macro_set_gender1(Writer out, TransferWord word1) throws IOException
+	private void macro_set_gender1(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_set_gender1",  word1); } 
 		/**  arg.1: determiner
@@ -152,7 +152,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		}
 	}
 	
-	private void macro_set_n_defness(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	private void macro_set_n_defness(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("macro_set_n_defness",  word1, blank1,  word2); } 
 		/**  arg.1: noun, arg.2: determiner/adjective
@@ -172,7 +172,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		}
 	}
 	
-	private void macro_set_gender2(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	private void macro_set_gender2(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("macro_set_gender2",  word1, blank1,  word2); } 
 		/**  arg.1: noun, arg.2: determiner
@@ -239,7 +239,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	}
 	
 	/**  ^^^ noun had no gender (was eg. np/acr), use det  otherwise: no number, no gender  */
-	private void macro_set_adj_number(Writer out, TransferWord word1) throws IOException
+	private void macro_set_adj_number(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_set_adj_number",  word1); } 
 		/**  arg.1: adjective
@@ -262,7 +262,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		}
 	}
 	
-	private void macro_set_adj_GND(Writer out, TransferWord word1) throws IOException
+	private void macro_set_adj_GND(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_set_adj_GND",  word1); } 
 		/**  arg.1: adjective
@@ -310,7 +310,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		}
 	}
 	
-	private void macro_set_gender3(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	private void macro_set_gender3(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
 		if (debug) { logCall("macro_set_gender3",  word1, blank1,  word2, blank2,  word3); } 
 		/**  arg.1: noun, arg.2: determiner, arg.3: adjective 
@@ -327,7 +327,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	}
 	
 	/**  Output macros:  */
-	private void macro_out_ndef(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	private void macro_out_ndef(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("macro_out_ndef",  word1, blank1,  word2); } 
 		/**  arg.1: possessed noun. arg.2 gives typographic case
@@ -343,7 +343,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		out.append('$');
 	}
 	
-	private void macro_out_posgen(Writer out, TransferWord word1) throws IOException
+	private void macro_out_posgen(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_out_posgen",  word1); } 
 		/**  arg.1: possessor, either genitive noun or det.pos.
@@ -390,7 +390,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		}
 	}
 	
-	private void macro_out_sin(Writer out, TransferWord word1) throws IOException
+	private void macro_out_sin(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_out_sin",  word1); } 
 		macro_set_gender1(out, word1);
@@ -405,7 +405,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 		out.append('$');
 	}
 	
-	private void macro_out_adj(Writer out, TransferWord word1) throws IOException
+	private void macro_out_adj(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("macro_out_adj",  word1); } 
 		macro_set_adj_GND(out, word1);
@@ -429,7 +429,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	
 	/**  Verbs  */
 	// VBLEX.INF.PASS: kan leses => kan lesast
-	public void rule0__vblexinfpass(Writer out, TransferWord word1) throws IOException
+	public void rule0__vblexinfpass(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule0__vblexinfpass",  word1); } 
 		if (word1.tl(attr_a_verb).equals("<vblex><pstv>"))
@@ -458,7 +458,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	}
 	
 	// VBLEX.PRES.PASS: leses => blir lest                    todo: verb probably should lose possible uppercasing,                    although it's unlikely to find the passive verb in                    the beginning of a sentence                     If we translate into a pstv verb, don't change anything.
-	public void rule1__vblexprespass(Writer out, TransferWord word1) throws IOException
+	public void rule1__vblexprespass(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule1__vblexprespass",  word1); } 
 		if (word1.tl(attr_a_verb).equals("<vblex><pstv>"))
@@ -489,7 +489,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	}
 	
 	// VBLEX.PRES.PASS ADV: leses ikke => blir ikke lest                    Based on the above rule.
-	public void rule2__vblexprespass__adv(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule2__vblexprespass__adv(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule2__vblexprespass__adv",  word1, blank1,  word2); } 
 		if (word1.tl(attr_a_verb).equals("<vblex><pstv>"))
@@ -545,7 +545,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	}
 	
 	// VBLEX.PRES.PASS ADV ADV: leses ikke alltid => blir ikke alltid lest                    Based on the above rule.
-	public void rule3__vblexprespass__adv__adv(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule3__vblexprespass__adv__adv(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
 		if (debug) { logCall("rule3__vblexprespass__adv__adv",  word1, blank1,  word2, blank2,  word3); } 
 		if (word1.tl(attr_a_verb).equals("<vblex><pstv>"))
@@ -625,7 +625,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	}
 	
 	// VBLEX                    Just in case we have nn multiwords; which need                    lemq after the inflected part.                    This has to be below the passive rules.
-	public void rule4__vblex(Writer out, TransferWord word1) throws IOException
+	public void rule4__vblex(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule4__vblex",  word1); } 
 		{
@@ -646,7 +646,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	
 	/**  Possessive noun phrases  First: exceptions to these, since earlier rules match first.  */
 	// NGEN_TEMPORAL: dagens => dagens.
-	public void rule5__ngen_temporal(Writer out, TransferWord word1) throws IOException
+	public void rule5__ngen_temporal(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule5__ngen_temporal",  word1); } 
 		{
@@ -663,7 +663,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	}
 	
 	// NGEN_TEMPORAL NIND: dagens avis => dagens avis
-	public void rule6__ngen_temporal__nind(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule6__ngen_temporal__nind(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule6__ngen_temporal__nind",  word1, blank1,  word2); } 
 		{
@@ -692,7 +692,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	}
 	
 	// DET NGEN_TEMPORAL NIND: et års tid => eit års tid                    TODO: disse års tid => ?
-	public void rule7__det__ngen_temporal__nind(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule7__det__ngen_temporal__nind(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
 		if (debug) { logCall("rule7__det__ngen_temporal__nind",  word1, blank1,  word2, blank2,  word3); } 
 		macro_set_gender2(out, word2, " ", word1);
@@ -739,7 +739,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	}
 	
 	// NGEN_TEMPORAL ADJ NIND: dagens siste avis => dagens siste avis
-	public void rule8__ngen_temporal__adj__nind(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule8__ngen_temporal__adj__nind(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
 		if (debug) { logCall("rule8__ngen_temporal__adj__nind",  word1, blank1,  word2, blank2,  word3); } 
 		macro_set_gender3(out, word3, blank1, word2, blank1, word2);
@@ -771,7 +771,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	}
 	
 	// ADJ NGEN_TEMPORAL NIND: flere års tid => fleire års tid                                            hele dagens region => heile dagens region
-	public void rule9__adj__ngen_temporal__nind(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule9__adj__ngen_temporal__nind(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
 		if (debug) { logCall("rule9__adj__ngen_temporal__nind",  word1, blank1,  word2, blank2,  word3); } 
 		macro_set_gender3(out, word2, " ", word1, " ", word1);
@@ -803,7 +803,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	}
 	
 	// DET ADJ NGEN_TEMPORAL NIND: et langt års tid => eit langt års tid                    TODO: disse lange års tid =>?
-	public void rule10__det__adj__ngen_temporal__nind(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
+	public void rule10__det__adj__ngen_temporal__nind(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
 		if (debug) { logCall("rule10__det__adj__ngen_temporal__nind",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		macro_set_gender3(out, word3, " ", word1, blank1, word2);
@@ -858,7 +858,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
          men det jo berre kopiere og lime inn (og fikse litt) etter at ADJ{1} regelen 
          er ferdig. Sjå http://wiki.apertium.org/wiki/Norsk#Genitive.2Fpossessive   */
 	// NGEN: mannens => mannen sin                    Very heuristic fallback rule.                    If we can't match with the below rules, turn the                    genitive -s into 'sin' garpegenitiv instead.                    A bit more fluent where eg. input is incomplete:                          mannens *sykkel => mannen sin *sykkel                    But we don't know gen/nbr of object, so we could end                    up with                          mannens *sykler => mannen sin *sykler                    So let's just hope plurals possess plurals etc...
-	public void rule11__ngen(Writer out, TransferWord word1) throws IOException
+	public void rule11__ngen(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule11__ngen",  word1); } 
 		{
@@ -882,7 +882,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	}
 	
 	// ADJ NGEN: lille mannens => lille mannen sin                    Very heuristic fallback rule  (needed since we have an                    ADJ NOM rule below)                                        We use an adjective to set determiner adj_gender, so call                    set_gender1 again.
-	public void rule12__adj__ngen(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule12__adj__ngen(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule12__adj__ngen",  word1, blank1,  word2); } 
 		macro_set_gender3(out, word2, " ", word1, " ", word1);
@@ -924,7 +924,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	}
 	
 	// DETNONPOS ADJ NGEN: den lille mannens => den lille mannen sin                    Very heuristic fallback rule (needed since we have a                    DETNONPOS ADJ NOM rule below)
-	public void rule13__detnonpos__adj__ngen(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule13__detnonpos__adj__ngen(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
 		if (debug) { logCall("rule13__detnonpos__adj__ngen",  word1, blank1,  word2, blank2,  word3); } 
 		macro_set_gender3(out, word3, " ", word1, blank1, word2);
@@ -989,7 +989,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	
 	/**  POSGEN ADJ* NIND:  */
 	// POSGEN NIND: naboens bil => bilen til naboen                                 min mor => mora mi                                 ditt hus => huset ditt                    nind makes sure we don't match 'min Per(np)' nor 'min bils(gen)'                    Third example shows how determiners ..um..determine number.
-	public void rule14__posgen__nind(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule14__posgen__nind(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule14__posgen__nind",  word1, blank1,  word2); } 
 		word1.tlSet(attr_lemh, TransferWord.copycase(word2.tl(attr_lemh), word1.tl(attr_lemh)));
@@ -1000,7 +1000,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	}
 	
 	// POSGEN ADJ NIND: naboens lille bil => den vesle bilen til naboen                                     mitt lille navn => det vesle namnet mitt                                     mitt svarte hus => det svarte huset mitt                    nind: vil ikkje ha 'det vesle #Noreg(def) mitt'
-	public void rule15__posgen__adj__nind(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule15__posgen__adj__nind(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
 		if (debug) { logCall("rule15__posgen__adj__nind",  word1, blank1,  word2, blank2,  word3); } 
 		word1.tlSet(attr_lemh, TransferWord.copycase(word2.tl(attr_lemh), word1.tl(attr_lemh)));
@@ -1035,7 +1035,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	}
 	
 	// POSGEN ADJ ADJ NIND
-	public void rule16__posgen__adj__adj__nind(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
+	public void rule16__posgen__adj__adj__nind(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
 		if (debug) { logCall("rule16__posgen__adj__adj__nind",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		word1.tlSet(attr_lemh, TransferWord.copycase(word2.tl(attr_lemh), word1.tl(attr_lemh)));
@@ -1057,7 +1057,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	}
 	
 	// POSGEN ADJ ADJ ADJ NIND
-	public void rule17__posgen__adj__adj__adj__nind(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5) throws IOException
+	public void rule17__posgen__adj__adj__adj__nind(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5) throws IOException
 	{
 		if (debug) { logCall("rule17__posgen__adj__adj__adj__nind",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5); } 
 		word1.tlSet(attr_lemh, TransferWord.copycase(word2.tl(attr_lemh), word1.tl(attr_lemh)));
@@ -1081,7 +1081,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	}
 	
 	// POSGEN ADJ ADJ ADJ ADJ NIND
-	public void rule18__posgen__adj__adj__adj__adj__nind(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5, String blank5, TransferWord word6) throws IOException
+	public void rule18__posgen__adj__adj__adj__adj__nind(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4, String blank4, TransferWord word5, String blank5, TransferWord word6) throws IOException
 	{
 		if (debug) { logCall("rule18__posgen__adj__adj__adj__adj__nind",  word1, blank1,  word2, blank2,  word3, blank3,  word4, blank4,  word5, blank5,  word6); } 
 		word1.tlSet(attr_lemh, TransferWord.copycase(word2.tl(attr_lemh), word1.tl(attr_lemh)));
@@ -1108,7 +1108,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	
 	/**  POSGEN ADJ* NGEN ADJ* NIND:  */
 	// POSGEN NGEN NIND: min katts snute => snuten til katten min                                      naboens katts snute => snuten til katten til naboen                                      (but not *'min din snute')
-	public void rule19__posgen__ngen__nind(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule19__posgen__ngen__nind(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
 		if (debug) { logCall("rule19__posgen__ngen__nind",  word1, blank1,  word2, blank2,  word3); } 
 		word1.tlSet(attr_lemh, TransferWord.copycase(word3.tl(attr_lemh), word1.tl(attr_lemh)));
@@ -1122,7 +1122,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	}
 	
 	// POSGEN ADJ NGEN NIND: min sorte katts snute => snuten til den svarte katten min
-	public void rule20__posgen__adj__ngen__nind(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
+	public void rule20__posgen__adj__ngen__nind(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
 		if (debug) { logCall("rule20__posgen__adj__ngen__nind",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		word1.tlSet(attr_lemh, TransferWord.copycase(word4.tl(attr_lemh), word1.tl(attr_lemh)));
@@ -1141,7 +1141,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	}
 	
 	// POSGEN NGEN ADJ NIND: min katts hvite snute => den kvite snuten til katten min
-	public void rule21__posgen__ngen__adj__nind(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
+	public void rule21__posgen__ngen__adj__nind(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
 		if (debug) { logCall("rule21__posgen__ngen__adj__nind",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		word1.tlSet(attr_lemh, TransferWord.copycase(word4.tl(attr_lemh), word1.tl(attr_lemh)));
@@ -1164,7 +1164,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	
 	/**  DETNONPOS* ADJ* NGEN ADJ* NIND:  */
 	// DETNONPOS NGEN NIND: en katts snute => snuten til ein katt
-	public void rule22__detnonpos__ngen__nind(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule22__detnonpos__ngen__nind(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
 		if (debug) { logCall("rule22__detnonpos__ngen__nind",  word1, blank1,  word2, blank2,  word3); } 
 		macro_set_gender2(out, word2, " ", word1);
@@ -1208,7 +1208,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	}
 	
 	// DETNONPOS ADJ NGEN NIND: en sort katts snute => snuten til ein svart katt                                            den nye Lamaens bil => bilen til den nye Lamaen
-	public void rule23__detnonpos__adj__ngen__nind(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
+	public void rule23__detnonpos__adj__ngen__nind(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
 		if (debug) { logCall("rule23__detnonpos__adj__ngen__nind",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		word1.tlSet(attr_lemh, TransferWord.copycase(word4.tl(attr_lemh), word1.tl(attr_lemh)));
@@ -1254,7 +1254,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	}
 	
 	// DETNONPOS DETNONPOS NGEN NIND: den neste Lamaens bil => bilen til den neste Lamaen                                                   hver en Lamas bil => bilen til kvar ein Lama                                                   (vel... logisk tvitydig, er det ikkje?)
-	public void rule24__detnonpos__detnonpos__ngen__nind(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
+	public void rule24__detnonpos__detnonpos__ngen__nind(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
 		if (debug) { logCall("rule24__detnonpos__detnonpos__ngen__nind",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		word1.tlSet(attr_lemh, TransferWord.copycase(word4.tl(attr_lemh), word1.tl(attr_lemh)));
@@ -1316,7 +1316,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	}
 	
 	// DETNONPOS NGEN ADJ NIND: en katts hvite snute => den kvite snuten til ein katt                                             forrige århundres største filosofer => dei største filosofane til forrige århundre                    (ja, me burde ha ein måte å velje preposisjon)                    Merk at «en katts hvite hus» er tvitydig mellom sg/pl, så me nyttar set_gender1 først.
-	public void rule25__detnonpos__ngen__adj__nind(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
+	public void rule25__detnonpos__ngen__adj__nind(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3, String blank3, TransferWord word4) throws IOException
 	{
 		if (debug) { logCall("rule25__detnonpos__ngen__adj__nind",  word1, blank1,  word2, blank2,  word3, blank3,  word4); } 
 		word1.tlSet(attr_lemh, TransferWord.copycase(word4.tl(attr_lemh), word1.tl(attr_lemh)));
@@ -1370,7 +1370,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	
 	/**  Other determiner/noun phrases  */
 	// DET: en => ein      Frequency is on our side, but politically incorrect..hmm..
-	public void rule26__det(Writer out, TransferWord word1) throws IOException
+	public void rule26__det(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule26__det",  word1); } 
 		macro_set_gender1(out, word1);
@@ -1393,7 +1393,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	}
 	
 	// DET NACR: eit kl => et kl
-	public void rule27__det__nacr(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule27__det__nacr(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule27__det__nacr",  word1, blank1,  word2); } 
 		macro_set_gender1(out, word1);
@@ -1428,7 +1428,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	}
 	
 	// NDEF DETPOS: jenten min => jenta mi
-	public void rule28__ndef__detpos(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule28__ndef__detpos(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule28__ndef__detpos",  word1, blank1,  word2); } 
 		macro_set_gender2(out, word1, blank1, word2);
@@ -1463,7 +1463,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	}
 	
 	// DET NOM: en kvinne => ei kvinne               hvilken jente => kva for ei jente        egne hus => eigne hus        et Norge => eit Noreg                             dette hus => dette huset             np får ikkje noko tal i den siste.
-	public void rule29__det__nom(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule29__det__nom(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule29__det__nom",  word1, blank1,  word2); } 
 		macro_set_gender2(out, word2, " ", word1);
@@ -1505,7 +1505,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	
 	/**  Adjectives  */
 	// ADJ: åpne (hus) => opne (hus), liten(f) => lita
-	public void rule30__adj(Writer out, TransferWord word1) throws IOException
+	public void rule30__adj(Appendable out, TransferWord word1) throws IOException
 	{
 		if (debug) { logCall("rule30__adj",  word1); } 
 		macro_set_number1(out, word1);
@@ -1513,7 +1513,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	}
 	
 	// ADJ NOM: liten bok => lita bok               hele Norge => heile Noreg             np får ikkje noko tal i den siste.      We let CG disambiguate art and nbr using the following noun,      o/w all info should be in the adjective wordform (eg. in the above      example, hus being ind should give plural).                                        We include case here since this should catch proper as well as common nouns,                    and earlier rules should catch any _possessive_ noun phrases.
-	public void rule31__adj__nom(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule31__adj__nom(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule31__adj__nom",  word1, blank1,  word2); } 
 		macro_set_gender3(out, word2, " ", word1, " ", word1);
@@ -1555,7 +1555,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	}
 	
 	// DET ADJ: en liten(f) => ei lita 
-	public void rule32__det__adj(Writer out, TransferWord word1, String blank1, TransferWord word2) throws IOException
+	public void rule32__det__adj(Appendable out, TransferWord word1, String blank1, TransferWord word2) throws IOException
 	{
 		if (debug) { logCall("rule32__det__adj",  word1, blank1,  word2); } 
 		macro_set_gender1(out, word1);
@@ -1580,7 +1580,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 	}
 	
 	// DETNONPOS ADJ NOM: en(mf) viktig(mf) dag(m) => ein(m) viktig(mf) dag(m)                                       denne viktige dag => denne viktige dagen      Note that the adjective might have different gender specificity from the      determiner; so we have an extra test to set adj_gender.                                        We include case here since this should catch proper as well as common nouns,                    and earlier rules should catch any _possessive_ noun phrases.
-	public void rule33__detnonpos__adj__nom(Writer out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
+	public void rule33__detnonpos__adj__nom(Appendable out, TransferWord word1, String blank1, TransferWord word2, String blank2, TransferWord word3) throws IOException
 	{
 		if (debug) { logCall("rule33__detnonpos__adj__nom",  word1, blank1,  word2, blank2,  word3); } 
 		macro_set_gender3(out, word3, " ", word1, blank1, word2);
