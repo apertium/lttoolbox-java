@@ -162,6 +162,23 @@ public class Compression {
         }
         return (int) result;
   }
+
+
+  public static void multibyte_skip(ByteBuffer input) {
+        int up = (0xff & input.get());
+        if (up < 0x40) {
+        } else if (up < 0x80) {
+            input.get();
+        } else if (up < 0xc0) {
+            input.get();
+            input.get();
+        } else {
+            input.get();
+            input.get();
+            input.get();
+        }
+  }
+
     /**
      * Skips a number of integers on the input stream and stores them in a byte array for later reading
      * @param input input stream.
@@ -171,7 +188,7 @@ public class Compression {
 
       // TODO TODO!!  This can be improved to get muuuuuuuch faster
       for (int i=no_of_multibyte_reads; i>0; i--) {
-        multibyte_read(input);
+        multibyte_skip(input);
       }
     }
 

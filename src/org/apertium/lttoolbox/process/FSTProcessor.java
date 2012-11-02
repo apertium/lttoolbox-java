@@ -706,6 +706,15 @@ public class FSTProcessor {
    @throws IOException
    */
   public void load(ByteBuffer input) throws IOException {
+    load(input, new File("/tmp")); // XXX TODO null
+  }
+
+  /**
+   Reads the binary representation of a .dix file
+   @param input
+   @param cachedIndexes path to a unique directory where cached transducer indexes are
+   */
+  public void load(ByteBuffer input, File cachedIndexes) throws IOException {
     // the following examples and numbers corresponds to testdata/wound-example.dix
 
     // read letters (<alphabet>ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz</alphabet>)
@@ -739,7 +748,7 @@ public class FSTProcessor {
       }
 
       //System.out.println("reading : "+name);
-      tx.read(input, alphabet);
+      tx.read(input, alphabet, null);//new File(cachedIndexes, name) );
       len--;
       //System.out.println(len);
     }

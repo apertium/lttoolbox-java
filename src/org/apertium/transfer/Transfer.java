@@ -573,7 +573,7 @@ So the array of rule_map Method is taken by introspection, taking all methods be
   */
   public static Appendable checkIfOutputMustBeWriterCompatible(Appendable output, Method[] rule_map) {
     boolean outputMustBeWriterCompatible = rule_map.length>0 && !rule_map[0].getParameterTypes()[0].isAssignableFrom(Appendable.class);
-    System.err.println("outputMustBeWriterCompatible = "+outputMustBeWriterCompatible);
+    if (DEBUG) System.err.println("outputMustBeWriterCompatible = "+outputMustBeWriterCompatible);
     if (!(output instanceof Writer) && outputMustBeWriterCompatible) {
       final Appendable target = output;
       output = new Writer() {
