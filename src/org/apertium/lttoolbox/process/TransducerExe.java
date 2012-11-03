@@ -45,7 +45,7 @@ public class TransducerExe {
   /**
    Used for delayed loading
    */
-  private int base;
+  private int number_of_states;
   /**
    Used for delayed loading
    */
@@ -84,7 +84,7 @@ public class TransducerExe {
   class NodeLoadInfo {
     // TransducerExe this_TransducerExe     <-- this reference is actually there
     //byte[] nodeData; not needed - we use the enclosing TransducerExe's  bytebuffer object
-    int number_of_transitions;
+    //int number_of_transitions;
     int nodeNo__current_state;
     int byteBufferPosition;
 
@@ -92,13 +92,14 @@ public class TransducerExe {
       //assert check: if (node_list[nodeNo__current_state] != sourceNode) throw new InternalError();
 
       byteBuffer.position(byteBufferPosition); // seek to correct place in file
-      int number_of_local_transitions = number_of_transitions;
+      int number_of_local_transitions = Compression.multibyte_read(byteBuffer); // typically 20-40, max seen is 694
+//      int number_of_local_transitions = number_of_transitions;
       sourceNode.initTransitions(number_of_local_transitions);
       int tagbase = 0;
       while (number_of_local_transitions > 0) {
         number_of_local_transitions--;
         tagbase += Compression.multibyte_read(byteBuffer);
-        int state = (nodeNo__current_state + Compression.multibyte_read(byteBuffer)) % base;
+        int state = (nodeNo__current_state + Compression.multibyte_read(byteBuffer)) % number_of_states;
         IntegerPair pair = alphabet.decode(tagbase);
         int i_symbol = pair.first;
         int o_symbol = pair.second;
@@ -134,28 +135,27 @@ public class TransducerExe {
     read(input, alphabet, null);
   }
   public void read(ByteBuffer input, Alphabet alphabet, ByteBuffer cachedNodeIndex) throws IOException {
-    //index = 0;
     initial_id = Compression.multibyte_read(input);  // 0 for eo-en.dix)
     final int finals_size = Compression.multibyte_read(input); // xx  (5 for eo-en.dix)
     //System.out.println("finals_size : "+finals_size);
 
-    this.base = 0;
     this.alphabet = alphabet;
 
     // first comes the list of the final nodes
     int[] myfinals = new int[finals_size]; // xx  ([679, 14875, 27426, 27883, 35871] for eo-en.dix)
+    int base = 0;
     for (int i = 0; i < finals_size; i++) {
       base += Compression.multibyte_read(input);
       myfinals[i] = base;
     }
 
 
-    final int number_of_states = Compression.multibyte_read(input); // xx  (46191 for eo-en.dix)
-    base = number_of_states;
+    final int number_of_statesl = Compression.multibyte_read(input); // xx  (46191 for eo-en.dix)
+    number_of_states = number_of_statesl;
 
     // We need to pre-allocate all the Node objects as they will be set to refer to each other
-    node_list = new Node[number_of_states];
-    for (int current_state = 0; current_state < number_of_states; current_state++) {
+    node_list = new Node[number_of_statesl];
+    for (int current_state = 0; current_state < number_of_statesl; current_state++) {
       node_list[current_state] = new Node();
     }
 
@@ -168,14 +168,14 @@ public class TransducerExe {
     if (DELAYED_NODE_LOADING && cachedNodeIndex!=null) {
       // TODO
     } else {
-      for (int nodeNo__current_state = 0; nodeNo__current_state < number_of_states; nodeNo__current_state++) {
+      for (int nodeNo__current_state = 0; nodeNo__current_state < number_of_statesl; nodeNo__current_state++) {
+        nodeLoadInfo.byteBufferPosition = input.position();
         int number_of_local_transitions = Compression.multibyte_read(input); // typically 20-40, max seen is 694
 
         nodeLoadInfo.nodeNo__current_state = nodeNo__current_state;
-        nodeLoadInfo.byteBufferPosition = input.position();
-        nodeLoadInfo.number_of_transitions = number_of_local_transitions;
-        // System.out.println("NodeLoadInfo "+nodeLoadInfo.nodeNo__current_state+ " "+nodeLoadInfo.byteBufferPosition+ " "+nodeLoadInfo.number_of_transitions);
-       Node sourceNode = node_list[nodeNo__current_state];
+        //nodeLoadInfo.number_of_transitions = number_of_local_transitions;
+        //System.out.println(number_of_states+"NodeLoadInfo "+nodeLoadInfo.nodeNo__current_state+ " "+nodeLoadInfo.byteBufferPosition+ " "+nodeLoadInfo.number_of_transitions);
+        Node sourceNode = node_list[nodeNo__current_state];
 
         if (DELAYED_NODE_LOADING) {
           sourceNode.setNodeLoadInfo(nodeLoadInfo);
