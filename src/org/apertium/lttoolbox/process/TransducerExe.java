@@ -167,21 +167,23 @@ public class TransducerExe {
     // Now load the nodes
     if (DELAYED_NODE_LOADING && cachedNodeIndex!=null) {
       // TODO
-    } else
-    for (int nodeNo__current_state = 0; nodeNo__current_state < number_of_states; nodeNo__current_state++) {
-      int number_of_local_transitions = Compression.multibyte_read(input); // typically 20-40, max seen is 694
+    } else {
+      for (int nodeNo__current_state = 0; nodeNo__current_state < number_of_states; nodeNo__current_state++) {
+        int number_of_local_transitions = Compression.multibyte_read(input); // typically 20-40, max seen is 694
 
-      nodeLoadInfo.number_of_transitions = number_of_local_transitions;
-      nodeLoadInfo.nodeNo__current_state = nodeNo__current_state;
-      nodeLoadInfo.byteBufferPosition = input.position();
-      Node sourceNode = node_list[nodeNo__current_state];
+        nodeLoadInfo.nodeNo__current_state = nodeNo__current_state;
+        nodeLoadInfo.byteBufferPosition = input.position();
+        nodeLoadInfo.number_of_transitions = number_of_local_transitions;
+        // System.out.println("NodeLoadInfo "+nodeLoadInfo.nodeNo__current_state+ " "+nodeLoadInfo.byteBufferPosition+ " "+nodeLoadInfo.number_of_transitions);
+       Node sourceNode = node_list[nodeNo__current_state];
 
-      if (DELAYED_NODE_LOADING) {
-        sourceNode.setNodeLoadInfo(nodeLoadInfo);
-        Compression.multibyte_skip(input, 2 * number_of_local_transitions);
-        nodeLoadInfo = new NodeLoadInfo();
-      } else {
-        nodeLoadInfo.loadNode(sourceNode); // skips the correct number of positions
+        if (DELAYED_NODE_LOADING) {
+          sourceNode.setNodeLoadInfo(nodeLoadInfo);
+          Compression.multibyte_skip(input, 2 * number_of_local_transitions);
+          nodeLoadInfo = new NodeLoadInfo();
+        } else {
+          nodeLoadInfo.loadNode(sourceNode); // skips the correct number of positions
+        }
       }
     }
 

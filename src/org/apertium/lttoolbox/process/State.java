@@ -210,8 +210,10 @@ public class State {
           return;
         }
 
+        Node.TransitionIterator ti = new Node.TransitionIterator();
         for (int i = 0,  limit = state.size(); i != limit; i++) {
             TNodeState state_i = state.get(i);
+            /*
             Transition it = state_i.where.transitions_get(input);
             while (it != null) {
               TNodeState tn = REUSE_OBJECTS?nodeStatePool_get(): new TNodeState(state_i.sequence.size()+1);
@@ -222,6 +224,18 @@ public class State {
               new_state.add(tn);
               it = it.next;
             }
+*/
+            state_i.where.transitions_getIterator(ti, input);
+            while (ti.hasNext()) {
+              TNodeState tn = REUSE_OBJECTS?nodeStatePool_get(): new TNodeState(state_i.sequence.size()+1);
+              tn.where = ti.node_dest();
+              tn.caseWasChanged = state_i.caseWasChanged;
+              tn.sequence.addAll(state_i.sequence);
+              tn.sequence.add(ti.output_symbol());
+              new_state.add(tn);
+              ti.next();
+            }
+/*            */
             if (REUSE_OBJECTS) nodeStatePool_release(state_i);
         }
         if (REUSE_OBJECTS) reusable_state = state;
@@ -231,7 +245,7 @@ public class State {
     /**
      * Make a transition, version for lowercase and uppercase letters
      * @param input the input symbol (which is actually always uppercase)
-     * @param lowerCasedInput the alternative input symbol (actually its always Alphabet.toLowerCase(input))
+     * @param lowerCasedInput the alternative input symbol (mostly its always Alphabet.toLowerCase(input))
      */
     private void apply(int input, int lowerCasedInput) {
         ArrayList<TNodeState> new_state;

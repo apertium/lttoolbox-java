@@ -86,6 +86,10 @@ public class Node {
     }
   }
 
+  void transitions_getIterator(TransitionIterator ti, int i) {
+    ti.transition = transitions_get(i);
+  }
+
   Transition transitions_get(int i) {
     // Check to see if we need to load this node first
     if (nodeLoadInfo!=null) {
@@ -122,6 +126,28 @@ public class Node {
         System.err.println(dest_node_no + "\t" +  n + "\t'" + a.getSymbol(i)+"'"+i+"\t'"+a.getSymbol(t.output_symbol)+"'"+t.output_symbol);
         t = t.next;
       }
+    }
+  }
+
+  public static class TransitionIterator {
+    private Transition transition;
+    public TransitionIterator() {
+    }
+
+    boolean hasNext() {
+      return transition != null;
+    }
+
+    Node node_dest() {
+      return transition.node_dest;
+    }
+
+    int output_symbol() {
+      return transition.output_symbol;
+    }
+
+    void next() {
+      transition = transition.next;
     }
   }
 }

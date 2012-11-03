@@ -28,7 +28,8 @@ public class Playground {
       //String[] arg = {"-d", "/usr/local/share/apertium/", "en-es", "/tmp/will", "/tmp/will.rezulto"};
       //ApertiumMain.main(arg);
 
-      measureBigTransferMemory();
+      measureMemory();
+//      measureBigTransferMemory();
 
 /*
     fstp.load(new BufferedInputStream(new FileInputStream("unhammer-fejl/hang.bin")));
@@ -52,7 +53,7 @@ public class Playground {
     Runtime rt = Runtime.getRuntime();
     FSTProcessor fstp = new FSTProcessor();
      //fstp.load(new BufferedInputStream(new FileInputStream("/home/j/esperanto/apertium/apertium-eo-en/en-eo.autobil.bin")));
-     fstp.load("/home/j/esperanto/apertium/apertium-eo-en/en-eo.autobil.bin");
+     fstp.load("/home/j/esperanto/apertium/trunk/apertium-eo-en/en-eo.autobil.bin");
      fstp = null;
      System.gc();
      Thread.sleep(200);
@@ -62,7 +63,7 @@ public class Playground {
      fstp = new FSTProcessor();
   //  fstp.load(new BufferedInputStream(new FileInputStream("testdata/wound-example.bin")));
   //   fstp.load(new BufferedInputStream(new FileInputStream("/home/j/esperanto/apertium/apertium-eo-en/en-eo.autobil.bin")));
-     fstp.load("/home/j/esperanto/apertium/apertium-eo-en/en-eo.autobil.bin");
+     fstp.load("/home/j/esperanto/apertium/trunk/apertium-eo-en/en-eo.autobil.bin");
      System.gc();
      Thread.sleep(200);
      System.gc();
