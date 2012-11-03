@@ -256,9 +256,11 @@ public class State {
           new_state = new ArrayList<TNodeState>(state.size()*2);
         }
         //System.err.println("apply i="+input+ "  state.size()="+state.size());
+        Node.TransitionIterator ti = new Node.TransitionIterator();
 
         for (int i = 0,  limit = state.size(); i != limit; i++) {
             TNodeState state_i = state.get(i);
+            /*
             Transition it = state_i.where.transitions_get(input);
             while (it != null) {
               TNodeState tn = REUSE_OBJECTS?nodeStatePool_get(): new TNodeState(state_i.sequence.size()+1);
@@ -269,8 +271,20 @@ public class State {
               new_state.add(tn);
               it = it.next;
             } //XXX no pool now: pool.release(state.get(i).sequence);
+            */
+            state_i.where.transitions_getIterator(ti, input);
+            while (ti.hasNext()) {
+              TNodeState tn = REUSE_OBJECTS?nodeStatePool_get(): new TNodeState(state_i.sequence.size()+1);
+              tn.where = ti.node_dest();
+              tn.caseWasChanged = state_i.caseWasChanged;
+              tn.sequence.addAll(state_i.sequence);
+              tn.sequence.add(ti.output_symbol());
+              new_state.add(tn);
+              ti.next();
+            }
 
             // try also apply lowerCasedInput
+            /*
             it = state_i.where.transitions_get(lowerCasedInput);
             while (it != null) {
               TNodeState tn = REUSE_OBJECTS?nodeStatePool_get(): new TNodeState(state_i.sequence.size()+1);
@@ -280,7 +294,18 @@ public class State {
               tn.sequence.add(it.output_symbol);
               new_state.add(tn);
               it = it.next;
+            }*/
+            state_i.where.transitions_getIterator(ti, lowerCasedInput);
+            while (ti.hasNext()) {
+              TNodeState tn = REUSE_OBJECTS?nodeStatePool_get(): new TNodeState(state_i.sequence.size()+1);
+              tn.where = ti.node_dest();
+              tn.caseWasChanged = true; // lowercased version of input
+              tn.sequence.addAll(state_i.sequence);
+              tn.sequence.add(ti.output_symbol());
+              new_state.add(tn);
+              ti.next();
             }
+
             if (REUSE_OBJECTS) nodeStatePool_release(state_i);
         }
 
@@ -293,9 +318,11 @@ public class State {
      * i.e. expand to all states reachable consuming θ (the empty input symbol)
      */
     private void epsilonClosure() {
+        Node.TransitionIterator ti = new Node.TransitionIterator();
         for (int i = 0; i != state.size(); i++) {
             TNodeState state_i = state.get(i);
             // get the transitions consuming θ (the empty input symbol)
+            /*
             Transition epsilonTransition = state_i.where.transitions_get(0);
             while (epsilonTransition != null) {
               TNodeState tn = REUSE_OBJECTS?nodeStatePool_get(): new TNodeState(state_i.sequence.size()+1);
@@ -307,6 +334,19 @@ public class State {
                 }
                 state.add(tn);
                 epsilonTransition = epsilonTransition.next;
+            }*/
+            state_i.where.transitions_getIterator(ti, 0);
+            while (ti.hasNext()) {
+              TNodeState tn = REUSE_OBJECTS?nodeStatePool_get(): new TNodeState(state_i.sequence.size()+1);
+              tn.where = ti.node_dest();
+              tn.caseWasChanged = state_i.caseWasChanged;
+              tn.sequence.addAll(state_i.sequence);
+              int output_symbol = ti.output_symbol();
+              if (output_symbol != 0) {
+                  tn.sequence.add(output_symbol);
+              }
+              state.add(tn);
+              ti.next();
             }
         }
     }

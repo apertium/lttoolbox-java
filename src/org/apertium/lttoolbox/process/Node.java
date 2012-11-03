@@ -90,7 +90,7 @@ public class Node {
     ti.transition = transitions_get(i);
   }
 
-  Transition transitions_get(int i) {
+  private Transition transitions_get(int i) {
     // Check to see if we need to load this node first
     if (nodeLoadInfo!=null) {
       load();
