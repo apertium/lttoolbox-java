@@ -64,6 +64,7 @@ public class State {
       this.where = transducer.getNode(where_node_id);
       this.sequence = sequence;
       this.caseWasChanged = caseWasChanged;
+      consistency_check();
     }
 
     public TNodeState() {
@@ -78,6 +79,14 @@ public class State {
 
     TNodeState(int sequence_size) {
       sequence = new ArrayList<Integer>(sequence_size);
+    }
+
+    private void consistency_check() {
+      /*
+      if (transducer.getNode(where_node_id)!=where) {
+        throw new InternalError(where_node_id+ " "+ transducer.getNode(where_node_id).hashCode()+" "+where.hashCode());
+      }
+      */
     }
   }
 
@@ -143,6 +152,9 @@ public class State {
         copy.sequence.addAll(tn.sequence);
         copy.where_node_id = tn.where_node_id;
         copy.where = tn.where;
+        copy.consistency_check();
+        tn.consistency_check();
+
         this.state.add(copy);
       } else {
         this.state.add(new TNodeState(tn.transducer, tn.where_node_id, new ArrayList<Integer>(tn.sequence), tn.caseWasChanged));
@@ -179,6 +191,7 @@ public class State {
       state_i.where_node_id = transducer.getInitialId();
       state_i.where = transducer.getInitial(); // state_i.transducer.getNode(state_i.where_node_id);
       state_i.caseWasChanged = false;
+      state_i.consistency_check();
       initial_state.state.add(state_i);
     }
     initial_state.epsilonClosure();
@@ -246,6 +259,7 @@ public class State {
         tn.transducer = state_i.transducer;
         tn.where_node_id = ti.node_dest();
         tn.where = state_i.transducer.getNode(ti.node_dest());
+        tn.consistency_check();
         tn.caseWasChanged = state_i.caseWasChanged;
         tn.sequence.addAll(state_i.sequence);
         tn.sequence.add(ti.output_symbol());
@@ -283,7 +297,9 @@ public class State {
       while (ti.hasNext()) {
         TNodeState tn = REUSE_OBJECTS ? nodeStatePool_get() : new TNodeState(state_i.sequence.size() + 1);
         tn.transducer = state_i.transducer;
+        tn.where_node_id = ti.node_dest();
         tn.where = state_i.transducer.getNode(ti.node_dest());
+        tn.consistency_check();
         tn.caseWasChanged = state_i.caseWasChanged;
         tn.sequence.addAll(state_i.sequence);
         tn.sequence.add(ti.output_symbol());
@@ -298,6 +314,7 @@ public class State {
         tn.transducer = state_i.transducer;
         tn.where_node_id = ti.node_dest();
         tn.where = state_i.transducer.getNode(ti.node_dest());
+        tn.consistency_check();
         tn.caseWasChanged = true; // lowercased version of input
         tn.sequence.addAll(state_i.sequence);
         tn.sequence.add(ti.output_symbol());
@@ -327,6 +344,7 @@ public class State {
         tn.transducer = state_i.transducer;
         tn.where_node_id = ti.node_dest();
         tn.where = state_i.transducer.getNode(ti.node_dest());
+        tn.consistency_check();
         tn.caseWasChanged = state_i.caseWasChanged;
         tn.sequence.addAll(state_i.sequence);
         int output_symbol = ti.output_symbol();
