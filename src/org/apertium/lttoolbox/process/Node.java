@@ -84,33 +84,26 @@ public class Node {
     }
   }
 
-  void transitions_getIterator(TransitionIterator ti, int i) {
-    ti.transition = transitions_get(i);
+  static void transitions_getIterator(TransducerExe transducer, int node_no, Node node, TransitionIterator ti, int input_symbol) {
+    //this_ = transducer.getNode(node_no);
+    if (node.nodeLoadInfo!=null) {
+      node.nodeLoadInfo.loadNodex(node);
+      node.nodeLoadInfo = null;
+    }
+    ti.transition = node.transitions.get(input_symbol);
   }
 
-  private Transition transitions_get(int i) {
-    // Check to see if we need to load this node first
-    if (nodeLoadInfo!=null) {
-      load();
-    }
-    return transitions.get(i);
-  }
 
   @Override
   public String toString() {
     return "Node{" + this.transitions + "}@" + hashCode();
   }
 
-  private void load() {
-    nodeLoadInfo.loadNode(this);
-    nodeLoadInfo = null;
-  }
-
   /** Note that this method is neccesarily very slow as the number of nodes increases,
       as the nodes don't (and for memory usage reasont shouldnt) know their own node number */
   void show_DEBUG(int n, Alphabet a, Node[] node_list) {
     if (nodeLoadInfo!=null) {
-      load();
+// XXX      load();
     }
     // TreeSet is used to get the list sorted
     for (Integer i : new TreeSet<Integer>(transitions.keySet())) {
