@@ -165,6 +165,17 @@ public class Compression {
 
 
   public static void multibyte_skip(ByteBuffer input) {
+        byte up = input.get();
+        if ((up & (0x40+0x80)) == 0) { // most common
+          return;
+        } else if ((up & 0x80) == 0) { // up < 0x80, infrequent
+            input.position(input.position()+1);
+        } else if ((up & 0x40)==0) { // up < 0xc0
+            input.position(input.position()+2);
+        } else {
+            input.position(input.position()+3);
+        }
+/*
         int up = (0xff & input.get());
         if (up < 0x40) {
         } else if (up < 0x80) {
@@ -177,6 +188,7 @@ public class Compression {
             input.get();
             input.get();
         }
+*/
   }
 
     /**
@@ -185,8 +197,6 @@ public class Compression {
      * @return array of bytes skipped
      */
     public static void multibyte_skip(final ByteBuffer input, final int no_of_multibyte_reads) throws IOException {
-
-      // TODO TODO!!  This can be improved to get muuuuuuuch faster
       for (int i=no_of_multibyte_reads; i>0; i--) {
         multibyte_skip(input);
       }

@@ -18,28 +18,26 @@ import org.apertium.lttoolbox.Alphabet;
 import org.apertium.lttoolbox.process.TransducerExe.NodeLoadInfo;
 
 
-/**
- * A linked list of transitions.
- * Experiments show that 95 % nodes have only 1 transition, and the rest have less than 8 transitions
- * @author Jacob Nordfalk
- */
-class Transition {
-
-  /** The output symbol (character/tag) sent when making this transition */
-  int output_symbol;
-
-  /** Destination node when makine this transition */
-  Node node_dest;
-
-  /** Next transition in the linked list */
-  Transition next;
-}
-
-
-
-
 
 public class Node {
+
+  /**
+   * A linked list of transitions.
+   * Experiments show that 95 % nodes have only 1 transition, and the rest have less than 8 transitions
+   * @author Jacob Nordfalk
+   */
+  private static class Transition {
+
+    /** The output symbol (character/tag) sent when making this transition */
+    int output_symbol;
+
+    /** Destination node when makine this transition */
+    Node node_dest;
+
+    /** Next transition in the linked list */
+    Transition next;
+  }
+
   /**
    The outgoing transitions of this node. Schema: (input symbol, (output symbol, destination node))
    */

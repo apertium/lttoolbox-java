@@ -99,11 +99,11 @@ public class TransducerExe {
       while (number_of_local_transitions > 0) {
         number_of_local_transitions--;
         tagbase += Compression.multibyte_read(byteBuffer);
-        int state = (nodeNo__current_state + Compression.multibyte_read(byteBuffer)) % number_of_states;
+        int target_nodeNo = (nodeNo__current_state + Compression.multibyte_read(byteBuffer)) % number_of_states;
         IntegerPair pair = alphabet.decode(tagbase);
         int i_symbol = pair.first;
         int o_symbol = pair.second;
-        Node targetNode = node_list[state];
+        Node targetNode = node_list[target_nodeNo];
         sourceNode.addTransition(i_symbol, o_symbol, targetNode);
       }
     }
