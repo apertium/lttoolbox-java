@@ -88,6 +88,11 @@ public class State {
       }
       */
     }
+
+    private boolean isFinal() {
+      // return transducer.getFinals().contains(where);
+      return transducer.isFinal(where_node_id);
+    }
   }
 
   /**
@@ -442,7 +447,8 @@ public class State {
 
     for (int i = 0, limit = state.size(); i != limit; i++) {
       TNodeState state_i = state.get(i);
-      if (finals.contains(state_i.where)) {
+      //if (finals.contains(state_i.where)) {
+      if (state_i.isFinal()) {
         result.append('/');
         int first_char = result.length();
 

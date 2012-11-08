@@ -21,6 +21,7 @@ import org.apertium.lttoolbox.*;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.HashSet;
 import org.apertium.lttoolbox.Alphabet.IntegerPair;
 
 /**
@@ -60,6 +61,10 @@ public class TransducerExe {
    Set of final nodes
    */
   private ArrayList<Node> finals = new ArrayList<Node>();
+  /**
+   Set of final node indexes
+   */
+  private HashSet<Integer> final_ids = new HashSet<Integer>();
 
   int getInitialId() {
     return initial_id;
@@ -85,10 +90,14 @@ public class TransducerExe {
     }
   }
 
-  public static boolean DELAYED_NODE_LOADING = true;
+  public static boolean DELAYED_NODE_LOADING = false;
 
   Node getNode(int node_dest) {
     return node_list[node_dest];
+  }
+
+  boolean isFinal(int where_node_id) {
+    return final_ids.contains(where_node_id);
   }
 
   /**
@@ -194,7 +203,9 @@ public class TransducerExe {
     //System.err.println(ant1 + " ettere ud af  " + number_of_states);
     for (int i = 0; i < finals_size; i++) {
       int final_index = myfinals[i];
-      finals.add(getNode(final_index));
+      final_ids.add(final_index);
+      Node final_node = getNode(final_index);
+      finals.add(final_node);
     }
   }
 }

@@ -27,13 +27,10 @@ public class Node {
    * @author Jacob Nordfalk
    */
   private static class Transition {
-
     /** The output symbol (character/tag) sent when making this transition */
     int output_symbol;
-
     /** Destination node when makine this transition */
     int node_dest;
-
     /** Next transition in the linked list */
     Transition next;
   }
