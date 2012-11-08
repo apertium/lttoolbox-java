@@ -103,7 +103,7 @@ public class Node {
     return "Node{" + this.transitions + "}@" + hashCode();
   }
 
-  void load() {
+  private void load() {
     nodeLoadInfo.loadNode(this);
     nodeLoadInfo = null;
   }

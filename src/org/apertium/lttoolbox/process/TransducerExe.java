@@ -113,6 +113,7 @@ public class TransducerExe {
    WITH BYTEBUFFER and a direct file
    public static boolean DELAYED_NODE_LOADING = true;
    alloc 2085984
+           46191
 
    public static boolean DELAYED_NODE_LOADING = false;
    alloc 9556192
@@ -132,9 +133,6 @@ public class TransducerExe {
    alloc 9556000
    */
   public void read(ByteBuffer input, Alphabet alphabet) throws IOException {
-    read(input, alphabet, null);
-  }
-  public void read(ByteBuffer input, Alphabet alphabet, ByteBuffer cachedNodeIndex) throws IOException {
     initial_id = Compression.multibyte_read(input);  // 0 for eo-en.dix)
     final int finals_size = Compression.multibyte_read(input); // xx  (5 for eo-en.dix)
     //System.out.println("finals_size : "+finals_size);
@@ -165,25 +163,21 @@ public class TransducerExe {
     NodeLoadInfo nodeLoadInfo = new NodeLoadInfo();
 
     // Now load the nodes
-    if (DELAYED_NODE_LOADING && cachedNodeIndex!=null) {
-      // TODO
-    } else {
-      for (int nodeNo__current_state = 0; nodeNo__current_state < number_of_statesl; nodeNo__current_state++) {
-        nodeLoadInfo.byteBufferPosition = input.position();
-        int number_of_local_transitions = Compression.multibyte_read(input); // typically 20-40, max seen is 694
+    for (int nodeNo__current_state = 0; nodeNo__current_state < number_of_statesl; nodeNo__current_state++) {
+      nodeLoadInfo.byteBufferPosition = input.position();
+      int number_of_local_transitions = Compression.multibyte_read(input); // typically 20-40, max seen is 694
 
-        nodeLoadInfo.nodeNo__current_state = nodeNo__current_state;
-        //nodeLoadInfo.number_of_transitions = number_of_local_transitions;
-        //System.out.println(number_of_states+"NodeLoadInfo "+nodeLoadInfo.nodeNo__current_state+ " "+nodeLoadInfo.byteBufferPosition+ " "+nodeLoadInfo.number_of_transitions);
-        Node sourceNode = node_list[nodeNo__current_state];
+      nodeLoadInfo.nodeNo__current_state = nodeNo__current_state;
+      //nodeLoadInfo.number_of_transitions = number_of_local_transitions;
+      //System.out.println(number_of_states+" NodeLoadInfo "+nodeLoadInfo.nodeNo__current_state+ " "+nodeLoadInfo.byteBufferPosition);
+      Node sourceNode = node_list[nodeNo__current_state];
 
-        if (DELAYED_NODE_LOADING) {
-          sourceNode.setNodeLoadInfo(nodeLoadInfo);
-          Compression.multibyte_skip(input, 2 * number_of_local_transitions);
-          nodeLoadInfo = new NodeLoadInfo();
-        } else {
-          nodeLoadInfo.loadNode(sourceNode); // skips the correct number of positions
-        }
+      if (DELAYED_NODE_LOADING) {
+        sourceNode.setNodeLoadInfo(nodeLoadInfo);
+        Compression.multibyte_skip(input, 2 * number_of_local_transitions);
+        nodeLoadInfo = new NodeLoadInfo();
+      } else {
+        nodeLoadInfo.loadNode(sourceNode); // skips the correct number of positions
       }
     }
 

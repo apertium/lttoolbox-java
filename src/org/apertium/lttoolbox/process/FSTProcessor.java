@@ -748,7 +748,7 @@ public class FSTProcessor {
       }
 
       //System.out.println("reading : "+name);
-      tx.read(input, alphabet, null);//new File(cachedIndexes, name) );
+      tx.read(input, alphabet); //new File(cachedIndexes, name) );
       len--;
       //System.out.println(len);
     }
