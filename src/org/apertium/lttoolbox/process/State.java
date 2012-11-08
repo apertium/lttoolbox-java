@@ -425,10 +425,22 @@ public class State {
   }
 
   /**
+   Return true if at least one record of the state references a final node
+   @return true if the state is final
+   */
+  public boolean isFinal() {
+    for (int i = 0, limit = state.size(); i != limit; i++) {
+      if (state.get(i).isFinal()) {
+        return true;
+      }
+    }
+    return false;
+  }
+  /**
    Slower version of the StringBuilder filterFinals()
    */
-  String filterFinals(Set<Node> finals, Alphabet alphabet, SetOfCharacters escaped_chars, boolean uppercase, boolean firstupper) {
-    return filterFinals(new StringBuilder(), finals, alphabet, escaped_chars, uppercase, firstupper).toString();
+  String filterFinals(Alphabet alphabet, SetOfCharacters escaped_chars, boolean uppercase, boolean firstupper) {
+    return filterFinals(new StringBuilder(), alphabet, escaped_chars, uppercase, firstupper).toString();
   }
 
   /**
@@ -443,7 +455,7 @@ public class State {
    @param firstupper true if the first letter of a word is uppercase
    @return the result of the transduction
    */
-  public StringBuilder filterFinals(StringBuilder result, Set<Node> finals, Alphabet alphabet, SetOfCharacters escaped_chars, boolean uppercase, boolean firstupper) {
+  public StringBuilder filterFinals(StringBuilder result, Alphabet alphabet, SetOfCharacters escaped_chars, boolean uppercase, boolean firstupper) {
 
     for (int i = 0, limit = state.size(); i != limit; i++) {
       TNodeState state_i = state.get(i);
@@ -481,11 +493,12 @@ public class State {
   /**
    For lexical selection. NOTE: Return type is incorrect for the time being
    */
-  public StringBuilder filterFinalsLRX(StringBuilder result, Set<Node> finals, Alphabet alphabet, SetOfCharacters escaped_chars) {
+  public StringBuilder filterFinalsLRX(StringBuilder result, Alphabet alphabet, SetOfCharacters escaped_chars) {
 
     for (int i = 0, limit = state.size(); i != limit; i++) {
       TNodeState state_i = state.get(i);
-      if (finals.contains(state_i.where)) {
+      if (state_i.isFinal()) {
+      //if (finals.contains(state_i.where)) {
         result.append('/');
 
         for (int j = 0, limit2 = state_i.sequence.size(); j != limit2; j++) {
@@ -510,7 +523,7 @@ public class State {
    @param restart_state
    @param separationSymbol
    */
-  void restartFinals(Set<Node> finals, int requiredSymbol, State restart_state, int separationSymbol) {
+  void restartFinals(int requiredSymbol, State restart_state, int separationSymbol) {
 
     ArrayList<TNodeState> added_states = new ArrayList<TNodeState>();
 
@@ -518,7 +531,8 @@ public class State {
       TNodeState state_i = state.get(i);
       // A state can be a possible final state and still have transitions
 
-      if (finals.contains(state_i.where)) {
+      //if (finals.contains(state_i.where)) {
+      if (state_i.isFinal()) {
         boolean restart = lastPartHasRequiredSymbol(state_i.sequence, requiredSymbol, separationSymbol);
         if (restart) {
           if (restart_state != null) {
@@ -610,7 +624,6 @@ public class State {
   /**
    Same as previous one, but the output is adapted to the SAO system
 
-   @param finals the set of final nodes
    @param alphabet the alphabet to decode strings
    @param escaped_chars the set of chars to be preceeded with one backslash
    @param uppercase true if the word is uppercase
@@ -618,15 +631,13 @@ public class State {
    @param firstchar first character of the word
    @return the result of the transduction
    */
-  String filterFinalsSAO(Set<Node> finals,
-      Alphabet alphabet,
-      SetOfCharacters escaped_chars,
-      boolean uppercase, boolean firstupper, int firstchar) {
+  String filterFinalsSAO(Alphabet alphabet, SetOfCharacters escaped_chars, boolean uppercase, boolean firstupper, int firstchar) {
     StringBuilder result = new StringBuilder("");
 
     for (int i = 0, limit = state.size(); i != limit; i++) {
       TNodeState state_i = state.get(i);
-      if (finals.contains(state_i.where)) {
+      //if (finals.contains(state_i.where)) {
+      if (state_i.isFinal()) {
         result.append('/');
         int first_char = result.length() + firstchar;
         for (int j = 0, limit2 = state_i.sequence.size(); j != limit2; j++) {
@@ -666,11 +677,12 @@ public class State {
    @param firstchar first character of the word
    @return the result of the transduction
    */
-  String filterFinalsTM(Set<Node> finals, Alphabet alphabet, SetOfCharacters escaped_chars, ArrayDeque<String> blankqueue, ArrayList<String> numbers) {
+  String filterFinalsTM(Alphabet alphabet, SetOfCharacters escaped_chars, ArrayDeque<String> blankqueue, ArrayList<String> numbers) {
     String result = "";
     for (int i = 0, limit = state.size(); i < limit; i++) {
       TNodeState state_i = state.get(i);
-      if (finals.contains(state_i.where)) {
+      //if (finals.contains(state_i.where)) {
+      if (state_i.isFinal()) {
         result += '/';
         for (int j = 0, limit2 = state_i.sequence.size(); j < limit2; j++) {
           if (escaped_chars.contains((char) state_i.sequence.get(j).intValue())) {

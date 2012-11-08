@@ -242,7 +242,7 @@ echo "^liten<adj><posi><mf><sg><ind>/small<adj><sint><posi><mf><sg><ind>/little<
           }
           if (s.isFinal(anfinals)) {
             StringBuilder sb = new StringBuilder();
-            s.filterFinalsLRX(sb, anfinals, alphabet, escaped_chars);
+            s.filterFinalsLRX(sb, alphabet, escaped_chars);
             LOG("filterfinals = "+sb);
           }
         }

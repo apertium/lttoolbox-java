@@ -158,10 +158,6 @@ public class FSTProcessor {
    */
   private Set<Node> preblank = new HashSet<Node>();
   /**
-   Merge of 'inconditional', 'standard', 'postblank' and 'preblank' sets
-   */
-  private Set<Node> all_finals;
-  /**
    Queue of blanks, used in reading methods
    */
   private ArrayDeque<String> blankqueue = new ArrayDeque<String>();
@@ -763,12 +759,6 @@ public class FSTProcessor {
   public void initAnalysis() {
     calc_initial_state();
     classifyFinals();
-    //all_finals = standard;
-    all_finals = new HashSet<Node>(standard.size() + inconditional.size() + postblank.size() + preblank.size());
-    all_finals.addAll(standard);
-    all_finals.addAll(inconditional);
-    all_finals.addAll(postblank);
-    all_finals.addAll(preblank);
     if (do_flagMatch) {
       initFlagMatch();
     }
@@ -924,10 +914,6 @@ public class FSTProcessor {
   public void initTMAnalysis() {
     calc_initial_state();
     tmNumbers = new ArrayList<String>();
-    all_finals = new HashSet<Node>();
-    for (TransducerExe t : transducers.values()) {
-      all_finals.addAll(t.getFinals());
-    }
     if (!showControlSymbols) {
       hideControlSymbols();
     }
@@ -935,10 +921,6 @@ public class FSTProcessor {
 
   public void initGeneration() {
     calc_initial_state();
-    all_finals = new HashSet<Node>();
-    for (String first : transducers.keySet()) {
-      all_finals.addAll(transducers.get(first).getFinals());
-    }
     if (do_flagMatch) {
       initFlagMatch();
     }
@@ -977,7 +959,7 @@ public class FSTProcessor {
      */
     char val;
     while ((val = readAnalysis(input)) != (char) 0) {
-      if (current_state.isFinal(all_finals)) {
+      if (current_state.isFinal()) {
         if (current_state.isFinal(inconditional)) {
           boolean firstupper = !dictionaryCase && Alphabet.isUpperCase(sf.charAt(0));
           boolean uppercase = !dictionaryCase && firstupper && Alphabet.isUpperCase(sf.charAt(sf.length() - 1));
@@ -988,7 +970,7 @@ public class FSTProcessor {
             deleteStatesWithConflictingFlags(current_state);
           }
           lf.setLength(0);
-          current_state.filterFinals(lf, all_finals, alphabet, escaped_chars, uppercase, firstupper);
+          current_state.filterFinals(lf, alphabet, escaped_chars, uppercase, firstupper);
           last = input_buffer.getPos();
           last_incond = true;
         } else if (current_state.isFinal(postblank)) {
@@ -1001,7 +983,7 @@ public class FSTProcessor {
             deleteStatesWithConflictingFlags(current_state);
           }
           lf.setLength(0);
-          current_state.filterFinals(lf, all_finals, alphabet, escaped_chars, uppercase, firstupper);
+          current_state.filterFinals(lf, alphabet, escaped_chars, uppercase, firstupper);
           last = input_buffer.getPos();
           last_postblank = true;
         } else if (current_state.isFinal(preblank)) {
@@ -1014,7 +996,7 @@ public class FSTProcessor {
             deleteStatesWithConflictingFlags(current_state);
           }
           lf.setLength(0);
-          current_state.filterFinals(lf, all_finals, alphabet, escaped_chars, uppercase, firstupper);
+          current_state.filterFinals(lf, alphabet, escaped_chars, uppercase, firstupper);
           last = input_buffer.getPos();
           last_preblank = true;
         } else {
@@ -1030,7 +1012,7 @@ public class FSTProcessor {
               deleteStatesWithConflictingFlags(current_state);
             }
             lf.setLength(0);
-            current_state.filterFinals(lf, all_finals, alphabet, escaped_chars, uppercase, firstupper);
+            current_state.filterFinals(lf, alphabet, escaped_chars, uppercase, firstupper);
             last = input_buffer.getPos();
             last_postblank = last_preblank = last_incond = false;
           }
@@ -1162,7 +1144,7 @@ public class FSTProcessor {
         current_state.step_case(val, caseSensitive);
       }
 
-      String result = previous_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
+      String result = previous_state.filterFinals(alphabet, escaped_chars, uppercase, firstupper);
       if (DEBUG) {
         System.err.println(i + " result = " + result);
       }
@@ -1170,7 +1152,7 @@ public class FSTProcessor {
       if (current_state.size() == 0 || endOfWord) {
         // longest match exceeded has come - or end of word
 
-        if (previous_state.isFinal(all_finals)) {
+        if (previous_state.isFinal()) {
 
           String[] alternatives = result.substring(1).split("/");
           // Add array of possible analyses
@@ -1276,10 +1258,10 @@ public class FSTProcessor {
       if (DEBUG) {
         System.err.println(val + " eft step " + i + " current_state = " + current_state);
       }
-      String result = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
+      String result = current_state.filterFinals(alphabet, escaped_chars, uppercase, firstupper);
 
       if (i < input_word.length() - 1) {
-        current_state.restartFinals(all_finals, compoundOnlyLSymbol, initial_state, '+');
+        current_state.restartFinals(compoundOnlyLSymbol, initial_state, '+');
       }
       if (DEBUG) {
         System.err.println(val + " eft rest " + i + " current_state = " + current_state);
@@ -1288,7 +1270,7 @@ public class FSTProcessor {
         System.err.println(i + " result = " + result);
       }
       if (DEBUG) {
-        result = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
+        result = current_state.filterFinals(alphabet, escaped_chars, uppercase, firstupper);
       }
       if (DEBUG) {
         System.err.println(i + " result = " + result);
@@ -1303,7 +1285,7 @@ public class FSTProcessor {
     }
     current_state.pruneCompounds(compoundRSymbol, '+', compound_max_elements);
 
-    String result = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
+    String result = current_state.filterFinals(alphabet, escaped_chars, uppercase, firstupper);
     if (DEBUG) {
       System.err.println("rrresult = " + result.replaceAll("/", "/\n"));
     }
@@ -1359,9 +1341,9 @@ public class FSTProcessor {
     char val;
     while ((val = readAnalysis(input)) != (char) 0) {
       // test for final states
-      if (current_state.isFinal(all_finals)) {
+      if (current_state.isFinal()) {
         if (iswpunct(val)) {
-          lf = current_state.filterFinalsTM(all_finals, alphabet, escaped_chars, blankqueue, tmNumbers).substring(1);
+          lf = current_state.filterFinalsTM(alphabet, escaped_chars, blankqueue, tmNumbers).substring(1);
           last = input_buffer.getPos();
           tmNumbers.clear();
         }
@@ -1480,7 +1462,7 @@ public class FSTProcessor {
             } else if (mode == GenerationMode.gm_unknown) {
               writeEscaped(removeTags(sf), output);
             }
-          } else if (current_state.isFinal(all_finals)) {
+          } else if (current_state.isFinal()) {
             boolean uppercase = sf.length() > 1 && Alphabet.isUpperCase(sf.charAt(1));
             boolean firstupper = Alphabet.isUpperCase(ch0);
             if (mode == GenerationMode.gm_tagged) {
@@ -1489,7 +1471,7 @@ public class FSTProcessor {
             if (do_flagMatch) {
               deleteStatesWithConflictingFlags(current_state);
             }
-            output.append(current_state.filterFinals(all_finals, alphabet,
+            output.append(current_state.filterFinals(alphabet,
                 escaped_chars, uppercase, firstupper).substring(1));
             if (mode == GenerationMode.gm_tagged) {
               output.append('/');
@@ -1553,10 +1535,10 @@ public class FSTProcessor {
         }
       } else {
         // test for final states
-        if (current_state.isFinal(all_finals)) {
+        if (current_state.isFinal()) {
           boolean firstupper = Alphabet.isUpperCase(sf.charAt(1));
           boolean uppercase = sf.length() > 1 && firstupper && Alphabet.isUpperCase(sf.charAt(2));
-          lf = new StringBuilder(current_state.filterFinals(all_finals, alphabet, empty_escaped_chars, uppercase, firstupper));
+          lf = new StringBuilder(current_state.filterFinals(alphabet, empty_escaped_chars, uppercase, firstupper));
 
           // case of the beggining of the next word
 
@@ -1659,7 +1641,7 @@ public class FSTProcessor {
           firstupper = Alphabet.isUpperCase(sf.charAt(1));
           uppercase = sf.length() > 1 && firstupper && Alphabet.isUpperCase(sf.charAt(2));
         }
-        lf = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
+        lf = current_state.filterFinals(alphabet, escaped_chars, uppercase, firstupper);
         if (lf.length() > 0) {
           output.append(lf.substring(1));
           current_state.copy(initial_state);
@@ -1675,10 +1657,10 @@ public class FSTProcessor {
           output.append(val);
         }
       } else {
-        if (current_state.isFinal(all_finals)) {
+        if (current_state.isFinal()) {
           boolean firstupper = Alphabet.isUpperCase(sf.charAt(1));
           boolean uppercase = sf.length() > 1 && firstupper && Alphabet.isUpperCase(sf.charAt(2));
-          lf = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
+          lf = current_state.filterFinals(alphabet, escaped_chars, uppercase, firstupper);
           last = input_buffer.getPos();
         }
 
@@ -1758,8 +1740,8 @@ public class FSTProcessor {
 
       current_state.step_case(val, caseSensitive);
 
-      if (current_state.isFinal(all_finals)) {
-        result = new StringBuilder(current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper));
+      if (current_state.isFinal()) {
+        result = new StringBuilder(current_state.filterFinals(alphabet, escaped_chars, uppercase, firstupper));
         if (with_delim) {
           if (mark) {
             result = new StringBuilder("^=" + result.substring(1));
@@ -1882,7 +1864,7 @@ public class FSTProcessor {
           boolean uppercase = (sf.length() > 1) && Alphabet.isUpperCase(sf.charAt(1));
           boolean firstupper= Alphabet.isUpperCase(sf.charAt(0));
 
-          result = current_state.filterFinals(result, all_finals, alphabet, escaped_chars, uppercase, firstupper);
+          result = current_state.filterFinals(result, alphabet, escaped_chars, uppercase, firstupper);
           /*
           result = current_state.filterFinals(all_finals, alphabet,
                                     escaped_chars,
@@ -1943,12 +1925,12 @@ public class FSTProcessor {
             current_state.step(val);
           }
         }
-        if(current_state.isFinal(all_finals)) {
+        if(current_state.isFinal()) {
 
           boolean uppercase = (sf.length() > 1) && Alphabet.isUpperCase(sf.charAt(1));
           boolean firstupper= Alphabet.isUpperCase(sf.charAt(0));
 
-          result = current_state.filterFinals(result, all_finals, alphabet, escaped_chars, uppercase, firstupper);
+          result = current_state.filterFinals(result, alphabet, escaped_chars, uppercase, firstupper);
         }
 
         if(current_state.size() == 0 && result.length()>0) {
@@ -2042,8 +2024,8 @@ public class FSTProcessor {
 
       current_state.step_case(val, caseSensitive);
 
-      if (current_state.isFinal(all_finals)) {
-        String res0 = current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper);
+      if (current_state.isFinal()) {
+        String res0 = current_state.filterFinals(alphabet, escaped_chars, uppercase, firstupper);
         if (with_delim) {
           if (mark) {
             result = new StringBuilder("^=");
@@ -2161,8 +2143,8 @@ public class FSTProcessor {
 
       current_state.step_case(val, caseSensitive);
 
-      if (current_state.isFinal(all_finals)) {
-        result = new StringBuilder(current_state.filterFinals(all_finals, alphabet, escaped_chars, uppercase, firstupper));
+      if (current_state.isFinal()) {
+        result = new StringBuilder(current_state.filterFinals(alphabet, escaped_chars, uppercase, firstupper));
         if (with_delim) {
           if (mark) {
             result = new StringBuilder("^=" + result.substring(1));
@@ -2198,7 +2180,7 @@ public class FSTProcessor {
   }
 
   public boolean valid() {
-    if (initial_state.isFinal(all_finals)) {
+    if (initial_state.isFinal()) {
       System.err.println("Error: Invalid dictionary (hint: the left side of an entry is empty)");
       return false;
     } else {
@@ -2280,12 +2262,12 @@ public class FSTProcessor {
     char val;
     while ((val = readSAO(input)) != (char) 0) {
       // test for final states
-      if (current_state.isFinal(all_finals)) {
+      if (current_state.isFinal()) {
         if (current_state.isFinal(inconditional)) {
           boolean firstupper = Alphabet.isUpperCase(sf.charAt(0));
           boolean uppercase = firstupper && Alphabet.isUpperCase(sf.charAt(sf.length() - 1));
 
-          lf = current_state.filterFinalsSAO(all_finals, alphabet, escaped_chars, uppercase, firstupper, 0);
+          lf = current_state.filterFinalsSAO(alphabet, escaped_chars, uppercase, firstupper, 0);
 
           last_incond = true;
           last = input_buffer.getPos();
@@ -2293,7 +2275,7 @@ public class FSTProcessor {
           boolean firstupper = Alphabet.isUpperCase(sf.charAt(0));
           boolean uppercase = firstupper && Alphabet.isUpperCase(sf.charAt(sf.length() - 1));
 
-          lf = current_state.filterFinalsSAO(all_finals, alphabet, escaped_chars, uppercase, firstupper, 0);
+          lf = current_state.filterFinalsSAO(alphabet, escaped_chars, uppercase, firstupper, 0);
 
           last_postblank = true;
           last = input_buffer.getPos();
@@ -2301,7 +2283,7 @@ public class FSTProcessor {
           boolean firstupper = Alphabet.isUpperCase(sf.charAt(0));
           boolean uppercase = firstupper && Alphabet.isUpperCase(sf.charAt(sf.length() - 1));
 
-          lf = current_state.filterFinalsSAO(all_finals, alphabet, escaped_chars, uppercase, firstupper, 0);
+          lf = current_state.filterFinalsSAO(alphabet, escaped_chars, uppercase, firstupper, 0);
 
           last_postblank = false;
           last_incond = false;
