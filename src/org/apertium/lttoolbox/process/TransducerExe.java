@@ -77,6 +77,10 @@ public class TransducerExe {
   }
 
   public static boolean DELAYED_NODE_LOADING = true;
+
+  Node getNode(int node_dest) {
+    return node_list[node_dest];
+  }
   /**
    Inner class to hold the info on loading nodes. Note that this has an implicit reference to the containing
    TransducerExe and can therefore access its fields (node_list, alphabet, base)
@@ -103,8 +107,8 @@ public class TransducerExe {
         IntegerPair pair = alphabet.decode(tagbase);
         int i_symbol = pair.first;
         int o_symbol = pair.second;
-        Node targetNode = node_list[target_nodeNo];
-        sourceNode.addTransition(i_symbol, o_symbol, targetNode);
+        //Node targetNode = node_list[target_nodeNo];
+        sourceNode.addTransition(i_symbol, o_symbol, target_nodeNo);
       }
     }
   }

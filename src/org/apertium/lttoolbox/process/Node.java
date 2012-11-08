@@ -32,7 +32,7 @@ public class Node {
     int output_symbol;
 
     /** Destination node when makine this transition */
-    Node node_dest;
+    int node_dest;
 
     /** Next transition in the linked list */
     Transition next;
@@ -61,7 +61,7 @@ public class Node {
    @param outs output symbol
    @param node_dest destination
    */
-  public void addTransition(int ins, int outs, Node node_dest) {
+  public void addTransition(int ins, int outs, int node_dest) {
 
     Transition newTransition = new Transition();
     newTransition.output_symbol = outs;
@@ -116,6 +116,7 @@ public class Node {
     for (Integer i : new TreeSet<Integer>(transitions.keySet())) {
       Transition t = transitions.get(i);
       while (t != null) {
+        /*
         if (t.node_dest.nodeLoadInfo!=null) t.node_dest.load();
         int dest_node_no = -1;
         for (int j=0; j<node_list.length; j++) {
@@ -123,6 +124,7 @@ public class Node {
         }
         System.err.println(dest_node_no + "\t" +  n + "\t'" + a.getSymbol(i)+"'"+i+"\t'"+a.getSymbol(t.output_symbol)+"'"+t.output_symbol);
         t = t.next;
+        */
       }
     }
   }
@@ -136,7 +138,7 @@ public class Node {
       return transition != null;
     }
 
-    Node node_dest() {
+    int node_dest() {
       return transition.node_dest;
     }
 

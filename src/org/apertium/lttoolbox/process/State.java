@@ -41,6 +41,14 @@ public class State {
      */
     Node where;
     /**
+     Which node are we currently visiting
+     */
+    int where_node_id;
+    /**
+     Which transducer does this node belong to
+    */
+     TransducerExe transducer;
+    /**
      The list of output symbols we produced while getting to this node
      */
     ArrayList<Integer> sequence;
@@ -50,8 +58,10 @@ public class State {
      */
     boolean caseWasChanged;
 
-    public TNodeState(Node where, ArrayList<Integer> sequence, boolean caseWasChanged) {
+    public TNodeState(TransducerExe transducer, Node where, ArrayList<Integer> sequence, boolean caseWasChanged) {
+      this.transducer = transducer;
       this.where = where;
+//      this.where = transducer.getNode(where_node_id);
       this.sequence = sequence;
       this.caseWasChanged = caseWasChanged;
     }
@@ -107,6 +117,7 @@ public class State {
 
   private void nodeStatePool_release(TNodeState state_i) {
     nodeStatePool.add(state_i);
+    state_i.transducer = null; // permit CG
   }
   /*
    Pool<TNodeState> nodeStatePool = new Pool<TNodeState>(new ObjectFactory<TNodeState>() {
@@ -138,12 +149,13 @@ public class State {
       TNodeState tn = other_states.get(i);
       if (REUSE_OBJECTS) {
         TNodeState copy = nodeStatePool_get();
+        copy.transducer = tn.transducer;
         copy.caseWasChanged = tn.caseWasChanged;
         copy.sequence.addAll(tn.sequence);
         copy.where = tn.where;
         this.state.add(copy);
       } else {
-        this.state.add(new TNodeState(tn.where, new ArrayList<Integer>(tn.sequence), tn.caseWasChanged));
+        this.state.add(new TNodeState(tn.transducer, tn.where, new ArrayList<Integer>(tn.sequence), tn.caseWasChanged));
       }
     }
     return this;
@@ -187,7 +199,7 @@ public class State {
     initial_state.state.clear();
     for (TransducerExe transducer : transducerc) {
       State.TNodeState state_i = new State.TNodeState(true);
-//      state_i.transducer = transducer;
+      state_i.transducer = transducer;
 //      state_i.where_node_id = transducer.getInitialId();
       state_i.where = transducer.getInitial(); // state_i.transducer.getNode(state_i.where_node_id);
       state_i.caseWasChanged = false;
@@ -250,7 +262,8 @@ public class State {
       state_i.where.transitions_getIterator(ti, input);
       while (ti.hasNext()) {
         TNodeState tn = REUSE_OBJECTS ? nodeStatePool_get() : new TNodeState(state_i.sequence.size() + 1);
-        tn.where = ti.node_dest();
+        tn.transducer = state_i.transducer;
+        tn.where = state_i.transducer.getNode(ti.node_dest());
         tn.caseWasChanged = state_i.caseWasChanged;
         tn.sequence.addAll(state_i.sequence);
         tn.sequence.add(ti.output_symbol());
@@ -298,7 +311,8 @@ public class State {
       state_i.where.transitions_getIterator(ti, input);
       while (ti.hasNext()) {
         TNodeState tn = REUSE_OBJECTS ? nodeStatePool_get() : new TNodeState(state_i.sequence.size() + 1);
-        tn.where = ti.node_dest();
+        tn.transducer = state_i.transducer;
+        tn.where = state_i.transducer.getNode(ti.node_dest());
         tn.caseWasChanged = state_i.caseWasChanged;
         tn.sequence.addAll(state_i.sequence);
         tn.sequence.add(ti.output_symbol());
@@ -321,7 +335,8 @@ public class State {
       state_i.where.transitions_getIterator(ti, lowerCasedInput);
       while (ti.hasNext()) {
         TNodeState tn = REUSE_OBJECTS ? nodeStatePool_get() : new TNodeState(state_i.sequence.size() + 1);
-        tn.where = ti.node_dest();
+        tn.transducer = state_i.transducer;
+        tn.where = state_i.transducer.getNode(ti.node_dest());
         tn.caseWasChanged = true; // lowercased version of input
         tn.sequence.addAll(state_i.sequence);
         tn.sequence.add(ti.output_symbol());
@@ -361,7 +376,9 @@ public class State {
       state_i.where.transitions_getIterator(ti, 0);
       while (ti.hasNext()) {
         TNodeState tn = REUSE_OBJECTS ? nodeStatePool_get() : new TNodeState(state_i.sequence.size() + 1);
-        tn.where = ti.node_dest();
+        tn.transducer = state_i.transducer;
+        tn.transducer = state_i.transducer;
+        tn.where = state_i.transducer.getNode(ti.node_dest());
         tn.caseWasChanged = state_i.caseWasChanged;
         tn.sequence.addAll(state_i.sequence);
         int output_symbol = ti.output_symbol();
@@ -538,6 +555,7 @@ public class State {
             }
             for (TNodeState initst : restart_state.state) {
               TNodeState tn = REUSE_OBJECTS ? nodeStatePool_get() : new TNodeState(state_i.sequence.size() + 1);
+              tn.transducer = state_i.transducer;
               tn.where = initst.where;
               tn.caseWasChanged = state_i.caseWasChanged;
               tn.sequence.addAll(state_i.sequence);
