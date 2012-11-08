@@ -113,7 +113,7 @@ class LRXProcessor {
 
 
   public void init() {
-    initial_state.init(transducer.getInitial());
+    initial_state.init(transducer);
 
     anfinals.addAll(transducer.getFinals());
 

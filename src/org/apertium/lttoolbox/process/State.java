@@ -21,6 +21,7 @@ import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Set;
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  Class to represent the set of alive states of a transducer
@@ -28,6 +29,7 @@ import java.util.ArrayList;
  @author Raah
  */
 public class State {
+
   /**
    one state element in the current set of states of transducer processing
 
@@ -164,7 +166,7 @@ public class State {
    Init the state with the initial node and empty output
 
    @param initial the initial node of the transducer
-   */
+
   public void init(Node initial) {
     state.clear();
     TNodeState tn = REUSE_OBJECTS ? nodeStatePool_get() : new TNodeState(true);
@@ -173,6 +175,33 @@ public class State {
     state.add(tn);
     epsilonClosure();
   }
+*/
+
+  /**
+   Init the state with the initial node and empty output
+
+   @param transducerc collection of transducers to initialize from
+   */
+  void init(Collection<TransducerExe> transducerc) {
+    State initial_state = this;
+    initial_state.state.clear();
+    for (TransducerExe transducer : transducerc) {
+      State.TNodeState state_i = new State.TNodeState(true);
+//      state_i.transducer = transducer;
+//      state_i.where_node_id = transducer.getInitialId();
+      state_i.where = transducer.getInitial(); // state_i.transducer.getNode(state_i.where_node_id);
+      state_i.caseWasChanged = false;
+      initial_state.state.add(state_i);
+    }
+    initial_state.epsilonClosure();
+  }
+
+  public void init(TransducerExe transducer) {
+    ArrayList<TransducerExe> c = new ArrayList<TransducerExe>();
+    c.add(transducer);
+    init(c);
+  }
+
 
   public String toString() {
     return this.state.toString();
@@ -311,7 +340,7 @@ public class State {
    Calculate the epsilon closure over the current state, replacing its content. i.e. expand to all states reachable
    consuming θ (the empty input symbol)
    */
-  private void epsilonClosure() {
+  public void epsilonClosure() {
     Node.TransitionIterator ti = new Node.TransitionIterator();
     for (int i = 0; i != state.size(); i++) {
       TNodeState state_i = state.get(i);

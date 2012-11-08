@@ -68,6 +68,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import org.apertium.utils.IOUtils;
 
@@ -581,15 +582,17 @@ public class FSTProcessor {
   }
 
   private void calc_initial_state() {
+    Collection<TransducerExe> transducerc = transducers.values();
+/*
     Node root = new Node();
-    root.initTransitions(transducers.size());
-    for (String name : transducers.keySet()) {
-      Node initialNodeForThisTransducer = transducers.get(name).getInitial();
+    root.initTransitions(transducerc.size());
+    for (TransducerExe transducer : transducerc) {
+      Node initialNodeForThisTransducer = transducer.getInitial();
       root.addTransition(0, 0, initialNodeForThisTransducer);
     }
-    //System.out.println("plp");
     initial_state.init(root);
-    //System.out.println("exiting calcInitial");
+*/
+    initial_state.init(transducerc);
   }
 
   private boolean endsWith(String str, String suffix) {
