@@ -19,8 +19,10 @@ package org.apertium.lttoolbox.process;
 import java.io.File;
 import org.apertium.lttoolbox.*;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -33,8 +35,28 @@ import org.apertium.lttoolbox.Alphabet.IntegerPair;
  @author Raah
  */
 public class TransducerExe {
-  
+
   public static boolean DELAYED_NODE_LOADING = false;
+
+  /*
+   nodes   46191
+
+
+   alloc   64624
+
+   public static boolean DELAYED_NODE_LOADING = true;
+   WITH BYTEBUFFER and a direct file after 9 nov 2012
+   alloc  425424
+
+   WITH BYTEBUFFER and a direct file before 9 nov 2012
+   alloc 2085984
+
+   public static boolean DELAYED_NODE_LOADING = false;
+   alloc 9556192
+   */
+
+
+
   /**
    Initial state
    */
@@ -151,21 +173,12 @@ public class TransducerExe {
     return node;
   }
 
-
-  /*
-   nodes   46191
-
-   public static boolean DELAYED_NODE_LOADING = true;
-   WITH BYTEBUFFER and a direct file after 9 nov 2012
-   alloc  425424
-
-   WITH BYTEBUFFER and a direct file before 9 nov 2012
-   alloc 2085984
-
-   public static boolean DELAYED_NODE_LOADING = false;
-   alloc 9556192
-   */
   public void read(ByteBuffer input, Alphabet alphabet) throws IOException {
+    read(input, alphabet, null);
+  }
+
+  public void read(ByteBuffer input, Alphabet alphabet, File cachedFile) throws IOException {
+
     initial_id = Compression.multibyte_read(input);  // 0 for eo-en.dix)
     final int finals_size = Compression.multibyte_read(input); // xx  (5 for eo-en.dix)
     //System.out.println("finals_size : "+finals_size);
@@ -180,26 +193,52 @@ public class TransducerExe {
       myfinals[i] = base;
     }
 
+    //System.err.println(ant1 + " ettere ud af  " + number_of_states);
+    for (int i = 0; i < finals_size; i++) {
+      int final_index = myfinals[i];
+      final_ids.add(final_index);
+    }
 
     number_of_states = Compression.multibyte_read(input); // xx  (46191 for eo-en.dix)
 
     //node_list = new Node[number_of_states];
     node_list2 = new HashMap<Integer, Node>(1000);
 
-    byteBufferPositions = ByteBuffer.allocate(number_of_states*4); //int[number_of_statesl];
 
     // Keep reference to bytebuffer for delayed node loading
     byteBuffer = input;
 
-    // Now load the nodes
+
+    boolean canReadFromCache = false;
+    int cacheFileSize = number_of_states*4 + 4; // one extra int to hold index of end of transducer
+    if (cachedFile.canRead() && cachedFile.length() == cacheFileSize) {
+      RandomAccessFile raf = new RandomAccessFile(cachedFile, "r");
+      byteBufferPositions = raf.getChannel().map(FileChannel.MapMode.READ_ONLY, 0, cacheFileSize);
+      canReadFromCache = true;
+    } else if (!cachedFile.exists() || cachedFile.canWrite()) {
+      if (cachedFile.exists()) cachedFile.delete();
+      cachedFile.getParentFile().mkdirs();
+      RandomAccessFile raf = new RandomAccessFile(cachedFile, "rw");
+      byteBufferPositions = raf.getChannel().map(FileChannel.MapMode.READ_WRITE, 0, cacheFileSize);
+    } else {
+      byteBufferPositions = ByteBuffer.allocate(cacheFileSize); //int[number_of_statesl];
+    }
+
+
+    //
+    if (canReadFromCache) {
+      int lastPos = byteBufferPositions.getInt(number_of_states*4);
+      input.position(lastPos); // Skip to end position
+      return;
+    }
+
+    // No cache. Load and index the nodes
     for (int nodeNo__current_state = 0; nodeNo__current_state < number_of_states; nodeNo__current_state++) {
 
       byteBufferPositions.putInt(input.position());
-      //nodeLoadInfo.byteBufferPosition = input.position();
+      //System.out.println(number_of_states+"  "+nodeNo__current_state+ " "+input.position());
       int number_of_local_transitions = Compression.multibyte_read(input); // typically 20-40, max seen is 694
 
-      //nodeLoadInfo.number_of_transitions = number_of_local_transitions;
-      //System.out.println(number_of_states+" NodeLoadInfo "+nodeLoadInfo.nodeNo__current_state+ " "+nodeLoadInfo.byteBufferPosition);
 
       if (DELAYED_NODE_LOADING) {
         Compression.multibyte_skip(input, 2 * number_of_local_transitions);
@@ -207,11 +246,7 @@ public class TransducerExe {
         loadNode(nodeNo__current_state); // skips the correct number of positions
       }
     }
+    byteBufferPositions.putInt(input.position()); // Remember end position
 
-    //System.err.println(ant1 + " ettere ud af  " + number_of_states);
-    for (int i = 0; i < finals_size; i++) {
-      int final_index = myfinals[i];
-      final_ids.add(final_index);
-    }
   }
 }

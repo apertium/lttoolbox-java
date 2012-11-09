@@ -40,7 +40,7 @@ public class IOUtils {
     private static File parent;
 
     /** Path to location of cached node indexes */
-    public static File cacheDir = new File("/tmp/lttoolbox-java");
+    public static File cacheDir = new File("/tmp/apertium-cache");
 
 
 

@@ -746,22 +746,17 @@ public class FSTProcessor {
         System.err.println(this.getClass() + ".load() Why has transducer already name " + name);
       }
 
-      File cachedFile = null;
+      File cacheFile = null;
       //System.out.println("reading : "+name);
       if (IOUtils.cacheDir!=null && filename!=null) {
         // Try to load make cached a memmapped transducer cache file
-        cachedFile = new File(IOUtils.cacheDir, filename.replace(File.separatorChar, '_')  + "@"+name);
-        System.out.println("cachedFile = " + cachedFile);
-        if (cachedFile.canRead()) {
-          RandomAccessFile raf = new RandomAccessFile(cachedFile, "r");
-          MappedByteBuffer bb = raf.getChannel().map(FileChannel.MapMode.READ_ONLY, 0, raf.length());
-//          ReadOnlyDirectByteBuffer xcx;
-//          bb.asIntBuffer()
-        }
+        cacheFile = new File(IOUtils.cacheDir, filename.replace(File.separatorChar, '_')  + "@"+input.position());
+        //System.out.println("cachedFile = " + cacheFile);
       }
 
+      tx.read(input, alphabet, cacheFile);
 
-      tx.read(input, alphabet); //new File(cachedIndexes, name) );
+
       len--;
       //System.out.println(len);
     }
