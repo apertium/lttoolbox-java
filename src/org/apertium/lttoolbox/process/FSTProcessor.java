@@ -941,7 +941,7 @@ public class FSTProcessor {
   /*
    private final char charAt(String s, int index) { return s.charAt(index); }
    */
-  public void analysis(Reader input, Appendable output) throws IOException {
+  public synchronized void analysis(Reader input, Appendable output) throws IOException {
     if (getNullFlush()) {
       analysis_wrapper_null_flush(input, output);
     }
@@ -1428,7 +1428,7 @@ public class FSTProcessor {
     flushBlanks(output);
   }
 
-  public void generation(Reader input, Appendable output, GenerationMode mode) throws IOException {
+  public synchronized void generation(Reader input, Appendable output, GenerationMode mode) throws IOException {
     if (getNullFlush()) {
       generation_wrapper_null_flush(input, output, mode);
     }
@@ -1507,7 +1507,7 @@ public class FSTProcessor {
     }
   }
 
-  public void postgeneration(Reader input, Appendable output) throws IOException {
+  public synchronized void postgeneration(Reader input, Appendable output) throws IOException {
     if (getNullFlush()) {
       postgeneration_wrapper_null_flush(input, output);
     }
@@ -1624,7 +1624,7 @@ public class FSTProcessor {
     flushBlanks(output);
   }
 
-  public void transliteration(Reader input, Appendable output) throws IOException {
+  public synchronized void transliteration(Reader input, Appendable output) throws IOException {
     if (getNullFlush()) {
       transliteration_wrapper_null_flush(input, output);
     }
@@ -1695,7 +1695,7 @@ public class FSTProcessor {
     flushBlanks(output);
   }
 
-  public String biltrans(String input_word, boolean with_delim) {
+  public synchronized String biltrans(String input_word, boolean with_delim) {
     State current_state = initial_state.copy();
     StringBuilder result = new StringBuilder("");
     int start_point = 1;
@@ -1817,7 +1817,7 @@ public class FSTProcessor {
   @param output ^Jeg<prn><p1><mf><sg><nom>/Prpers<prn><p1><mf><sg><nom>$ ^ha<vblex><pres>/have<vbhaver><pres>$ ^ikke<adv>/not<adv>$
   @throws IOException
   */
-  public void bilingual(Reader input, Appendable output) throws IOException {
+  public synchronized void bilingual(Reader input, Appendable output) throws IOException {
     /* XXX TODO
     if (getNullFlush()) {
       transliteration_wrapper_null_flush(input, output);
@@ -1970,7 +1970,7 @@ public class FSTProcessor {
 
 
 
-  public Pair<String, Integer> biltransWithQueue(String input_word, boolean with_delim) {
+  public synchronized Pair<String, Integer> biltransWithQueue(String input_word, boolean with_delim) {
     State current_state = initial_state.copy();
     StringBuilder result = new StringBuilder();
     StringBuilder queue = new StringBuilder();
@@ -2098,7 +2098,7 @@ public class FSTProcessor {
     }
   }
 
-  public String biltransWithoutQueue(String input_word, boolean with_delim) {
+  public synchronized String biltransWithoutQueue(String input_word, boolean with_delim) {
     State current_state = initial_state.copy();
     StringBuilder result = new StringBuilder("");
     int start_point = 1;
@@ -2384,7 +2384,8 @@ public class FSTProcessor {
   }
 
   public void setNullFlush(boolean value) {
-    nullFlush = value;
+    if (value) System.err.println("sorry, null flush is currently not supported.");
+    nullFlush = false; // value;
   }
 
   public boolean getNullFlush() {
