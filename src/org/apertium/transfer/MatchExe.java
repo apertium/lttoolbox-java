@@ -108,8 +108,8 @@ public class MatchExe {
     int number_of_local_transitions=Compression.multibyte_read(in);
     if (number_of_local_transitions>0) {
       for (int j=number_of_local_transitions; j>0; j--) {
-        Compression.multibyte_read(in);
-        Compression.multibyte_read(in);
+        Compression.multibyte_skip(in);
+        Compression.multibyte_skip(in);
       }
     }
   }

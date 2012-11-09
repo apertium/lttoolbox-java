@@ -58,10 +58,6 @@ public class TransducerExe {
    */
   private Alphabet alphabet;
   /**
-   Set of final nodes
-   */
-  private ArrayList<Node> finals = new ArrayList<Node>();
-  /**
    Set of final node indexes
    */
   private HashSet<Integer> final_ids = new HashSet<Integer>();
@@ -70,12 +66,8 @@ public class TransducerExe {
     return initial_id;
   }
 
-  public Node getInitial() {
-    return getNode(initial_id);
-  }
-
-  public ArrayList<Node> getFinals() {
-    return finals;
+  public HashSet<Integer> getFinals() {
+    return final_ids;
   }
 
 
@@ -90,30 +82,19 @@ public class TransducerExe {
     }
   }
 
-  public static boolean DELAYED_NODE_LOADING = false;
+  public static boolean DELAYED_NODE_LOADING = true;
 
-  Node getNode(int node_dest) {
-    return node_list[node_dest];
+  Node getNode(int node_no) {
+    Node node = node_list[node_no];
+    if (node==null) {
+      node_list[node_no] = node = new Node();
+      loadNode(node, node_no);
+    }
+    return node;
   }
 
   boolean isFinal(int where_node_id) {
     return final_ids.contains(where_node_id);
-  }
-
-  /**
-   Inner class to hold the info on loading nodes. Note that this has an implicit reference to the containing
-   TransducerExe and can therefore access its fields (node_list, alphabet, base)
-   */
-  class NodeLoadInfo {
-    // TransducerExe this_TransducerExe     <-- this reference is actually there
-    //byte[] nodeData; not needed - we use the enclosing TransducerExe's  bytebuffer object
-    //int number_of_transitions;
-    int nodeNo__current_state;
-    //int byteBufferPosition;
-
-    void loadNodex(Node aThis) {
-      loadNode(aThis, nodeNo__current_state);
-    }
   }
 
   void loadNode(Node sourceNode, int nodeNo__current_state) {
@@ -139,10 +120,14 @@ public class TransducerExe {
 
 
   /*
-   WITH BYTEBUFFER and a direct file
-   public static boolean DELAYED_NODE_LOADING = true;
-   alloc 2085984
    nodes   46191
+
+   public static boolean DELAYED_NODE_LOADING = true;
+   WITH BYTEBUFFER and a direct file after 9 nov 2012
+   alloc  425424
+
+   WITH BYTEBUFFER and a direct file before 9 nov 2012
+   alloc 2085984
 
    public static boolean DELAYED_NODE_LOADING = false;
    alloc 9556192
@@ -168,16 +153,14 @@ public class TransducerExe {
 
     // We need to pre-allocate all the Node objects as they will be set to refer to each other
     node_list = new Node[number_of_statesl];
-    for (int current_state = 0; current_state < number_of_statesl; current_state++) {
-      node_list[current_state] = new Node();
-    }
+    //for (int current_state = 0; current_state < number_of_statesl; current_state++) {
+    //  node_list[current_state] = new Node();
+    //}
 
     byteBufferPositions = new int[number_of_statesl];
 
     // Keep reference to bytebuffer for delayed node loading
     byteBuffer = input;
-
-    NodeLoadInfo nodeLoadInfo = new NodeLoadInfo();
 
     // Now load the nodes
     for (int nodeNo__current_state = 0; nodeNo__current_state < number_of_statesl; nodeNo__current_state++) {
@@ -186,17 +169,15 @@ public class TransducerExe {
       //nodeLoadInfo.byteBufferPosition = input.position();
       int number_of_local_transitions = Compression.multibyte_read(input); // typically 20-40, max seen is 694
 
-      nodeLoadInfo.nodeNo__current_state = nodeNo__current_state;
       //nodeLoadInfo.number_of_transitions = number_of_local_transitions;
       //System.out.println(number_of_states+" NodeLoadInfo "+nodeLoadInfo.nodeNo__current_state+ " "+nodeLoadInfo.byteBufferPosition);
-      Node sourceNode = node_list[nodeNo__current_state];
 
       if (DELAYED_NODE_LOADING) {
-        sourceNode.setNodeLoadInfo(nodeLoadInfo);
         Compression.multibyte_skip(input, 2 * number_of_local_transitions);
-        nodeLoadInfo = new NodeLoadInfo();
       } else {
-        loadNode(sourceNode, nodeLoadInfo.nodeNo__current_state); // skips the correct number of positions
+        Node sourceNode = new Node();
+        node_list[nodeNo__current_state] = sourceNode;
+        loadNode(sourceNode, nodeNo__current_state); // skips the correct number of positions
       }
     }
 
@@ -204,8 +185,6 @@ public class TransducerExe {
     for (int i = 0; i < finals_size; i++) {
       int final_index = myfinals[i];
       final_ids.add(final_index);
-      Node final_node = getNode(final_index);
-      finals.add(final_node);
     }
   }
 }

@@ -69,7 +69,7 @@ public class Playground {
      System.gc();
     long alloc2 = rt.totalMemory()-rt.freeMemory();
 
-    System.err.println("alloc " + (alloc2 - alloc1));
+    System.err.println("measureMemory alloc " + (alloc2 - alloc1));
   }
 
   private static void measureBigTransferMemory() throws InterruptedException, IOException {
@@ -89,6 +89,6 @@ public class Playground {
      System.gc();
     long alloc2 = rt.totalMemory()-rt.freeMemory();
 
-    System.err.println("alloc " + (alloc2 - alloc1));
+    System.err.println("measureBigTransferMemory alloc " + (alloc2 - alloc1));
   }
 }
