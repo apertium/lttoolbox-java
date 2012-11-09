@@ -92,7 +92,7 @@ public class TransducerExe {
 
   final void nodeStatePool_release(State.TNodeState state_i) {
     nodeStatePool.add(state_i);
-    state_i.transducer = null; // permit GC
+    //state_i.transducer = null; // permit GC
   }
 
   /**
