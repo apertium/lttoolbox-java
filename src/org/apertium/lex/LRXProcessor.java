@@ -27,7 +27,7 @@ class LRXProcessor {
   Alphabet alphabet;
   TransducerExe transducer;
   HashMap<String, TransducerExe> recognisers = new HashMap<String, TransducerExe>();
-  HashSet<Node> anfinals = new HashSet<Node>();
+  HashSet<TransducerExe> anfinals = new HashSet<TransducerExe>();
   /**
    Initial state of every token
    */
@@ -115,7 +115,7 @@ class LRXProcessor {
   public void init() {
     initial_state.init(transducer);
 
-    anfinals.addAll(transducer.getFinals());
+    anfinals.add(transducer);
 
     // escaped_chars chars
     escaped_chars.add('[');

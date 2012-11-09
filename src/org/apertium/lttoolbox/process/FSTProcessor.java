@@ -142,21 +142,21 @@ public class FSTProcessor {
    */
   private State initial_state = new State();
   /**
-   Set of final states of incoditional sections in the dictionaries
+   Set incoditional sections in the dictionaries
    */
-  private Set<Node> inconditional = new HashSet<Node>();
+  private Set<TransducerExe> inconditional = new HashSet<TransducerExe>();
   /**
-   Set of final states of standard sections in the dictionaries
+   Set standard sections in the dictionaries
    */
-  private Set<Node> standard = new HashSet<Node>();
+  private Set<TransducerExe> standard = new HashSet<TransducerExe>();
   /**
-   Set of final states of postblank sections in the dictionaries
+   Set postblank sections in the dictionaries
    */
-  private Set<Node> postblank = new HashSet<Node>();
+  private Set<TransducerExe> postblank = new HashSet<TransducerExe>();
   /**
-   Set of final states of preblank sections in the dictionaries
+   Set preblank sections in the dictionaries
    */
-  private Set<Node> preblank = new HashSet<Node>();
+  private Set<TransducerExe> preblank = new HashSet<TransducerExe>();
   /**
    Queue of blanks, used in reading methods
    */
@@ -604,13 +604,13 @@ public class FSTProcessor {
     for (String name : transducers.keySet()) {
       final TransducerExe transducer = transducers.get(name);
       if (endsWith(name, "@inconditional")) {
-        inconditional.addAll(transducer.getFinals());
+        inconditional.add(transducer);
       } else if (endsWith(name, "@standard")) {
-        standard.addAll(transducer.getFinals());
+        standard.add(transducer);
       } else if (endsWith(name, "@postblank")) {
-        postblank.addAll(transducer.getFinals());
+        postblank.add(transducer);
       } else if (endsWith(name, "@preblank")) {
-        preblank.addAll(transducer.getFinals());
+        preblank.add(transducer);
       } else {
         throw new RuntimeException("Error: Unsupported transducer type for '" + name + "'.");
       }

@@ -419,10 +419,11 @@ public class State {
    @param finals set of final nodes
    @return true if the state is final
    */
-  public boolean isFinal(Set<Node> finals) {
-    //if (finals.isEmpty()) return false;
+  public boolean isFinal(Set<TransducerExe> transducers) {
     for (int i = 0, limit = state.size(); i != limit; i++) {
-      if (finals.contains(state.get(i).where)) {
+      TNodeState state_i = state.get(i);
+      if (!transducers.contains(state_i.transducer)) continue;
+      if (state_i.isFinal()) {
         return true;
       }
     }
