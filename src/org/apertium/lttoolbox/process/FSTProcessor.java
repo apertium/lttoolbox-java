@@ -1246,6 +1246,7 @@ public class FSTProcessor {
 
       if (DEBUG) {
         System.err.println(val + " før step " + i + " current_state = " + current_state);
+        current_state.consistency_check();
       }
       current_state.step_case(val, caseSensitive);
       if (current_state.size() > MAX_COMBINATIONS) {
@@ -1265,6 +1266,7 @@ public class FSTProcessor {
       }
       if (DEBUG) {
         System.err.println(val + " eft rest " + i + " current_state = " + current_state);
+        current_state.consistency_check();
       }
       if (DEBUG) {
         System.err.println(i + " result = " + result);

@@ -30,6 +30,11 @@ import java.util.Collection;
  */
 public class State {
 
+  public static final boolean CONSISTENCY_CHECKS = true;
+
+  public void consistency_check() {
+    if (CONSISTENCY_CHECKS) for (TNodeState x : state) x.consistency_check();
+  }
   /**
    one state element in the current set of states of transducer processing
 
@@ -82,11 +87,10 @@ public class State {
     }
 
     private void consistency_check() {
-      /*
+      if (!CONSISTENCY_CHECKS) return;
       if (transducer.getNode(where_node_id)!=where) {
         throw new InternalError(where_node_id+ " "+ transducer.getNode(where_node_id).hashCode()+" "+where.hashCode());
       }
-      */
     }
 
     private boolean isFinal() {
@@ -131,8 +135,8 @@ public class State {
 
   private void nodeStatePool_release(TNodeState state_i) {
     nodeStatePool.add(state_i);
-    state_i.transducer = null; // permit CG
-    state_i.where = null;  // permit CG
+    state_i.transducer = null; // permit GC
+    state_i.where = null;  // permit GC
   }
 
   public static boolean DEBUG = false;
@@ -194,7 +198,7 @@ public class State {
       State.TNodeState state_i = new State.TNodeState(true);
       state_i.transducer = transducer;
       state_i.where_node_id = transducer.getInitialId();
-      state_i.where = transducer.getInitial(); // state_i.transducer.getNode(state_i.where_node_id);
+      state_i.where = transducer.getNode(state_i.where_node_id);
       state_i.caseWasChanged = false;
       state_i.consistency_check();
       initial_state.state.add(state_i);
@@ -230,7 +234,7 @@ public class State {
     } else {
       new_state = new ArrayList<TNodeState>(state.size() * 2);
     }
-
+    consistency_check();
 
     if (input==0) { // in transfer it happens an unknown symbol is translated to 0. Avoid interpreting that as an epsilon.
       if (REUSE_OBJECTS) reusable_state = state;
@@ -254,10 +258,9 @@ public class State {
        }
        */
 
-      /*
-      if (state_i.transducer.getNode(state_i.where_node_id)!=state_i.where) {
-        System.err.println(state_i.where_node_id+ " "+ state_i.transducer.getNode(state_i.where_node_id).hashCode()+" "+state_i.where.hashCode());
-      }*/
+      if (CONSISTENCY_CHECKS && state_i.transducer.getNode(state_i.where_node_id)!=state_i.where) {
+        throw new InternalError(state_i.where_node_id+ " "+ state_i.transducer.getNode(state_i.where_node_id).hashCode()+" "+state_i.where.hashCode());
+      }
       Node.transitions_getIterator(state_i.transducer, state_i.where_node_id, state_i.where, ti, input);
       while (ti.hasNext()) {
         TNodeState tn = REUSE_OBJECTS ? nodeStatePool_get() : new TNodeState(state_i.sequence.size() + 1);
@@ -273,8 +276,8 @@ public class State {
       }
 
       if (REUSE_OBJECTS) nodeStatePool_release(state_i);
-      }
-      if (REUSE_OBJECTS) reusable_state = state;
+    }
+    if (REUSE_OBJECTS) reusable_state = state;
     state = new_state;
   }
 
@@ -298,7 +301,7 @@ public class State {
     for (int i = 0, limit = state.size(); i != limit; i++) {
       TNodeState state_i = state.get(i);
 
-      Node.transitions_getIterator( state_i.transducer, state_i.where_node_id, state_i.where, ti, input);
+      Node.transitions_getIterator(state_i.transducer, state_i.where_node_id, state_i.where, ti, input);
       while (ti.hasNext()) {
         TNodeState tn = REUSE_OBJECTS ? nodeStatePool_get() : new TNodeState(state_i.sequence.size() + 1);
         tn.transducer = state_i.transducer;
@@ -332,6 +335,7 @@ public class State {
 
     if (REUSE_OBJECTS) reusable_state = state;
     state = new_state;
+    if (CONSISTENCY_CHECKS) consistency_check();
   }
 
   /**
@@ -360,6 +364,7 @@ public class State {
         ti.next();
       }
     }
+    if (CONSISTENCY_CHECKS) consistency_check();
   }
 
   /**
@@ -541,7 +546,7 @@ public class State {
             }
             for (TNodeState initst : restart_state.state) {
               TNodeState tn = REUSE_OBJECTS ? nodeStatePool_get() : new TNodeState(state_i.sequence.size() + 1);
-              tn.transducer = state_i.transducer;
+              tn.transducer = initst.transducer;
               tn.where = initst.where;
               tn.where_node_id = initst.where_node_id;
               tn.caseWasChanged = state_i.caseWasChanged;
