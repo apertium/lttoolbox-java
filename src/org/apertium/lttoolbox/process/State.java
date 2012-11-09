@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.ArrayList;
 import java.util.Collection;
+import org.apertium.lttoolbox.process.Node.Transition;
 
 /**
  Class to represent the set of alive states of a transducer
@@ -33,7 +34,7 @@ public class State {
   public static final boolean CONSISTENCY_CHECKS = false;
 
   public void consistency_check() {
-    if (CONSISTENCY_CHECKS) for (TNodeState x : state) x.consistency_check();
+    //if (CONSISTENCY_CHECKS) for (TNodeState x : state) x.consistency_check();
   }
   /**
    one state element in the current set of states of transducer processing
@@ -64,7 +65,6 @@ public class State {
       this.where_node_id = where_node_id;
       this.sequence = sequence;
       this.caseWasChanged = caseWasChanged;
-      consistency_check();
     }
 
     public TNodeState() {
@@ -81,9 +81,7 @@ public class State {
       sequence = new ArrayList<Integer>(sequence_size);
     }
 
-    private void consistency_check() {
-      if (!CONSISTENCY_CHECKS) return;
-      transducer.getNode(where_node_id);
+    final void consistency_check() {
     }
 
     private boolean isFinal() {
@@ -232,7 +230,6 @@ public class State {
       return;
     }
 
-    Node.TransitionIterator ti = new Node.TransitionIterator();
     for (int i = 0, limit = state.size(); i != limit; i++) {
       TNodeState state_i = state.get(i);
       /*
@@ -247,18 +244,17 @@ public class State {
        it = it.next;
        }
        */
-
-      Node.transitions_getIterator(state_i.transducer, state_i.where_node_id, ti, input);
-      while (ti.hasNext()) {
+      Transition ti = Node.transitions_getIterator(state_i.transducer, state_i.where_node_id, input);
+      while (ti != null) {
         TNodeState tn = REUSE_OBJECTS ? nodeStatePool_get() : new TNodeState(state_i.sequence.size() + 1);
         tn.transducer = state_i.transducer;
-        tn.where_node_id = ti.node_dest();
+        tn.where_node_id = ti.node_dest;
         tn.consistency_check();
         tn.caseWasChanged = state_i.caseWasChanged;
         tn.sequence.addAll(state_i.sequence);
-        tn.sequence.add(ti.output_symbol());
+        tn.sequence.add(ti.output_symbol);
         new_state.add(tn);
-        ti.next();
+        ti = ti.next;
       }
 
       if (REUSE_OBJECTS) nodeStatePool_release(state_i);
@@ -282,36 +278,35 @@ public class State {
       new_state = new ArrayList<TNodeState>(state.size() * 2);
     }
     //System.err.println("apply i="+input+ "  state.size()="+state.size());
-    Node.TransitionIterator ti = new Node.TransitionIterator();
 
     for (int i = 0, limit = state.size(); i != limit; i++) {
       TNodeState state_i = state.get(i);
 
-      Node.transitions_getIterator(state_i.transducer, state_i.where_node_id, ti, input);
-      while (ti.hasNext()) {
+      Transition ti = Node.transitions_getIterator(state_i.transducer, state_i.where_node_id, input);
+      while (ti != null) {
         TNodeState tn = REUSE_OBJECTS ? nodeStatePool_get() : new TNodeState(state_i.sequence.size() + 1);
         tn.transducer = state_i.transducer;
-        tn.where_node_id = ti.node_dest();
+        tn.where_node_id = ti.node_dest;
         tn.consistency_check();
         tn.caseWasChanged = state_i.caseWasChanged;
         tn.sequence.addAll(state_i.sequence);
-        tn.sequence.add(ti.output_symbol());
+        tn.sequence.add(ti.output_symbol);
         new_state.add(tn);
-        ti.next();
+        ti = ti.next;
       } //XXX no pool now: pool.release(state.get(i).sequence);
 
       // try also apply lowerCasedInput
-      Node.transitions_getIterator(state_i.transducer, state_i.where_node_id, ti, lowerCasedInput);
-      while (ti.hasNext()) {
+      ti = Node.transitions_getIterator(state_i.transducer, state_i.where_node_id, lowerCasedInput);
+      while (ti != null) {
         TNodeState tn = REUSE_OBJECTS ? nodeStatePool_get() : new TNodeState(state_i.sequence.size() + 1);
         tn.transducer = state_i.transducer;
-        tn.where_node_id = ti.node_dest();
+        tn.where_node_id = ti.node_dest;
         tn.consistency_check();
         tn.caseWasChanged = true; // lowercased version of input
         tn.sequence.addAll(state_i.sequence);
-        tn.sequence.add(ti.output_symbol());
+        tn.sequence.add(ti.output_symbol);
         new_state.add(tn);
-        ti.next();
+        ti = ti.next;
       }
 
       if (REUSE_OBJECTS) nodeStatePool_release(state_i);
@@ -327,24 +322,23 @@ public class State {
    consuming θ (the empty input symbol)
    */
   public void epsilonClosure() {
-    Node.TransitionIterator ti = new Node.TransitionIterator();
     for (int i = 0; i != state.size(); i++) {
       TNodeState state_i = state.get(i);
       // get the transitions consuming θ (the empty input symbol)
-      Node.transitions_getIterator(state_i.transducer, state_i.where_node_id, ti, 0);
-      while (ti.hasNext()) {
+      Transition ti = Node.transitions_getIterator(state_i.transducer, state_i.where_node_id, 0);
+      while (ti != null) {
         TNodeState tn = REUSE_OBJECTS ? nodeStatePool_get() : new TNodeState(state_i.sequence.size() + 1);
         tn.transducer = state_i.transducer;
-        tn.where_node_id = ti.node_dest();
+        tn.where_node_id = ti.node_dest;
         tn.consistency_check();
         tn.caseWasChanged = state_i.caseWasChanged;
         tn.sequence.addAll(state_i.sequence);
-        int output_symbol = ti.output_symbol();
+        int output_symbol = ti.output_symbol;
         if (output_symbol != 0) {
           tn.sequence.add(output_symbol);
         }
         state.add(tn);
-        ti.next();
+        ti = ti.next;
       }
     }
     if (CONSISTENCY_CHECKS) consistency_check();

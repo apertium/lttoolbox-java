@@ -103,7 +103,7 @@ public class TransducerExe {
     int byteBufferPosition = byteBufferPositions[nodeNo__current_state];
     byteBuffer.position(byteBufferPosition); // seek to correct place in file
     int number_of_local_transitions = Compression.multibyte_read(byteBuffer); // typically 20-40, max seen is 694
-//      int number_of_local_transitions = number_of_transitions;
+
     sourceNode.initTransitions(number_of_local_transitions);
     int tagbase = 0;
     while (number_of_local_transitions > 0) {

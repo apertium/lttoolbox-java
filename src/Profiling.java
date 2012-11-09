@@ -48,7 +48,7 @@ public class Profiling {
         p.testjavaAnalysis();
 
         System.gc();
-    LTComp.main(new String[] { "rl", "testdata/apertium-fr-es.fr.dix", "tmp/testJava.bin"});
+   // LTComp.main(new String[] { "rl", "testdata/apertium-fr-es.fr.dix", "tmp/testJava.bin"});
     report("lt-comp");
 /**/
         //System.err.println("SetOfCharacters.max_encountered = " + SetOfCharacters.max_encountered);
@@ -141,7 +141,7 @@ generation -d took sec 2544 msec
 generation -n took sec 2631 msec
 generation -p took sec 1669 msec
 analysis -a   took sec 2464 msec
- 
+
 
 Profiling Tue Nov 24 08:45:18 CET 2009
 analysis -a   took sec 3417 msec
@@ -180,7 +180,7 @@ generation -p took sec 448 msec
 analysis -a   took sec 1166 msec
 lt-comp   took sec 9485 msec
 
- 
+
  avoid
                     if (transitions.containsKey(it2)) {
                         for (Integer it3 : transitions.get(it2).keySet()) {
@@ -211,7 +211,7 @@ various optimizations
   lt-comp   took sec 9327 msec
   BUILD SUCCESSFUL (total time: 16 seconds)
 
- 
+
 
 Profiling Wed Nov 25 13:49:13 CET 2009
 analysis -a   took sec 2272 msec
@@ -251,9 +251,9 @@ analysis -a   took sec 735 msec
 lt-comp   took sec 10081 msec
 BUILD SUCCESSFUL (total time: 15 seconds)
 
- 
+
   make readFullBlock use char instread of Character
- 
+
 Profiling Wed Nov 25 22:40:04 CET 2009
 analysis -a   took sec 1679 msec
 generation -g took sec 737 msec

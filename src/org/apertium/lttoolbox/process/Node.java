@@ -24,7 +24,7 @@ public class Node {
    * Experiments show that 95 % nodes have only 1 transition, and the rest have less than 8 transitions
    * @author Jacob Nordfalk
    */
-  private static class Transition {
+  static class Transition {
     /** The output symbol (character/tag) sent when making this transition */
     int output_symbol;
     /** Destination node when makine this transition */
@@ -74,9 +74,10 @@ public class Node {
     }
   }
 
-  static void transitions_getIterator(TransducerExe transducer, int node_no, TransitionIterator ti, int input_symbol) {
+  static Transition transitions_getIterator(TransducerExe transducer, int node_no, int input_symbol) {
     Node node = transducer.getNode(node_no);
-    ti.transition = node.transitions.get(input_symbol);
+    Transition tr = node.transitions.get(input_symbol);
+    return tr;
   }
 
 
