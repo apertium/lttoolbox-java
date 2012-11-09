@@ -81,10 +81,8 @@ public class Node {
     }
   }
 
-  static void transitions_getIterator(TransducerExe transducer, int node_no, Node node, TransitionIterator ti, int input_symbol) {
-    if (State.CONSISTENCY_CHECKS) {
-      node = transducer.getNode(node_no);
-    }
+  static void transitions_getIterator(TransducerExe transducer, int node_no, TransitionIterator ti, int input_symbol) {
+    Node node = transducer.getNode(node_no);
     if (node.nodeLoadInfo!=null) {
       node.nodeLoadInfo.loadNodex(node);
       node.nodeLoadInfo = null;
