@@ -48,8 +48,7 @@ public class Profiling {
         p.testjavaAnalysis();
 
         System.gc();
-   // LTComp.main(new String[] { "rl", "testdata/apertium-fr-es.fr.dix", "tmp/testJava.bin"});
-    report("lt-comp");
+//    LTComp.main(new String[] { "rl", "testdata/apertium-fr-es.fr.dix", "tmp/testJava.bin"}); report("lt-comp");
 /**/
         //System.err.println("SetOfCharacters.max_encountered = " + SetOfCharacters.max_encountered);
       }
@@ -423,4 +422,34 @@ final@inconditional 61 858
 main@standard 62442 96775
 lt-comp took sec 6363 msec
 BUILD SUCCESSFUL (total time: 10 seconds)
+
+
+
+Profiling Fri Nov 09 14:48:14 CET 2012 Java HotSpot(TM) Client VM 1.7.0_09
+
+DELAYED_NODE_LOADING = true
+transfer-init apertium_en_ca_en_ca_t1x took sec 200 msec
+transfer took sec 524 msec
+analysis -a   took sec 508 msec
+tagger took sec 225 msec
+generation -g took sec 453 msec
+generation -d took sec 401 msec
+generation -n took sec 366 msec
+generation -p took sec 111 msec
+analysis -a   took sec 396 msec
+
+DELAYED_NODE_LOADING = false
+transfer-init apertium_en_ca_en_ca_t1x took sec 179 msec
+transfer took sec 380 msec
+analysis -a   took sec 504 msec
+tagger took sec 191 msec
+generation -g took sec 440 msec
+generation -d took sec 439 msec
+generation -n took sec 411 msec
+generation -p took sec 103 msec
+analysis -a   took sec 446 msec
+final@inconditional 61 858
+main@standard 62442 96775
+lt-comp took sec 6832 msec
+
  */
