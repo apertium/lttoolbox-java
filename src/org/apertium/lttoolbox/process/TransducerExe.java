@@ -33,6 +33,8 @@ import org.apertium.lttoolbox.Alphabet.IntegerPair;
  @author Raah
  */
 public class TransducerExe {
+  
+  public static boolean DELAYED_NODE_LOADING = false;
   /**
    Initial state
    */
@@ -46,7 +48,7 @@ public class TransducerExe {
   /**
    Node positions in the byteBuffer
    */
-  private IntBuffer byteBufferPositions;
+  private ByteBuffer byteBufferPositions;
 
   /**
    Used for delayed loading
@@ -109,7 +111,6 @@ public class TransducerExe {
     }
   }
 
-  public static boolean DELAYED_NODE_LOADING = true;
 
   Node getNode(int node_no) {
     //Node node = node_list[node_no];
@@ -130,7 +131,7 @@ public class TransducerExe {
     //node_list[node_no] = node;
     node_list2.put(node_no, node);
 
-    int byteBufferPosition = byteBufferPositions.get(node_no);
+    int byteBufferPosition = byteBufferPositions.getInt(node_no*4);
     byteBuffer.position(byteBufferPosition); // seek to correct place in file
     int number_of_local_transitions = Compression.multibyte_read(byteBuffer); // typically 20-40, max seen is 694
 
@@ -185,7 +186,7 @@ public class TransducerExe {
     //node_list = new Node[number_of_states];
     node_list2 = new HashMap<Integer, Node>(1000);
 
-    byteBufferPositions = IntBuffer.allocate(number_of_states); //int[number_of_statesl];
+    byteBufferPositions = ByteBuffer.allocate(number_of_states*4); //int[number_of_statesl];
 
     // Keep reference to bytebuffer for delayed node loading
     byteBuffer = input;
@@ -193,7 +194,7 @@ public class TransducerExe {
     // Now load the nodes
     for (int nodeNo__current_state = 0; nodeNo__current_state < number_of_states; nodeNo__current_state++) {
 
-      byteBufferPositions.put(input.position());
+      byteBufferPositions.putInt(input.position());
       //nodeLoadInfo.byteBufferPosition = input.position();
       int number_of_local_transitions = Compression.multibyte_read(input); // typically 20-40, max seen is 694
 
