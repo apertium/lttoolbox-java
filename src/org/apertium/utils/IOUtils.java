@@ -39,7 +39,9 @@ public class IOUtils {
     private static ClassLoader loader;
     private static File parent;
 
-    public static boolean memmapping = true;
+    /** Path to location of cached node indexes */
+    public static File cacheDir = new File("/tmp/lttoolbox-java");
+
 
 
     public static void setJarAsResourceZip() throws IOException {
@@ -291,14 +293,12 @@ public class IOUtils {
      * @return the buffer containing the file
      */
     public static ByteBuffer openFileAsByteBuffer(String filename) throws IOException {
-        if (zip != null || (loader != null && parent == null) || !memmapping) {
-          // FAIL, revert to memory intensive processing
+        if (!memMappingAvailable()) {
+          // FAIL, revert to memory intensive processing :-(
           return inputStreamToByteBuffer(openInFileStream(filename));
         }
         else {
-          // YES, we have a file we can map!
-          RandomAccessFile raf = new RandomAccessFile(openFile(filename), "r");
-          MappedByteBuffer bb = raf.getChannel().map(FileChannel.MapMode.READ_ONLY, 0, raf.length());
+          MappedByteBuffer bb = memmap(filename);
           return bb;
         }
     }
@@ -457,6 +457,17 @@ public class IOUtils {
   /** Close if possible */
   public static void close(Appendable output) throws IOException {
     if (output instanceof Closeable) ((Closeable) output).close();
+  }
+
+  public static boolean memMappingAvailable() {
+    return !(zip != null || (loader != null && parent == null));
+  }
+
+  public static MappedByteBuffer memmap(String filename) throws IOException, FileNotFoundException {
+    // YES, we have a file we can map!
+    RandomAccessFile raf = new RandomAccessFile(openFile(filename), "r");
+    MappedByteBuffer bb = raf.getChannel().map(FileChannel.MapMode.READ_ONLY, 0, raf.length());
+    return bb;
   }
 
 }

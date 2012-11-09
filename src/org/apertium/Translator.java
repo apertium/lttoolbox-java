@@ -80,8 +80,9 @@ public class Translator {
         org.apertium.lttoolbox.process.TransducerExe.DELAYED_NODE_LOADING = enabled;
     }
 
+    /** @deprecated */
     public static void setMemmappingEnabled(boolean enabled) {
-        IOUtils.memmapping = enabled;
+        System.err.println("setMemmappingEnabled not supported");
     }
 
     public static void setCacheEnabled(boolean enabled) {
@@ -415,7 +416,7 @@ public class Translator {
                         Dispatcher.dispatch(program, input, output, dispAmb, dispMarks);
                         IOUtils.close(output);
                     } catch (Exception ex) {
-                        processingException = ex;
+                        processingException = new Exception(program.toString(), ex);
                     }
                 }
             }).start();

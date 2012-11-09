@@ -60,6 +60,7 @@ package org.apertium.lttoolbox.process;
 import java.io.*;
 import org.apertium.lttoolbox.*;
 import java.nio.ByteBuffer;
+import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayDeque;
 import java.util.HashSet;
@@ -695,8 +696,7 @@ public class FSTProcessor {
    @throws IOException
    */
   public void load(String filePath) throws IOException {
-    RandomAccessFile raf = new RandomAccessFile(filePath, "r");
-    load(raf.getChannel().map(FileChannel.MapMode.READ_ONLY, 0, raf.length()));
+    load(IOUtils.memmap(filePath), filePath);
   }
 
   /**
@@ -705,7 +705,7 @@ public class FSTProcessor {
    @throws IOException
    */
   public void load(ByteBuffer input) throws IOException {
-    load(input, new File("/tmp")); // XXX TODO null
+    load(input, null);
   }
 
   /**
@@ -713,7 +713,7 @@ public class FSTProcessor {
    @param input
    @param cachedIndexes path to a unique directory where cached transducer indexes are
    */
-  public void load(ByteBuffer input, File cachedIndexes) throws IOException {
+  public void load(ByteBuffer input, String filename) throws IOException {
     // the following examples and numbers corresponds to testdata/wound-example.dix
 
     // read letters (<alphabet>ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz</alphabet>)
@@ -746,7 +746,21 @@ public class FSTProcessor {
         System.err.println(this.getClass() + ".load() Why has transducer already name " + name);
       }
 
+      File cachedFile = null;
       //System.out.println("reading : "+name);
+      if (IOUtils.cacheDir!=null && filename!=null) {
+        // Try to load make cached a memmapped transducer cache file
+        cachedFile = new File(IOUtils.cacheDir, filename.replace(File.separatorChar, '_')  + "@"+name);
+        System.out.println("cachedFile = " + cachedFile);
+        if (cachedFile.canRead()) {
+          RandomAccessFile raf = new RandomAccessFile(cachedFile, "r");
+          MappedByteBuffer bb = raf.getChannel().map(FileChannel.MapMode.READ_ONLY, 0, raf.length());
+//          ReadOnlyDirectByteBuffer xcx;
+//          bb.asIntBuffer()
+        }
+      }
+
+
       tx.read(input, alphabet); //new File(cachedIndexes, name) );
       len--;
       //System.out.println(len);

@@ -29,7 +29,7 @@ public class Playground {
       //ApertiumMain.main(arg);
 
       measureMemory();
-      measureBigTransferMemory();
+//      measureBigTransferMemory();
 
 /*
     fstp.load(new BufferedInputStream(new FileInputStream("unhammer-fejl/hang.bin")));

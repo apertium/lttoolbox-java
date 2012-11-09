@@ -18,6 +18,7 @@ package org.apertium.lttoolbox;
  */
 
 import java.io.Closeable;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
@@ -102,8 +103,7 @@ public class LTProc {
         doMain(argv, null, null);
     }
 
-    public static void doMain(String[] argv, Reader input, Appendable output)
-            throws IOException {
+    public static void doMain(String[] argv, Reader input, Appendable output) throws IOException {
 
         if (argv.length == 0) {
             showHelp("LTProc");
@@ -217,10 +217,9 @@ public class LTProc {
         SoftReference<FSTProcessor> ref = cache.get(filename);
         if (ref != null) fstp = ref.get(); // there was a soft ref, get the contents
         if (fstp == null) { // contents might be null if it wasn't cached or it has been was garbage collected
-            ByteBuffer in = openFileAsByteBuffer(filename);
-            //never happens if (in == null) showHelp("LTProc");
             fstp = new FSTProcessor();
-            fstp.load(in);
+            ByteBuffer in = openFileAsByteBuffer(filename);
+            fstp.load(in, filename);
             if (cacheEnabled)
                 cache.put(filename, new SoftReference<FSTProcessor>(fstp));
         }

@@ -167,7 +167,7 @@ So the array of rule_map Method is taken by introspection, taking all methods be
    */
   private void readBil(String bilFstFile) throws IOException {
     ByteBuffer is = openFileAsByteBuffer(bilFstFile);
-    fstp.load(is);
+    fstp.load(is, bilFstFile);
     fstp.initBiltrans();
   }
 
@@ -180,7 +180,7 @@ So the array of rule_map Method is taken by introspection, taking all methods be
   private void setExtendedDictionary(String fstfile) throws IOException {
     extended=new FSTProcessor();
     ByteBuffer is = openFileAsByteBuffer(fstfile);
-    extended.load(is);
+    extended.load(is, fstfile);
     extended.initBiltrans();
     isExtended = true;
   }
