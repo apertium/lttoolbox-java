@@ -73,9 +73,9 @@ public class TransducerExe {
   /**
    Pool of TNodeState (with their sequence list), for efficiency
    */
-  private static ArrayList<State.TNodeState> nodeStatePool = State.REUSE_OBJECTS ? new ArrayList<State.TNodeState>(50) : null;
+  private final ArrayList<State.TNodeState> nodeStatePool = State.REUSE_OBJECTS ? new ArrayList<State.TNodeState>(50) : null;
 
-  State.TNodeState nodeStatePool_get() {
+  final State.TNodeState nodeStatePool_get() {
     int size = nodeStatePool.size();
     if (size != 0) {
       State.TNodeState tn = nodeStatePool.remove(size - 1);
@@ -83,14 +83,14 @@ public class TransducerExe {
       //genbrugt++;
       return tn;
     } else {
-      State.TNodeState tn = new State.TNodeState();
+      State.TNodeState tn = new State.TNodeState(this);
       //oprettet++;
       tn.sequence = new ArrayList<Integer>(State.INITAL_SEQUENCE_ALLOCATION);
       return tn;
     }
   }
 
-  void nodeStatePool_release(State.TNodeState state_i) {
+  final void nodeStatePool_release(State.TNodeState state_i) {
     nodeStatePool.add(state_i);
     state_i.transducer = null; // permit GC
   }

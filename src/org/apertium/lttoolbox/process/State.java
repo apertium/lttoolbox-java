@@ -41,7 +41,7 @@ public class State {
    Pooling seems to do no difference on JDK 1.6, but it might make a big difference for smaller VMs, like Androids or
    J2ME JVMs in phones, so we turn it on for now
    */
-  public static final boolean REUSE_OBJECTS = false;
+  public static final boolean REUSE_OBJECTS = true;
   /**
    Pre-allocate for this amount of elements in a sequence
    */
@@ -85,18 +85,21 @@ public class State {
       this.caseWasChanged = caseWasChanged;
     }
 
-    public TNodeState() {
+    public TNodeState(TransducerExe transducer) {
+      this.transducer = transducer;
     }
 
     /**
      special constructor to signal that the sequence list must be initialized
      */
-    TNodeState(boolean b) {
+    TNodeState(TransducerExe transducer, boolean b) {
       sequence = new ArrayList<Integer>();
+      this.transducer = transducer;
     }
 
-    TNodeState(int sequence_size) {
+    TNodeState(TransducerExe transducer, int sequence_size) {
       sequence = new ArrayList<Integer>(sequence_size);
+      this.transducer = transducer;
     }
 
     final void consistency_check() {
@@ -172,7 +175,7 @@ public class State {
     State initial_state = this;
     initial_state.state.clear();
     for (TransducerExe transducer : transducerc) {
-      State.TNodeState state_i = new State.TNodeState(true);
+      State.TNodeState state_i = new State.TNodeState(transducer, true);
       state_i.transducer = transducer;
       state_i.where_node_id = transducer.getInitialId();
       state_i.caseWasChanged = false;
@@ -234,7 +237,7 @@ public class State {
        */
       Transition ti = Node.transitions_getIterator(state_i.transducer, state_i.where_node_id, input);
       while (ti != null) {
-        TNodeState tn = REUSE_OBJECTS ? state_i.nodeStatePool_get() : new TNodeState(state_i.sequence.size() + 1);
+        TNodeState tn = REUSE_OBJECTS ? state_i.nodeStatePool_get() : new TNodeState(state_i.transducer, state_i.sequence.size() + 1);
         tn.transducer = state_i.transducer;
         tn.where_node_id = ti.node_dest;
         tn.consistency_check();
@@ -272,7 +275,7 @@ public class State {
 
       Transition ti = Node.transitions_getIterator(state_i.transducer, state_i.where_node_id, input);
       while (ti != null) {
-        TNodeState tn = REUSE_OBJECTS ? state_i.nodeStatePool_get() : new TNodeState(state_i.sequence.size() + 1);
+        TNodeState tn = REUSE_OBJECTS ? state_i.nodeStatePool_get() : new TNodeState(state_i.transducer, state_i.sequence.size() + 1);
         tn.transducer = state_i.transducer;
         tn.where_node_id = ti.node_dest;
         tn.consistency_check();
@@ -286,7 +289,7 @@ public class State {
       // try also apply lowerCasedInput
       ti = Node.transitions_getIterator(state_i.transducer, state_i.where_node_id, lowerCasedInput);
       while (ti != null) {
-        TNodeState tn = REUSE_OBJECTS ? state_i.nodeStatePool_get() : new TNodeState(state_i.sequence.size() + 1);
+        TNodeState tn = REUSE_OBJECTS ? state_i.nodeStatePool_get() : new TNodeState(state_i.transducer, state_i.sequence.size() + 1);
         tn.transducer = state_i.transducer;
         tn.where_node_id = ti.node_dest;
         tn.consistency_check();
@@ -315,7 +318,7 @@ public class State {
       // get the transitions consuming θ (the empty input symbol)
       Transition ti = Node.transitions_getIterator(state_i.transducer, state_i.where_node_id, 0);
       while (ti != null) {
-        TNodeState tn = REUSE_OBJECTS ? state_i.nodeStatePool_get() : new TNodeState(state_i.sequence.size() + 1);
+        TNodeState tn = REUSE_OBJECTS ? state_i.nodeStatePool_get() : new TNodeState(state_i.transducer, state_i.sequence.size() + 1);
         tn.transducer = state_i.transducer;
         tn.where_node_id = ti.node_dest;
         tn.consistency_check();
@@ -511,7 +514,7 @@ public class State {
               System.err.println("restart state " + i + "= " + state_i);
             }
             for (TNodeState initst : restart_state.state) {
-              TNodeState tn = REUSE_OBJECTS ? initst.nodeStatePool_get() : new TNodeState(state_i.sequence.size() + 1);
+              TNodeState tn = REUSE_OBJECTS ? initst.nodeStatePool_get() : new TNodeState(initst.transducer, state_i.sequence.size() + 1);
               tn.transducer = initst.transducer;
               tn.where_node_id = initst.where_node_id;
               tn.caseWasChanged = state_i.caseWasChanged;
