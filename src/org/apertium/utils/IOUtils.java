@@ -476,4 +476,29 @@ public class IOUtils {
     return bb;
   }
 
+
+  public static ByteBuffer mapByteBuffer(File cachedFile, int cacheFileSize) throws IOException {
+    ByteBuffer byteBufferPositions;
+
+    if (cacheFileSize>1024) // don't cache tiny files
+    try {
+      if (cachedFile.canRead() && cachedFile.length() == cacheFileSize) {
+        RandomAccessFile raf = new RandomAccessFile(cachedFile, "r");
+        byteBufferPositions = raf.getChannel().map(FileChannel.MapMode.READ_ONLY, 0, cacheFileSize);
+        return byteBufferPositions;
+      }
+
+      if (cachedFile.exists()) cachedFile.delete();
+      cachedFile.getParentFile().mkdirs();
+      cachedFile.createNewFile();
+      if (cachedFile.canWrite()) {
+        RandomAccessFile raf = new RandomAccessFile(cachedFile, "rw");
+        byteBufferPositions = raf.getChannel().map(FileChannel.MapMode.READ_WRITE, 0, cacheFileSize);
+        return byteBufferPositions;
+      }
+    } catch (Exception e) {}
+
+    byteBufferPositions = ByteBuffer.allocate(cacheFileSize); //int[number_of_statesl];
+    return byteBufferPositions;
+  }
 }

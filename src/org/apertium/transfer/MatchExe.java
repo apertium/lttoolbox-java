@@ -39,7 +39,7 @@ public class MatchExe {
    */
   private final int initial_id;
 
-  final ByteBuffer data;
+  private final ByteBuffer byteBuffer;
   //private final int[] byteBufferPositions;
   private ByteBuffer byteBufferPositions;
 
@@ -53,31 +53,31 @@ public class MatchExe {
   private static final int MAX_OUTPUT_SYMBOLS = (1 << MAX_OUTPUT_SYMBOLS_POWS_OF_2) - 1;  // 2047
   private static final int MAX_STATE_INDEX_NO = (1 << MAX_OUTPUT_SYMBOLS_SHIFT) - 1;
 
-  public MatchExe(ByteBuffer in, int decalage, File cachedFile) throws IOException {
-    data = in;
+  public MatchExe(ByteBuffer input, int decalage, File cachedFile) throws IOException {
+    byteBuffer = input;
     this.decalage = decalage;
     //reading the initial state - set up initial node
-    initial_id = Compression.multibyte_read(in);
+    initial_id = Compression.multibyte_read(input);
 
 
     //reading the list of final states - not used
-    int number_of_finals = Compression.multibyte_read(in);
+    int number_of_finals = Compression.multibyte_read(input);
 
     /* Discard the bytes
       * for the list of final states, since this implementation doesn't actually
       * use that list. But we need to advance the read pointer past the finals
       * list.
       */
-    Compression.multibyte_skip(in, number_of_finals);
+    Compression.multibyte_skip(input, number_of_finals);
 
 
     //reading the transitions
-    number_of_states = Compression.multibyte_read(in);
+    number_of_states = Compression.multibyte_read(input);
 
     // -----------------
+    int cacheFileSize = number_of_states*4 + 4; // one extra int to hold index of end of transducer
     /*
     boolean canReadFromCache = false;
-    int cacheFileSize = number_of_states*4 + 4; // one extra int to hold index of end of transducer
     if (cachedFile.canRead() && cachedFile.length() == cacheFileSize) {
       RandomAccessFile raf = new RandomAccessFile(cachedFile, "r");
       byteBufferPositions = raf.getChannel().map(FileChannel.MapMode.READ_ONLY, 0, cacheFileSize);
@@ -111,21 +111,20 @@ public class MatchExe {
 
 
     // -----------------
-    int cacheFileSize = number_of_states*4 + 4; // one extra int to hold index of end of transducer
 
     // memory allocation
     byteBufferPositions = ByteBuffer.allocate(cacheFileSize); //int[number_of_statesl];
     //byteBufferPositions = new int[number_of_states];
     //final_state_to_symbol = new short[number_of_states];
-
+    
     int current_state=0;
     for (int i=number_of_states; i>0; i--) {
-      byteBufferPositions.putInt(current_state*4, in.position());
-      skipNode(in);
+      byteBufferPositions.putInt(current_state*4, input.position());
+      skipNode(input);
       current_state++;
     }
 
-    if (byteBufferPositions.getInt( (current_state-1)*4)>MAX_STATE_INDEX_NO) throw new IllegalStateException("Cannot hold state index value. File too large: "+in.position()+". Max possible value is "+MAX_STATE_INDEX_NO);
+    if (byteBufferPositions.getInt( (current_state-1)*4)>MAX_STATE_INDEX_NO) throw new IllegalStateException("Cannot hold state index value. File too large: "+input.position()+". Max possible value is "+MAX_STATE_INDEX_NO);
 
 
     // set up finals
@@ -134,12 +133,12 @@ public class MatchExe {
    // noOfFinals == number of rules
 
 
-    int number_of_finals2=Compression.multibyte_read(in);  // == number_of_finals
+    int number_of_finals2=Compression.multibyte_read(input);  // == number_of_finals
 
 
     for (int i=0; i!=number_of_finals; i++) {
-      int key=Compression.multibyte_read(in);
-      int value=Compression.multibyte_read(in); // value == rule number (method nomber)
+      int key=Compression.multibyte_read(input);
+      int value=Compression.multibyte_read(input); // value == rule number (method nomber)
       if (value>MAX_OUTPUT_SYMBOLS) throw new IllegalStateException("Output symbol index value too large: "+value+". Max value is: "+MAX_OUTPUT_SYMBOLS);
 
 
@@ -162,15 +161,15 @@ public class MatchExe {
   public int[] loadNode(int node_id) {
     int index = byteBufferPositions.getInt(node_id*4) & MAX_STATE_INDEX_NO;
 
-    data.position( index );
-    int number_of_local_transitions=Compression.multibyte_read(data);
+    byteBuffer.position( index );
+    int number_of_local_transitions=Compression.multibyte_read(byteBuffer);
     if (number_of_local_transitions>0) {
       int[] mynode = new int[number_of_local_transitions*2];
       int symbol=0;
       int n=0;
       for (int j=number_of_local_transitions; j>0; j--) {
-        symbol+=Compression.multibyte_read(data)-decalage;
-        int target_state=(node_id+Compression.multibyte_read(data))%number_of_states;
+        symbol+=Compression.multibyte_read(byteBuffer)-decalage;
+        int target_state=(node_id+Compression.multibyte_read(byteBuffer))%number_of_states;
         mynode[n++]=symbol;
         mynode[n++]=target_state;
         //              System.err.println(current_state+ "( "+symbol+" "+(char)symbol+")  -> "+target_state);

@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import org.apertium.lttoolbox.Alphabet.IntegerPair;
+import org.apertium.utils.IOUtils;
 
 /**
  Transducer class for execution of lexical processing algorithms. Formerly named TransExe, but its really the runtime
@@ -208,29 +209,15 @@ public class TransducerExe {
     byteBuffer = input;
 
 
-    boolean canReadFromCache = false;
     int cacheFileSize = number_of_states*4 + 4; // one extra int to hold index of end of transducer
-    if (cachedFile.canRead() && cachedFile.length() == cacheFileSize) {
-      RandomAccessFile raf = new RandomAccessFile(cachedFile, "r");
-      byteBufferPositions = raf.getChannel().map(FileChannel.MapMode.READ_ONLY, 0, cacheFileSize);
-      canReadFromCache = true;
-    } else {
-      if (cachedFile.exists()) cachedFile.delete();
-      cachedFile.getParentFile().mkdirs();
-      if (cachedFile.canWrite()) {
-        RandomAccessFile raf = new RandomAccessFile(cachedFile, "rw");
-        byteBufferPositions = raf.getChannel().map(FileChannel.MapMode.READ_WRITE, 0, cacheFileSize);
-      } else {
-        byteBufferPositions = ByteBuffer.allocate(cacheFileSize); //int[number_of_statesl];
-      }
-    }
+    byteBufferPositions = IOUtils.mapByteBuffer(cachedFile, cacheFileSize);
 
     if (FSTProcessor.DEBUG) {
-      System.err.println("TransducerExe read states:"+number_of_states+ "  cachedFile="+cachedFile+" "+canReadFromCache+" "+byteBufferPositions);
+      System.err.println("TransducerExe read states:"+number_of_states+ "  cachedFile="+cachedFile+" "+byteBufferPositions.isReadOnly()+" "+byteBufferPositions);
     }
 
 
-    if (canReadFromCache) {
+    if (byteBufferPositions.isReadOnly()) {
       int lastPos = byteBufferPositions.getInt(number_of_states*4);
       input.position(lastPos); // Skip to end position
       return;

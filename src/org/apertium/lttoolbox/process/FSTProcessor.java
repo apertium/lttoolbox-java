@@ -759,7 +759,7 @@ public class FSTProcessor {
       //System.out.println("reading : "+name);
       if (IOUtils.cacheDir!=null && filename!=null) {
         // Try to load make cached a memmapped transducer cache file
-        cacheFile = new File(IOUtils.cacheDir, filename.replace(File.separatorChar, '_')  + "@"+input.position());
+        cacheFile = new File(IOUtils.cacheDir, filename.replace(File.separatorChar, '_').replace('.', '_')  + "@"+input.position());
         //System.out.println("cachedFile = " + cacheFile);
       }
 
