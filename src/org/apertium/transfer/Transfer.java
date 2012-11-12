@@ -4,21 +4,15 @@
  */
 package org.apertium.transfer;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Reader;
-import java.io.Writer;
 import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
-import org.apertium.lttoolbox.Alphabet;
 import org.apertium.lttoolbox.Pair;
 import org.apertium.lttoolbox.process.FSTProcessor;
 import org.apertium.transfer.development.Timing;
-import org.apertium.transfer.generated.GeneratedTransferBase;
-import org.apertium.utils.IOUtils;
 import static org.apertium.utils.IOUtils.openFileAsByteBuffer;
 
 
@@ -106,38 +100,7 @@ Now, the transfer code could need a big cleanup. This is the stuff I experimente
 </pre>
  * @author Jacob Nordfalk
  */
-public class Transfer {
-  public static boolean DEBUG = false;
-  public static final boolean DO_TIMING = false;
-  public Timing timing;
-
-  public Alphabet alphabet;
-  private String TRXReader__ANY_CHAR="<ANY_CHAR>";
-  private String TRXReader__ANY_TAG="<ANY_TAG>";
-  private int any_char;
-  private int any_tag;
-
-  private MatchExe me;
-  private MatchState ms;
-
-
-  /**
-   *
-So, how do we set up the array of rule_map Method?
-Well, during compilation the ParseTransferFile.java takes the XML hell of for example apertium-eo-en.en-eo.t1x, and converts it into Java code like the apertium_eo_en_eo_en_t1x java class (in package org.apertium.transfer.generated), which is loaded during runtime.
-So the array of rule_map Method is taken by introspection, taking all methods beginning with rule<number>, like rule0__la__num_ord__de__monato, rule1__de_ekde__tempo etc etc and kicks them into the array.
-   */
-  private Method[] rule_map=null;// vector<xmlNode *> rule_map;
-
-  private BufferT<TransferToken> input_buffer=new BufferT<TransferToken>();
-
-  public GeneratedTransferBase transferObject;
-
-  /**
-   * if true, flush the output when the null character is found
-   */
-  private boolean null_flush;
-  private boolean internal_null_flush;
+public class Transfer extends AbstractTransfer {
 
 
 
@@ -150,28 +113,6 @@ So the array of rule_map Method is taken by introspection, taking all methods be
 
   private boolean preBilingual=false;
 
-  public void readData(ByteBuffer in, String filename) throws IOException {
-    // symbols
-    alphabet=Alphabet.read(in);
-    any_char=alphabet.cast(TRXReader__ANY_CHAR);
-    any_tag=alphabet.cast(TRXReader__ANY_TAG);
-
-    File cacheFile = null;
-    //System.out.println("reading : "+name);
-    if (IOUtils.cacheDir!=null && filename!=null) {
-      // Try to load make cached a memmapped transducer cache file
-      cacheFile = new File(IOUtils.cacheDir, filename.replace(File.separatorChar, '_'));
-      //System.out.println("cachedFile = " + cacheFile);
-    }
-
-    // faster - let it read itselv, thus no need to make a big hashmap
-    me=new MatchExe(in, alphabet.size(), cacheFile);
-    ms =new MatchState(me);
-
-    // Rest of data file contains attr_items, variables. macros, lists.
-    // This is encoded in the class/bytecode, so we skip the rest of the file.
-    // See old code at: http://apertium.svn.sourceforge.net/viewvc/apertium/trunk/lttoolbox-java/src/org/apertium/transfer/Transfer.java?r1=24752&r2=24751&pathrev=24752
-  }
 
   /**
    * Read bilingual dictionary
@@ -210,37 +151,15 @@ So the array of rule_map Method is taken by introspection, taking all methods be
    */
   @SuppressWarnings("unchecked")
   public void read(Class transferClass, String datafile, String bilFstFile) throws Exception {
-
-    ByteBuffer is = IOUtils.openFileAsByteBuffer(datafile);
-    readData(is, datafile);
-
-    Method[] mets =  transferClass.getMethods();
-    rule_map = new Method[mets.length];
-
-    // Find all methods starting with name 'rule'
-    // So the array of rule_map Method is taken by introspection, taking all methods beginning with rule<number>,
-    // like rule0__la__num_ord__de__monato, rule1__de_ekde__tempo etc etc and kicks them into the array.
-    for (Method method : mets) {
-      String name = method.getName();
-      if (!name.startsWith("rule")) continue;
-      int number = Integer.parseInt(name.substring(4, name.indexOf('_',5)));
-      rule_map[number] = method;
-      if (DEBUG) System.err.println(method.getName()+"  - #words=" +method.getParameterTypes().length/2 );
-    }
-
-    transferObject = (GeneratedTransferBase) transferClass.newInstance();
-    transferObject.debug = DEBUG;
-    transferObject.init();
+    super.read(transferClass, datafile);
 
     if (bilFstFile!=null&&bilFstFile.length()>0) {
       readBil(bilFstFile);
     }
   }
 
-  // this and the following methods should not implemented, as we use bytecode compiled transfer
-  //private void readTransfer() {
-  //  throw new UnsupportedOperationException("Not implemented (and should not be)");
-  //}
+  //private void readTransfer()  and the following methods should not implemented, as we use bytecode compiled transfer
+
 
   TransferToken readToken(Reader in) throws IOException {
     if (!input_buffer.isEmpty()) {
@@ -280,32 +199,15 @@ So the array of rule_map Method is taken by introspection, taking all methods be
     }
   }
 
-  public boolean getNullFlush() {
-    return null_flush;
-  }
-
-  public void setNullFlush(boolean b) {
-    null_flush=b;
-  }
 
 
-  private void process_wrapper_null_flush(Reader input, Appendable output) throws Exception {
-    null_flush= false;
-    while (input.ready()) {
-      process(input, output);
-      output.append('\0');
-      IOUtils.flush(output);
-    }
-    null_flush= true;
-  }
-
-
+  @Override
   public void process(Reader in, Appendable output) throws Exception {
     if (getNullFlush()) {
       process_wrapper_null_flush(in, output);
     }
 
-    output = Transfer.checkIfOutputMustBeWriterCompatible(output, rule_map);
+    output = checkIfOutputMustBeWriterCompatible(output, rule_map);
 
     Method lastMatchedRule=null;
     ArrayList<String> tmpword=new ArrayList<String>();
@@ -362,9 +264,9 @@ So the array of rule_map Method is taken by introspection, taking all methods be
             {
               if (!transferObject.isOutputChunked())
               {
-                fputwc_unlocked('^', output);
-                fputws_unlocked(tr.first, output);
-                fputwc_unlocked('$', output);
+                output.append('^');
+                output.append(tr.first);
+                output.append('$');
               }
               else
               {
@@ -565,76 +467,6 @@ So the array of rule_map Method is taken by introspection, taking all methods be
 	public void setPreBilingual(boolean preBilingual) {
 		this.preBilingual = preBilingual;
 	}
-
-/**
-  Backwards compatibility issue:
-  Prior to 31 oct 2012 bytecode transfer classes were generated with a signature with a Writer
-  as the output:
-  private void macro_genere_nombre(Writer out, TransferWord word1) throws IOException
-  Therefore we need to ensure that there is a Writer here, until a time that we can be sure
-  that all transfer classes have been re-generated
-  @param output output
-  @param rule_map rule map which might have issues with the above signature
-  @return output, safely wrapped in a Writer if neccesary
-  */
-  public static Appendable checkIfOutputMustBeWriterCompatible(Appendable output, Method[] rule_map) {
-    boolean outputMustBeWriterCompatible = rule_map.length>0 && !rule_map[0].getParameterTypes()[0].isAssignableFrom(Appendable.class);
-    if (DEBUG) System.err.println("outputMustBeWriterCompatible = "+outputMustBeWriterCompatible);
-    if (!(output instanceof Writer) && outputMustBeWriterCompatible) {
-      final Appendable target = output;
-      output = new Writer() {
-        @Override
-        public void write(char[] cbuf, int off, int len) throws IOException {
-          target.append(new String(cbuf, off, len));
-        }
-
-        @Override
-        public void flush() throws IOException {
-        }
-
-        @Override
-        public void close() throws IOException {
-        }
-        // Source: http://www.java2s.com/Code/Java/File-Input-Output/WriterthatplacesalloutputonanlinkAppendabletarget.htm
-        /*
-         * Override a few functions for performance reasons to avoid creating
-         * unnecessary strings.
-         */
-
-        @Override public void write(int c) throws IOException {
-          target.append((char) c);
-        }
-
-        @Override public void write(String str) throws IOException {
-          target.append(str);
-        }
-
-        @Override public void write(String str, int off, int len) throws IOException {
-          // tricky: append takes start, end pair...
-          target.append(str, off, off + len);
-        }
-
-        @Override public Writer append(char c) throws IOException {
-          target.append(c);
-          return this;
-        }
-
-        @Override public Writer append(CharSequence charSeq) throws IOException {
-          target.append(charSeq);
-          return this;
-        }
-
-        @Override public Writer append(CharSequence charSeq, int start, int end)
-            throws IOException {
-          target.append(charSeq, start, end);
-          return this;
-        }
-
-
-      };
-    }
-    return output;
-  }
 
 
   //TODO: Cleanup -- unnecessary method

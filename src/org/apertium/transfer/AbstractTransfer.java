@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.Writer;
 import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import org.apertium.lttoolbox.Alphabet;
@@ -20,7 +21,7 @@ import org.apertium.utils.IOUtils;
   @author Jacob Nordfalk
  */
 public abstract class AbstractTransfer {
-  public static final boolean DEBUG = false;
+  public static boolean DEBUG = false;
   public static final boolean DO_TIMING = false;
   public Timing timing;
 
@@ -66,7 +67,7 @@ So the array of rule_map Method is taken by introspection, taking all methods be
     readData(in, null);
   }
 
-  public final void readData(ByteBuffer in, String filename) throws IOException {
+  public void readData(ByteBuffer in, String filename) throws IOException {
     // symbols
     alphabet = Alphabet.read(in);
     any_char = alphabet.cast(TRXReader__ANY_CHAR);
@@ -138,4 +139,78 @@ So the array of rule_map Method is taken by introspection, taking all methods be
   }
 
   public abstract void process(Reader input, Appendable output) throws Exception;
+
+
+
+/**
+  Backwards compatibility issue:
+  Prior to 31 oct 2012 bytecode transfer classes were generated with a signature with a Writer
+  as the output:
+  private void macro_genere_nombre(Writer out, TransferWord word1) throws IOException
+  Therefore we need to ensure that there is a Writer here, until a time that we can be sure
+  that all transfer classes have been re-generated
+  @param output output
+  @param rule_map rule map which might have issues with the above signature
+  @return output, safely wrapped in a Writer if neccesary
+  */
+  public static Appendable checkIfOutputMustBeWriterCompatible(Appendable output, Method[] rule_map) {
+    boolean outputMustBeWriterCompatible = rule_map.length>0 && !rule_map[0].getParameterTypes()[0].isAssignableFrom(Appendable.class);
+    if (DEBUG) System.err.println("outputMustBeWriterCompatible = "+outputMustBeWriterCompatible);
+    if (!(output instanceof Writer) && outputMustBeWriterCompatible) {
+      final Appendable target = output;
+      output = new Writer() {
+        @Override
+        public void write(char[] cbuf, int off, int len) throws IOException {
+          target.append(new String(cbuf, off, len));
+        }
+
+        @Override
+        public void flush() throws IOException {
+        }
+
+        @Override
+        public void close() throws IOException {
+        }
+        // Source: http://www.java2s.com/Code/Java/File-Input-Output/WriterthatplacesalloutputonanlinkAppendabletarget.htm
+        /*
+         * Override a few functions for performance reasons to avoid creating
+         * unnecessary strings.
+         */
+
+        @Override public void write(int c) throws IOException {
+          target.append((char) c);
+        }
+
+        @Override public void write(String str) throws IOException {
+          target.append(str);
+        }
+
+        @Override public void write(String str, int off, int len) throws IOException {
+          // tricky: append takes start, end pair...
+          target.append(str, off, off + len);
+        }
+
+        @Override public Writer append(char c) throws IOException {
+          target.append(c);
+          return this;
+        }
+
+        @Override public Writer append(CharSequence charSeq) throws IOException {
+          target.append(charSeq);
+          return this;
+        }
+
+        @Override public Writer append(CharSequence charSeq, int start, int end)
+            throws IOException {
+          target.append(charSeq, start, end);
+          return this;
+        }
+
+
+      };
+    }
+    return output;
+  }
+
+
 }

@@ -168,7 +168,7 @@ public class Interchunk extends AbstractTransfer {
             process_wrapper_null_flush(in, output);
         }
 
-        output = Transfer.checkIfOutputMustBeWriterCompatible(output, rule_map);
+        output = checkIfOutputMustBeWriterCompatible(output, rule_map);
 
         Method lastMatchedRule = null; // xmlNode *lastrule;
         ArrayList<String> tmpword = new ArrayList<String>(); // vector<wstring *> tmpword;

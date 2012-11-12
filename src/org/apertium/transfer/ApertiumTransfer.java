@@ -126,7 +126,7 @@ public class ApertiumTransfer {
                     case 'D':
                       FSTProcessor.DEBUG = true;
                       State.DEBUG = true;
-                      Transfer.DEBUG = true;
+                      AbstractTransfer.DEBUG = true;
                         break;
 
                     case 'z':
