@@ -478,7 +478,7 @@ public class IOUtils {
 
 
   public static ByteBuffer mapByteBuffer(File cachedFile, int cacheFileSize) throws IOException {
-    ByteBuffer byteBufferPositions;
+    ByteBuffer byteBufferPositions = null;
 
     if (cacheFileSize>1024) // don't cache tiny files
     try {

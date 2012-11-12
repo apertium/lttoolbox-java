@@ -27,6 +27,7 @@ import java.nio.channels.FileChannel;
 import java.util.Arrays;
 import org.apertium.lttoolbox.Compression;
 import org.apertium.lttoolbox.process.FSTProcessor;
+import org.apertium.utils.IOUtils;
 
 /**
  * The container object that contains all states (and transitions betweem them)
@@ -76,29 +77,15 @@ public class MatchExe {
 
     // -----------------
     int cacheFileSize = number_of_states*4 + 4; // one extra int to hold index of end of transducer
-    /*
-    boolean canReadFromCache = false;
-    if (cachedFile.canRead() && cachedFile.length() == cacheFileSize) {
-      RandomAccessFile raf = new RandomAccessFile(cachedFile, "r");
-      byteBufferPositions = raf.getChannel().map(FileChannel.MapMode.READ_ONLY, 0, cacheFileSize);
-      canReadFromCache = true;
-    } else {
-      if (cachedFile.exists()) cachedFile.delete();
-      cachedFile.getParentFile().mkdirs();
-      if (cachedFile.canWrite()) {
-        RandomAccessFile raf = new RandomAccessFile(cachedFile, "rw");
-        byteBufferPositions = raf.getChannel().map(FileChannel.MapMode.READ_WRITE, 0, cacheFileSize);
-      } else {
-        byteBufferPositions = ByteBuffer.allocate(cacheFileSize); //int[number_of_statesl];
-      }
-    }
+    byteBufferPositions = IOUtils.mapByteBuffer(cachedFile, cacheFileSize);
+    //byteBufferPositions = ByteBuffer.allocate(cacheFileSize); //int[number_of_statesl];
 
     if (FSTProcessor.DEBUG) {
-      System.err.println("TransducerExe read states:"+number_of_states+ "  cachedFile="+cachedFile+" "+canReadFromCache+" "+byteBufferPositions);
+      System.err.println("TransducerExe read states:"+number_of_states+ "  cachedFile="+cachedFile+" "+byteBufferPositions.isReadOnly()+" "+byteBufferPositions);
     }
 
 
-    if (canReadFromCache) {
+    if (byteBufferPositions.isReadOnly()) {
       int lastPos = byteBufferPositions.getInt(number_of_states*4);
       input.position(lastPos); // Skip to end position
       return;
@@ -106,17 +93,6 @@ public class MatchExe {
 
     // No cache. Load and index the nodes
 
-    */
-
-
-
-    // -----------------
-
-    // memory allocation
-    byteBufferPositions = ByteBuffer.allocate(cacheFileSize); //int[number_of_statesl];
-    //byteBufferPositions = new int[number_of_states];
-    //final_state_to_symbol = new short[number_of_states];
-    
     int current_state=0;
     for (int i=number_of_states; i>0; i--) {
       byteBufferPositions.putInt(current_state*4, input.position());
