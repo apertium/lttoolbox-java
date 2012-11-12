@@ -379,13 +379,4 @@ public class Postchunk extends Interchunk {
         super();
         icMode = InterchunkMode.POSTCHUNK;
     }
-
-    /* This just calls the interchunk method. It's provided as a convenience because
-     * it's expected that postchunk will have a postchunk method, instead of an interchunk
-     * method.
-     */
-    public void postchunk(Reader in, Appendable output) throws IllegalArgumentException,
-            IOException, IllegalAccessException, InvocationTargetException {
-        interchunk(in, output);
-    }
 }

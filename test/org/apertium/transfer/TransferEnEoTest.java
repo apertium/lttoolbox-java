@@ -35,7 +35,7 @@ public class TransferEnEoTest {
 
       StringReader input = new StringReader("^Prpers<prn><subj><p3><m><sg>$  \\$^see<vblex><past>$ ^the<det><def><sp>$ ^saw<n><sg>$^'s<gen>$ ^tooth<n><sg>$   ^.<sent>$\n");
       Writer output = new StringWriter();
-      t.transfer( input, output);
+      t.process( input, output);
 
      assertEquals("^prnpers<SN><nom>{^Prpers<prn><p3><m><sg><2>$}$  \\$^verb_all<SV><aliaj><past>{^vidi<vblex><3>$}$ ^det_nom_gen_det_nom<SN><nom>{^la<det><def><sp>$ ^dento<n><sg><2>$ ^de<gen>$ ^la<det><def><sg><nom>$ ^segilo<n><sg><nom>$}$   ^sent<S>{^.<sent>$}$\n", output.toString());
   }
@@ -48,7 +48,7 @@ public class TransferEnEoTest {
       Reader input = new FileReader(dir+"transferinput-en-eo.t1x-malgranda.txt");
       String outFile = "./tmp/transferoutput-en-eo.t1x-malgranda.txt";
       Writer output = new FileWriter(outFile);
-      t.transfer( input, output);
+      t.process( input, output);
       output.close();
       assertEquals("Difference", "", exec("diff "+dir+"transferoutput-en-eo.t1x-malgranda.txt "+outFile));
       rm(outFile);

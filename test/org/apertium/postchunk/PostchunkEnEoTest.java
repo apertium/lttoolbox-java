@@ -40,7 +40,7 @@ public class PostchunkEnEoTest {
       String exp = "^granda<adj><sg><nom>$ ^kato<n><sg><nom>$\n";
       StringReader input = new StringReader(inp);
       Writer output = new StringWriter();
-      t.interchunk(input, output);
+      t.process(input, output);
 
       String out = output.toString();
 

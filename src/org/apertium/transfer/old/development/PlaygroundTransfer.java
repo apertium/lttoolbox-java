@@ -30,7 +30,7 @@ public class PlaygroundTransfer {
       String input = "^Prpers<prn><subj><p3><m><sg>$ ^see<vblex><past>$ ^the<det><def><sp>$ ^saw<n><sg>$^'s<gen>$ ^tooth<n><sg>$   ^.<sent>$  \n";
       //String input = " ^tooth<n><sg>$^.<sent>$\n";
       Writer output = new StringWriter(); //new PrintWriter(System.err); //
-      t.transfer(new StringReader( input ), output);
+      t.process(new StringReader( input ), output);
       System.err.println("transfer output = " + output);
 
 //   fstp.load(new BufferedInputStream(new FileInputStream("apertium-eo-en.en-eo.bin")));

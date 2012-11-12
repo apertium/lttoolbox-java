@@ -53,7 +53,7 @@ public class CompareAndDebugOneTestFile {
       String outFile = "./tmp/"+t1xFile+"-actual.txt";
       Writer output = new FileWriter(outFile);
       //Writer output = new OutputStreamWriter(System.out);
-      t.transfer( input, output);
+      t.process( input, output);
       output.close();
 
       FindAndCompareAllReleasedTransferFiles.exec("diff","./tmp/"+t1xFile+"-expected.txt", outFile );

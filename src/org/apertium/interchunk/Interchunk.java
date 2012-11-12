@@ -19,33 +19,27 @@
 
 package org.apertium.interchunk;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import org.apertium.transfer.AbstractTransfer;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.apertium.lttoolbox.Alphabet;
-import org.apertium.transfer.BufferT;
-import org.apertium.transfer.MatchExe;
-import org.apertium.transfer.MatchState;
 import org.apertium.transfer.Transfer;
 import org.apertium.transfer.TransferToken;
 import org.apertium.transfer.development.Timing;
-import org.apertium.transfer.generated.GeneratedTransferBase;
-import org.apertium.utils.IOUtils;
 
 /**
  * @author Stephen Tigner
  *
  */
-public class Interchunk {
+public class Interchunk extends AbstractTransfer {
+
+
+  protected boolean inword;
 
     /* Yes, this increases the linkage and entanglement of the classes, but
      * but it's better than duplicating so much code just for a change of a
@@ -58,122 +52,9 @@ public class Interchunk {
         INTERCHUNK, POSTCHUNK
     }
 
-    protected InterchunkMode icMode;
-
-    /*
-     * This class is very similar to the Transfer class, so some code was just
-     * copied straight over, with alot of commented-out code removed.
-     */
-
-    // Private members and methods
-    private Alphabet alphabet;
-    private String TRXReader__ANY_CHAR = "<ANY_CHAR>";
-    private String TRXReader__ANY_TAG = "<ANY_TAG>";
-
-    private MatchExe me; // Pointer in C++ version
-    private MatchState ms;
-
-    private Method[] rule_map = null; // vector<xmlNode *> rule_map;
-
-    private BufferT<TransferToken> input_buffer=new BufferT<TransferToken>(); // Buffer<TransferToken> input_buffer;
-
-    private int any_char;
-    private int any_tag;
-
-    public GeneratedTransferBase transferObject;
-
-    private boolean inword;
-    private boolean null_flush;
-    private boolean internal_null_flush;
-
-    public static final boolean DEBUG = false;
-
-    // Moved these up here, in contrast to Transfer, where they're stuck down
-    // between some functions.
-    public Timing timing;
-    public static final boolean DO_TIMING = false;
+    protected InterchunkMode icMode  = InterchunkMode.INTERCHUNK;
 
 
-    /**
-     * Constructor
-     */
-    public Interchunk() {
-        me = null;
-        inword = false;
-        null_flush = false;
-        internal_null_flush = false;
-
-        icMode = InterchunkMode.INTERCHUNK;
-    }
-
-
-    /** @deprecated */
-    public void readData(ByteBuffer in) throws IOException {
-      readData(in, null);
-    }
-
-
-    public void readData(ByteBuffer in, String filename) throws IOException {
-        // symbols
-        alphabet = Alphabet.read(in);
-        any_char = alphabet.cast(TRXReader__ANY_CHAR);
-        any_tag = alphabet.cast(TRXReader__ANY_TAG);
-
-
-        File cacheFile = null;
-        //System.out.println("reading : "+name);
-        if (IOUtils.cacheDir!=null && filename!=null) {
-          // Try to load make cached a memmapped transducer cache file
-          cacheFile = new File(IOUtils.cacheDir, filename.replace(File.separatorChar, '_'));
-          //System.out.println("cachedFile = " + cacheFile);
-        }
-
-        // faster - let it read itself, thus no need to make a big hashmap
-        me = new MatchExe(in, alphabet.size(), cacheFile);
-        ms = new MatchState(me);
-    }
-
-    /**
-     * Copied from
-     * {@link org.apertium.transfer.Transfer#read(Class, String, String)}
-     *
-     * @param transferClass
-     * @param datafile
-     * @param fstfile
-     * @throws Exception
-     */
-    @SuppressWarnings("unchecked")
-    public void read(Class transferClass, String datafile)
-            throws FileNotFoundException, IOException, IllegalAccessException,
-            InstantiationException {
-
-        ByteBuffer is = IOUtils.openFileAsByteBuffer(datafile);
-        readData(is, datafile);
-
-        Method[] mets = transferClass.getMethods();
-        rule_map = new Method[mets.length];
-
-        for (Method method : mets) {
-            String name = method.getName();
-
-            if (DEBUG) System.err.println("n = " + name);
-            if (!name.startsWith("rule"))
-                continue;
-
-            int number = Integer.parseInt(name.substring(4, name
-                    .indexOf('_', 5)));
-            rule_map[number] = method;
-
-            if (DEBUG)
-                System.err.println(method.getName() + "  - #words="
-                        + method.getParameterTypes().length / 2);
-        }
-
-        transferObject = (GeneratedTransferBase) transferClass.newInstance();
-        transferObject.debug = DEBUG;
-        transferObject.init();
-
-    }
 
     /**
      * Much of this code originally copied from {@link org.apertium.transfer.Transfer#readToken(Reader)}.
@@ -271,40 +152,6 @@ public class Interchunk {
     }
 
     /**
-     * Copied from
-     * {@link org.apertium.transfer.Transfer#transfer_wrapper_null_flush(Reader, Writer)},
-     * then modified slightly, in-line with the changes between transfer.cc
-     * and interchunk.cc
-     *
-     * @param input
-     * @param output
-     * @throws InvocationTargetException
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     * @throws Exception
-     */
-    private void interchunk_wrapper_null_flush(Reader input, Appendable output)
-            throws IOException, IllegalArgumentException,
-            IllegalAccessException, InvocationTargetException {
-        null_flush = false;
-        internal_null_flush = true;
-        while (input.ready()) {
-            interchunk(input, output);
-            output.append('\0');
-        }
-        internal_null_flush = false;
-        null_flush = true;
-    }
-
-    public boolean getNullFlush() {
-        return null_flush;
-    }
-
-    public void setNullFlush(boolean b) {
-        null_flush = b;
-    }
-
-    /**
      * Much of this code originally copied from {@link org.apertium.transfer.Transfer#transfer(Reader, Writer)}.
      * Modified to be in-line with the differences between transfer.cc and interchunk.cc
      * @param in
@@ -315,11 +162,10 @@ public class Interchunk {
      * @throws IllegalArgumentException
      * @throws Exception
      */
-    public void interchunk(Reader in, Appendable output) throws IOException,
-            IllegalArgumentException, IllegalAccessException,
-            InvocationTargetException {
+    @Override
+    public void process(Reader in, Appendable output) throws Exception {
         if (getNullFlush()) {
-            interchunk_wrapper_null_flush(in, output);
+            process_wrapper_null_flush(in, output);
         }
 
         output = Transfer.checkIfOutputMustBeWriterCompatible(output, rule_map);

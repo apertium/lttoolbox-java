@@ -171,7 +171,7 @@ public class TestPostChunk {
             postchunk.read(transferClass, preprocFile);
             //postchunk.transferObject.debug = true;
 
-            postchunk.postchunk(input, output);
+            postchunk.process(input, output);
         } catch (Exception e) {
             e.printStackTrace();
             fail("Exception occured during test.");
@@ -208,7 +208,7 @@ public class TestPostChunk {
             postchunk.read(transferClass, preprocFile);
             //interchunk.transferObject.debug = true;
 
-            postchunk.interchunk(input, output);
+            postchunk.process(input, output);
         } catch (Exception e) {
             e.printStackTrace();
             fail("Exception occured during test.");

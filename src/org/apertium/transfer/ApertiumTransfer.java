@@ -93,9 +93,7 @@ public class ApertiumTransfer {
     }
 
     @SuppressWarnings("unchecked")
-    public static void doMain(String[] argv, Reader input, Appendable output)
-            throws IOException, InstantiationException, IllegalAccessException,
-            ClassNotFoundException {
+    public static void doMain(String[] argv, Reader input, Appendable output) throws Exception {
 
         boolean useBD = true;
 
@@ -234,7 +232,7 @@ public class ApertiumTransfer {
         }
 
         try {
-            t.transfer(input, output);
+            t.process(input, output);
             input.close();
             IOUtils.close(output);
         } catch (Exception e) {

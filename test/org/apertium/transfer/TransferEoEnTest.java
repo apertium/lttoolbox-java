@@ -39,7 +39,7 @@ public class TransferEoEnTest {
       t.read(transferClass, folder+dir+".t1x.bin", folder+"en-eo.autobil.bin");
       Reader input = new FileReader(folder+"transferinput-en-eo.t1x-malgranda.txt");
       Writer output = new FileWriter("./tmp/"+outFile);
-      t.transfer( input, output);
+      t.process( input, output);
       output.close();
       assertEquals("Difference", "", exec("diff "+folder+outFile+" ./tmp/"+outFile));
       rm(outFile);

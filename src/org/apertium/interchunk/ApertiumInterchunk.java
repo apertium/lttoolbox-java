@@ -158,7 +158,7 @@ public class ApertiumInterchunk {
         }
 
         i.setNullFlush(par.nullFlush);
-        i.interchunk(par.input, par.output);
+        i.process(par.input, par.output);
         //Have to flush or there won't be any output.
         IOUtils.flush(par.output);
     }

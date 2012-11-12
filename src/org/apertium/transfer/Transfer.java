@@ -107,15 +107,18 @@ Now, the transfer code could need a big cleanup. This is the stuff I experimente
  * @author Jacob Nordfalk
  */
 public class Transfer {
+  public static boolean DEBUG = false;
+  public static final boolean DO_TIMING = false;
+  public Timing timing;
 
-  public Alphabet alphabet=new Alphabet();
+  public Alphabet alphabet;
   private String TRXReader__ANY_CHAR="<ANY_CHAR>";
   private String TRXReader__ANY_TAG="<ANY_TAG>";
+  private int any_char;
+  private int any_tag;
+
   private MatchExe me;
   private MatchState ms;
-  //private LinkedHashMap<String, ApertiumRE> attr_items = new LinkedHashMap<String, ApertiumRE>(); //   map<string, ApertiumRE, Ltstr> attr_items;
-  //private LinkedHashMap<String, String> variables = new LinkedHashMap<String, String>(); // map<string, string, Ltstr> variables;
-  //private LinkedHashMap<String, Integer> macros= new LinkedHashMap<String, Integer>(); // map<string, int, Ltstr> macros;
 
 
   /**
@@ -127,25 +130,25 @@ So the array of rule_map Method is taken by introspection, taking all methods be
   private Method[] rule_map=null;// vector<xmlNode *> rule_map;
 
   private BufferT<TransferToken> input_buffer=new BufferT<TransferToken>();
-  private FSTProcessor fstp =new FSTProcessor();
-  private FSTProcessor extended;
-  private boolean isExtended;
-  private int any_char;
-  private int any_tag;
+
   public GeneratedTransferBase transferObject;
 
-  public static boolean DEBUG = false;
-
-
-  //map<xmlNode *, TransferInstr> evalStringCache;
-  private boolean useBilingual=true;
-
-  private boolean preBilingual=false;
   /**
    * if true, flush the output when the null character is found
    */
   private boolean null_flush;
   private boolean internal_null_flush;
+
+
+
+  private FSTProcessor fstp =new FSTProcessor();
+  private FSTProcessor extended;
+  private boolean isExtended;
+
+  //map<xmlNode *, TransferInstr> evalStringCache;
+  private boolean useBilingual=true;
+
+  private boolean preBilingual=false;
 
   public void readData(ByteBuffer in, String filename) throws IOException {
     // symbols
@@ -206,8 +209,7 @@ So the array of rule_map Method is taken by introspection, taking all methods be
    * @throws IOException
    */
   @SuppressWarnings("unchecked")
-  public void read(Class transferClass, String datafile, String bilFstFile)
-          throws IOException, InstantiationException, IllegalAccessException {
+  public void read(Class transferClass, String datafile, String bilFstFile) throws Exception {
 
     ByteBuffer is = IOUtils.openFileAsByteBuffer(datafile);
     readData(is, datafile);
@@ -287,25 +289,20 @@ So the array of rule_map Method is taken by introspection, taking all methods be
   }
 
 
-  private void transfer_wrapper_null_flush(Reader input, Appendable output) throws Exception {
+  private void process_wrapper_null_flush(Reader input, Appendable output) throws Exception {
     null_flush= false;
-    internal_null_flush = true;
     while (input.ready()) {
-      transfer(input, output);
+      process(input, output);
       output.append('\0');
       IOUtils.flush(output);
     }
-    internal_null_flush = false;
     null_flush= true;
   }
 
 
-  public Timing timing;
-  public static final boolean DO_TIMING = false;
-
-  public void transfer(Reader in, Appendable output) throws Exception {
+  public void process(Reader in, Appendable output) throws Exception {
     if (getNullFlush()) {
-      transfer_wrapper_null_flush(in, output);
+      process_wrapper_null_flush(in, output);
     }
 
     output = Transfer.checkIfOutputMustBeWriterCompatible(output, rule_map);

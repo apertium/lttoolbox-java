@@ -111,7 +111,7 @@ public class TestInterchunk {
             interchunk.read(transferClass, preprocFile);
             interchunk.transferObject.debug = true;
 
-            interchunk.interchunk(input, output);
+            interchunk.process(input, output);
         } catch (Exception e) {
             e.printStackTrace();
             fail("Exception occured during test.");
@@ -148,7 +148,7 @@ public class TestInterchunk {
             interchunk.read(transferClass, preprocFile);
             //interchunk.transferObject.debug = true;
 
-            interchunk.interchunk(input, output);
+            interchunk.process(input, output);
         } catch (Exception e) {
             e.printStackTrace();
             fail("Exception occured during test.");

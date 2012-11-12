@@ -38,7 +38,7 @@ public class InterchunkEnEoTest {
       String exp = "^ĉu<adv><itg>{^ĉu<adv><itg>$}$ ^prnpers<SN><sp><nom>{^prpers<prn><p2><mf><sp><3>$}$ ^verb_all<SV><aliaj><pres>{^scii<vblex><3>$}$ ^det_nom<SN><sg><nom>{^la<det><def><sg><3>$ ^kato<n><sg><3>$}$^sent<S>{^?<sent>$}$\n";
       StringReader input = new StringReader(inp);
       Writer output = new StringWriter();
-      t.interchunk(input, output);
+      t.process(input, output);
 
       String out = output.toString();
 

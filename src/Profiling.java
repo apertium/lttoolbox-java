@@ -107,7 +107,7 @@ public class Profiling {
       Reader input = new FileReader(tdir+"transferinput-en-eo.t1x-malgranda.txt");
       String outFile = "./tmp/transfer-output-malgranda.txt";
       Writer output = new FileWriter(outFile);
-      t.transfer( input, output);
+      t.process( input, output);
       output.close();
       report("transfer" );
   }

@@ -38,7 +38,7 @@ public class TransferEnCaTest1 {
       String expect = "^Det_det_nom1<SN><DET><GD><pl>{^ĉiuj<predet><3><4><sp>$ ^el<det><def><3><pl>$ ^nivelo<n><4>$}$\n";
       Writer output = new StringWriter();
       t.transferObject.debug = true;
-      t.transfer( input, output);
+      t.process( input, output);
 
 
       System.err.println("expect = " + expect);

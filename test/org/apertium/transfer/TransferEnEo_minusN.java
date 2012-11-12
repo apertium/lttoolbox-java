@@ -35,7 +35,7 @@ public class TransferEnEo_minusN {
 
       StringReader input = new StringReader("^'<apos>$^Paris<np><ant><f><sg>$ ^'<gen>$ ^blue<adj>$ ^cat<n><pl>$ ^'<gen>$\n");
       Writer output = new StringWriter();
-      t.transfer( input, output);
+      t.process( input, output);
 
       String exp = "[']^Paris<np><ant><f><sg>$ ^'<gen>$ ^blue<adj>$ ^cat<n><pl>$[']\n";
 
@@ -43,7 +43,7 @@ public class TransferEnEo_minusN {
 
       System.err.println("exp = " + exp);
       assertEquals(exp, output.toString());
- 
+
   }
 
 }
