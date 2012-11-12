@@ -76,7 +76,8 @@ So the array of rule_map Method is taken by introspection, taking all methods be
     //System.out.println("reading : "+name);
     if (IOUtils.cacheDir != null && filename != null) {
       // Try to load make cached a memmapped transducer cache file
-      cacheFile = new File(IOUtils.cacheDir, filename.replace(File.separatorChar, '_').replace('.', '_'));
+      String fileid = new File(filename).getAbsolutePath().replace(File.separatorChar, '_').replace('.', '_');
+      cacheFile = new File(IOUtils.cacheDir, fileid);
       //System.out.println("cachedFile = " + cacheFile);
     }
     // faster - let it read itself, thus no need to make a big hashmap

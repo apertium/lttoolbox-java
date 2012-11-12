@@ -32,6 +32,12 @@ public class Profiling {
       report("start "+ new File(".").getAbsolutePath());
         System.gc();
         p.testTransfer();
+        p.testTransfer();
+        p.testTransfer();
+        p.testTransfer();
+        p.testTransfer();
+        p.testTransfer();
+        /*
         System.gc();
         p.testjavaAnalysis();
         System.gc();

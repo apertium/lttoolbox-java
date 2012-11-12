@@ -165,7 +165,14 @@ public class MatchExe {
   }
 
 
+  private int lastNodeLoadedId = -1;
+  private int[] lastNodeLoaded;
+
   public final int[] loadNode(int node_id) {
+    // This happens a lot as ANY_CHAR/ANY_TAG is quite frequent
+    if (lastNodeLoadedId==node_id) return lastNodeLoaded;
+    lastNodeLoadedId=node_id;
+
     int index = byteBufferPositions.getInt(node_id*4) & MAX_STATE_INDEX_NO;
 
     byteBuffer.position( index );
@@ -181,12 +188,12 @@ public class MatchExe {
         mynode[n++]=target_state;
         //              System.err.println(current_state+ "( "+symbol+" "+(char)symbol+")  -> "+target_state);
       }
-      System.err.println("loadNode("+node_id+") "+mynode.length);
-      return mynode;
+      if (MatchState.DEBUG) System.err.println("loadNode("+node_id+") "+mynode.length);
+      return lastNodeLoaded=mynode;
     } else {
       // then it must be a final state - we handle that elsewhere
-      System.err.println("loadNode("+node_id+") null");
-      return null;
+      if (MatchState.DEBUG) System.err.println("loadNode("+node_id+") null");
+      return lastNodeLoaded=null;
     }
   }
 

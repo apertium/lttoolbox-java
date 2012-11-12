@@ -78,26 +78,13 @@ public class MatchState {
      */
     int[] node = me.loadNode(pnode);
     if (node==null) return;
-
-    /* Search through the list of transitions from pnode to the input symbol.
-     * The step is 2 because of the format of the node list, see the
-     * javadoc for MatchExe.node_list for that specification.
-     */
-    for (int i=0; i<node.length-1; i+=2) { // TODO binary seach - No: only ca. 1%  cpu is used here anyway
-      if (node[i]==symbol) { //If the input symbol was found
-        int aux = node[i+1]; //Grab that symbol's node id
-        state[last] = aux; //store that node id
-        last = (last + 1) % BUF_LIMIT;
-        //increment last by 1 up to BUF_LIMIT, then wrap back around to zero.
-        break;
-      }
-    }
+    applySymbol(node, symbol);
   }
 
-	private boolean DEBUG = false;
+	final static boolean DEBUG = false;
 
   public void step(int input) {
-    if (DEBUG) System.out.println("step "+input);
+    if (DEBUG) System.err.println("step "+input+" "+toString());
     //Store the current end of the buffer, as the applySymbol calls will advance it.
     int mylast = last;
     /* Loop through each node in the state buffer from first to the old last
@@ -107,21 +94,25 @@ public class MatchState {
      * beginning, and continue searching.
      */
     for (int i = first; i != mylast; i = (i + 1) % BUF_LIMIT) {
-      applySymbol(state[i], input);
+      int[] node = me.loadNode(state[i]);
+      if (node==null) continue;
+      applySymbol(node, input);
     }
     //The old end of the buffer is now the beginning of the buffer.
     first = mylast;
   }
 
   public void step(int input, int alt) {
-		if (DEBUG) System.out.println("step "+input+" "+alt);
+		if (DEBUG) System.err.println("step "+input+"/"+alt+" "+toString());
     int mylast = last;
     for (int i = first; i != mylast; i = (i + 1) % BUF_LIMIT) {
       /* This is as above, but has two symbols to look for. The input symbol, and
        * an alternate. Transitions to either one are added to the state buffer.
        */
-      applySymbol(state[i], input);
-      applySymbol(state[i], alt);
+      int[] node = me.loadNode(state[i]);
+      if (node==null) continue;
+      applySymbol(node, input);
+      applySymbol(node, alt);
     }
     first = mylast;
   }
@@ -146,7 +137,24 @@ public class MatchState {
     return result;
   }
 
+  @Override
   public String toString() {
     return "ms["+first +";"+last+"]=" + Arrays.toString(Arrays.copyOfRange(state, first, last));
+  }
+
+  private void applySymbol(int[] node, int symbol) {
+    /* Search through the list of transitions from pnode to the input symbol.
+     * The step is 2 because of the format of the node list, see the
+     * javadoc for MatchExe.node_list for that specification.
+     */
+    for (int i=0; i<node.length-1; i+=2) { // TODO binary seach - No: only ca. 1%  cpu is used here anyway
+      if (node[i]==symbol) { //If the input symbol was found
+        int aux = node[i+1]; //Grab that symbol's node id
+        state[last] = aux; //store that node id
+        last = (last + 1) % BUF_LIMIT;
+        //increment last by 1 up to BUF_LIMIT, then wrap back around to zero (cirkular buffer).
+        break;
+      }
+    }
   }
 }
