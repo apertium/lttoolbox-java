@@ -4,6 +4,7 @@
  */
 package org.apertium.transfer;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
@@ -146,14 +147,22 @@ So the array of rule_map Method is taken by introspection, taking all methods be
   private boolean null_flush;
   private boolean internal_null_flush;
 
-  public void readData(ByteBuffer in) throws IOException {
+  public void readData(ByteBuffer in, String filename) throws IOException {
     // symbols
     alphabet=Alphabet.read(in);
     any_char=alphabet.cast(TRXReader__ANY_CHAR);
     any_tag=alphabet.cast(TRXReader__ANY_TAG);
 
+    File cacheFile = null;
+    //System.out.println("reading : "+name);
+    if (IOUtils.cacheDir!=null && filename!=null) {
+      // Try to load make cached a memmapped transducer cache file
+      cacheFile = new File(IOUtils.cacheDir, filename.replace(File.separatorChar, '_'));
+      //System.out.println("cachedFile = " + cacheFile);
+    }
+
     // faster - let it read itselv, thus no need to make a big hashmap
-    me=new MatchExe(in, alphabet.size());
+    me=new MatchExe(in, alphabet.size(), cacheFile);
     ms =new MatchState(me);
 
     // Rest of data file contains attr_items, variables. macros, lists.
@@ -201,7 +210,7 @@ So the array of rule_map Method is taken by introspection, taking all methods be
           throws IOException, InstantiationException, IllegalAccessException {
 
     ByteBuffer is = IOUtils.openFileAsByteBuffer(datafile);
-    readData(is);
+    readData(is, datafile);
 
     Method[] mets =  transferClass.getMethods();
     rule_map = new Method[mets.length];
@@ -445,8 +454,8 @@ So the array of rule_map Method is taken by introspection, taking all methods be
   }
 
 
-  private void applyRule(Appendable output, Method rule,
-    ArrayList<String> words, ArrayList<String> blanks) throws Exception
+  private void applyRule(Appendable output, Method rule, ArrayList<String> words, ArrayList<String> blanks)
+      throws Exception
   {
     if (DEBUG) System.err.println("applyRule("+rule+ ", " + words+ ", " + blanks);
     if (DO_TIMING) timing.log("other1");

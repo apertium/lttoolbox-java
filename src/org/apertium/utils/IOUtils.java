@@ -42,6 +42,12 @@ public class IOUtils {
     /** Path to location of cached node indexes */
     public static File cacheDir = new File("/tmp/apertium-cache");
 
+    static {
+      try {
+        cacheDir = new File(System.getProperty("java.io.tmpdir"),"apertium-cache");
+      } catch (Throwable t) {} // ignore
+    }
+
 
 
     public static void setJarAsResourceZip() throws IOException {

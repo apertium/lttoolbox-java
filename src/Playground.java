@@ -28,8 +28,8 @@ public class Playground {
       //String[] arg = {"-d", "/usr/local/share/apertium/", "en-es", "/tmp/will", "/tmp/will.rezulto"};
       //ApertiumMain.main(arg);
 
-      measureMemory();
-//      measureBigTransferMemory();
+//      measureMemory();
+      measureBigTransferMemory();
 
 /*
     fstp.load(new BufferedInputStream(new FileInputStream("unhammer-fejl/hang.bin")));
@@ -75,7 +75,7 @@ public class Playground {
   private static void measureBigTransferMemory() throws InterruptedException, IOException {
     Runtime rt = Runtime.getRuntime();
     Transfer fstp = new Transfer();
-     fstp.readData(IOUtils.openFileAsByteBuffer("../en-es.t1x.bin"));
+     fstp.readData(IOUtils.openFileAsByteBuffer("../en-es.t1x.bin"), "en-es.t1x.bin");
      fstp = null;
      System.gc();
      Thread.sleep(200);
@@ -83,7 +83,7 @@ public class Playground {
 
     long alloc1 = rt.totalMemory()-rt.freeMemory();
      fstp = new Transfer();
-     fstp.readData(IOUtils.openFileAsByteBuffer("../en-es.t1x.bin"));
+     fstp.readData(IOUtils.openFileAsByteBuffer("../en-es.t1x.bin"),"en-es.t1x.bin");
      System.gc();
      Thread.sleep(200);
      System.gc();

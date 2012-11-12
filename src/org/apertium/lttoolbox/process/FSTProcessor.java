@@ -74,6 +74,8 @@ import java.util.List;
 import org.apertium.utils.IOUtils;
 
 public class FSTProcessor {
+  public static boolean DEBUG = true;
+
   private boolean isLastBlankTM;
   private boolean showControlSymbols = false;
   private boolean biltransSurfaceForms;
@@ -686,6 +688,9 @@ public class FSTProcessor {
    @throws IOException
    */
   public void load(InputStream input) throws IOException {
+    if (DEBUG) {
+      System.err.println("FSTProcessor.load - SLOW VERSION");
+    }
     ByteBuffer byteBuffer =  IOUtils.inputStreamToByteBuffer(input);
     load(byteBuffer);
   }
@@ -696,6 +701,9 @@ public class FSTProcessor {
    @throws IOException
    */
   public void load(String filePath) throws IOException {
+    if (DEBUG) {
+      System.err.println("FSTProcessor memmap and load("+filePath);
+    }
     load(IOUtils.memmap(filePath), filePath);
   }
 
@@ -730,6 +738,7 @@ public class FSTProcessor {
     alphabet = Alphabet.read(input);
 
     if (DEBUG) {
+      System.err.println("FSTProcessor load("+input+ " "+filename);
       System.err.println("alphabet = " + alphabet.toString());
     }
 
@@ -945,7 +954,6 @@ public class FSTProcessor {
   public void initBiltrans() {
     initGeneration();
   }
-  public static boolean DEBUG = false;
 
   /*
    private final char charAt(String s, int index) { return s.charAt(index); }

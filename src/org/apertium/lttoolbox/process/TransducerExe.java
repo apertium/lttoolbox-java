@@ -181,7 +181,6 @@ public class TransducerExe {
 
     initial_id = Compression.multibyte_read(input);  // 0 for eo-en.dix)
     final int finals_size = Compression.multibyte_read(input); // xx  (5 for eo-en.dix)
-    //System.out.println("finals_size : "+finals_size);
 
     this.alphabet = alphabet;
 
@@ -215,17 +214,22 @@ public class TransducerExe {
       RandomAccessFile raf = new RandomAccessFile(cachedFile, "r");
       byteBufferPositions = raf.getChannel().map(FileChannel.MapMode.READ_ONLY, 0, cacheFileSize);
       canReadFromCache = true;
-    } else if (!cachedFile.exists() || cachedFile.canWrite()) {
+    } else {
       if (cachedFile.exists()) cachedFile.delete();
       cachedFile.getParentFile().mkdirs();
-      RandomAccessFile raf = new RandomAccessFile(cachedFile, "rw");
-      byteBufferPositions = raf.getChannel().map(FileChannel.MapMode.READ_WRITE, 0, cacheFileSize);
-    } else {
-      byteBufferPositions = ByteBuffer.allocate(cacheFileSize); //int[number_of_statesl];
+      if (cachedFile.canWrite()) {
+        RandomAccessFile raf = new RandomAccessFile(cachedFile, "rw");
+        byteBufferPositions = raf.getChannel().map(FileChannel.MapMode.READ_WRITE, 0, cacheFileSize);
+      } else {
+        byteBufferPositions = ByteBuffer.allocate(cacheFileSize); //int[number_of_statesl];
+      }
+    }
+
+    if (FSTProcessor.DEBUG) {
+      System.err.println("TransducerExe read states:"+number_of_states+ "  cachedFile="+cachedFile+" "+canReadFromCache+" "+byteBufferPositions);
     }
 
 
-    //
     if (canReadFromCache) {
       int lastPos = byteBufferPositions.getInt(number_of_states*4);
       input.position(lastPos); // Skip to end position

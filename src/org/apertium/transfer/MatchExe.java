@@ -19,6 +19,7 @@ package org.apertium.transfer;
  */
 
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import org.apertium.lttoolbox.Compression;
@@ -32,7 +33,7 @@ public class MatchExe {
   /**
    * Initial state
    */
-  private int initial_id;
+  private final int initial_id;
 
   final ByteBuffer data;
   final int[] state_to_data_index;
@@ -41,7 +42,7 @@ public class MatchExe {
   final int decalage;
 
 
-  public MatchExe(ByteBuffer in, int decalage) throws IOException {
+  public MatchExe(ByteBuffer in, int decalage, File cachedFile) throws IOException {
     data = in;
     this.decalage = decalage;
     //reading the initial state - set up initial node
@@ -79,8 +80,18 @@ public class MatchExe {
    // noOfFinals == number of rules
 
 
-    _readAndAddFinals(in);
+    int number_of_finals2=Compression.multibyte_read(in);  // == number_of_finals
+
+
+    for (int i=0; i!=number_of_finals; i++) {
+      int key=Compression.multibyte_read(in);
+      int value=Compression.multibyte_read(in); // value == rule number (method nomber)
+      final_state_to_symbol[key]=(short) value;
+      //System.err.println("node_list["+key+"] = " + Arrays.toString(node_list[key]));
+      //System.err.println("node_list["+key+"] = " + Arrays.toString(node_list[key]));
+    }
   }
+
 
   public int[] loadNode(int current_state) {
     data.position( state_to_data_index[current_state] );
@@ -111,20 +122,6 @@ public class MatchExe {
         Compression.multibyte_skip(in);
         Compression.multibyte_skip(in);
       }
-    }
-  }
-
-  private void _readAndAddFinals(ByteBuffer in) throws IllegalStateException, IOException {
-
-    int number_of_finals=Compression.multibyte_read(in);
-
-
-    for (int i=0; i!=number_of_finals; i++) {
-      int key=Compression.multibyte_read(in);
-      int value=Compression.multibyte_read(in); // value == rule number (method nomber)
-      final_state_to_symbol[key]=(short) value;
-      //System.err.println("node_list["+key+"] = " + Arrays.toString(node_list[key]));
-      //System.err.println("node_list["+key+"] = " + Arrays.toString(node_list[key]));
     }
   }
 

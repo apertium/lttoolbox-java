@@ -19,6 +19,7 @@
 
 package org.apertium.interchunk;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -105,20 +106,30 @@ public class Interchunk {
         icMode = InterchunkMode.INTERCHUNK;
     }
 
-    /**
-     * Copied from {@link org.apertium.transfer.Transfer#readData(InputStream)}
-     *
-     * @param in
-     * @throws IOException
-     */
+
+    /** @deprecated */
     public void readData(ByteBuffer in) throws IOException {
+      readData(in, null);
+    }
+
+
+    public void readData(ByteBuffer in, String filename) throws IOException {
         // symbols
         alphabet = Alphabet.read(in);
         any_char = alphabet.cast(TRXReader__ANY_CHAR);
         any_tag = alphabet.cast(TRXReader__ANY_TAG);
 
+
+        File cacheFile = null;
+        //System.out.println("reading : "+name);
+        if (IOUtils.cacheDir!=null && filename!=null) {
+          // Try to load make cached a memmapped transducer cache file
+          cacheFile = new File(IOUtils.cacheDir, filename.replace(File.separatorChar, '_'));
+          //System.out.println("cachedFile = " + cacheFile);
+        }
+
         // faster - let it read itself, thus no need to make a big hashmap
-        me = new MatchExe(in, alphabet.size());
+        me = new MatchExe(in, alphabet.size(), cacheFile);
         ms = new MatchState(me);
     }
 
@@ -137,7 +148,7 @@ public class Interchunk {
             InstantiationException {
 
         ByteBuffer is = IOUtils.openFileAsByteBuffer(datafile);
-        readData(is);
+        readData(is, datafile);
 
         Method[] mets = transferClass.getMethods();
         rule_map = new Method[mets.length];
