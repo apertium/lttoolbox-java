@@ -136,7 +136,7 @@ public class MatchState {
      * from the end of the buffer to the beginning, if necessary.
      */
     for (int i = first; i != last; i = (i + 1) % BUF_LIMIT) {
-      short symbol = me.final_state_to_symbol[state[i]];
+      int symbol = me.final_state_to_symbol(state[i]);
       if (symbol!=0) result = Math.min(result, symbol);
     }
     result = (result < Integer.MAX_VALUE) ? result : (-1);

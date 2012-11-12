@@ -21,9 +21,12 @@ package org.apertium.transfer;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.Arrays;
 import org.apertium.lttoolbox.Compression;
+import org.apertium.lttoolbox.process.FSTProcessor;
 
 /**
  * The container object that contains all states (and transitions betweem them)
@@ -37,12 +40,15 @@ public class MatchExe {
   private final int initial_id;
 
   final ByteBuffer data;
-  final int[] state_to_data_index;
-  final short[] final_state_to_symbol;
+  //private final int[] byteBufferPositions;
+  private ByteBuffer byteBufferPositions;
+
+  //private final short[] final_state_to_symbol;
   final int number_of_states;
   final int decalage;
 
-  private static final int MAX_OUTPUT_SYMBOLS_POWS_OF_2 = 11;
+  /** We putting in final state output values (rule number) into the high bits of the state array index (final_state_to_symbol) */
+  private static final int MAX_OUTPUT_SYMBOLS_POWS_OF_2 = 10; // Must be 9 (max 512 rules, max 8MB t1x.bin file) or 10 (max 1024 rules, max 4MB t1x.bin file)
   private static final int MAX_OUTPUT_SYMBOLS_SHIFT = 32 - MAX_OUTPUT_SYMBOLS_POWS_OF_2; // 32 bits in an int
   private static final int MAX_OUTPUT_SYMBOLS = (1 << MAX_OUTPUT_SYMBOLS_POWS_OF_2) - 1;  // 2047
   private static final int MAX_STATE_INDEX_NO = (1 << MAX_OUTPUT_SYMBOLS_SHIFT) - 1;
@@ -52,6 +58,7 @@ public class MatchExe {
     this.decalage = decalage;
     //reading the initial state - set up initial node
     initial_id = Compression.multibyte_read(in);
+
 
     //reading the list of final states - not used
     int number_of_finals = Compression.multibyte_read(in);
@@ -67,18 +74,58 @@ public class MatchExe {
     //reading the transitions
     number_of_states = Compression.multibyte_read(in);
 
+    // -----------------
+    /*
+    boolean canReadFromCache = false;
+    int cacheFileSize = number_of_states*4 + 4; // one extra int to hold index of end of transducer
+    if (cachedFile.canRead() && cachedFile.length() == cacheFileSize) {
+      RandomAccessFile raf = new RandomAccessFile(cachedFile, "r");
+      byteBufferPositions = raf.getChannel().map(FileChannel.MapMode.READ_ONLY, 0, cacheFileSize);
+      canReadFromCache = true;
+    } else {
+      if (cachedFile.exists()) cachedFile.delete();
+      cachedFile.getParentFile().mkdirs();
+      if (cachedFile.canWrite()) {
+        RandomAccessFile raf = new RandomAccessFile(cachedFile, "rw");
+        byteBufferPositions = raf.getChannel().map(FileChannel.MapMode.READ_WRITE, 0, cacheFileSize);
+      } else {
+        byteBufferPositions = ByteBuffer.allocate(cacheFileSize); //int[number_of_statesl];
+      }
+    }
+
+    if (FSTProcessor.DEBUG) {
+      System.err.println("TransducerExe read states:"+number_of_states+ "  cachedFile="+cachedFile+" "+canReadFromCache+" "+byteBufferPositions);
+    }
+
+
+    if (canReadFromCache) {
+      int lastPos = byteBufferPositions.getInt(number_of_states*4);
+      input.position(lastPos); // Skip to end position
+      return;
+    }
+
+    // No cache. Load and index the nodes
+
+    */
+
+
+
+    // -----------------
+    int cacheFileSize = number_of_states*4 + 4; // one extra int to hold index of end of transducer
+
     // memory allocation
-    state_to_data_index = new int[number_of_states];
-    final_state_to_symbol = new short[number_of_states];
+    byteBufferPositions = ByteBuffer.allocate(cacheFileSize); //int[number_of_statesl];
+    //byteBufferPositions = new int[number_of_states];
+    //final_state_to_symbol = new short[number_of_states];
 
     int current_state=0;
     for (int i=number_of_states; i>0; i--) {
-      state_to_data_index[current_state] = in.position();
+      byteBufferPositions.putInt(current_state*4, in.position());
       skipNode(in);
       current_state++;
     }
 
-    if (state_to_data_index[current_state-1]>MAX_STATE_INDEX_NO) throw new IllegalStateException("Cannot hold state index value. File too large: "+in.position());
+    if (byteBufferPositions.getInt( (current_state-1)*4)>MAX_STATE_INDEX_NO) throw new IllegalStateException("Cannot hold state index value. File too large: "+in.position()+". Max possible value is "+MAX_STATE_INDEX_NO);
 
 
     // set up finals
@@ -93,20 +140,27 @@ public class MatchExe {
     for (int i=0; i!=number_of_finals; i++) {
       int key=Compression.multibyte_read(in);
       int value=Compression.multibyte_read(in); // value == rule number (method nomber)
-      if (value>MAX_OUTPUT_SYMBOLS) throw new IllegalStateException("Output symbol index value too large: "+value);
+      if (value>MAX_OUTPUT_SYMBOLS) throw new IllegalStateException("Output symbol index value too large: "+value+". Max value is: "+MAX_OUTPUT_SYMBOLS);
 
-//      state_to_data_index[key] |=  value>> (32-MAX_OUTPUT_SYMBOLS_POWS_OF_2);
 
-      final_state_to_symbol[key]=(short) value;
-//      state_to_data_index[key] = -state_to_data_index[key]; // negative sign signals a final state
+      //final_state_to_symbol[key]=(short) value;
+      byteBufferPositions.putInt(key*4, byteBufferPositions.getInt(key*4) | value<<MAX_OUTPUT_SYMBOLS_SHIFT);
+
 //      System.err.println("node_list["+key+"] = " + value);
       //System.err.println("node_list["+key+"] = " + Arrays.toString(node_list[key]));
     }
   }
 
 
+  int final_state_to_symbol(int index) {
+    // final_state_to_symbol
+    //return final_state_to_symbol[index];
+    return byteBufferPositions.getInt(index*4)>>MAX_OUTPUT_SYMBOLS_SHIFT;
+  }
+
+
   public int[] loadNode(int node_id) {
-    int index = state_to_data_index[node_id];
+    int index = byteBufferPositions.getInt(node_id*4) & MAX_STATE_INDEX_NO;
 
     data.position( index );
     int number_of_local_transitions=Compression.multibyte_read(data);
