@@ -68,6 +68,25 @@ public class Compression {
     }
 
     /**
+     * Encodes an integer value and writes it into the output stream
+     * @param value integer to write.
+     */
+    public static int multibyte_len(long value) {
+        if (value < 0x00000040) {
+            return 1;
+        } else if (value < 0x00004000) {
+            return 2;
+        } else if (value < 0x00400000) {
+            return 3;
+        } else if (value < 0x40000000) {
+            return 4;
+        } else {
+            throw new RuntimeException("Out of range: " + value);
+        }
+    }
+
+
+    /**
      * Read and decode an integer from the input stream.
      * @param input input stream.
      * @return the integer value readed.

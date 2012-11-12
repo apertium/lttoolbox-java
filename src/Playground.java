@@ -5,6 +5,7 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import org.apertium.lttoolbox.process.FSTProcessor;
 import org.apertium.pipeline.ApertiumMain;
+import org.apertium.transfer.AbstractTransfer;
 import org.apertium.transfer.ApertiumTransfer;
 import org.apertium.transfer.Transfer;
 import org.apertium.transfer.old.compile.ApertiumTransferCompile;
@@ -28,6 +29,7 @@ public class Playground {
       //String[] arg = {"-d", "/usr/local/share/apertium/", "en-es", "/tmp/will", "/tmp/will.rezulto"};
       //ApertiumMain.main(arg);
 
+      AbstractTransfer.DEBUG = true;
 //      measureMemory();
       measureBigTransferMemory("../apertium-en-es/en-es.t1x.bin");
       measureBigTransferMemory("../apertium-eu-en/eu-en.t1x.bin");

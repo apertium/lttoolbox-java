@@ -21,12 +21,8 @@ package org.apertium.transfer;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
-import java.util.Arrays;
 import org.apertium.lttoolbox.Compression;
-import org.apertium.lttoolbox.process.FSTProcessor;
 import org.apertium.utils.IOUtils;
 
 /**
@@ -45,8 +41,8 @@ public class MatchExe {
   private ByteBuffer byteBufferPositions;
 
   //private final short[] final_state_to_symbol;
-  final int number_of_states;
-  final int decalage;
+  private int number_of_states;
+  private final int decalage;
 
   /** We putting in final state output values (rule number) into the high bits of the state array index (final_state_to_symbol) */
   private static final int MAX_OUTPUT_SYMBOLS_POWS_OF_2 = 10; // Must be 9 (max 512 rules, max 8MB t1x.bin file) or 10 (max 1024 rules, max 4MB t1x.bin file)
@@ -59,6 +55,41 @@ public class MatchExe {
     this.decalage = decalage;
     //reading the initial state - set up initial node
     initial_id = Compression.multibyte_read(input);
+
+    if (cachedFile.canRead()) try {
+      int cacheFileSize = (int) cachedFile.length();
+      byteBufferPositions = IOUtils.mapByteBuffer(cachedFile, cacheFileSize);
+      // Just before the transducers will the number_of_states be encoded
+      // Use this as a chech to make sure the index is intact
+      int number_of_states1 = (cacheFileSize - 4) / 4;
+      int number_of_states_pos = byteBufferPositions.getInt(0) - Compression.multibyte_len(number_of_states1);
+      byteBuffer.position(number_of_states_pos);
+      int number_of_states2 =  Compression.multibyte_read(byteBuffer);
+      if (number_of_states2 != number_of_states1) {
+        // check failed, reload
+        byteBufferPositions = null;
+        if (AbstractTransfer.DEBUG) {
+          System.err.println("TransducerExe discarding cached index - "+number_of_states1+ " != "+number_of_states2);
+        }
+      } else {
+        // cache test passed - use it and skip reading the rest of the file
+        number_of_states = number_of_states1;
+        if (AbstractTransfer.DEBUG) {
+          System.err.println("TransducerExe cache test passed number_of_states="+number_of_states+ " for "+cachedFile);
+        }
+        return;
+      }
+
+    } catch (Exception e) {
+      if (AbstractTransfer.DEBUG) {
+        System.err.println("TransducerExe ignoring error for cachedFile "+cachedFile);
+        e.printStackTrace();
+      }
+      byteBufferPositions = null;
+    }
+
+    // cache check failed, so dont try load it
+    cachedFile.delete();
 
 
     //reading the list of final states - not used
@@ -80,7 +111,7 @@ public class MatchExe {
     byteBufferPositions = IOUtils.mapByteBuffer(cachedFile, cacheFileSize);
     //byteBufferPositions = ByteBuffer.allocate(cacheFileSize); //int[number_of_statesl];
 
-    if (FSTProcessor.DEBUG) {
+    if (AbstractTransfer.DEBUG) {
       System.err.println("TransducerExe read states:"+number_of_states+ "  cachedFile="+cachedFile+" "+byteBufferPositions.isReadOnly()+" "+byteBufferPositions);
     }
 
@@ -127,14 +158,14 @@ public class MatchExe {
   }
 
 
-  int final_state_to_symbol(int index) {
+  final int final_state_to_symbol(int index) {
     // final_state_to_symbol
     //return final_state_to_symbol[index];
     return byteBufferPositions.getInt(index*4)>>MAX_OUTPUT_SYMBOLS_SHIFT;
   }
 
 
-  public int[] loadNode(int node_id) {
+  public final int[] loadNode(int node_id) {
     int index = byteBufferPositions.getInt(node_id*4) & MAX_STATE_INDEX_NO;
 
     byteBuffer.position( index );
@@ -150,9 +181,11 @@ public class MatchExe {
         mynode[n++]=target_state;
         //              System.err.println(current_state+ "( "+symbol+" "+(char)symbol+")  -> "+target_state);
       }
+      System.err.println("loadNode("+node_id+") "+mynode.length);
       return mynode;
     } else {
       // then it must be a final state - we handle that elsewhere
+      System.err.println("loadNode("+node_id+") null");
       return null;
     }
   }

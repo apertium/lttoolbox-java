@@ -74,7 +74,7 @@ import java.util.List;
 import org.apertium.utils.IOUtils;
 
 public class FSTProcessor {
-  public static boolean DEBUG = true;
+  public static boolean DEBUG = false;
 
   private boolean isLastBlankTM;
   private boolean showControlSymbols = false;
