@@ -22,6 +22,7 @@ package org.apertium.transfer;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import org.apertium.lttoolbox.Compression;
 
 /**
@@ -41,6 +42,10 @@ public class MatchExe {
   final int number_of_states;
   final int decalage;
 
+  private static final int MAX_OUTPUT_SYMBOLS_POWS_OF_2 = 11;
+  private static final int MAX_OUTPUT_SYMBOLS_SHIFT = 32 - MAX_OUTPUT_SYMBOLS_POWS_OF_2; // 32 bits in an int
+  private static final int MAX_OUTPUT_SYMBOLS = (1 << MAX_OUTPUT_SYMBOLS_POWS_OF_2) - 1;  // 2047
+  private static final int MAX_STATE_INDEX_NO = (1 << MAX_OUTPUT_SYMBOLS_SHIFT) - 1;
 
   public MatchExe(ByteBuffer in, int decalage, File cachedFile) throws IOException {
     data = in;
@@ -73,6 +78,8 @@ public class MatchExe {
       current_state++;
     }
 
+    if (state_to_data_index[current_state-1]>MAX_STATE_INDEX_NO) throw new IllegalStateException("Cannot hold state index value. File too large: "+in.position());
+
 
     // set up finals
    //  values for en_ca_t1x: {14=1, 41=2, 48=2, 55=2, 62=2, 69=2, 76=2, 83=2, 90=2, 97=2, 103=90, 106=90, 109=90, ...
@@ -86,15 +93,22 @@ public class MatchExe {
     for (int i=0; i!=number_of_finals; i++) {
       int key=Compression.multibyte_read(in);
       int value=Compression.multibyte_read(in); // value == rule number (method nomber)
+      if (value>MAX_OUTPUT_SYMBOLS) throw new IllegalStateException("Output symbol index value too large: "+value);
+
+//      state_to_data_index[key] |=  value>> (32-MAX_OUTPUT_SYMBOLS_POWS_OF_2);
+
       final_state_to_symbol[key]=(short) value;
-      //System.err.println("node_list["+key+"] = " + Arrays.toString(node_list[key]));
+//      state_to_data_index[key] = -state_to_data_index[key]; // negative sign signals a final state
+//      System.err.println("node_list["+key+"] = " + value);
       //System.err.println("node_list["+key+"] = " + Arrays.toString(node_list[key]));
     }
   }
 
 
-  public int[] loadNode(int current_state) {
-    data.position( state_to_data_index[current_state] );
+  public int[] loadNode(int node_id) {
+    int index = state_to_data_index[node_id];
+
+    data.position( index );
     int number_of_local_transitions=Compression.multibyte_read(data);
     if (number_of_local_transitions>0) {
       int[] mynode = new int[number_of_local_transitions*2];
@@ -102,7 +116,7 @@ public class MatchExe {
       int n=0;
       for (int j=number_of_local_transitions; j>0; j--) {
         symbol+=Compression.multibyte_read(data)-decalage;
-        int target_state=(current_state+Compression.multibyte_read(data))%number_of_states;
+        int target_state=(node_id+Compression.multibyte_read(data))%number_of_states;
         mynode[n++]=symbol;
         mynode[n++]=target_state;
         //              System.err.println(current_state+ "( "+symbol+" "+(char)symbol+")  -> "+target_state);
@@ -117,11 +131,9 @@ public class MatchExe {
 
   private void skipNode(ByteBuffer in) {
     int number_of_local_transitions=Compression.multibyte_read(in);
-    if (number_of_local_transitions>0) {
-      for (int j=number_of_local_transitions; j>0; j--) {
-        Compression.multibyte_skip(in);
-        Compression.multibyte_skip(in);
-      }
+    for (int j=number_of_local_transitions; j>0; j--) {
+      Compression.multibyte_skip(in);
+      Compression.multibyte_skip(in);
     }
   }
 

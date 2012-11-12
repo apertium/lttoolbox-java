@@ -29,7 +29,9 @@ public class Playground {
       //ApertiumMain.main(arg);
 
 //      measureMemory();
-      measureBigTransferMemory();
+      measureBigTransferMemory("../apertium-en-es/en-es.t1x.bin");
+      measureBigTransferMemory("../apertium-eu-en/eu-en.t1x.bin");
+      measureBigTransferMemory("../apertium-eo-fr/fr-eo.t1x.bin");
 
 /*
     fstp.load(new BufferedInputStream(new FileInputStream("unhammer-fejl/hang.bin")));
@@ -72,10 +74,10 @@ public class Playground {
     System.err.println("measureMemory alloc " + (alloc2 - alloc1));
   }
 
-  private static void measureBigTransferMemory() throws InterruptedException, IOException {
+  private static void measureBigTransferMemory(String fil) throws InterruptedException, IOException {
     Runtime rt = Runtime.getRuntime();
     Transfer fstp = new Transfer();
-     fstp.readData(IOUtils.openFileAsByteBuffer("../en-es.t1x.bin"), "en-es.t1x.bin");
+     fstp.readData(IOUtils.openFileAsByteBuffer(fil), fil);
      fstp = null;
      System.gc();
      Thread.sleep(200);
@@ -83,12 +85,12 @@ public class Playground {
 
     long alloc1 = rt.totalMemory()-rt.freeMemory();
      fstp = new Transfer();
-     fstp.readData(IOUtils.openFileAsByteBuffer("../en-es.t1x.bin"),"en-es.t1x.bin");
+     fstp.readData(IOUtils.openFileAsByteBuffer(fil),fil);
      System.gc();
      Thread.sleep(200);
      System.gc();
     long alloc2 = rt.totalMemory()-rt.freeMemory();
 
-    System.err.println("measureBigTransferMemory alloc " + (alloc2 - alloc1));
+    System.err.println("measureBigTransferMemory alloc " + (alloc2 - alloc1)+" "+fil);
   }
 }
