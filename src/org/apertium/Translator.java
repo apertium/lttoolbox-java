@@ -26,6 +26,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.logging.Level;
@@ -214,7 +215,7 @@ public class Translator {
                 }
                 return;
             }
-        throw new IllegalArgumentException("Invalid mode.");
+        throw new IllegalArgumentException("Invalid mode. Valid modes are "+Arrays.toString(modeFiles));
     }
 
     public static String[] getAvailableModes() {

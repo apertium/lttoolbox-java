@@ -95,9 +95,14 @@ public class ApertiumMain {
         clp.reformatter = new Program(reFormatProgName);
     }
 
-    private static boolean _parseCommandLine(String[] args,
-            CommandLineParams clp) throws Exception {
-        Getopt getopt = new Getopt("Apertium", args, "d:f:ual");
+    private static boolean _parseCommandLine(String[] args, CommandLineParams clp) throws Exception {
+      
+      if (args.length == 0) {
+        _displayHelp();
+        return false;
+      }
+
+      Getopt getopt = new Getopt("Apertium", args, "d:f:ual");
 
         while (true) {
             int c = getopt.getopt();
