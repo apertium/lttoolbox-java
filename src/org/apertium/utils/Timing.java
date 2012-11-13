@@ -22,14 +22,15 @@ import java.util.LinkedHashMap;
       long diff = now - timing;
       timing = now;
       if ("".equals(task)) {
-        if (diff<100) return;
-        new Exception("You reset the timer at a place where you shoud use it, diff="+diff).printStackTrace();
+        if (diff<500 || times.isEmpty()) return;
+        new Exception("Note: You reset the timer at a place where you should probably use it, diff="+diff).printStackTrace();
+        task = "(unknown)";
       }
       //System.err.println("diff = " + diff);
       Long sum = times.get(task);
       sum = sum==null? diff : diff+sum;
       times.put(task, sum);
-      if (logging) System.err.println(name+" used " + ((diff/10)/100.0)+ " ms for "+task);
+      if (logging) System.err.println(name+": used " + diff+ " ms for "+task);
     }
 
     public void report() {
@@ -40,6 +41,7 @@ import java.util.LinkedHashMap;
         long time = times.get(task);
         System.err.println(name+" used " + ((1000*time/total)/10.0)+ " % time for "+task);
       }
-      System.err.println(name+" took total " + ((total/10000)/100.0)+ " sec");
+      System.err.println(name+" took total " + ((total/10)/100.0)+ " sec");
+      times.clear();
     }
   }

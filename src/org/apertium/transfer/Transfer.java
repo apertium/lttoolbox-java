@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.apertium.lttoolbox.Pair;
 import org.apertium.lttoolbox.process.FSTProcessor;
+import org.apertium.utils.IOUtils;
 import org.apertium.utils.Timing;
 import static org.apertium.utils.IOUtils.openFileAsByteBuffer;
 
@@ -153,8 +154,9 @@ public class Transfer extends AbstractTransfer {
   public void read(Class transferClass, String datafile, String bilFstFile) throws Exception {
     super.read(transferClass, datafile);
 
-    if (bilFstFile!=null&&bilFstFile.length()>0) {
+    if (bilFstFile!=null && bilFstFile.length()>0) {
       readBil(bilFstFile);
+      if (IOUtils.timing != null) IOUtils.timing.log("Load bilingual transfer transducer "+bilFstFile);
     }
   }
 
@@ -203,6 +205,7 @@ public class Transfer extends AbstractTransfer {
 
   @Override
   public void process(Reader in, Appendable output) throws Exception {
+    if (IOUtils.timing != null) IOUtils.timing.log("");
     if (getNullFlush()) {
       process_wrapper_null_flush(in, output);
     }
@@ -340,6 +343,7 @@ public class Transfer extends AbstractTransfer {
               timing.log("transfer");
               timing.report();
             }
+            if (IOUtils.timing != null) IOUtils.timing.log("Process interchunk/postchunk");
             return;
           }
           break;

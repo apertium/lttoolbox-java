@@ -30,6 +30,7 @@ public class TransferClassLoader extends ClassLoader {
     @SuppressWarnings("unchecked")
     public static Class loadTxClass(String txOrClassFile, String binFile)
             throws ClassNotFoundException, IOException {
+        if (IOUtils.timing != null) IOUtils.timing.log("");
         try { // We first try to load the class directly
             String className = txOrClassFile.replace('.', '_').replace('-', '_').replace('/', '.').replace('\\', '.');
             if (className.startsWith("data.")) className = "transfer_classes" + className.substring(4);
@@ -37,6 +38,7 @@ public class TransferClassLoader extends ClassLoader {
             ClassLoader loader = getLoader() != null ? getLoader() : TransferClassLoader.class.getClassLoader();
             return loader.loadClass(className);
         } catch (Exception e) {} //If it fails we will keep trying and, if necessary, generate it
+        finally { if (IOUtils.timing != null) IOUtils.timing.log("Load transfer class1 for "+binFile); }
         return loadTxClass(txOrClassFile, binFile, new TransferClassLoader());
     }
 
@@ -45,7 +47,6 @@ public class TransferClassLoader extends ClassLoader {
     public static Class loadTxClass(String txOrClassFile, String binFile, TransferClassLoader tcl)
             throws ClassNotFoundException, IOException {
 
-        if (IOUtils.timing != null) IOUtils.timing.log("");
 
         try {
             //If we have been given a class, we load it
@@ -62,7 +63,7 @@ public class TransferClassLoader extends ClassLoader {
             if (!classFile.endsWith(".class")) classFile += ".class";
             return tcl.loadClassFile(classFile);
         } catch (Exception e) {} //We will keep trying!
-        finally { if (IOUtils.timing != null) IOUtils.timing.log("Load transfer class for "+binFile); }
+        finally { if (IOUtils.timing != null) IOUtils.timing.log("Load transfer class2 for "+binFile); }
 
 
         //OK, it seems that we will finally have to build the class...
