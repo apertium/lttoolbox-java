@@ -206,14 +206,16 @@ public class LTProc {
             if (optind != (argc - 2))  { showHelp("LTProc"); return; }
         }
 
-        FSTProcessor fstp = null;
+        if (IOUtils.timing != null) IOUtils.timing.log("");
 
+        FSTProcessor fstp = null;
         final String filename = argv[optind + 1];
         fstp = cache.get(filename);
         if (fstp == null) {
             fstp = new FSTProcessor();
             ByteBuffer in = openFileAsByteBuffer(filename);
             fstp.load(in, filename);
+            if (IOUtils.timing != null) IOUtils.timing.log("Load transducer "+filename);
             if (cacheEnabled) cache.put(filename, fstp);
         }
 
@@ -284,6 +286,7 @@ public class LTProc {
                     fstp.analysis(input, output);
                     break;
             }
+            if (IOUtils.timing != null) IOUtils.timing.log("Process transducer "+filename);
         } catch (Exception e) {
             System.out.flush();
             try {
@@ -295,6 +298,7 @@ public class LTProc {
             }
             throw new IOException(e); // Send to parent
         }
+
 
         input.close();
         IOUtils.close(output);

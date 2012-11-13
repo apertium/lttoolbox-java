@@ -12,7 +12,7 @@ import java.io.Writer;
 import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import org.apertium.lttoolbox.Alphabet;
-import org.apertium.transfer.development.Timing;
+import org.apertium.utils.Timing;
 import org.apertium.transfer.generated.GeneratedTransferBase;
 import org.apertium.utils.IOUtils;
 
@@ -99,8 +99,13 @@ So the array of rule_map Method is taken by introspection, taking all methods be
    */
   @SuppressWarnings(value = "unchecked")
   public void read(Class transferClass, String datafile) throws Exception {
+    if (IOUtils.timing != null) IOUtils.timing.log("");
+
     ByteBuffer is = IOUtils.openFileAsByteBuffer(datafile);
     readData(is, datafile);
+
+    if (IOUtils.timing != null) IOUtils.timing.log("Load transfer transducer "+datafile);
+
 
     Method[] mets = transferClass.getMethods();
     rule_map = new Method[mets.length];
@@ -124,6 +129,7 @@ So the array of rule_map Method is taken by introspection, taking all methods be
     transferObject = (GeneratedTransferBase) transferClass.newInstance();
     transferObject.debug = DEBUG;
     transferObject.init();
+    if (IOUtils.timing != null) IOUtils.timing.log("Init transfer object for "+datafile);
   }
 
 

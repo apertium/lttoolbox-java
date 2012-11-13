@@ -30,7 +30,8 @@ import java.util.Arrays;
 
 import org.apertium.transfer.Transfer;
 import org.apertium.transfer.TransferToken;
-import org.apertium.transfer.development.Timing;
+import org.apertium.utils.IOUtils;
+import org.apertium.utils.Timing;
 
 /**
  * @author Stephen Tigner
@@ -164,6 +165,7 @@ public class Interchunk extends AbstractTransfer {
      */
     @Override
     public void process(Reader in, Appendable output) throws Exception {
+        if (IOUtils.timing != null) IOUtils.timing.log("");
         if (getNullFlush()) {
             process_wrapper_null_flush(in, output);
         }
@@ -273,6 +275,7 @@ public class Interchunk extends AbstractTransfer {
                             timing.log("interchunk");
                             timing.report();
                         }
+                        if (IOUtils.timing != null) IOUtils.timing.log("Process interchunk/postchunk");
                         return;
                     }
                     break;

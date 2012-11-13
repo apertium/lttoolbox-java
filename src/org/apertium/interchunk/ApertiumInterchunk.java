@@ -26,6 +26,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
+import java.lang.ref.SoftReference;
 import java.util.HashMap;
 
 import org.apertium.lttoolbox.Getopt;

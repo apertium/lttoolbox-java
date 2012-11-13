@@ -7,6 +7,8 @@ import java.io.Writer;
 import org.apertium.lttoolbox.LTComp;
 import org.apertium.tagger.Tagger;
 import org.apertium.transfer.Transfer;
+import org.apertium.utils.IOUtils;
+import org.apertium.utils.Timing;
 
 
 /**
@@ -25,6 +27,7 @@ public class Profiling {
 
       public static void main(String[] argv) throws Exception {
 
+        IOUtils.timing = new Timing("overall");
 
         Profiling p = new Profiling();
        System.out.println(System.getProperties() );
@@ -32,12 +35,6 @@ public class Profiling {
       report("start "+ new File(".").getAbsolutePath());
         System.gc();
         p.testTransfer();
-        p.testTransfer();
-        p.testTransfer();
-        p.testTransfer();
-        p.testTransfer();
-        p.testTransfer();
-        /*
         System.gc();
         p.testjavaAnalysis();
         System.gc();
@@ -57,6 +54,7 @@ public class Profiling {
 //    LTComp.main(new String[] { "rl", "testdata/apertium-fr-es.fr.dix", "tmp/testJava.bin"}); report("lt-comp");
 /**/
         //System.err.println("SetOfCharacters.max_encountered = " + SetOfCharacters.max_encountered);
+        IOUtils.timing.report();
       }
 
 

@@ -50,8 +50,7 @@ public class Dispatcher {
     private static final String splitPattern = "[ ]+";
 
     private static void doInterchunk(Program prog, Reader input, Appendable output) throws Exception {
-        ApertiumInterchunk.CommandLineParams par =
-            new ApertiumInterchunk.CommandLineParams();
+        ApertiumInterchunk.CommandLineParams par = new ApertiumInterchunk.CommandLineParams();
         /* Parse the command line. The passed-in CommandLineParams object
          * will be modified by this method.
          */

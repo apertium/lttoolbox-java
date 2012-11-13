@@ -45,11 +45,13 @@ public class TransferClassLoader extends ClassLoader {
     public static Class loadTxClass(String txOrClassFile, String binFile, TransferClassLoader tcl)
             throws ClassNotFoundException, IOException {
 
-        //If we have been given a class, we load it
-        if (txOrClassFile.endsWith(".class") && openFile(txOrClassFile).exists())
-            return tcl.loadClassFile(txOrClassFile);
+        if (IOUtils.timing != null) IOUtils.timing.log("");
 
         try {
+            //If we have been given a class, we load it
+            if (txOrClassFile.endsWith(".class") && openFile(txOrClassFile).exists())
+                return tcl.loadClassFile(txOrClassFile);
+
             // Even if we haven't been given a class, the corresponding class might already exist...
             // let's try to load it! (This is necessary when working with compressed files, since
             // resources inside them cannot be accessed as Files and, thus, the following attempts
@@ -60,9 +62,13 @@ public class TransferClassLoader extends ClassLoader {
             if (!classFile.endsWith(".class")) classFile += ".class";
             return tcl.loadClassFile(classFile);
         } catch (Exception e) {} //We will keep trying!
+        finally { if (IOUtils.timing != null) IOUtils.timing.log("Load transfer class for "+binFile); }
+
 
         //OK, it seems that we will finally have to build the class...
-        return buildAndLoadClass(openFile(txOrClassFile), openFile(binFile), tcl);
+        try {
+          return buildAndLoadClass(openFile(txOrClassFile), openFile(binFile), tcl);
+        } finally { if (IOUtils.timing != null) IOUtils.timing.log("Build transfer class for "+binFile); }
     }
 
     @SuppressWarnings("unchecked")

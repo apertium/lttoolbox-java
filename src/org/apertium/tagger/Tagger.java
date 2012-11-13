@@ -30,6 +30,7 @@ import java.io.*;
 import java.util.HashMap;
 
 import org.apertium.lttoolbox.Getopt;
+import org.apertium.utils.IOUtils;
 
 // Use GNU Getopt
 class MyGetOpt extends Getopt {
@@ -281,8 +282,7 @@ public class Tagger {
         taggerDispatch(args, null, null);
     }
 
-    public static void taggerDispatch(String[] args, Reader input,
-            Appendable output) {
+    public static void taggerDispatch(String[] args, Reader input, Appendable output) {
         Tagger t = new Tagger();
         int mode = t.getMode(args);
         switch (mode) {
@@ -336,15 +336,16 @@ public class Tagger {
     void tagger(boolean mode_first, Reader input, Appendable output)
             throws IOException {
 
-        TaggerData td = null;
+        if (IOUtils.timing != null) IOUtils.timing.log("");
 
-        td = cache.get(filenames.get(0));
+        TaggerData td = cache.get(filenames.get(0));
         if (td == null) {
             InputStream ftdata = openInFileStream(filenames.get(0));
             td = new TaggerData();
             td.read(ftdata);
             ftdata.close();
             if (cacheEnabled) cache.put(filenames.get(0), td);
+            if (IOUtils.timing != null) IOUtils.timing.log("Load tagger "+filenames.get(0));
         }
 
         HMM hmm = new HMM(td);
@@ -376,6 +377,7 @@ public class Tagger {
             fReader.close();
 
         }
+        if (IOUtils.timing != null) IOUtils.timing.log("Process tagger "+filenames.get(0));
 
     }
 

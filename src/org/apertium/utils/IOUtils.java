@@ -49,6 +49,9 @@ public class IOUtils {
     }
 
 
+    /** Set this to a new Timing object to collect stats about how long stuff is taking */
+    public static Timing timing;
+
 
     public static void setJarAsResourceZip() throws IOException {
         zip = new ZipFile(new File(IOUtils.class.getProtectionDomain().getCodeSource().getLocation().getFile()));

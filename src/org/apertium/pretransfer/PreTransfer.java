@@ -150,6 +150,8 @@ public class PreTransfer {
 
     public static void processStream(Reader input, Appendable output,
             boolean null_flush) throws IOException {
+        if (IOUtils.timing != null) IOUtils.timing.log("");
+
         int myChar;
         while((myChar = input.read()) != -1) {
             /* The above while statement is equivalent to the C++ code:
@@ -196,6 +198,7 @@ public class PreTransfer {
                     break;
             }
         }
+        if (IOUtils.timing != null) IOUtils.timing.log("Process pretransfer");
     }
 
     private static void showHelp() {

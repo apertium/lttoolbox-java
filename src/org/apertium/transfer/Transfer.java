@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.apertium.lttoolbox.Pair;
 import org.apertium.lttoolbox.process.FSTProcessor;
-import org.apertium.transfer.development.Timing;
+import org.apertium.utils.Timing;
 import static org.apertium.utils.IOUtils.openFileAsByteBuffer;
 
 
