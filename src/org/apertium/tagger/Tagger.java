@@ -27,7 +27,6 @@ import static org.apertium.utils.IOUtils.openOutFileWriter;
 import java.util.List;
 import java.util.ArrayList;
 import java.io.*;
-import java.lang.ref.SoftReference;
 import java.util.HashMap;
 
 import org.apertium.lttoolbox.Getopt;
@@ -69,7 +68,7 @@ public class Tagger {
     private static boolean DEBUG = false;
 
 
-    private static HashMap<String, SoftReference<TaggerData>> cache = new HashMap<String, SoftReference<TaggerData>>();
+    private static HashMap<String, TaggerData> cache = new HashMap<String, TaggerData>();
     private static boolean cacheEnabled = false;
 
     public static void setCacheEnabled(boolean enabled) {
@@ -339,15 +338,13 @@ public class Tagger {
 
         TaggerData td = null;
 
-        SoftReference<TaggerData> ref = cache.get(filenames.get(0));
-        if (ref != null) td = ref.get(); // there was a soft ref, get the contents
-        if (td == null) { // contents might be null if it wasn't cached or it has been was garbage collected
+        td = cache.get(filenames.get(0));
+        if (td == null) {
             InputStream ftdata = openInFileStream(filenames.get(0));
             td = new TaggerData();
             td.read(ftdata);
             ftdata.close();
-            if (cacheEnabled)
-                cache.put(filenames.get(0), new SoftReference<TaggerData>(td));
+            if (cacheEnabled) cache.put(filenames.get(0), td);
         }
 
         HMM hmm = new HMM(td);

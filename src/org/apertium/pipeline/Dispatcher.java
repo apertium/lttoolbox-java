@@ -49,8 +49,7 @@ public class Dispatcher {
 
     private static final String splitPattern = "[ ]+";
 
-    private static void doInterchunk(Program prog, Reader input, Appendable output)
-            throws Exception {
+    private static void doInterchunk(Program prog, Reader input, Appendable output) throws Exception {
         ApertiumInterchunk.CommandLineParams par =
             new ApertiumInterchunk.CommandLineParams();
         /* Parse the command line. The passed-in CommandLineParams object
@@ -58,8 +57,7 @@ public class Dispatcher {
          */
         String[] args = prog.getParameters().split(splitPattern);
         if (!ApertiumInterchunk.parseCommandLine(args, par, "Interchunk", true)) {
-            throw new IllegalArgumentException("Failed to parse " +
-                "Interchunk arguments.");
+            throw new IllegalArgumentException("Failed to parse Interchunk arguments.");
         }
         /* Assume internal i/o, don't allow for specifying external temp
          * files for i/o.
@@ -83,10 +81,8 @@ public class Dispatcher {
          * will be modified by this method.
          */
         String[] args = prog.getParameters().split(splitPattern);
-        if(!ApertiumPostchunk.
-                parseCommandLine(args, par, "Interchunk", true)) {
-            throw new IllegalArgumentException("Failed to parse " +
-                "Postchunk arguments.");
+        if(!ApertiumPostchunk.parseCommandLine(args, par, "Interchunk", true)) {
+            throw new IllegalArgumentException("Failed to parse Postchunk arguments."+args);
         }
         /* Assume internal I/O, don't allow for specifying external temp
          * files for I/O.

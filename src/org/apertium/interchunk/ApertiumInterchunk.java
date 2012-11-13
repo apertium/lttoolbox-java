@@ -26,7 +26,6 @@ import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
-import java.lang.ref.SoftReference;
 import java.util.HashMap;
 
 import org.apertium.lttoolbox.Getopt;
@@ -49,7 +48,7 @@ public class ApertiumInterchunk {
     }
 
 
-    private static HashMap<String, SoftReference<Interchunk>> cache = new HashMap<String, SoftReference<Interchunk>>();
+    private static HashMap<String, Interchunk> cache = new HashMap<String, Interchunk>();
     private static boolean cacheEnabled = false;
 
     public static void setCacheEnabled(boolean enabled) {
@@ -141,20 +140,15 @@ public class ApertiumInterchunk {
      * @throws Exception
      */
     @SuppressWarnings("unchecked")
-    public static void doMain(CommandLineParams par, Interchunk i)
-            throws Exception {
+    public static void doMain(CommandLineParams par, Interchunk newInterOrPostchunk) throws Exception {
 
         String key = par.t2xFile + "; " + par.preprocFile;
-        SoftReference<Interchunk> ref = cache.get(key);
-        Interchunk cachedInterchunk = null;
-        if (ref != null) cachedInterchunk = ref.get(); // there was a soft ref, get the contents
-        if (cachedInterchunk != null) // contents might be null if it wasn't cached or it has been was garbage collected
-            i = cachedInterchunk;
-        else {
+        Interchunk i = cache.get(key);
+        if (i == null) {
+            i = newInterOrPostchunk;
             Class t2xClass = TransferClassLoader.loadTxClass(par.t2xFile, par.preprocFile);
             i.read(t2xClass, par.preprocFile);
-            if (cacheEnabled)
-                cache.put(key, new SoftReference<Interchunk>(i));
+            if (cacheEnabled) cache.put(key, i);
         }
 
         i.setNullFlush(par.nullFlush);
@@ -169,7 +163,6 @@ public class ApertiumInterchunk {
      */
     public static int main(String[] args) throws Exception {
         System.setProperty("file.encoding", "UTF-8");
-        Interchunk i = new Interchunk();
 
         CommandLineParams par = new CommandLineParams();
           /* Parse the command line. The passed-in CommandLineParams object
@@ -179,7 +172,7 @@ public class ApertiumInterchunk {
               return 1;
           }
 
-        doMain(par, i);
+        doMain(par, new Interchunk());
         return 0;
     }
 

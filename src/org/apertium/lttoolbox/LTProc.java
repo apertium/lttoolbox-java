@@ -17,13 +17,8 @@ package org.apertium.lttoolbox;
  * 02111-1307, USA.
  */
 
-import java.io.Closeable;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Reader;
-import java.io.Writer;
-import java.lang.ref.SoftReference;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import org.apertium.CommandLineInterface;
@@ -53,7 +48,7 @@ public class LTProc {
 
 
 
-    private static HashMap<String, SoftReference<FSTProcessor>> cache = new HashMap<String, SoftReference<FSTProcessor>>();
+    private static HashMap<String, FSTProcessor> cache = new HashMap<String, FSTProcessor>();
     private static boolean cacheEnabled = false;
 
     public static void setCacheEnabled(boolean enabled) {
@@ -214,14 +209,12 @@ public class LTProc {
         FSTProcessor fstp = null;
 
         final String filename = argv[optind + 1];
-        SoftReference<FSTProcessor> ref = cache.get(filename);
-        if (ref != null) fstp = ref.get(); // there was a soft ref, get the contents
-        if (fstp == null) { // contents might be null if it wasn't cached or it has been was garbage collected
+        fstp = cache.get(filename);
+        if (fstp == null) {
             fstp = new FSTProcessor();
             ByteBuffer in = openFileAsByteBuffer(filename);
             fstp.load(in, filename);
-            if (cacheEnabled)
-                cache.put(filename, new SoftReference<FSTProcessor>(fstp));
+            if (cacheEnabled) cache.put(filename, fstp);
         }
 
         fstp.setCaseSensitiveMode(caseSensitiveMode);

@@ -26,7 +26,6 @@ import static org.apertium.utils.IOUtils.openOutFileWriter;
 import org.apertium.lttoolbox.*;
 import org.apertium.lttoolbox.process.FSTProcessor;
 import java.io.*;
-import java.lang.ref.SoftReference;
 import java.util.HashMap;
 
 import org.apertium.lttoolbox.process.State;
@@ -52,7 +51,7 @@ class MyGetOpt extends Getopt {
 public class ApertiumTransfer {
 
 
-    private static HashMap<String, SoftReference<Transfer>> cache = new HashMap<String, SoftReference<Transfer>>();
+    private static HashMap<String, Transfer> cache = new HashMap<String, Transfer>();
     private static boolean cacheEnabled = false;
 
     public static void setCacheEnabled(boolean enabled) {
@@ -187,14 +186,12 @@ public class ApertiumTransfer {
         String preProc = argv[optind + 2];
         String bilTrans = useBD ? argv[optind + 3] : null;
         String key = tRulesOrClassString + "; " + preProc + "; " + bilTrans;
-        SoftReference<Transfer> ref = cache.get(key);
-        if (ref != null) t = ref.get(); // there was a soft ref, get the contents
-        if (t == null) { // contents might be null if it wasn't cached or it has been was garbage collected
+        t = cache.get(key);
+        if (t == null) {
             Class tRulesClass = TransferClassLoader.loadTxClass(tRulesOrClassString, preProc);
             t = new Transfer();
             t.read(tRulesClass, preProc, bilTrans);
-            if (cacheEnabled)
-                cache.put(key, new SoftReference<Transfer>(t));
+            if (cacheEnabled) cache.put(key, t);
         }
         t.setNullFlush(nullFlush);
         t.setPreBilingual(preBilingual);

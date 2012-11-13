@@ -12,6 +12,7 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apertium.transfer.generation.TransferBytecode;
+import org.apertium.utils.IOUtils;
 import org.xml.sax.SAXException;
 
 public class TransferClassLoader extends ClassLoader {
@@ -76,7 +77,7 @@ public class TransferClassLoader extends ClassLoader {
          * a string.
          */
 
-        String tempDir = System.getProperty("java.io.tmpdir");
+        String tempDir = IOUtils.cacheDir.getAbsolutePath();
         tempDir = addTrailingSlash(tempDir);
 
         File classFile = openFile(addTrailingSlash(binFile.getParent()) + classFilename);

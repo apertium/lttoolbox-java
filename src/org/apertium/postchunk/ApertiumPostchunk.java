@@ -34,7 +34,6 @@ public class ApertiumPostchunk extends ApertiumInterchunk {
      */
     public static int main(String[] args) throws Exception {
         System.setProperty("file.encoding", "UTF-8");
-        Postchunk p = new Postchunk();
 
         CommandLineParams par = new CommandLineParams();
         /* Parse the command line. The passed-in CommandLineParams object
@@ -44,7 +43,7 @@ public class ApertiumPostchunk extends ApertiumInterchunk {
             return 1;
         }
 
-        doMain(par, p);
+        doMain(par, new Postchunk());
         return 0;
     }
 
