@@ -223,7 +223,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			String myword = 
 			         word4.tl(attr_lemh)
 			         +word4.tl(attr_a_nom)
-			         +(word4.tl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +(word4.tl(attr_a_nbr)==""?"" : "<2>")
 			         +word4.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -267,7 +267,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			String myword = 
 			         word2.tl(attr_lemh)
 			         +word2.tl(attr_a_nom)
-			         +(word2.tl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +(word2.tl(attr_a_nbr)==""?"" : "<2>")
 			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -298,7 +298,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			String myword = 
 			         word2.tl(attr_lemh)
 			         +word2.tl(attr_a_det)
-			         +(word2.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +(word2.sl(attr_a_nbr)==""?"" : "<2>")
 			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -313,7 +313,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			String myword = 
 			         word3.tl(attr_lemh)
 			         +word3.tl(attr_a_nom)
-			         +(word3.tl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +(word3.tl(attr_a_nbr)==""?"" : "<2>")
 			         +word3.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -358,7 +358,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			String myword = 
 			         word4.tl(attr_lemh)
 			         +word4.tl(attr_a_nom)
-			         +(word4.tl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +(word4.tl(attr_a_nbr)==""?"" : "<2>")
 			         +word4.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -388,7 +388,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			String myword = 
 			         word3.tl(attr_lemh)
 			         +word3.tl(attr_a_det)
-			         +(word3.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +(word3.sl(attr_a_nbr)==""?"" : "<2>")
 			         +word3.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -403,7 +403,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			String myword = 
 			         word4.tl(attr_lemh)
 			         +word4.tl(attr_a_nom)
-			         +(word4.tl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +(word4.tl(attr_a_nbr)==""?"" : "<2>")
 			         +word4.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -442,7 +442,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			String myword = 
 			         word3.tl(attr_lemh)
 			         +word3.tl(attr_a_nom)
-			         +(word3.tl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +(word3.tl(attr_a_nbr)==""?"" : "<2>")
 			         +word3.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -468,7 +468,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			String myword = 
 			         word2.tl(attr_lemh)
 			         +word2.tl(attr_a_det)
-			         +(word2.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +(word2.sl(attr_a_nbr)==""?"" : "<2>")
 			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -483,7 +483,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			String myword = 
 			         word3.tl(attr_lemh)
 			         +word3.tl(attr_a_nom)
-			         +(word3.tl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +(word3.tl(attr_a_nbr)==""?"" : "<2>")
 			         +word3.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -513,7 +513,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			String myword = 
 			         word1.tl(attr_lemh)
 			         +word1.tl(attr_a_det)
-			         +(word1.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +(word1.sl(attr_a_nbr)==""?"" : "<2>")
 			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -573,9 +573,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 				String myword = 
 				         word1.tl(attr_lemh)
 				         +word1.tl(attr_a_prn)
-				         +(word1.tl(attr_a_prs).isEmpty()?"" : "<2>")
-				         +(word1.tl(attr_a_gen).isEmpty()?"" : "<3>")
-				         +(word1.tl(attr_a_nbr).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_a_prs)==""?"" : "<2>")
+				         +(word1.tl(attr_a_gen)==""?"" : "<3>")
+				         +(word1.tl(attr_a_nbr)==""?"" : "<4>")
 				         +word1.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
@@ -600,7 +600,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 				String myword = 
 				         word1.tl(attr_lemh)
 				         +word1.tl(attr_a_prn)
-				         +(word1.tl(attr_a_nbr).isEmpty()?"" : "<2>")
+				         +(word1.tl(attr_a_nbr)==""?"" : "<2>")
 				         +word1.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
@@ -652,9 +652,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 				String myword = 
 				         word2.tl(attr_lemh)
 				         +word2.tl(attr_a_prn)
-				         +(word2.tl(attr_a_prs).isEmpty()?"" : "<2>")
-				         +(word2.tl(attr_a_gen).isEmpty()?"" : "<3>")
-				         +(word2.tl(attr_a_nbr).isEmpty()?"" : "<4>")
+				         +(word2.tl(attr_a_prs)==""?"" : "<2>")
+				         +(word2.tl(attr_a_gen)==""?"" : "<3>")
+				         +(word2.tl(attr_a_nbr)==""?"" : "<4>")
 				         +word2.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
@@ -693,7 +693,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 				String myword = 
 				         word2.tl(attr_lemh)
 				         +word2.tl(attr_a_prn)
-				         +(word2.tl(attr_a_nbr).isEmpty()?"" : "<2>")
+				         +(word2.tl(attr_a_nbr)==""?"" : "<2>")
 				         +word2.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
@@ -802,7 +802,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			String myword = 
 			         word1.tl(attr_lemh)
 			         +word1.tl(attr_a_nom)
-			         +(word1.tl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +(word1.tl(attr_a_nbr)==""?"" : "<2>")
 			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -831,7 +831,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			String myword = 
 			         word1.tl(attr_lemh)
 			         +word1.tl(attr_a_det)
-			         +(word1.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +(word1.sl(attr_a_nbr)==""?"" : "<2>")
 			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -846,7 +846,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			String myword = 
 			         word2.tl(attr_lemh)
 			         +word2.tl(attr_a_nom)
-			         +(word2.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +(word2.sl(attr_a_nbr)==""?"" : "<2>")
 			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -887,7 +887,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			String myword = 
 			         word2.tl(attr_lemh)
 			         +word2.tl(attr_a_nom)
-			         +(word2.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +(word2.sl(attr_a_nbr)==""?"" : "<2>")
 			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -916,7 +916,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			String myword = 
 			         word1.tl(attr_lemh)
 			         +word1.tl(attr_a_det)
-			         +(word1.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +(word1.sl(attr_a_nbr)==""?"" : "<2>")
 			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -943,7 +943,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			String myword = 
 			         word3.tl(attr_lemh)
 			         +word3.tl(attr_a_nom)
-			         +(word3.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +(word3.sl(attr_a_nbr)==""?"" : "<2>")
 			         +word3.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -972,7 +972,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			String myword = 
 			         word1.tl(attr_lemh)
 			         +word1.tl(attr_a_det)
-			         +(word1.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +(word1.sl(attr_a_nbr)==""?"" : "<2>")
 			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -1013,7 +1013,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			String myword = 
 			         word4.tl(attr_lemh)
 			         +word4.tl(attr_a_nom)
-			         +(word4.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +(word4.sl(attr_a_nbr)==""?"" : "<2>")
 			         +word4.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -1042,7 +1042,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			String myword = 
 			         word1.tl(attr_lemh)
 			         +word1.tl(attr_a_det)
-			         +(word1.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +(word1.sl(attr_a_nbr)==""?"" : "<2>")
 			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -1097,7 +1097,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			String myword = 
 			         word5.tl(attr_lemh)
 			         +word5.tl(attr_a_nom)
-			         +(word5.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +(word5.sl(attr_a_nbr)==""?"" : "<2>")
 			         +word5.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -1127,7 +1127,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			String myword = 
 			         word1.tl(attr_lemh)
 			         +word1.tl(attr_a_det)
-			         +(word1.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +(word1.sl(attr_a_nbr)==""?"" : "<2>")
 			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -1154,7 +1154,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			String myword = 
 			         word4.tl(attr_lemh)
 			         +word4.tl(attr_a_nom)
-			         +(word4.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +(word4.sl(attr_a_nbr)==""?"" : "<2>")
 			         +word4.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -1184,7 +1184,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			String myword = 
 			         word1.tl(attr_lemh)
 			         +word1.tl(attr_a_det)
-			         +(word1.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +(word1.sl(attr_a_nbr)==""?"" : "<2>")
 			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -1223,7 +1223,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			String myword = 
 			         word5.tl(attr_lemh)
 			         +word5.tl(attr_a_nom)
-			         +(word5.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +(word5.sl(attr_a_nbr)==""?"" : "<2>")
 			         +word5.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -1278,7 +1278,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 				String myword = 
 				         word1.tl(attr_lemh)
 				         +word1.tl(attr_a_det)
-				         +(word1.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+				         +(word1.sl(attr_a_nbr)==""?"" : "<2>")
 				         +word1.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
@@ -1323,7 +1323,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			String myword = 
 			         word1.tl(attr_lemh)
 			         +word1.tl(attr_a_det)
-			         +(word1.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +(word1.sl(attr_a_nbr)==""?"" : "<2>")
 			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -1377,7 +1377,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			String myword = 
 			         word2.tl(attr_lemh)
 			         +word2.tl(attr_a_nom)
-			         +(word2.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +(word2.sl(attr_a_nbr)==""?"" : "<2>")
 			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -1406,7 +1406,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			String myword = 
 			         word1.tl(attr_lemh)
 			         +word1.tl(attr_a_det)
-			         +(word1.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +(word1.sl(attr_a_nbr)==""?"" : "<2>")
 			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -1435,7 +1435,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			String myword = 
 			         word3.tl(attr_lemh)
 			         +word3.tl(attr_a_nom)
-			         +(word3.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +(word3.sl(attr_a_nbr)==""?"" : "<2>")
 			         +word3.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -1464,7 +1464,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			String myword = 
 			         word1.tl(attr_lemh)
 			         +word1.tl(attr_a_det)
-			         +(word1.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +(word1.sl(attr_a_nbr)==""?"" : "<2>")
 			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -1507,7 +1507,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			String myword = 
 			         word4.tl(attr_lemh)
 			         +word4.tl(attr_a_nom)
-			         +(word4.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +(word4.sl(attr_a_nbr)==""?"" : "<2>")
 			         +word4.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -1536,7 +1536,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			String myword = 
 			         word1.tl(attr_lemh)
 			         +word1.tl(attr_a_det)
-			         +(word1.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +(word1.sl(attr_a_nbr)==""?"" : "<2>")
 			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -1593,7 +1593,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 			String myword = 
 			         word5.tl(attr_lemh)
 			         +word5.tl(attr_a_nom)
-			         +(word5.sl(attr_a_nbr).isEmpty()?"" : "<2>")
+			         +(word5.sl(attr_a_nbr)==""?"" : "<2>")
 			         +word5.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -1995,9 +1995,9 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 				String myword = 
 				         word4.tl(attr_lemh)
 				         +word4.tl(attr_a_prn)
-				         +(word4.tl(attr_a_prs).isEmpty()?"" : "<2>")
-				         +(word4.tl(attr_a_gen).isEmpty()?"" : "<3>")
-				         +(word4.tl(attr_a_nbr).isEmpty()?"" : "<4>")
+				         +(word4.tl(attr_a_prs)==""?"" : "<2>")
+				         +(word4.tl(attr_a_gen)==""?"" : "<3>")
+				         +(word4.tl(attr_a_nbr)==""?"" : "<4>")
 				         +word4.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
@@ -2020,7 +2020,7 @@ pri konstruo el la tipo 'pli granda', kiu estas sinteza en la angla  */
 				String myword = 
 				         word4.tl(attr_lemh)
 				         +word4.tl(attr_a_prn)
-				         +(word4.tl(attr_a_nbr).isEmpty()?"" : "<2>")
+				         +(word4.tl(attr_a_nbr)==""?"" : "<2>")
 				         +word4.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
@@ -3172,9 +3172,9 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 				String myword = 
 				         word3.tl(attr_lemh)
 				         +word3.tl(attr_a_prn)
-				         +(word3.tl(attr_a_prs).isEmpty()?"" : "<2>")
-				         +(word3.tl(attr_a_gen).isEmpty()?"" : "<3>")
-				         +(word3.tl(attr_a_nbr).isEmpty()?"" : "<4>")
+				         +(word3.tl(attr_a_prs)==""?"" : "<2>")
+				         +(word3.tl(attr_a_gen)==""?"" : "<3>")
+				         +(word3.tl(attr_a_nbr)==""?"" : "<4>")
 				         +word3.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
@@ -3197,7 +3197,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 				String myword = 
 				         word3.tl(attr_lemh)
 				         +word3.tl(attr_a_prn)
-				         +(word3.tl(attr_a_nbr).isEmpty()?"" : "<2>")
+				         +(word3.tl(attr_a_nbr)==""?"" : "<2>")
 				         +word3.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
@@ -3258,9 +3258,9 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 				String myword = 
 				         word2.tl(attr_lemh)
 				         +word2.tl(attr_a_prn)
-				         +(word2.tl(attr_a_prs).isEmpty()?"" : "<2>")
-				         +(word2.tl(attr_a_gen).isEmpty()?"" : "<3>")
-				         +(word2.tl(attr_a_nbr).isEmpty()?"" : "<4>")
+				         +(word2.tl(attr_a_prs)==""?"" : "<2>")
+				         +(word2.tl(attr_a_gen)==""?"" : "<3>")
+				         +(word2.tl(attr_a_nbr)==""?"" : "<4>")
 				         +word2.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
@@ -3283,7 +3283,7 @@ ERARO: en tiu kazo "not" devus aperi inter lemh kaj lemq
 				String myword = 
 				         word2.tl(attr_lemh)
 				         +word2.tl(attr_a_prn)
-				         +(word2.tl(attr_a_nbr).isEmpty()?"" : "<2>")
+				         +(word2.tl(attr_a_nbr)==""?"" : "<2>")
 				         +word2.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)

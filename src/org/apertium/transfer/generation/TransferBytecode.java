@@ -240,6 +240,10 @@ public class TransferBytecode {
 
             String as = e.getAttribute("link-to");
             if (!as.isEmpty()) {
+                // TODO for Mikel during Christmas time: Replace the code generation that generates
+                //  (word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+                // with
+                //  (word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
                 il.append(factory.createInvoke("java.lang.String", "isEmpty", BOOLEAN, NO_ARGS, INVOKEVIRTUAL));
                 BranchHandle ifeq = il.append(new IFEQ(null));
                 il.append(factory.createConstant(""));

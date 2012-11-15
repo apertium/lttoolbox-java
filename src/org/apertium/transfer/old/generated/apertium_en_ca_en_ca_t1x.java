@@ -1582,9 +1582,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -1595,16 +1595,16 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			}
 		}
 		out.append(" ^el<det><def>");
-		out.append((word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>"));
+		out.append((word1.tl(attr_gen_sense_mf)==""?"" : "<3>"));
 		out.append("<pl>$");
 		out.append(blank1);
 		{
 			String myword = 
 			         word2.tl(attr_lemh)
 			         +word2.tl(attr_a_nom)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         +word2.tl(attr_lemq)
 			         ;
@@ -1638,9 +1638,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -1651,16 +1651,16 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			}
 		}
 		out.append(" ^el<det><def>");
-		out.append((word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>"));
+		out.append((word1.tl(attr_gen_sense_mf)==""?"" : "<3>"));
 		out.append("<pl>$");
 		out.append(blank1);
 		{
 			String myword = 
 			         word3.tl(attr_lemh)
 			         +word3.tl(attr_a_nom)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         +word3.tl(attr_lemq)
 			         ;
@@ -1678,10 +1678,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word2.tl(attr_lemh)
 			         +word2.tl(attr_a_adj)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
-			         +(word2.tl(attr_nbr_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
+			         +(word2.tl(attr_nbr_sp)==""?"" : "<4>")
 			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -1715,9 +1715,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -1732,9 +1732,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word2.tl(attr_lemh)
 			         +word2.tl(attr_a_nom)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         +word2.tl(attr_lemq)
 			         ;
@@ -1766,9 +1766,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_num)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -1783,9 +1783,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word2.tl(attr_lemh)
 			         +word2.tl(attr_a_nom)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         +word2.tl(attr_lemq)
 			         ;
@@ -1817,9 +1817,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -1834,9 +1834,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word2.tl(attr_lem)
 			         +word2.tl(attr_a_det)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -1851,9 +1851,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word3.tl(attr_lemh)
 			         +word3.tl(attr_a_nom)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         +word3.tl(attr_lemq)
 			         ;
@@ -1887,9 +1887,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -1904,9 +1904,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word2.tl(attr_lem)
 			         +word2.tl(attr_a_num)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -1921,9 +1921,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word3.tl(attr_lemh)
 			         +word3.tl(attr_a_nom)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         +word3.tl(attr_lemq)
 			         ;
@@ -1965,9 +1965,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_num)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -1982,9 +1982,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word2.tl(attr_lem)
 			         +word2.tl(attr_a_num)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -1999,9 +1999,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word3.tl(attr_lemh)
 			         +word3.tl(attr_a_nom)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         +word3.tl(attr_lemq)
 			         ;
@@ -2035,9 +2035,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -2052,9 +2052,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word2.tl(attr_lem)
 			         +word2.tl(attr_a_det)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -2069,9 +2069,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word3.tl(attr_lem)
 			         +word3.tl(attr_a_num)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -2086,9 +2086,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word4.tl(attr_lemh)
 			         +word4.tl(attr_a_nom)
-			         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word4.tl(attr_gen_mf)
-			         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word4.tl(attr_nbr_sp)
 			         +word4.tl(attr_lemq)
 			         ;
@@ -2132,9 +2132,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -2149,9 +2149,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word2.tl(attr_lem)
 			         +word2.tl(attr_a_num)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -2166,9 +2166,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word3.tl(attr_lem)
 			         +word3.tl(attr_a_num)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -2183,9 +2183,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word4.tl(attr_lemh)
 			         +word4.tl(attr_a_nom)
-			         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word4.tl(attr_gen_mf)
-			         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word4.tl(attr_nbr_sp)
 			         +word4.tl(attr_lemq)
 			         ;
@@ -2229,9 +2229,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word3.tl(attr_lemh)
 			         +word3.tl(attr_a_nom)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         +word3.tl(attr_lemq)
 			         ;
@@ -2248,9 +2248,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word2.tl(attr_lemh)
 			         +word2.tl(attr_a_adj)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         +word2.tl(attr_lemq)
 			         ;
@@ -2281,9 +2281,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word2.tl(attr_lemh)
 			         +word2.tl(attr_a_nom)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         +word2.tl(attr_lemq)
 			         ;
@@ -2300,9 +2300,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word1.tl(attr_lemh)
 			         +word1.tl(attr_a_adj)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         +word1.tl(attr_lemq)
 			         ;
@@ -2338,9 +2338,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -2355,9 +2355,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word3.tl(attr_lemh)
 			         +word3.tl(attr_a_nom)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         +word3.tl(attr_lemq)
 			         ;
@@ -2374,9 +2374,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word2.tl(attr_lemh)
 			         +word2.tl(attr_a_adj)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -2409,9 +2409,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_num)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -2426,9 +2426,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word3.tl(attr_lemh)
 			         +word3.tl(attr_a_nom)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         +word3.tl(attr_lemq)
 			         ;
@@ -2445,9 +2445,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word2.tl(attr_lem)
 			         +word2.tl(attr_a_adj)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -2479,9 +2479,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -2496,9 +2496,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word2.tl(attr_lemh)
 			         +word2.tl(attr_a_det)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -2513,9 +2513,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word4.tl(attr_lemh)
 			         +word4.tl(attr_a_nom)
-			         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word4.tl(attr_gen_mf)
-			         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word4.tl(attr_nbr_sp)
 			         +word4.tl(attr_lemq)
 			         ;
@@ -2532,9 +2532,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word3.tl(attr_lemh)
 			         +word3.tl(attr_a_adj)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -2568,9 +2568,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -2585,9 +2585,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word2.tl(attr_lemh)
 			         +word2.tl(attr_a_num)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -2602,9 +2602,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word4.tl(attr_lemh)
 			         +word4.tl(attr_a_nom)
-			         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word4.tl(attr_gen_mf)
-			         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word4.tl(attr_nbr_sp)
 			         +word4.tl(attr_lemq)
 			         ;
@@ -2621,9 +2621,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word3.tl(attr_lemh)
 			         +word3.tl(attr_a_adj)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -2655,9 +2655,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_adj)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -2672,9 +2672,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word2.tl(attr_lemh)
 			         +word2.tl(attr_a_num)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -2689,9 +2689,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word4.tl(attr_lemh)
 			         +word4.tl(attr_a_nom)
-			         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word4.tl(attr_gen_mf)
-			         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word4.tl(attr_nbr_sp)
 			         +word4.tl(attr_lemq)
 			         ;
@@ -2708,9 +2708,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word3.tl(attr_lemh)
 			         +word3.tl(attr_a_adj)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -2743,9 +2743,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -2760,9 +2760,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word4.tl(attr_lemh)
 			         +word4.tl(attr_a_nom)
-			         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word4.tl(attr_gen_mf)
-			         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word4.tl(attr_nbr_sp)
 			         +word4.tl(attr_lemq)
 			         ;
@@ -2791,9 +2791,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word3.tl(attr_lemh)
 			         +word3.tl(attr_a_adj)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         +word3.tl(attr_lemq)
 			         ;
@@ -2826,9 +2826,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_num)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -2843,9 +2843,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word4.tl(attr_lemh)
 			         +word4.tl(attr_a_nom)
-			         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word4.tl(attr_gen_mf)
-			         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word4.tl(attr_nbr_sp)
 			         +word4.tl(attr_lemq)
 			         ;
@@ -2874,9 +2874,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word3.tl(attr_lemh)
 			         +word3.tl(attr_a_adj)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         +word3.tl(attr_lemq)
 			         ;
@@ -2907,9 +2907,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word3.tl(attr_lemh)
 			         +word3.tl(attr_a_nom)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         +word3.tl(attr_lemq)
 			         ;
@@ -2938,9 +2938,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word2.tl(attr_lemh)
 			         +word2.tl(attr_a_adj)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -2973,9 +2973,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -2990,9 +2990,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word2.tl(attr_lem)
 			         +word2.tl(attr_a_det)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -3007,9 +3007,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word5.tl(attr_lemh)
 			         +word5.tl(attr_a_nom)
-			         +(word5.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word5.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word5.tl(attr_gen_mf)
-			         +(word5.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word5.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word5.tl(attr_nbr_sp)
 			         +word5.tl(attr_lemq)
 			         ;
@@ -3038,9 +3038,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word4.tl(attr_lemh)
 			         +word4.tl(attr_a_adj)
-			         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word4.tl(attr_gen_mf)
-			         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word4.tl(attr_nbr_sp)
 			         +word4.tl(attr_lemq)
 			         ;
@@ -3075,9 +3075,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -3092,9 +3092,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word2.tl(attr_lem)
 			         +word2.tl(attr_a_num)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -3109,9 +3109,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word5.tl(attr_lemh)
 			         +word5.tl(attr_a_nom)
-			         +(word5.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word5.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word5.tl(attr_gen_mf)
-			         +(word5.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word5.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word5.tl(attr_nbr_sp)
 			         +word5.tl(attr_lemq)
 			         ;
@@ -3140,9 +3140,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word4.tl(attr_lemh)
 			         +word4.tl(attr_a_adj)
-			         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word4.tl(attr_gen_mf)
-			         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word4.tl(attr_nbr_sp)
 			         +word4.tl(attr_lemq)
 			         ;
@@ -3172,9 +3172,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word3.tl(attr_lemh)
 			         +word3.tl(attr_a_nom)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         +word3.tl(attr_lemq)
 			         ;
@@ -3190,9 +3190,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word2.tl(attr_lemh)
 			         +word2.tl(attr_a_adj)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -3239,9 +3239,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -3256,9 +3256,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word4.tl(attr_lemh)
 			         +word4.tl(attr_a_nom)
-			         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word4.tl(attr_gen_mf)
-			         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word4.tl(attr_nbr_sp)
 			         +word4.tl(attr_lemq)
 			         ;
@@ -3275,9 +3275,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu2
 			         +word3.tl(attr_lem)
 			         +word3.tl(attr_a_adj)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -3293,9 +3293,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word2.tl(attr_lem)
 			         +word2.tl(attr_a_adj)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -3329,9 +3329,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -3346,9 +3346,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word2.tl(attr_lem)
 			         +word2.tl(attr_a_det)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -3363,9 +3363,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word5.tl(attr_lemh)
 			         +word5.tl(attr_a_nom)
-			         +(word5.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word5.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word5.tl(attr_gen_mf)
-			         +(word5.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word5.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word5.tl(attr_nbr_sp)
 			         +word5.tl(attr_lemq)
 			         ;
@@ -3382,9 +3382,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu2
 			         +word4.tl(attr_lem)
 			         +word4.tl(attr_a_adj)
-			         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word4.tl(attr_gen_mf)
-			         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word4.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -3400,9 +3400,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word3.tl(attr_lem)
 			         +word3.tl(attr_a_adj)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -3436,9 +3436,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -3453,9 +3453,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word5.tl(attr_lemh)
 			         +word5.tl(attr_a_nom)
-			         +(word5.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word5.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word5.tl(attr_gen_mf)
-			         +(word5.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word5.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word5.tl(attr_nbr_sp)
 			         +word5.tl(attr_lemq)
 			         ;
@@ -3472,9 +3472,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu2
 			         +word4.tl(attr_lem)
 			         +word4.tl(attr_a_adj)
-			         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word4.tl(attr_gen_mf)
-			         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word4.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -3502,9 +3502,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word3.tl(attr_lem)
 			         +word3.tl(attr_a_adj)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -3535,9 +3535,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -3552,9 +3552,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word5.tl(attr_lemh)
 			         +word5.tl(attr_a_nom)
-			         +(word5.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word5.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word5.tl(attr_gen_mf)
-			         +(word5.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word5.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word5.tl(attr_nbr_sp)
 			         +word5.tl(attr_lemq)
 			         ;
@@ -3571,9 +3571,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu2
 			         +word4.tl(attr_lem)
 			         +word4.tl(attr_a_adj)
-			         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word4.tl(attr_gen_mf)
-			         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word4.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -3601,9 +3601,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word3.tl(attr_lem)
 			         +word3.tl(attr_a_adj)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -3636,9 +3636,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_num)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -3653,9 +3653,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word4.tl(attr_lemh)
 			         +word4.tl(attr_a_nom)
-			         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word4.tl(attr_gen_mf)
-			         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word4.tl(attr_nbr_sp)
 			         +word4.tl(attr_lemq)
 			         ;
@@ -3672,9 +3672,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu2
 			         +word3.tl(attr_lemh)
 			         +word3.tl(attr_a_adj)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -3690,9 +3690,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word2.tl(attr_lemh)
 			         +word2.tl(attr_a_adj)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -3727,9 +3727,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -3744,9 +3744,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word2.tl(attr_lem)
 			         +word2.tl(attr_a_num)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -3761,9 +3761,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word5.tl(attr_lemh)
 			         +word5.tl(attr_a_nom)
-			         +(word5.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word5.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word5.tl(attr_gen_mf)
-			         +(word5.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word5.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word5.tl(attr_nbr_sp)
 			         +word5.tl(attr_lemq)
 			         ;
@@ -3780,9 +3780,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu2
 			         +word4.tl(attr_lemh)
 			         +word4.tl(attr_a_adj)
-			         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word4.tl(attr_gen_mf)
-			         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word4.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -3798,9 +3798,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word3.tl(attr_lemh)
 			         +word3.tl(attr_a_adj)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -3831,9 +3831,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word3.tl(attr_lemh)
 			         +word3.tl(attr_a_nom)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         +word3.tl(attr_lemq)
 			         ;
@@ -3850,9 +3850,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu2
 			         +word2.tl(attr_lemh)
 			         +word2.tl(attr_a_adj)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         +word2.tl(attr_lemq)
 			         ;
@@ -3869,9 +3869,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word1.tl(attr_lemh)
 			         +word1.tl(attr_a_adj)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         +word1.tl(attr_lemq)
 			         ;
@@ -3907,9 +3907,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -3924,9 +3924,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word2.tl(attr_lem)
 			         +word2.tl(attr_a_num)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -3941,9 +3941,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word6.tl(attr_lemh)
 			         +word6.tl(attr_a_nom)
-			         +(word6.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word6.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word6.tl(attr_gen_mf)
-			         +(word6.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word6.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word6.tl(attr_nbr_sp)
 			         +word6.tl(attr_lemq)
 			         ;
@@ -3960,9 +3960,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu2
 			         +word5.tl(attr_lemh)
 			         +word5.tl(attr_a_adj)
-			         +(word5.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word5.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word5.tl(attr_gen_mf)
-			         +(word5.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word5.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word5.tl(attr_nbr_sp)
 			         +word5.tl(attr_lemq)
 			         ;
@@ -3991,9 +3991,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word4.tl(attr_lemh)
 			         +word4.tl(attr_a_adj)
-			         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word4.tl(attr_gen_mf)
-			         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word4.tl(attr_nbr_sp)
 			         +word4.tl(attr_lemq)
 			         ;
@@ -4029,9 +4029,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -4046,9 +4046,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word2.tl(attr_lem)
 			         +word2.tl(attr_a_det)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -4063,9 +4063,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word6.tl(attr_lemh)
 			         +word6.tl(attr_a_nom)
-			         +(word6.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word6.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word6.tl(attr_gen_mf)
-			         +(word6.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word6.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word6.tl(attr_nbr_sp)
 			         +word6.tl(attr_lemq)
 			         ;
@@ -4082,9 +4082,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu2
 			         +word5.tl(attr_lemh)
 			         +word5.tl(attr_a_adj)
-			         +(word5.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word5.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word5.tl(attr_gen_mf)
-			         +(word5.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word5.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word5.tl(attr_nbr_sp)
 			         +word5.tl(attr_lemq)
 			         ;
@@ -4113,9 +4113,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word4.tl(attr_lemh)
 			         +word4.tl(attr_a_adj)
-			         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word4.tl(attr_gen_mf)
-			         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word4.tl(attr_nbr_sp)
 			         +word4.tl(attr_lemq)
 			         ;
@@ -4148,9 +4148,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word4.tl(attr_lemh)
 			         +word4.tl(attr_a_nom)
-			         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word4.tl(attr_gen_mf)
-			         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word4.tl(attr_nbr_sp)
 			         +word4.tl(attr_lemq)
 			         ;
@@ -4167,9 +4167,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word1.tl(attr_lemh)
 			         +word1.tl(attr_a_adj)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         +word1.tl(attr_lemq)
 			         ;
@@ -4198,9 +4198,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu2
 			         +word3.tl(attr_lemh)
 			         +word3.tl(attr_a_adj)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         +word3.tl(attr_lemq)
 			         ;
@@ -4232,9 +4232,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word5.tl(attr_lemh)
 			         +word5.tl(attr_a_nom)
-			         +(word5.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word5.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word5.tl(attr_gen_mf)
-			         +(word5.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word5.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word5.tl(attr_nbr_sp)
 			         +word5.tl(attr_lemq)
 			         ;
@@ -4251,9 +4251,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word1.tl(attr_lemh)
 			         +word1.tl(attr_a_adj)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         +word1.tl(attr_lemq)
 			         ;
@@ -4294,9 +4294,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu2
 			         +word4.tl(attr_lemh)
 			         +word4.tl(attr_a_adj)
-			         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word4.tl(attr_gen_mf)
-			         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word4.tl(attr_nbr_sp)
 			         +word4.tl(attr_lemq)
 			         ;
@@ -4331,9 +4331,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -4348,9 +4348,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word5.tl(attr_lemh)
 			         +word5.tl(attr_a_nom)
-			         +(word5.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word5.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word5.tl(attr_gen_mf)
-			         +(word5.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word5.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word5.tl(attr_nbr_sp)
 			         +word5.tl(attr_lemq)
 			         ;
@@ -4367,9 +4367,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word2.tl(attr_lemh)
 			         +word2.tl(attr_a_adj)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         +word2.tl(attr_lemq)
 			         ;
@@ -4398,9 +4398,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu2
 			         +word4.tl(attr_lemh)
 			         +word4.tl(attr_a_adj)
-			         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word4.tl(attr_gen_mf)
-			         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word4.tl(attr_nbr_sp)
 			         +word4.tl(attr_lemq)
 			         ;
@@ -4435,9 +4435,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -4452,9 +4452,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word6.tl(attr_lemh)
 			         +word6.tl(attr_a_nom)
-			         +(word6.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word6.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word6.tl(attr_gen_mf)
-			         +(word6.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word6.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word6.tl(attr_nbr_sp)
 			         +word6.tl(attr_lemq)
 			         ;
@@ -4471,9 +4471,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word2.tl(attr_lemh)
 			         +word2.tl(attr_a_adj)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         +word2.tl(attr_lemq)
 			         ;
@@ -4514,9 +4514,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu2
 			         +word5.tl(attr_lemh)
 			         +word5.tl(attr_a_adj)
-			         +(word5.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word5.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word5.tl(attr_gen_mf)
-			         +(word5.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word5.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word5.tl(attr_nbr_sp)
 			         +word5.tl(attr_lemq)
 			         ;
@@ -4551,9 +4551,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -4568,9 +4568,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word6.tl(attr_lemh)
 			         +word6.tl(attr_a_nom)
-			         +(word6.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word6.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word6.tl(attr_gen_mf)
-			         +(word6.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word6.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word6.tl(attr_nbr_sp)
 			         +word6.tl(attr_lemq)
 			         ;
@@ -4599,9 +4599,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word3.tl(attr_lemh)
 			         +word3.tl(attr_a_adj)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         +word3.tl(attr_lemq)
 			         ;
@@ -4630,9 +4630,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu2
 			         +word5.tl(attr_lemh)
 			         +word5.tl(attr_a_adj)
-			         +(word5.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word5.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word5.tl(attr_gen_mf)
-			         +(word5.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word5.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word5.tl(attr_nbr_sp)
 			         +word5.tl(attr_lemq)
 			         ;
@@ -4668,9 +4668,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -4685,9 +4685,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word5.tl(attr_lemh)
 			         +word5.tl(attr_a_nom)
-			         +(word5.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word5.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word5.tl(attr_gen_mf)
-			         +(word5.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word5.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word5.tl(attr_nbr_sp)
 			         +word5.tl(attr_lemq)
 			         ;
@@ -4704,9 +4704,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word2.tl(attr_lemh)
 			         +word2.tl(attr_a_adj)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         +word2.tl(attr_lemq)
 			         ;
@@ -4734,9 +4734,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu2
 			         +word4.tl(attr_lemh)
 			         +word4.tl(attr_a_adj)
-			         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word4.tl(attr_gen_mf)
-			         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word4.tl(attr_nbr_sp)
 			         +word4.tl(attr_lemq)
 			         ;
@@ -4768,9 +4768,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word4.tl(attr_lemh)
 			         +word4.tl(attr_a_nom)
-			         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word4.tl(attr_gen_mf)
-			         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word4.tl(attr_nbr_sp)
 			         +word4.tl(attr_lemq)
 			         ;
@@ -4787,9 +4787,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word1.tl(attr_lemh)
 			         +word1.tl(attr_a_adj)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         +word1.tl(attr_lemq)
 			         ;
@@ -4817,9 +4817,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu2
 			         +word3.tl(attr_lemh)
 			         +word3.tl(attr_a_adj)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         +word3.tl(attr_lemq)
 			         ;
@@ -4851,9 +4851,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word4.tl(attr_lemh)
 			         +word4.tl(attr_a_nom)
-			         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word4.tl(attr_gen_mf)
-			         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word4.tl(attr_nbr_sp)
 			         +word4.tl(attr_lemq)
 			         ;
@@ -4881,9 +4881,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word2.tl(attr_lemh)
 			         +word2.tl(attr_a_adj)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         +word2.tl(attr_lemq)
 			         ;
@@ -4936,9 +4936,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word3.tl(attr_lemh)
 			         +word3.tl(attr_a_nom)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         +word3.tl(attr_lemq)
 			         ;
@@ -4966,9 +4966,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word1.tl(attr_lemh)
 			         +word1.tl(attr_a_adj)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         +word1.tl(attr_lemq)
 			         ;
@@ -5002,9 +5002,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -5030,9 +5030,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word4.tl(attr_lemh)
 			         +word4.tl(attr_a_nom)
-			         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word4.tl(attr_gen_mf)
-			         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word4.tl(attr_nbr_sp)
 			         +word4.tl(attr_lemq)
 			         ;
@@ -5060,9 +5060,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word2.tl(attr_lemh)
 			         +word2.tl(attr_a_adj)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         +word2.tl(attr_lemq)
 			         ;
@@ -5096,10 +5096,10 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
-			         +(word1.tl(attr_nbr_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
+			         +(word1.tl(attr_nbr_sp)==""?"" : "<4>")
 			         ;
 			if (myword.length()>0)
 			{
@@ -5113,9 +5113,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word5.tl(attr_lemh)
 			         +word5.tl(attr_a_nom)
-			         +(word5.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word5.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word5.tl(attr_gen_mf)
-			         +(word5.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word5.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word5.tl(attr_nbr_sp)
 			         +word5.tl(attr_lemq)
 			         ;
@@ -5143,9 +5143,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word3.tl(attr_lemh)
 			         +word3.tl(attr_a_adj)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         +word3.tl(attr_lemq)
 			         ;
@@ -5195,8 +5195,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word2.tl(attr_lemh)
 				         +word2.tl(attr_a_nom)
-				         +(word2.tl(attr_gen).isEmpty()?"" : "<3>")
-				         +(word2.tl(attr_nbr).isEmpty()?"" : "<4>")
+				         +(word2.tl(attr_gen)==""?"" : "<3>")
+				         +(word2.tl(attr_nbr)==""?"" : "<4>")
 				         +word2.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
@@ -5238,8 +5238,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word1.tl(attr_lemh)
 				         +word1.tl(attr_a_nom)
-				         +(word1.tl(attr_gen).isEmpty()?"" : "<3>")
-				         +(word1.tl(attr_nbr).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_gen)==""?"" : "<3>")
+				         +(word1.tl(attr_nbr)==""?"" : "<4>")
 				         +word1.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
@@ -5296,9 +5296,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word1.tl(attr_lem)
 				         +word1.tl(attr_a_det)
-				         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word1.tl(attr_gen_mf)
-				         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word1.tl(attr_nbr_sp)
 				         ;
 				if (myword.length()>0)
@@ -5313,9 +5313,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word3.tl(attr_lemh)
 				         +word3.tl(attr_a_nom)
-				         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word3.tl(attr_gen_mf)
-				         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word3.tl(attr_nbr_sp)
 				         +word3.tl(attr_lemq)
 				         ;
@@ -5360,9 +5360,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word1.tl(attr_lem)
 				         +word1.tl(attr_a_det)
-				         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word1.tl(attr_gen_mf)
-				         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word1.tl(attr_nbr_sp)
 				         ;
 				if (myword.length()>0)
@@ -5377,9 +5377,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word2.tl(attr_lemh)
 				         +word2.tl(attr_a_nom)
-				         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word2.tl(attr_gen_mf)
-				         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word2.tl(attr_nbr_sp)
 				         +word2.tl(attr_lemq)
 				         ;
@@ -5437,9 +5437,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word1.tl(attr_lem)
 				         +word1.tl(attr_a_num)
-				         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word1.tl(attr_gen_mf)
-				         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word1.tl(attr_nbr_sp)
 				         ;
 				if (myword.length()>0)
@@ -5454,9 +5454,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word3.tl(attr_lemh)
 				         +word3.tl(attr_a_nom)
-				         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word3.tl(attr_gen_mf)
-				         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word3.tl(attr_nbr_sp)
 				         +word3.tl(attr_lemq)
 				         ;
@@ -5500,9 +5500,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word1.tl(attr_lem)
 				         +word1.tl(attr_a_num)
-				         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word1.tl(attr_gen_mf)
-				         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word1.tl(attr_nbr_sp)
 				         ;
 				if (myword.length()>0)
@@ -5517,9 +5517,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word2.tl(attr_lemh)
 				         +word2.tl(attr_a_nom)
-				         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word2.tl(attr_gen_mf)
-				         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word2.tl(attr_nbr_sp)
 				         +word2.tl(attr_lemq)
 				         ;
@@ -5580,8 +5580,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word4.tl(attr_lemh)
 			         +word4.tl(attr_a_nom)
-			         +(word4.tl(attr_gen).isEmpty()?"" : "<3>")
-			         +(word4.tl(attr_nbr).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_gen)==""?"" : "<3>")
+			         +(word4.tl(attr_nbr)==""?"" : "<4>")
 			         +word4.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -5659,8 +5659,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word4.tl(attr_lemh)
 			         +word4.tl(attr_a_nom)
-			         +(word4.tl(attr_gen).isEmpty()?"" : "<3>")
-			         +(word4.tl(attr_nbr).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_gen)==""?"" : "<3>")
+			         +(word4.tl(attr_nbr)==""?"" : "<4>")
 			         +word4.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -5750,9 +5750,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -5767,9 +5767,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word5.tl(attr_lemh)
 			         +word5.tl(attr_a_nom)
-			         +(word5.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word5.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word5.tl(attr_gen_mf)
-			         +(word5.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word5.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word5.tl(attr_nbr_sp)
 			         +word5.tl(attr_lemq)
 			         ;
@@ -5858,9 +5858,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_num)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -5875,9 +5875,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word5.tl(attr_lemh)
 			         +word5.tl(attr_a_nom)
-			         +(word5.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word5.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word5.tl(attr_gen_mf)
-			         +(word5.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word5.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word5.tl(attr_nbr_sp)
 			         +word5.tl(attr_lemq)
 			         ;
@@ -5964,8 +5964,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word5.tl(attr_lemh)
 			         +word5.tl(attr_a_nom)
-			         +(word5.tl(attr_gen).isEmpty()?"" : "<3>")
-			         +(word5.tl(attr_nbr).isEmpty()?"" : "<4>")
+			         +(word5.tl(attr_gen)==""?"" : "<3>")
+			         +(word5.tl(attr_nbr)==""?"" : "<4>")
 			         +word5.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -6072,9 +6072,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -6089,9 +6089,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word6.tl(attr_lemh)
 			         +word6.tl(attr_a_nom)
-			         +(word6.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word6.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word6.tl(attr_gen_mf)
-			         +(word6.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word6.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word6.tl(attr_nbr_sp)
 			         +word6.tl(attr_lemq)
 			         ;
@@ -6198,9 +6198,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_num)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -6215,9 +6215,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word6.tl(attr_lemh)
 			         +word6.tl(attr_a_nom)
-			         +(word6.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word6.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word6.tl(attr_gen_mf)
-			         +(word6.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word6.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word6.tl(attr_nbr_sp)
 			         +word6.tl(attr_lemq)
 			         ;
@@ -6295,9 +6295,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word4.tl(attr_lemh)
 			         +word4.tl(attr_a_nom)
-			         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word4.tl(attr_gen_mf)
-			         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word4.tl(attr_nbr_sp)
 			         +word4.tl(attr_lemq)
 			         ;
@@ -6325,9 +6325,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word3.tl(attr_lemh)
 			         +word3.tl(attr_a_adj)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         +word3.tl(attr_lemq)
 			         ;
@@ -6359,9 +6359,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_num)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -6376,9 +6376,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word5.tl(attr_lemh)
 			         +word5.tl(attr_a_nom)
-			         +(word5.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word5.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word5.tl(attr_gen_mf)
-			         +(word5.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word5.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word5.tl(attr_nbr_sp)
 			         +word5.tl(attr_lemq)
 			         ;
@@ -6406,9 +6406,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word4.tl(attr_lemh)
 			         +word4.tl(attr_a_adj)
-			         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word4.tl(attr_gen_mf)
-			         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word4.tl(attr_nbr_sp)
 			         +word4.tl(attr_lemq)
 			         ;
@@ -6441,9 +6441,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -6458,9 +6458,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word5.tl(attr_lemh)
 			         +word5.tl(attr_a_nom)
-			         +(word5.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word5.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word5.tl(attr_gen_mf)
-			         +(word5.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word5.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word5.tl(attr_nbr_sp)
 			         +word5.tl(attr_lemq)
 			         ;
@@ -6488,9 +6488,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word4.tl(attr_lemh)
 			         +word4.tl(attr_a_adj)
-			         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word4.tl(attr_gen_mf)
-			         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word4.tl(attr_nbr_sp)
 			         +word4.tl(attr_lemq)
 			         ;
@@ -6531,9 +6531,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word1.tl(attr_lem)
 				         +word1.tl(attr_a_det)
-				         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word1.tl(attr_gen_mf)
-				         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word1.tl(attr_nbr_sp)
 				         ;
 				if (myword.length()>0)
@@ -6548,9 +6548,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word2.tl(attr_lem)
 				         +word2.tl(attr_a_det)
-				         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word2.tl(attr_gen_mf)
-				         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word2.tl(attr_nbr_sp)
 				         ;
 				if (myword.length()>0)
@@ -6565,9 +6565,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word4.tl(attr_lemh)
 				         +word4.tl(attr_a_nom)
-				         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word4.tl(attr_gen_mf)
-				         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word4.tl(attr_nbr_sp)
 				         +word4.tl(attr_lemq)
 				         ;
@@ -6612,9 +6612,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word1.tl(attr_lem)
 				         +word1.tl(attr_a_det)
-				         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word1.tl(attr_gen_mf)
-				         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word1.tl(attr_nbr_sp)
 				         ;
 				if (myword.length()>0)
@@ -6629,9 +6629,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word2.tl(attr_lem)
 				         +word2.tl(attr_a_det)
-				         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word2.tl(attr_gen_mf)
-				         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word2.tl(attr_nbr_sp)
 				         ;
 				if (myword.length()>0)
@@ -6646,9 +6646,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word3.tl(attr_lemh)
 				         +word3.tl(attr_a_nom)
-				         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word3.tl(attr_gen_mf)
-				         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word3.tl(attr_nbr_sp)
 				         +word3.tl(attr_lemq)
 				         ;
@@ -6708,9 +6708,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word1.tl(attr_lem)
 				         +word1.tl(attr_a_det)
-				         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word1.tl(attr_gen_mf)
-				         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word1.tl(attr_nbr_sp)
 				         ;
 				if (myword.length()>0)
@@ -6725,9 +6725,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word2.tl(attr_lem)
 				         +word2.tl(attr_a_num)
-				         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word2.tl(attr_gen_mf)
-				         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word2.tl(attr_nbr_sp)
 				         ;
 				if (myword.length()>0)
@@ -6742,9 +6742,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word4.tl(attr_lemh)
 				         +word4.tl(attr_a_nom)
-				         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word4.tl(attr_gen_mf)
-				         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word4.tl(attr_nbr_sp)
 				         +word4.tl(attr_lemq)
 				         ;
@@ -6789,9 +6789,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word1.tl(attr_lem)
 				         +word1.tl(attr_a_det)
-				         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word1.tl(attr_gen_mf)
-				         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word1.tl(attr_nbr_sp)
 				         ;
 				if (myword.length()>0)
@@ -6806,9 +6806,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word2.tl(attr_lem)
 				         +word2.tl(attr_a_num)
-				         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word2.tl(attr_gen_mf)
-				         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word2.tl(attr_nbr_sp)
 				         ;
 				if (myword.length()>0)
@@ -6823,9 +6823,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word3.tl(attr_lemh)
 				         +word3.tl(attr_a_nom)
-				         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word3.tl(attr_gen_mf)
-				         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word3.tl(attr_nbr_sp)
 				         +word3.tl(attr_lemq)
 				         ;
@@ -6889,9 +6889,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -6906,9 +6906,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word5.tl(attr_lemh)
 			         +word5.tl(attr_a_nom)
-			         +(word5.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word5.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word5.tl(attr_gen_mf)
-			         +(word5.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word5.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word5.tl(attr_nbr_sp)
 			         +word5.tl(attr_lemq)
 			         ;
@@ -6992,8 +6992,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word3.tl(attr_lemh)
 				         +word3.tl(attr_a_nom)
-				         +(word3.tl(attr_gen).isEmpty()?"" : "<3>")
-				         +(word3.tl(attr_nbr).isEmpty()?"" : "<4>")
+				         +(word3.tl(attr_gen)==""?"" : "<3>")
+				         +(word3.tl(attr_nbr)==""?"" : "<4>")
 				         +word3.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
@@ -7054,9 +7054,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word2.tl(attr_lemh)
 				         +word2.tl(attr_a_nom)
-				         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word2.tl(attr_gen_mf)
-				         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word2.tl(attr_nbr_sp)
 				         +word2.tl(attr_lemq)
 				         ;
@@ -7073,9 +7073,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				         var_adjectiu1
 				         +word1.tl(attr_lemh)
 				         +word1.tl(attr_a_adj)
-				         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word1.tl(attr_gen_mf)
-				         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word1.tl(attr_nbr_sp)
 				         +word1.tl(attr_lemq)
 				         ;
@@ -7134,9 +7134,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word1.tl(attr_lem)
 				         +word1.tl(attr_a_det)
-				         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word1.tl(attr_gen_mf)
-				         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word1.tl(attr_nbr_sp)
 				         ;
 				if (myword.length()>0)
@@ -7151,9 +7151,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word4.tl(attr_lemh)
 				         +word4.tl(attr_a_nom)
-				         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word4.tl(attr_gen_mf)
-				         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word4.tl(attr_nbr_sp)
 				         +word4.tl(attr_lemq)
 				         ;
@@ -7187,9 +7187,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				         var_adjectiu1
 				         +word2.tl(attr_lemh)
 				         +word2.tl(attr_a_adj)
-				         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word2.tl(attr_gen_mf)
-				         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word2.tl(attr_nbr_sp)
 				         +word2.tl(attr_lemq)
 				         ;
@@ -7217,9 +7217,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word1.tl(attr_lem)
 				         +word1.tl(attr_a_det)
-				         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word1.tl(attr_gen_mf)
-				         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word1.tl(attr_nbr_sp)
 				         ;
 				if (myword.length()>0)
@@ -7234,9 +7234,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word3.tl(attr_lemh)
 				         +word3.tl(attr_a_nom)
-				         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word3.tl(attr_gen_mf)
-				         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word3.tl(attr_nbr_sp)
 				         +word3.tl(attr_lemq)
 				         ;
@@ -7253,9 +7253,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				         var_adjectiu1
 				         +word2.tl(attr_lemh)
 				         +word2.tl(attr_a_adj)
-				         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word2.tl(attr_gen_mf)
-				         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word2.tl(attr_nbr_sp)
 				         +word2.tl(attr_lemq)
 				         ;
@@ -7313,9 +7313,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word4.tl(attr_lemh)
 				         +word4.tl(attr_a_nom)
-				         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word4.tl(attr_gen_mf)
-				         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word4.tl(attr_nbr_sp)
 				         +word4.tl(attr_lemq)
 				         ;
@@ -7349,9 +7349,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				         var_adjectiu2
 				         +word2.tl(attr_lemh)
 				         +word2.tl(attr_a_adj)
-				         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word2.tl(attr_gen_mf)
-				         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word2.tl(attr_nbr_sp)
 				         +word2.tl(attr_lemq)
 				         ;
@@ -7368,9 +7368,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				         var_adjectiu1
 				         +word1.tl(attr_lem)
 				         +word1.tl(attr_a_adj)
-				         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word1.tl(attr_gen_mf)
-				         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word1.tl(attr_nbr_sp)
 				         ;
 				if (myword.length()>0)
@@ -7396,9 +7396,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word3.tl(attr_lemh)
 				         +word3.tl(attr_a_nom)
-				         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word3.tl(attr_gen_mf)
-				         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word3.tl(attr_nbr_sp)
 				         +word3.tl(attr_lemq)
 				         ;
@@ -7415,9 +7415,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				         var_adjectiu2
 				         +word2.tl(attr_lemh)
 				         +word2.tl(attr_a_adj)
-				         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word2.tl(attr_gen_mf)
-				         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word2.tl(attr_nbr_sp)
 				         +word2.tl(attr_lemq)
 				         ;
@@ -7434,9 +7434,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				         var_adjectiu1
 				         +word1.tl(attr_lem)
 				         +word1.tl(attr_a_adj)
-				         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word1.tl(attr_gen_mf)
-				         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word1.tl(attr_nbr_sp)
 				         ;
 				if (myword.length()>0)
@@ -7495,9 +7495,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word1.tl(attr_lem)
 				         +word1.tl(attr_a_det)
-				         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word1.tl(attr_gen_mf)
-				         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word1.tl(attr_nbr_sp)
 				         ;
 				if (myword.length()>0)
@@ -7512,9 +7512,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word5.tl(attr_lemh)
 				         +word5.tl(attr_a_nom)
-				         +(word5.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word5.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word5.tl(attr_gen_mf)
-				         +(word5.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word5.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word5.tl(attr_nbr_sp)
 				         +word5.tl(attr_lemq)
 				         ;
@@ -7548,9 +7548,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				         var_adjectiu2
 				         +word3.tl(attr_lemh)
 				         +word3.tl(attr_a_adj)
-				         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word3.tl(attr_gen_mf)
-				         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word3.tl(attr_nbr_sp)
 				         +word3.tl(attr_lemq)
 				         ;
@@ -7567,9 +7567,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				         var_adjectiu1
 				         +word2.tl(attr_lem)
 				         +word2.tl(attr_a_adj)
-				         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word2.tl(attr_gen_mf)
-				         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word2.tl(attr_nbr_sp)
 				         ;
 				if (myword.length()>0)
@@ -7596,9 +7596,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word1.tl(attr_lem)
 				         +word1.tl(attr_a_det)
-				         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word1.tl(attr_gen_mf)
-				         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word1.tl(attr_nbr_sp)
 				         ;
 				if (myword.length()>0)
@@ -7613,9 +7613,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word4.tl(attr_lemh)
 				         +word4.tl(attr_a_nom)
-				         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word4.tl(attr_gen_mf)
-				         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word4.tl(attr_nbr_sp)
 				         +word4.tl(attr_lemq)
 				         ;
@@ -7632,9 +7632,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				         var_adjectiu2
 				         +word3.tl(attr_lemh)
 				         +word3.tl(attr_a_adj)
-				         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word3.tl(attr_gen_mf)
-				         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word3.tl(attr_nbr_sp)
 				         +word3.tl(attr_lemq)
 				         ;
@@ -7651,9 +7651,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				         var_adjectiu1
 				         +word2.tl(attr_lem)
 				         +word2.tl(attr_a_adj)
-				         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word2.tl(attr_gen_mf)
-				         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word2.tl(attr_nbr_sp)
 				         ;
 				if (myword.length()>0)
@@ -7704,8 +7704,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word3.tl(attr_lemh)
 				         +word3.tl(attr_a_nom)
-				         +(word3.tl(attr_gen).isEmpty()?"" : "<3>")
-				         +(word3.tl(attr_nbr).isEmpty()?"" : "<4>")
+				         +(word3.tl(attr_gen)==""?"" : "<3>")
+				         +(word3.tl(attr_nbr)==""?"" : "<4>")
 				         +word3.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
@@ -7771,8 +7771,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word2.tl(attr_lemh)
 				         +word2.tl(attr_a_nom)
-				         +(word2.tl(attr_gen).isEmpty()?"" : "<3>")
-				         +(word2.tl(attr_nbr).isEmpty()?"" : "<4>")
+				         +(word2.tl(attr_gen)==""?"" : "<3>")
+				         +(word2.tl(attr_nbr)==""?"" : "<4>")
 				         +word2.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
@@ -7841,8 +7841,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lemh)
 			         +word1.tl(attr_a_nom)
-			         +(word1.tl(attr_gen).isEmpty()?"" : "<3>")
-			         +(word1.tl(attr_nbr).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_gen)==""?"" : "<3>")
+			         +(word1.tl(attr_nbr)==""?"" : "<4>")
 			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -7912,9 +7912,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word1.tl(attr_lem)
 				         +word1.tl(attr_a_det)
-				         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word1.tl(attr_gen_mf)
-				         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word1.tl(attr_nbr_sp)
 				         ;
 				if (myword.length()>0)
@@ -7929,9 +7929,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word4.tl(attr_lemh)
 				         +word4.tl(attr_a_nom)
-				         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word4.tl(attr_gen_mf)
-				         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word4.tl(attr_nbr_sp)
 				         +word4.tl(attr_lemq)
 				         ;
@@ -8000,9 +8000,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word1.tl(attr_lem)
 				         +word1.tl(attr_a_det)
-				         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word1.tl(attr_gen_mf)
-				         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word1.tl(attr_nbr_sp)
 				         ;
 				if (myword.length()>0)
@@ -8017,9 +8017,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word3.tl(attr_lemh)
 				         +word3.tl(attr_a_nom)
-				         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word3.tl(attr_gen_mf)
-				         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word3.tl(attr_nbr_sp)
 				         +word3.tl(attr_lemq)
 				         ;
@@ -8094,9 +8094,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word4.tl(attr_lemh)
 				         +word4.tl(attr_a_nom)
-				         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word4.tl(attr_gen_mf)
-				         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word4.tl(attr_nbr_sp)
 				         +word4.tl(attr_lemq)
 				         ;
@@ -8147,9 +8147,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				         var_adjectiu1
 				         +word1.tl(attr_lemh)
 				         +word1.tl(attr_a_adj)
-				         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word1.tl(attr_gen_mf)
-				         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word1.tl(attr_nbr_sp)
 				         +word1.tl(attr_lemq)
 				         ;
@@ -8177,9 +8177,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word3.tl(attr_lemh)
 				         +word3.tl(attr_a_nom)
-				         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word3.tl(attr_gen_mf)
-				         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word3.tl(attr_nbr_sp)
 				         +word3.tl(attr_lemq)
 				         ;
@@ -8213,9 +8213,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				         var_adjectiu1
 				         +word1.tl(attr_lemh)
 				         +word1.tl(attr_a_adj)
-				         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word1.tl(attr_gen_mf)
-				         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word1.tl(attr_nbr_sp)
 				         +word1.tl(attr_lemq)
 				         ;
@@ -8270,9 +8270,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word1.tl(attr_lem)
 				         +word1.tl(attr_a_det)
-				         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word1.tl(attr_gen_mf)
-				         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word1.tl(attr_nbr_sp)
 				         ;
 				if (myword.length()>0)
@@ -8287,9 +8287,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word5.tl(attr_lemh)
 				         +word5.tl(attr_a_nom)
-				         +(word5.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word5.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word5.tl(attr_gen_mf)
-				         +(word5.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word5.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word5.tl(attr_nbr_sp)
 				         +word5.tl(attr_lemq)
 				         ;
@@ -8341,9 +8341,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				         var_adjectiu1
 				         +word2.tl(attr_lemh)
 				         +word2.tl(attr_a_adj)
-				         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word2.tl(attr_gen_mf)
-				         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word2.tl(attr_nbr_sp)
 				         +word2.tl(attr_lemq)
 				         ;
@@ -8372,9 +8372,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word1.tl(attr_lem)
 				         +word1.tl(attr_a_det)
-				         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word1.tl(attr_gen_mf)
-				         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word1.tl(attr_nbr_sp)
 				         ;
 				if (myword.length()>0)
@@ -8389,9 +8389,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word4.tl(attr_lemh)
 				         +word4.tl(attr_a_nom)
-				         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word4.tl(attr_gen_mf)
-				         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word4.tl(attr_nbr_sp)
 				         +word4.tl(attr_lemq)
 				         ;
@@ -8425,9 +8425,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				         var_adjectiu1
 				         +word2.tl(attr_lemh)
 				         +word2.tl(attr_a_adj)
-				         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word2.tl(attr_gen_mf)
-				         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word2.tl(attr_nbr_sp)
 				         +word2.tl(attr_lemq)
 				         ;
@@ -8476,8 +8476,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word4.tl(attr_lemh)
 			         +word4.tl(attr_a_nom)
-			         +(word4.tl(attr_gen).isEmpty()?"" : "<3>")
-			         +(word4.tl(attr_nbr).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_gen)==""?"" : "<3>")
+			         +(word4.tl(attr_nbr)==""?"" : "<4>")
 			         +word4.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -8565,9 +8565,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word1.tl(attr_lem)
 				         +word1.tl(attr_a_det)
-				         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word1.tl(attr_gen_mf)
-				         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word1.tl(attr_nbr_sp)
 				         ;
 				if (myword.length()>0)
@@ -8582,9 +8582,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word5.tl(attr_lemh)
 				         +word5.tl(attr_a_nom)
-				         +(word5.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word5.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word5.tl(attr_gen_mf)
-				         +(word5.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word5.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word5.tl(attr_nbr_sp)
 				         +word5.tl(attr_lemq)
 				         ;
@@ -8665,9 +8665,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word1.tl(attr_lem)
 				         +word1.tl(attr_a_det)
-				         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word1.tl(attr_gen_mf)
-				         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word1.tl(attr_nbr_sp)
 				         ;
 				if (myword.length()>0)
@@ -8682,9 +8682,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word4.tl(attr_lemh)
 				         +word4.tl(attr_a_nom)
-				         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word4.tl(attr_gen_mf)
-				         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word4.tl(attr_nbr_sp)
 				         +word4.tl(attr_lemq)
 				         ;
@@ -10365,8 +10365,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word6.tl(attr_lemh)
 			         +word6.tl(attr_a_nom)
-			         +(word6.tl(attr_gen).isEmpty()?"" : "<3>")
-			         +(word6.tl(attr_nbr).isEmpty()?"" : "<4>")
+			         +(word6.tl(attr_gen)==""?"" : "<3>")
+			         +(word6.tl(attr_nbr)==""?"" : "<4>")
 			         +word6.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -10434,8 +10434,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word4.tl(attr_lemh)
 			         +word4.tl(attr_a_nom)
-			         +(word4.tl(attr_gen).isEmpty()?"" : "<3>")
-			         +(word4.tl(attr_nbr).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_gen)==""?"" : "<3>")
+			         +(word4.tl(attr_nbr)==""?"" : "<4>")
 			         +word4.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -10507,9 +10507,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -10524,9 +10524,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word7.tl(attr_lemh)
 			         +word7.tl(attr_a_nom)
-			         +(word7.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word7.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word7.tl(attr_gen_mf)
-			         +(word7.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word7.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word7.tl(attr_nbr_sp)
 			         +word7.tl(attr_lemq)
 			         ;
@@ -10598,9 +10598,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -10615,9 +10615,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word5.tl(attr_lemh)
 			         +word5.tl(attr_a_nom)
-			         +(word5.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word5.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word5.tl(attr_gen_mf)
-			         +(word5.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word5.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word5.tl(attr_nbr_sp)
 			         +word5.tl(attr_lemq)
 			         ;
@@ -10840,9 +10840,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -11299,8 +11299,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_num)
-			         +(word1.tl(attr_gen).isEmpty()?"" : "<2>")
-			         +(word1.tl(attr_nbr).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen)==""?"" : "<2>")
+			         +(word1.tl(attr_nbr)==""?"" : "<3>")
 			         ;
 			if (myword.length()>0)
 			{
@@ -11327,9 +11327,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<2>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<2>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<3>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -11357,8 +11357,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lemh)
 			         +word1.tl(attr_a_nom)
-			         +(word1.tl(attr_gen).isEmpty()?"" : "<3>")
-			         +(word1.tl(attr_nbr).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_gen)==""?"" : "<3>")
+			         +(word1.tl(attr_nbr)==""?"" : "<4>")
 			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -11396,7 +11396,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_prn)
-			         +(word1.tl(attr_tipus_prn).isEmpty()?"" : "<2>")
+			         +(word1.tl(attr_tipus_prn)==""?"" : "<2>")
 			         +word1.tl(attr_pers)
 			         +word1.tl(attr_gen)
 			         +word1.tl(attr_nbr)
@@ -11428,7 +11428,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_prn)
-			         +(word1.tl(attr_tipus_prn).isEmpty()?"" : "<2>")
+			         +(word1.tl(attr_tipus_prn)==""?"" : "<2>")
 			         +word1.tl(attr_pers)
 			         +word1.tl(attr_gen)
 			         +word1.tl(attr_nbr)
@@ -11461,9 +11461,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -11478,9 +11478,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word2.tl(attr_lemh)
 			         +word2.tl(attr_a_num)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -11540,8 +11540,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 		out.append(word2.tl(attr_lem));
 		out.append("<prn><2>");
 		out.append(word2.tl(attr_pers));
-		out.append((word2.tl(attr_gen).isEmpty()?"" : "<4>"));
-		out.append((word2.tl(attr_nbr).isEmpty()?"" : "<5>"));
+		out.append((word2.tl(attr_gen)==""?"" : "<4>"));
+		out.append((word2.tl(attr_nbr)==""?"" : "<5>"));
 		out.append("$}$");
 	}
 	
@@ -11578,9 +11578,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word1.tl(attr_lem)
 				         +word1.tl(attr_a_det)
-				         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word1.tl(attr_gen_mf)
-				         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word1.tl(attr_nbr_sp)
 				         ;
 				if (myword.length()>0)
@@ -11595,9 +11595,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word2.tl(attr_lemh)
 				         +word2.tl(attr_a_nom)
-				         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word2.tl(attr_gen_mf)
-				         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word2.tl(attr_nbr_sp)
 				         +word2.tl(attr_lemq)
 				         ;
@@ -11624,7 +11624,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			out.append('^');
 			out.append(word4.tl(attr_lemh));
 			out.append(word4.tl(attr_a_verb));
-			out.append((word4.tl(attr_temps).isEmpty()?"" : "<5>"));
+			out.append((word4.tl(attr_temps)==""?"" : "<5>"));
 			out.append("+es<prn><enc><ref><p3><mf><sp>");
 			out.append(word4.tl(attr_lemq));
 			out.append("$}$");
@@ -11643,9 +11643,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word1.tl(attr_lem)
 				         +word1.tl(attr_a_det)
-				         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word1.tl(attr_gen_mf)
-				         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word1.tl(attr_nbr_sp)
 				         ;
 				if (myword.length()>0)
@@ -11660,9 +11660,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word2.tl(attr_lemh)
 				         +word2.tl(attr_a_nom)
-				         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word2.tl(attr_gen_mf)
-				         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word2.tl(attr_nbr_sp)
 				         +word2.tl(attr_lemq)
 				         ;
@@ -11690,7 +11690,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word4.tl(attr_lemh)
 				         +word4.tl(attr_a_verb)
-				         +(word4.tl(attr_temps).isEmpty()?"" : "<5>")
+				         +(word4.tl(attr_temps)==""?"" : "<5>")
 				         +word4.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
@@ -11736,9 +11736,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word1.tl(attr_lem)
 				         +word1.tl(attr_a_det)
-				         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word1.tl(attr_gen_mf)
-				         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word1.tl(attr_nbr_sp)
 				         ;
 				if (myword.length()>0)
@@ -11753,9 +11753,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word2.tl(attr_lemh)
 				         +word2.tl(attr_a_nom)
-				         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word2.tl(attr_gen_mf)
-				         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word2.tl(attr_nbr_sp)
 				         +word2.tl(attr_lemq)
 				         ;
@@ -11782,7 +11782,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			out.append('^');
 			out.append(word4.tl(attr_lemh));
 			out.append(word4.tl(attr_a_verb));
-			out.append((word4.tl(attr_temps).isEmpty()?"" : "<5>"));
+			out.append((word4.tl(attr_temps)==""?"" : "<5>"));
 			out.append("+es<prn><enc><ref><p3><mf><sp>+");
 			out.append(word5.tl(attr_lem));
 			out.append("<prn><enc>");
@@ -11806,9 +11806,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word1.tl(attr_lem)
 				         +word1.tl(attr_a_det)
-				         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word1.tl(attr_gen_mf)
-				         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word1.tl(attr_nbr_sp)
 				         ;
 				if (myword.length()>0)
@@ -11823,9 +11823,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word2.tl(attr_lemh)
 				         +word2.tl(attr_a_nom)
-				         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word2.tl(attr_gen_mf)
-				         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word2.tl(attr_nbr_sp)
 				         +word2.tl(attr_lemq)
 				         ;
@@ -11852,7 +11852,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			out.append('^');
 			out.append(word4.tl(attr_lemh));
 			out.append(word4.tl(attr_a_verb));
-			out.append((word4.tl(attr_temps).isEmpty()?"" : "<5>"));
+			out.append((word4.tl(attr_temps)==""?"" : "<5>"));
 			out.append('+');
 			out.append(word5.tl(attr_lem));
 			out.append("<prn><enc>");
@@ -11893,8 +11893,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word1.tl(attr_lemh)
 				         +word1.tl(attr_a_nom)
-				         +(word1.tl(attr_gen).isEmpty()?"" : "<3>")
-				         +(word1.tl(attr_nbr).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_gen)==""?"" : "<3>")
+				         +(word1.tl(attr_nbr)==""?"" : "<4>")
 				         +word1.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
@@ -11920,7 +11920,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			out.append('^');
 			out.append(word3.tl(attr_lemh));
 			out.append(word3.tl(attr_a_verb));
-			out.append((word3.tl(attr_temps).isEmpty()?"" : "<5>"));
+			out.append((word3.tl(attr_temps)==""?"" : "<5>"));
 			out.append("+es<prn><enc><ref><p3><mf><sp>");
 			out.append(word3.tl(attr_lemq));
 			out.append("$}$");
@@ -11938,8 +11938,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word1.tl(attr_lemh)
 				         +word1.tl(attr_a_nom)
-				         +(word1.tl(attr_gen).isEmpty()?"" : "<3>")
-				         +(word1.tl(attr_nbr).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_gen)==""?"" : "<3>")
+				         +(word1.tl(attr_nbr)==""?"" : "<4>")
 				         +word1.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
@@ -11966,7 +11966,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word3.tl(attr_lemh)
 				         +word3.tl(attr_a_verb)
-				         +(word3.tl(attr_temps).isEmpty()?"" : "<5>")
+				         +(word3.tl(attr_temps)==""?"" : "<5>")
 				         +word3.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
@@ -12008,8 +12008,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word1.tl(attr_lemh)
 				         +word1.tl(attr_a_nom)
-				         +(word1.tl(attr_gen).isEmpty()?"" : "<3>")
-				         +(word1.tl(attr_nbr).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_gen)==""?"" : "<3>")
+				         +(word1.tl(attr_nbr)==""?"" : "<4>")
 				         +word1.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
@@ -12035,7 +12035,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			out.append('^');
 			out.append(word3.tl(attr_lemh));
 			out.append(word3.tl(attr_a_verb));
-			out.append((word3.tl(attr_temps).isEmpty()?"" : "<5>"));
+			out.append((word3.tl(attr_temps)==""?"" : "<5>"));
 			out.append("+es<prn><enc><ref><p3><mf><sp>+");
 			out.append(word4.tl(attr_lem));
 			out.append("<prn><enc>");
@@ -12058,8 +12058,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word1.tl(attr_lemh)
 				         +word1.tl(attr_a_nom)
-				         +(word1.tl(attr_gen).isEmpty()?"" : "<3>")
-				         +(word1.tl(attr_nbr).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_gen)==""?"" : "<3>")
+				         +(word1.tl(attr_nbr)==""?"" : "<4>")
 				         +word1.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
@@ -12085,7 +12085,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			out.append('^');
 			out.append(word3.tl(attr_lemh));
 			out.append(word3.tl(attr_a_verb));
-			out.append((word3.tl(attr_temps).isEmpty()?"" : "<5>"));
+			out.append((word3.tl(attr_temps)==""?"" : "<5>"));
 			out.append('+');
 			out.append(word4.tl(attr_lem));
 			out.append("<prn><enc>");
@@ -12131,9 +12131,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word1.tl(attr_lem)
 				         +word1.tl(attr_a_det)
-				         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word1.tl(attr_gen_mf)
-				         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word1.tl(attr_nbr_sp)
 				         ;
 				if (myword.length()>0)
@@ -12148,9 +12148,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word3.tl(attr_lemh)
 				         +word3.tl(attr_a_nom)
-				         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word3.tl(attr_gen_mf)
-				         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word3.tl(attr_nbr_sp)
 				         +word3.tl(attr_lemq)
 				         ;
@@ -12167,9 +12167,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				         var_adjectiu1
 				         +word2.tl(attr_lemh)
 				         +word2.tl(attr_a_adj)
-				         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word2.tl(attr_gen_mf)
-				         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word2.tl(attr_nbr_sp)
 				         +word2.tl(attr_lemq)
 				         ;
@@ -12196,7 +12196,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			out.append('^');
 			out.append(word5.tl(attr_lemh));
 			out.append(word5.tl(attr_a_verb));
-			out.append((word5.tl(attr_temps).isEmpty()?"" : "<5>"));
+			out.append((word5.tl(attr_temps)==""?"" : "<5>"));
 			out.append("+es<prn><enc><ref><p3><mf><sp>");
 			out.append(word5.tl(attr_lemq));
 			out.append("$}$");
@@ -12215,9 +12215,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word1.tl(attr_lem)
 				         +word1.tl(attr_a_det)
-				         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word1.tl(attr_gen_mf)
-				         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word1.tl(attr_nbr_sp)
 				         ;
 				if (myword.length()>0)
@@ -12232,9 +12232,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word3.tl(attr_lemh)
 				         +word3.tl(attr_a_nom)
-				         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word3.tl(attr_gen_mf)
-				         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word3.tl(attr_nbr_sp)
 				         +word3.tl(attr_lemq)
 				         ;
@@ -12251,9 +12251,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				         var_adjectiu1
 				         +word2.tl(attr_lemh)
 				         +word2.tl(attr_a_adj)
-				         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word2.tl(attr_gen_mf)
-				         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word2.tl(attr_nbr_sp)
 				         +word2.tl(attr_lemq)
 				         ;
@@ -12281,7 +12281,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word5.tl(attr_lemh)
 				         +word5.tl(attr_a_verb)
-				         +(word5.tl(attr_temps).isEmpty()?"" : "<5>")
+				         +(word5.tl(attr_temps)==""?"" : "<5>")
 				         +word5.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
@@ -12329,9 +12329,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word1.tl(attr_lem)
 				         +word1.tl(attr_a_det)
-				         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word1.tl(attr_gen_mf)
-				         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word1.tl(attr_nbr_sp)
 				         ;
 				if (myword.length()>0)
@@ -12346,9 +12346,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word3.tl(attr_lemh)
 				         +word3.tl(attr_a_nom)
-				         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word3.tl(attr_gen_mf)
-				         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word3.tl(attr_nbr_sp)
 				         +word3.tl(attr_lemq)
 				         ;
@@ -12365,9 +12365,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				         var_adjectiu1
 				         +word2.tl(attr_lemh)
 				         +word2.tl(attr_a_adj)
-				         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word2.tl(attr_gen_mf)
-				         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word2.tl(attr_nbr_sp)
 				         +word2.tl(attr_lemq)
 				         ;
@@ -12394,7 +12394,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			out.append('^');
 			out.append(word5.tl(attr_lemh));
 			out.append(word5.tl(attr_a_verb));
-			out.append((word5.tl(attr_temps).isEmpty()?"" : "<5>"));
+			out.append((word5.tl(attr_temps)==""?"" : "<5>"));
 			out.append("+es<prn><enc><ref><p3><mf><sp>+");
 			out.append(word6.tl(attr_lem));
 			out.append("<prn><enc>");
@@ -12418,9 +12418,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word1.tl(attr_lem)
 				         +word1.tl(attr_a_det)
-				         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word1.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word1.tl(attr_gen_mf)
-				         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word1.tl(attr_nbr_sp)
 				         ;
 				if (myword.length()>0)
@@ -12435,9 +12435,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word3.tl(attr_lemh)
 				         +word3.tl(attr_a_nom)
-				         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word3.tl(attr_gen_mf)
-				         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word3.tl(attr_nbr_sp)
 				         +word3.tl(attr_lemq)
 				         ;
@@ -12454,9 +12454,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				         var_adjectiu1
 				         +word2.tl(attr_lemh)
 				         +word2.tl(attr_a_adj)
-				         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+				         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 				         +word2.tl(attr_gen_mf)
-				         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+				         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 				         +word2.tl(attr_nbr_sp)
 				         +word2.tl(attr_lemq)
 				         ;
@@ -12483,7 +12483,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			out.append('^');
 			out.append(word5.tl(attr_lemh));
 			out.append(word5.tl(attr_a_verb));
-			out.append((word5.tl(attr_temps).isEmpty()?"" : "<5>"));
+			out.append((word5.tl(attr_temps)==""?"" : "<5>"));
 			out.append('+');
 			out.append(word6.tl(attr_lem));
 			out.append("<prn><enc>");
@@ -12527,9 +12527,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 		out.append(var_gen_chunk);
 		out.append(var_nbr_chunk);
 		out.append("{^el<det><def>");
-		out.append((word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>"));
+		out.append((word1.tl(attr_gen_sense_mf)==""?"" : "<3>"));
 		out.append(word1.tl(attr_gen_mf));
-		out.append((word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>"));
+		out.append((word1.tl(attr_nbr_sense_sp)==""?"" : "<4>"));
 		out.append(word1.tl(attr_nbr_sp));
 		out.append('$');
 		out.append(blank1);
@@ -12537,9 +12537,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word2.tl(attr_lemh)
 			         +word2.tl(attr_a_nom)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         +word2.tl(attr_lemq)
 			         ;
@@ -12587,9 +12587,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 		out.append(var_gen_chunk);
 		out.append(var_nbr_chunk);
 		out.append("{^el<det><def>");
-		out.append((word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>"));
+		out.append((word1.tl(attr_gen_sense_mf)==""?"" : "<3>"));
 		out.append(word1.tl(attr_gen_mf));
-		out.append((word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>"));
+		out.append((word1.tl(attr_nbr_sense_sp)==""?"" : "<4>"));
 		out.append(word1.tl(attr_nbr_sp));
 		out.append('$');
 		out.append(blank1);
@@ -12597,9 +12597,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word2.tl(attr_lem)
 			         +word2.tl(attr_a_det)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -12614,9 +12614,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word3.tl(attr_lemh)
 			         +word3.tl(attr_a_nom)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         +word3.tl(attr_lemq)
 			         ;
@@ -12666,9 +12666,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 		out.append(var_gen_chunk);
 		out.append(var_nbr_chunk);
 		out.append("{^el<det><def>");
-		out.append((word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>"));
+		out.append((word1.tl(attr_gen_sense_mf)==""?"" : "<3>"));
 		out.append(word1.tl(attr_gen_mf));
-		out.append((word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>"));
+		out.append((word1.tl(attr_nbr_sense_sp)==""?"" : "<4>"));
 		out.append(word1.tl(attr_nbr_sp));
 		out.append('$');
 		out.append(blank1);
@@ -12676,9 +12676,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word2.tl(attr_lem)
 			         +word2.tl(attr_a_num)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -12693,9 +12693,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word3.tl(attr_lemh)
 			         +word3.tl(attr_a_nom)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         +word3.tl(attr_lemq)
 			         ;
@@ -12745,9 +12745,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 		out.append(var_gen_chunk);
 		out.append(var_nbr_chunk);
 		out.append("{^el<det><def>");
-		out.append((word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>"));
+		out.append((word1.tl(attr_gen_sense_mf)==""?"" : "<3>"));
 		out.append(word1.tl(attr_gen_mf));
-		out.append((word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>"));
+		out.append((word1.tl(attr_nbr_sense_sp)==""?"" : "<4>"));
 		out.append(word1.tl(attr_nbr_sp));
 		out.append('$');
 		out.append(blank1);
@@ -12755,9 +12755,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word2.tl(attr_lem)
 			         +word2.tl(attr_a_det)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -12772,9 +12772,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word3.tl(attr_lem)
 			         +word3.tl(attr_a_num)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -12789,9 +12789,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word4.tl(attr_lemh)
 			         +word4.tl(attr_a_nom)
-			         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word4.tl(attr_gen_mf)
-			         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word4.tl(attr_nbr_sp)
 			         +word4.tl(attr_lemq)
 			         ;
@@ -12851,9 +12851,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 		out.append(var_gen_chunk);
 		out.append(var_nbr_chunk);
 		out.append("{^el<det><def>");
-		out.append((word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>"));
+		out.append((word1.tl(attr_gen_sense_mf)==""?"" : "<3>"));
 		out.append(word1.tl(attr_gen_mf));
-		out.append((word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>"));
+		out.append((word1.tl(attr_nbr_sense_sp)==""?"" : "<4>"));
 		out.append(word1.tl(attr_nbr_sp));
 		out.append('$');
 		out.append(blank1);
@@ -12861,9 +12861,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word2.tl(attr_lem)
 			         +word2.tl(attr_a_num)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -12878,9 +12878,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word3.tl(attr_lem)
 			         +word3.tl(attr_a_num)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -12895,9 +12895,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word4.tl(attr_lemh)
 			         +word4.tl(attr_a_nom)
-			         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word4.tl(attr_gen_mf)
-			         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word4.tl(attr_nbr_sp)
 			         +word4.tl(attr_lemq)
 			         ;
@@ -12946,9 +12946,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 		out.append(var_gen_chunk);
 		out.append(var_nbr_chunk);
 		out.append("{^el<det><def>");
-		out.append((word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>"));
+		out.append((word1.tl(attr_gen_sense_mf)==""?"" : "<3>"));
 		out.append(word1.tl(attr_gen_mf));
-		out.append((word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>"));
+		out.append((word1.tl(attr_nbr_sense_sp)==""?"" : "<4>"));
 		out.append(word1.tl(attr_nbr_sp));
 		out.append('$');
 		out.append(blank1);
@@ -12956,9 +12956,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word3.tl(attr_lemh)
 			         +word3.tl(attr_a_nom)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         +word3.tl(attr_lemq)
 			         ;
@@ -12975,9 +12975,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word2.tl(attr_lemh)
 			         +word2.tl(attr_a_adj)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -13025,9 +13025,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 		out.append(var_gen_chunk);
 		out.append(var_nbr_chunk);
 		out.append("{^el<det><def>");
-		out.append((word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>"));
+		out.append((word1.tl(attr_gen_sense_mf)==""?"" : "<3>"));
 		out.append(word1.tl(attr_gen_mf));
-		out.append((word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>"));
+		out.append((word1.tl(attr_nbr_sense_sp)==""?"" : "<4>"));
 		out.append(word1.tl(attr_nbr_sp));
 		out.append('$');
 		out.append(blank1);
@@ -13035,9 +13035,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word2.tl(attr_lemh)
 			         +word2.tl(attr_a_det)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -13052,9 +13052,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word4.tl(attr_lemh)
 			         +word4.tl(attr_a_nom)
-			         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word4.tl(attr_gen_mf)
-			         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word4.tl(attr_nbr_sp)
 			         +word4.tl(attr_lemq)
 			         ;
@@ -13071,9 +13071,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word3.tl(attr_lemh)
 			         +word3.tl(attr_a_adj)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -13123,9 +13123,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 		out.append(var_gen_chunk);
 		out.append(var_nbr_chunk);
 		out.append("{^el<det><def>");
-		out.append((word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>"));
+		out.append((word1.tl(attr_gen_sense_mf)==""?"" : "<3>"));
 		out.append(word1.tl(attr_gen_mf));
-		out.append((word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>"));
+		out.append((word1.tl(attr_nbr_sense_sp)==""?"" : "<4>"));
 		out.append(word1.tl(attr_nbr_sp));
 		out.append('$');
 		out.append(blank1);
@@ -13133,9 +13133,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word2.tl(attr_lemh)
 			         +word2.tl(attr_a_num)
-			         +(word2.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word2.tl(attr_gen_mf)
-			         +(word2.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word2.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word2.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -13150,9 +13150,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word4.tl(attr_lemh)
 			         +word4.tl(attr_a_nom)
-			         +(word4.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word4.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word4.tl(attr_gen_mf)
-			         +(word4.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word4.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word4.tl(attr_nbr_sp)
 			         +word4.tl(attr_lemq)
 			         ;
@@ -13169,9 +13169,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         var_adjectiu1
 			         +word3.tl(attr_lemh)
 			         +word3.tl(attr_a_adj)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<3>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<3>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<4>")
 			         +word3.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -13416,7 +13416,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			out.append('^');
 			out.append(word3.tl(attr_lemh));
 			out.append(word3.tl(attr_a_verb));
-			out.append((word3.tl(attr_temps).isEmpty()?"" : "<4>"));
+			out.append((word3.tl(attr_temps)==""?"" : "<4>"));
 			out.append("+es<prn><enc><ref><p3><mf><sp>");
 			out.append(word3.tl(attr_lemq));
 			out.append("$}$");
@@ -13441,7 +13441,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word3.tl(attr_lemh)
 				         +word3.tl(attr_a_verb)
-				         +(word3.tl(attr_temps).isEmpty()?"" : "<4>")
+				         +(word3.tl(attr_temps)==""?"" : "<4>")
 				         +word3.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
@@ -13490,7 +13490,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			out.append('^');
 			out.append(word3.tl(attr_lemh));
 			out.append(word3.tl(attr_a_verb));
-			out.append((word3.tl(attr_temps).isEmpty()?"" : "<4>"));
+			out.append((word3.tl(attr_temps)==""?"" : "<4>"));
 			out.append("+es<prn><enc><ref><p3><mf><sp>+");
 			out.append(word4.tl(attr_lem));
 			out.append("<prn><enc>");
@@ -13519,7 +13519,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			out.append('^');
 			out.append(word3.tl(attr_lemh));
 			out.append(word3.tl(attr_a_verb));
-			out.append((word3.tl(attr_temps).isEmpty()?"" : "<4>"));
+			out.append((word3.tl(attr_temps)==""?"" : "<4>"));
 			out.append('+');
 			out.append(word4.tl(attr_lem));
 			out.append("<prn><enc>");
@@ -13580,7 +13580,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			out.append('^');
 			out.append(word4.tl(attr_lemh));
 			out.append(word4.tl(attr_a_verb));
-			out.append((word4.tl(attr_temps).isEmpty()?"" : "<4>"));
+			out.append((word4.tl(attr_temps)==""?"" : "<4>"));
 			out.append("+es<prn><enc><ref><p3><mf><sp>");
 			out.append(word4.tl(attr_lemq));
 			out.append("$}$");
@@ -13617,7 +13617,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word4.tl(attr_lemh)
 				         +word4.tl(attr_a_verb)
-				         +(word4.tl(attr_temps).isEmpty()?"" : "<4>")
+				         +(word4.tl(attr_temps)==""?"" : "<4>")
 				         +word4.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
@@ -13679,7 +13679,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			out.append('^');
 			out.append(word4.tl(attr_lemh));
 			out.append(word4.tl(attr_a_verb));
-			out.append((word4.tl(attr_temps).isEmpty()?"" : "<4>"));
+			out.append((word4.tl(attr_temps)==""?"" : "<4>"));
 			out.append("+es<prn><enc><ref><p3><mf><sp>+");
 			out.append(word5.tl(attr_lem));
 			out.append("<prn><enc>");
@@ -13720,7 +13720,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			out.append('^');
 			out.append(word4.tl(attr_lemh));
 			out.append(word4.tl(attr_a_verb));
-			out.append((word4.tl(attr_temps).isEmpty()?"" : "<4>"));
+			out.append((word4.tl(attr_temps)==""?"" : "<4>"));
 			out.append('+');
 			out.append(word5.tl(attr_lem));
 			out.append("<prn><enc>");
@@ -14075,7 +14075,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word1.tl(attr_lemh)
 				         +word1.tl(attr_a_verb)
-				         +(word1.tl(attr_temps).isEmpty()?"" : "<3>")
+				         +(word1.tl(attr_temps)==""?"" : "<3>")
 				         +var_pronomenc
 				         +word1.tl(attr_lemq)
 				         ;
@@ -14124,7 +14124,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word1.tl(attr_lemh)
 				         +word1.tl(attr_a_verb)
-				         +(word1.tl(attr_temps).isEmpty()?"" : "<3>")
+				         +(word1.tl(attr_temps)==""?"" : "<3>")
 				         +var_pronomenc
 				         ;
 				if (myword.length()>0)
@@ -14196,7 +14196,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word2.tl(attr_lemh)
 				         +word2.tl(attr_a_verb)
-				         +(word2.tl(attr_temps).isEmpty()?"" : "<3>")
+				         +(word2.tl(attr_temps)==""?"" : "<3>")
 				         +var_pronomenc
 				         +word2.tl(attr_lemq)
 				         ;
@@ -14262,7 +14262,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 				String myword = 
 				         word2.tl(attr_lemh)
 				         +word2.tl(attr_a_verb)
-				         +(word2.tl(attr_temps).isEmpty()?"" : "<3>")
+				         +(word2.tl(attr_temps)==""?"" : "<3>")
 				         +var_pronomenc
 				         ;
 				if (myword.length()>0)
@@ -14474,7 +14474,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word2.tl(attr_lemh)
 			         +word2.tl(attr_a_verb)
-			         +(word2.tl(attr_temps).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_temps)==""?"" : "<3>")
 			         +var_pronomenc
 			         +word2.tl(attr_lemq)
 			         ;
@@ -14535,7 +14535,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word2.tl(attr_lemh)
 			         +word2.tl(attr_a_verb)
-			         +(word2.tl(attr_temps).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_temps)==""?"" : "<3>")
 			         +var_pronomenc
 			         ;
 			if (myword.length()>0)
@@ -14602,7 +14602,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word2.tl(attr_lemh)
 			         +word2.tl(attr_a_verb)
-			         +(word2.tl(attr_temps).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_temps)==""?"" : "<3>")
 			         +var_pronomenc
 			         +word2.tl(attr_lemq)
 			         ;
@@ -14668,7 +14668,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word2.tl(attr_lemh)
 			         +word2.tl(attr_a_verb)
-			         +(word2.tl(attr_temps).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_temps)==""?"" : "<3>")
 			         +var_pronomenc
 			         +word2.tl(attr_lemq)
 			         ;
@@ -14715,8 +14715,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word4.tl(attr_lemh)
 			         +word4.tl(attr_a_nom)
-			         +(word4.tl(attr_gen).isEmpty()?"" : "<4>")
-			         +(word4.tl(attr_nbr).isEmpty()?"" : "<5>")
+			         +(word4.tl(attr_gen)==""?"" : "<4>")
+			         +(word4.tl(attr_nbr)==""?"" : "<5>")
 			         +word4.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -14763,8 +14763,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word3.tl(attr_lemh)
 			         +word3.tl(attr_a_nom)
-			         +(word3.tl(attr_gen).isEmpty()?"" : "<4>")
-			         +(word3.tl(attr_nbr).isEmpty()?"" : "<5>")
+			         +(word3.tl(attr_gen)==""?"" : "<4>")
+			         +(word3.tl(attr_nbr)==""?"" : "<5>")
 			         +word3.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -14817,9 +14817,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_det)
-			         +(word1.tl(attr_gen_sense_mf).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_gen_sense_mf)==""?"" : "<4>")
 			         +word1.tl(attr_gen_mf)
-			         +(word1.tl(attr_nbr_sense_sp).isEmpty()?"" : "<5>")
+			         +(word1.tl(attr_nbr_sense_sp)==""?"" : "<5>")
 			         +word1.tl(attr_nbr_sp)
 			         ;
 			if (myword.length()>0)
@@ -14834,9 +14834,9 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word3.tl(attr_lemh)
 			         +word3.tl(attr_a_nom)
-			         +(word3.tl(attr_gen_sense_mf).isEmpty()?"" : "<4>")
+			         +(word3.tl(attr_gen_sense_mf)==""?"" : "<4>")
 			         +word3.tl(attr_gen_mf)
-			         +(word3.tl(attr_nbr_sense_sp).isEmpty()?"" : "<5>")
+			         +(word3.tl(attr_nbr_sense_sp)==""?"" : "<5>")
 			         +word3.tl(attr_nbr_sp)
 			         +word3.tl(attr_lemq)
 			         ;
@@ -14896,8 +14896,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word3.tl(attr_lemh)
 			         +word3.tl(attr_a_nom)
-			         +(word3.tl(attr_gen).isEmpty()?"" : "<4>")
-			         +(word3.tl(attr_nbr).isEmpty()?"" : "<5>")
+			         +(word3.tl(attr_gen)==""?"" : "<4>")
+			         +(word3.tl(attr_nbr)==""?"" : "<5>")
 			         +word3.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -15224,7 +15224,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lemh)
 			         +word1.tl(attr_a_verb)
-			         +(word1.tl(attr_temps).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_temps)==""?"" : "<3>")
 			         +var_pronomenc
 			         +word1.tl(attr_lemq)
 			         ;
@@ -15267,7 +15267,7 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lemh)
 			         +word1.tl(attr_a_verb)
-			         +(word1.tl(attr_temps).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_temps)==""?"" : "<3>")
 			         +var_pronomenc
 			         ;
 			if (myword.length()>0)
@@ -18815,8 +18815,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_rel)
-			         +(word1.tl(attr_gen).isEmpty()?"" : "<3>")
-			         +(word1.tl(attr_nbr).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_gen)==""?"" : "<3>")
+			         +(word1.tl(attr_nbr)==""?"" : "<4>")
 			         ;
 			if (myword.length()>0)
 			{
@@ -18844,8 +18844,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			String myword = 
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_rel)
-			         +(word1.tl(attr_gen).isEmpty()?"" : "<3>")
-			         +(word1.tl(attr_nbr).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_gen)==""?"" : "<3>")
+			         +(word1.tl(attr_nbr)==""?"" : "<4>")
 			         ;
 			if (myword.length()>0)
 			{
@@ -18888,8 +18888,8 @@ El resultat és una sola forma lèxica (vindré) (excepte en el cas 'I did come'
 			         word1.tl(attr_lem)
 			         +word1.tl(attr_a_prn)
 			         +word1.tl(attr_tipus_prn)
-			         +(word1.tl(attr_gen).isEmpty()?"" : "<3>")
-			         +(word1.tl(attr_nbr).isEmpty()?"" : "<4>")
+			         +(word1.tl(attr_gen)==""?"" : "<3>")
+			         +(word1.tl(attr_nbr)==""?"" : "<4>")
 			         ;
 			if (myword.length()>0)
 			{

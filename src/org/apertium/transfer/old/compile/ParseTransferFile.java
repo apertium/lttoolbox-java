@@ -417,7 +417,9 @@ public class ParseTransferFile {
       String as = e.getAttribute("link-to");
       String expr=getReadClipExpr(e);
       if (as.isEmpty()) return expr;
-      else return "("+expr+".isEmpty()?\"\" : \"<"+as+">\")";
+      // Not JDK 1.5 compliant: else return "("+expr+".isEmpty()?\"\" : \"<"+as+">\")";
+      // Its OK to use == in this case, as its ApertiumRE which is emitting the string
+      else return "("+expr+"==\"\"?\"\" : \"<"+as+">\")";
     } else if (n.equals("lit-tag")) {
       return str("<"+e.getAttribute("v").replaceAll("\\.", "><")+">");
     } else if (n.equals("lit")) {

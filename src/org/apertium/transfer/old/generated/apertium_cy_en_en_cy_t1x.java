@@ -89,8 +89,8 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 			String myword = 
 			         word1.tl(attr_lemh)
 			         +word1.tl(attr_a_nom)
-			         +(word1.tl(attr_gen).isEmpty()?"" : "<2>")
-			         +(word1.tl(attr_nbr).isEmpty()?"" : "<3>")
+			         +(word1.tl(attr_gen)==""?"" : "<2>")
+			         +(word1.tl(attr_nbr)==""?"" : "<3>")
 			         +word1.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
@@ -120,8 +120,8 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 				String myword = 
 				         word2.tl(attr_lemh)
 				         +word2.tl(attr_a_nom)
-				         +(word2.tl(attr_gen).isEmpty()?"" : "<2>")
-				         +(word2.tl(attr_nbr).isEmpty()?"" : "<3>")
+				         +(word2.tl(attr_gen)==""?"" : "<2>")
+				         +(word2.tl(attr_nbr)==""?"" : "<3>")
 				         +word2.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
@@ -157,8 +157,8 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 				String myword = 
 				         word2.tl(attr_lemh)
 				         +word2.tl(attr_a_nom)
-				         +(word2.tl(attr_gen).isEmpty()?"" : "<2>")
-				         +(word2.tl(attr_nbr).isEmpty()?"" : "<3>")
+				         +(word2.tl(attr_gen)==""?"" : "<2>")
+				         +(word2.tl(attr_nbr)==""?"" : "<3>")
 				         +word2.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
@@ -216,8 +216,8 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 				String myword = 
 				         word3.tl(attr_lemh)
 				         +word3.tl(attr_a_nom)
-				         +(word3.tl(attr_gen).isEmpty()?"" : "<2>")
-				         +(word3.tl(attr_nbr).isEmpty()?"" : "<3>")
+				         +(word3.tl(attr_gen)==""?"" : "<2>")
+				         +(word3.tl(attr_nbr)==""?"" : "<3>")
 				         +word3.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
@@ -254,8 +254,8 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 				String myword = 
 				         word3.tl(attr_lemh)
 				         +word3.tl(attr_a_nom)
-				         +(word3.tl(attr_gen).isEmpty()?"" : "<2>")
-				         +(word3.tl(attr_nbr).isEmpty()?"" : "<3>")
+				         +(word3.tl(attr_gen)==""?"" : "<2>")
+				         +(word3.tl(attr_nbr)==""?"" : "<3>")
 				         +word3.tl(attr_lemq)
 				         ;
 				if (myword.length()>0)
@@ -370,7 +370,7 @@ public class apertium_cy_en_en_cy_t1x extends GeneratedTransferBase
 			String myword = 
 			         word2.tl(attr_lemh)
 			         +word2.tl(attr_a_verb)
-			         +(word2.tl(attr_temps).isEmpty()?"" : "<3>")
+			         +(word2.tl(attr_temps)==""?"" : "<3>")
 			         +word2.tl(attr_lemq)
 			         ;
 			if (myword.length()>0)
