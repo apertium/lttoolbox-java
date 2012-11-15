@@ -296,7 +296,8 @@ public class LTProc {
             if (fstp.getNullFlush()) {
                 output.append('\0');
             }
-            throw new IOException(e); // Send to parent
+            //Not JDK 1.5 compliant: throw new IOException(e); // Send to parent
+            throw new RuntimeException(e); // Send to parent
         }
 
 

@@ -17,11 +17,11 @@ package org.apertium.lttoolbox.process;
  * 02111-1307, USA.
  */
 import org.apertium.lttoolbox.Alphabet;
-import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Set;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import org.apertium.lttoolbox.process.Node.Transition;
 
 /**
@@ -652,7 +652,7 @@ public class State {
    @param firstchar first character of the word
    @return the result of the transduction
    */
-  String filterFinalsTM(Alphabet alphabet, SetOfCharacters escaped_chars, ArrayDeque<String> blankqueue, ArrayList<String> numbers) {
+  String filterFinalsTM(Alphabet alphabet, SetOfCharacters escaped_chars, LinkedList<String> blankqueue, ArrayList<String> numbers) {
     String result = "";
     for (int i = 0, limit = state.size(); i < limit; i++) {
       TNodeState state_i = state.get(i);

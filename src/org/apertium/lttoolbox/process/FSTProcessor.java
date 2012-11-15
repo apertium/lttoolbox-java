@@ -60,9 +60,6 @@ package org.apertium.lttoolbox.process;
 import java.io.*;
 import org.apertium.lttoolbox.*;
 import java.nio.ByteBuffer;
-import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
-import java.util.ArrayDeque;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -70,6 +67,7 @@ import java.util.TreeMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import org.apertium.utils.IOUtils;
 
@@ -163,7 +161,8 @@ public class FSTProcessor {
   /**
    Queue of blanks, used in reading methods
    */
-  private ArrayDeque<String> blankqueue = new ArrayDeque<String>();
+  // Not JDK1.5 compliant: private ArrayDeque<String> blankqueue = new ArrayDeque<String>();
+  private LinkedList<String> blankqueue = new LinkedList<String>();
   /**
    Set of characters being considered alphabetics in wound-example.dix file this corresponds to
    <alphabet>ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz</alphabet>
@@ -1657,7 +1656,8 @@ public class FSTProcessor {
       if (iswpunct(val) || Alphabet.isSpaceChar(val)) {
         boolean firstupper = false;
         boolean uppercase = false;
-        if (!sf.isEmpty()) {
+        // Not JDK 1.5 compliant: if (!sf.isEmpty()) {
+        if (sf.length()>0) {
           firstupper = Alphabet.isUpperCase(sf.charAt(1));
           uppercase = sf.length() > 1 && firstupper && Alphabet.isUpperCase(sf.charAt(2));
         }
@@ -2066,7 +2066,7 @@ public class FSTProcessor {
       }
 
       if (current_state.size() == 0) {
-        if (!symbol.isEmpty() && !(result.length() == 0)) {
+        if (symbol.length()>0 && !(result.length() == 0)) {
           queue.append(symbol);
         } else {
           // word is not present

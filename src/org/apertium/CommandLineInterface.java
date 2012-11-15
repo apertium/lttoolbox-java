@@ -72,7 +72,8 @@ public class CommandLineInterface {
       // strip evt path
       String task = new File(argv[0]).getName().trim();
 
-      String[] restOfArgs = Arrays.copyOfRange(argv, 1 , argv.length);
+      String[] restOfArgs = new String[argv.length-1]; //Not used for JDK 1.5 compatibility: Arrays.copyOfRange(argv, 1 , argv.length);
+      System.arraycopy(argv, 1, restOfArgs, 0, argv.length-1);
       if (task.startsWith("lt-proc")) LTProc.main(restOfArgs);
       else if (task.equals("apertium") || task.equals("apertium-j")) ApertiumMain.main(restOfArgs);
       else if (task.startsWith("apertium-transfer")) ApertiumTransfer.main(restOfArgs);

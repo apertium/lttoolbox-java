@@ -338,8 +338,7 @@ public class Postchunk extends Interchunk {
    * Modified to be in-line with the differences between transfer.cc and interchunk.cc
    */
   @Override
-  protected void applyRule(Appendable output, Method rule, ArrayList<String> words, ArrayList<String> blanks)
-      throws IOException {
+  protected void applyRule(Appendable output, Method rule, ArrayList<String> words, ArrayList<String> blanks) throws IOException {
     if (words.size()!=1) {
       System.err.println("WARNING: applyRule(words.size() = " + words.size()+". This should be 1 in postchunk. \nFor "+words);
     }
@@ -370,7 +369,8 @@ public class Postchunk extends Interchunk {
       System.err.println("Error during invokation of "+rule);
       System.err.println("#args = " + args.length);
       System.err.println("processRule:"+rule.getName()+"("+Arrays.toString(args));
-      throw new IOException(e);
+      e.printStackTrace();
+      throw new IOException(e.toString());
     }
 
   }

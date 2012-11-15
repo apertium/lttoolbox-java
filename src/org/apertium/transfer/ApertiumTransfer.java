@@ -243,7 +243,8 @@ public class ApertiumTransfer {
             if (t.getNullFlush()) {
                 output.append('\0');
             }
-            throw new IOException(e);
+            // Not JDK 1.5 compliant: throw new IOException(e);
+            throw new Exception(e);
         }
 
     }

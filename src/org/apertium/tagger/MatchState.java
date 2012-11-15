@@ -157,7 +157,9 @@ class MatchState {
     return result;
   }
 
+  @Override
   public String toString() {
-    return "ms["+first +";"+last+"]=" + Arrays.toString(Arrays.copyOfRange(state, first, last));
+    //Not JDK 1.5 compliant: return "ms["+first +";"+last+"]=" + Arrays.toString(Arrays.copyOfRange(state, first, last));
+    return "ms["+first +";"+last+"]=" + Arrays.asList(state).subList(first, last);
   }
 }

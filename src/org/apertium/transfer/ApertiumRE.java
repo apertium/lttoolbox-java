@@ -22,13 +22,16 @@ public class ApertiumRE {
   }
 
    public String toString() {
-     return ""+re;
+     return re.toString();
    }
 
 
+   /** This string is used for checking for object equality in GeneratedTransferBase.empty() */
+   public static final String EMPTY_STRING = "";
+
     public String match(String source) {
     Matcher m = re.matcher(source);
-    if (!m.find()) return "";
+    if (!m.find()) return EMPTY_STRING;
 
     //System.err.println("m = " + m);
     //System.err.println("m = " + m.groupCount());
