@@ -241,7 +241,7 @@ public class TransferBytecode {
             String as = e.getAttribute("link-to");
             if (!as.isEmpty()) {
                 il.append(factory.createInvoke("java.lang.String", "length", INT, NO_ARGS, INVOKEVIRTUAL));
-                BranchHandle ifeq = il.append(new IFEQ(null));
+                BranchHandle ifeq = il.append(new IFNE(null));
                 il.append(factory.createConstant(""));
                 BranchHandle g = il.append(new GOTO(null));
                 ifeq.setTarget(il.append(factory.createConstant("<" + as + ">")));
