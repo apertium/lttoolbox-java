@@ -365,15 +365,32 @@ public class Translator {
         translate(input, output, new Program("apertium-des" + format), new Program("apertium-re" + format));
     }
 
+    public static void translate(Reader input, Appendable output, Program deformatter, Program reformatter) throws Exception {
+      translate(input, output, deformatter, reformatter, null);
+    }
+
+    public interface TranslationProgressListener {
+      public void onTranslationProgress(String subtask, int progress, int maxProgress);
+    }
+    private static final TranslationProgressListener dummyTranslationProgressListener = new TranslationProgressListener() {
+      @Override
+      public void onTranslationProgress(String subtask, int progress, int maxProgress) {
+        // nothing
+      }
+    };
 
     private static Exception processingException = null;
-    public static void translate(Reader input, Appendable output, Program deformatter, Program reformatter) throws Exception {
+    public static void translate(Reader input, Appendable output, Program deformatter, Program reformatter, TranslationProgressListener progressListener) throws Exception {
         if (Thread.interrupted()) throw new InterruptedException();
         if (cacheEnabled && loader != null && !Thread.currentThread().equals(loader)) {
             loader.interrupt();
             loader.join();
             loader = null;
         }
+
+        if (progressListener==null) progressListener = dummyTranslationProgressListener;
+        int progressMax = mode.getPipelineLength()+2; // +1 for (re)formatting
+        progressListener.onTranslationProgress(deformatter.getCommandName(), 0, progressMax);
 
         if (parallelProcessingEnabled) {
           // Warning: Parallel processing not tested
@@ -383,10 +400,13 @@ public class Translator {
 
           for (int i = 0; i < mode.getPipelineLength(); i++) {
               intOutput = new PipedWriter();
-              dispatch(mode.getProgramByIndex(i), intInput, intOutput, parallelProcessingEnabled);
+              Program prg = mode.getProgramByIndex(i);
+              progressListener.onTranslationProgress(prg.getCommandName(), i+1, progressMax);
+              dispatch(prg, intInput, intOutput, parallelProcessingEnabled);
               intInput = new PipedReader(intOutput);
           }
-          dispatch(reformatter, intInput, output, false);
+          progressListener.onTranslationProgress(reformatter.getCommandName(), progressMax-1, progressMax);
+          dispatch(reformatter, intInput, output, false); // wait for it to finish
         } else {
           StringBuilder intOutput = new StringBuilder(1000);
           dispatch(deformatter, input, intOutput, parallelProcessingEnabled);
@@ -394,19 +414,22 @@ public class Translator {
 
           for (int i = 0; i < mode.getPipelineLength(); i++) {
               intOutput = new StringBuilder(intOutput.length());
-              dispatch(mode.getProgramByIndex(i), intInput, intOutput, parallelProcessingEnabled);
+              Program prg = mode.getProgramByIndex(i);
+              progressListener.onTranslationProgress(prg.getCommandName(), i+1, progressMax);
+              dispatch(prg, intInput, intOutput, parallelProcessingEnabled);
               intInput = new StringReader(intOutput.toString());
           }
-          dispatch(reformatter, intInput, output, false);
+          progressListener.onTranslationProgress(reformatter.getCommandName(), progressMax-1, progressMax);
+          dispatch(reformatter, intInput, output, false); // wait for it to finish
         }
-
 
         if (processingException != null) {
             Exception aux = processingException;
             processingException = null;
             throw aux;
         }
-    }
+        progressListener.onTranslationProgress("", progressMax, progressMax);
+  }
 
      private static void dispatch(final Program program, final Reader input, final Appendable output, boolean async) throws Exception {
         if (async)
