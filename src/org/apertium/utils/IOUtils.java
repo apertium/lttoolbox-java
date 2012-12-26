@@ -40,11 +40,11 @@ public class IOUtils {
     private static File parent;
 
     /** Path to location of cached node indexes */
-    public static File cacheDir = new File("/tmp/apertium-cache");
+    public static File cacheDir = new File("/tmp/apertium-index-cache");
 
     static {
       try {
-        cacheDir = new File(System.getProperty("java.io.tmpdir"),"apertium-cache");
+        cacheDir = new File(System.getProperty("java.io.tmpdir"),"apertium-index-cache");
       } catch (Throwable t) {} // ignore
     }
 
