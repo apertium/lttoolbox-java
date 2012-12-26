@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.apertium.transfer.generation;
 
 import java.io.StringWriter;
@@ -22,14 +21,14 @@ public class DOMTools {
 
   public static Iterable<Element> listElements(final NodeList nl) {
     return new Iterable<Element>() {
-
       @Override
       public Iterator<Element> iterator() {
         return new Iterator<Element>() {
           int i = 0;
+
           public boolean hasNext() {
-            while (i<nl.getLength() && !(nl.item(i) instanceof Element)) {
-              if (commentHandler!=null && (nl.item(i).getNodeType() == Node.COMMENT_NODE)) {
+            while (i < nl.getLength() && !(nl.item(i) instanceof Element)) {
+              if (commentHandler != null && (nl.item(i).getNodeType() == Node.COMMENT_NODE)) {
                 commentHandler.write(nl.item(i).getNodeValue());
               }
               i++;
@@ -37,7 +36,9 @@ public class DOMTools {
             return (nl.item(i) instanceof Element);
           }
 
-          { hasNext(); } // initialization, in case hasNext() isnt called
+          {
+            hasNext();
+          } // initialization, in case hasNext() isnt called
 
           public Element next() {
             return (Element) nl.item(i++);
@@ -55,11 +56,9 @@ public class DOMTools {
     return listElements(e.getChildNodes());
   }
 
-
   public static Element getFirstChildElement(Element e) {
     return findElementSibling(e.getFirstChild());
   }
-
 
   public static Iterable<Element> getChildsChildrenElements(Element e0, String tagName) {
     for (Element e : listElements(e0.getChildNodes()))
@@ -73,7 +72,7 @@ public class DOMTools {
       if (e.getTagName().equals(tagName))
         return findElementSibling((e.getFirstChild()));
 
-    new IllegalStateException(e0+" has no child "+tagName).printStackTrace();
+    new IllegalStateException(e0 + " has no child " + tagName).printStackTrace();
     return null;
   }
 
@@ -82,15 +81,15 @@ public class DOMTools {
       if (e.getTagName().equals(tagName))
         return e;
 
-    new IllegalStateException(e0+" has no child "+tagName).printStackTrace();
+    new IllegalStateException(e0 + " has no child " + tagName).printStackTrace();
     return null;
   }
 
   public static Element findElementSibling(Node n) {
-    while (n!=null && !(n instanceof Element)) n = n.getNextSibling();
+    while (n != null && !(n instanceof Element))
+      n = n.getNextSibling();
     return (Element) n;
   }
-
 
   public static boolean isTag(Element e, String string) {
     String n = e.getTagName();

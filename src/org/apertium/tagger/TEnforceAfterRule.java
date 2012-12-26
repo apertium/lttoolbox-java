@@ -16,8 +16,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
  */
-
 package org.apertium.tagger;
+
 import java.util.ArrayList;
 
 /**
@@ -25,10 +25,10 @@ import java.util.ArrayList;
  * @author jimregan
  */
 public class TEnforceAfterRule {
-    int tagi;
-    ArrayList<Integer> tagsj;
+  int tagi;
+  ArrayList<Integer> tagsj;
 
-    public TEnforceAfterRule() {
-        tagsj = new ArrayList<Integer>();
-    }
+  public TEnforceAfterRule() {
+    tagsj = new ArrayList<Integer>();
+  }
 }

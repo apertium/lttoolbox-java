@@ -2,18 +2,16 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.apertium.lttoolbox.collections;
 
 import java.util.BitSet;
 import java.util.Collection;
-//import java.util.HashSet; //Unused
 import java.util.Iterator;
-//import java.util.TreeSet; //Unused
 
 /**
  * A set where perhaps 10-20% of the integers from 0 to a given max is present.
  * contains() method must be fast
+ *
  * @author Jacob Nordfalk
  */
 public class AbundantIntSet implements IntSet { //extends TreeSet<Integer> {
@@ -21,17 +19,18 @@ public class AbundantIntSet implements IntSet { //extends TreeSet<Integer> {
   private int size;
 
   public AbundantIntSet() {
-	  bs = new BitSet(4096);
-	  size = 0;
+    bs = new BitSet(4096);
+    size = 0;
   }
-  
+
   /**
    * Constructor that creates a new AbundantBitSet based on the one passed in.
+   *
    * @param o - The AbundantBitSet object to copy.
    */
   public AbundantIntSet(AbundantIntSet o) {
-	  bs = (BitSet)o.bs.clone();
-	  size = o.size;
+    bs = (BitSet) o.bs.clone();
+    size = o.size;
   }
 
   public void clear() {
@@ -70,22 +69,22 @@ public class AbundantIntSet implements IntSet { //extends TreeSet<Integer> {
   @Override
   public Iterator<Integer> iterator() {
     return new Iterator() {
-      int i=0;
+      int i = 0;
+
       @Override
       public boolean hasNext() {
-        return bs.nextSetBit(i)==-1;
+        return bs.nextSetBit(i) == -1;
       }
 
       @Override
       public Object next() {
-        return (i=bs.nextSetBit(i));
+        return (i = bs.nextSetBit(i));
       }
 
       @Override
       public void remove() {
         throw new UnsupportedOperationException("Not supported.");
       }
-
     };
   }
 
@@ -93,7 +92,7 @@ public class AbundantIntSet implements IntSet { //extends TreeSet<Integer> {
   public boolean addAll(Collection<? extends Integer> c) {
     Iterator<? extends Integer> e = c.iterator();
     while (e.hasNext()) {
-       add(e.next());
+      add(e.next());
     }
     return true;
   }
@@ -102,7 +101,7 @@ public class AbundantIntSet implements IntSet { //extends TreeSet<Integer> {
   public boolean addAll(IntSet c) {
     Iterator<? extends Integer> e = c.iterator();
     while (e.hasNext()) {
-       add(e.next());
+      add(e.next());
     }
     return true;
   }

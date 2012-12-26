@@ -8,7 +8,7 @@ package org.apertium.lttoolbox.process;
  *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
@@ -27,63 +27,57 @@ import org.apertium.lttoolbox.Alphabet.IntegerPair;
 import org.apertium.utils.IOUtils;
 
 /**
- Transducer class for execution of lexical processing algorithms. Formerly named TransExe, but its really the runtime
- parallel to compile.Transducer
-
- @author Raah
+ * Transducer class for execution of lexical processing algorithms. Formerly named TransExe, but its really the runtime
+ * parallel to compile.Transducer
+ *
+ * @author Raah
  */
 public class TransducerExe {
-
   public static boolean DELAYED_NODE_LOADING = false;
 
   /*
-   nodes   46191
-
-
-   alloc   64624
-
-   public static boolean DELAYED_NODE_LOADING = true;
-   WITH BYTEBUFFER and a direct file after 9 nov 2012
-   alloc  425424
-
-   WITH BYTEBUFFER and a direct file before 9 nov 2012
-   alloc 2085984
-
-   public static boolean DELAYED_NODE_LOADING = false;
-   alloc 9556192
+   * nodes 46191
+   *
+   *
+   * alloc 64624
+   *
+   * public static boolean DELAYED_NODE_LOADING = true;
+   * WITH BYTEBUFFER and a direct file after 9 nov 2012
+   * alloc 425424
+   *
+   * WITH BYTEBUFFER and a direct file before 9 nov 2012
+   * alloc 2085984
+   *
+   * public static boolean DELAYED_NODE_LOADING = false;
+   * alloc 9556192
    */
-
-
-
   /**
-   Initial state
+   * Initial state
    */
   private int initial_id;
   /**
-   Node list
+   * Node list
    */
   //private Node[] node_list;
-  private HashMap<Integer,Node> node_list2;
-
+  private HashMap<Integer, Node> node_list2;
   /**
-   Node positions in the byteBuffer
+   * Node positions in the byteBuffer
    */
   private ByteBuffer byteBufferPositions;
-
   /**
-   Used for delayed loading
+   * Used for delayed loading
    */
   private ByteBuffer byteBuffer;
   /**
-   Used for delayed loading
+   * Used for delayed loading
    */
   private int number_of_states;
   /**
-   Used for delayed loading
+   * Used for delayed loading
    */
   private Alphabet alphabet;
   /**
-   Set of final node indexes
+   * Set of final node indexes
    */
   private HashSet<Integer> final_ids = new HashSet<Integer>();
 
@@ -94,9 +88,8 @@ public class TransducerExe {
   public HashSet<Integer> getFinals() {
     return final_ids;
   }
-
   /**
-   Pool of TNodeState (with their sequence list), for efficiency
+   * Pool of TNodeState (with their sequence list), for efficiency
    */
   private final ArrayList<State.TNodeState> nodeStatePool = State.REUSE_OBJECTS ? new ArrayList<State.TNodeState>(50) : null;
 
@@ -121,8 +114,8 @@ public class TransducerExe {
   }
 
   /**
-   Note that this method is neccesarily very slow as the number of nodes increases, as the nodes don't (and for memory
-   usage reasont shouldnt) know their own node number
+   * Note that this method is neccesarily very slow as the number of nodes increases, as the nodes don't (and for memory
+   * usage reasont shouldnt) know their own node number
    */
   public void show_DEBUG(Alphabet a) {
     for (int i = 0; i < number_of_states; i++) {
@@ -131,11 +124,10 @@ public class TransducerExe {
     }
   }
 
-
   Node getNode(int node_no) {
     //Node node = node_list[node_no];
     Node node = node_list2.get(node_no);
-    if (node==null) {
+    if (node == null) {
       node = loadNode(node_no);
     }
     return node;
@@ -151,7 +143,7 @@ public class TransducerExe {
     //node_list[node_no] = node;
     node_list2.put(node_no, node);
 
-    int byteBufferPosition = byteBufferPositions.getInt(node_no*4);
+    int byteBufferPosition = byteBufferPositions.getInt(node_no * 4);
     byteBuffer.position(byteBufferPosition); // seek to correct place in file
     int number_of_local_transitions = Compression.multibyte_read(byteBuffer); // typically 20-40, max seen is 694
 
@@ -206,16 +198,16 @@ public class TransducerExe {
     byteBuffer = input;
 
 
-    int cacheFileSize = number_of_states*4 + 4; // one extra int to hold index of end of transducer
+    int cacheFileSize = number_of_states * 4 + 4; // one extra int to hold index of end of transducer
     byteBufferPositions = IOUtils.mapByteBuffer(cachedFile, cacheFileSize);
 
     if (FSTProcessor.DEBUG) {
-      System.err.println("TransducerExe read states:"+number_of_states+ "  cachedFile="+cachedFile+" "+byteBufferPositions.isReadOnly()+" "+byteBufferPositions);
+      System.err.println("TransducerExe read states:" + number_of_states + "  cachedFile=" + cachedFile + " " + byteBufferPositions.isReadOnly() + " " + byteBufferPositions);
     }
 
 
     if (byteBufferPositions.isReadOnly()) {
-      int lastPos = byteBufferPositions.getInt(number_of_states*4);
+      int lastPos = byteBufferPositions.getInt(number_of_states * 4);
       input.position(lastPos); // Skip to end position
       return;
     }

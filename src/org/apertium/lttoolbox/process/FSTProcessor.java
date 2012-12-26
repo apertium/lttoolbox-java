@@ -1,61 +1,61 @@
 package org.apertium.lttoolbox.process;
 /*
- Xerox:
-
- @P.feature.value@ When a @P.feature.value@ Flag Diacritic is encountered, the value of the indicated feature is simply
- set or reset to the indicated value.
-
- @N.feature.value@ When an @N.feature.value@ Flag Diacritic is encountered, the value of feature is set or reset to the
- negation or complement of value.
-
- @R.feature.value@ When an @R.feature.value@Flag Diacritic is encountered, a test is performed; this test succeeds if
- and only if feature is currently set to value.
-
- @R.feature@ When an @R.feature@ Flag Diacritic is encountered, the test succeeds if and only if feature is currently
- set to some value other than neutral.
-
- @D.feature.value@ When a @D.feature.value@Flag Diacritic is encountered, the test succeeds if and only if feature is
- currently neutral or is set to a value that is incompatible with value.
-
- @D.feature@ When a @D.feature@ Flag Diacritic is encountered, the test succeeds if and only if feature is currently
- neutral (unset).
-
- @C.feature@ When a @C.feature@ Flag Diacritic is encountered, the value of feature is reset to neutral.
-
- @U.feature.value@ If feature is currently neutral, then encountering @U.feature.value@ simply causes feature to be set
- to value.
-
- ------------
-
- <jacobEo> we have 4 combinations of words: <jacobEo> LR : can be both <jacobEo> L : root only <jacobEo> R ending only
- <jacobEo> - cannot be part of a compound
-
- LR: <if (!cmp) fail><if (R) fail><if L set R=on><set L=on> L : <if (!cmp) fail><set L=on> R : <if (!cmp) fail><if (R)
- fail><set R=on> - : <if (cmp) fail>
-
-
- when entering compounding prepend: @P.cmp.yes@ R : @R.cmp.yes@ @R.right.no@ @P.right.yes@ L : @R.cmp.yes@ - :
- @R.cmp.no@ add after last compound word: @R.right.yes@
-
-
-
- when entering compounding prepend: @set:cmp=yes@ R : @assert:cmp==yes@ @assert:right!=yes@ @set:right=yes@ L :
- @assert:cmp==yes@ - : @assert:cmp!=yes@ add after last compound word: @assert:right==yes@
-
+ * Xerox:
+ *
+ * @P.feature.value@ When a @P.feature.value@ Flag Diacritic is encountered, the value of the indicated feature is simply
+ * set or reset to the indicated value.
+ *
+ * @N.feature.value@ When an @N.feature.value@ Flag Diacritic is encountered, the value of feature is set or reset to the
+ * negation or complement of value.
+ *
+ * @R.feature.value@ When an @R.feature.value@Flag Diacritic is encountered, a test is performed; this test succeeds if
+ * and only if feature is currently set to value.
+ *
+ * @R.feature@ When an @R.feature@ Flag Diacritic is encountered, the test succeeds if and only if feature is currently
+ * set to some value other than neutral.
+ *
+ * @D.feature.value@ When a @D.feature.value@Flag Diacritic is encountered, the test succeeds if and only if feature is
+ * currently neutral or is set to a value that is incompatible with value.
+ *
+ * @D.feature@ When a @D.feature@ Flag Diacritic is encountered, the test succeeds if and only if feature is currently
+ * neutral (unset).
+ *
+ * @C.feature@ When a @C.feature@ Flag Diacritic is encountered, the value of feature is reset to neutral.
+ *
+ * @U.feature.value@ If feature is currently neutral, then encountering @U.feature.value@ simply causes feature to be set
+ * to value.
+ *
+ * ------------
+ *
+ * <jacobEo> we have 4 combinations of words: <jacobEo> LR : can be both <jacobEo> L : root only <jacobEo> R ending only
+ * <jacobEo> - cannot be part of a compound
+ *
+ * LR: <if (!cmp) fail><if (R) fail><if L set R=on><set L=on> L : <if (!cmp) fail><set L=on> R : <if (!cmp) fail><if (R)
+ * fail><set R=on> - : <if (cmp) fail>
+ *
+ *
+ * when entering compounding prepend: @P.cmp.yes@ R : @R.cmp.yes@ @R.right.no@ @P.right.yes@ L : @R.cmp.yes@ - :
+ * @R.cmp.no@ add after last compound word: @R.right.yes@
+ *
+ *
+ *
+ * when entering compounding prepend: @set:cmp=yes@ R : @assert:cmp==yes@ @assert:right!=yes@ @set:right=yes@ L :
+ * @assert:cmp==yes@ - : @assert:cmp!=yes@ add after last compound word: @assert:right==yes@
+ *
  */
 
 
 /*
- This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public
- License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later
- version.
-
- This program is distributed in the hope that it will be useful, butflagvalues = WITHOUT ANY WARRANTY; without even the
- implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- details.
-
- You should have received a copy of the GNU General Public License along with this program; if not, write to the Free
- Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, butflagvalues = WITHOUT ANY WARRANTY; without even the
+ * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free
+ * Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 import java.io.*;
 import org.apertium.lttoolbox.*;
@@ -73,7 +73,6 @@ import org.apertium.utils.IOUtils;
 
 public class FSTProcessor {
   public static boolean DEBUG = false;
-
   private boolean isLastBlankTM;
   private boolean showControlSymbols = false;
   private boolean biltransSurfaceForms;
@@ -113,14 +112,14 @@ public class FSTProcessor {
   }
 
   /**
-   @param dictionaryCase the dictionaryCase to set
+   * @param dictionaryCase the dictionaryCase to set
    */
   public void setDictionaryCase(boolean dictionaryCase) {
     this.dictionaryCase = dictionaryCase;
   }
 
   /**
-   @param showControlSymbols the showHiddenSymbols to set
+   * @param showControlSymbols the showHiddenSymbols to set
    */
   public void setShowControlSymbols(boolean showControlSymbols) {
     this.showControlSymbols = showControlSymbols;
@@ -135,65 +134,65 @@ public class FSTProcessor {
   //private Collator myCollator = Collator.getInstance();
 
   /**
-   Transducers in FSTP
+   * Transducers in FSTP
    */
   private Map<String, TransducerExe> transducers = new TreeMap<String, TransducerExe>();
   /**
-   Initial state of every token
+   * Initial state of every token
    */
   private State initial_state = new State();
   /**
-   Set incoditional sections in the dictionaries
+   * Set incoditional sections in the dictionaries
    */
   private Set<TransducerExe> inconditional = new HashSet<TransducerExe>();
   /**
-   Set standard sections in the dictionaries
+   * Set standard sections in the dictionaries
    */
   private Set<TransducerExe> standard = new HashSet<TransducerExe>();
   /**
-   Set postblank sections in the dictionaries
+   * Set postblank sections in the dictionaries
    */
   private Set<TransducerExe> postblank = new HashSet<TransducerExe>();
   /**
-   Set preblank sections in the dictionaries
+   * Set preblank sections in the dictionaries
    */
   private Set<TransducerExe> preblank = new HashSet<TransducerExe>();
   /**
-   Queue of blanks, used in reading methods
+   * Queue of blanks, used in reading methods
    */
   // Not JDK1.5 compliant: private ArrayDeque<String> blankqueue = new ArrayDeque<String>();
   private LinkedList<String> blankqueue = new LinkedList<String>();
   /**
-   Set of characters being considered alphabetics in wound-example.dix file this corresponds to
-   <alphabet>ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz</alphabet>
+   * Set of characters being considered alphabetics in wound-example.dix file this corresponds to
+   * <alphabet>ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz</alphabet>
    */
   private SetOfCharacters alphabetic_chars;
   /**
-   Set of characters to escape with a backslash
+   * Set of characters to escape with a backslash
    */
   private SetOfCharacters escaped_chars = new SetOfCharacters();
   /**
-   Alphabet
+   * Alphabet
    */
   public Alphabet alphabet = new Alphabet();
   /**
-   Input buffer
+   * Input buffer
    */
   private Buffer input_buffer = new Buffer(2048);
   /**
-   true if the position of input stream is out of a word
+   * true if the position of input stream is out of a word
    */
   private boolean outOfWord;
   /**
-   if true, makes always difference between uppercase and lowercase characters
+   * if true, makes always difference between uppercase and lowercase characters
    */
   private boolean caseSensitive = false;
   /**
-   if true, makes always difference between uppercase and lowercase characters
+   * if true, makes always difference between uppercase and lowercase characters
    */
   private boolean dictionaryCase = false;
   /**
-   if true, flush the output when the null character is found
+   * if true, flush the output when the null character is found
    */
   private boolean nullFlush = false;
   private ArrayList<String> tmNumbers;
@@ -515,19 +514,19 @@ public class FSTProcessor {
           return new Pair<String, Integer>(symbol, 0x7fffffff);
         }
       } else if (val == '\\') {
-        output.append((char)val);
+        output.append((char) val);
         val = (char) input.read();
         if (val == EOF) {
           return new Pair<String, Integer>(symbol, 0x7fffffff);
         }
-        output.append((char)val);
+        output.append((char) val);
         skipUntil(input, output, '^');
         val = (char) input.read();
         if (val == EOF) {
           return new Pair<String, Integer>(symbol, 0x7fffffff);
         }
       } else {
-        output.append((char)val);
+        output.append((char) val);
         skipUntil(input, output, '^');
         val = (char) input.read();
         if (val == EOF) {
@@ -558,7 +557,7 @@ public class FSTProcessor {
       }
       cad += (char) val;
       int res = alphabet.cast(cad);
-      if (res==0) {
+      if (res == 0) {
         symbol = cad;
       }
       return new Pair<String, Integer>(symbol, res);
@@ -570,8 +569,6 @@ public class FSTProcessor {
     }
   }
 
-
-
   private void flushBlanks(Appendable output) throws IOException {
     for (int i = blankqueue.size(); i > 0; i--) {
       output.append(blankqueue.getFirst());
@@ -581,24 +578,24 @@ public class FSTProcessor {
 
   private void calc_initial_state() {
     Collection<TransducerExe> transducerc = transducers.values();
-/*
-    Node root = new Node();
-    root.initTransitions(transducerc.size());
-    for (TransducerExe transducer : transducerc) {
-      Node initialNodeForThisTransducer = transducer.getInitial();
-      root.addTransition(0, 0, initialNodeForThisTransducer);
-    }
-    initial_state.init(root);
-*/
+    /*
+     * Node root = new Node();
+     * root.initTransitions(transducerc.size());
+     * for (TransducerExe transducer : transducerc) {
+     * Node initialNodeForThisTransducer = transducer.getInitial();
+     * root.addTransition(0, 0, initialNodeForThisTransducer);
+     * }
+     * initial_state.init(root);
+     */
     initial_state.init(transducerc);
   }
 
   private boolean endsWith(String str, String suffix) {
     return str.endsWith(suffix);
     /*
-     if (str.length() < suffix.length()) { return false; } else { return str.substring(str.length() -
-     suffix.length()).equals(suffix);
-        }
+     * if (str.length() < suffix.length()) { return false; } else { return str.substring(str.length() -
+     * suffix.length()).equals(suffix);
+     * }
      */
   }
 
@@ -645,7 +642,6 @@ public class FSTProcessor {
     output.append('$');
   }
 
-
   private void printUnknownWord(String surfaceForm, Appendable output) throws IOException {
     output.append('^');
     writeEscaped(surfaceForm, output);
@@ -681,44 +677,48 @@ public class FSTProcessor {
   }
 
   /**
-   Reads the binary representation of a .dix file - <b>keeping the whole file in memory at all times</b>.
-   <b>WARNING</b>This method should be avoided on Android and other memory constrained devices.
-   @param input
-   @throws IOException
+   * Reads the binary representation of a .dix file - <b>keeping the whole file in memory at all times</b>.
+   * <b>WARNING</b>This method should be avoided on Android and other memory constrained devices.
+   *
+   * @param input
+   * @throws IOException
    */
   public void load(InputStream input) throws IOException {
     if (DEBUG) {
       System.err.println("FSTProcessor.load - SLOW VERSION");
     }
-    ByteBuffer byteBuffer =  IOUtils.inputStreamToByteBuffer(input);
+    ByteBuffer byteBuffer = IOUtils.inputStreamToByteBuffer(input);
     load(byteBuffer);
   }
 
   /**
-   Reads the binary representation of a .dix file
-   @param filePath
-   @throws IOException
+   * Reads the binary representation of a .dix file
+   *
+   * @param filePath
+   * @throws IOException
    */
   public void load(String filePath) throws IOException {
     if (DEBUG) {
-      System.err.println("FSTProcessor memmap and load("+filePath);
+      System.err.println("FSTProcessor memmap and load(" + filePath);
     }
     load(IOUtils.memmap(filePath), filePath);
   }
 
   /**
-   Reads the binary representation of a .dix file
-   @param input
-   @throws IOException
+   * Reads the binary representation of a .dix file
+   *
+   * @param input
+   * @throws IOException
    */
   public void load(ByteBuffer input) throws IOException {
     load(input, null);
   }
 
   /**
-   Reads the binary representation of a .dix file
-   @param input
-   @param cachedIndexes path to a unique directory where cached transducer indexes are
+   * Reads the binary representation of a .dix file
+   *
+   * @param input
+   * @param cachedIndexes path to a unique directory where cached transducer indexes are
    */
   public void load(ByteBuffer input, String filename) throws IOException {
     // the following examples and numbers corresponds to testdata/wound-example.dix
@@ -737,7 +737,7 @@ public class FSTProcessor {
     alphabet = Alphabet.read(input);
 
     if (DEBUG) {
-      System.err.println("FSTProcessor load("+input+ " "+filename);
+      System.err.println("FSTProcessor load(" + input + " " + filename);
       System.err.println("alphabet = " + alphabet.toString());
     }
 
@@ -756,10 +756,10 @@ public class FSTProcessor {
 
       File cacheFile = null;
       //System.out.println("reading : "+name);
-      if (IOUtils.cacheDir!=null && filename!=null) {
+      if (IOUtils.cacheDir != null && filename != null) {
         // Try to load make cached a memmapped transducer cache file
         String fileid = new File(filename).getAbsolutePath().replace(File.separatorChar, '_').replace('.', '_');
-        cacheFile = new File(IOUtils.cacheDir, fileid + "@"+input.position());
+        cacheFile = new File(IOUtils.cacheDir, fileid + "@" + input.position());
         //System.out.println("cachedFile = " + cacheFile);
       }
 
@@ -956,7 +956,7 @@ public class FSTProcessor {
   }
 
   /*
-   private final char charAt(String s, int index) { return s.charAt(index); }
+   * private final char charAt(String s, int index) { return s.charAt(index); }
    */
   public synchronized void analysis(Reader input, Appendable output) throws IOException {
     if (getNullFlush()) {
@@ -971,8 +971,8 @@ public class FSTProcessor {
     StringBuilder sf = new StringBuilder(200); // surface form
     int last = 0;
     /*
-     System.err.println("\nall_finals = " + all_finals); System.err.println("\ninconditional = " + inconditional);
-     System.err.println("\npostblank = " + postblank); System.err.println("\npreblank = " + preblank);
+     * System.err.println("\nall_finals = " + all_finals); System.err.println("\ninconditional = " + inconditional);
+     * System.err.println("\npostblank = " + postblank); System.err.println("\npreblank = " + preblank);
      */
     char val;
     while ((val = readAnalysis(input)) != (char) 0) {
@@ -1056,7 +1056,7 @@ public class FSTProcessor {
             if (isEscaped(val)) {
               output.append('\\');
             }
-            output.append((char)val);
+            output.append((char) val);
           }
         } else if (last_postblank) {
           printWord(sf.substring(0, sf.length() - input_buffer.diffPrevPos(last)), lf.toString(), output);
@@ -1463,7 +1463,7 @@ public class FSTProcessor {
         val = readGeneration(input, output);
       }
       if (val == '$' && outOfWord) {
-        if (sf.length()==0) {
+        if (sf.length() == 0) {
           // nothing inside, so output nothing
         } else {
           char ch0 = sf.charAt(0);
@@ -1657,7 +1657,7 @@ public class FSTProcessor {
         boolean firstupper = false;
         boolean uppercase = false;
         // Not JDK 1.5 compliant: if (!sf.isEmpty()) {
-        if (sf.length()>0) {
+        if (sf.length() > 0) {
           firstupper = Alphabet.isUpperCase(sf.charAt(1));
           uppercase = sf.length() > 1 && firstupper && Alphabet.isUpperCase(sf.charAt(2));
         }
@@ -1828,18 +1828,16 @@ public class FSTProcessor {
     }
   }
 
-
-
   /**
-  @param input  ^Jeg<prn><p1><mf><sg><nom>$ ^ha<vblex><pres>$ ^ikke<adv>$
-  @param output ^Jeg<prn><p1><mf><sg><nom>/Prpers<prn><p1><mf><sg><nom>$ ^ha<vblex><pres>/have<vbhaver><pres>$ ^ikke<adv>/not<adv>$
-  @throws IOException
-  */
+   * @param input ^Jeg<prn><p1><mf><sg><nom>$ ^ha<vblex><pres>$ ^ikke<adv>$
+   * @param output ^Jeg<prn><p1><mf><sg><nom>/Prpers<prn><p1><mf><sg><nom>$ ^ha<vblex><pres>/have<vbhaver><pres>$ ^ikke<adv>/not<adv>$
+   * @throws IOException
+   */
   public synchronized void bilingual(Reader input, Appendable output) throws IOException {
     /* XXX TODO
-    if (getNullFlush()) {
-      transliteration_wrapper_null_flush(input, output);
-    }*/
+     * if (getNullFlush()) {
+     * transliteration_wrapper_null_flush(input, output);
+     * } */
 
     State current_state = initial_state.copy();
     StringBuilder sf = new StringBuilder(200);    // source language analysis
@@ -1860,8 +1858,8 @@ public class FSTProcessor {
       tr = readBilingual(input, output);
       symbol = tr.first;
       val = tr.second;
-      if(biltransSurfaceForms && !seensurface && !outOfWord) {
-        while(val != '/' && val != 0x7fffffff) {
+      if (biltransSurfaceForms && !seensurface && !outOfWord) {
+        while (val != '/' && val != 0x7fffffff) {
           surface = surface + symbol;
           surface = alphabet.getSymbol(val);
           tr = readBilingual(input, output);
@@ -1874,34 +1872,31 @@ public class FSTProcessor {
         val = tr.second;
       }
 
-      if (val == 0x7fffffff)
-      {
+      if (val == 0x7fffffff) {
         break;
       }
 
       if (val == '$' && outOfWord) {
         if (!seentags) {       // if no tags: only return complete matches
           boolean uppercase = (sf.length() > 1) && Alphabet.isUpperCase(sf.charAt(1));
-          boolean firstupper= Alphabet.isUpperCase(sf.charAt(0));
+          boolean firstupper = Alphabet.isUpperCase(sf.charAt(0));
 
           result = current_state.filterFinals(result, alphabet, escaped_chars, uppercase, firstupper);
           /*
-          result = current_state.filterFinals(all_finals, alphabet,
-                                    escaped_chars,
-                                    uppercase, firstupper, 0);
-          */
+           * result = current_state.filterFinals(all_finals, alphabet,
+           * escaped_chars,
+           * uppercase, firstupper, 0);
+           */
         }
-        if (sf.charAt(0)=='*') {
-          printWordBilingual(sf.toString(), "/"+sf, output);
+        if (sf.charAt(0) == '*') {
+          printWordBilingual(sf.toString(), "/" + sf, output);
         } else if (result.length() > 0) {
-          printWordBilingual(sf.toString(), result.toString()+queue.toString(), output);
+          printWordBilingual(sf.toString(), result.toString() + queue.toString(), output);
         } else {
           if (biltransSurfaceForms) {
-            printWordBilingual(surface, "/@"+surface, output);
-          }
-          else
-          {
-            printWordBilingual(sf.toString(), "/@"+sf, output);
+            printWordBilingual(surface, "/@" + surface, output);
+          } else {
+            printWordBilingual(sf.toString(), "/@" + sf, output);
           }
         }
         seensurface = false;
@@ -1911,14 +1906,14 @@ public class FSTProcessor {
         current_state = initial_state.copy();
         sf.setLength(0);
         seentags = false;
-      } else if (Alphabet.isWhitespace((char) val) && sf.length()==0) {
+      } else if (Alphabet.isWhitespace((char) val) && sf.length() == 0) {
         // do nothing
-      } else if(sf.length() > 0 && sf.charAt(0) == '*') {
+      } else if (sf.length() > 0 && sf.charAt(0) == '*') {
         if (isEscaped((char) val)) {
           sf.append('\\');
         }
         sf.append(alphabet.getSymbol(val));  // add symbol to sf iff alphabetic
-        if(val == 0)  // non-alphabetic, possibly unknown tag; add to sf
+        if (val == 0) // non-alphabetic, possibly unknown tag; add to sf
         {
           sf.append(symbol);
         }
@@ -1927,47 +1922,40 @@ public class FSTProcessor {
           sf.append('\\');
         }
         sf.append(alphabet.getSymbol(val));  // add symbol to sf iff alphabetic
-        if(val == 0)  // non-alphabetic, possibly unknown tag; add to sf
+        if (val == 0) // non-alphabetic, possibly unknown tag; add to sf
         {
           sf.append(symbol);
         }
-        if(alphabet.isTag(val) || val == 0)
-        {
+        if (alphabet.isTag(val) || val == 0) {
           seentags = true;
         }
         if (current_state.size() != 0) {
-          if(!alphabet.isTag(val) && Alphabet.isUpperCase(val) && !caseSensitive)
-          {
+          if (!alphabet.isTag(val) && Alphabet.isUpperCase(val) && !caseSensitive) {
             current_state.step(val, Alphabet.toLowerCase(val));
-          }
-          else
-          {
+          } else {
             current_state.step(val);
           }
         }
-        if(current_state.isFinal()) {
+        if (current_state.isFinal()) {
 
           boolean uppercase = (sf.length() > 1) && Alphabet.isUpperCase(sf.charAt(1));
-          boolean firstupper= Alphabet.isUpperCase(sf.charAt(0));
+          boolean firstupper = Alphabet.isUpperCase(sf.charAt(0));
 
           result = current_state.filterFinals(result, alphabet, escaped_chars, uppercase, firstupper);
         }
 
-        if(current_state.size() == 0 && result.length()>0) {
+        if (current_state.size() == 0 && result.length() > 0) {
           // We already have a result, but there is still more to read
           // of the analysis; following tags are not consumed, but
           // output as target language tags (added to result on
           // end-of-word)
-          if(alphabet.isTag(val)) // known tag
+          if (alphabet.isTag(val)) // known tag
           {
             queue.append(alphabet.getSymbol(val));
-          }
-          else if (val == 0) // non-alphabetic, possibly unknown tag
+          } else if (val == 0) // non-alphabetic, possibly unknown tag
           {
             queue.append(symbol);
-          }
-          else
-          {
+          } else {
             // There are no more alive transductions and the current symbol is not a tag -- unknown word!
             result.setLength(0);
           }
@@ -1978,15 +1966,6 @@ public class FSTProcessor {
     // print remaining blanks
     flushBlanks(output);
   }
-
-
-
-
-
-
-
-
-
 
   public synchronized Pair<String, Integer> biltransWithQueue(String input_word, boolean with_delim) {
     State current_state = initial_state.copy();
@@ -2066,7 +2045,7 @@ public class FSTProcessor {
       }
 
       if (current_state.size() == 0) {
-        if (symbol.length()>0 && !(result.length() == 0)) {
+        if (symbol.length() > 0 && !(result.length() == 0)) {
           queue.append(symbol);
         } else {
           // word is not present
@@ -2402,7 +2381,8 @@ public class FSTProcessor {
   }
 
   public void setNullFlush(boolean value) {
-    if (value) System.err.println("sorry, null flush is currently not supported.");
+    if (value)
+      System.err.println("sorry, null flush is currently not supported.");
     nullFlush = false; // value;
   }
 

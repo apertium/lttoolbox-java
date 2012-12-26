@@ -14,25 +14,23 @@ import org.apertium.lttoolbox.collections.Transducer;
 /**
  * Created by Nic Cottrell, Jan 27, 2009 5:00:21 PM
  * Used in:
-morpho_stream.cc:  me = td->getPatternList().newMatchExe();
-morpho_stream.cc:  alphabet = td->getPatternList().getAlphabet();
-morpho_stream.cc:  ca_any_char = alphabet(PatternList::ANY_CHAR);
-morpho_stream.cc:  ca_any_tag = alphabet(PatternList::ANY_TAG);
-Binara dosiero morpho_stream.o kongruas
-tagger_data.cc:PatternList &
-tagger_data.cc:TaggerData::getPatternList()
-tagger_data.cc:TaggerData::setPatternList(PatternList const &pl)
-tagger_data.h:  PatternList plist;
-tagger_data.h:  void setPatternList(PatternList const &pl);
-tagger_data.h:  PatternList & getPatternList();
-Binara dosiero tagger_data.o kongruas
-tsx_reader.cc:  plist = &(tdata.getPatternList());
-tsx_reader.h:  PatternList *plist;
-
+ * morpho_stream.cc: me = td->getPatternList().newMatchExe();
+ * morpho_stream.cc: alphabet = td->getPatternList().getAlphabet();
+ * morpho_stream.cc: ca_any_char = alphabet(PatternList::ANY_CHAR);
+ * morpho_stream.cc: ca_any_tag = alphabet(PatternList::ANY_TAG);
+ * Binara dosiero morpho_stream.o kongruas
+ * tagger_data.cc:PatternList &
+ * tagger_data.cc:TaggerData::getPatternList()
+ * tagger_data.cc:TaggerData::setPatternList(PatternList const &pl)
+ * tagger_data.h: PatternList plist;
+ * tagger_data.h: void setPatternList(PatternList const &pl);
+ * tagger_data.h: PatternList & getPatternList();
+ * Binara dosiero tagger_data.o kongruas
+ * tsx_reader.cc: plist = &(tdata.getPatternList());
+ * tsx_reader.h: PatternList *plist;
+ *
  */
-
 class PatternList {
-
   private Alphabet alphabet;
 
   /* PatternStore is just a typedef in the C++ version for a multimap<int, vector<int>>.
@@ -42,27 +40,19 @@ class PatternList {
    * have had to implement iterators in the PatternStore. This is much simpler.
    */
   private Map<Integer, ArrayList<ArrayList<Integer>>> patterns;
-
   private boolean sequence;
-
   private ArrayList<ArrayList<Integer>> sequence_data;
-
   private Transducer transducer;
-
   private Map<Integer, Integer> final_type;
-
   private int sequence_id;
-
   /**
    * This symbol stands for any char
    */
   static final String ANY_CHAR = "<ANY_CHAR>";
-
   /**
    * This symbol stands for any tag
    */
   static final String ANY_TAG = "<ANY_TAG>";
-
   /**
    * This symbol marks a word queue
    */
@@ -72,37 +62,40 @@ class PatternList {
    * Constructor
    */
   PatternList() {
-	  sequence = false;
-	  alphabet = new Alphabet();
-	  alphabet.includeSymbol(ANY_TAG);
-	  alphabet.includeSymbol(ANY_CHAR);
-	  alphabet.includeSymbol(QUEUE);
+    sequence = false;
+    alphabet = new Alphabet();
+    alphabet.includeSymbol(ANY_TAG);
+    alphabet.includeSymbol(ANY_CHAR);
+    alphabet.includeSymbol(QUEUE);
 
-	  final_type = new LinkedHashMap<Integer, Integer>();
+    final_type = new LinkedHashMap<Integer, Integer>();
   }
 
   /**
    * Constructor that creates a new PatternList object by copying the passed-in one.
+   *
    * @param p - The PatternList object to copy.
    */
   PatternList(PatternList p) {
-	  _copy(p);
+    _copy(p);
   }
 
   /**
    * Copies the passed-in PatternList object to this one.
+   *
    * @param p - The PatternList object to copy.
    */
   private void _copy(PatternList p) {
-	  sequence = p.sequence;
-	  sequence_data = new ArrayList<ArrayList<Integer>>(p.sequence_data);
-	  patterns = new LinkedHashMap<Integer, ArrayList<ArrayList<Integer>>>(p.patterns);
-	  alphabet = new Alphabet(p.alphabet);
-	  transducer = new Transducer(p.transducer);
+    sequence = p.sequence;
+    sequence_data = new ArrayList<ArrayList<Integer>>(p.sequence_data);
+    patterns = new LinkedHashMap<Integer, ArrayList<ArrayList<Integer>>>(p.patterns);
+    alphabet = new Alphabet(p.alphabet);
+    transducer = new Transducer(p.transducer);
   }
 
   /**
    * Private function to handle adding sequences to the patterns list.
+   *
    * @param seqId - The key to store this entry under.
    * @param seqData - The actual sequence data to store.
    */
@@ -136,7 +129,7 @@ class PatternList {
   }
 
   void insertOutOfSequence(String lemma, String tags,
-                      ArrayList<Integer> result) {
+      ArrayList<Integer> result) {
     if (lemma.equals("")) {
       result.add(alphabet.cast(ANY_CHAR));
     } else {
@@ -165,7 +158,7 @@ class PatternList {
   }
 
   void insertIntoSequence(int id, String lemma,
-                     String tags) {
+      String tags) {
     sequence_id = id;
 
     if (sequence_data.size() == 0) {
@@ -205,7 +198,7 @@ class PatternList {
       }
     } else {
       ArrayList<ArrayList<Integer>> new_sequence_data =
-    	  new ArrayList<ArrayList<Integer>>();
+          new ArrayList<ArrayList<Integer>>();
 
       for (ArrayList<Integer> it : sequence_data) {
         for (ArrayList<Integer> p : patterns.get(otherid)) {
@@ -345,7 +338,7 @@ class PatternList {
       transducer = Transducer.read(input, alphabet.size());
 
       int finalSize = Compression.multibyte_read(input);
-      for(; finalSize !=0; finalSize--) {
+      for (; finalSize != 0; finalSize--) {
         int key = Compression.multibyte_read(input);
         final_type.put(key, Compression.multibyte_read(input));
       }
@@ -363,5 +356,4 @@ class PatternList {
   Alphabet getAlphabet() {
     return alphabet;
   }
-
 }

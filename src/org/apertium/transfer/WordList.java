@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.apertium.transfer;
 
 import java.util.HashSet;
@@ -16,7 +15,7 @@ public class WordList {
   private HashSet<String> elementsLowercase;
 
   public WordList(String[] list) {
-    int cap = Math.max((int) (list.length/.75f) + 1, 16);
+    int cap = Math.max((int) (list.length / .75f) + 1, 16);
     elements = new HashSet<String>(cap);
     elementsLowercase = new HashSet<String>(cap);
     for (String e : list) {

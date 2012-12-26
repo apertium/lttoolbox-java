@@ -16,7 +16,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
  */
-
 package org.apertium.transfer.old.compile;
 
 import java.io.File;
@@ -25,56 +24,59 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-
 /**
  * @author Stephen Tigner
  *
  */
 public abstract class BaseTransferCompile {
-    //None of these are static because you can't have static abstract methods
+  //None of these are static because you can't have static abstract methods
+  /**
+   * A convenience method for {@link BaseTransferCompiler#compile
+   * (InputStream, OutputStream, OutputStream, String[])}.<br>
+   * Equivalent to
+   * <code>compile(null, null, null, args)</code>
+   * may be
+   * <code>null</code>
+   *
+   * @param classPath -- A file/path to add to the classpath when compiling
+   * @parem javaFile -- The source file to compile
+   * @throws IOException
+   */
+  public int compile(File classPath, File javaFile) throws IOException {
+    return compile(null, null, null, classPath, javaFile);
+  }
 
-    /**
-     * A convenience method for {@link BaseTransferCompiler#compile
-     * (InputStream, OutputStream, OutputStream, String[])}.<br>
-     * Equivalent to <code>compile(null, null, null, args)</code>
-     * may be <code>null</code>
-     * @param classPath -- A file/path to add to the classpath when compiling
-     * @parem javaFile -- The source file to compile
-     * @throws IOException
-     */
-    public int compile(File classPath, File javaFile) throws IOException {
-        return compile(null, null, null, classPath, javaFile);
+  /**
+   * A convenience method for {@link BaseTransferCompiler#compile
+   * (InputStream, OutputStream, OutputStream, String[])}.<br>
+   * Equivalent to
+   * <code>compile(input, output, null, args)</code>
+   *
+   * @param input -- stdin InputStream for compilation process,
+   * may be <code>null</code>
+   * @param output -- stdout OutputStream for compilation process,
+   * may be <code>null</code>
+   * @param classPath -- A file/path to add to the classpath when compiling
+   * @parem javaFile -- The source file to compile
+   * @throws IOException
+   */
+  public int compile(InputStream input, OutputStream output, File classPath,
+      File javaFile) throws IOException {
+    return compile(input, output, null, classPath, javaFile);
+  }
+
+  public abstract int compile(InputStream input, OutputStream output, OutputStream errOutput,
+      File classPath, File javaFile) throws IOException;
+
+  protected static void verifyFilesExist(File classPath, File javaFile)
+      throws FileNotFoundException {
+    if (!classPath.exists()) {
+      throw new FileNotFoundException("Transfer compile classpath ("
+          + classPath + " -- ");
     }
-
-    /**
-     * A convenience method for {@link BaseTransferCompiler#compile
-     * (InputStream, OutputStream, OutputStream, String[])}.<br>
-     * Equivalent to <code>compile(input, output, null, args)</code>
-     * @param input -- stdin InputStream for compilation process,
-     * may be <code>null</code>
-     * @param output -- stdout OutputStream for compilation process,
-     * may be <code>null</code>
-     * @param classPath -- A file/path to add to the classpath when compiling
-     * @parem javaFile -- The source file to compile
-     * @throws IOException
-     */
-    public int compile(InputStream input, OutputStream output, File classPath,
-            File javaFile) throws IOException {
-        return compile(input, output, null, classPath, javaFile);
+    if (!javaFile.exists()) {
+      throw new FileNotFoundException("Transfer compile source file ("
+          + javaFile + " -- ");
     }
-
-    public abstract int compile(InputStream input, OutputStream output, OutputStream errOutput,
-            File classPath, File javaFile) throws IOException;
-
-    protected static void verifyFilesExist(File classPath, File javaFile)
-            throws FileNotFoundException {
-        if(!classPath.exists()) {
-            throw new FileNotFoundException("Transfer compile classpath (" +
-                    classPath + " -- ");
-        }
-        if(!javaFile.exists()) {
-            throw new FileNotFoundException("Transfer compile source file (" +
-                    javaFile + " -- " );
-        }
-    }
+  }
 }

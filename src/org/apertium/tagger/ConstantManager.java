@@ -16,8 +16,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
  */
-
 package org.apertium.tagger;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 import org.apertium.lttoolbox.Compression;
@@ -25,69 +25,69 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
 
-
 /**
  *
  * @author jimregan
  */
 public class ConstantManager {
-    private LinkedHashMap<String, Integer> constants;
+  private LinkedHashMap<String, Integer> constants;
 
-    public ConstantManager() {
-        this.constants = new LinkedHashMap<String, Integer>();
-    }
-    
-    public ConstantManager(ConstantManager o) {
-    	copy(o);
-    }
+  public ConstantManager() {
+    this.constants = new LinkedHashMap<String, Integer>();
+  }
 
-    /**
-     * Copies the passed-in ConstantManager object to this one.
-     * @param o - The ConstantManager object to copy.
-     */
-    private void copy(ConstantManager o) {
-    	this.constants = new LinkedHashMap<String, Integer>(o.constants);
-    }
+  public ConstantManager(ConstantManager o) {
+    copy(o);
+  }
 
-    public void setConstant (String constant, int value) {
-        try {
-            if (constants==null) {
-                constants = new LinkedHashMap<String, Integer>();
-            }
-            constants.put(constant, value);
-        } catch (NullPointerException npe) {
-            System.err.println("Null pointer: " + constant + " " + value);
-            npe.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+  /**
+   * Copies the passed-in ConstantManager object to this one.
+   *
+   * @param o - The ConstantManager object to copy.
+   */
+  private void copy(ConstantManager o) {
+    this.constants = new LinkedHashMap<String, Integer>(o.constants);
+  }
 
-    public int getConstant(String constant) {
-        return constants.get(constant);
+  public void setConstant(String constant, int value) {
+    try {
+      if (constants == null) {
+        constants = new LinkedHashMap<String, Integer>();
+      }
+      constants.put(constant, value);
+    } catch (NullPointerException npe) {
+      System.err.println("Null pointer: " + constant + " " + value);
+      npe.printStackTrace();
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+  }
 
-    public void write(OutputStream output) throws IOException {
-        Compression.multibyte_write(constants.size(), output);
-        for (Map.Entry<String, Integer> e : constants.entrySet()) {
-            Compression.String_write(e.getKey(), output);
-            Compression.multibyte_write(e.getValue(), output);
-        }
-    }
+  public int getConstant(String constant) {
+    return constants.get(constant);
+  }
 
-    public void read(InputStream input) throws IOException {
-        try {
-            if (constants != null && constants.size()!=0) {
-                constants.clear();
-            }
-            int size = Compression.multibyte_read(input);
-            for (int i=0; i!=size; i++) {
-                String str = Compression.String_read(input);
-                int constant = Compression.multibyte_read(input);
-                setConstant(str, constant);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+  public void write(OutputStream output) throws IOException {
+    Compression.multibyte_write(constants.size(), output);
+    for (Map.Entry<String, Integer> e : constants.entrySet()) {
+      Compression.String_write(e.getKey(), output);
+      Compression.multibyte_write(e.getValue(), output);
     }
+  }
+
+  public void read(InputStream input) throws IOException {
+    try {
+      if (constants != null && constants.size() != 0) {
+        constants.clear();
+      }
+      int size = Compression.multibyte_read(input);
+      for (int i = 0; i != size; i++) {
+        String str = Compression.String_read(input);
+        int constant = Compression.multibyte_read(input);
+        setConstant(str, constant);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
 }

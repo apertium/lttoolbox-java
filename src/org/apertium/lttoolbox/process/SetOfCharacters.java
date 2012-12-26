@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.apertium.lttoolbox.process;
 
 import java.util.Arrays;
@@ -20,11 +19,12 @@ public final class SetOfCharacters {
 
   // Probe
   //public static int max_encountered = 0;
-
   final public void add(char c) {
     //max_encountered = Math.max(max_encountered, c);
-    if (c<LIMIT) set[c]=true;
-    else otherChars.add(c);
+    if (c < LIMIT)
+      set[c] = true;
+    else
+      otherChars.add(c);
   }
 
   final void clear() {
@@ -33,8 +33,10 @@ public final class SetOfCharacters {
   }
 
   public final boolean contains(char c) {
-    if (c== ((char)-1)) return false; // EOF
-    if (c<LIMIT) return set[c];
+    if (c == ((char) -1))
+      return false; // EOF
+    if (c < LIMIT)
+      return set[c];
     //if (c>max_encountered) return false;
     return otherChars.contains(c);
   }

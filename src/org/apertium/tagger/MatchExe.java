@@ -9,7 +9,7 @@ package org.apertium.tagger;
  *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
@@ -17,7 +17,6 @@ package org.apertium.tagger;
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
  */
-
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -27,15 +26,14 @@ import org.apertium.lttoolbox.collections.IntSet;
 /**
  * Copy from transfer (old version before july 2012)
  * The container object that contains all states (and transitions betweem them)
+ *
  * @author Jacob Nordfalk
  */
 class MatchExe {
-
   /**
    * Initial state
    */
   private int initial_id;
-
   /**
    * MatchNode list
    * Schema:
@@ -56,7 +54,6 @@ class MatchExe {
     _copy(te);
   }
 
-
   // Slow
   @Deprecated
   public MatchExe(Transducer t, Map<Integer, Integer> final_type) {
@@ -69,7 +66,7 @@ class MatchExe {
     // set up initial node
     initial_id = t.getInitial();
 
-    int limit=t.transitions.size();
+    int limit = t.transitions.size();
 
     // memory allocation
     node_list = new int[limit][];
@@ -77,42 +74,42 @@ class MatchExe {
     // set up the transitions
     for (int node_id = 0; node_id < limit; node_id++) { //Loop through node_id's
         /* Each entry in the ArrayList Transducer.transitions, is a state.
-          * These states correspond to the node_id's which make up the first
-          * level of the node_list array.
-          *
-          * Now, for the Maps that are the entries in the ArrayList.
-          * The key is the input symbol, and the value is a list of target node_id's.
-          *
-          */
-        final Map<Integer, IntSet> second=t.transitions.get(node_id);
+       * These states correspond to the node_id's which make up the first
+       * level of the node_list array.
+       *
+       * Now, for the Maps that are the entries in the ArrayList.
+       * The key is the input symbol, and the value is a list of target node_id's.
+       *
+       */
+      final Map<Integer, IntSet> second = t.transitions.get(node_id);
 
-        /* Using an ArrayList because we don't know how many elements we'll have
-          * up front, and it's not worth trying to calculate ahead of time.
-          */
-        ArrayList<Integer> currArray = new ArrayList<Integer>();
-        for (Integer it2First : second.keySet()) { //Loop through input symbols
-            IntSet it2Second=second.get(it2First);
-            for (Integer integer : it2Second) { //Loop through targets
-                //mynode.addTransition(it2First, my_node_list[integer]);
-                currArray.add(it2First);
-                currArray.add(integer);
-            }
+      /* Using an ArrayList because we don't know how many elements we'll have
+       * up front, and it's not worth trying to calculate ahead of time.
+       */
+      ArrayList<Integer> currArray = new ArrayList<Integer>();
+      for (Integer it2First : second.keySet()) { //Loop through input symbols
+        IntSet it2Second = second.get(it2First);
+        for (Integer integer : it2Second) { //Loop through targets
+          //mynode.addTransition(it2First, my_node_list[integer]);
+          currArray.add(it2First);
+          currArray.add(integer);
         }
-        /* Check if there is a final for this node_id, if so, add it.
-          * Since we're iterating through all possible nodes, no need to worry
-          * about missing any of the finals.
-          */
-        Integer final_symbol;
-        if((final_symbol = final_type.get(node_id)) != null) {
-            currArray.add(final_symbol);
-        }
-        //Add temporary array to node_list
-        int[] curr_node_list = node_list[node_id] = new int[currArray.size()];
-        Integer[] currArrayArray = currArray.toArray(new Integer[1]);
-        //Can't directly cast from Integer[] to int[]
-        for(int i = 0; i < currArray.size(); i++) {
-            curr_node_list[i] = currArrayArray[i];
-        }
+      }
+      /* Check if there is a final for this node_id, if so, add it.
+       * Since we're iterating through all possible nodes, no need to worry
+       * about missing any of the finals.
+       */
+      Integer final_symbol;
+      if ((final_symbol = final_type.get(node_id)) != null) {
+        currArray.add(final_symbol);
+      }
+      //Add temporary array to node_list
+      int[] curr_node_list = node_list[node_id] = new int[currArray.size()];
+      Integer[] currArrayArray = currArray.toArray(new Integer[1]);
+      //Can't directly cast from Integer[] to int[]
+      for (int i = 0; i < currArray.size(); i++) {
+        curr_node_list[i] = currArrayArray[i];
+      }
     }
 
   }
@@ -122,10 +119,7 @@ class MatchExe {
     node_list = te.node_list;
   }
 
-
   public int getInitial() {
     return initial_id;
   }
-
-
 }

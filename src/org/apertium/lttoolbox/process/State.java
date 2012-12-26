@@ -8,7 +8,7 @@ package org.apertium.lttoolbox.process;
  *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
@@ -25,56 +25,52 @@ import java.util.LinkedList;
 import org.apertium.lttoolbox.process.Node.Transition;
 
 /**
- Class to represent the set of alive states of a transducer
-
- @author Raah
+ * Class to represent the set of alive states of a transducer
+ *
+ * @author Raah
  */
 public class State {
-
   public static final boolean CONSISTENCY_CHECKS = false;
-
   /**
-   Whether object pooling should be done. Object allocation (of small objects) on modern JVMs is even so fast that
-   making a copy of immutable objects sometimes outperforms modification of mutable (and often old) objects. See also
-   "Object pooling is now a serious performance loss": http://www.theserverside.com/news/thread.tss?thread_id=37146
-
-   Pooling seems to do no difference on JDK 1.6, but it might make a big difference for smaller VMs, like Androids or
-   J2ME JVMs in phones, so we turn it on for now
+   * Whether object pooling should be done. Object allocation (of small objects) on modern JVMs is even so fast that
+   * making a copy of immutable objects sometimes outperforms modification of mutable (and often old) objects. See also
+   * "Object pooling is now a serious performance loss": http://www.theserverside.com/news/thread.tss?thread_id=37146
+   *
+   * Pooling seems to do no difference on JDK 1.6, but it might make a big difference for smaller VMs, like Androids or
+   * J2ME JVMs in phones, so we turn it on for now
    */
   public static final boolean REUSE_OBJECTS = true;
   /**
-   Pre-allocate for this amount of elements in a sequence
+   * Pre-allocate for this amount of elements in a sequence
    */
   public static final int INITAL_SEQUENCE_ALLOCATION = 50;
-
   public static boolean DEBUG = false;
-
-
 
   public void consistency_check() {
     //if (CONSISTENCY_CHECKS) for (TNodeState x : state) x.consistency_check();
   }
-  /**
-   one state element in the current set of states of transducer processing
 
-   @author Raah
+  /**
+   * one state element in the current set of states of transducer processing
+   *
+   * @author Raah
    */
   static class TNodeState {
     int where_node_id;
     /**
-     Which transducer does this node belong to
-    */
-     final TransducerExe transducer;
+     * Which transducer does this node belong to
+     */
+    final TransducerExe transducer;
     /**
-     Which node in the transducer we are currently visiting
+     * Which node in the transducer we are currently visiting
      */
     /**
-     The list of output symbols we produced while getting to this node
+     * The list of output symbols we produced while getting to this node
      */
     ArrayList<Integer> sequence;
     /**
-     caseWasChanged means input was lowercased - thus we should consider uppercasing the output symbols before
-     outputting
+     * caseWasChanged means input was lowercased - thus we should consider uppercasing the output symbols before
+     * outputting
      */
     boolean caseWasChanged;
 
@@ -90,7 +86,7 @@ public class State {
     }
 
     /**
-     special constructor to signal that the sequence list must be initialized
+     * special constructor to signal that the sequence list must be initialized
      */
     TNodeState(TransducerExe transducer, boolean b) {
       sequence = new ArrayList<Integer>();
@@ -120,7 +116,6 @@ public class State {
       return nn;
     }
   }
-
 
   ArrayList<TNodeState> state = new ArrayList<TNodeState>(50);
 
@@ -159,19 +154,18 @@ public class State {
   }
 
   /**
-   Number of alive transductions
-
-   @return the size
+   * Number of alive transductions
+   *
+   * @return the size
    */
   public int size() {
     return state.size();
   }
 
-
   /**
-   Init the state with the initial node and empty output
-
-   @param transducerc collection of transducers to initialize from
+   * Init the state with the initial node and empty output
+   *
+   * @param transducerc collection of transducers to initialize from
    */
   void init(Collection<TransducerExe> transducerc) {
     State initial_state = this;
@@ -193,19 +187,18 @@ public class State {
     init(c);
   }
 
-
   public String toString() {
     return this.state.toString();
   }
   /**
-   Reference to last discarded list of nodestates
+   * Reference to last discarded list of nodestates
    */
   private ArrayList<TNodeState> reusable_state = REUSE_OBJECTS ? new ArrayList<TNodeState>(50) : null;
 
   /**
-   Make a transition, version for lowercase letters and symbols
-
-   @param input the input symbol
+   * Make a transition, version for lowercase letters and symbols
+   *
+   * @param input the input symbol
    */
   private void apply(int input) {
     ArrayList<TNodeState> new_state;
@@ -217,8 +210,9 @@ public class State {
     }
     consistency_check();
 
-    if (input==0) { // in transfer it happens an unknown symbol is translated to 0. Avoid interpreting that as an epsilon.
-      if (REUSE_OBJECTS) reusable_state = state;
+    if (input == 0) { // in transfer it happens an unknown symbol is translated to 0. Avoid interpreting that as an epsilon.
+      if (REUSE_OBJECTS)
+        reusable_state = state;
       state = new_state;
       return;
     }
@@ -226,16 +220,16 @@ public class State {
     for (int i = 0, limit = state.size(); i != limit; i++) {
       TNodeState state_i = state.get(i);
       /*
-       Transition it = state_i.where.transitions_get(input);
-       while (it != null) {
-       TNodeState tn = REUSE_OBJECTS?nodeStatePool_get(): new TNodeState(state_i.sequence.size()+1);
-       tn.where = it.node_dest;
-       tn.caseWasChanged = state_i.caseWasChanged;
-       tn.sequence.addAll(state_i.sequence);
-       tn.sequence.add(it.output_symbol);
-       new_state.add(tn);
-       it = it.next;
-       }
+       * Transition it = state_i.where.transitions_get(input);
+       * while (it != null) {
+       * TNodeState tn = REUSE_OBJECTS?nodeStatePool_get(): new TNodeState(state_i.sequence.size()+1);
+       * tn.where = it.node_dest;
+       * tn.caseWasChanged = state_i.caseWasChanged;
+       * tn.sequence.addAll(state_i.sequence);
+       * tn.sequence.add(it.output_symbol);
+       * new_state.add(tn);
+       * it = it.next;
+       * }
        */
       Transition ti = Node.transitions_getIterator(state_i.transducer, state_i.where_node_id, input);
       while (ti != null) {
@@ -250,17 +244,19 @@ public class State {
         ti = ti.next;
       }
 
-      if (REUSE_OBJECTS) state_i.nodeStatePool_release();
+      if (REUSE_OBJECTS)
+        state_i.nodeStatePool_release();
     }
-    if (REUSE_OBJECTS) reusable_state = state;
+    if (REUSE_OBJECTS)
+      reusable_state = state;
     state = new_state;
   }
 
   /**
-   Make a transition, version for lowercase and uppercase letters
-
-   @param input the input symbol (which is actually always uppercase)
-   @param lowerCasedInput the alternative input symbol (mostly its always Alphabet.toLowerCase(input))
+   * Make a transition, version for lowercase and uppercase letters
+   *
+   * @param input the input symbol (which is actually always uppercase)
+   * @param lowerCasedInput the alternative input symbol (mostly its always Alphabet.toLowerCase(input))
    */
   private void apply(int input, int lowerCasedInput) {
     ArrayList<TNodeState> new_state;
@@ -302,17 +298,20 @@ public class State {
         ti = ti.next;
       }
 
-      if (REUSE_OBJECTS) state_i.nodeStatePool_release();
+      if (REUSE_OBJECTS)
+        state_i.nodeStatePool_release();
     }
 
-    if (REUSE_OBJECTS) reusable_state = state;
+    if (REUSE_OBJECTS)
+      reusable_state = state;
     state = new_state;
-    if (CONSISTENCY_CHECKS) consistency_check();
+    if (CONSISTENCY_CHECKS)
+      consistency_check();
   }
 
   /**
-   Calculate the epsilon closure over the current state, replacing its content. i.e. expand to all states reachable
-   consuming θ (the empty input symbol)
+   * Calculate the epsilon closure over the current state, replacing its content. i.e. expand to all states reachable
+   * consuming θ (the empty input symbol)
    */
   public void epsilonClosure() {
     for (int i = 0; i != state.size(); i++) {
@@ -334,13 +333,14 @@ public class State {
         ti = ti.next;
       }
     }
-    if (CONSISTENCY_CHECKS) consistency_check();
+    if (CONSISTENCY_CHECKS)
+      consistency_check();
   }
 
   /**
-   step = apply + epsilonClosure
-
-   @param input the input symbol
+   * step = apply + epsilonClosure
+   *
+   * @param input the input symbol
    */
   public void step(int input) {
     if (DEBUG) {
@@ -357,10 +357,10 @@ public class State {
   }
 
   /**
-   step = apply + epsilonClosure
-
-   @param input the input symbol
-   @param alt the alternative input symbol (typically lowercase version of input symbol)
+   * step = apply + epsilonClosure
+   *
+   * @param input the input symbol
+   * @param alt the alternative input symbol (typically lowercase version of input symbol)
    */
   public void step(int input, int lowerCasedInput) {
     apply(input, lowerCasedInput);
@@ -384,15 +384,16 @@ public class State {
   }
 
   /**
-   Return true if at least one record of the state references a final node of the set
-
-   @param finals set of final nodes
-   @return true if the state is final
+   * Return true if at least one record of the state references a final node of the set
+   *
+   * @param finals set of final nodes
+   * @return true if the state is final
    */
   public boolean isFinal(Set<TransducerExe> transducers) {
     for (int i = 0, limit = state.size(); i != limit; i++) {
       TNodeState state_i = state.get(i);
-      if (!transducers.contains(state_i.transducer)) continue;
+      if (!transducers.contains(state_i.transducer))
+        continue;
       if (state_i.isFinal()) {
         return true;
       }
@@ -401,8 +402,9 @@ public class State {
   }
 
   /**
-   Return true if at least one record of the state references a final node
-   @return true if the state is final
+   * Return true if at least one record of the state references a final node
+   *
+   * @return true if the state is final
    */
   public boolean isFinal() {
     for (int i = 0, limit = state.size(); i != limit; i++) {
@@ -412,24 +414,25 @@ public class State {
     }
     return false;
   }
+
   /**
-   Slower version of the StringBuilder filterFinals()
+   * Slower version of the StringBuilder filterFinals()
    */
   String filterFinals(Alphabet alphabet, SetOfCharacters escaped_chars, boolean uppercase, boolean firstupper) {
     return filterFinals(new StringBuilder(), alphabet, escaped_chars, uppercase, firstupper).toString();
   }
 
   /**
-   Print all outputs of current parsing, preceeded by a bar '/', from the final nodes of the state. Examples:
-   /le<prn><pro><p3><nt>/le<det><def><m><sg>/le<prn><pro><p3><m><sg> /domaine<n><m><sg> /,<cm>
-
-   @param result append to this buffer
-   @param finals the set of final nodes
-   @param alphabet the alphabet to decode strings
-   @param escaped_chars the set of chars to be preceeded with one backslash
-   @param uppercase true if the word is uppercase
-   @param firstupper true if the first letter of a word is uppercase
-   @return the result of the transduction
+   * Print all outputs of current parsing, preceeded by a bar '/', from the final nodes of the state. Examples:
+   * /le<prn><pro><p3><nt>/le<det><def><m><sg>/le<prn><pro><p3><m><sg> /domaine<n><m><sg> /,<cm>
+   *
+   * @param result append to this buffer
+   * @param finals the set of final nodes
+   * @param alphabet the alphabet to decode strings
+   * @param escaped_chars the set of chars to be preceeded with one backslash
+   * @param uppercase true if the word is uppercase
+   * @param firstupper true if the first letter of a word is uppercase
+   * @return the result of the transduction
    */
   public StringBuilder filterFinals(StringBuilder result, Alphabet alphabet, SetOfCharacters escaped_chars, boolean uppercase, boolean firstupper) {
 
@@ -467,14 +470,14 @@ public class State {
   }
 
   /**
-   For lexical selection. NOTE: Return type is incorrect for the time being
+   * For lexical selection. NOTE: Return type is incorrect for the time being
    */
   public StringBuilder filterFinalsLRX(StringBuilder result, Alphabet alphabet, SetOfCharacters escaped_chars) {
 
     for (int i = 0, limit = state.size(); i != limit; i++) {
       TNodeState state_i = state.get(i);
       if (state_i.isFinal()) {
-      //if (finals.contains(state_i.where)) {
+        //if (finals.contains(state_i.where)) {
         result.append('/');
 
         for (int j = 0, limit2 = state_i.sequence.size(); j != limit2; j++) {
@@ -491,13 +494,13 @@ public class State {
   }
 
   /**
-   Find final states, remove those that not has a requiredSymbol and 'restart' each of them as the set of initial
-   states, but remembering the sequence and adding a separationSymbol
-
-   @param finals
-   @param requiredSymbol
-   @param restart_state
-   @param separationSymbol
+   * Find final states, remove those that not has a requiredSymbol and 'restart' each of them as the set of initial
+   * states, but remembering the sequence and adding a separationSymbol
+   *
+   * @param finals
+   * @param requiredSymbol
+   * @param restart_state
+   * @param separationSymbol
    */
   void restartFinals(int requiredSymbol, State restart_state, int separationSymbol) {
 
@@ -597,14 +600,14 @@ public class State {
   }
 
   /**
-   Same as previous one, but the output is adapted to the SAO system
-
-   @param alphabet the alphabet to decode strings
-   @param escaped_chars the set of chars to be preceeded with one backslash
-   @param uppercase true if the word is uppercase
-   @param firstupper true if the first letter of a word is uppercase
-   @param firstchar first character of the word
-   @return the result of the transduction
+   * Same as previous one, but the output is adapted to the SAO system
+   *
+   * @param alphabet the alphabet to decode strings
+   * @param escaped_chars the set of chars to be preceeded with one backslash
+   * @param uppercase true if the word is uppercase
+   * @param firstupper true if the first letter of a word is uppercase
+   * @param firstchar first character of the word
+   * @return the result of the transduction
    */
   String filterFinalsSAO(Alphabet alphabet, SetOfCharacters escaped_chars, boolean uppercase, boolean firstupper, int firstchar) {
     StringBuilder result = new StringBuilder("");
@@ -642,15 +645,15 @@ public class State {
   }
 
   /**
-   Same as previous one, but the output is adapted to the TM system
-
-   @param finals the set of final nodes
-   @param alphabet the alphabet to decode strings
-   @param escaped_chars the set of chars to be preceeded with one backslash
-   @param uppercase true if the word is uppercase
-   @param firstupper true if the first letter of a word is uppercase
-   @param firstchar first character of the word
-   @return the result of the transduction
+   * Same as previous one, but the output is adapted to the TM system
+   *
+   * @param finals the set of final nodes
+   * @param alphabet the alphabet to decode strings
+   * @param escaped_chars the set of chars to be preceeded with one backslash
+   * @param uppercase true if the word is uppercase
+   * @param firstupper true if the first letter of a word is uppercase
+   * @param firstchar first character of the word
+   * @return the result of the transduction
    */
   String filterFinalsTM(Alphabet alphabet, SetOfCharacters escaped_chars, LinkedList<String> blankqueue, ArrayList<String> numbers) {
     String result = "";
@@ -729,10 +732,10 @@ public class State {
   }
 
   /**
-   Compute if a character is a digit (gives the same results as the c++ iswdigit() function
-
-   @param c the character
-   @return true if the c is a digit
+   * Compute if a character is a digit (gives the same results as the c++ iswdigit() function
+   *
+   * @param c the character
+   * @return true if the c is a digit
    */
   private boolean iswdigit(char c) {
     int i = (int) c;

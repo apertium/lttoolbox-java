@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.apertium.lttoolbox.collections;
 
 import java.util.HashSet;
@@ -13,7 +12,6 @@ import java.util.Iterator;
  * @author Jacob Nordfalk
  */
 public class SlowIntegerHashSet extends HashSet<Integer> implements IntSet {
-
   @Override
   public void add(int i) {
     super.add(i);
@@ -38,7 +36,7 @@ public class SlowIntegerHashSet extends HashSet<Integer> implements IntSet {
   public boolean addAll(IntSet c) {
     Iterator<? extends Integer> e = c.iterator();
     while (e.hasNext()) {
-       add(e.next());
+      add(e.next());
     }
     return true;
   }

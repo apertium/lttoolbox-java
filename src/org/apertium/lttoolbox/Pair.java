@@ -8,7 +8,7 @@ package org.apertium.lttoolbox;
  *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
@@ -16,38 +16,36 @@ package org.apertium.lttoolbox;
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
  */
-
 /**
  * Created by Nic Cottrell, Jan 27, 2009 6:05:38 PM
  */
-public class Pair<P, Q>{
+public class Pair<P, Q> {
+  public P first;
+  public Q second;
 
-    public P first;
-    public Q second;
+  public Pair(P obj1, Q obj2) {
+    this.first = obj1;
+    this.second = obj2;
+  }
 
-    public Pair(P obj1, Q obj2) {
-        this.first = obj1;
-        this.second = obj2;
-    }
+  public P getFirst() {
+    return first;
+  }
 
-    public P getFirst() {
-        return first;
-    }
+  public void setFirst(P first) {
+    this.first = first;
+  }
 
-    public void setFirst(P first) {
-        this.first = first;
-    }
+  public Q getSecond() {
+    return second;
+  }
 
-    public Q getSecond() {
-        return second;
-    }
+  public void setSecond(Q second) {
+    this.second = second;
+  }
 
-    public void setSecond(Q second) {
-        this.second = second;
-    }
-
-    @Override
-    public String toString() {
-        return "<" + first.toString() + "," + second.toString() + ">";
-    }
+  @Override
+  public String toString() {
+    return "<" + first.toString() + "," + second.toString() + ">";
+  }
 }

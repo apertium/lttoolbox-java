@@ -20,8 +20,8 @@ import org.apertium.lttoolbox.process.TransducerExe;
 import static org.apertium.utils.IOUtils.*;
 
 /**
-
- @author j
+ *
+ * @author j
  */
 class LRXProcessor {
   Alphabet alphabet;
@@ -29,11 +29,11 @@ class LRXProcessor {
   HashMap<String, TransducerExe> recognisers = new HashMap<String, TransducerExe>();
   HashSet<TransducerExe> anfinals = new HashSet<TransducerExe>();
   /**
-   Initial state of every token
+   * Initial state of every token
    */
   private State initial_state = new State();
   /**
-   Set of characters to escape with a backslash
+   * Set of characters to escape with a backslash
    */
   private SetOfCharacters escaped_chars = new SetOfCharacters();
   private boolean debugMode;
@@ -55,8 +55,8 @@ class LRXProcessor {
     D(alphabet);
     ANY_TAG = alphabet.cast("<ANY_TAG>");
     ANY_CHAR = alphabet.cast("<ANY_CHAR>");
-    LOG("ANY_TAG="+ANY_TAG);
-    LOG("ANY_CHAR="+ANY_CHAR);
+    LOG("ANY_TAG=" + ANY_TAG);
+    LOG("ANY_CHAR=" + ANY_CHAR);
 
 
     int len = Compression.multibyte_read(in); // numer of letters (52)
@@ -70,12 +70,12 @@ class LRXProcessor {
       TransducerExe tx = new TransducerExe();
       tx.read(in, alphabet);
       recognisers.put(name, tx);
-      D(name+" -> "+tx.getFinals());
+      D(name + " -> " + tx.getFinals());
       len--;
     }
 
 
-    D("recognisers: " +recognisers.size());
+    D("recognisers: " + recognisers.size());
 
     int len2 = Compression.multibyte_read(in);
     String name = "";
@@ -86,10 +86,11 @@ class LRXProcessor {
     transducer = new TransducerExe();
     transducer.read(in, alphabet);
     transducer.show_DEBUG(alphabet);
-    D(name+" -> "+transducer);
+    D(name + " -> " + transducer);
     // Now read in weights
 //...
   }
+
   private void streamError() throws IOException {
     throw new IOException("streamError");
   }
@@ -98,19 +99,18 @@ class LRXProcessor {
     System.err.println(string);
   }
 
-
   private void D(Object string) {
-    if (!DEBUG) return;
+    if (!DEBUG)
+      return;
     System.err.println(string);
   }
 
-
   private char eofRead(Reader input) throws IOException {
     int c = input.read();
-    if (c==-1) throw new EOFException();
+    if (c == -1)
+      throw new EOFException();
     return (char) c;
   }
-
 
   public void init() {
     initial_state.init(transducer);
@@ -154,7 +154,6 @@ class LRXProcessor {
     return result.toString();
   }
 
-
   private void skipUntil(Reader input, Appendable output, char character) throws IOException {
     while (true) {
       char val = eofRead(input);
@@ -173,10 +172,11 @@ class LRXProcessor {
       }
     }
   }
-/*
-echo "^liten<adj><posi><mf><sg><ind>/small<adj><sint><posi><mf><sg><ind>/little<adj><sint><posi><mf><sg><ind>$" | lrx-proc rules.bin
-^liten<adj><posi><mf><sg><ind>/little<adj><sint><posi><mf><sg><ind>$
-*/
+  /*
+   * echo "^liten<adj><posi><mf><sg><ind>/small<adj><sint><posi><mf><sg><ind>/little<adj><sint><posi><mf><sg><ind>$" | lrx-proc rules.bin
+   * ^liten<adj><posi><mf><sg><ind>/little<adj><sint><posi><mf><sg><ind>$
+   */
+
   public static void main(String[] argv) throws Exception {
     Reader input = new StringReader("hej [sd\\$sd \\^sdsd\\$] oh ^liten<adj><posi><mf><sg><ind>/small<adj><sint><posi><mf><sg><ind>/little<adj><sint><posi><mf><sg><ind>$");
     Appendable output = new StringWriter();
@@ -192,12 +192,11 @@ echo "^liten<adj><posi><mf><sg><ind>/small<adj><sint><posi><mf><sg><ind>/little<
 
   }
 
-
   void process(Reader input, Appendable output) throws IOException {
-/*
-^liten<adj><posi><mf><sg><ind>/small<adj><sint><posi><mf><sg><ind>/little<adj><sint><posi><mf><sg><ind>$
-^liten<adj><posi><mf><sg><ind>/little<adj><sint><posi><mf><sg><ind>$
-*/
+    /*
+     * ^liten<adj><posi><mf><sg><ind>/small<adj><sint><posi><mf><sg><ind>/little<adj><sint><posi><mf><sg><ind>$
+     * ^liten<adj><posi><mf><sg><ind>/little<adj><sint><posi><mf><sg><ind>$
+     */
     ArrayList<State> alive_states = new ArrayList<State>();
     alive_states.add(initial_state.copy());
 
@@ -210,17 +209,17 @@ echo "^liten<adj><posi><mf><sg><ind>/small<adj><sint><posi><mf><sg><ind>/little<
 
       // We've finished reading a lexical form
       LOG(output);
-      LOG("Here is the LU: "+Arrays.toString(luelems));
+      LOG("Here is the LU: " + Arrays.toString(luelems));
 
       String sl = luelems[0];
 
-      for (int i=0; i<sl.length(); i++) {
+      for (int i = 0; i < sl.length(); i++) {
         char ch = sl.charAt(i);
         int val;
-        if (ch=='<') {
-          int n = sl.indexOf('>', i+1);
+        if (ch == '<') {
+          int n = sl.indexOf('>', i + 1);
           //LOG("sl "+sl);
-          String tag = sl.substring(i,n+1);
+          String tag = sl.substring(i, n + 1);
           val = alphabet.cast(tag);
           i = n;
           //LOG("step "+tag + " "+val);
@@ -232,30 +231,30 @@ echo "^liten<adj><posi><mf><sg><ind>/small<adj><sint><posi><mf><sg><ind>/little<
         ArrayList<State> new_state = new ArrayList<State>();
 
         for (State s : alive_states) {
-          if (val<0) {
+          if (val < 0) {
             s.step(val, ANY_TAG);
           } else {
             s.step(val, ANY_CHAR);
           }
-          if (s.size()>0) {
+          if (s.size() > 0) {
             new_state.add(s);
           }
           if (s.isFinal(anfinals)) {
             StringBuilder sb = new StringBuilder();
             s.filterFinalsLRX(sb, alphabet, escaped_chars);
-            LOG("filterfinals = "+sb);
+            LOG("filterfinals = " + sb);
           }
         }
-        LOG("new_state "+new_state.size());
+        LOG("new_state " + new_state.size());
 
         alive_states = new_state;
-        if (alive_states.size()==1) {
+        if (alive_states.size() == 1) {
           State s = alive_states.get(0);
         }
         alive_states.add(initial_state.copy());
 
 
-        LOG("alive_states "+alive_states.size());
+        LOG("alive_states " + alive_states.size());
       }
 
     }

@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.apertium.transfer;
 
 /**
@@ -10,9 +9,7 @@ package org.apertium.transfer;
  * @author Jacob Nordfalk
  */
 public class TransferToken {
-
-  public enum TransferTokenType
-  {
+  public enum TransferTokenType {
     tt_eof,
     tt_word,
     tt_blank

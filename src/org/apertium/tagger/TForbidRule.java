@@ -16,7 +16,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
  */
-
 package org.apertium.tagger;
 
 /**
@@ -24,16 +23,16 @@ package org.apertium.tagger;
  * @author jimregan
  */
 public class TForbidRule {
-    int tagi;
-    int tagj;
-    
-    public void TForbidRule () {
-        tagi = 0;
-        tagj = 0;
-    }
-    
-    @Override
-    public String toString() {
-        return "{tagi: " + tagi + ", tagj: " + tagj + "}";
-    }
+  int tagi;
+  int tagj;
+
+  public void TForbidRule() {
+    tagi = 0;
+    tagj = 0;
+  }
+
+  @Override
+  public String toString() {
+    return "{tagi: " + tagi + ", tagj: " + tagj + "}";
+  }
 }

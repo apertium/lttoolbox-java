@@ -16,9 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
  */
-
 package org.apertium.postchunk;
-
 
 import org.apertium.interchunk.ApertiumInterchunk;
 
@@ -27,24 +25,22 @@ import org.apertium.interchunk.ApertiumInterchunk;
  *
  */
 public class ApertiumPostchunk extends ApertiumInterchunk {
+  /**
+   * @param args
+   * @throws Exception
+   */
+  public static int main(String[] args) throws Exception {
+    System.setProperty("file.encoding", "UTF-8");
 
-    /**
-     * @param args
-     * @throws Exception
+    CommandLineParams par = new CommandLineParams();
+    /* Parse the command line. The passed-in CommandLineParams object
+     * will be modified by this method.
      */
-    public static int main(String[] args) throws Exception {
-        System.setProperty("file.encoding", "UTF-8");
-
-        CommandLineParams par = new CommandLineParams();
-        /* Parse the command line. The passed-in CommandLineParams object
-         * will be modified by this method.
-         */
-        if(!parseCommandLine(args, par, "Postchunk", false)) {
-            return 1;
-        }
-
-        doMain(par, new Postchunk());
-        return 0;
+    if (!parseCommandLine(args, par, "Postchunk", false)) {
+      return 1;
     }
 
+    doMain(par, new Postchunk());
+    return 0;
+  }
 }
