@@ -18,14 +18,9 @@ package org.apertium.lttoolbox.compile;
  */
 
 import org.apertium.lttoolbox.*;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 import javax.xml.stream.XMLInputFactory;
@@ -103,13 +98,13 @@ public class Compile {
     /**
      * List of named transducers-paradigms
      */
-    private Map<String, Transducer> paradigms = new HashMap<String, Transducer>();
+    private Map<String, TransducerComp> paradigms = new HashMap<String, TransducerComp>();
 
     /**
      * List of named dictionary sections.
      * MUST be sorted when writing .bin file to retain compatibility with C++ code.
      */
-    public Map<String, Transducer> sections = new TreeMap<String, Transducer>();
+    public Map<String, TransducerComp> sections = new TreeMap<String, TransducerComp>();
 
     /**
      * List of named prefix copy of a paradigm
@@ -182,7 +177,7 @@ public class Compile {
             }
             reader.close();
             // Minimize transducers
-            for (Transducer transducer : sections.values()) {
+            for (TransducerComp transducer : sections.values()) {
                 transducer.minimize();
             }
 
@@ -243,7 +238,7 @@ public class Compile {
         Compression.multibyte_write(sections.size(), output);
 
         for (String first : sections.keySet()) {
-            final Transducer second = sections.get(first);
+            final TransducerComp second = sections.get(first);
             System.out.println(first + " " + second.size() + " " + second.numberOfTransitions());
             Compression.String_write(first, output);
             second.write(output, 0);
@@ -276,9 +271,9 @@ public class Compile {
       if (DEBUG) System.err.println("insertEntryTokens( " + elements);
         if (!current_paradigm.equals("")) {
             // compilation of paradigms
-            Transducer t = paradigms.get(current_paradigm);
+            TransducerComp t = paradigms.get(current_paradigm);
             if (t==null) {
-                t = new Transducer();
+                t = new TransducerComp();
                 paradigms.put(current_paradigm, t);
             }
 
@@ -289,7 +284,7 @@ public class Compile {
 
                 if (entry.isParadigm()) {
                     if (!paradigms.containsKey(entry.paradigmName)) {
-                        paradigms.put(entry.paradigmName, new Transducer());
+                        paradigms.put(entry.paradigmName, new TransducerComp());
                     }
                     e = t.insertTransducer(e, paradigms.get(entry.paradigmName));
                 } else if (entry.isSingleTransduction()) {
@@ -308,9 +303,9 @@ public class Compile {
             t.setFinal(e);
         } else {
             // compilation of the dictionary
-            Transducer t;
+            TransducerComp t;
             if (!sections.containsKey(current_section)) {
-                t = new Transducer();
+                t = new TransducerComp();
                 sections.put(current_section, t);
             } else {
                 t = sections.get(current_section);
@@ -354,7 +349,7 @@ public class Compile {
                     } else {
                         // paradigm intermediate
                         if (!paradigms.containsKey(paradigmName)) {
-                            paradigms.put(paradigmName, new Transducer());
+                            paradigms.put(paradigmName, new TransducerComp());
                         }
                         t.setEpsilon_Tag(0);
                         e = t.insertTransducer(e, paradigms.get(paradigmName));
@@ -382,7 +377,7 @@ public class Compile {
      * @param t the transducer
      * @return the last state of the inserted transduction
      */
-    int matchTransduction(ArrayList<Integer> pi, ArrayList<Integer> pd, int state, Transducer t) {
+    int matchTransduction(ArrayList<Integer> pi, ArrayList<Integer> pd, int state, TransducerComp t) {
         int izqda, dcha, limizqda, limdcha;
         if (direction.equals(COMPILER_RESTRICTION_LR_VAL)) {
             izqda = 0;
@@ -585,7 +580,7 @@ public class Compile {
 
                 // detection of the use of undefined paradigms
                 String p = par.paradigmName;
-                Transducer t = paradigms.get(p);
+                TransducerComp t = paradigms.get(p);
                 if (t==null) {
                     throw new RuntimeException("Error: Undefined paradigm '" + p + "'.");
                 }
@@ -723,7 +718,7 @@ public class Compile {
                     current_paradigm = "";
                 }
             } else {
-                paradigms.put(current_paradigm, new Transducer());
+                paradigms.put(current_paradigm, new TransducerComp());
             }
         }
     }

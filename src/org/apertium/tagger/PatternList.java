@@ -9,7 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import org.apertium.lttoolbox.Alphabet;
 import org.apertium.lttoolbox.Compression;
-import org.apertium.lttoolbox.compile.Transducer;
+import org.apertium.lttoolbox.collections.Transducer;
 
 /**
  * Created by Nic Cottrell, Jan 27, 2009 5:00:21 PM

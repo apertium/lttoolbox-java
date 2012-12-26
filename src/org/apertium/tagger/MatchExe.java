@@ -21,7 +21,7 @@ package org.apertium.tagger;
 
 import java.util.ArrayList;
 import java.util.Map;
-import org.apertium.lttoolbox.compile.Transducer;
+import org.apertium.lttoolbox.collections.Transducer;
 import org.apertium.lttoolbox.collections.IntSet;
 
 /**

@@ -17,7 +17,6 @@ package org.apertium.lttoolbox.compile;
  * 02111-1307, USA.
  */
 
-import org.apertium.lttoolbox.*;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -51,7 +50,7 @@ public class RegexpCompiler {
     /**
      * Transducer to store analysis
      */
-    Transducer transducer;
+    TransducerComp transducer;
 
     /**
      * Current state
@@ -77,7 +76,7 @@ public class RegexpCompiler {
      * The constructor
      */
     RegexpCompiler() {
-        transducer = new Transducer();
+        transducer = new TransducerComp();
         brackets = new TreeSet<Integer>();
     }
 
@@ -197,7 +196,7 @@ public class RegexpCompiler {
      */
     void Term() {
         if (!isReserved(token) || token == '\\') {
-            Transducer t = new Transducer();
+            TransducerComp t = new TransducerComp();
             t.setEpsilon_Tag(alphabet_cast00);
             Integer e = t.getInitial();
             Letra();
@@ -214,10 +213,10 @@ public class RegexpCompiler {
             postop = "";
             state = transducer.insertTransducer(state, t);
         } else if (token == '(') {
-            Transducer t = transducer;
+            TransducerComp t = transducer;
             t.setEpsilon_Tag(alphabet_cast00);
             Integer e = state;
-            transducer = new Transducer();
+            transducer = new TransducerComp();
             state = transducer.getInitial();
             consume('(');
             S();
@@ -296,7 +295,7 @@ public class RegexpCompiler {
      * RDP function
      */
     void Esp() {
-        Transducer t = new Transducer();
+        TransducerComp t = new TransducerComp();
         t.setEpsilon_Tag(alphabet_cast00);
         if (!isReserved(token) || token == '\\' || token == ']') {
             Lista();
@@ -414,7 +413,7 @@ public class RegexpCompiler {
      * Get the transducer built
      * @return the transducer
      */
-    public Transducer getTransducer() {
+    public TransducerComp getTransducer() {
         return transducer;
     }
 
