@@ -671,7 +671,7 @@ public class TransferBytecode {
       LinkedList<BranchHandle> result = new LinkedList<BranchHandle>();
       result.push(il.append(branchIfTrue ? new IFNE(null) : new IFEQ(null)));
       return result;
-    } else if (n.equals("begins-with-listElements")) {
+    } else if (n.equals("begins-with-list")) {
       processBeginsWithList(e);
       LinkedList<BranchHandle> result = new LinkedList<BranchHandle>();
       result.push(il.append(branchIfTrue ? new IFNE(null) : new IFEQ(null)));
@@ -681,7 +681,7 @@ public class TransferBytecode {
       LinkedList<BranchHandle> result = new LinkedList<BranchHandle>();
       result.push(il.append(branchIfTrue ? new IFNE(null) : new IFEQ(null)));
       return result;
-    } else if (n.equals("ends-with-listElements")) {
+    } else if (n.equals("ends-with-list")) {
       processEndsWithList(e);
       LinkedList<BranchHandle> result = new LinkedList<BranchHandle>();
       result.push(il.append(branchIfTrue ? new IFNE(null) : new IFEQ(null)));

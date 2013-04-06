@@ -705,11 +705,11 @@ public class ParseTransferFile {
       return processEqual(e);
     } else if (n.equals("begins-with")) {
       return processBeginsWith(e);
-    } else if (n.equals("begins-with-listElements")) {
+    } else if (n.equals("begins-with-list")) {
       return processBeginsWithList(e);
     } else if (n.equals("ends-with")) {
       return processEndsWith(e);
-    } else if (n.equals("ends-with-listElements")) {
+    } else if (n.equals("ends-with-list")) {
       return processEndsWithList(e);
     } else if (n.equals("contains-substring")) {
       return processContainsSubstring(e);
