@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dictionary>
+  <alphabet>АБВГДЃЕЖЗЅИЈКЛЉМНЊОПРСТЌУФХЦЧЏШабвгдѓежзѕијклљмнњопрстќуфхцчџшABCČĆDDžĐEFGHIJKLLjMNNjOPRSŠTUVZŽabcčćddžđefghijklljmnnjoprsštuvzžwWxXyY</alphabet>
+  <sdefs/>
+
+  <section id="main" type="inconditional">
+    <e><p><l>nj</l><r>њ</r></p></e>
+    <e><p><l>lj</l><r>љ</r></p></e>
+    <e><p><l>dž</l><r>џ</r></p></e>
+    <e><p><l>dz</l><r>ѕ</r></p></e>
+    <e><p><l>a</l><r>а</r></p></e>
+    <e><p><l>b</l><r>б</r></p></e>
+    <e><p><l>c</l><r>ц</r></p></e>
+    <e><p><l>d</l><r>д</r></p></e>
+    <e><p><l>e</l><r>е</r></p></e>
+    <e><p><l>f</l><r>ф</r></p></e>
+    <e><p><l>g</l><r>г</r></p></e>
+    <e><p><l>h</l><r>х</r></p></e>
+    <e><p><l>i</l><r>и</r></p></e>
+    <e><p><l>j</l><r>ј</r></p></e>
+    <e><p><l>k</l><r>к</r></p></e>
+    <e><p><l>l</l><r>л</r></p></e>
+    <e><p><l>m</l><r>м</r></p></e>
+    <e><p><l>n</l><r>н</r></p></e>
+    <e><p><l>o</l><r>о</r></p></e>
+    <e><p><l>p</l><r>п</r></p></e>
+    <e><p><l>r</l><r>р</r></p></e>
+    <e><p><l>s</l><r>с</r></p></e>
+    <e><p><l>t</l><r>т</r></p></e>
+    <e><p><l>u</l><r>у</r></p></e>
+    <e><p><l>v</l><r>в</r></p></e>
+    <e><p><l>z</l><r>з</r></p></e>
+    <e><p><l>ž</l><r>ж</r></p></e>
+    <e><p><l>š</l><r>ш</r></p></e>
+    <e><p><l>č</l><r>ч</r></p></e>
+    <e><p><l>đ</l><r>ѓ</r></p></e>
+    <e><p><l>ć</l><r>ќ</r></p></e>
+
+    <e><p><l>Nj</l><r>Њ</r></p></e>
+    <e><p><l>Lj</l><r>Љ</r></p></e>
+    <e><p><l>Dž</l><r>Џ</r></p></e>
+    <e><p><l>Dz</l><r>Ѕ</r></p></e>
+    <e><p><l>A</l><r>А</r></p></e>
+    <e><p><l>B</l><r>Б</r></p></e>
+    <e><p><l>C</l><r>Ц</r></p></e>
+    <e><p><l>D</l><r>Д</r></p></e>
+    <e><p><l>E</l><r>Е</r></p></e>
+    <e><p><l>F</l><r>Ф</r></p></e>
+    <e><p><l>G</l><r>Г</r></p></e>
+    <e><p><l>H</l><r>Х</r></p></e>
+    <e><p><l>I</l><r>И</r></p></e>
+    <e><p><l>J</l><r>Ј</r></p></e>
+    <e><p><l>K</l><r>К</r></p></e>
+    <e><p><l>L</l><r>Л</r></p></e>
+    <e><p><l>M</l><r>М</r></p></e>
+    <e><p><l>N</l><r>Н</r></p></e>
+    <e><p><l>O</l><r>О</r></p></e>
+    <e><p><l>P</l><r>П</r></p></e>
+    <e><p><l>R</l><r>Р</r></p></e>
+    <e><p><l>S</l><r>С</r></p></e>
+    <e><p><l>T</l><r>Т</r></p></e>
+    <e><p><l>U</l><r>У</r></p></e>
+    <e><p><l>V</l><r>В</r></p></e>
+    <e><p><l>Z</l><r>З</r></p></e>
+    <e><p><l>Ž</l><r>Ж</r></p></e>
+    <e><p><l>Š</l><r>Ш</r></p></e>
+    <e><p><l>Č</l><r>Ч</r></p></e>
+    <e><p><l>Đ</l><r>Ѓ</r></p></e>
+    <e><p><l>Ć</l><r>Ќ</r></p></e>
+
+  </section>
+</dictionary>

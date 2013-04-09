@@ -188,6 +188,19 @@ public class LTProcTest extends TestCase {
     assertEquals("#de Europe[<\\/a> <i>]\n", output.toString());
   }
 
+
+  public void testTransliteration() throws IOException {
+    FSTProcessor fstp = new FSTProcessor();
+    fstp.load("testdata/translit/translit.bin");
+    fstp.initGeneration();
+    StringWriter output = new StringWriter();
+    fstp.transliteration(new StringReader("To je prova\n"), output);
+    System.err.println("testTransliteration() output = " + output);
+
+    assertEquals("То је прова\n", output.toString());
+  }
+
+
   public void testPostGeneration() throws IOException {
     FSTProcessor fstp = new FSTProcessor();
     fstp.load("testdata/regression/fr-es.autopgen.bin");

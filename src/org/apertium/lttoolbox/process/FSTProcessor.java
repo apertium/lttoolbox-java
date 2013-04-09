@@ -738,7 +738,7 @@ public class FSTProcessor {
 
     if (DEBUG) {
       System.err.println("FSTProcessor load(" + input + " " + filename);
-      System.err.println("alphabet = " + alphabet.toString());
+      System.err.println("alphabet = " + alphabet.toString().replace(',', '\n'));
     }
 
     //loading the sections transducers
@@ -1658,8 +1658,8 @@ public class FSTProcessor {
         boolean uppercase = false;
         // Not JDK 1.5 compliant: if (!sf.isEmpty()) {
         if (sf.length() > 0) {
-          firstupper = Alphabet.isUpperCase(sf.charAt(1));
-          uppercase = sf.length() > 1 && firstupper && Alphabet.isUpperCase(sf.charAt(2));
+          firstupper = Alphabet.isUpperCase(sf.charAt(0));
+          uppercase = sf.length() > 1 && firstupper && Alphabet.isUpperCase(sf.charAt(1));
         }
         lf = current_state.filterFinals(alphabet, escaped_chars, uppercase, firstupper);
         if (lf.length() > 0) {
@@ -1678,8 +1678,8 @@ public class FSTProcessor {
         }
       } else {
         if (current_state.isFinal()) {
-          boolean firstupper = Alphabet.isUpperCase(sf.charAt(1));
-          boolean uppercase = sf.length() > 1 && firstupper && Alphabet.isUpperCase(sf.charAt(2));
+          boolean firstupper = Alphabet.isUpperCase(sf.charAt(0));
+          boolean uppercase = sf.length() > 1 && firstupper && Alphabet.isUpperCase(sf.charAt(1));
           lf = current_state.filterFinals(alphabet, escaped_chars, uppercase, firstupper);
           last = input_buffer.getPos();
         }
