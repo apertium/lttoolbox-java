@@ -180,7 +180,7 @@ public class Dispatcher {
     LTProc.doMain(args, input, output);
   }
 
-  private static void doUnknown(Program prog, final Reader input, Appendable output) throws Exception {
+  private static void doUnknown(Program prog, final Reader input, Appendable output, boolean dispAmb, boolean dispMarks) throws Exception {
     File tempDir = new File(System.getProperty("java.io.tmpdir"));
     // As we have *no* idea what it might be, we will try to treat each parameter as a file
     // name and copy it to temp dir, just in case the command needs it to be present on the
@@ -201,7 +201,7 @@ public class Dispatcher {
       } catch (Exception e) {
       } // Ignore errors comming from that it wasn't a file name
     }
-    final Process extProcess = Runtime.getRuntime().exec(prog.getFullPath() + " " + prog.getParameters(), null, tempDir);
+    final Process extProcess = Runtime.getRuntime().exec(prog.getFullPath() + " " + prog.getParameters().replaceAll("\\$1", dispMarks ? "-g" : "-n").replaceAll("\\$2", dispAmb ? "-m" : ""), null, tempDir);
 
     // We will create a new thread to copy from the input Reader to the OutputStream of the
     // external process (note that we must convert the input to UTF-8)
@@ -284,7 +284,7 @@ public class Dispatcher {
         doOmegatFormat(prog, input, output, false);
         break;
       case UNKNOWN:
-        doUnknown(prog, input, output);
+        doUnknown(prog, input, output, dispAmb, dispMarks);
         break;
       default:
         //We should never get here.
@@ -293,3 +293,4 @@ public class Dispatcher {
     IOUtils.flush(output);
   }
 }
+
