@@ -1,0 +1,21 @@
+<dictionary>
+  <alphabet>abcdefghijklmnopqrstuvwxyz</alphabet>
+  <sdefs>
+    <sdef n="n"/>
+    <sdef n="sg"/>
+    <sdef n="pl"/>
+  </sdefs>
+  <pardefs>
+    <pardef n="beer__n">
+      <e><p><l></l><r><s n="n"/><s n="sg"/></r></p></e>
+      <e><p><l>s</l><r><s n="n"/><s n="pl"/></r></p></e>
+    </pardef>
+  </pardefs>
+  <section id="main" type="standard">
+    <e lm="beer"><i>beer</i><par n="beer__n"/></e>
+    <e lm="school"><i>school</i><par n="beer__n"/></e>
+    <e lm="computer"><i>computer</i><par n="beer__n"/></e>
+    <e lm="house"><i>house</i><par n="beer__n"/></e>
+  </section>
+</dictionary>
+

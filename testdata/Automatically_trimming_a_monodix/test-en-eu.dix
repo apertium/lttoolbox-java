@@ -1,0 +1,14 @@
+<dictionary>
+  <alphabet>abcdefghijklmnopqrstuvwxyz</alphabet>
+  <sdefs>
+    <sdef n="n"/>
+    <sdef n="sg"/>
+    <sdef n="pl"/>
+  </sdefs>
+  <pardefs>
+  </pardefs>
+  <section id="main" type="standard">
+    <e><p><l>beer<s n="n"/></l><r>garagardo<s n="n"/></r></p></e>
+    <e><p><l>house<s n="n"/></l><r>etxe<s n="n"/></r></p></e>
+  </section>
+</dictionary>
