@@ -71,8 +71,7 @@ import java.util.LinkedList;
 import java.util.List;
 import org.apertium.utils.IOUtils;
 
-public class FSTProcessor {
-  public static boolean DEBUG = false;
+public class FSTProcessor extends BasicFSTProcessor {
   private boolean isLastBlankTM;
   private boolean showControlSymbols = false;
   private boolean biltransSurfaceForms;
@@ -132,15 +131,6 @@ public class FSTProcessor {
     gm_tagged   // tagged generation
   }
   //private Collator myCollator = Collator.getInstance();
-
-  /**
-   * Transducers in FSTP
-   */
-  private Map<String, TransducerExe> transducers = new TreeMap<String, TransducerExe>();
-  /**
-   * Initial state of every token
-   */
-  private State initial_state = new State();
   /**
    * Set incoditional sections in the dictionaries
    */
@@ -163,18 +153,9 @@ public class FSTProcessor {
   // Not JDK1.5 compliant: private ArrayDeque<String> blankqueue = new ArrayDeque<String>();
   private LinkedList<String> blankqueue = new LinkedList<String>();
   /**
-   * Set of characters being considered alphabetics in wound-example.dix file this corresponds to
-   * <alphabet>ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz</alphabet>
-   */
-  private SetOfCharacters alphabetic_chars;
-  /**
    * Set of characters to escape with a backslash
    */
   private SetOfCharacters escaped_chars = new SetOfCharacters();
-  /**
-   * Alphabet
-   */
-  public Alphabet alphabet = new Alphabet();
   /**
    * Input buffer
    */
@@ -576,20 +557,6 @@ public class FSTProcessor {
     }
   }
 
-  private void calc_initial_state() {
-    Collection<TransducerExe> transducerc = transducers.values();
-    /*
-     * Node root = new Node();
-     * root.initTransitions(transducerc.size());
-     * for (TransducerExe transducer : transducerc) {
-     * Node initialNodeForThisTransducer = transducer.getInitial();
-     * root.addTransition(0, 0, initialNodeForThisTransducer);
-     * }
-     * initial_state.init(root);
-     */
-    initial_state.init(transducerc);
-  }
-
   private boolean endsWith(String str, String suffix) {
     return str.endsWith(suffix);
     /*
@@ -674,104 +641,6 @@ public class FSTProcessor {
 
   private boolean isAlphabetic(char c) {
     return alphabetic_chars.contains(c);
-  }
-
-  /**
-   * Reads the binary representation of a .dix file - <b>keeping the whole file in memory at all times</b>.
-   * <b>WARNING</b>This method should be avoided on Android and other memory constrained devices.
-   *
-   * @param input
-   * @throws IOException
-   */
-  public void load(InputStream input) throws IOException {
-    if (DEBUG) {
-      System.err.println("FSTProcessor.load - SLOW VERSION");
-    }
-    ByteBuffer byteBuffer = IOUtils.inputStreamToByteBuffer(input);
-    load(byteBuffer);
-  }
-
-  /**
-   * Reads the binary representation of a .dix file
-   *
-   * @param filePath
-   * @throws IOException
-   */
-  public void load(String filePath) throws IOException {
-    if (DEBUG) {
-      System.err.println("FSTProcessor memmap and load(" + filePath);
-    }
-    load(IOUtils.memmap(filePath), filePath);
-  }
-
-  /**
-   * Reads the binary representation of a .dix file
-   *
-   * @param input
-   * @throws IOException
-   */
-  public void load(ByteBuffer input) throws IOException {
-    load(input, null);
-  }
-
-  /**
-   * Reads the binary representation of a .dix file
-   *
-   * @param input
-   * @param cachedIndexes path to a unique directory where cached transducer indexes are
-   */
-  public void load(ByteBuffer input, String filename) throws IOException {
-    // the following examples and numbers corresponds to testdata/wound-example.dix
-
-    // read letters (<alphabet>ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz</alphabet>)
-    int len = Compression.multibyte_read(input); // numer of letters (52)
-    alphabetic_chars = new SetOfCharacters();
-
-    while (len > 0) {
-      char c = (char) Compression.multibyte_read(input);
-      alphabetic_chars.add(c);
-      len--;
-    }
-
-    // symbols
-    alphabet = Alphabet.read(input);
-
-    if (DEBUG) {
-      System.err.println("FSTProcessor load(" + input + " " + filename);
-      System.err.println("alphabet = " + alphabet.toString().replace(',', '\n'));
-    }
-
-    //loading the sections transducers
-    len = Compression.multibyte_read(input);  // xx  (2 for eo-en.dix)
-    while (len > 0) {
-      String name = Compression.String_read(input);  // "main@standard", "propraj_nomoj@standard"
-
-      TransducerExe tx = transducers.get(name);
-      if (tx == null) {
-        tx = new TransducerExe();
-        transducers.put(name, tx);
-      } else {
-        System.err.println(this.getClass() + ".load() Why has transducer already name " + name);
-      }
-
-      File cacheFile = null;
-      //System.out.println("reading : "+name);
-      if (IOUtils.cacheDir != null && filename != null) {
-        // Try to load make cached a memmapped transducer cache file
-        String fileid = new File(filename).getAbsolutePath().replace(File.separatorChar, '_').replace('.', '_');
-        cacheFile = new File(IOUtils.cacheDir, fileid + "@" + input.position());
-        //System.out.println("cachedFile = " + cacheFile);
-      }
-
-      tx.read(input, alphabet, cacheFile);
-
-
-      len--;
-      //System.out.println(len);
-    }
-
-    //if (DEBUG)  System.err.println("  transducers = " + transducers.toString());
-
   }
 
   public void initAnalysis() {
@@ -2176,21 +2045,6 @@ public class FSTProcessor {
       result.append('$');
     }
     return result.toString();
-  }
-
-  public boolean valid() {
-    if (initial_state.isFinal()) {
-      System.err.println("Error: Invalid dictionary (hint: the left side of an entry is empty)");
-      return false;
-    } else {
-      State s = initial_state.copy();
-      s.step(' ');
-      if (s.size() != 0) {
-        System.err.println("Error: Invalid dictionary (hint: entry beginning with whitespace)");
-        return false;
-      }
-    }
-    return true;
   }
 
   char readSAO(Reader input) throws IOException {
