@@ -69,16 +69,18 @@ public class AbundantIntSet implements IntSet { //extends TreeSet<Integer> {
   @Override
   public Iterator<Integer> iterator() {
     return new Iterator() {
-      int i = 0;
+      int i = bs.nextSetBit(0);
 
       @Override
       public boolean hasNext() {
-        return bs.nextSetBit(i) == -1;
+        return i > -1;
       }
 
       @Override
       public Object next() {
-        return (i = bs.nextSetBit(i));
+        int j = i;
+        i = bs.nextSetBit(i+1);
+        return j;
       }
 
       @Override

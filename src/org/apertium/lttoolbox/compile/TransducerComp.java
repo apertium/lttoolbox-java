@@ -12,6 +12,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +26,7 @@ import org.apertium.lttoolbox.collections.AbundantIntSet;
 import org.apertium.lttoolbox.collections.IntSet;
 import org.apertium.lttoolbox.collections.SlowIntegerHashSet;
 import org.apertium.lttoolbox.collections.SlowIntegerTreeSet;
+import org.apertium.lttoolbox.collections.Transducer;
 
 /**
  * Transducer extended with methods handy for compilation of transducer
@@ -415,65 +417,20 @@ public class TransducerComp extends org.apertium.lttoolbox.collections.Transduce
     optional();
   }
 
-  static TransducerComp TEST_read(InputStream input) throws IOException {
+  public static TransducerComp TEST_read(InputStream input) throws IOException {
 
 
     TransducerComp t = new TransducerComp();
-
-    t.initial = Compression.multibyte_read(input);
-    int finals_size = Compression.multibyte_read(input);
-
-    int base = 0;
-
-    Set<Integer> myfinals = new TreeSet<Integer>();
-
-    while (finals_size > 0) {
-      System.out.println("finals_size : " + finals_size);
-      finals_size--;
-      base += Compression.multibyte_read(input);
-      t.finals.add(base);
-    }
-
-    base = Compression.multibyte_read(input);
-
-    int number_of_states = base;
-    int current_state = 0;
-    /*
-     * while (number_of_states > 0) {
-     * //System.out.println("number of states : "+number_of_states);
-     * int number_of_local_transitions = Compression.multibyte_read(input);
-     * int tagbase = 0;
-     * if (!t.transitions.containsKey(current_state)) {
-     * t.transitions.put(current_state,new TreeMap<Integer,Set<Integer>>());
-     * }
-     *
-     * while (number_of_local_transitions > 0) {
-     * //System.out.println("number of local transitions "+number_of_local_transitions);
-     * number_of_local_transitions--;
-     * tagbase += Compression.multibyte_read(input);
-     * int state = (current_state + Compression.multibyte_read(input)) % base;
-     * //int i_symbol = alphabet.decode(tagbase).firstInt;
-     * //int o_symbol = alphabet.decode(tagbase).second;
-     * //System.out.println("i : "+i_symbol+", o : "+o_symbol);
-     *
-     * if (!t.transitions.get(current_state).containsKey(tagbase)) {
-     * t.transitions.get(current_state).put(tagbase, new TreeSet<Integer>());
-     * }
-     * t.transitions.get(current_state).get(tagbase).add(state);
-     * }
-     * number_of_states--;
-     * current_state++;
-     * }
-     *
-     */
+    t.transitions.clear();
+    t._read(input, 0);
     return t;
   }
+
 
   public static void main(String[] args) throws FileNotFoundException, IOException {
 
 
     Compile c = new Compile();
-    Compile c2 = new Compile();
     c.parse("testdata/apertium-fr-es.fr.dix", Compile.COMPILER_RESTRICTION_LR_VAL);
     //c.parse("../src/test/org/apertium/lttoolbox/test3.dix", NewCompiler.COMPILER_RESTRICTION_LR_VAL);
     //c.parse("../src/test/org/apertium/lttoolbox/test4.dix", NewCompiler.COMPILER_RESTRICTION_LR_VAL);
@@ -503,15 +460,14 @@ public class TransducerComp extends org.apertium.lttoolbox.collections.Transduce
     OutputStream output = new BufferedOutputStream(new FileOutputStream("testTransducer2.bin"));
     c.write(output);
     output.close();
-    //InputStream input = new InputStream(new BufferedInputStream (new FileInputStream("testTransducer2.bin")));
-    InputStream input = new BufferedInputStream(new FileInputStream("outc"));
+    InputStream input = new BufferedInputStream (new FileInputStream("testTransducer2.bin"));
+    //InputStream input = new BufferedInputStream(new FileInputStream("outc"));
     //c2 = c.DEBUG_read(input);
 
     //FSTProcessor fstp = new FSTProcessor();
     //fstp.load(input);
     String letters = Compression.String_read(input);
-    Alphabet a = new Alphabet();
-    a.read(input);
+    Alphabet alphabet = Alphabet.read(input);
 
     Map<String, TransducerComp> sections = new HashMap<String, TransducerComp>();
 
@@ -529,7 +485,9 @@ public class TransducerComp extends org.apertium.lttoolbox.collections.Transduce
 
       len--;
       if (c.sections.get(name) != null && sections.get(name) != null) {
-        System.out.println(c.sections.get(name).DEBUG_compare(sections.get(name)));
+        boolean same = c.sections.get(name).DEBUG_compare(sections.get(name));
+        if (!same) throw new RuntimeException(name+" didnt compare");
+        System.out.println(name + " passed comparison");
       }
       //System.exit(-1);
       //throw new RuntimeException("section "+name+" was totaly DEBUG_read");
@@ -560,17 +518,55 @@ public class TransducerComp extends org.apertium.lttoolbox.collections.Transduce
       }
 
       System.out.println("comparing transducers of section " + s);
-      //System.out.println("original transducer : "+c.sections.get(s));
+      System.out.println("original transducer : "+c.sections.get(s));
       System.out.println("original transducer has " + count1 + " transitions");
       System.out.println("original transducer higher state is " + max1);
-      //System.out.println("DEBUG_read transducer : "+sections.get(s));
+      System.out.println("DEBUG_read transducer : "+sections.get(s));
       System.out.println("read transducer has " + count2 + " transitions");
       System.out.println("read transducer higher state is " + max2);
       //System.out.println(c.sections.get(s).DEBUG_compare(sections.get(s)));
+      boolean same = c.sections.get(s).DEBUG_compare(sections.get(s));
+      if (!same) throw new RuntimeException(s+" didnt compare");
+      System.out.println(s + " passed comparison");
     }
 
-    //System.out.println(c.DEBUG_compare(c2));
+  }
 
+  public void show(Alphabet alphabet, PrintStream out) {
+    joinFinals();
 
+    for (int it_first=0; it_first<transitions.size(); it_first++) {
+      Map<Integer, IntSet> it = transitions.get(it_first);
+
+      for (Integer it2_first : it.keySet()) {
+        for (Integer it2_second : it.get(it2_first)) {
+          Alphabet.IntegerPair t = alphabet.decode(it2_first);
+          out.printf("%d\t"+"%d\t", it_first, it2_second);
+          String l = alphabet.getSymbol(t.first);
+          if (l=="") { // If we find an epsilon
+            out.print("ε\t");
+          } else {
+            out.print(l+"\t");
+          }
+          String r = alphabet.getSymbol(t.second);
+          if (r=="") { // If we find an epsilon
+            out.print("ε\t");
+          } else {
+            out.print(r+"\t");
+          }
+          out.println();
+        }
+      }
+    }
+
+/*
+  for(set<int>::iterator it3 = finals.begin(); it3 != finals.end(); it3++)
+  {
+    fwprintf(output, L"%d\n", *it3);
+  }
+*/
+    for (Integer it3 : finals) {
+      out.println(it3);
+    }
   }
 }

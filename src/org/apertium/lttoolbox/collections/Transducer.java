@@ -359,9 +359,15 @@ public class Transducer {
   }
 
   public static Transducer read(InputStream input, int decalage) throws IOException {
-
     Transducer t = new Transducer();
     t.transitions.clear();
+    t._read(input, decalage);
+    return t;
+  }
+
+  protected void _read(InputStream input, int decalage) throws IOException {
+
+    Transducer t = this;
 
     //reading the initial state
     t.initial = Compression.multibyte_read(input);
@@ -401,7 +407,6 @@ public class Transducer {
       current_state++;
     }
 
-    return t;
   }
 
   /**

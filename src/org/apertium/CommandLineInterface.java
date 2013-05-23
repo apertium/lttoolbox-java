@@ -104,6 +104,8 @@ public class CommandLineInterface {
       LTExpand.main(restOfArgs);
     else if (task.startsWith("lt-comp"))
       LTComp.main(restOfArgs);
+    else if (task.startsWith("lt-print"))
+      LTPrint.main(restOfArgs);
     else if (task.startsWith("lt-validate"))
       LTValidate.main(restOfArgs);
     else if (task.startsWith("apertium-preprocess-transfer-bytecode"))
