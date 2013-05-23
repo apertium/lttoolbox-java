@@ -15,6 +15,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -28,6 +29,10 @@ import org.apertium.lttoolbox.collections.IntSet;
 import org.apertium.lttoolbox.collections.SlowIntegerHashSet;
 import org.apertium.lttoolbox.collections.SlowIntegerTreeSet;
 import org.apertium.lttoolbox.collections.Transducer;
+import static org.apertium.lttoolbox.collections.Transducer.DEBUG;
+import org.apertium.lttoolbox.process.BasicFSTProcessor;
+import org.apertium.lttoolbox.process.FSTProcessor;
+import org.apertium.lttoolbox.process.State;
 
 /**
  * Transducer extended with methods handy for compilation of transducer
@@ -57,7 +62,7 @@ public class TransducerComp extends org.apertium.lttoolbox.collections.Transduce
    * Transducer minimization
    * Minimize = reverse + determinize + reverse + determinize
    */
-  void minimize() {
+  public void minimize() {
     reverse();
     determinize();
     reverse();
@@ -155,7 +160,7 @@ public class TransducerComp extends org.apertium.lttoolbox.collections.Transduce
    *
    * @param s1 the firstInt set
    * @param s2 the second set
-   * @return true if the sets don't intersect
+   * @return true if the sets don't trim
    */
   private boolean isEmptyIntersection(Set<Integer> s1, Set<Integer> s2) {
     for (Integer i : s1) {
@@ -171,7 +176,7 @@ public class TransducerComp extends org.apertium.lttoolbox.collections.Transduce
    *
    * @param s1 the firstInt set
    * @param s2 the second set
-   * @return true if the sets don't intersect
+   * @return true if the sets don't trim
    */
   private boolean isEmptyIntersection(Set<Integer> s1, IntSet s2) {
     for (Integer i : s1) {
@@ -458,9 +463,7 @@ public class TransducerComp extends org.apertium.lttoolbox.collections.Transduce
     }
 
     //System.exit(-1);
-    OutputStream output = new BufferedOutputStream(new FileOutputStream("testTransducer2.bin"));
-    c.write(output);
-    output.close();
+    c.write("testTransducer2.bin");
     InputStream input = new BufferedInputStream (new FileInputStream("testTransducer2.bin"));
     //InputStream input = new BufferedInputStream(new FileInputStream("outc"));
     //c2 = c.DEBUG_read(input);
@@ -565,7 +568,7 @@ public class TransducerComp extends org.apertium.lttoolbox.collections.Transduce
     }
   }
 
-  private void expand(Alphabet alphabet, PrintStream out, int state, boolean[] visited, String left, String right) {
+  private void showLtExpandish(Alphabet alphabet, PrintStream out, int state, boolean[] visited, String left, String right) {
     if (finals.contains(state)) {
       out.println(left + ":" + right);
       return;
@@ -583,61 +586,72 @@ public class TransducerComp extends org.apertium.lttoolbox.collections.Transduce
           out.println("__CYCLE__ "+  left+l + ":" + right+r);
           return;
         }
-        expand(alphabet, out, target_state, visited, left+l, right+r);
+        showLtExpandish(alphabet, out, target_state, visited, left+l, right+r);
       }
     }
     visited[state] = false;
   }
   
-  public void expand(Alphabet alphabet, PrintStream out) {
+  public void showLtExpandish(Alphabet alphabet, PrintStream out) {
     joinFinals();
     boolean[] visited = new boolean[transitions.size()];
-    expand(alphabet, out, 0, visited, "", "");
+    showLtExpandish(alphabet, out, 0, visited, "", "");
   }
 
 
-  public void intersect(Alphabet alphabet, TransducerCollection bil) {
+  public void trim(Alphabet alphabet, BasicFSTProcessor bil) {
     joinFinals();
     boolean[] visited = new boolean[transitions.size()];
-
-    TransducerComp[] bilsections = bil.sections.values().toArray(new TransducerComp[0]);
-    int[] bilstate = new int[bilsections.length];
-
-
-    prune(alphabet, 0, visited, "", "", bil, bilsections, bilstate);
+    bil.calc_initial_state();
+    State bilstate = bil.initial_state.copy();
+    trim(alphabet, 0, visited, "", "", bil, bilstate);
   }
 
-  private void prune(Alphabet alphabet, int state, boolean[] visited, String left, String right, TransducerCollection biltc, TransducerComp[] bilsections, int[] bilstates) {
-    System.out.println(left + ":" + right);
-    if (finals.contains(state)) {
-      System.out.println(left + ":" + right+" final");
-      return;
-    }
+  private void trim(Alphabet alphabet, int state, boolean[] visited, String left, String right, BasicFSTProcessor bil, State bilstate) {
+    //System.out.println(left + ":" + right + "  "+bilstate.isFinal()+" "+bilstate.size());
     visited[state] = true;
 
     Map<Integer, IntSet> it = transitions.get(state);
-    for (Map.Entry<Integer, IntSet> it2 : it.entrySet()) {
+    for (Iterator<Map.Entry<Integer, IntSet>> iter2 = it.entrySet().iterator(); iter2.hasNext();) {
+      Map.Entry<Integer, IntSet> it2 = iter2.next();
       Integer it2_first = it2.getKey();
       IntegerPair t = alphabet.decode(it2_first);
+
+      String l = alphabet.getSymbol(t.first);
+      String r = alphabet.getSymbol(t.second);
+      String left2 = left + l;
+      String right2 = right + r;
+      int outsym = t.second>=0?t.second : bil.alphabet.cast(r);
+      //System.out.println("rsym = "+rsym + ", da r="+r);
+      State newbilstate = bilstate.copy();
+      newbilstate.step(outsym);
+      if (newbilstate.isFinal()) {
+        if (DEBUG) System.out.println("Keep: " +left2 + ":" + right2);
+        continue;
+      }
+      if (newbilstate.size()==0) {
+        if (DEBUG) {
+          String ellipsis = "\u2026"; // ellipsis …
+          System.out.println("Trim: " +left2 + ellipsis+":" + right2+ellipsis);
+        }
+        
+        iter2.remove(); // =it.remove(it2_first);
+        continue;
+      }
+
+
       for (Integer target_state : it2.getValue()) {
-        String l = alphabet.getSymbol(t.first);
-        String r = alphabet.getSymbol(t.second);
         if (visited[target_state]) {
-          System.out.println("__CYCLE__ "+  left+l + ":" + right+r);
+          if (DEBUG) System.out.println("Keepc: " +left2 + ":" + right2); // Cyclic, probably a regular expression
+          return;
+        }
+        if (finals.contains(target_state)) {
+          if (DEBUG) System.out.println("Keepf: " +left2 + ":" + right2);
           return;
         }
 
-        for (int i=0; i<bilstates.length; i++) {
-          int bilstate = bilstates[i];
-          TransducerComp bilsection = bilsections[i];
-          //x = biltc.alphabet.
-          int lsym = biltc.alphabet.cast(l);
-          int rsym = biltc.alphabet.cast(r);
-          Map<Integer, IntSet> biltransitions = bilsection.transitions.get(bilstate);
 
-        }
-
-        prune(alphabet, target_state, visited, left+l, right+r, biltc, bilsections, bilstates);
+        trim(alphabet, target_state, visited, left2, right2, bil, newbilstate);
       }
     }
     visited[state] = false;

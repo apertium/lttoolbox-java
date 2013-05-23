@@ -5,70 +5,45 @@
 package org.apertium.lttoolbox;
 
 import org.apertium.lttoolbox.compile.TransducerCollection;
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintStream;
+import org.apertium.CommandLineInterface;
 import org.apertium.lttoolbox.compile.TransducerComp;
+import org.apertium.lttoolbox.process.BasicFSTProcessor;
 
 /**
- *
- * @author j
+ * @author Jacob Nordfalk
  */
 public class LTPrint {
+  private static void showHelp() {
+    System.out.println(" v" + CommandLineInterface.PACKAGE_VERSION + ": dump a transducer to text"
+        + "\nUSAGE: lt-print [ -a | -s ] bin_file"
+        + "\nOptions"
+        + "\n  -a:   dump to text in ATT format (default)"
+        + "\n  -s:   print strings in a format similar to lt-expand"
+        );
+  }
 
   public static void main(String[] args) throws IOException {
-    if (args.length==0) args = new String[] { "testdata/Automatically_trimming_a_monodix/test-en.bin" };
-    //if (args.length==0) args = new String[] { "testdata/wound-example.bin" };
-    //if (args.length==0) args = new String[] { "testTransducer2.bin" };
-
-    doPrint(args[0], System.out);
-    doExpand(args[0], System.out);
-    doIntersect("testdata/Automatically_trimming_a_monodix/test-en.bin",
-        "testdata/Automatically_trimming_a_monodix/test-en-eu.bin",
-        "tmp/xx.bin");
+    if (args.length==1) doPrintATT(args[0], System.out);
+    else if (args.length==2 && args[0].equals("-a")) doPrintATT(args[1], System.out);
+    else if (args.length==2 && args[0].equals("-s")) doPrintLtExpandish(args[1], System.out);
+    else showHelp();
   }
 
 
-
-
-  private static void doIntersect(String monodixf, String bidixf, String intersectedf) throws IOException {
-    TransducerCollection mon = new TransducerCollection();
-    mon.read(monodixf);
-    for (TransducerComp t : mon.sections.values()) {
-      t.expand(mon.alphabet, System.out);
-    }
-    System.out.println(" --- ");
-
-    TransducerCollection bil = new TransducerCollection();
-    bil.read(bidixf);
-    for (TransducerComp t : bil.sections.values()) {
-      t.expand(bil.alphabet, System.out);
-    }
-
-    for (TransducerComp t : mon.sections.values()) {
-      t.intersect(mon.alphabet, bil);
-    }
-    System.out.println(" --- ");
-
-  }
-
-
-
-
-  private static void doExpand(String file, PrintStream out) throws IOException {
+  private static void doPrintLtExpandish(String file, PrintStream out) throws IOException {
 
     TransducerCollection tc = new TransducerCollection();
     tc.read(file);
     for (TransducerComp t : tc.sections.values()) {
-      t.expand(tc.alphabet, out);
+      t.showLtExpandish(tc.alphabet, out);
     }
   }
 
 
 
-  private static void doPrint(String file, PrintStream out) throws IOException {
+  private static void doPrintATT(String file, PrintStream out) throws IOException {
 
     TransducerCollection tc = new TransducerCollection();
     tc.read(file);

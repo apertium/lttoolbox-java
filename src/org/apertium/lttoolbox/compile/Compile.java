@@ -210,23 +210,12 @@ public class Compile {
    * @param output the stream where write the result
    * @throws java.io.IOException
    */
-  public void write(OutputStream output) throws IOException {
-
-    // letters
-    Compression.String_write(letters, output);
-
-    // symbols
-    alphabet.write(output);
-
-    // transducers
-    Compression.multibyte_write(sections.size(), output);
-
-    for (String first : sections.keySet()) {
-      final TransducerComp second = sections.get(first);
-      System.out.println(first + " " + second.size() + " " + second.numberOfTransitions());
-      Compression.String_write(first, output);
-      second.write(output, 0);
-    }
+  public void write(String file) throws IOException {
+    TransducerCollection tc = new TransducerCollection();
+    tc.alphabet = alphabet;
+    tc.letters = letters;
+    tc.sections = sections;
+    tc.write(file);
   }
 
   /**
