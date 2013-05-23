@@ -4,16 +4,13 @@
  */
 package org.apertium.lttoolbox;
 
+import org.apertium.lttoolbox.compile.TransducerCollection;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.HashMap;
-import java.util.Map;
 import org.apertium.lttoolbox.compile.TransducerComp;
-import org.apertium.lttoolbox.process.FSTProcessor;
 
 /**
  *
@@ -22,37 +19,67 @@ import org.apertium.lttoolbox.process.FSTProcessor;
 public class LTPrint {
 
   public static void main(String[] args) throws IOException {
-    if (args.length==0) args = new String[] { "testdata/wound-example.bin" };
+    if (args.length==0) args = new String[] { "testdata/Automatically_trimming_a_monodix/test-en.bin" };
+    //if (args.length==0) args = new String[] { "testdata/wound-example.bin" };
     //if (args.length==0) args = new String[] { "testTransducer2.bin" };
 
-
     doPrint(args[0], System.out);
-    
+    doExpand(args[0], System.out);
+    doIntersect("testdata/Automatically_trimming_a_monodix/test-en.bin",
+        "testdata/Automatically_trimming_a_monodix/test-en-eu.bin",
+        "tmp/xx.bin");
   }
 
+
+
+
+  private static void doIntersect(String monodixf, String bidixf, String intersectedf) throws IOException {
+    TransducerCollection mon = new TransducerCollection();
+    mon.read(monodixf);
+    for (TransducerComp t : mon.sections.values()) {
+      t.expand(mon.alphabet, System.out);
+    }
+    System.out.println(" --- ");
+
+    TransducerCollection bil = new TransducerCollection();
+    bil.read(bidixf);
+    for (TransducerComp t : bil.sections.values()) {
+      t.expand(bil.alphabet, System.out);
+    }
+
+    for (TransducerComp t : mon.sections.values()) {
+      t.intersect(mon.alphabet, bil);
+    }
+    System.out.println(" --- ");
+
+  }
+
+
+
+
+  private static void doExpand(String file, PrintStream out) throws IOException {
+
+    TransducerCollection tc = new TransducerCollection();
+    tc.read(file);
+    for (TransducerComp t : tc.sections.values()) {
+      t.expand(tc.alphabet, out);
+    }
+  }
+
+
+
   private static void doPrint(String file, PrintStream out) throws IOException {
-    InputStream input = new BufferedInputStream (new FileInputStream(file));
 
-    //FSTProcessor fstp = new FSTProcessor();
-    //fstp.load(input);
-    String letters = Compression.String_read(input);
-    Alphabet alphabet = Alphabet.read(input);
-
-    int len = Compression.multibyte_read(input);
-
-    while (len > 0) {
-      String name = Compression.String_read(input);
-
-      //System.out.println("reading : " + name);
-      TransducerComp t = TransducerComp.TEST_read(input);
-
-      len--;
-      t.show(alphabet, out);
-      if (len>0) {
+    TransducerCollection tc = new TransducerCollection();
+    tc.read(file);
+    boolean first = true;
+    for (TransducerComp t : tc.sections.values()) {
+      t.show(tc.alphabet, out);
+      if (!first) {
         //System.out.println("-- "+name);
         System.out.println("--");
       }
+      first = false;
     }
-    input.close();
   }
 }

@@ -21,6 +21,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import org.apertium.lttoolbox.Alphabet;
+import org.apertium.lttoolbox.Alphabet.IntegerPair;
 import org.apertium.lttoolbox.Compression;
 import org.apertium.lttoolbox.collections.AbundantIntSet;
 import org.apertium.lttoolbox.collections.IntSet;
@@ -529,19 +530,20 @@ public class TransducerComp extends org.apertium.lttoolbox.collections.Transduce
       if (!same) throw new RuntimeException(s+" didnt compare");
       System.out.println(s + " passed comparison");
     }
-
   }
 
+  
   public void show(Alphabet alphabet, PrintStream out) {
     joinFinals();
 
-    for (int it_first=0; it_first<transitions.size(); it_first++) {
-      Map<Integer, IntSet> it = transitions.get(it_first);
+    for (int state=0; state<transitions.size(); state++) {
+      Map<Integer, IntSet> it = transitions.get(state);
 
-      for (Integer it2_first : it.keySet()) {
-        for (Integer it2_second : it.get(it2_first)) {
-          Alphabet.IntegerPair t = alphabet.decode(it2_first);
-          out.printf("%d\t"+"%d\t", it_first, it2_second);
+      for (Map.Entry<Integer, IntSet> it2 : it.entrySet()) {
+        Integer it2_first = it2.getKey();
+        IntegerPair t = alphabet.decode(it2_first);
+        for (Integer target_state : it2.getValue()) {
+          out.printf("%d\t"+"%d\t", state, target_state);
           String l = alphabet.getSymbol(t.first);
           if (l=="") { // If we find an epsilon
             out.print("ε\t");
@@ -558,15 +560,87 @@ public class TransducerComp extends org.apertium.lttoolbox.collections.Transduce
         }
       }
     }
-
-/*
-  for(set<int>::iterator it3 = finals.begin(); it3 != finals.end(); it3++)
-  {
-    fwprintf(output, L"%d\n", *it3);
-  }
-*/
     for (Integer it3 : finals) {
       out.println(it3);
     }
   }
+
+  private void expand(Alphabet alphabet, PrintStream out, int state, boolean[] visited, String left, String right) {
+    if (finals.contains(state)) {
+      out.println(left + ":" + right);
+      return;
+    }
+    visited[state] = true;
+
+    Map<Integer, IntSet> it = transitions.get(state);
+    for (Map.Entry<Integer, IntSet> it2 : it.entrySet()) {
+      Integer it2_first = it2.getKey();
+      IntegerPair t = alphabet.decode(it2_first);
+      for (Integer target_state : it2.getValue()) {
+        String l = alphabet.getSymbol(t.first);
+        String r = alphabet.getSymbol(t.second);
+        if (visited[target_state]) {
+          out.println("__CYCLE__ "+  left+l + ":" + right+r);
+          return;
+        }
+        expand(alphabet, out, target_state, visited, left+l, right+r);
+      }
+    }
+    visited[state] = false;
+  }
+  
+  public void expand(Alphabet alphabet, PrintStream out) {
+    joinFinals();
+    boolean[] visited = new boolean[transitions.size()];
+    expand(alphabet, out, 0, visited, "", "");
+  }
+
+
+  public void intersect(Alphabet alphabet, TransducerCollection bil) {
+    joinFinals();
+    boolean[] visited = new boolean[transitions.size()];
+
+    TransducerComp[] bilsections = bil.sections.values().toArray(new TransducerComp[0]);
+    int[] bilstate = new int[bilsections.length];
+
+
+    prune(alphabet, 0, visited, "", "", bil, bilsections, bilstate);
+  }
+
+  private void prune(Alphabet alphabet, int state, boolean[] visited, String left, String right, TransducerCollection biltc, TransducerComp[] bilsections, int[] bilstates) {
+    System.out.println(left + ":" + right);
+    if (finals.contains(state)) {
+      System.out.println(left + ":" + right+" final");
+      return;
+    }
+    visited[state] = true;
+
+    Map<Integer, IntSet> it = transitions.get(state);
+    for (Map.Entry<Integer, IntSet> it2 : it.entrySet()) {
+      Integer it2_first = it2.getKey();
+      IntegerPair t = alphabet.decode(it2_first);
+      for (Integer target_state : it2.getValue()) {
+        String l = alphabet.getSymbol(t.first);
+        String r = alphabet.getSymbol(t.second);
+        if (visited[target_state]) {
+          System.out.println("__CYCLE__ "+  left+l + ":" + right+r);
+          return;
+        }
+
+        for (int i=0; i<bilstates.length; i++) {
+          int bilstate = bilstates[i];
+          TransducerComp bilsection = bilsections[i];
+          //x = biltc.alphabet.
+          int lsym = biltc.alphabet.cast(l);
+          int rsym = biltc.alphabet.cast(r);
+          Map<Integer, IntSet> biltransitions = bilsection.transitions.get(bilstate);
+
+        }
+
+        prune(alphabet, target_state, visited, left+l, right+r, biltc, bilsections, bilstates);
+      }
+    }
+    visited[state] = false;
+  }
+
 }
