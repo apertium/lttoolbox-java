@@ -437,6 +437,15 @@ public class TransducerComp extends org.apertium.lttoolbox.collections.Transduce
   }
 
 
+  public static void main3(String[] args) throws FileNotFoundException, IOException {
+    LTPrint.main(new String[]{"-a", "testdata/trimming/test-en.bin" });
+    //LTPrint.main(new String[]{"-s", "testdata/bilingual/eo-en.autobil.bin" });
+  }
+
+  public static void main(String[] args) throws IOException {
+    LTTrim.main(new String[]{"-v", "testdata/compounding/eo-en.automorf.bin","testdata/bilingual/eo-en.autobil.bin","/tmp/x" });
+  }
+
   public static void xmain(String[] args) throws FileNotFoundException, IOException {
 
 
@@ -542,7 +551,7 @@ public class TransducerComp extends org.apertium.lttoolbox.collections.Transduce
   
   public void show(Alphabet alphabet, PrintStream out) {
     joinFinals();
-
+    
     for (int state=0; state<transitions.size(); state++) {
       Map<Integer, IntSet> it = transitions.get(state);
 
@@ -656,10 +665,6 @@ public class TransducerComp extends org.apertium.lttoolbox.collections.Transduce
     visited[state] = false;
   }
   
-  public static void mainxx(String[] args) throws FileNotFoundException, IOException {
-    LTPrint.main(new String[]{"-s", "testdata/bilingual/eo-en.autobil.bin" });
-  }
-  
   public void showLtExpandish(Alphabet alphabet, PrintStream out) {
     joinFinals();
     boolean[] visited = new boolean[transitions.size()];
@@ -669,11 +674,48 @@ public class TransducerComp extends org.apertium.lttoolbox.collections.Transduce
 
   public void trim(Alphabet alphabet, BasicFSTProcessor bil) {
     joinFinals();
+    //determinize();
     boolean[] visited = new boolean[transitions.size()];
     bil.calc_initial_state();
     State bilstate = bil.initial_state.copy();
     trim(alphabet, 0, visited, "", "", bil, bilstate);
   }
+
+
+
+
+  private void xshowLtExpandish(Alphabet alphabet, PrintStream out, int state, boolean[] visited, String left, String right) {
+    if (finals.contains(state)) {
+      out.println(left + ":" + right);
+      return;
+    }
+    visited[state] = true;
+
+    Map<Integer, IntSet> it = transitions.get(state);
+    for (Map.Entry<Integer, IntSet> it2 : it.entrySet()) {
+      Integer it2_first = it2.getKey();
+      IntegerPair t = alphabet.decode(it2_first);
+      for (Integer target_state : it2.getValue()) {
+        String l = alphabet.getSymbol(t.first);
+        String r = alphabet.getSymbol(t.second);
+        if (visited[target_state]) {
+          out.println("__CYCLE__ "+  left+l + ":" + right+r);
+          return;
+        }
+        showLtExpandish(alphabet, out, target_state, visited, left+l, right+r);
+      }
+    }
+    visited[state] = false;
+  }
+
+  public void xshowLtExpandish(Alphabet alphabet, PrintStream out) {
+    joinFinals();
+    boolean[] visited = new boolean[transitions.size()];
+    showLtExpandish(alphabet, out, 0, visited, "", "");
+  }
+
+
+
 
   private void trim(Alphabet alphabet, int state, boolean[] visited, String left, String right, BasicFSTProcessor bil, State bilstate) {
     //System.out.println(left + ":" + right + "  "+bilstate.isFinal()+" "+bilstate.size());
@@ -690,7 +732,7 @@ public class TransducerComp extends org.apertium.lttoolbox.collections.Transduce
       String left2 = left + l;
       String right2 = right + r;
       int outsym = t.second>=0?t.second : bil.alphabet.cast(r);
-      //System.out.println("rsym = "+rsym + ", da r="+r);
+      System.out.println("rsym = "+outsym + ", da r="+r);
       State newbilstate = bilstate.copy();
       newbilstate.step(outsym);
       if (newbilstate.isFinal()) {
@@ -722,10 +764,6 @@ public class TransducerComp extends org.apertium.lttoolbox.collections.Transduce
       }
     }
     visited[state] = false;
-  }
-
-  public static void main(String[] args) throws IOException {
-    LTTrim.main(new String[]{"-v", "testdata/compounding/eo-en.automorf.bin","testdata/bilingual/eo-en.autobil.bin","/tmp/x" });
   }
 
 }

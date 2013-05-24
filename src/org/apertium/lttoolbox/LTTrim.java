@@ -17,7 +17,7 @@ import org.apertium.lttoolbox.process.BasicFSTProcessor;
 public class LTTrim {
   private static void showHelp() {
     System.out.println(" v" + CommandLineInterface.PACKAGE_VERSION + ": trim a transducer to metch input of another transducer"
-        + "\nUSAGE: lt-trim [ -v ] morph_bin_file bilingual_bin_file output_morph_bin_file"
+        + "\nUSAGE: lt-trim [ -v ] automorph.bin autobil.bin trimmed_output_automorph.bin"
         + "\nOptions"
         + "\n  -v:   verbose output"
         );
