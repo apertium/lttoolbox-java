@@ -278,20 +278,18 @@ public class Transducer {
    * @return the transducer read from the stream
    * @throws java.io.IOException
    */
-  public static Transducer read(InputStream input) throws IOException {
-    return read(input, 0);
+  public static Transducer createRead(InputStream input) throws IOException {
+    return createTead(input, 0);
   }
 
-  public static Transducer read(InputStream input, int decalage) throws IOException {
+  public static Transducer createTead(InputStream input, int decalage) throws IOException {
     Transducer t = new Transducer();
-    t.transitions.clear();
-    t._read(input, decalage);
+    read(t, input, decalage);
     return t;
   }
 
-  protected void _read(InputStream input, int decalage) throws IOException {
-
-    Transducer t = this;
+  public static void read(Transducer t, InputStream input, int decalage) throws IOException {
+    t.transitions.clear();
 
     //reading the initial state
     t.initial = Compression.multibyte_read(input);

@@ -508,15 +508,6 @@ public class TransducerComp extends org.apertium.lttoolbox.collections.Transduce
   }
 
 
-  public static TransducerComp TEST_read(InputStream input) throws IOException {
-
-
-    TransducerComp t = new TransducerComp();
-    t.transitions.clear();
-    t._read(input, 0);
-    return t;
-  }
-
 
   public static void main3(String[] args) throws FileNotFoundException, IOException {
     LTPrint.main(new String[]{"-a", "testdata/trimming/test-en.bin" });

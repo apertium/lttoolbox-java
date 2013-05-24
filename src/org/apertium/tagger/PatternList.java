@@ -335,7 +335,7 @@ class PatternList {
     alphabet = Alphabet.read(input);
     if (Compression.multibyte_read(input) == 1) {
       String myStr = Compression.String_read(input);  // string (value "tagger") must be read/skipped
-      transducer = Transducer.read(input, alphabet.size());
+      transducer = Transducer.createTead(input, alphabet.size());
 
       int finalSize = Compression.multibyte_read(input);
       for (; finalSize != 0; finalSize--) {

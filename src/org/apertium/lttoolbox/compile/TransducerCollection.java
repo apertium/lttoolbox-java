@@ -15,6 +15,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import org.apertium.lttoolbox.Alphabet;
 import org.apertium.lttoolbox.Compression;
+import org.apertium.lttoolbox.collections.Transducer;
 
 /**
  *
@@ -36,7 +37,8 @@ public class TransducerCollection {
       String name = Compression.String_read(input);
       //System.err.println("read "+name+ "  @" + file);
 
-      TransducerComp t = TransducerComp.TEST_read(input);
+      TransducerComp t = new TransducerComp();
+      Transducer.read(t, input, 0);
       sections.put(name, t);
       len--;
     }
