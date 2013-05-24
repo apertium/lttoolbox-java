@@ -16,14 +16,17 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import org.apertium.lttoolbox.Alphabet;
 import org.apertium.lttoolbox.Alphabet.IntegerPair;
 import org.apertium.lttoolbox.Compression;
+import org.apertium.lttoolbox.LTPrint;
 import org.apertium.lttoolbox.collections.AbundantIntSet;
 import org.apertium.lttoolbox.collections.IntSet;
 import org.apertium.lttoolbox.collections.SlowIntegerHashSet;
@@ -568,6 +571,35 @@ public class TransducerComp extends org.apertium.lttoolbox.collections.Transduce
     }
   }
 
+  private static class TargetStateLR {
+    boolean moreThanOneSymbol = false;
+
+    String ls, rs;
+    final Integer target_state;
+    
+    private TargetStateLR(Integer target_state, String l, String r) {
+      ls = l;
+      rs = r;
+      this.target_state = target_state;
+    }
+
+    private void addSymbols(String l, String r) {
+      ls += l;
+      rs += r;
+      moreThanOneSymbol = true;
+    }    
+
+    private String getLeft() {
+      if (moreThanOneSymbol) return "["+ls+"]";
+      return ls;
+    }
+
+    private String getRight() {
+      if (moreThanOneSymbol) return "["+rs+"]";
+      return rs;
+    }
+  }
+
   private void showLtExpandish(Alphabet alphabet, PrintStream out, int state, boolean[] visited, String left, String right) {
     if (finals.contains(state)) {
       out.println(left + ":" + right);
@@ -576,20 +608,34 @@ public class TransducerComp extends org.apertium.lttoolbox.collections.Transduce
     visited[state] = true;
 
     Map<Integer, IntSet> it = transitions.get(state);
+    LinkedHashMap<Integer, TargetStateLR> targetStatesLR = new LinkedHashMap<Integer,TargetStateLR>();
+
+    // first, run thru and collect transitions according to target state
     for (Map.Entry<Integer, IntSet> it2 : it.entrySet()) {
       Integer it2_first = it2.getKey();
       IntegerPair t = alphabet.decode(it2_first);
+      String l = alphabet.getSymbol(t.first);
+      String r = alphabet.getSymbol(t.second);
       for (Integer target_state : it2.getValue()) {
-        String l = alphabet.getSymbol(t.first);
-        String r = alphabet.getSymbol(t.second);
-        if (visited[target_state]) {
-          out.println("__CYCLE__ "+  left+l + ":" + right+r);
-          return;
-        }
-        showLtExpandish(alphabet, out, target_state, visited, left+l, right+r);
+        TargetStateLR lr = targetStatesLR.get(target_state);
+        if (lr == null) targetStatesLR.put(target_state, new TargetStateLR(target_state, l, r));
+        else lr.addSymbols(l, r);
       }
     }
+    // then recurse one time for each target state
+    for (TargetStateLR lr : targetStatesLR.values()) {
+      //System.out.println(lr.target_state+"   "+left+" "+lr.ls + ":" + right+" "+lr.rs);
+      if (visited[lr.target_state]) {
+        out.println("__CYCLE__ "+  left+lr.getLeft() + ":" + right+lr.getRight());
+        return;
+      }
+      showLtExpandish(alphabet, out, lr.target_state, visited, left+lr.getLeft(), right+lr.getRight());
+    }
     visited[state] = false;
+  }
+  
+  public static void xmain(String[] args) throws FileNotFoundException, IOException {
+    LTPrint.main(new String[]{"-s", "testdata/bilingual/eo-en.autobil.bin" });
   }
   
   public void showLtExpandish(Alphabet alphabet, PrintStream out) {
