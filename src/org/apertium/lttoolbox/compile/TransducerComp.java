@@ -27,6 +27,7 @@ import org.apertium.lttoolbox.Alphabet;
 import org.apertium.lttoolbox.Alphabet.IntegerPair;
 import org.apertium.lttoolbox.Compression;
 import org.apertium.lttoolbox.LTPrint;
+import org.apertium.lttoolbox.LTTrim;
 import org.apertium.lttoolbox.collections.AbundantIntSet;
 import org.apertium.lttoolbox.collections.IntSet;
 import org.apertium.lttoolbox.collections.SlowIntegerHashSet;
@@ -436,7 +437,7 @@ public class TransducerComp extends org.apertium.lttoolbox.collections.Transduce
   }
 
 
-  public static void main(String[] args) throws FileNotFoundException, IOException {
+  public static void xmain(String[] args) throws FileNotFoundException, IOException {
 
 
     Compile c = new Compile();
@@ -571,34 +572,40 @@ public class TransducerComp extends org.apertium.lttoolbox.collections.Transduce
     }
   }
 
+  /** Helper class for collecting symbols during expanding/traversing */
   private static class TargetStateLR {
-    boolean moreThanOneSymbol = false;
+    TargetStateLR next = null;
+    TargetStateLR last = null;
 
-    String ls, rs;
+    String left, right;
     final Integer target_state;
     
     private TargetStateLR(Integer target_state, String l, String r) {
-      ls = l;
-      rs = r;
+      left = l;
+      right = r;
       this.target_state = target_state;
     }
 
-    private void addSymbols(String l, String r) {
-      ls += l;
-      rs += r;
-      moreThanOneSymbol = true;
-    }    
-
     private String getLeft() {
-      if (moreThanOneSymbol) return "["+ls+"]";
-      return ls;
+      if (next != null) return left+next.getLeft();
+      return left;
     }
 
     private String getRight() {
-      if (moreThanOneSymbol) return "["+rs+"]";
-      return rs;
+      if (next != null) return right+next.getRight();
+      return right;
+    }
+
+    private void addlast(TargetStateLR targetStateLR) {
+      if (last == null) next=last=targetStateLR;
+      else {
+        last.next = targetStateLR;
+        last = targetStateLR;
+      }
     }
   }
+
+  String ELLIPSIS = "\u2026"; // ELLIPSIS …
 
   private void showLtExpandish(Alphabet alphabet, PrintStream out, int state, boolean[] visited, String left, String right) {
     if (finals.contains(state)) {
@@ -619,22 +626,37 @@ public class TransducerComp extends org.apertium.lttoolbox.collections.Transduce
       for (Integer target_state : it2.getValue()) {
         TargetStateLR lr = targetStatesLR.get(target_state);
         if (lr == null) targetStatesLR.put(target_state, new TargetStateLR(target_state, l, r));
-        else lr.addSymbols(l, r);
+        else lr.addlast(new TargetStateLR(target_state, l, r));
       }
     }
     // then recurse one time for each target state
     for (TargetStateLR lr : targetStatesLR.values()) {
       //System.out.println(lr.target_state+"   "+left+" "+lr.ls + ":" + right+" "+lr.rs);
       if (visited[lr.target_state]) {
-        out.println("__CYCLE__ "+  left+lr.getLeft() + ":" + right+lr.getRight());
+        out.println("__CYCLE__ "+  left+lr.getLeft()+ELLIPSIS + ":" + right+lr.getRight()+ELLIPSIS);
         return;
       }
-      showLtExpandish(alphabet, out, lr.target_state, visited, left+lr.getLeft(), right+lr.getRight());
+      String lettersl = "";
+      String lettersr = "";
+      Integer target_state = lr.target_state;
+      while (lr != null) {
+        if (lr.left.length() != 1 || lr.right.length() != 1) {
+          // Symbol or empty value. Print out seperately
+          showLtExpandish(alphabet, out, lr.target_state, visited, left+lr.left, right+lr.right);
+        } else {
+          // letter. Collect all of them and show together
+          lettersl += lr.left;
+          lettersr += lr.right;
+        }
+        lr = lr.next;
+      }
+      if (lettersl.length()==1) showLtExpandish(alphabet, out, target_state, visited, left+lettersl, right+lettersr);
+      if (lettersl.length()>1) showLtExpandish(alphabet, out, target_state, visited, left+"["+lettersl+"]", right+"["+lettersr+"]");
     }
     visited[state] = false;
   }
   
-  public static void xmain(String[] args) throws FileNotFoundException, IOException {
+  public static void mainxx(String[] args) throws FileNotFoundException, IOException {
     LTPrint.main(new String[]{"-s", "testdata/bilingual/eo-en.autobil.bin" });
   }
   
@@ -677,8 +699,7 @@ public class TransducerComp extends org.apertium.lttoolbox.collections.Transduce
       }
       if (newbilstate.size()==0) {
         if (DEBUG) {
-          String ellipsis = "\u2026"; // ellipsis …
-          System.out.println("Trim: " +left2 + ellipsis+":" + right2+ellipsis);
+          System.out.println("Trim: " +left2 + ELLIPSIS+":" + right2+ELLIPSIS);
         }
         
         iter2.remove(); // =it.remove(it2_first);
@@ -701,6 +722,10 @@ public class TransducerComp extends org.apertium.lttoolbox.collections.Transduce
       }
     }
     visited[state] = false;
+  }
+
+  public static void main(String[] args) throws IOException {
+    LTTrim.main(new String[]{"-v", "testdata/compounding/eo-en.automorf.bin","testdata/bilingual/eo-en.autobil.bin","/tmp/x" });
   }
 
 }
