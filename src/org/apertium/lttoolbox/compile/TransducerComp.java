@@ -427,6 +427,87 @@ public class TransducerComp extends org.apertium.lttoolbox.collections.Transduce
     optional();
   }
 
+  /**
+   * Copies the passed-in Transducer object to this one.
+   *
+   * @param t - The Transducer object to copy.
+   */
+  public void shallowCopy(TransducerComp t) {
+    initial = t.initial;
+    finals = t.finals;
+    transitions = t.transitions;
+    epsilon_tag = t.epsilon_tag;
+  }
+
+
+  /**
+   * Compare the tranducer with another one
+   *
+   * @param t the transducer to DEBUG_compare to
+   * @return true if the two transducers are similar
+   */
+  public boolean DEBUG_compare(TransducerComp other) {
+    System.out.println(("comparing this:\n" + this + "\nwith other:\n " + other)); // .replaceAll("\n", " ")
+    if (other == null) {
+      throw new RuntimeException("comparing with a null transducer");
+    }
+    if (!(initial.equals(other.initial))) {
+      throw new RuntimeException("the two transducer have different initial states: "+initial+ " != "+ other.initial);
+    }
+    if (finals.size() != other.finals.size()) {
+      throw new RuntimeException("the two transducer have a different number of final states: "+ finals.size()+ " != "+other.finals.size());
+    }
+    /*
+     * for (Integer i : finals) {
+     * if (!other.finals.contains(i)) {
+     * System.out.println("the state " + i + " is a final state in the firstInt transducer but not in the second one");
+     * sameFinals = false;
+     * return false;
+     * }
+     * }
+     */
+    if (transitions.size() != other.transitions.size()) {
+      throw new RuntimeException("the two transducers have different sizes for their attribute transitions: "+transitions.size()+" != "+other.transitions.size());
+    }
+    /*
+     * for (Integer source : transitions.keySet()) {
+     * boolean sameTransitionsFromSource = true;
+     * if (!other.transitions.containsKey(source)) {
+     * System.out.println("key " + source + " exists in this.transitions, but not in t.transitions");
+     * sameTransducer = false;
+     * break;
+     * }
+     * if (!(transitions.get(source).size() == other.transitions.get(source).size())) {
+     * System.out.println("the transducers have a different number of transitions leaving the state " + source);
+     * sameTransducer = false;
+     * break;
+     * }
+     * for (Integer label : transitions.get(source).keySet()) {
+     * if (!other.transitions.get(source).containsKey(label)) {
+     * System.out.println("the state " + source + " has a transition with label " + label + " in this.transitions, but not in t.transitions");
+     * sameTransducer = false;
+     * break;
+     * }
+     * if (!(transitions.get(source).get(label).size() == other.transitions.get(source).get(label).size())) {
+     * System.out.println("the transducers have a different number of transitions leaving the state " + source + " with the label " + label);
+     * sameTransducer = false;
+     * break;
+     * }
+     * for (Integer destination : transitions.get(source).get(label)) {
+     * if (!other.transitions.get(source).get(label).contains(destination)) {
+     * System.out.println("there is a transition from the state " + source +
+     * " to the state " + destination + " with the label " + label +
+     * " which is in this.transitions and not in t.transitions");
+     * sameTransducer = false;
+     * }
+     * }
+     * }
+     * }
+     */
+    return true;
+  }
+
+
   public static TransducerComp TEST_read(InputStream input) throws IOException {
 
 
@@ -442,112 +523,9 @@ public class TransducerComp extends org.apertium.lttoolbox.collections.Transduce
     //LTPrint.main(new String[]{"-s", "testdata/bilingual/eo-en.autobil.bin" });
   }
 
-  public static void main(String[] args) throws IOException {
+  public static void xmain(String[] args) throws IOException {
     LTTrim.main(new String[]{"-v", "testdata/compounding/eo-en.automorf.bin","testdata/bilingual/eo-en.autobil.bin","/tmp/x" });
   }
-
-  public static void xmain(String[] args) throws FileNotFoundException, IOException {
-
-
-    Compile c = new Compile();
-    c.parse("testdata/apertium-fr-es.fr.dix", Compile.COMPILER_RESTRICTION_LR_VAL);
-    //c.parse("../src/test/org/apertium/lttoolbox/test3.dix", NewCompiler.COMPILER_RESTRICTION_LR_VAL);
-    //c.parse("../src/test/org/apertium/lttoolbox/test4.dix", NewCompiler.COMPILER_RESTRICTION_LR_VAL);
-    //c.parse("../src/test/org/apertium/lttoolbox/test5.dix", NewCompiler.COMPILER_RESTRICTION_LR_VAL);
-    //c.parse("../src/test/org/apertium/lttoolbox/test6.dix", NewCompiler.COMPILER_RESTRICTION_LR_VAL);
-    //c.parse("../src/test/org/apertium/lttoolbox/test7.dix", NewCompiler.COMPILER_RESTRICTION_LR_VAL);
-    //c.parse("../src/test/org/apertium/lttoolbox/short.dix", NewCompiler.COMPILER_RESTRICTION_LR_VAL);
-
-
-    for (String s : c.sections.keySet()) {
-      System.out.println("considering transducer of section " + s);
-      System.out.println("number of states : " + c.sections.get(s).transitions.size());
-      int temp = 0;
-      int max = 0;
-      float average = 0;
-      for (int i = 0; i < c.sections.get(s).transitions.size(); i++) {
-        temp += c.sections.get(s).transitions.get(i).size();
-        average += temp;
-        max = (temp > max) ? temp : max;
-        temp = 0;
-      }
-      System.out.println("maximal number of transitions leaving a state " + max);
-      System.out.println("average number of transitions leaving a state " + average / ((float) c.sections.get(s).transitions.size()));
-    }
-
-    //System.exit(-1);
-    c.write("testTransducer2.bin");
-    InputStream input = new BufferedInputStream (new FileInputStream("testTransducer2.bin"));
-    //InputStream input = new BufferedInputStream(new FileInputStream("outc"));
-    //c2 = c.DEBUG_read(input);
-
-    //FSTProcessor fstp = new FSTProcessor();
-    //fstp.load(input);
-    String letters = Compression.String_read(input);
-    Alphabet alphabet = Alphabet.read(input);
-
-    Map<String, TransducerComp> sections = new HashMap<String, TransducerComp>();
-
-    int len = Compression.multibyte_read(input);
-
-    while (len > 0) {
-      String name = Compression.String_read(input);
-
-      if (!sections.containsKey(name)) {
-        sections.put(name, new TransducerComp());
-      }
-      System.out.println("reading : " + name);
-      //if (len ==2) {System.exit(-1);}
-      sections.put(name, TEST_read(input));
-
-      len--;
-      if (c.sections.get(name) != null && sections.get(name) != null) {
-        boolean same = c.sections.get(name).DEBUG_compare(sections.get(name));
-        if (!same) throw new RuntimeException(name+" didnt compare");
-        System.out.println(name + " passed comparison");
-      }
-      //System.exit(-1);
-      //throw new RuntimeException("section "+name+" was totaly DEBUG_read");
-    }
-    input.close();
-
-    for (String s : c.sections.keySet()) {
-      int count1 = 0;
-      int max1 = 0;
-      int count2 = 0;
-      int max2 = 0;
-      for (int i = 0; i < c.sections.get(s).transitions.size(); i++) {
-        if (i > max1) {
-          max1 = i;
-        }
-        for (Integer j : c.sections.get(s).transitions.get(i).keySet()) {
-
-          count1 += c.sections.get(s).transitions.get(i).get(j).size();
-        }
-      }
-      for (int i = 0; i < sections.get(s).transitions.size(); i++) {
-        if (i > max2) {
-          max2 = i;
-        }
-        for (Integer j : sections.get(s).transitions.get(i).keySet()) {
-          count2 += sections.get(s).transitions.get(i).get(j).size();
-        }
-      }
-
-      System.out.println("comparing transducers of section " + s);
-      System.out.println("original transducer : "+c.sections.get(s));
-      System.out.println("original transducer has " + count1 + " transitions");
-      System.out.println("original transducer higher state is " + max1);
-      System.out.println("DEBUG_read transducer : "+sections.get(s));
-      System.out.println("read transducer has " + count2 + " transitions");
-      System.out.println("read transducer higher state is " + max2);
-      //System.out.println(c.sections.get(s).DEBUG_compare(sections.get(s)));
-      boolean same = c.sections.get(s).DEBUG_compare(sections.get(s));
-      if (!same) throw new RuntimeException(s+" didnt compare");
-      System.out.println(s + " passed comparison");
-    }
-  }
-
   
   public void show(Alphabet alphabet, PrintStream out) {
     joinFinals();

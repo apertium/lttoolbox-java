@@ -6,8 +6,10 @@ package org.apertium.lttoolbox;
 
 import java.io.File;
 import java.io.IOException;
+import static junit.framework.Assert.assertEquals;
 import junit.framework.TestCase;
 import static org.apertium.lttoolbox.TestTools.*;
+import org.apertium.lttoolbox.compile.TransducerCompTest;
 
 /**
  *
@@ -74,6 +76,12 @@ public class LTCompTest extends TestCase {
     int compareExitValue = Runtime.getRuntime().exec("cmp tmp/testC++.bin testdata/correct-testRl.bin").waitFor();
     assertEquals("files must be binary equal", 0, compareExitValue);
   }
+
+
+  public void testTransducerCompTest() throws Exception {
+    TransducerCompTest.main(null);
+  }
+
 
   /* skipping as they take too much CPU time. Should be working, though
 

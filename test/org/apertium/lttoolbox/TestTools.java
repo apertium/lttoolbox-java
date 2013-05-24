@@ -44,13 +44,15 @@ public abstract class TestTools {
 
     p.waitFor();
     int retval = p.exitValue();
+
+    if (output.length() > 0) {
+      //System.err.println("exec: " + cmd);
+      System.err.println("output: " + output);
+    }
+
     if (p.exitValue() != 0)
       throw new RuntimeException(cmd + " reported error: " + retval);
 
-    if (output.length() > 0) {
-      System.err.println("exec: " + cmd);
-      System.err.println("output: " + output);
-    }
     return output;
   }
 
