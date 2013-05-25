@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.Map;
 import org.apertium.CommandLineInterface;
 import org.apertium.lttoolbox.compile.TransducerComp;
+import org.apertium.lttoolbox.compile.TransducerTrim;
 import org.apertium.lttoolbox.process.BasicFSTProcessor;
 
 /**
@@ -44,7 +45,7 @@ public class LTTrim {
     bil2.load(bidixf);
 
     for (TransducerComp t : mon.sections.values()) {
-      t.trim(mon.alphabet, bil2);
+      new TransducerTrim(t).trim(mon.alphabet, bil2);
       t.minimize();
     }
 /*

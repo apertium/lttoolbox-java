@@ -279,10 +279,10 @@ public class Transducer {
    * @throws java.io.IOException
    */
   public static Transducer createRead(InputStream input) throws IOException {
-    return createTead(input, 0);
+    return createRead(input, 0);
   }
 
-  public static Transducer createTead(InputStream input, int decalage) throws IOException {
+  public static Transducer createRead(InputStream input, int decalage) throws IOException {
     Transducer t = new Transducer();
     read(t, input, decalage);
     return t;

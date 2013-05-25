@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.PrintStream;
 import org.apertium.CommandLineInterface;
 import org.apertium.lttoolbox.compile.TransducerComp;
+import org.apertium.lttoolbox.compile.TransducerPrint;
+import org.apertium.lttoolbox.compile.TransducerPrintExpandish;
 import org.apertium.lttoolbox.process.BasicFSTProcessor;
 
 /**
@@ -37,7 +39,7 @@ public class LTPrint {
     TransducerCollection tc = new TransducerCollection();
     tc.read(file);
     for (TransducerComp t : tc.sections.values()) {
-      t.showLtExpandish(tc.alphabet, out);
+      new TransducerPrintExpandish(t).showLtExpandish(tc.alphabet, out);
     }
   }
 
@@ -49,7 +51,7 @@ public class LTPrint {
     tc.read(file);
     boolean first = true;
     for (TransducerComp t : tc.sections.values()) {
-      t.show(tc.alphabet, out);
+      new TransducerPrint(t).show(tc.alphabet, out);
       if (!first) {
         //System.out.println("-- "+name);
         System.out.println("--");
