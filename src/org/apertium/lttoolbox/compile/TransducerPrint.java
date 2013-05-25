@@ -57,7 +57,7 @@ public class TransducerPrint extends TransducerComp {
 
 
   public static void main(String[] args) throws FileNotFoundException, IOException {
-    LTPrint.main(new String[]{"-s", "testdata/trimming/test-en.bin" });
-    //LTPrint.main(new String[]{"-s", "testdata/bilingual/eo-en.autobil.bin" });
+    //LTPrint.main(new String[]{"-a", "testdata/trimming/test-en.bin" });
+    LTPrint.main(new String[]{"-a", "testdata/bilingual/eo-en.autobil.bin" });
   }
 }

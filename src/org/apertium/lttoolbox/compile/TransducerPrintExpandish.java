@@ -63,48 +63,53 @@ public class TransducerPrintExpandish extends TransducerComp {
       out.println(left + ":" + right);
       return;
     }
-    visited[state] = true;
+    try {
 
-    Map<Integer, IntSet> it = transitions.get(state);
-    LinkedHashMap<Integer, TargetStateLR> targetStatesLR = new LinkedHashMap<Integer,TargetStateLR>();
+      visited[state] = true;
 
-    // first, run thru and collect transitions according to target state
-    for (Map.Entry<Integer, IntSet> it2 : it.entrySet()) {
-      Integer it2_first = it2.getKey();
-      Alphabet.IntegerPair t = alphabet.decode(it2_first);
-      String l = alphabet.getSymbol(t.first);
-      String r = alphabet.getSymbol(t.second);
-      for (Integer target_state : it2.getValue()) {
-        TargetStateLR lr = targetStatesLR.get(target_state);
-        if (lr == null) targetStatesLR.put(target_state, new TargetStateLR(target_state, l, r));
-        else lr.addlast(new TargetStateLR(target_state, l, r));
-      }
-    }
-    // then recurse one time for each target state
-    for (TargetStateLR lr : targetStatesLR.values()) {
-      //System.out.println(lr.target_state+"   "+left+" "+lr.ls + ":" + right+" "+lr.rs);
-      if (visited[lr.target_state]) {
-        out.println("__CYCLE__ "+  left+lr.getLeft()+"…" + ":" + right+lr.getRight()+"…");
-        return;
-      }
-      String lettersl = "";
-      String lettersr = "";
-      Integer target_state = lr.target_state;
-      while (lr != null) {
-        if (lr.left.length() != 1 || lr.right.length() != 1) {
-          // Symbol or empty value. Print out seperately
-          showLtExpandish(alphabet, out, lr.target_state, visited, left+lr.left, right+lr.right);
-        } else {
-          // letter. Collect all of them and show together
-          lettersl += lr.left;
-          lettersr += lr.right;
+      Map<Integer, IntSet> it = transitions.get(state);
+      LinkedHashMap<Integer, TargetStateLR> targetStatesLR = new LinkedHashMap<Integer,TargetStateLR>();
+
+      // first, run thru and collect transitions according to target state
+      for (Map.Entry<Integer, IntSet> it2 : it.entrySet()) {
+        Integer it2_first = it2.getKey();
+        Alphabet.IntegerPair t = alphabet.decode(it2_first);
+        String l = alphabet.getSymbol(t.first);
+        String r = alphabet.getSymbol(t.second);
+        for (Integer target_state : it2.getValue()) {
+          TargetStateLR lr = targetStatesLR.get(target_state);
+          if (lr == null) targetStatesLR.put(target_state, new TargetStateLR(target_state, l, r));
+          else lr.addlast(new TargetStateLR(target_state, l, r));
         }
-        lr = lr.next;
       }
-      if (lettersl.length()==1) showLtExpandish(alphabet, out, target_state, visited, left+lettersl, right+lettersr);
-      if (lettersl.length()>1) showLtExpandish(alphabet, out, target_state, visited, left+"["+lettersl+"]", right+"["+lettersr+"]");
+      // then recurse one time for each target state
+      for (TargetStateLR lr : targetStatesLR.values()) {
+        //System.out.println(lr.target_state+"   "+left+" "+lr.ls + ":" + right+" "+lr.rs);
+        if (visited[lr.target_state]) {
+          out.println("__CYCLE__ "+  left+lr.getLeft()+"…" + ":" + right+lr.getRight()+"…");
+          return;
+        }
+        String lettersl = "";
+        String lettersr = "";
+        Integer target_state = lr.target_state;
+        while (lr != null) {
+          if (lr.left.length() != 1 || lr.right.length() != 1) {
+            // Symbol or empty value. Print out seperately
+            showLtExpandish(alphabet, out, lr.target_state, visited, left+lr.left, right+lr.right);
+          } else {
+            // letter. Collect all of them and show together
+            lettersl += lr.left;
+            lettersr += lr.right;
+          }
+          lr = lr.next;
+        }
+        if (lettersl.length()==1) showLtExpandish(alphabet, out, target_state, visited, left+lettersl, right+lettersr);
+        if (lettersl.length()>1) showLtExpandish(alphabet, out, target_state, visited, left+"["+lettersl+"]", right+"["+lettersr+"]");
+      }
+      visited[state] = false;
+    } finally {
+      visited[state] = false;
     }
-    visited[state] = false;
   }
 
   public void showLtExpandish(Alphabet alphabet, PrintStream out) {
@@ -116,7 +121,7 @@ public class TransducerPrintExpandish extends TransducerComp {
 
 
   public static void main(String[] args) throws FileNotFoundException, IOException {
-    //LTPrint.main(new String[]{"-a", "testdata/trimming/test-en.bin" });
-    LTPrint.main(new String[]{"-a", "testdata/bilingual/eo-en.autobil.bin" });
+    LTPrint.main(new String[]{"-s", "testdata/trimming3/test-en.bin" });
+    //LTPrint.main(new String[]{"-s", "testdata/bilingual/eo-en.autobil.bin" });
   }
 }
