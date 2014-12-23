@@ -116,7 +116,7 @@ if [ -n "$ANDROID_SDK_PATH" ] && [ -e $ANDROID_SDK_PATH ] ; then
 fi
 
 #Delete unnecessary classes for runtime
-zip -d $JAR_FILE org/apertium/transfer/old/* org/apertium/transfer/generation/* org/apertium/charlifter/* Playground.class Profiling.class acx.xsd dix.xsd
+zip -d $JAR_FILE org/apertium/transfer/old/* org/apertium/transfer/generation/* org/apertium/charlifter/* Playground.class Profiling.class xsd/acx.xsd xsd/dix.xsd
 
 #Create the README file
 echo >  README "Content of the package:"

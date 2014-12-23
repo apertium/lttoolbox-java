@@ -57,11 +57,11 @@ public class LTValidate {
   }
 
   static boolean validateDix(String fn) {
-    return validateXmlSchema(LTValidate.class.getResource("/dix.xsd"), fn);
+    return validateXmlSchema(LTValidate.class.getResource("/xsd/dix.xsd"), fn);
   }
 
   static boolean validateAcx(String fn) {
-    return validateXmlSchema(LTValidate.class.getResource("/acx.xsd"), fn);
+    return validateXmlSchema(LTValidate.class.getResource("/xsd/acx.xsd"), fn);
   }
 
   static boolean validateXmlSchema(URL schemaUrl, String xmlFile) {
