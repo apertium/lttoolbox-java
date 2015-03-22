@@ -90,7 +90,11 @@ public class Expander {
     try {
       output = out;
       XMLInputFactory factory = XMLInputFactory.newInstance();
-      reader = factory.createXMLStreamReader(new FileInputStream(file));
+			if (file.equals("-")) {
+	      reader = factory.createXMLStreamReader(System.in);
+			} else {
+	      reader = factory.createXMLStreamReader(new FileInputStream(file));
+			}
       while (reader.hasNext()) {
         procNode();
         reader.next();

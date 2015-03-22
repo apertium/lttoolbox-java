@@ -29,7 +29,9 @@ public class LTExpand {
   private static void showHelp(String name) {
     if (name != null) {
       System.out.println(" v" + CommandLineInterface.PACKAGE_VERSION + ": expand the contents of a dictionary file"
-          + "USAGE: " + name + " dictionary_file [output_file]");
+          + "\nUSAGE: " + name + " dictionary_file [output_file]"
+          + "\nUSAGE: " + name + " - [output_file] reads dix file from stdin and expands it"
+			);
     }
   }
 
@@ -57,7 +59,7 @@ public class LTExpand {
         }
         break;
       default:
-        showHelp("LTExpand");
+        showHelp("lt-expand-j");
         return;
     }
 
