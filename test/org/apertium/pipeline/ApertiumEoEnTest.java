@@ -69,7 +69,7 @@ public class ApertiumEoEnTest {
     ApertiumMain.main(args);
     String output = readFile(outputFilename);
     String expOut = readFile(expOutputFilename);
-    assertEquals("ApertiumTestEoEn -- " + testName + " failed", expOut, output);
+    assertEquals(testName + " difference in "+outputFilename+" compared to expected "+expOutputFilename, expOut, output);
   }
 
   /**
