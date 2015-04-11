@@ -185,6 +185,11 @@ public class TransferBytecode {
     return unescaped.replace("\\", "\\\\").replace("\"", "\\\"");
   }
 
+	/**
+	Creates a regular expression from la list of items with tags.
+	@param items, for example "np.ant", "n" or "np", "np.top"
+	@return regular expression, f.ex: "<n(?:p><ant|)>", or "<np(?:><top|)>"
+	*/
   private String attrItemRegexp(ArrayList<String> items) {
     String item0 = items.get(0);
     int startSame = 0;
@@ -202,7 +207,7 @@ public class TransferBytecode {
     while (stopSame < item0.length() - startSame) {
       char ch = item0.charAt(item0.length() - stopSame - 1);
       for (String item : items)
-        if (stopSame == item.length() || item.charAt(item.length() - stopSame - 1) != ch)
+        if (stopSame == item.length()-startSame || item.charAt(item.length() - stopSame - 1) != ch)
           break stop;
       stopSame++;
     }
@@ -218,6 +223,7 @@ public class TransferBytecode {
     String res = "<" + item0.substring(0, startSame) + (re.length() == 0 ? "" : "(?:" + re.toString() + ")") + item0.substring(item0.length() - stopSame) + ">";
     res = res.replace(".", "><");
 
+//		System.err.println("attrItemRegexp("+items+") gave "+res);
     return res;
   }
 

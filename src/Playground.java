@@ -3,6 +3,7 @@ import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import org.apertium.CommandLineInterface;
 import org.apertium.lttoolbox.process.FSTProcessor;
 import org.apertium.pipeline.ApertiumMain;
 import org.apertium.transfer.AbstractTransfer;
@@ -21,6 +22,10 @@ import org.apertium.utils.IOUtils;
  */
 public class Playground {
   public static void main(String[] args) throws Exception {
+		CommandLineInterface.main("apertium-transfer-j -b /home/j/esperanto/apertium/trunk/apertium-dan-nor/apertium-dan-nor.nor-dan.t1x /home/j/esperanto/apertium/trunk/apertium-dan-nor/nor-dan.t1x.bin".split(" "));
+	}
+
+  public static void mainx(String[] args) throws Exception {
 
     //String[] arg = {"-d", "/usr/local/share/apertium/", "es-en", "europarl-v7.es-en.es.1000", "/tmp/europarl-v7.es-en.es.rezulto"};
     //String[] arg = {"-a", "-d", "/usr/local/share/apertium/", "en-es", "/tmp/will", "/tmp/will.rezulto"};
