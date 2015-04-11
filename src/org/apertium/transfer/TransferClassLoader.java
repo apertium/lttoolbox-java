@@ -99,20 +99,20 @@ public class TransferClassLoader extends ClassLoader {
 
     String tempDir = IOUtils.cacheDir.getAbsolutePath();
     tempDir = addTrailingSlash(tempDir);
+		long txFilelastModified = txFile.lastModified();
+		//  || classFile.lastModified()<txFilelastModified
 
     File classFile = openFile(addTrailingSlash(binFile.getParent()) + classFilename);
-    // If it doesn't exist in the binFile directory, try the temp directory
-    if (!classFile.exists()) {
-      classFile = openFile(tempDir + classFilename);
-    }
-    // If it doesn't exist there either, switch back to the binFile
-    // directory
-    if (!classFile.exists()) {
-      classFile = openFile(addTrailingSlash(binFile.getParent()) + classFilename);
+    // If it doesn't exist in the binFile directory, or its too old, try the temp directory
+    if (!classFile.exists()|| classFile.lastModified()<txFilelastModified) {
+			File tmpDirClassFile = openFile(tempDir + classFilename);
+			if (tmpDirClassFile.exists()) {
+				classFile = tmpDirClassFile;
+			}
     }
 
-    // If the class file exists already, try and load it.
-    if (classFile.exists()) {
+    // If the class file exists already, and its not too old, try and load it.
+    if (classFile.exists() && classFile.lastModified()>=txFilelastModified) {
       return tcl.loadClassFile(classFile.getPath());
     }
 
