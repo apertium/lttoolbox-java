@@ -206,16 +206,16 @@ public class FSTProcessor extends BasicFSTProcessor {
   }
 
   private char readEscaped(Reader input) throws IOException {
-    int val = input.read();
+    char val = (char) input.read();
     if (val == EOF) {
       streamError();
     }
 
-    if (!escaped_chars.contains((char) val)) {
+    if (!escaped_chars.contains(val)) {
       streamError();
     }
 
-    return (char) val;
+    return val;
   }
 
   private String readFullBlock(Reader input, char delim1, char delim2) throws IOException {
@@ -242,6 +242,7 @@ public class FSTProcessor extends BasicFSTProcessor {
     return result.toString();
   }
   private static final char EOF = (char) -1;
+  private static final int EOF_int = -1;
 
   private char readAnalysis(Reader input) throws IOException {
     if (!input_buffer.isEmpty()) {
@@ -484,33 +485,33 @@ public class FSTProcessor extends BasicFSTProcessor {
     int val = input.read();
     //System.err.println("read '"+((char) val)+"' : "+val );
     String symbol = "";
-    if (val == EOF) {
+    if (val == EOF_int) {
       return new Pair<String, Integer>(symbol, 0x7fffffff);
     }
 
     if (outOfWord) {
       if (val == '^') {
-        val = (char) input.read();
-        if (val == EOF) {
+        val = input.read();
+        if (val == EOF_int) {
           return new Pair<String, Integer>(symbol, 0x7fffffff);
         }
       } else if (val == '\\') {
         output.append((char) val);
-        val = (char) input.read();
-        if (val == EOF) {
+        val = input.read();
+        if (val == EOF_int) {
           return new Pair<String, Integer>(symbol, 0x7fffffff);
         }
         output.append((char) val);
         skipUntil(input, output, '^');
-        val = (char) input.read();
-        if (val == EOF) {
+        val = input.read();
+        if (val == EOF_int) {
           return new Pair<String, Integer>(symbol, 0x7fffffff);
         }
       } else {
         output.append((char) val);
         skipUntil(input, output, '^');
-        val = (char) input.read();
-        if (val == EOF) {
+        val = input.read();
+        if (val == EOF_int) {
           return new Pair<String, Integer>(symbol, 0x7fffffff);
         }
       }
@@ -518,21 +519,21 @@ public class FSTProcessor extends BasicFSTProcessor {
     }
 
     if (val == '\\') {
-      val = (char) input.read();
+      val = input.read();
       return new Pair<String, Integer>(symbol, 0x7fffffff);
     } else if (val == '$') {
       outOfWord = true;
       return new Pair<String, Integer>(symbol, (int) '$');
     } else if (val == '<') {
       String cad = "<";
-      val = (char) input.read();
-      if (val == EOF) {
+      val = input.read();
+      if (val == EOF_int) {
         streamError();
       }
       while (val != '>') {
         cad += (char) val;
         val = input.read();
-        if (val == EOF) {
+        if (val == EOF_int) {
           streamError();
         }
       }
