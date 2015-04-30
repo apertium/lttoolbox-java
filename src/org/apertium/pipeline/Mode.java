@@ -22,6 +22,7 @@ import static org.apertium.utils.IOUtils.readFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import org.apertium.Translator;
 
 /**
@@ -40,6 +41,10 @@ public class Mode {
     for (String prog : progList) {
       _pipeline.add(new Program(prog.trim()));
     }
+  }
+
+  public List<Program> getPrograms() {
+    return _pipeline;
   }
 
   public Program getProgramByIndex(int index) {
