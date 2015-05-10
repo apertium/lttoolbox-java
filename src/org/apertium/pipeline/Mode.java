@@ -18,6 +18,7 @@
  */
 package org.apertium.pipeline;
 
+import java.io.File;
 import static org.apertium.utils.IOUtils.readFile;
 
 import java.io.IOException;
@@ -58,6 +59,15 @@ public class Mode {
   public String getFilename() {
     return _filename;
   }
+
+  public String getSourceLanguageCode() {
+		return new File(_filename).getName().split("-",2)[0];
+  }
+
+  public String getTargetLanguageCode() {
+		return new File(_filename).getName().split("-",2)[1];
+  }
+
 
   @Override
   public String toString() {
