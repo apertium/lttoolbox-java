@@ -35,6 +35,7 @@ public class AbundantIntSet implements IntSet { //extends TreeSet<Integer> {
 
   public void clear() {
     bs.clear();
+		size = 0;
   }
 
   public int size() {
@@ -107,4 +108,14 @@ public class AbundantIntSet implements IntSet { //extends TreeSet<Integer> {
     }
     return true;
   }
+
+	@Override
+	public String toString() {
+		if (size==0) return "[]";
+		StringBuilder sb = new StringBuilder(size*6);
+		sb.append('[');
+		for (Integer i : this) sb.append(i).append(", ");
+		sb.setLength(sb.length()-2);
+		return sb.append(']').toString();
+	}
 }

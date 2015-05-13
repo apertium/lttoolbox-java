@@ -447,7 +447,7 @@ public class TransducerComp extends org.apertium.lttoolbox.collections.Transduce
    * @return true if the two transducers are similar
    */
   public boolean DEBUG_compare(TransducerComp other) {
-    System.out.println(("comparing this:\n" + this + "\nwith other:\n " + other)); // .replaceAll("\n", " ")
+    //System.out.println(("comparing this:\n" + this + "\nwith other:\n " + other)); // .replaceAll("\n", " ")
     if (other == null) {
       throw new RuntimeException("comparing with a null transducer");
     }

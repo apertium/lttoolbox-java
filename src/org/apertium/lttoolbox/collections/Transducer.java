@@ -63,7 +63,8 @@ public class Transducer {
     String res = "";
     res += "initial :" + initial + " - ";
     res += "finals :" + finals + "\n";
-    res += "transitions :" + transitions + "";
+		if (transitions.size()>500) res += "transitions " + transitions.size() + "";
+		else res += "transitions :" + transitions + "";
     return res;
   }
 

@@ -102,10 +102,10 @@ public class TransducerCompTest {
       }
 
       System.out.println("comparing transducers of section " + s);
-      System.out.println("original transducer : "+c.sections.get(s));
+      //System.out.println("original transducer : "+c.sections.get(s));
       System.out.println("original transducer has " + count1 + " transitions");
       System.out.println("original transducer higher state is " + max1);
-      System.out.println("DEBUG_read transducer : "+sections.get(s));
+      //System.out.println("DEBUG_read transducer : "+sections.get(s));
       System.out.println("read transducer has " + count2 + " transitions");
       System.out.println("read transducer higher state is " + max2);
       //System.out.println(c.sections.get(s).DEBUG_compare(sections.get(s)));
