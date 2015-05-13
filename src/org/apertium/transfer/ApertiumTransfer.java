@@ -74,8 +74,9 @@ public class ApertiumTransfer {
         + "  output        output file, standard output by default\n"
         + "  -b            input from lexical transfer (single level transfer only)\n"
         + "  -n            don't use bilingual dictionary\n"
-        + //"  -x bindix  extended mode with user dictionary\n" +
-        "  -c         case-sensitiveness while accessing bilingual dictionary\n"
+//        + "  -x bindix  extended mode with user dictionary\n"
+        + "  -c            case-sensitiveness while accessing bilingual dictionary\n"
+        + "  -t            trace (show rule numbers and patterns matched)\n"
         + "  -z            null-flushing output on '\n"
         + "  -h            shows this message\n"
         + "");
@@ -98,11 +99,12 @@ public class ApertiumTransfer {
     }
 
     boolean caseSensitiveMode = false;
+    boolean trace = false;
     boolean nullFlush = false;
     boolean preBilingual = false;
     boolean useBilingual = true;
 
-    MyGetOpt getopt = new MyGetOpt(argv, "cvbnzhD");
+    MyGetOpt getopt = new MyGetOpt(argv, "ctvbnzhD");
 
     int optind = -1;
     while (true) {
@@ -116,6 +118,10 @@ public class ApertiumTransfer {
         switch (c) {
           case 'c':
             caseSensitiveMode = true;
+            break;
+
+          case 't':
+            trace = true;
             break;
 
           case 'D':
@@ -196,6 +202,7 @@ public class ApertiumTransfer {
     t.setNullFlush(nullFlush);
     t.setPreBilingual(preBilingual);
     t.setUseBilingual(useBilingual);
+		t.setTrace(trace);
     //setCaseSensitiveMode is not implemented yet at Transfer, so we comment the following line
     //t.setCaseSensitiveMode(caseSensitiveMode);
     t.transferObject.debug = Transfer.DEBUG;

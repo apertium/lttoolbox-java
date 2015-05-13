@@ -43,6 +43,7 @@ public class ApertiumInterchunk {
     public String t2xFile = null;
     public String preprocFile = null; //formerly f1, f2, these are more descriptive names
     public boolean nullFlush = false;
+		private boolean trace;
   }
 
   private static HashMap<String, Interchunk> cache = new HashMap<String, Interchunk>();
@@ -66,6 +67,7 @@ public class ApertiumInterchunk {
     stderr.println("  input      input file, standard input by default");
     stderr.println("  output     output file, standard output by default");
     stderr.println("OPTIONS");
+    stderr.println("  -t         trace mode");
     stderr.println("  -z         flush buffer on '\0'");
   }
 
@@ -90,6 +92,10 @@ public class ApertiumInterchunk {
         break;
       }
       switch (c) {
+        case 't':
+          par.trace = true;
+          break;
+
         case 'z':
           par.nullFlush = true;
           break;
@@ -155,6 +161,7 @@ public class ApertiumInterchunk {
         cache.put(key, i);
     }
 
+    i.setTrace(par.trace);
     i.setNullFlush(par.nullFlush);
     i.process(par.input, par.output);
     //Have to flush or there won't be any output.

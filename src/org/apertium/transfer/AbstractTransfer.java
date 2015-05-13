@@ -54,6 +54,15 @@ public abstract class AbstractTransfer {
     null_flush = b;
   }
 
+	// -t         trace (show rule numbers and patterns matched)
+	protected boolean trace = false;
+	public boolean isTrace() {
+		return trace;
+	}
+
+	public void setTrace(boolean trace) {
+		this.trace = trace;
+	}
   /**
    * @deprecated
    */

@@ -299,12 +299,15 @@ public class Transfer extends AbstractTransfer {
         lastMatchedRule = rule_map[(val - 1)];
         lastPos = input_buffer.getPos();
 
-        if (DEBUG)
+        if (trace) {
+          System.err.println("apertium-transfer: Rule " + val+" "+tmpword);
+				}
+
+        if (DEBUG) {
           System.err.println("lastrule = " + (val - 1) + " " + lastMatchedRule.getName());
-        if (DEBUG)
           System.err.println("tmpword = " + tmpword.size() + "  tmpblank = " + tmpblank.size());
-        if (DEBUG)
           System.err.println("tmpword = " + tmpword + "  tmpblank = " + tmpblank);
+				}
         matchedWords.clear();
         matchedBlanks.clear();
         matchedWords.addAll(tmpword);
