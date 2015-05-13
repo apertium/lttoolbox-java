@@ -1348,7 +1348,7 @@ public class FSTProcessor extends BasicFSTProcessor {
               writeEscaped(sf, output);
             } else if (mode == GenerationMode.gm_clean) {
               writeEscaped(removeTags(sf.substring(1)), output);
-            } else if (mode == GenerationMode.gm_unknown) {
+            } else { // if (mode == GenerationMode.gm_unknown || gm_tagged)
               writeEscaped(removeTags(sf), output);
             }
           } else if (current_state.isFinal()) {
@@ -1698,6 +1698,19 @@ public class FSTProcessor extends BasicFSTProcessor {
     }
   }
 
+	private String compose(StringBuilder lexforms, StringBuilder queue) {
+		// lexforms = "/führen<vblex>/leiten<vblex>/füttern<vblex>", queue = "<pp>"
+		// output "/führen<vblex><pp>/leiten<vblex><pp>/füttern<vblex>"  (no <pp> on the last)
+		for (int i=1; i<lexforms.length(); i++) {
+			if (lexforms.charAt(i) == '/') {
+				lexforms.insert(i, queue);
+				i += queue.length();
+			}
+		}
+
+		return lexforms.append(queue).toString();
+	}
+
   /**
    * @param input ^Jeg<prn><p1><mf><sg><nom>$ ^ha<vblex><pres>$ ^ikke<adv>$
    * @param output ^Jeg<prn><p1><mf><sg><nom>/Prpers<prn><p1><mf><sg><nom>$ ^ha<vblex><pres>/have<vbhaver><pres>$ ^ikke<adv>/not<adv>$
@@ -1760,8 +1773,8 @@ public class FSTProcessor extends BasicFSTProcessor {
         }
         if (sf.charAt(0) == '*') {
           printWordBilingual(sf.toString(), "/" + sf, output);
-        } else if (result.length() > 0) {
-          printWordBilingual(sf.toString(), result.toString() + queue.toString(), output);
+				} else if (result.length() > 0) {
+          printWordBilingual(sf.toString(), compose(result, queue), output);
         } else {
           if (biltransSurfaceForms) {
             printWordBilingual(surface, "/@" + surface, output);

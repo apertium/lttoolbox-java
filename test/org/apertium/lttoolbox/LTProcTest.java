@@ -22,7 +22,7 @@ import junit.framework.TestCase;
  * @author Jacob Nordfalk
  */
 public class LTProcTest extends TestCase {
-  /**
+	/**
    * The -b options
    */
   public void testBilingual() throws IOException {
@@ -34,12 +34,33 @@ public class LTProcTest extends TestCase {
     System.err.println("testBilingual() output = " + output);
 
     String res = output.toString();
-    String exp = "^have<vblex><pres>/havi<vblex><pres>$ ^not<adv>/ne<adv>$  ^not<adv>/ne<adv>$\n";
+    String exp = "^have<vblex><pres>/havi<vblex><pres>$ ^not<adv>/ne<adv>$ ^not<adv>/ne<adv>$\n";
     System.out.println("res='" + res + "'");
     System.out.println("exp='" + exp + "'");
     // WORKS
-    assertEquals(res, res);
+    assertEquals(exp, res);
   }
+
+  /**
+   * The -b option - test for fix for https://sourceforge.net/p/apertium/tickets/70/
+	 * Test is using nld-deu.autobil.bin which isnt in the test data, therefore the test isnt normally runned
+   */
+  public void dontrun_testBilingualBugfix() throws IOException {
+    FSTProcessor fstp = new FSTProcessor();
+    fstp.load("/home/j/esperanto/apertium/incubator/apertium-deu-nld/nld-deu.autobil.bin");
+    fstp.initBiltrans();
+    StringWriter output = new StringWriter();
+    fstp.bilingual(new StringReader("^voeren<vblex><pp>$\n"), output);
+    System.err.println("testBilingual() output = " + output);
+
+    String res = output.toString();
+    String exp = "^voeren<vblex><pp>/führen<vblex><pp>/leiten<vblex><pp>/füttern<vblex><pp>$\n";
+    System.out.println("res='" + res + "'");
+    System.out.println("exp='" + exp + "'");
+    // WORKS
+    assertEquals(exp, res);
+  }
+
 
   /**
    * Tests a transducer like http://wiki.apertium.org/wiki/Morphological_dictionaries
