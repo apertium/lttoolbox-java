@@ -47,12 +47,12 @@ import org.apertium.utils.IOUtils;
 public class Dispatcher {
   private static final String splitPattern = "[ ]+";
 
-  private static void doInterchunk(Program prog, Reader input, Appendable output) throws Exception {
+  private static void doInterchunk(Program prog, Reader input, Appendable output, boolean trace) throws Exception {
     ApertiumInterchunk.CommandLineParams par = new ApertiumInterchunk.CommandLineParams();
     /* Parse the command line. The passed-in CommandLineParams object
      * will be modified by this method.
      */
-    String[] args = prog.getParameters().split(splitPattern);
+    String[] args = ((trace?"-t ":"")+prog.getParameters()).split(splitPattern);
     if (!ApertiumInterchunk.parseCommandLine(args, par, "Interchunk", true)) {
       throw new IllegalArgumentException("Failed to parse Interchunk arguments.");
     }
@@ -164,9 +164,9 @@ public class Dispatcher {
     formatter.doMain(args, input, output);
   }
 
-  private static void doTransfer(Program prog, Reader input, Appendable output)
-      throws Exception {
-    String[] args = prog.getParameters().split("[ ]+");
+  private static void doTransfer(Program prog, Reader input, Appendable output,
+			boolean trace) throws Exception {
+    String[] args = ((trace?"-t ":"")+prog.getParameters()).split(splitPattern);
     ApertiumTransfer.doMain(args, input, output);
   }
 
@@ -252,9 +252,13 @@ public class Dispatcher {
 
   public static void dispatch(Program prog, Reader input, Appendable output,
       boolean dispAmb, boolean dispMarks) throws Exception {
+		dispatch(prog, input, output, dispAmb, dispMarks, false);
+	}
+  public static void dispatch(Program prog, Reader input, Appendable output,
+      boolean dispAmb, boolean dispMarks, boolean traceTransferInterchunk) throws Exception {
     switch (prog.getProgram()) {
       case INTERCHUNK:
-        doInterchunk(prog, input, output);
+        doInterchunk(prog, input, output, traceTransferInterchunk);
         break;
       case LT_PROC:
         doLTProc(prog, input, output, dispMarks);
@@ -269,7 +273,7 @@ public class Dispatcher {
         doTagger(prog, input, output, dispAmb);
         break;
       case TRANSFER:
-        doTransfer(prog, input, output);
+        doTransfer(prog, input, output, traceTransferInterchunk);
         break;
       case TXT_DEFORMAT:
         doTextFormat(prog, input, output, true);

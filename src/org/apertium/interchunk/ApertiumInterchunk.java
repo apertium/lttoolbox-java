@@ -84,7 +84,7 @@ public class ApertiumInterchunk {
       return false;
     }
 
-    Getopt getopt = new Getopt(commandName, args, "zh");
+    Getopt getopt = new Getopt(commandName, args, "tzh");
 
     while (true) {
       int c = getopt.getopt();
