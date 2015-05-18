@@ -32,8 +32,8 @@ public class Profiling {
     System.out.println(System.getProperties());
     System.out.println("Profiling " + new java.util.Date() + " " + System.getProperty("java.vm.name") + " " + System.getProperty("java.version"));
     report("start " + new File(".").getAbsolutePath());
-    System.gc();
-    p.testTransfer();
+    //System.gc();
+    //p.testTransfer();
     System.gc();
     p.testjavaAnalysis();
     System.gc();
@@ -88,6 +88,7 @@ public class Profiling {
     report("generation -p");
   }
 
+	/*
   private void testTransfer() throws Exception {
 
     Transfer t;
@@ -106,6 +107,7 @@ public class Profiling {
     output.close();
     report("transfer");
   }
+	*/
 
   private void testTagger() throws Exception {
 

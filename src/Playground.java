@@ -9,7 +9,6 @@ import org.apertium.pipeline.ApertiumMain;
 import org.apertium.transfer.AbstractTransfer;
 import org.apertium.transfer.ApertiumTransfer;
 import org.apertium.transfer.Transfer;
-import org.apertium.transfer.old.compile.ApertiumTransferCompile;
 import org.apertium.utils.IOUtils;
 
 /*
