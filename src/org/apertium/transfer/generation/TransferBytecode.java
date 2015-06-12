@@ -962,8 +962,14 @@ public class TransferBytecode {
       for (Element c0 : getChildsChildrenElements(root, "section-def-attrs")) {
         String n = c0.getAttribute("n");
         ArrayList<String> items = new ArrayList<String>();
-        for (Element c1 : listChildren(c0))
-          items.add(c1.getAttribute("tags"));
+        for (Element c1 : listChildren(c0)) {
+					String tags = c1.getAttribute("tags");
+					// Clumsy hack to allow + as special characters to allow tags like <@+FMAINV>
+					// (<attr-item tags="@\+FMAINV"/> in apertium-sme-sma.sme-sma.t1x)
+					//String escapedTags = java.util.regex.Pattern.quote(tags); // no, just adds \Q and \E
+					String escapedTags = tags.replaceAll("\\\\\\+", "+"); // unescape \+ to +
+          items.add(escapedTags);
+				}
 
         /* FIX:
          * java match of (<prn>|<prn><ref>|<prn><itg>|<prn><tn>) on ^what<prn><itg><sp> is '<prn>'
@@ -985,7 +991,11 @@ public class TransferBytecode {
         il.append(createThis());
         il.append(factory.createNew("org.apertium.transfer.ApertiumRE"));
         il.append(DUP);
-        il.append(factory.createConstant(attrItemRegexp(items)));
+				String regexp = attrItemRegexp(items);
+				// Clumsy hack to allow + as special characters to allow tags like <@+FMAINV>
+				// (<attr-item tags="@\+FMAINV"/> in apertium-sme-sma.sme-sma.t1x)
+				regexp = regexp.replaceAll("\\+", "\\\\\\+"); // escape + to \+
+        il.append(factory.createConstant(regexp));
         il.append(factory.createInvoke("org.apertium.transfer.ApertiumRE", "<init>", VOID, new Type[]{STRING}, INVOKESPECIAL));
         il.append(factory.createPutField(fullClassName, "attr_" + javaIdentifier(n), APERTIUM_RE));
       }
