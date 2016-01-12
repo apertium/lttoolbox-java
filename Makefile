@@ -23,13 +23,14 @@ install: dist/lttoolbox.jar
 	@if [ ! -e prefix ]; then \
 		echo "/usr/local" > prefix; \
 	fi
-	@echo installing into `cat prefix`;
-	mkdir -p `cat prefix`/bin/;
-	mkdir -p `cat prefix`/share/apertium/;
-	cp dist/lttoolbox.jar `cat prefix`/share/apertium/;
-#	cp -a apertium-j lt-expand-j lt-comp-j lt-validate-j `cat prefix`/bin/;
-	chmod a+x ${SYMLINKS} apertium-j apertium-pack-j;
-	cp -a ${SYMLINKS} apertium-j apertium-pack-j `cat prefix`/bin/;
+	$(eval DEST=${DESTDIR}$(shell cat prefix))
+	@echo installing into ${DEST}
+	mkdir -p ${DEST}/bin/
+	mkdir -p ${DEST}/share/apertium/
+	cp dist/lttoolbox.jar ${DEST}/share/apertium/
+#	cp -a apertium-j lt-expand-j lt-comp-j lt-validate-j ${DEST}/bin/
+	chmod a+x ${SYMLINKS} apertium-j apertium-pack-j
+	cp -a ${SYMLINKS} apertium-j apertium-pack-j ${DEST}/bin/
 
 test:
 	ant -quiet test
