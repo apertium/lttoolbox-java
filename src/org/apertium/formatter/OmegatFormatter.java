@@ -98,7 +98,7 @@ public class OmegatFormatter extends GenericFormatter {
           if (currentChar != ' ') { //Whitespace char is other than space
             writeBrackets = true;
           }
-          spaceWrite.append(currentChar);
+          spaceWrite.append((char) currentChar);
           previousChar = currentChar;
           while (Character.isWhitespace((currentChar = inRead.read())) || inTag || currentChar == '<') {
             if (currentChar == '<')
@@ -107,7 +107,7 @@ public class OmegatFormatter extends GenericFormatter {
               inTag = false;
             if (isApertiumSpecialCharacter(currentChar))
               spaceWrite.append('\\');
-            spaceWrite.append(currentChar);
+            spaceWrite.append((char) currentChar);
             previousChar = currentChar;
           }
           if (currentChar != -1) {
