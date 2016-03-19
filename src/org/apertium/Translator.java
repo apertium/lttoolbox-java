@@ -212,7 +212,7 @@ public class Translator {
             public void run() {
               try {
                 translate("");
-              } catch (Exception e) {
+              } catch (Throwable e) { // catch OutOfMemoryError as well as ordinary problems
               }
             }
           })).start();
@@ -292,7 +292,7 @@ public class Translator {
     lang = pair[1].split("_");
     title.append(getTitleForCode(lang[0]));
     for (int i = 1; i < lang.length; i++)
-      title.append("(").append(lang[i].toUpperCase()).append(")");
+      title.append(" (").append(lang[i].toUpperCase()).append(")");
     for (int i = 2; i < pair.length; i++)
       title.append(" (").append(pair[i].toUpperCase()).append(")");
 
