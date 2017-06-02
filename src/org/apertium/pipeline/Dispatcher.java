@@ -53,6 +53,8 @@ public class Dispatcher {
      * will be modified by this method.
      */
     String[] args = ((trace?"-t ":"")+prog.getParameters()).split(splitPattern);
+//    String[] args = prog.getParameterArray();
+//    if (trace) { };
     if (!ApertiumInterchunk.parseCommandLine(args, par, "Interchunk", true)) {
       throw new IllegalArgumentException("Failed to parse Interchunk arguments.");
     }
@@ -96,7 +98,7 @@ public class Dispatcher {
   private static void doPretransfer(Program prog, Reader input, Appendable output)
       throws IOException {
     PreTransfer.CommandLineParams params = new PreTransfer.CommandLineParams();
-    String[] args = prog.getParameters().split(splitPattern);
+    String[] args = prog.getParameterArray();
     PreTransfer.parseArgs(args, params, true);
 
     /* Assume internal I/O, don't allow for specifying external temp
@@ -172,11 +174,10 @@ public class Dispatcher {
 
   private static void doLTProc(Program prog, Reader input, Appendable output,
       boolean dispMarks) throws IOException {
-    String paramString = prog.getParameters();
     String replacement = (dispMarks ? "-g" : "-n");
-    paramString = paramString.replaceAll("\\$1", replacement);
 
-    String[] args = paramString.split(splitPattern);
+    String[] args = prog.getParameterArray();
+    for (int i=0; i<args.length; i++) args[i] = args[i].replaceAll("\\$1", replacement);
     LTProc.doMain(args, input, output);
   }
 

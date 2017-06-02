@@ -18,6 +18,11 @@
  */
 package org.apertium.pipeline;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * @author Stephen Tigner
  *
@@ -34,16 +39,13 @@ public class Program {
   private final ProgEnum _program;
   //Each program also has a list of files, which are used, in order.
   private String _parameters_deprecated;
+  private String[] _parameterArray;
 
   public Program(String commandLine) {
-    /* Splits on spaces, assumes path won't have internal spaces.
-     * This only splits the command from the parameters. The parameters
-     * are left as a single string.
-     * This is to make it easier to run the command when the time comes.
-     * If a specific command needs to have the parameters split up for some
-     * reason, that can still be done later.
-     */
-    String[] paramList = commandLine.split(" ", 2);
+    ArrayList<String> list = splitCommandLineString(commandLine);
+    int n = list.size();
+    _parameterArray = list.subList(1, n).toArray(new String[n-1]);
+    _fullPath = list.get(0);
 
     /* Split off the command name from the rest of the path, as the paths in
      * mode files are absolute unix paths and will fail in cygwin, as Java
@@ -51,11 +53,11 @@ public class Program {
      * Running the executables w/o a path prefix will work in Windows with
      * cygwin, provided that the user has the cygwin bin dir in their path.
      */
-    _fullPath = paramList[0].trim();
     String[] commandPathList = _fullPath.split("\\/");
     //Grab the last entry
     _commandName = commandPathList[commandPathList.length - 1];
-    //Grab the 2nd (and last) entry -- if it exists
+
+    String[] paramList = commandLine.split(" ", 2); // deprecated june 2017 - remove in 2019
     if (paramList.length > 1) {
       _parameters_deprecated = paramList[1];
     } else {
@@ -108,6 +110,14 @@ public class Program {
     return _parameters_deprecated;
   }
 
+  /**
+   * Returns the list of parameters. Spaces in path names are allowed and quotation have been removed.
+   * @return A copy of the internal list of parameters.
+   */
+  public String[] getParameterArray() {
+    return _parameterArray;
+  }
+
   @Override
   public String toString() {
     /* StringBuilder tempString = new StringBuilder();
@@ -142,5 +152,30 @@ public class Program {
       return false;
     }
     return true;
+  }
+
+  private static Pattern commandLineParameterRegex = Pattern.compile("'([^']*)'|\"([^\"]*)\"|(\\S+)");
+  /**
+   * Utility method for splitting a (mode) command line into its parts, taking quoted spaces into account and removing quotes
+   * Source: https://stackoverflow.com/questions/3366281/tokenizing-a-string-but-ignoring-delimiters-within-quotes
+   * @param commandLine
+   * @return
+   */
+  public static ArrayList<String> splitCommandLineString(String commandLine) {
+    ArrayList<String> list = new ArrayList<String>();
+
+    Matcher m = commandLineParameterRegex.matcher(commandLine);
+    while (m.find()) {
+      int n=0;
+      String str;
+      do str = m.group(++n); while (str==null);
+      list.add(str);
+    }
+    return list;
+  }
+
+  public static void main(String[] args) {
+    System.out.println(splitCommandLineString("a b c"));
+    System.out.println(splitCommandLineString("  user   123712378 suspend \"They are 'bad guys'\" 'bad guys'  "));
   }
 }
