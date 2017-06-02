@@ -202,8 +202,11 @@ public class Dispatcher {
       } catch (Exception e) {
       } // Ignore errors comming from that it wasn't a file name
     }
-    //String[] cmdArray = prepend(prog.getFullPath(), prog.getParameterArray());
-    final Process extProcess = Runtime.getRuntime().exec(prog.getFullPath() + " " + prog.getParameters().replaceAll("\\$1", dispMarks ? "-g" : "-n").replaceAll("\\$2", dispAmb ? "-m" : ""), null, tempDir);
+    List<String> args = new ArrayList<String>(prog.getParameterList());
+    args = replace("$1", dispMarks ? "-g" : "-n", args);
+    args = replace("$2", dispAmb ? "-m" : "", args);
+    args.add(0, prog.getFullPath());
+    final Process extProcess = Runtime.getRuntime().exec(args.toArray(STRARR0), null, tempDir);
 
     // We will create a new thread to copy from the input Reader to the OutputStream of the
     // external process (note that we must convert the input to UTF-8)
@@ -300,10 +303,12 @@ public class Dispatcher {
   }
 
   /** Replace (or remove, if empty) an element */
-  private static List<String> replace(String str, String replacement, List<String> parameterList) {
+  public static List<String> replace(String str, String replacement, List<String> parameterList) {
     int n = parameterList.indexOf(str);
     if (n==-1) return parameterList;
-    parameterList = new ArrayList<String>(parameterList);
+    if (!(parameterList instanceof ArrayList)) { // create a modifiable list (copy)
+      parameterList = new ArrayList<String>(parameterList);
+    }
     if (replacement==null || replacement.isEmpty()) parameterList.remove(n);
     else parameterList.set(n, replacement);
     return parameterList;
@@ -311,8 +316,8 @@ public class Dispatcher {
 
   private final static String[] STRARR0 = new String[0];
   /** Prepend an item to an array, returning the result as a new array */
-  public static List<String> prepend(String prepend, List<String> args) {
-    List<String> args2 = new ArrayList<String>(args.size()+1);
+  private static ArrayList<String> prepend(String prepend, List<String> args) {
+    ArrayList<String> args2 = new ArrayList<String>(args.size()+1);
     args2.add(prepend);
     args2.addAll(args);
     return args2;
