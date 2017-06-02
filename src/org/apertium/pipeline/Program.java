@@ -19,6 +19,7 @@
 package org.apertium.pipeline;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -39,12 +40,12 @@ public class Program {
   private final ProgEnum _program;
   //Each program also has a list of files, which are used, in order.
   private String _parameters_deprecated;
-  private String[] _parameterArray;
+  private final List<String> _parameterList;
 
   public Program(String commandLine) {
     ArrayList<String> list = splitCommandLineString(commandLine);
     int n = list.size();
-    _parameterArray = list.subList(1, n).toArray(new String[n-1]);
+    _parameterList = Collections.unmodifiableList(list.subList(1, n));
     _fullPath = list.get(0);
 
     /* Split off the command name from the rest of the path, as the paths in
@@ -103,7 +104,7 @@ public class Program {
 
   /**
    * Allows for all the filename strings to be retrieved at once.
-   * @deprecated You will have to take quotation and spaces in path names yourself if you use this method.
+   * @deprecated You will have to take quotation and spaces in path names yourself if you use this method - method will be removed july 2018
    * @return A copy of the internal list of parameters.
    */
   public String getParameters() {
@@ -114,8 +115,8 @@ public class Program {
    * Returns the list of parameters. Spaces in path names are allowed and quotation have been removed.
    * @return A copy of the internal list of parameters.
    */
-  public String[] getParameterArray() {
-    return _parameterArray;
+  public List<String> getParameterList() {
+    return _parameterList;
   }
 
   @Override
