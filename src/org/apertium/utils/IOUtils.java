@@ -407,6 +407,10 @@ public class IOUtils {
 
   public static File openFile(String filename) {
     filename = filename.trim();
+    if (filename.startsWith("'") && filename.endsWith("'") || // remove start and end quotes in file names
+        filename.startsWith("\"") && filename.endsWith("\"")) {
+      filename = filename.substring(1, filename.length()-1);
+    }
     File file = new File(filename);
     if (!file.exists()) {
       File aux = new File(parent, filename);
