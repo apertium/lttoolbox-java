@@ -33,7 +33,7 @@ public class Program {
   private String _fullPath;
   private final ProgEnum _program;
   //Each program also has a list of files, which are used, in order.
-  private String _parameters;
+  private String _parameters_deprecated;
 
   public Program(String commandLine) {
     /* Splits on spaces, assumes path won't have internal spaces.
@@ -57,9 +57,9 @@ public class Program {
     _commandName = commandPathList[commandPathList.length - 1];
     //Grab the 2nd (and last) entry -- if it exists
     if (paramList.length > 1) {
-      _parameters = paramList[1];
+      _parameters_deprecated = paramList[1];
     } else {
-      _parameters = "";
+      _parameters_deprecated = "";
     }
 
     if (_commandName.equals("lt-proc")) {
@@ -101,11 +101,11 @@ public class Program {
 
   /**
    * Allows for all the filename strings to be retrieved at once.
-   *
+   * @deprecated You will have to take quotation and spaces in path names yourself if you use this method.
    * @return A copy of the internal list of parameters.
    */
   public String getParameters() {
-    return _parameters;
+    return _parameters_deprecated;
   }
 
   @Override
@@ -115,14 +115,14 @@ public class Program {
      * _program.toString() + "): \n");
      * tempString.append("Parameters: " + _parameters + " }");
      * return tempString.toString(); */
-    return _commandName + " " + _parameters;
+    return _commandName + " " + _parameters_deprecated;
   }
 
   @Override
   public int hashCode() {
     int hash = 3;
     hash = 23 * hash + (this._program != null ? this._program.hashCode() : 0);
-    hash = 23 * hash + (this._parameters != null ? this._parameters.hashCode() : 0);
+    hash = 23 * hash + (this._parameters_deprecated != null ? this._parameters_deprecated.hashCode() : 0);
     return hash;
   }
 
@@ -138,7 +138,7 @@ public class Program {
     if (this._program != other._program) {
       return false;
     }
-    if ((this._parameters == null) ? (other._parameters != null) : !this._parameters.equals(other._parameters)) {
+    if ((this._parameters_deprecated == null) ? (other._parameters_deprecated != null) : !this._parameters_deprecated.equals(other._parameters_deprecated)) {
       return false;
     }
     return true;
