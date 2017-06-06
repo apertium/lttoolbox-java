@@ -56,7 +56,7 @@ public class Dispatcher {
      */
     List<String> args = prog.getParameterList();
     if (trace) {
-      args = prepend("-t", args);
+      args = prependParameter("-t", args);
     }
     if (!ApertiumInterchunk.parseCommandLine(args.toArray(STRARR0), par, "Interchunk", true)) {
       throw new IllegalArgumentException("Failed to parse Interchunk arguments.");
@@ -116,7 +116,7 @@ public class Dispatcher {
   private static void doTagger(Program prog, Reader input, Appendable output,
       boolean dispAmb) {
     String replacement = (dispAmb ? "-m" : "");
-    List<String> args = replace("$2", replacement, prog.getParameterList());
+    List<String> args = Program.replaceParameter(prog.getParameterList(), "$2", replacement);
     Tagger.taggerDispatch(args.toArray(STRARR0), input, output);
   }
 
@@ -129,12 +129,12 @@ public class Dispatcher {
        * .mode files aren't setup like that, so prepending "-d" to set it to
        * deformatting mode.
        */
-      args = prepend("-d", args);
+      args = prependParameter("-d", args);
     } else {
       /* If not in deformatting mode, must be in reformatting mode.
        * So prepend with "-r" instead.
        */
-      args = prepend("-r", args);
+      args = prependParameter("-r", args);
     }
 
     TextFormatter formatter = new TextFormatter();
@@ -151,12 +151,12 @@ public class Dispatcher {
        * .mode files aren't setup like that, so prepending "-d" to set it to
        * deformatting mode.
        */
-      args = prepend("-d", args);
+      args = prependParameter("-d", args);
     } else {
       /* If not in deformatting mode, must be in reformatting mode.
        * So prepend with "-r" instead.
        */
-      args = prepend("-r", args);
+      args = prependParameter("-r", args);
     }
 
     OmegatFormatter formatter = new OmegatFormatter();
@@ -168,7 +168,7 @@ public class Dispatcher {
 			boolean trace) throws Exception {
     List<String> args = prog.getParameterList();
     if (trace) {
-      args = prepend("-t", args);
+      args = prependParameter("-t", args);
     }
     ApertiumTransfer.doMain(args.toArray(STRARR0), input, output);
   }
@@ -177,7 +177,7 @@ public class Dispatcher {
       boolean dispMarks) throws IOException {
     List<String> args = prog.getParameterList();
     String replacement = (dispMarks ? "-g" : "-n");
-    args = replace("$1", replacement, args);
+    args = Program.replaceParameter(args, "$1", replacement);
     LTProc.doMain(args.toArray(STRARR0), input, output);
   }
 
@@ -203,8 +203,8 @@ public class Dispatcher {
       } // Ignore errors comming from that it wasn't a file name
     }
     List<String> args = new ArrayList<String>(prog.getParameterList());
-    args = replace("$1", dispMarks ? "-g" : "-n", args);
-    args = replace("$2", dispAmb ? "-m" : "", args);
+    args = Program.replaceParameter(args, "$1", dispMarks ? "-g" : "-n");
+    args = Program.replaceParameter(args, "$2", dispAmb ? "-m" : null);
     args.add(0, prog.getFullPath());
     final Process extProcess = Runtime.getRuntime().exec(args.toArray(STRARR0), null, tempDir);
 
@@ -302,21 +302,9 @@ public class Dispatcher {
     IOUtils.flush(output);
   }
 
-  /** Replace (or remove, if empty) an element */
-  public static List<String> replace(String str, String replacement, List<String> parameterList) {
-    int n = parameterList.indexOf(str);
-    if (n==-1) return parameterList;
-    if (!(parameterList instanceof ArrayList)) { // create a modifiable list (copy)
-      parameterList = new ArrayList<String>(parameterList);
-    }
-    if (replacement==null || replacement.isEmpty()) parameterList.remove(n);
-    else parameterList.set(n, replacement);
-    return parameterList;
-  }
-
   private final static String[] STRARR0 = new String[0];
   /** Prepend an item to an array, returning the result as a new array */
-  private static ArrayList<String> prepend(String prepend, List<String> args) {
+  private static ArrayList<String> prependParameter(String prepend, List<String> args) {
     ArrayList<String> args2 = new ArrayList<String>(args.size()+1);
     args2.add(prepend);
     args2.addAll(args);

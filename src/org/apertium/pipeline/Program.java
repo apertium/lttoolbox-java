@@ -104,16 +104,18 @@ public class Program {
 
   /**
    * Allows for all the filename strings to be retrieved at once.
-   * @deprecated You will have to take quotation and spaces in path names yourself if you use this method - method will be removed july 2018
+   * @deprecated You will have to take quotation and spaces in path names yourself if you use this method
+   * - method will be removed july 2018, please use getParameterList() instead
    * @return A copy of the internal list of parameters.
    */
-  public String getParameters() {
+  public String getParameters() { // TODO remove method
     return _parameters_deprecated;
   }
 
   /**
-   * Returns the list of parameters. Spaces in path names are allowed and quotation have been removed.
-   * @return A copy of the internal list of parameters.
+   * Returns the list of parameters (filenames and flags)
+   * Spaces in quoted path names are intact and quotation have been removed.
+   * @return An (unmodifiable) list of command line parameters.
    */
   public List<String> getParameterList() {
     return _parameterList;
@@ -121,24 +123,23 @@ public class Program {
 
   @Override
   public String toString() {
-    /* StringBuilder tempString = new StringBuilder();
-     * tempString.append("{Program -- " + _commandName + " (" +
-     * _program.toString() + "): \n");
-     * tempString.append("Parameters: " + _parameters + " }");
-     * return tempString.toString(); */
     return _commandName + " " + _parameters_deprecated;
   }
 
+  // TODO: remove method
   @Override
   public int hashCode() {
+    System.err.println("Program.hashCode() seems unused and will be removed july 2018. Please notify jacob.nordfalk@gmail.com if you see this message");
     int hash = 3;
     hash = 23 * hash + (this._program != null ? this._program.hashCode() : 0);
     hash = 23 * hash + (this._parameters_deprecated != null ? this._parameters_deprecated.hashCode() : 0);
     return hash;
   }
 
+  // TODO: remove method
   @Override
   public boolean equals(Object obj) {
+    System.err.println("Program.equals() seems unused and will be removed july 2018. Please notify jacob.nordfalk@gmail.com if you see this message");
     if (obj == null) {
       return false;
     }
@@ -155,14 +156,25 @@ public class Program {
     return true;
   }
 
+  /** Utility method to replace (or remove, if replacement is empty) an element in a parameter list.
+   * Use case is for example to replace f.ex. '$1' with '-g' */
+  public static List<String> replaceParameter(List<String> parameterList, String searchString, String replacement) {
+    int n = parameterList.indexOf(searchString);
+    if (n==-1) return parameterList;
+    if (!(parameterList instanceof ArrayList)) { // create a modifiable list (copy)
+      parameterList = new ArrayList<String>(parameterList);
+    }
+    if (replacement==null || replacement.isEmpty()) parameterList.remove(n);
+    else parameterList.set(n, replacement);
+    return parameterList;
+  }
+
   private static Pattern commandLineParameterRegex = Pattern.compile("'([^']*)'|\"([^\"]*)\"|(\\S+)");
   /**
    * Utility method for splitting a (mode) command line into its parts, taking quoted spaces into account and removing quotes
    * Source: https://stackoverflow.com/questions/3366281/tokenizing-a-string-but-ignoring-delimiters-within-quotes
-   * @param commandLine
-   * @return
    */
-  public static ArrayList<String> splitCommandLineString(String commandLine) {
+  private static ArrayList<String> splitCommandLineString(String commandLine) {
     ArrayList<String> list = new ArrayList<String>();
 
     Matcher m = commandLineParameterRegex.matcher(commandLine);

@@ -1,4 +1,4 @@
-PACKAGE=lttoolbox-java-3.2.0
+PACKAGE=lttoolbox-java-3.2.1
 
 SYMLINKS=lt-validate-j lt-print-j lt-expand-j lt-comp-j lt-proc-j lt-trim-j\
 apertium-destxt-j apertium-retxt-j apertium-tagger-j apertium-pretransfer-j\
