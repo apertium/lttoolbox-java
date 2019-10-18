@@ -38,7 +38,8 @@ public class TestTextFormatter {
    */
   @Test
   public void testMainDeformat() throws IOException {
-    String[] args = {"-d", "-i", "./tmp/txtfmtin", "-o", "./tmp/txtfmtout"};
+    // -c is added to disable that the output precisely mimics the output of the C++ version. See GenericFormatter _cppCompat flag.
+    String[] args = {"-c", "-d", "-i", "./tmp/txtfmtin", "-o", "./tmp/txtfmtout"};
     String testin = "$100 cash+\n@No refunds *\\ > ~ < \tfoo\tbar {} //// \t  #<blah>";
     String expOut = "\\$100 cash\\+[\n]\\@No refunds \\*\\\\ \\> \\~ \\<[ \t]foo[\t]bar \\{\\} \\/\\/\\/\\/[ \t  ]\\#\\<blah\\>.[]";
 

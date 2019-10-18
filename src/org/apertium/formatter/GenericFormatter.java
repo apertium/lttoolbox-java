@@ -23,13 +23,10 @@ import static org.apertium.utils.IOUtils.getStdoutWriter;
 import static org.apertium.utils.IOUtils.openInFileReader;
 import static org.apertium.utils.IOUtils.openOutFileWriter;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
+import java.io.*;
 
 import org.apertium.lttoolbox.Getopt;
+import org.apertium.utils.IOUtils;
 
 /**
  * @author Stephen Tigner
@@ -237,6 +234,8 @@ public abstract class GenericFormatter {
         errorString += System.getProperty("line.separator") + "Cannot continue.";
         throw new IllegalArgumentException(errorString);
     }
+
+    IOUtils.flush(out);
   }
 
   public GenericFormatter(String commandLabel) {
