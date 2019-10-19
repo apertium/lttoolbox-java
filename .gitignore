@@ -3,3 +3,5 @@
 /dist/
 /tmp/
 /.idea/
+/target/
+*.log

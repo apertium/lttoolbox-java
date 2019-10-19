@@ -36,7 +36,7 @@ public class TransducerCompTest {
       for (int i = 0; i < c.sections.get(s).transitions.size(); i++) {
         temp += c.sections.get(s).transitions.get(i).size();
         average += temp;
-        max = (temp > max) ? temp : max;
+        max = Math.max(temp, max);
         temp = 0;
       }
       System.out.println("maximal number of transitions leaving a state " + max);
@@ -44,8 +44,8 @@ public class TransducerCompTest {
     }
 
     //System.exit(-1);
-    c.write("testTransducer2.bin");
-    InputStream input = new BufferedInputStream (new FileInputStream("testTransducer2.bin"));
+    c.write("tmp/testTransducer2.bin");
+    InputStream input = new BufferedInputStream (new FileInputStream("tmp/testTransducer2.bin"));
     //InputStream input = new BufferedInputStream(new FileInputStream("outc"));
     //c2 = c.DEBUG_read(input);
 
