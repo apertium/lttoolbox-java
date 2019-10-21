@@ -4,14 +4,6 @@
  */
 package org.apertium.transfer.generation;
 
-import static com.sun.org.apache.bcel.internal.Constants.ACC_PRIVATE;
-import static com.sun.org.apache.bcel.internal.Constants.ACC_PUBLIC;
-import static com.sun.org.apache.bcel.internal.Constants.ACC_SUPER;
-import static com.sun.org.apache.bcel.internal.Constants.INVOKEINTERFACE;
-import static com.sun.org.apache.bcel.internal.Constants.INVOKESPECIAL;
-import static com.sun.org.apache.bcel.internal.Constants.INVOKESTATIC;
-import static com.sun.org.apache.bcel.internal.Constants.INVOKEVIRTUAL;
-
 import com.sun.org.apache.bcel.internal.generic.ArrayType;
 import com.sun.org.apache.bcel.internal.generic.BranchHandle;
 import com.sun.org.apache.bcel.internal.generic.ClassGen;
@@ -21,6 +13,14 @@ import com.sun.org.apache.bcel.internal.generic.GOTO;
 import com.sun.org.apache.bcel.internal.generic.IFEQ;
 import com.sun.org.apache.bcel.internal.generic.IFLE;
 import com.sun.org.apache.bcel.internal.generic.IFNE;
+/* JDK 8 imports */
+import static com.sun.org.apache.bcel.internal.Constants.ACC_PRIVATE;
+import static com.sun.org.apache.bcel.internal.Constants.ACC_PUBLIC;
+import static com.sun.org.apache.bcel.internal.Constants.ACC_SUPER;
+import static com.sun.org.apache.bcel.internal.Constants.INVOKEINTERFACE;
+import static com.sun.org.apache.bcel.internal.Constants.INVOKESPECIAL;
+import static com.sun.org.apache.bcel.internal.Constants.INVOKESTATIC;
+import static com.sun.org.apache.bcel.internal.Constants.INVOKEVIRTUAL;
 import static com.sun.org.apache.bcel.internal.generic.InstructionConstants.ARRAYLENGTH;
 import static com.sun.org.apache.bcel.internal.generic.InstructionConstants.DUP;
 import static com.sun.org.apache.bcel.internal.generic.InstructionConstants.ICONST_0;
@@ -30,6 +30,31 @@ import static com.sun.org.apache.bcel.internal.generic.InstructionConstants.ISUB
 import static com.sun.org.apache.bcel.internal.generic.InstructionConstants.NOP;
 import static com.sun.org.apache.bcel.internal.generic.InstructionConstants.POP;
 import static com.sun.org.apache.bcel.internal.generic.InstructionConstants.RETURN;
+/* JDK11 imports would be the following:
+
+import static com.sun.org.apache.bcel.internal.Const.ACC_PRIVATE;
+import static com.sun.org.apache.bcel.internal.Const.ACC_PUBLIC;
+import static com.sun.org.apache.bcel.internal.Const.ACC_SUPER;
+import static com.sun.org.apache.bcel.internal.Const.INVOKEINTERFACE;
+import static com.sun.org.apache.bcel.internal.Const.INVOKESPECIAL;
+import static com.sun.org.apache.bcel.internal.Const.INVOKESTATIC;
+import static com.sun.org.apache.bcel.internal.Const.INVOKEVIRTUAL;
+import static com.sun.org.apache.bcel.internal.generic.InstructionConst.ARRAYLENGTH;
+import static com.sun.org.apache.bcel.internal.generic.InstructionConst.DUP;
+import static com.sun.org.apache.bcel.internal.generic.InstructionConst.ICONST_0;
+import static com.sun.org.apache.bcel.internal.generic.InstructionConst.ICONST_1;
+import static com.sun.org.apache.bcel.internal.generic.InstructionConst.IRETURN;
+import static com.sun.org.apache.bcel.internal.generic.InstructionConst.ISUB;
+import static com.sun.org.apache.bcel.internal.generic.InstructionConst.NOP;
+import static com.sun.org.apache.bcel.internal.generic.InstructionConst.POP;
+import static com.sun.org.apache.bcel.internal.generic.InstructionConst.RETURN;
+
+ - but its not that easy to import private APIs anymore, so it might be better to include bcel as dependency,
+or source /usr/lib/jvm/java-8-openjdk-amd64/src.zip!/com/sun/org/apache/bcel/internal/Constants.java
+and  /usr/lib/jvm/java-8-openjdk-amd64/src.zip!/com/sun/org/apache/bcel/internal/generic/InstructionConstants.java
+et al
+*/
+
 import com.sun.org.apache.bcel.internal.generic.InstructionFactory;
 import static com.sun.org.apache.bcel.internal.generic.InstructionFactory.*;
 import com.sun.org.apache.bcel.internal.generic.InstructionHandle;
@@ -1303,7 +1328,8 @@ public class TransferBytecode {
   }
 
   public Class getJavaClass() {
-    return new BytecodeLoader().getClassFromBytes(getBytes());
+    byte[] bytes = cg.getJavaClass().getBytes();
+    return new BytecodeLoader().getClassFromBytes(bytes);
   }
 
   public byte[] getBytes() {
