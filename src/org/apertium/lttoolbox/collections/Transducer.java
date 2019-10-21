@@ -16,10 +16,12 @@ package org.apertium.lttoolbox.collections;
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
  */
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -291,6 +293,19 @@ public class Transducer {
 
   public static void read(Transducer t, InputStream input, int decalage) throws IOException {
     t.transitions.clear();
+
+    input.mark(4);
+    byte[] header = new byte[4];
+    input.read(header);
+    if (Arrays.equals(header, Compression.HEADER_TRANSDUCER)) {
+      long features = new DataInputStream(input).readLong();
+      if (DEBUG) System.err.println("Transducer.read() got features " + features);
+      if (features>=1) throw new IOException("FST has features that are unknown to this version of lttoolbox - upgrade!");
+    } else {
+      // Old binary format
+      input.reset();
+      if (DEBUG) System.err.println("Transducer.read() got Old binary format");
+    }
 
     //reading the initial state
     t.initial = Compression.multibyte_read(input);

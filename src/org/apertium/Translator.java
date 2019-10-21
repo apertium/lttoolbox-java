@@ -435,7 +435,9 @@ public class Translator {
         intOutput = new StringBuilder(intOutput.length());
         Program prg = mode.getProgramByIndex(i);
         progressListener.onTranslationProgress(prg.getCommandName(), i + 1, progressMax);
+        //System.out.println("Translator dispatch "+prg);
         dispatch(prg, intInput, intOutput, parallelProcessingEnabled);
+        //System.out.println("Translator out "+intOutput);
         intInput = new StringReader(intOutput.toString());
       }
       progressListener.onTranslationProgress(reformatter.getCommandName(), progressMax - 1, progressMax);

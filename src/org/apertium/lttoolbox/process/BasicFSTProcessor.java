@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
@@ -98,9 +99,40 @@ public class BasicFSTProcessor {
    * Reads the binary representation of a .dix file
    *
    * @param input
-   * @param cachedIndexes path to a unique directory where cached transducer indexes are
+   * @param filename path to a unique directory where cached transducer indexes might be for faster processing
    */
   public void load(ByteBuffer input, String filename) throws IOException {
+    // Check for new format.
+/*
+  if (fgetpos(input, &pos) == 0) {
+      char header[4]{};
+      fread(header, 1, 4, input);
+      if (strncmp(header, HEADER_LTTOOLBOX, 4) == 0) {
+          auto features = read_le<uint64_t>(input);
+          if (features >= LTF_UNKNOWN) {
+              throw std::runtime_error("FST has features that are unknown to this version of lttoolbox - upgrade!");
+          }
+      }
+      else {
+          // Old binary format
+          fsetpos(input, &pos);
+      }
+  }
+ */
+    input.mark();
+    byte[] header = new byte[4];
+    input.get(header);
+    if (Arrays.equals(header, Compression.HEADER_LTTOOLBOX)) {
+      long features = input.getLong();
+      if (DEBUG) System.err.println("BasicFSTProcessor.load() got features " + features);
+      if (features>=1) throw new IOException("FST has features that are unknown to this version of lttoolbox - upgrade!");
+    } else {
+      // Old binary format
+      input.reset();
+      if (DEBUG) System.err.println("BasicFSTProcessor.load() got Old binary format");
+    }
+
+
     // the following examples and numbers corresponds to testdata/wound-example.dix
     // read letters (<alphabet>ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz</alphabet>)
     int len = Compression.multibyte_read(input); // numer of letters (52)

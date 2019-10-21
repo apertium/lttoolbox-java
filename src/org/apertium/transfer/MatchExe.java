@@ -21,6 +21,7 @@ package org.apertium.transfer;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import org.apertium.lttoolbox.Compression;
 import org.apertium.utils.IOUtils;
 
@@ -48,6 +49,18 @@ public class MatchExe {
 
   public MatchExe(ByteBuffer input, int decalage, File cachedFile) throws IOException {
     byteBuffer = input;
+    input.mark();
+    byte[] header = new byte[4];
+    input.get(header);
+    if (Arrays.equals(header, Compression.HEADER_TRANSDUCER)) {
+      long features = input.getLong();
+      if (AbstractTransfer.DEBUG) System.err.println("MatchExe.read() got features " + features);
+      if (features>=1) throw new IOException("FST has features that are unknown to this version of lttoolbox - upgrade!");
+    } else {
+      // Old binary format
+      input.reset();
+      if (AbstractTransfer.DEBUG) System.err.println("MatchExe.read() got Old binary format");
+    }
     this.decalage = decalage;
     //reading the initial state - set up initial node
     initial_id = Compression.multibyte_read(input);

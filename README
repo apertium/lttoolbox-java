@@ -28,7 +28,7 @@ http://wiki.apertium.org/wiki/Lttoolbox-java
 
 	a. Requirements:
 	        - i686, ppc, SPARC, etc.
-		- JDK 1.6 (Java Development Kit 6)
+		- JDK 1.8 or later
 		- Netbeans or ant version 1.6.5 or later
 
 	b. Building & installing

@@ -21,6 +21,7 @@ import org.apertium.lttoolbox.*;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import org.apertium.lttoolbox.Alphabet.IntegerPair;
@@ -168,6 +169,40 @@ public class TransducerExe {
   }
 
   public void read(ByteBuffer input, Alphabet alphabet, File cachedFile) throws IOException {
+
+/*
+  fpos_t pos;
+  if (fgetpos(input, &pos) == 0) {
+      char header[4]{};
+      fread(header, 1, 4, input);
+      if (strncmp(header, HEADER_TRANSDUCER, 4) == 0) {
+          auto features = read_le<uint64_t>(input);
+          if (features >= TDF_UNKNOWN) {
+              throw std::runtime_error("Transducer has features that are unknown to this version of lttoolbox - upgrade!");
+          }
+          read_weights = (features & TDF_WEIGHTS);
+      }
+      else {
+          // Old binary format
+          fsetpos(input, &pos);
+      }
+  }
+
+ */
+    input.mark();
+    byte[] header = new byte[4];
+    input.get(header);
+    if (Arrays.equals(header, Compression.HEADER_TRANSDUCER)) {
+      long features = input.getLong();
+        if (FSTProcessor.DEBUG) System.err.println("TransducerExe.read() got features " + features);
+      if (features>=1) throw new IOException("FST has features that are unknown to this version of lttoolbox - upgrade!");
+    } else {
+      // Old binary format
+      input.reset();
+      if (FSTProcessor.DEBUG) System.err.println("TransducerExe.read() got Old binary format");
+    }
+
+
 
     initial_id = Compression.multibyte_read(input);  // 0 for eo-en.dix)
     final int finals_size = Compression.multibyte_read(input); // xx  (5 for eo-en.dix)
