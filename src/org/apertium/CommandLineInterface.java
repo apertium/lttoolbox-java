@@ -22,7 +22,7 @@ import org.apertium.transfer.generation.TransferBytecode;
  * @author Jacob Nordfalk
  */
 public class CommandLineInterface {
-  public static final String PACKAGE_VERSION = "3.2j";
+  public static final String PACKAGE_VERSION = "3.4.0";
 
   private static void showHelp(String invocationCommand) {
     String bareCommand = "";
