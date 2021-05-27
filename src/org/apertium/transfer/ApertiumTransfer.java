@@ -184,7 +184,7 @@ public class ApertiumTransfer {
      * stages themselves decide what to do. (This is a good thing!)
      * C++ way is: apertium-transfer apertium-eo-en.eo-en.t1x eo-en.t1x.bin eo-en.autobil.bin
      * expected is: apertium-transfer-j eo-en.t1x.class eo-en.t1x.bin eo-en.autobil.bin
-     * see also http://wiki.apertium.org/wiki/Bytecode_for_transfer
+     * see also https://wiki.apertium.org/wiki/Bytecode_for_transfer
      */
     Transfer t = null;
     String tRulesOrClassString = argv[optind + 1];

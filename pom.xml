@@ -7,16 +7,16 @@
 	<name>lttoolbox-java</name>
 	<version>3.4.0</version>
 	<description>lttoolbox-java is able to process and generate the binary files used by lttoolbox and produce exactly the same output.</description>
-	<url>http://wiki.apertium.org/wiki/Lttoolbox-java</url>
+	<url>https://wiki.apertium.org/wiki/Lttoolbox-java</url>
 
 	<organization>
 		<name>The Apertium Project</name>
-		<url>http://www.apertium.org</url>
+		<url>http://apertium.org</url>
 	</organization>
 
 	<issueManagement>
 		<system>Apertium Bug Tracker</system>
-		<url>http://wiki.apertium.org/wiki/Bugzilla</url>
+		<url>https://wiki.apertium.org/wiki/Bugzilla</url>
 	</issueManagement>
 
 	<developers>

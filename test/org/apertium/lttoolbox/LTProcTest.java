@@ -63,7 +63,7 @@ public class LTProcTest extends TestCase {
 
 
   /**
-   * Tests a transducer like http://wiki.apertium.org/wiki/Morphological_dictionaries
+   * Tests a transducer like https://wiki.apertium.org/wiki/Morphological_dictionaries
    *
    * @throws java.io.IOException
    */

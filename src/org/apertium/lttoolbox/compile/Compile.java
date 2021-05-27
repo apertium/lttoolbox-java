@@ -178,7 +178,7 @@ public class Compile {
   /**
    * Read ACX file.
    *
-   * @see http://wiki.apertium.org/wiki/ACX format
+   * @see https://wiki.apertium.org/wiki/ACX format
    * @param file the address of the file to be read
    * @param dir the direction of the compilation, 'lr' (leftSide-to-right) or 'rl'
    * (right-to-leftSide)

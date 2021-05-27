@@ -868,7 +868,7 @@
 
          Fleire reglar trengst for å matche ADJ* (eigentleg ADJ{0,4} i reglane under)
          men det jo berre kopiere og lime inn (og fikse litt) etter at ADJ{1} regelen 
-         er ferdig. Sjå http://wiki.apertium.org/wiki/Norsk#Genitive.2Fpossessive  -->
+         er ferdig. Sjå https://wiki.apertium.org/wiki/Norsk#Genitive.2Fpossessive  -->
     
     <rule comment="NGEN: mannens => mannen sin
                    Very heuristic fallback rule.

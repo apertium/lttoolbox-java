@@ -54,7 +54,7 @@ public class CommandLineInterface {
         + " " + bareCommand + " apertium-destxt             lexical transfer\n"
         + "For more help on a task, run it without parameters, like: " + bareCommand + " lt-proc\n"
         + "Note: Not all tasks shown, the above are just examples of Apertium commandt.\n"
-        + "See also http://wiki.apertium.org/wiki/Lttoolbox-java");
+        + "See also https://wiki.apertium.org/wiki/Lttoolbox-java");
   }
 
   public static void main(String[] argv) throws Exception {

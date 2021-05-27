@@ -856,7 +856,7 @@ public class apertium_nn_nb_nb_nn_t1x extends GeneratedTransferBase
 
          Fleire reglar trengst for å matche ADJ* (eigentleg ADJ{0,4} i reglane under)
          men det jo berre kopiere og lime inn (og fikse litt) etter at ADJ{1} regelen 
-         er ferdig. Sjå http://wiki.apertium.org/wiki/Norsk#Genitive.2Fpossessive   */
+         er ferdig. Sjå https://wiki.apertium.org/wiki/Norsk#Genitive.2Fpossessive   */
 	// NGEN: mannens => mannen sin                    Very heuristic fallback rule.                    If we can't match with the below rules, turn the                    genitive -s into 'sin' garpegenitiv instead.                    A bit more fluent where eg. input is incomplete:                          mannens *sykkel => mannen sin *sykkel                    But we don't know gen/nbr of object, so we could end                    up with                          mannens *sykler => mannen sin *sykler                    So let's just hope plurals possess plurals etc...
 	public void rule11__ngen(Appendable out, TransferWord word1) throws IOException
 	{
