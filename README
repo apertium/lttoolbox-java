@@ -40,6 +40,13 @@ https://wiki.apertium.org/wiki/Lttoolbox-java
 		- mvn install
 
 
+3. Preparations before running the tests
+mkdir tmp
+sudo apt install lttoolbox-dev
+sudo apt install apertium
+ant jar
+
+
 
 COMPATIBILITY AND PERFORMANCE
 

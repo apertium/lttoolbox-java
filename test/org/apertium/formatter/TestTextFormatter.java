@@ -21,6 +21,7 @@ package org.apertium.formatter;
 import static org.junit.Assert.*;
 import static org.apertium.utils.IOUtils.readFile;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -43,6 +44,7 @@ public class TestTextFormatter {
     String testin = "$100 cash+\n@No refunds *\\ > ~ < \tfoo\tbar {} //// \t  #<blah>";
     String expOut = "\\$100 cash\\+[\n]\\@No refunds \\*\\\\ \\> \\~ \\<[ \t]foo[\t]bar \\{\\} \\/\\/\\/\\/[ \t  ]\\#\\<blah\\>.[]";
 
+    new File("./tmp/").mkdir();
     FileWriter f = new FileWriter("./tmp/txtfmtin");
     f.append(testin);
     f.close();

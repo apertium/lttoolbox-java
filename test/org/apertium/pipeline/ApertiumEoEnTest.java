@@ -79,7 +79,7 @@ public class ApertiumEoEnTest {
    */
   @Test
   public void testEnEoSingleSentence() throws Exception {
-    assertTrue(lingDataDir + " must exist", openFile(lingDataDir).exists());
+    assertTrue(lingDataDir + " must be cloned and a working Esperanto-English language compiled there", openFile(lingDataDir).exists());
 
     String inputFilename = tempDir + "en-input.txt";
     String outputFilename = tempDir + "full_pipeline-en-eo-100-output.txt";
@@ -103,7 +103,7 @@ public class ApertiumEoEnTest {
    */
   @Test
   public void testEnEoSingleSentence2() throws Exception {
-    assertTrue(lingDataDir + " must exist", openFile(lingDataDir).exists());
+    assertTrue(lingDataDir + " must be cloned and a working Esperanto-English language compiled there", openFile(lingDataDir).exists());
 
     String inputFilename = tempDir + "en-input.txt";
     String outputFilename = tempDir + "full_pipeline-en-eo-100-output.txt";
