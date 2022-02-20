@@ -5,7 +5,7 @@
 	<artifactId>lttoolbox-java</artifactId>
 
 	<name>lttoolbox-java</name>
-	<version>3.4.1</version>
+	<version>3.4.2</version>
 	<description>lttoolbox-java is able to process and generate the binary files used by lttoolbox and produce exactly the same output.</description>
 	<url>https://wiki.apertium.org/wiki/Lttoolbox-java</url>
 
