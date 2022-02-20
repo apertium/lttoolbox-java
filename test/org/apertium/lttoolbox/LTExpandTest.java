@@ -21,10 +21,12 @@ public class LTExpandTest extends TestCase {
     assertEquals("Difference", "", exec("diff " + dir + "short.dix-expanded.txt " + outFile));
   }
 
+  /* Test disabled, as it verifies the C++ version, which might not be installed
   public void testCLTExpand() throws Exception {
     String outFile = "./tmp/lt-expand-output.txt";
     String res = exec("lt-expand " + dir + "short.dix");
     new FileWriter(outFile).append(res).close();
     assertEquals("Difference", "", exec("diff " + dir + "short.dix-expanded.txt " + outFile));
   }
+  */
 }

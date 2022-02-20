@@ -1,17 +1,20 @@
-PACKAGE=lttoolbox-java-3.2.1
+PACKAGE=lttoolbox-java-3.4.1
 
 SYMLINKS=lt-validate-j lt-print-j lt-expand-j lt-comp-j lt-proc-j lt-trim-j\
 apertium-destxt-j apertium-retxt-j apertium-tagger-j apertium-pretransfer-j\
 apertium-transfer-j apertium-interchunk-j apertium-postchunk-j apertium-preprocess-transfer-bytecode-j
 
-DISTFILES=README dist/lttoolbox.jar autogen.sh build.xml COPYING Makefile nbproject src test testdata apertium-j apertium-pack-j ${SYMLINKS}
+DISTFILES=README dist/lttoolbox.jar autogen.sh pom.xml COPYING Makefile src test testdata apertium-j apertium-pack-j ${SYMLINKS}
 
 .PHONY : test dist
 
 all: dist/lttoolbox.jar symlinks
 
-dist/lttoolbox.jar:
-	ant -quiet jar
+dist/lttoolbox.jar: pom.xml src
+	./mvnw package
+	mkdir dist
+	cp target/lttoolbox.jar dist/
+
 
 symlinks: ${SYMLINKS}
 
@@ -33,13 +36,14 @@ install: dist/lttoolbox.jar
 	cp -a ${SYMLINKS} apertium-j apertium-pack-j ${DEST}/bin/
 
 test:
-	ant -quiet test
+	./mvnw test
 
 clean:
-	ant -quiet clean
+	./mvnw -quiet clean
+	rm -rf out target dist tmp
 
 distclean: clean
-	rm -f prefix ${SYMLINKS};
+	rm -f prefix ${SYMLINKS}
 
 dist: dist/lttoolbox.jar
 	rm -rf ${PACKAGE}

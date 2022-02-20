@@ -35,12 +35,14 @@ public class LTCompTest extends TestCase {
     assertEquals("files must be binary equal", 0, compareExitValue);
   }
 
+  /* Test disabled, as it verifies the C++ version, which might not be installed
   public void testLTCompCpp() throws Exception {
     Runtime.getRuntime().exec("lt-comp lr testdata/test.dix tmp/testC++.bin").waitFor();
     int compareExitValue = Runtime.getRuntime().exec("cmp tmp/testC++.bin testdata/correct-test.bin").waitFor();
     System.err.println("Test disabled as it verified the C++ version lt-comp binary compilation output, which seems to have changed");
     // assertEquals("files must be binary equal", 0, compareExitValue);
   }
+  */
 
   public void testLTCompJava2() throws Exception {
     LTComp.main(new String[]{"lr", "testdata/short.dix", "tmp/testJava.bin"});
@@ -48,12 +50,14 @@ public class LTCompTest extends TestCase {
     assertEquals("files must be binary equal", 0, compareExitValue);
   }
 
+  /* Test disabled, as it verifies the C++ version, which might not be installed
   public void testLTCompCpp2() throws Exception {
     Runtime.getRuntime().exec("lt-comp lr testdata/short.dix tmp/testC++.bin").waitFor();
     int compareExitValue = Runtime.getRuntime().exec("cmp tmp/testC++.bin testdata/correct-short.bin").waitFor();
     System.err.println("Test disabled as it verified the C++ version lt-comp binary compilation output, which seems to have changed");
     // assertEquals("files must be binary equal", 0, compareExitValue);
   }
+  */
 
   public void testLTCompJavaLatin1() throws Exception {
     LTComp.main(new String[]{"lr", "testdata/latin-1.dix", "tmp/testJava.bin"});
@@ -61,12 +65,14 @@ public class LTCompTest extends TestCase {
     assertEquals("files must be binary equal", 0, compareExitValue);
   }
 
+  /* Test disabled, as it verifies the C++ version, which might not be installed
   public void testLTCompCppLatin1() throws Exception {
     Runtime.getRuntime().exec("lt-comp lr testdata/latin-1.dix tmp/testC++.bin").waitFor();
     int compareExitValue = Runtime.getRuntime().exec("cmp tmp/testC++.bin testdata/correct-latin-1.bin").waitFor();
     System.err.println("Test disabled as it verified the C++ version lt-comp binary compilation output, which seems to have changed");
     // assertEquals("files must be binary equal", 0, compareExitValue);
   }
+   */
 
   public void testLTCompJavaRl() throws Exception {
     LTComp.main(new String[]{"rl", "testdata/test.dix", "tmp/testJava.bin"});
@@ -74,12 +80,14 @@ public class LTCompTest extends TestCase {
     assertEquals("files must be binary equal", 0, compareExitValue);
   }
 
+  /* Test disabled, as it verifies the C++ version, which might not be installed
   public void testLTCompCppRl() throws Exception {
     Runtime.getRuntime().exec("lt-comp rl testdata/test.dix tmp/testC++.bin").waitFor();
     int compareExitValue = Runtime.getRuntime().exec("cmp tmp/testC++.bin testdata/correct-testRl.bin").waitFor();
     System.err.println("Test disabled as it verified the C++ version lt-comp binary compilation output, which seems to have changed");
     // assertEquals("files must be binary equal", 0, compareExitValue);
   }
+   */
 
 
   public void testTransducerCompTest() throws Exception {

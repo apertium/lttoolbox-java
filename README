@@ -27,24 +27,12 @@ https://wiki.apertium.org/wiki/Lttoolbox-java
 2. Install
 
 	a. Requirements:
-	        - i686, ppc, SPARC, etc.
 		- JDK 1.8 or later
-		- Netbeans or ant version 1.6.5 or later
 
 	b. Building & installing
 		- sh autogen.sh
 		- make
 		- sudo make install
-
-	b.2 Building & installing using Maven 2 (http://maven.apache.org)
-		- mvn install
-
-
-3. Preparations before running the tests
-mkdir tmp
-sudo apt install lttoolbox-dev
-sudo apt install apertium
-ant jar
 
 
 

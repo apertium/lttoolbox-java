@@ -5,6 +5,7 @@
 package org.apertium.transfer;
 
 import org.apertium.transfer.old.compile.ApertiumTransferCompile;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.Reader;
@@ -60,9 +61,14 @@ public class TransferEnEoTest {
 
     /////////////////////////////
     //
-    // NOTE:  You *need* dist/lttoolbox.jar  , so do a full rebuiild if this test fails
+    // NOTE:  You *need* dist/lttoolbox.jar  , so omitting the test if it hasnt been built
     //
     ///////////////////////////
+    if (!new File("dist/lttoolbox.jar").exists()) {
+      new Exception("You need dist/lttoolbox.jar to be built before running this test - omitting").printStackTrace();
+      return;
+    }
+
     ApertiumTransferCompile.main(new String[]{t1xFile, "./tmp/t1x.bin.class"});
 
 
@@ -73,7 +79,8 @@ public class TransferEnEoTest {
     rm("./tmp/t1x.bin.class");
   }
 
-  @Test
+  // Test disabled, as the C version of apertium-transfer has changed behaviour
+  //@Test
   public void testInterpretedTransferMalgranda_en_eo() throws Exception {
     String outFile = "./tmp/transferoutput-en-eo.t1x-malgranda.txt";
     String t1xFile = dir + "apertium-eo-en.en-eo.t1x";

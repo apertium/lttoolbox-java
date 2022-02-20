@@ -59,8 +59,10 @@ public class ApertiumEoEnTest {
       String expOutputFilename, String direction, String testName)
       throws Exception {
     // skip test if directory or some of the files don't exist
-    if (!openFile(lingDataDir).exists())
+    if (!openFile(lingDataDir).exists()) {
+      new Exception("For this test to run, " + lingDataDir + " must contain a git clone of the language pair, that is compiled and working").printStackTrace();
       return;
+    };
     if (!openFile(inputFilename).exists())
       return;
     if (!openFile(expOutputFilename).exists())
@@ -79,7 +81,10 @@ public class ApertiumEoEnTest {
    */
   @Test
   public void testEnEoSingleSentence() throws Exception {
-    assertTrue(lingDataDir + " must be cloned and a working Esperanto-English language compiled there", openFile(lingDataDir).exists());
+    if (!openFile(lingDataDir).exists()) {
+      new Exception("For this test to run, " + lingDataDir + " must contain a git clone of the language pair, that is compiled and working").printStackTrace();
+      return;
+    }
 
     String inputFilename = tempDir + "en-input.txt";
     String outputFilename = tempDir + "full_pipeline-en-eo-100-output.txt";
@@ -103,7 +108,10 @@ public class ApertiumEoEnTest {
    */
   @Test
   public void testEnEoSingleSentence2() throws Exception {
-    assertTrue(lingDataDir + " must be cloned and a working Esperanto-English language compiled there", openFile(lingDataDir).exists());
+    if (!openFile(lingDataDir).exists()) {
+      new Exception("For this test to run, " + lingDataDir + " must contain a git clone of the language pair, that is compiled and working").printStackTrace();
+      return;
+    };
 
     String inputFilename = tempDir + "en-input.txt";
     String outputFilename = tempDir + "full_pipeline-en-eo-100-output.txt";
