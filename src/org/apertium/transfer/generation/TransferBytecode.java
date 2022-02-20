@@ -82,6 +82,7 @@ public class TransferBytecode {
   private InstructionFactory factory;
   private FieldGen fg;
   private MethodGen mg;
+  private int errorsIssued = 0;
 
   private enum ParseMode {
     TRANSFER, INTERCHUNK, POSTCHUNK
@@ -176,6 +177,7 @@ public class TransferBytecode {
   }
 
   private void printErrorMessage(String message) {
+    errorsIssued ++;
     message = message + getPathAsString(currentNode);
     System.err.println(message);
   }
@@ -1325,7 +1327,10 @@ public class TransferBytecode {
   public static void main(String[] argv) throws Exception {
     if (argv.length != 2)
       showHelp("apertium-preprocess-transfer-bytecode-j");
-    else
-      new TransferBytecode(argv[0]).dump(argv[1]);
+    else {
+      TransferBytecode tb = new TransferBytecode(argv[0]);
+      tb.dump(argv[1]);
+      if (tb.errorsIssued>0) System.exit(1);
+    }
   }
 }
